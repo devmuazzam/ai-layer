@@ -9,4 +9,5 @@ claude/settings.local.json
 # community-plugins.json) stays tracked so vault settings are shared.
 **/.obsidian/workspace.json
 **/.obsidian/workspace-mobile.json
+**/.obsidian/graph.json
 **/.obsidian/cache
