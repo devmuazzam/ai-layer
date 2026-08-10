@@ -1,3 +1,12 @@
 .DS_Store
 claude/settings.local.json
 *.backup-*
+
+# Obsidian per-person UI state — not shared.
+# Patterns are **/-prefixed because a pattern containing a slash is anchored to
+# this .gitignore's directory (.ai/), and the vault lives at .ai/vault/.obsidian/.
+# The rest of .obsidian/ (app.json, appearance.json, core-plugins.json,
+# community-plugins.json) stays tracked so vault settings are shared.
+**/.obsidian/workspace.json
+**/.obsidian/workspace-mobile.json
+**/.obsidian/cache
