@@ -6,8 +6,8 @@ updated: 2026-07-14
 status: unverified
 conflicts_with: []
 jira: []
-topics: [daily-allocation, permits, yards, yard-operations, sprint-planning, navigation-ui]
-entities: [das, permit, sprint, yard]
+topics: [daily-allocation, permits, yards, yard-operations, sprint-planning, navigation-ui, projects, lift-plans]
+entities: [permit, das, yard, sprint, project]
 date_conflict: >
   Filename uses the Confluence created date (2026-06-17). The body is internally
   stamped "15 June - 26 June 2025", a year earlier than every surrounding page;

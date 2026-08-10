@@ -6,8 +6,8 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [product/frd-new-format-draft/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, lunch-breaks, jobs, safety, yards]
-entities: [field-ticket, job, lunch-record, yard, customer, certification]
+topics: [field-ops-mobile, inspections, lunch-breaks, jobs, safety, yards, ticket-workflow, signatures]
+entities: [field-ticket, job, lunch-record, yard, customer, certification, inspection, deficiency, notification, signature]
 parts:
   - 00-section-header.md
   - fr-fop-001-bottom-navigation.md

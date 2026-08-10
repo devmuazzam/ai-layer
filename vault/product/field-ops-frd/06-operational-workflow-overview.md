@@ -6,8 +6,8 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [product/frd-new-format-draft/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, ticket-workflow, time-tracking, lunch-breaks, safety]
-entities: [field-ticket, job-site, yard, lunch-record, customer, signature]
+topics: [field-ops-mobile, inspections, ticket-workflow, time-tracking, lunch-breaks, safety, job-sites, yards]
+entities: [field-ticket, job-site, yard, lunch-record, customer, signature, tailboard-jsa]
 part_of: product/field-ops-frd/INDEX.md
 ---
 ## 6. Operational Workflow Overview

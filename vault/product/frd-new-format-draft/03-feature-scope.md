@@ -6,8 +6,8 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, labor-payroll, time-tracking, compliance, notifications, ticket-workflow]
-entities: [field-ticket, labor-record, job, customer, yard, signature]
+topics: [field-ops-mobile, labor-payroll, time-tracking, compliance, notifications, ticket-workflow, inspections, lunch-breaks]
+entities: [field-ticket, labor-record, job, customer, yard, signature, lunch-record, certification, deficiency, notification]
 part_of: product/frd-new-format-draft/INDEX.md
 ---
 ## 3. Feature Scope

@@ -6,8 +6,8 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, signatures, ticket-workflow, inspections, customers, time-tracking]
-entities: [field-ticket, customer, signature, job, yard, labor-record]
+topics: [field-ops-mobile, signatures, ticket-workflow, inspections, customers, time-tracking, yards, jobs]
+entities: [field-ticket, customer, signature, job, yard, labor-record, tailboard-jsa, lunch-record]
 part_of: product/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---
 ### FR-FOP-007 — Guided Ticket Workflow

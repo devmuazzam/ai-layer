@@ -6,8 +6,8 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: [product/agencies.md, product/agency-and-vendor.md, product/agencies-module.md]
 jira: []
-topics: [vendors, assets, categories, dispatch, jobs, yards]
-entities: [vendor, employee, asset, category, job, yard]
+topics: [vendors, assets, categories, dispatch, jobs, agencies, yards, daily-allocation]
+entities: [vendor, employee, asset, category, job, agency, yard, das, schedule]
 ---
 
 ### EPIC: Vendor Management

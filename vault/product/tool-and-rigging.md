@@ -6,7 +6,7 @@ updated: 2026-05-26
 status: unverified
 conflicts_with: []
 jira: []
-topics: [tools-rigging, jobs, yards, quotations, assets, dashboard]
+topics: [tools-rigging, jobs, yards, quotations, assets, dashboard, dispatch, inspections]
 entities: [tool-rigging, job, yard, quotation, asset, employee]
 ---
 

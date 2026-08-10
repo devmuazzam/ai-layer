@@ -8,8 +8,8 @@ kind: conflict-stub
 gap: gaps.md#agencies-and-vendors
 conflicts_with: [product/agencies.md, product/vendors.md, product/agency-and-vendor.md, product/agencies-module.md]
 jira: []
-topics: [agencies, vendors, permits, dispatch]
-entities: [agency, vendor, permit, attachment]
+topics: [agencies, vendors, permits, documents-attachments, dashboard, dispatch, categories]
+entities: [agency, vendor, permit, attachment, category]
 ---
 
 # Agencies and vendors — four sources, two entities

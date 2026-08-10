@@ -6,8 +6,8 @@ updated: 2026-07-14
 status: unverified
 conflicts_with: []
 jira: []
-topics: [sprint-planning, authentication, inspections, permits, jobs, dashboard]
-entities: [sprint, permit, job, tool-rigging, inspection, quotation]
+topics: [permits, sprint-planning, authentication, inspections, tools-rigging, jobs, dashboard, quotations]
+entities: [sprint, permit, tool-rigging, job, quotation, customer, vendor, agency, inspection, project]
 date_conflict: >
   Filename uses the Confluence created date (2026-07-14). The body states the sprint ran June 29 - July 10, 2026, so this plan page was created 4 days after the sprint it plans had already ended. Not resolved - flagged for product.
 ---

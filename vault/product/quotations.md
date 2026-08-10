@@ -6,8 +6,8 @@ updated: 2026-07-14
 status: unverified
 conflicts_with: [product/quotation.md, product/quotation-flow-process.md, product/user-story-and-tasks.md]
 jira: []
-topics: [quotations, categories, signatures, customers, tools-rigging, assets]
-entities: [quotation, category, customer, asset, tool-rigging, permit]
+topics: [quotations, tools-rigging, customers, categories, signatures, permits, assets, inspections]
+entities: [quotation, tool-rigging, customer, category, asset, permit, project, billing-code, employee, notification]
 ---
 
 * Send emails notification for [[product/quotations-INDEX|quotation]] approvals to all levels

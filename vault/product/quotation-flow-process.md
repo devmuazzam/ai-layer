@@ -6,8 +6,8 @@ updated: 2026-07-09
 status: unverified
 conflicts_with: [product/quotation.md, product/quotations.md, product/user-story-and-tasks.md]
 jira: []
-topics: [quotations, customers, signatures, tools-rigging, projects, jobs]
-entities: [quotation, customer, job, project, tool-rigging, schedule]
+topics: [quotations, customers, tools-rigging, projects, signatures, jobs, permits, scheduling]
+entities: [quotation, customer, tool-rigging, project, job, permit, schedule, job-site, asset, signature]
 ---
 
 **[[product/quotations-INDEX|Quotation]] flow :**

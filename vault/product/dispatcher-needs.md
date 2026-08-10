@@ -6,8 +6,8 @@ updated: 2026-04-07
 status: unverified
 conflicts_with: []
 jira: []
-topics: [dispatch, jobs, permits, assets, customers, vendors]
-entities: [job, asset, permit, field-ticket, customer, vendor]
+topics: [dispatch, jobs, permits, assets, customers, vendors, scheduling, inspections]
+entities: [job, permit, asset, customer, vendor, field-ticket, schedule, project, agency, tool-rigging]
 ---
 
 ## **1. Dispatcher Needs (Extracted from Discovery)**

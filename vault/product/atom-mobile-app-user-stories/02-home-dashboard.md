@@ -6,7 +6,7 @@ updated: 2026-07-22
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/frd-new-format-draft/INDEX.md]
 jira: []
-topics: [field-ops-mobile, dashboard, certifications, notifications, documents-attachments, compliance]
+topics: [field-ops-mobile, dashboard, certifications, notifications, documents-attachments, compliance, labor-payroll, safety]
 entities: [certification, field-ticket, employee, notification]
 part_of: product/atom-mobile-app-user-stories/INDEX.md
 ---

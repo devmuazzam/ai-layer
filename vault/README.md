@@ -57,7 +57,15 @@ break the moment a file is split into a folder, which has already happened twice
 document gets `field-ops-mobile` so the broad lookup works, plus narrow tags so the
 specific lookup lands on the right two files rather than all 102. `entities:` gets **no
 anchor** — it states what the file specifies, and inflating it claims coverage that is
-not there. Both come from a frozen vocabulary listed at the bottom of `INDEX.md`; adding
+not there.
+
+**Tags are capped — absence of a tag is not proof of absence in the file.** A file gets at
+most **8 `topics:`** and **10 `entities:`**, ranked by how often the term occurs. Long
+files legitimately touch more than that, so the tail is dropped. The first pass capped
+both at 6 and silently discarded 252 entity tags across 50 files and 398 topic tags across
+74 — including `fcc` on `product/mobilization-and-demobilization.md`, the most informative
+FCC source in the vault. That was invisible until an agent cross-checked the index against
+the files. **Grep the body before concluding a file does not cover something.** Both come from a frozen vocabulary listed at the bottom of `INDEX.md`; adding
 a term is fine when a real domain area is missing, but coin a near-synonym
 (`quoting` beside `quotations`) and retrieval quietly degrades.
 
@@ -251,10 +259,11 @@ When product resolves a conflict set:
 ## Glossary — missing, and known to be missing
 
 There is **no glossary anywhere in this vault**, and eight crane-domain terms are used
-throughout as though understood: `fcc` (4 files), `tailboard-jsa` (5), `das` (4),
-`boom-time` (3), `build-up` (2), `craft-code` (2), `loadout` (1), `mob-demob` (1).
-`fcc` is the highest-value unknown — it is referenced as a system of record
-("verify from FCC", "Add all FCC fields") and nothing says what it is.
+throughout as though understood: `tailboard-jsa` (13 files), `das` (12), `boom-time` (9),
+`craft-code` (6), `fcc` (5), `build-up` (4), `loadout` (4), `mob-demob` (1).
+`fcc` is the highest-value unknown — it is referenced as an existing system of record
+("Customer-FCC", "need to verify from FCC if its customer contact or seperate job site
+contact") and nothing says what it is.
 
 A ninth, `comp-code`, exists in the domain but its only documentation was in the
 personnel content excluded by policy, so it has to be sourced from a person rather than

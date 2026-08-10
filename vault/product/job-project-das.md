@@ -6,8 +6,8 @@ updated: 2026-07-16
 status: unverified
 conflicts_with: [product/daily-allocation-system.md]
 jira: []
-topics: [assets, permits, jobs, categories, projects, billing-codes]
-entities: [asset, permit, job, employee, category, project]
+topics: [assets, permits, tools-rigging, projects, jobs, categories, agencies, billing-codes]
+entities: [asset, permit, job, project, tool-rigging, employee, category, agency, billing-code, quotation]
 ---
 
 **[[product/billing-code-and-price-list|Billing code]]**

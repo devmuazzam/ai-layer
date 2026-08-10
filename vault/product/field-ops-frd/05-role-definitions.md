@@ -6,8 +6,8 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [product/frd-new-format-draft/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, ticket-workflow, compliance, labor-payroll, customers]
-entities: [inspection, field-ticket, labor-record, customer, asset, signature]
+topics: [field-ops-mobile, inspections, ticket-workflow, compliance, labor-payroll, customers, assets, signatures]
+entities: [inspection, field-ticket, labor-record, customer, asset, signature, tailboard-jsa]
 part_of: product/field-ops-frd/INDEX.md
 ---
 ## 5. Role Definitions

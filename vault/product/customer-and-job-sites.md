@@ -6,8 +6,8 @@ updated: 2026-06-12
 status: unverified
 conflicts_with: [product/customer.md, product/discussion-points-with-mohsin.md, product/discussion-points-with-tcg-team.md, product/user-story-and-tasks.md]
 jira: []
-topics: [customers, job-sites, certifications, pricing, purchase-orders, reporting]
-entities: [customer, job-site, certification, fcc, purchase-order, quotation]
+topics: [customers, job-sites, certifications, pricing, purchase-orders, reporting, navigation-ui, quotations]
+entities: [customer, job-site, certification, fcc, purchase-order, quotation, task, industry-code]
 ---
 
 ## Customer-FCC

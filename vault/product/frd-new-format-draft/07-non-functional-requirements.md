@@ -6,8 +6,8 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, time-tracking, signatures, offline-reliability, ticket-workflow]
-entities: [field-ticket, signature, job, yard, certification, deficiency]
+topics: [field-ops-mobile, inspections, time-tracking, signatures, offline-reliability, ticket-workflow, labor-payroll, jobs]
+entities: [field-ticket, signature, job, yard, certification, deficiency, labor-record, lunch-record]
 part_of: product/frd-new-format-draft/INDEX.md
 ---
 ## 7. Non-Functional Requirements

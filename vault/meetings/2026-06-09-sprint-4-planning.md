@@ -6,8 +6,8 @@ updated: 2026-06-10
 status: unverified
 conflicts_with: []
 jira: [SCRUM-248, SCRUM-253, SCRUM-254, SCRUM-501, SCRUM-502, SCRUM-508, SCRUM-510, SCRUM-515, SCRUM-517, SCRUM-518, SCRUM-519, SCRUM-521]
-topics: [scrum-process, daily-allocation, purchase-orders, sprint-planning, notifications, offline-reliability]
-entities: [sprint, purchase-order, das, job, project, quotation]
+topics: [scrum-process, daily-allocation, purchase-orders, sprint-planning, notifications, offline-reliability, quotations, customers]
+entities: [sprint, purchase-order, das, job, project, quotation, customer, vendor, asset, permit]
 date_conflict: >
   Filename uses the Confluence created date (2026-06-09). The body states the sprint ran June 1-12, 2026, so this planning page was created 8 days into the sprint it plans. Not resolved - flagged for product.
 ---

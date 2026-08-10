@@ -201,6 +201,6 @@ Every file carries `topics:` (subject area) and `entities:` (what it actually sp
 
 These are used throughout as if understood, and defined nowhere in the vault. Ordered by usage, which is the order to ask about them:
 
-`fcc` (4 files — a system of record; the single highest-value unknown) · `tailboard-jsa` (5) · `das` (4) · `boom-time` (3) · `build-up` (2) · `craft-code` (2) · `loadout` (1) · `mob-demob` (1)
+`fcc` (5 files — an existing system of record; the single highest-value unknown) · `tailboard-jsa` (13) · `das` (12) · `boom-time` (9) · `craft-code` (6) · `build-up` (4) · `loadout` (4) · `mob-demob` (1)
 
 `comp-code` is a ninth: it exists in the domain but its only documentation was in the excluded personnel content, so it must be sourced from a person. Definitions should land in `domain/` as `status: unverified` until someone with crane-domain authority confirms them.

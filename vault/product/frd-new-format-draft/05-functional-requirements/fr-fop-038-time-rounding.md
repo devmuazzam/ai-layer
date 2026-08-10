@@ -6,7 +6,7 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, time-tracking, labor-payroll, compliance, yards, jobs]
+topics: [field-ops-mobile, time-tracking, labor-payroll, compliance, yards, jobs, lunch-breaks, permits]
 entities: [job, yard, permit, labor-record, lunch-record, union-code]
 part_of: product/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---

@@ -6,7 +6,7 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, compliance, labor-payroll, inspections, time-tracking, signatures]
+topics: [field-ops-mobile, compliance, labor-payroll, inspections, time-tracking, signatures, deficiencies]
 entities: [field-ticket, deficiency, signature, labor-record]
 part_of: product/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---

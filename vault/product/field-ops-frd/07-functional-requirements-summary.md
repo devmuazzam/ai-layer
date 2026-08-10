@@ -6,8 +6,8 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [product/frd-new-format-draft/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, labor-payroll, lunch-breaks, ticket-workflow, deficiencies]
-entities: [field-ticket, labor-record, lunch-record, inspection, job, deficiency]
+topics: [field-ops-mobile, inspections, labor-payroll, lunch-breaks, ticket-workflow, deficiencies, jobs, time-tracking]
+entities: [field-ticket, labor-record, lunch-record, inspection, job, deficiency, job-site, yard, certification, notification]
 part_of: product/field-ops-frd/INDEX.md
 ---
 ## 7. Functional Requirements Summary

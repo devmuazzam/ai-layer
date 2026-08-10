@@ -6,7 +6,7 @@ updated: 2026-02-04
 status: verified
 conflicts_with: []
 jira: []
-topics: [scrum-process, inspections, ticket-workflow, compliance, projects, sprint-planning]
+topics: [scrum-process, inspections, ticket-workflow, compliance, projects, sprint-planning, requirements-spec]
 entities: [field-ticket, sprint, task, project]
 supersedes:
   - confluence/TCG/JIRA ( SOP's ) — TCG-space copy, last updated 2026-04-23, not migrated

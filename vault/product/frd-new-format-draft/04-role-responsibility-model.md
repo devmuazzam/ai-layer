@@ -6,8 +6,8 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, labor-payroll, inspections, signatures, ticket-workflow, customers]
-entities: [field-ticket, labor-record, signature, customer, job, asset]
+topics: [field-ops-mobile, labor-payroll, inspections, signatures, ticket-workflow, customers, compliance, notifications]
+entities: [field-ticket, labor-record, signature, customer, job, asset, certification, notification]
 part_of: product/frd-new-format-draft/INDEX.md
 ---
 ## 4. Role Responsibility Model

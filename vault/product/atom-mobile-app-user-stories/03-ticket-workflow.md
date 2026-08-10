@@ -6,8 +6,8 @@ updated: 2026-07-22
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/frd-new-format-draft/INDEX.md]
 jira: []
-topics: [field-ops-mobile, time-tracking, inspections, customers, safety, signatures]
-entities: [employee, field-ticket, customer, signature, tailboard-jsa, job]
+topics: [field-ops-mobile, time-tracking, inspections, customers, safety, signatures, lunch-breaks, jobs]
+entities: [employee, field-ticket, customer, signature, tailboard-jsa, job, inspection, lunch-record, yard, labor-record]
 part_of: product/atom-mobile-app-user-stories/INDEX.md
 ---
 # EPIC 3 —> Ticket Workflow

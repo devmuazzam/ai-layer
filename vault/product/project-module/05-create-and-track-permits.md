@@ -6,8 +6,8 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [permits, projects, jobs, documents-attachments, notifications, dashboard]
-entities: [permit, project, job, asset, attachment, agency]
+topics: [permits, projects, jobs, documents-attachments, notifications, dashboard, dispatch, assets]
+entities: [permit, project, job, asset, attachment, agency, purchase-order, notification, quotation, customer]
 part_of: product/project-module/INDEX.md
 ---
 # User Story 4: Create and Track Permits
