@@ -123,3 +123,43 @@ from these sets — surface the conflict and cite all candidates.
   effect of indexing.
 - Owner: product team
 - Status: open
+
+## Lunch thresholds and work-through-lunch authorization
+
+- Question: Are the lunch thresholds in SCRUM-864 (5 / 10.5 / 16.5 / 22 hours, alert one
+  hour before each) confirmed values and by whom, is it three lunches or four, and when no
+  customer is available to authorize a work-through lunch does the employee record a reason
+  and proceed or is WTL blocked?
+- Candidates:
+  - `SCRUM-864` "Lunch & Work Through Lunch Management" — **In Progress**, Epic SCRUM-582
+    "Atom App", reported by Umair Khan, created 2026-08-06. The only source anywhere with
+    numeric threshold values. Cites no origin for them. Assumes **four** lunches and makes
+    WTL customer authorization unconditional (name + signature + photo).
+  - `product/brs.md` (9.2 KB, 2026-06-10) — BRS-LUNCH-005 "Lunch Threshold Values" is
+    marked *Needs Supporting Documentation*; OD-002 / OD-003 / OD-004 all *Need
+    Documentation*. BRS-LUNCH-002 lists **three** known lunches (First, Second, Third) and
+    is marked **✓ Confirmed**.
+  - `product/field-ops-frd/11-open-questions-future-considerations.md` (FR-TCG-FOP-002
+    v2.0 DRAFT) — open question 1, "Exact lunch thresholds and union variations".
+  - `product/frd-new-format-draft/08-open-questions.md` (FR-TCG-FOP-001 v1.1 REVIEWED) —
+    open question 4, "What are the final lunch threshold rules for first, second, third,
+    and fourth lunch?", owner Corrina, status Open. Open question 1 (owners Wes + Corrina)
+    additionally leaves signature ownership for Third Man/Laborer undecided.
+  - `product/frd-new-format-draft/05-functional-requirements/fr-fop-015-work-through-lunch-authorization.md`
+    — the only source with a customer-unavailable fallback: "employee records reason and
+    acknowledges the attempt". Neither SCRUM-864 nor FR-TCG-FOP-002 has it.
+- Note: this is not a documentation conflict but an unsourced decision already in flight —
+  numeric values reached a ticket that is being built while every specification records
+  those same values as undecided. The three-versus-four disagreement means one side is
+  already implemented wrong. Verified against the ticket and all four vault files on
+  2026-08-11 before escalating.
+- Escalated: not yet. Verified against the ticket and the vault on 2026-08-11 and ready to
+  raise, but nothing has been posted to Jira or sent to the team. Whoever picks this up is
+  raising it for the first time.
+- Blocked: nothing hard — both FRDs require thresholds to be configurable without a code
+  change, so building them as server-driven config (N lunches, configurable alert lead
+  time) makes the answer a config change rather than a re-release. The values cannot be
+  fixed and the WTL no-customer path cannot be finalised until this is answered.
+- Owner: product team — Corrina owns the threshold question in FR-TCG-FOP-001; Wes +
+  Corrina own signature ownership.
+- Status: open
