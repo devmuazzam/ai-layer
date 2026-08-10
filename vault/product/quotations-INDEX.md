@@ -8,8 +8,8 @@ kind: conflict-stub
 gap: gaps.md#quotations
 conflicts_with: [product/quotation.md, product/quotations.md, product/quotation-flow-process.md, product/user-story-and-tasks.md]
 jira: []
-topics: [quotations, customers, pricing, open-questions]
-entities: [quotation, customer, job-site]
+topics: [quotations, tools-rigging, customers, jobs, signatures, daily-allocation, billing-codes, assets]
+entities: [quotation, tool-rigging, customer, job, asset, billing-code, das, task, project, purchase-order]
 ---
 
 # Quotations — four overlapping sources

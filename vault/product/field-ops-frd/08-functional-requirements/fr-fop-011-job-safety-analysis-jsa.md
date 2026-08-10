@@ -6,8 +6,8 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [product/frd-new-format-draft/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, safety, escalation, deficiencies, jobs, time-tracking]
-entities: [tailboard-jsa, job, deficiency, field-ticket, employee, signature]
+topics: [field-ops-mobile, safety, escalation, deficiencies, jobs, time-tracking, signatures, documents-attachments]
+entities: [tailboard-jsa, job, deficiency, field-ticket, employee, signature, attachment]
 part_of: product/field-ops-frd/08-functional-requirements/INDEX.md
 ---
 ### FR-FOP-011 — Job Safety Analysis (JSA)

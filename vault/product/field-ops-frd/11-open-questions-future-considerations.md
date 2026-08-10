@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [product/frd-new-format-draft/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, labor-payroll, lunch-breaks, inspections, signatures, downtime-delays]
+topics: [field-ops-mobile, labor-payroll, lunch-breaks, inspections, signatures, downtime-delays, escalation, geolocation]
 entities: [lunch-record, inspection, signature, union-code, downtime]
 part_of: product/field-ops-frd/INDEX.md
 ---

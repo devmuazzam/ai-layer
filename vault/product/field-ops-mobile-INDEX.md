@@ -8,8 +8,8 @@ kind: conflict-stub
 gap: gaps.md#field-operations-mobile-app
 conflicts_with: [product/field-ops-frd/INDEX.md, product/frd-new-format-draft/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, ticket-workflow, requirements-spec, open-questions]
-entities: [field-ticket, employee]
+topics: [requirements-spec, lunch-breaks, authentication, ticket-workflow, time-tracking, signatures, compliance, notifications]
+entities: [field-ticket, lunch-record, vendor, signature]
 ---
 
 # Field operations mobile app — three competing documents

@@ -6,8 +6,8 @@ updated: 2026-07-03
 status: unverified
 conflicts_with: []
 jira: []
-topics: [permits, purchase-orders, assets, jobs, vendors, agencies]
-entities: [permit, purchase-order, asset, job, vendor, agency]
+topics: [permits, purchase-orders, assets, jobs, vendors, agencies, lift-plans, customers]
+entities: [permit, purchase-order, asset, job, vendor, agency, lift-plan, project, customer, quotation]
 ---
 
 # Purchase Orders (POs)

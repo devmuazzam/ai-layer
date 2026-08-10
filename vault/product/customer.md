@@ -6,8 +6,8 @@ updated: 2026-07-16
 status: unverified
 conflicts_with: [product/customer-and-job-sites.md, product/user-story-and-tasks.md]
 jira: []
-topics: [documents-attachments, job-sites, scrum-process, customers, reporting, permissions-roles]
-entities: [attachment, job-site, field-ticket, customer, industry-code, employee]
+topics: [documents-attachments, job-sites, customers, scrum-process, reporting, quotations, permissions-roles, navigation-ui]
+entities: [attachment, job-site, field-ticket, customer, industry-code, quotation, employee, vendor, agency, tool-rigging]
 ---
 
 1. need to change the ? button color, make it consistent

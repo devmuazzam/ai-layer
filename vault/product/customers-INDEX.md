@@ -8,8 +8,8 @@ kind: conflict-stub
 gap: gaps.md#customer
 conflicts_with: [product/customer.md, product/customer-and-job-sites.md, product/discussion-points-with-mohsin.md, product/discussion-points-with-tcg-team.md, product/user-story-and-tasks.md]
 jira: []
-topics: [customers, job-sites, open-questions]
-entities: [customer, job-site, industry-code, fcc]
+topics: [customers, jobs, yards, navigation-ui, job-sites, reporting, open-questions, certifications]
+entities: [customer, job, fcc, yard, job-site, task, employee, certification, das, category]
 ---
 
 # Customer and Job Site — five sources, three of them copies
@@ -39,8 +39,12 @@ deletion, not adjudication.
 
 So the five files contain roughly three documents' worth of distinct content.
 
-**Unanswered throughout:** all five reference **FCC** as a system of record ("verify
-from FCC", "Add all FCC fields", "Customer-FCC") and nothing anywhere in the vault
-says what FCC is.
+**Unanswered throughout:** two of these five reference **FCC** as an existing system of
+record — `customer-and-job-sites.md` ("Customer-FCC", "need to verify from FCC if its
+customer contact or seperate job site contact") and its copy
+`discussion-points-with-mohsin.md`. Three more vault files use it the same way
+(`billing-code-and-price-list.md`, `categories-and-sub-categories.md`,
+`mobilization-and-demobilization.md`), and nothing anywhere in the vault says what FCC is.
+See `INDEX.md` → *Undefined terms*.
 
 See the full entry in [`gaps.md`](../gaps.md) → *Customer*.

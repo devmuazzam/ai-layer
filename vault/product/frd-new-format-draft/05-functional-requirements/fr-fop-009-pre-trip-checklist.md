@@ -6,8 +6,8 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, deficiencies, time-tracking, safety, job-sites]
-entities: [deficiency, field-ticket, job, job-site, yard, asset]
+topics: [field-ops-mobile, inspections, deficiencies, time-tracking, safety, job-sites, yards, jobs]
+entities: [deficiency, field-ticket, job, job-site, yard, asset, attachment]
 part_of: product/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---
 ### FR-FOP-009 — Pre-Trip Checklist _(Updated v1.1)_

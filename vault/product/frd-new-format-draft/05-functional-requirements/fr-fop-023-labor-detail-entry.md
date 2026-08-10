@@ -6,8 +6,8 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, labor-payroll, time-tracking, yards, jobs, inspections]
-entities: [labor-record, field-ticket, job, yard, craft-code, employee]
+topics: [field-ops-mobile, labor-payroll, time-tracking, yards, jobs, inspections, compliance]
+entities: [labor-record, field-ticket, job, yard, craft-code, employee, union-code]
 part_of: product/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---
 ### FR-FOP-023 — Labor Detail Entry _(Updated v1.1)_

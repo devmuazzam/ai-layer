@@ -6,8 +6,8 @@ updated: 2026-06-10
 status: unverified
 conflicts_with: []
 jira: []
-topics: [requirements-spec, lunch-breaks, labor-payroll, time-tracking, notifications, escalation]
-entities: [lunch-record, field-ticket, notification, labor-record, deficiency, signature]
+topics: [requirements-spec, lunch-breaks, labor-payroll, time-tracking, notifications, escalation, ticket-workflow, signatures]
+entities: [lunch-record, field-ticket, notification, labor-record, deficiency, signature, employee, union-code, downtime, job]
 ---
 
 **The BRS is not a place to design future behavior.**

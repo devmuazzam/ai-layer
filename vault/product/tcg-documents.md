@@ -6,8 +6,8 @@ updated: 2026-07-08
 status: unverified
 conflicts_with: []
 jira: []
-topics: [jobs, labor-payroll, customers, inspections, assets, scheduling]
-entities: [job, customer, union-code, asset, employee, field-ticket]
+topics: [customers, jobs, labor-payroll, inspections, assets, scheduling, documents-attachments]
+entities: [job, customer, union-code, asset, employee, field-ticket, inspection, schedule]
 ---
 
 ## Documentations : 

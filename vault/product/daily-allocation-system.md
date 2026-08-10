@@ -6,8 +6,8 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: [product/job-project-das.md]
 jira: []
-topics: [jobs, assets, dispatch, daily-allocation, vendors, navigation-ui]
-entities: [job, employee, asset, field-ticket, das, vendor]
+topics: [jobs, assets, dispatch, vendors, daily-allocation, navigation-ui, inspections, scheduling]
+entities: [job, employee, asset, field-ticket, vendor, das, schedule, project, quotation, yard]
 ---
 
 ### EPIC 1 : DAILY ALLOCATION SYSTEM  

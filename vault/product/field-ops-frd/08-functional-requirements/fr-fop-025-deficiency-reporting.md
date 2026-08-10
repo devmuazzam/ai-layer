@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [product/frd-new-format-draft/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, deficiencies, escalation, inspections, documents-attachments, categories]
+topics: [field-ops-mobile, deficiencies, escalation, inspections, documents-attachments, categories, permissions-roles]
 entities: [deficiency, field-ticket, inspection, attachment, category]
 part_of: product/field-ops-frd/08-functional-requirements/INDEX.md
 ---

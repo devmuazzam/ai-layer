@@ -6,8 +6,8 @@ updated: 2026-06-25
 status: unverified
 conflicts_with: [product/customer-and-job-sites.md, product/billing-code-and-price-list.md]
 jira: []
-topics: [customers, yards, pricing, yard-operations, scheduling, billing-codes]
-entities: [customer, yard, asset, billing-code, price-list, purchase-order]
+topics: [customers, yards, pricing, yard-operations, scheduling, billing-codes, purchase-orders, categories]
+entities: [customer, yard, asset, billing-code, price-list, purchase-order, schedule, category, quotation, employee]
 ---
 
 * [[product/customers-INDEX|Customers]]: Ability to add industry codes

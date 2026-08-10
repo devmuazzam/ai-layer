@@ -6,8 +6,8 @@ updated: 2026-07-22
 status: unverified
 conflicts_with: [product/agencies.md, product/vendors.md, product/agency-and-vendor.md]
 jira: []
-topics: [agencies, documents-attachments, dashboard, quotations, customers, categories]
-entities: [agency, attachment, quotation, customer, employee, category]
+topics: [agencies, documents-attachments, quotations, customers, dashboard, vendors, categories]
+entities: [agency, attachment, quotation, customer, vendor, employee, category]
 ---
 
 **Listing Page**

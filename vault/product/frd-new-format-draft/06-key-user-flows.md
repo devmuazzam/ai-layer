@@ -6,8 +6,8 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, downtime-delays, time-tracking, lunch-breaks, ticket-workflow]
-entities: [field-ticket, lunch-record, yard, job, customer, deficiency]
+topics: [field-ops-mobile, inspections, downtime-delays, time-tracking, lunch-breaks, ticket-workflow, yards, customers]
+entities: [field-ticket, lunch-record, yard, job, customer, deficiency, signature, asset, notification, labor-record]
 part_of: product/frd-new-format-draft/INDEX.md
 ---
 ## 6. Key User Flows

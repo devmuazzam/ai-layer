@@ -6,8 +6,8 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [projects, quotations, customers, jobs, job-sites, permits]
-entities: [project, quotation, customer, job, job-site, permit]
+topics: [projects, quotations, customers, jobs, job-sites, permits, purchase-orders, documents-attachments]
+entities: [project, quotation, customer, job, job-site, permit, purchase-order, attachment]
 part_of: product/project-module/INDEX.md
 ---
 # User Story 1: Create and Track Projects

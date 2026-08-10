@@ -6,8 +6,8 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: [product/vendors.md, product/agency-and-vendor.md, product/agencies-module.md]
 jira: []
-topics: [agencies, permits, documents-attachments]
-entities: [agency, permit, attachment]
+topics: [agencies, permits, documents-attachments, vendors, projects]
+entities: [agency, permit, attachment, project, vendor]
 ---
 
 ## **EPIC : Agencies** 

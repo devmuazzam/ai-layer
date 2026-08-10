@@ -6,8 +6,8 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [projects, jobs, quotations, signatures, dashboard, dispatch]
-entities: [project, job, quotation, asset, permit, lift-plan]
+topics: [projects, jobs, quotations, signatures, dashboard, dispatch, permits, lift-plans]
+entities: [project, job, quotation, asset, permit, lift-plan, schedule]
 part_of: product/project-module/INDEX.md
 ---
 

@@ -7,7 +7,7 @@ status: unverified
 conflicts_with: [product/customer-and-job-sites.md]
 jira: []
 topics: [job-sites, certifications, customers]
-entities: [job-site, certification, customer, fcc]
+entities: [job-site, customer, certification, fcc]
 ---
 
 ### Job Site

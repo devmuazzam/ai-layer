@@ -6,8 +6,8 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, compliance, labor-payroll, lunch-breaks, yards]
-entities: [employee, field-ticket, yard, lunch-record, job, signature]
+topics: [field-ops-mobile, inspections, compliance, labor-payroll, lunch-breaks, yards, signatures, jobs]
+entities: [employee, field-ticket, yard, lunch-record, job, signature, labor-record]
 part_of: product/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---
 ### FR-FOP-022 — Compliance Checklist

@@ -6,8 +6,8 @@ updated: 2026-06-23
 status: unverified
 conflicts_with: [product/quotations.md, product/quotation-flow-process.md, product/user-story-and-tasks.md]
 jira: []
-topics: [customers, tools-rigging, signatures, quotations, vendors, assets]
-entities: [customer, tool-rigging, quotation, vendor, asset, job]
+topics: [tools-rigging, customers, quotations, vendors, signatures, assets, navigation-ui, agencies]
+entities: [tool-rigging, customer, quotation, vendor, asset, job, agency, yard, billing-code, purchase-order]
 ---
 
 * industry code dropdown should pen up wards to make it more user friendly

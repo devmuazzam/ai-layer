@@ -6,8 +6,8 @@ updated: 2026-08-10
 status: unverified
 conflicts_with: []
 jira: []
-topics: [mobilization, quotations, assets, customers, jobs, time-tracking]
-entities: [mob-demob, quotation, asset, job, customer, field-ticket]
+topics: [mobilization, quotations, assets, customers, jobs, time-tracking, job-sites, yards]
+entities: [mob-demob, quotation, asset, customer, job, field-ticket, build-up, fcc, job-site, yard]
 ---
 
 ## **Mobilization & Demobilization**

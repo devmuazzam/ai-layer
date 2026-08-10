@@ -6,8 +6,8 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [jobs, permits, dispatch, lift-plans, assets, scheduling]
-entities: [job, permit, asset, lift-plan, schedule, project]
+topics: [jobs, permits, dispatch, lift-plans, assets, scheduling, yards, projects]
+entities: [job, permit, asset, lift-plan, schedule, project, yard, quotation, customer, job-site]
 part_of: product/project-module/INDEX.md
 ---
 # User Story 2: Create and Manage Jobs ( Excluded ) 

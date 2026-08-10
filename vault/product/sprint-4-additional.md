@@ -6,8 +6,8 @@ updated: 2026-06-22
 status: unverified
 conflicts_with: []
 jira: []
-topics: [jobs, tools-rigging, purchase-orders, notifications, quotations, vendors]
-entities: [job, tool-rigging, purchase-order, notification, field-ticket, quotation]
+topics: [jobs, tools-rigging, purchase-orders, notifications, quotations, vendors, customers, yards]
+entities: [job, tool-rigging, purchase-order, notification, quotation, field-ticket, vendor, customer, employee, project]
 ---
 
 **Epic:** [[product/tool-and-rigging|Tools & Rigging]] Management Linking

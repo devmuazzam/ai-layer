@@ -6,8 +6,8 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [assets, customers, safety, projects, lift-plans, documents-attachments]
-entities: [asset, customer, project, lift-plan, job, quotation]
+topics: [assets, customers, safety, projects, lift-plans, documents-attachments, jobs, notifications]
+entities: [asset, customer, project, lift-plan, job, quotation, job-site, notification, attachment, category]
 part_of: product/project-module/INDEX.md
 ---
 # User Story 3: Create and Approve Lift Plans

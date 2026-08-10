@@ -6,8 +6,8 @@ updated: 2026-07-22
 status: unverified
 conflicts_with: [product/field-ops-frd/INDEX.md, product/frd-new-format-draft/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, time-tracking, labor-payroll, safety, ticket-workflow]
-entities: [field-ticket, build-up, job, customer, inspection, signature]
+topics: [field-ops-mobile, inspections, time-tracking, labor-payroll, safety, ticket-workflow, signatures, compliance]
+entities: [field-ticket, build-up, job, customer, inspection, signature, job-site, yard, employee, tailboard-jsa]
 part_of: product/atom-mobile-app-user-stories/INDEX.md
 ---
 
