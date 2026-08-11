@@ -219,7 +219,20 @@ alternative ways to run a feature end to end; these are not.
 
 | Skill | Fires on |
 | --- | --- |
-| [`branch-commit`](claude/skills/branch-commit/SKILL.md) | Starting a unit, rebasing, or writing a commit. Branch naming, rebase-from-`origin/main`, conventional commit format |
+| [`commit`](claude/skills/commit/SKILL.md) | Starting a unit, rebasing, or writing a commit. Branch naming, rebase-from-`origin/main`, conventional commit format |
+| [`review-pr`](claude/skills/review-pr/SKILL.md) | Reviewing a PR, branch or diff — against the **vault** as well as the code. Cites product sources with their status, surfaces conflicts without adjudicating them |
+| [`lint-triage`](claude/skills/lint-triage/SKILL.md) | A failing gate. Separates your errors from the ~14 pre-existing ones by diffing against a baseline |
+| [`find-component`](claude/skills/find-component/SKILL.md) | Adding any UI component. Searches all nine `components/` directories, not just the atomic tiers |
+| [`debug-api`](claude/skills/debug-api/SKILL.md) | A failing endpoint. Status-code triage through four global guards, with the tenancy case checked early |
+
+Two of these exist because of measured failures rather than general good practice.
+`lint-triage` exists because `pnpm lint` fails before you touch anything. `find-component`
+exists because `components/ui` has more importers than any atomic tier, so the search the
+old docs prescribed missed the largest source in the app.
+
+`review-pr` is the one that reads the vault. Its discipline there is the vault's own: index
+first, name every candidate when sources conflict, never pick a winner, and never present
+`unverified` content as settled — most of the vault is unverified.
 
 **Design intake** is being redesigned around the UI team's HTML/CSS handoff rather than
 images. Not yet specified.

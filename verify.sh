@@ -71,6 +71,14 @@ else
   note "fix: re-run 'bash .ai/setup.sh' — the exclude step did not complete"
 fi
 
+head_ "Skills  (Claude Code discovers these at session start)"
+SKILLS="commit review-pr lint-triage find-component debug-api"
+for s in $SKILLS; do
+  if [ -f "$AI_DIR/claude/skills/$s/SKILL.md" ]; then ok "skills/$s"; else
+    bad "skills/$s — missing"; fi
+done
+note "not in your agent's list? it started before these existed — restart the session"
+
 head_ "Stale pointers  (a doc removed from the overlay must not leave a link behind)"
 DANGLING=""
 for f in *.md; do
