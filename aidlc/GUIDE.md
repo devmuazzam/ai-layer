@@ -307,9 +307,28 @@ Expect, in rough order of likelihood:
 
 ### Make sure the agent actually has the context
 
+**Check it mechanically. Do not ask the model.**
+
+```bash
+cat apps/api/src/main.ts     # reading a file in the directory is the trigger
+/context                      # look under "Memory files"
+```
+
+`/context` reports which instruction files actually loaded. That is an observation rather
+than a self-report, which matters: asking a model what is in its own context is the single
+method that cannot be trusted for this, and it is the reason PRE-FLIGHT 0 sat open. For a
+permanent record, the `InstructionsLoaded` hook logs which files load, when, and why.
+
+**Why reading a file is the trigger — confirmed in Claude Code's documentation**, not
+inferred: subdirectory `CLAUDE.md` files are *"included when Claude reads files in those
+directories"* rather than loaded at launch. A `cd` inside a bash command does not count.
+Related: after `/compact`, nested contexts are **not** re-injected — they reload the next
+time a file in that directory is read.
+
 **Status as of 2026-08-12: the root `CLAUDE.md` is confirmed to load. No run has yet
-confirmed a nested surface context loading.** That is an open question, not a settled one,
-and the two are worth keeping apart.
+confirmed a nested surface context loading** — but every run so far explored the surfaces
+with `find` and `ls` only, so the mechanism was never actually exercised. `/context` settles
+it in seconds.
 
 The history is worth reading, because it is a good example of a test that could not fail
 correctly:
