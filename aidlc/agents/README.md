@@ -41,6 +41,16 @@ resolve open questions. The executor does not invent requirements the spec omitt
 one of them stops instead, because the alternative — filling a gap with something plausible
 — produces work that is indistinguishable from specified work and survives review.
 
+**But not every ticket enters at inception.** The full loop is the *feature* path. A bug
+whose correct behaviour is already specified goes straight to construction — reproduce,
+executor, analyst — and a one-line UI change needs no phase at all. Elaboration and
+decomposition exist to answer "what should this do?", so skipping them when that is already
+answered is not a shortcut.
+
+The valve that keeps the short paths honest: **any path becomes the full loop the moment
+someone has to decide something nobody specified.** See
+[`../GUIDE.md`](../GUIDE.md) → *Not every ticket runs the full loop*.
+
 ## What every agent in here shares
 
 - **Sources are cited and status-tagged.** A claim that cannot be cited is not made. Most of
