@@ -104,8 +104,10 @@ done
 [ -f "$AI_DIR/.mcp.json" ] && safe_link "$AI_DIR/.mcp.json" ".mcp.json"
 
 # ------------------------------------------------------ 3. surface mirrors ---
-# .agent/ kept for now — flagged as a possible drop in the audit; delete the
-# entry below once confirmed nobody's tool reads it.
+# .agent/ is Antigravity's surface, not a dead drop — see claude/AGENTS.md
+# "Project Skills (all providers)" for the provider map. Whether to keep
+# mirroring it is a team question ("is anyone actually using Antigravity?"),
+# not something discoverable from this repo, so it stays until someone answers.
 for surface in .cursor .agent .codex; do
   mirror_dir "$AI_DIR/claude/skills" "$surface/skills"
   mirror_dir "$AI_DIR/aidlc/agents"  "$surface/agents"
