@@ -1,7 +1,7 @@
 # Spec — SCRUM-### <feature name>
 
 > Written to `.ai/aidlc/SCRUM-###/spec.md` by the elaborator
-> (`.ai/aidlc/agents/tcg-elaborator.md`) from `intent.md` beside it.
+> (`.ai/aidlc/agents/inception/tcg-elaborator.md`) from `intent.md` beside it.
 >
 > This is the document an executor builds from. **Every requirement in it carries its
 > sources, and every source carries its status.** A requirement with no source is not a
@@ -44,7 +44,7 @@ Alongside the tag, state the **kind** of source. Kind is provenance, not status:
   never settle a product question, and it can never be the only source for a behavior
   change.
 - `decision` — `.ai/vault/decisions/YYYY-MM-DD-topic.md`. These are `[VERIFIED]`.
-- `rule` — a `.ai/claude/rules/*.md` or `CLAUDE.md` section. Binding on *how* we build,
+- `rule` — a `.ai/claude/contexts/*.md` or `CLAUDE.md` section. Binding on *how* we build,
   never on *what* we build.
 
 **FR-FOP ids must name their document.** Both field-ops FRDs number from `001`, so a bare
@@ -77,7 +77,7 @@ reads as competence.
 | Elaborated on | `YYYY-MM-DD` |
 | Vault state at elaboration | *N files; six `domain/` files verified; N entries open in `gaps.md`* |
 | Gaps opened by this spec | `gaps.md#<anchor>`, … or `none` |
-| Rules consulted | *list the `.ai/claude/rules/*.md` files that bind this feature* |
+| Rules consulted | *list the `.ai/claude/contexts/*.md` files that bind this feature* |
 
 ## 1. Requirements ledger
 
@@ -132,7 +132,7 @@ Repeat this block per requirement. Keep the field order.
 
 - **Schema change required:** yes / no
 - **Migration required:** yes / no — *if yes: `pnpm db:migrate`, committed under
-  `apps/api/prisma/migrations/`. Mandatory, not optional (`.ai/claude/rules/prisma.md`).*
+  `apps/api/prisma/migrations/`. Mandatory, not optional (`.ai/claude/contexts/prisma.md`).*
 - **Data backfill required:** yes / no / `NOT SPECIFIED`
 
 ```prisma
@@ -176,7 +176,11 @@ Per endpoint:
 
 ## 5. Web surface — `apps/web`
 
-Atomic design, never import upward: atoms → molecules → organisms → templates → pages.
+**Feature-first, not atomic design.** Most work lands in `src/features/<feature>/`;
+`components/` is a shared library across nine directories. Features may import from
+`components/`; `components/` must not import from `features/`. Search all of `ui/`, `base/`,
+`atoms/`, `molecules/` and `patterns/` before creating anything — `ui/` has the most
+consumers. Detail in `.ai/claude/contexts/web.md`.
 
 - **Routes:** `/<feature>`, `/<feature>/create`, `/<feature>/<code>`, `/<feature>/<code>/edit`
 - **Existing components to reuse** *(checked before proposing anything new — mandatory)*:

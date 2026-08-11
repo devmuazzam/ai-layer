@@ -64,7 +64,7 @@ need care is noticing it has hit something the spec never specified, and stoppin
 filling it in.
 
 Cheap-tier work — commit messages, branch naming, running a gate — is not agent work at
-all. That belongs in a skill; see `claude/skills/branch-commit/`.
+all. That belongs in a skill; see `claude/skills/commit/`.
 
 ## Tools — phase-independent specialists
 
@@ -75,6 +75,7 @@ call them. See [`tools/README.md`](tools/README.md).
 
 ## Status
 
-Built: `tcg-elaborator`, `tcg-scrum`. The rest are being written against the trimmed
-context layer so they are authored once rather than reworked after it moves. Each phase
-README records what is real and what is not.
+**All six are written**: elaborator, decomposer, executor, analyst, reflector, scrum, plus
+the two tools. None has yet been run against a real ticket end to end — the first live
+exercise is what turns "written" into "works", and the phase READMEs record what each is
+built to prevent so the first run can be read against that.

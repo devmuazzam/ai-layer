@@ -31,7 +31,7 @@ confident, fabricated spec.
 
 | Scope | Access |
 | --- | --- |
-| Whole repo, `.ai/claude/rules/`, `.ai/vault/` | **read-only** |
+| Whole repo, `.ai/claude/contexts/`, `.ai/vault/` | **read-only** |
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/intent.md` | **read-only** — it is the ticket capture, not your draft |
 | `.ai/aidlc/SCRUM-###/spec.md` | **write** — the one artifact you produce |
@@ -253,10 +253,10 @@ optional context.
 
 | Surface | Read | Non-negotiables the spec must respect |
 | --- | --- | --- |
-| `apps/api` | `.ai/claude/rules/api.md`, `CLAUDE.md` → Architecture | `presentation → usecase → service → orm`, never upward. Controller/service/repository file patterns. Barrel `index.ts`. Module registered in `app.module.ts`. |
-| `apps/api/prisma` | `.ai/claude/rules/prisma.md`, `CLAUDE.md` → Identity Convention | UUID PK + per-tenant prefixed business code; `@@unique([tenantCompanyId, <code>])`; child FKs by UUID; codes minted from `entity_sequences`; `@db.Timestamptz`; **a schema change requires a committed migration**. |
-| `apps/web` | `.ai/claude/rules/web.md`, `.ai/claude/rules/design-system.md`, `CLAUDE.md` → Web UI Rules + Form Validation UX | Atomic layering. Reuse before creating. Workspace components (`PageHero`, `SectionCard`, `WorkspaceTable`, …). Theme variables, no hardcoded colors. Table search placeholder, filter empty states, `standardizeDesktopColumns`. Focused-submit validation, no summary boxes. |
-| `apps/mobile` | `.ai/claude/rules/mobile.md` | Expo Router structure, `theme/tokens.ts`, `StyleSheet.create`, 48px touch targets, `SecureStore` for tokens. |
+| `apps/api` | `.ai/claude/contexts/api.md`, `CLAUDE.md` → Architecture | `presentation → usecase → service → orm`, never upward. Controller/service/repository file patterns. Barrel `index.ts`. Module registered in `app.module.ts`. |
+| `apps/api/prisma` | `.ai/claude/contexts/prisma.md`, `CLAUDE.md` → Identity Convention | UUID PK + per-tenant prefixed business code; `@@unique([tenantCompanyId, <code>])`; child FKs by UUID; codes minted from `entity_sequences`; `@db.Timestamptz`; **a schema change requires a committed migration**. |
+| `apps/web` | `.ai/claude/contexts/web.md` | **Feature-first, not atomic design.** Reuse before creating — search all nine `components/` directories, not just the atomic tiers. Workspace patterns (`PageHero`, `SectionCard`). Theme variables, no hardcoded colours. Table search placeholder and filter empty states. Focused-submit validation. |
+| `apps/mobile` | `.ai/claude/contexts/mobile.md` | Expo Router structure, `theme/tokens.ts`, `StyleSheet.create`, 48px touch targets, `SecureStore` for tokens. |
 | `packages/shared` | `CLAUDE.md` → Import Aliases | Pure TypeScript; consumed by web and mobile both. |
 
 A rule can make a requirement *unnecessary* ("the spec need not restate the tenant scoping
@@ -435,7 +435,7 @@ service, repository, empty DTOs. You already know the shape."
 > revisited.
 >
 > The spec is at `.ai/aidlc/SCRUM-###/spec.md`, the layering it must follow is in
-> `.ai/claude/rules/api.md`, and Q1–Q2 are what I need back. Once they're answered I'll
+> `.ai/claude/contexts/api.md`, and Q1–Q2 are what I need back. Once they're answered I'll
 > fold them in with their sources and you'll have a spec that's safe to build against
 > end to end.
 
