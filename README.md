@@ -36,14 +36,27 @@ See also [`.gitignore`](.gitignore) for what the overlay itself does not track.
 
 ## 2. Install — works for any agent, not just Claude
 
-From the client repo root:
+From the client repo root, using **your own** remote URL for this overlay:
 
 ```bash
-git clone <overlay-remote> .ai && bash .ai/setup.sh
+git clone <your-overlay-remote> .ai && bash .ai/setup.sh
 ```
 
 That is the whole install, whichever tool you use. One script wires every surface; there
 is no per-tool variant to pick and nothing to configure.
+
+> **The `AI_REMOTE` default will not work on your machine.** `setup.sh` falls back to
+> `git@dev_codingcops_github.com:devCodingcops/tcg-ai-layer.git`, and
+> `dev_codingcops_github.com` is an **SSH host alias**, not a real hostname — it resolves
+> only on a machine with that entry in `~/.ssh/config`. Everyone else must either clone
+> manually as above, or override it:
+>
+> ```bash
+> AI_REMOTE=git@github.com:<org>/tcg-ai-layer.git bash .ai/setup.sh
+> ```
+>
+> This matters on the **first run only**. Once `.ai/` is a git clone, `setup.sh` pulls from
+> whatever `origin` that clone already has and never consults `AI_REMOTE` again.
 
 Re-run `bash .ai/setup.sh` any time — it is idempotent. It pulls the overlay, creates or
 repairs every symlink, mirrors the surfaces, drops the location-triggered context files,
@@ -168,9 +181,13 @@ codebase rather than by editing the old rules. That distinction matters: the old
 described atomic design, `PRLT`, NestJS 10, Prisma 5 and unconditional tenant scoping, none
 of which are true.
 
-**Skills** are removed pending redefinition. They will be re-introduced as task-triggered
-tools that are phase-independent — the kind of thing anyone needs at any point — rather
-than as an alternative way to run a feature end to end.
+**Skills** — task-triggered, phase-independent, and deliberately narrow so they never
+compete with a phase agent. The previous set was removed because two of the four were
+alternative ways to run a feature end to end; these are not.
+
+| Skill | Fires on |
+| --- | --- |
+| [`branch-commit`](claude/skills/branch-commit/SKILL.md) | Starting a unit, rebasing, or writing a commit. Branch naming, rebase-from-`origin/main`, conventional commit format |
 
 **Design intake** is being redesigned around the UI team's HTML/CSS handoff rather than
 images. Not yet specified.
@@ -229,10 +246,19 @@ contract, and what every agent in the loop shares.
 | [construction](aidlc/agents/construction/) | [`tcg-executor`](aidlc/agents/construction/tcg-executor.md) | One unit → working code. Stops where the spec stops |
 | | [`tcg-analyst`](aidlc/agents/construction/tcg-analyst.md) | Reviews the built unit, tagging every finding VERIFIED or INFERRED |
 | [reflection](aidlc/agents/reflection/) | [`tcg-reflector`](aidlc/agents/reflection/tcg-reflector.md) | What the loop missed → proposed rule changes. Proposes, never applies |
+| [tools](aidlc/agents/tools/) | [`tcg-contract-tracer`](aidlc/agents/tools/tcg-contract-tracer.md) | An API shape changed — what breaks across web and mobile. Reports, never fixes |
+| | [`tcg-prisma-guardian`](aidlc/agents/tools/tcg-prisma-guardian.md) | Is this schema change safe, isolated and efficient. Isolation first, because scoping here is conditional |
 | — | [`tcg-scrum`](aidlc/agents/tcg-scrum.md) | Unblocks from written sources or escalates. Never guesses. Runs alongside every phase |
 
-All six ask for the stronger model tier available, because every one of them is judgement
-work — see the tier note in the agents README.
+Model tier is assigned by how much judgement the task needs, not by seniority: elaborator,
+decomposer, analyst, reflector and scrum ask for the strong tier; executor, contract-tracer
+and prisma-guardian sit at mid tier. See the tier table in
+[`aidlc/agents/README.md`](aidlc/agents/README.md).
+
+**Branching and commits.** One unit, one branch, one PR —
+`<type>/SCRUM-###-u<n>-<slug>`, branched from `origin/main` and rebased onto it before
+pushing. Conventional commits with a body that says why, and what was deliberately left
+out. The executor enforces it; the mechanics live in the `branch-commit` skill.
 
 **Templates** — required-field checklists. A field is never deleted; an unfillable field
 stays and is marked, so a gap is visible rather than silent.
