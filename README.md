@@ -277,6 +277,11 @@ built; and a **reflection** feeds what the spec missed and what the executor got
 into the rules. The **scrum** agent runs alongside the whole loop, unblocking developers
 from written sources or escalating honestly when nothing is written.
 
+> **Start here: [`aidlc/GUIDE.md`](aidlc/GUIDE.md)** — how the loop works end to end, what
+> each agent does and refuses to do, why the tools exist, a full pass from ticket to
+> reflection, and what to expect on a first real run. Read it before running a ticket
+> through for the first time.
+
 **Agents are organised by phase**, and each phase folder carries a README explaining why
 its agents belong together and what leaves that phase. Roles stay in the filename; only
 folders carry phase, so moving an agent between phases never breaks a reference.
