@@ -39,6 +39,39 @@ lines — and did **not** contain any rules content. Every rules file had to be 
 explicitly. That is consistent with imports not expanding, but the harness may present
 imports differently, so it is not conclusive.
 
+**Second observation, same instrument (2026-08-11).** A later session ran the check from
+inside Claude Code with a working control. The control: a `## Stack` table row and a
+`## Commands` line from the root `CLAUDE.md` were quoted back verbatim from the session-start
+injection, which establishes that the observation channel carries injected content at all —
+something the observation above did not separately establish. In that session the
+session-start injection carried `CLAUDE.md` through its `## Links` list, with the
+`@`-prefixed paths present as literal text and no body from any file under `claude/rules/`;
+a second mid-session injection of the same file likewise carried no rules body. The
+discriminator string `FormErrorSummary` was present in that session only by way of explicit
+reads made during it, not by way of either injection. Consistent with the `@`-imports not
+expanding — baseline 186.
+
+**Tier: controlled self-report observation. It leans Branch B. It is not a confirmation.**
+The control removes the trivial failure mode in which nothing was injected at all. It does
+not change what the instrument is: a model reporting on the contents of its own context,
+which is the one method §PRE-FLIGHT 0 rules out as decisive. Same instrument as the
+observation above, so this **replicates** that result rather than independently confirming
+it — two runs of one instrument, not two instruments agreeing. It also inherits that
+instrument's contamination: the session had already read the rules files by the time it
+reported, so only the ordering of arrival distinguishes injected content from read content.
+
+**The claim the external read tests**, written down now so the check is specified before it
+runs rather than fitted to its result: at session start the injected block is `CLAUDE.md`
+through its `## Links` list, the `@`-prefixed paths appear as literal text, and no body from
+any file under `claude/rules/` is present. The cheapest external observer is the on-disk
+Claude Code session transcript under `~/.claude/projects/<repo-slug>/`, **if** it records the
+injected block — reading logged bytes off disk is external to the model in the way that
+quoting from context is not. If it does not record that block, the fresh-session inspection
+described below stands as the method.
+
+**The gate does not move.** The external read is still pending, and PRE-FLIGHT 0 remains the
+hard gate before the relocation commit.
+
 **Check — observe the injected context, do not ask the model.** Start a fresh session in
 the repo and inspect what is actually injected before any file is read, the same way the
 ALPHA/BRAVO probes were confirmed: the injected bodies are visible as context blocks, so
@@ -284,6 +317,25 @@ standards conflict with a different owner. Two options: file it in `gaps.md` wit
 explicit `Owner: engineering`, or open a second register. **Recommendation: `gaps.md`, with
 the owner field carrying the distinction.** A second register is how one fact acquires two
 homes, which is the exact failure this whole pass exists to remove.
+
+**Guardrail — a Branch B result would not account for D3's code-side facts.** If the external
+read confirms that the rules do not load ambiently, that settles the wiring half of this
+layer and nothing past it. It does not make non-loading the cause of the reuse-and-drift
+findings, because the rails-enforcement gap co-predicts every one of them on its own: no rule
+in any of the three eslint configs targets duplication, module boundaries, or hardcoded
+colors, so a rule that loads perfectly and a rule that never loads produce the same code.
+Evidence and per-instance counts are in `.ai/aidlc/skills-and-rails-analysis.md` §2; not
+re-argued here.
+
+`FormErrorSummary` is the clean case. It has zero consumers —
+`apps/web/src/components/organisms/form-error-summary.tsx` is imported by nothing in
+`apps/web/src`. Three causes each predict that outcome without help from the others: the
+mandate never reached anyone (non-loading), nothing ever checked whether it was followed
+(non-enforcement), and the `CLAUDE.md` half of D3 forbids the widget the `design-system.md`
+half requires (the contradiction itself). The observation is over-determined and cannot
+discriminate between them. Two layers, two causes, each standing on its own: fixing the
+wiring does not retire the rails question, and closing the rails gap does not retire the
+wiring question. Neither result should be reported as having explained the other.
 | D4 | Migration rule, **three copies**: `CLAUDE.md:154` (Web UI Rule 12), `web.md:38-45`, `prisma.md:100-111` | **`prisma.md:100-111`** — the fullest, and the only one that mentions `MIGRATION_BASELINE.md` | `CLAUDE.md:154` → **deleted**. `web.md:38-45` → **pointer stub, 1 line** (`Schema changes need a committed migration — see the prisma context`), since a web dev editing a list table does need the reminder even though the rule is not theirs. |
 | D5 | `CLAUDE.md:26-42` Automated Feature Implementation **vs** `claude/design/README.md` (416) **vs** `claude/AUTOMATED-FEATURES.md` (528) | **`design/README.md`** — the folder-usage doc, closest to where the work happens | `CLAUDE.md:26-42` → **pointer stub, 2 lines**. `AUTOMATED-FEATURES.md` → **pointer-only** (kept, unloaded); it and `design/README.md` overlap heavily and a later pass should merge them, but that is a content merge, not a wiring change — out of scope here and recorded as follow-up F3. |
 | D6 | `CLAUDE.md:61-71` Naming Conventions (DB rows) **vs** `prisma.md:24-33` | **Split, both canonical for their half.** `CLAUDE.md` owns Files/Classes/Functions/Constants; `prisma.md` owns Model/Field/DB column/DB table/Index | The 2 DB rows in `CLAUDE.md`'s table → **deleted** (they are the duplicated ones). `prisma.md` keeps the index convention `idx_<table>_<column>`, which `CLAUDE.md` never had. |
