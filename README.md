@@ -1,34 +1,52 @@
 # TCG AI layer
 
-Navigation hub for this overlay. **Pointers only** — every entry links to the file that
-owns the subject. Nothing here restates another document's content, and nothing here
-carries a count. If you want a number, follow the link; the file that owns the fact is the
-only place it should live.
+The private AI layer for the TCG crane-rental platform.
+
+This README explains **how the layer works** — how it wires into a repo it is not part of,
+how instructions actually reach an agent, and how to prove any of it. Content lives in the
+files that own it; this one links rather than restates, because a fact in two places
+diverges.
+
+**New here?** Install (§3), confirm it worked (§4), then read
+[`aidlc/GUIDE.md`](aidlc/GUIDE.md) before running a ticket through.
 
 ---
 
-## 1. What this is
+## 1. What this is, and why it is built this way
 
-The private AI layer for the TCG crane-rental platform. It is a **separate repo** that
-clones into the client monorepo at `.ai/` and is wired in by symlink. The client repo never
-contains it and never sees it.
+A **separate git repository** that clones into the client monorepo at `.ai/` and is wired in
+by symlink. The client repo never contains it, never sees it, and never learns it exists.
 
-The stealth model, in three moves, all performed by [`setup.sh`](setup.sh):
+That constraint drives every design decision below. The layer has to be **present enough for
+tools to read** and **invisible enough that nothing leaks into a client commit** — and those
+pull in opposite directions.
 
-1. **Clone** — the overlay lives at `.ai/`, its own git repo with its own history.
-2. **Symlink in** — every path a tool looks at is a symlink pointing back into `.ai/`. The
-   tools see ordinary files at ordinary paths; nothing is copied. Full map below.
-3. **Hide** — every wired-in path is appended to the client repo's `.git/info/exclude`, so
-   `git status` in the client repo shows nothing. `.git/info/exclude` is local-only and is
-   never committed, so the exclusion does not travel to the client either.
+Three moves, all performed by [`setup.sh`](setup.sh):
 
-> **Never add these paths to the client repo's `.gitignore`.** It is a tracked, committed
-> file, so listing `.ai/`, `CLAUDE.md` or `.cursor/` there would announce the layer's
-> existence to the client in the very act of hiding it from git. `.git/info/exclude` does
-> the identical job and is never committed. This is the whole reason `setup.sh` writes
-> there, and it is the one part of the stealth model that a well-meaning cleanup breaks.
+1. **Clone** — the overlay lives at `.ai/`, with its own git history, its own branches, its
+   own remote.
+2. **Symlink in** — every path a tool looks at becomes a symlink pointing back into `.ai/`.
+   Tools see ordinary files at ordinary paths.
+3. **Hide** — every wired path is appended to the client repo's `.git/info/exclude`, so
+   `git status` in the client repo shows nothing.
 
-### The symlink map
+**Everything real lives under `.ai/`.** Anything outside it is a pointer back in. Never write
+AI-layer content into the client tree.
+
+---
+
+## 2. How the wiring works
+
+### 2.1 Why symlinks and not copies
+
+A copy has to be kept in sync, and anything kept in sync eventually is not. Symlinks give
+**one file with several names**: edit `.ai/claude/contexts/api.md` and every path that points
+at it changes at once, with no sync step to forget.
+
+It also means a stale pointer is *visible* — a dangling symlink is detectable, where a stale
+copy looks exactly like a fresh one. `verify.sh` uses that property.
+
+### 2.2 The map
 
 Every one of these is created and repaired by `setup.sh`. Nothing here is a copy.
 
@@ -50,276 +68,274 @@ apps/mobile/AGENTS.md      ┘ -> ../../.ai/claude/contexts/mobile.md
 .agent/{skills,agents,contexts}/*    -> ../../.ai/...
 ```
 
-Three things worth knowing when one of these looks wrong:
+### 2.3 Four things that surprise people
 
-- **`AGENTS.md` is a three-hop chain.** `readlink AGENTS.md` prints `.claude/AGENTS.md`,
-  which is *itself* a symlink to `CLAUDE.md` in the same directory. So both root entry
-  points end at one file and cannot drift. Use `cat`, not `readlink`, to see content.
-- **Link prefixes are computed from depth**, not hardcoded — `../../` at `apps/web`,
-  `../../../` at `apps/api/prisma`. `prefix_for` in `setup.sh` does this, so moving a
-  surface deeper does not silently break its link.
-- **A dangling link means a source was deleted from the overlay.** `bash .ai/verify.sh`
-  reports them per surface; `bash .ai/setup.sh` prunes them.
+**`AGENTS.md` is a three-hop chain.** `readlink AGENTS.md` prints `.claude/AGENTS.md`, which
+is *itself* a symlink to `CLAUDE.md` in the same directory — and `.claude` is a symlink too.
+That looks like a broken link and is not. Use `cat`, not `readlink`. It is also why the two
+root entry points **cannot drift**: there is only one file.
 
-Consequence worth internalising: **all real content lives under `.ai/`.** Anything outside
-it is a symlink pointing back in. Never write AI-layer content into the client tree.
+**Every surface directory carries both filenames.** `apps/api/CLAUDE.md` and
+`apps/api/AGENTS.md` are two links to one context file. Claude Code reads `CLAUDE.md`;
+Cursor reads `AGENTS.md`. Guessing wrong would mean a surface silently gets no rules, so
+both are always present.
 
-See also [`.gitignore`](.gitignore) for what the overlay itself does not track.
+**Link prefixes are computed from depth, not hardcoded.** `prefix_for` in `setup.sh` counts
+path segments — `../../` at `apps/web`, `../../../` at `apps/api/prisma`. Moving a surface
+deeper does not silently break its link.
 
-## 2. Install — works for any agent, not just Claude
+**A dangling link means a source was deleted from the overlay.** `verify.sh` reports them;
+`setup.sh` prunes them. This is not theoretical: removing `claude/rules/` and
+`claude/skills/` once left 14 dead links behind on a machine that had already run setup.
 
-From the client repo root, using **your own** remote URL for this overlay:
+### 2.4 Why `.git/info/exclude` and never `.gitignore`
+
+This is the single easiest thing to "helpfully" break.
+
+`.gitignore` is **tracked and committed**. Adding `.ai/`, `CLAUDE.md` or `.cursor/` to it
+would announce the layer's existence to the client — in the very act of hiding it from git.
+The commit that hides the layer is the commit that reveals it.
+
+`.git/info/exclude` does the identical job and is **local-only**: never committed, never
+pushed, never travels to anyone else's clone. That is why `setup.sh` writes there.
+
+Consequence worth knowing: because it is local, **every machine must run `setup.sh`**.
+Cloning the client repo alone gets you none of this.
+
+The exclude list is also **derived, not hand-maintained**. `setup.sh` builds the nested
+context paths from the same `CONTEXT_MAP` it links them with, so a path can never be linked
+but left unhidden — which would put AI-layer files in a client `git status`.
+
+---
+
+## 3. Install
+
+From the client repo root, using **your own** remote URL:
 
 ```bash
 git clone <your-overlay-remote> .ai && bash .ai/setup.sh
 ```
 
-That is the whole install, whichever tool you use. One script wires every surface; there
-is no per-tool variant to pick and nothing to configure.
+One script wires every surface. There is no per-tool variant to choose.
 
 > **The `AI_REMOTE` default will not work on your machine.** `setup.sh` falls back to
-> `git@dev_codingcops_github.com:devCodingcops/tcg-ai-layer.git`, and
-> `dev_codingcops_github.com` is an **SSH host alias**, not a real hostname — it resolves
-> only on a machine with that entry in `~/.ssh/config`. Everyone else must either clone
-> manually as above, or override it:
+> `git@dev_codingcops_github.com:devCodingcops/tcg-ai-layer.git`, where
+> `dev_codingcops_github.com` is an **SSH host alias**, not a hostname — it resolves only
+> with that entry in `~/.ssh/config`. Either clone manually as above, or override it:
 >
 > ```bash
 > AI_REMOTE=git@github.com:<org>/tcg-ai-layer.git bash .ai/setup.sh
 > ```
 >
-> This matters on the **first run only**. Once `.ai/` is a git clone, `setup.sh` pulls from
-> whatever `origin` that clone already has and never consults `AI_REMOTE` again.
+> First run only. Once `.ai/` is a clone, `setup.sh` pulls from whatever `origin` it has.
 
-Re-run `bash .ai/setup.sh` any time — it is idempotent. It pulls the overlay, creates or
-repairs every symlink, mirrors the surfaces, drops the location-triggered context files,
-prunes links whose source was deleted, appends any missing exclude entries, and reports
-what it changed. Real files it would otherwise overwrite are backed up, never destroyed.
+`setup.sh` is **idempotent** — re-run it any time. It pulls the overlay, creates or repairs
+every symlink, drops the nested context files, mirrors the surfaces, prunes links whose
+source was deleted, appends missing exclude entries, and reports what it changed. A real
+file it would otherwise overwrite is **backed up, never destroyed**.
 
-**Re-run it after `pnpm install`** — husky resets the git hooks path, and the script says
-so when it finishes.
+**Re-run it after `pnpm install`** — husky resets the git hooks path. The script says so when
+it finishes.
 
-### What you get
+---
 
-**Two supported tools: Claude Code and Cursor.** Both receive the identical content
-through the identical mechanism — a root entry file plus one nested file per surface
-directory, where **the file nearest your edit wins**. They differ only in the filename each
-one looks for, and both filenames are always present.
+## 4. How instructions actually reach an agent
 
-| Your tool | Reads | Status |
+The part most worth understanding, because "the agent ignored the rule" and "the agent never
+saw the rule" look identical and have opposite fixes.
+
+### 4.1 Two loading behaviours
+
+| | When it loads |
+| --- | --- |
+| **Root** `CLAUDE.md` / `AGENTS.md` | At session start, always, in full |
+| **Nested** `apps/*/CLAUDE.md` | **Only when the agent reads a file in that directory** |
+
+Nested contexts are *not* loaded at launch. Per Claude Code's documentation, subdirectory
+`CLAUDE.md` files are *"included when Claude reads files in those directories"*.
+
+**What counts as the trigger:**
+
+| | Loads it? |
+| --- | --- |
+| Claude using its **Read tool** on a file in that directory | **yes** |
+| A `cd` inside a bash command | no |
+| **You** running `cat` in your own terminal | no — the agent is not involved |
+| The agent running `cat` via bash | probably not — ask it to *read* |
+
+This matters more than it sounds. Two sessions were asked *"how is this app organised?"*,
+explored `apps/web` with `find` and `ls` only, and answered without ever loading
+`contexts/web.md` — correctly, because nothing triggered it.
+
+**After `/compact`, nested contexts are not re-injected.** They reload the next time the
+agent reads a file in that directory. The root does get re-injected.
+
+### 4.2 Prove it, do not ask
+
+Asking a model what is in its own context is the one method that cannot be trusted. Use
+`/context`, typed **in the Claude Code chat**:
+
+```
+read apps/api/src/main.ts
+/context
+```
+
+Look under **Memory files** for `apps/api/CLAUDE.md`. That is an observation, not a
+self-report.
+
+For a permanent record, the `InstructionsLoaded` hook logs which instruction files load,
+when, and why — the Claude Code docs name lazy-loaded subdirectory files as its use case.
+
+### 4.3 Per surface
+
+| Tool | Reads | Status |
 | --- | --- | --- |
-| **Claude Code** | root `CLAUDE.md`, plus the nearest `apps/*/CLAUDE.md` as you work | **verified** — nested `CLAUDE.md` confirmed by probe, 2026-08-11 |
-| **Cursor** | root `AGENTS.md`, plus the nearest `apps/*/AGENTS.md` | **verified** against Cursor's rules documentation, 2026-08-11 |
-| **Antigravity** | all of the above are present, plus `.agent/agents/` and `.agent/contexts/` | **unverified** — see below |
-
-Root `AGENTS.md` and root `CLAUDE.md` resolve to **the same file**. They cannot drift,
-because there is only one.
+| **Claude Code** | root `CLAUDE.md` + nearest `apps/*/CLAUDE.md` | **verified** |
+| **Cursor** | root `AGENTS.md` + nearest `apps/*/AGENTS.md`, nearest wins | **verified** against Cursor's rules docs, 2026-08-11 |
+| **Antigravity** | everything above is present, plus `.agent/` mirrors | **unverified** — reachable, but what it auto-loads is unestablished |
 
 **Cursor does not use `.cursor/rules/`.** Its rules system reads `.mdc` only and ignores
-`.md`, so an earlier version of this layer that mirrored `.md` rules there was never read
-at all. `.cursor/agents/` and `.cursor/contexts/` exist as findable reference copies; they
-are not auto-loaded and nothing depends on them.
+`.md`, so an earlier version of this layer that mirrored `.md` rules there was never read at
+all. `.cursor/agents/` and `.cursor/contexts/` are findable reference copies, not a loading
+mechanism — nothing depends on them.
 
-**Antigravity is wired but unconfirmed.** Both root entry filenames and both nested
-filenames are present, and `.agent/` mirrors the content, so it is *reachable*. Which of
-those it loads by itself has not been established, and its published docs do not say. Check
-it in a minute: open a file under `apps/api/` and ask something only `contexts/api.md`
-answers — *"how many global guards does this API register, and which?"* The answer is four:
-AccessToken, Roles, Permissions, Throttler. If it cannot say, point it at
-[`claude/CLAUDE.md`](claude/CLAUDE.md) explicitly; that file names every context path.
+Codex is **not supported**; `setup.sh` removes `.codex/` unless you have put real files there.
 
-Codex is **not supported**. `setup.sh` removes `.codex/` if an earlier run created it,
-unless you have put real files there.
-
-### Confirming it worked
+### 4.4 Confirming the whole thing
 
 ```bash
 bash .ai/verify.sh
 ```
 
-It checks that the overlay is a clone, that both root entry points resolve to one file,
-that every surface directory carries both filenames pointing at the right context, that
-nothing from the layer is visible to the client repo's `git status`, and that no mirror
-holds a dangling link. It prints what your agent will read, exits non-zero on any failure,
-and names the fix.
+Checks the overlay is a clone, both root entry points resolve to one file, every surface
+carries both filenames pointing at the right context, no dangling links anywhere, all skills
+present, and **nothing from the layer visible to the client repo's `git status`**. Exits
+non-zero and names the fix.
 
-Run it after install, and any time an agent seems to be ignoring the rules — "is it wired
-or is the model ignoring it?" is otherwise a very expensive question to answer by hand.
+That last check is the important one: if AI-layer paths show up in `git status`, the exclude
+step did not complete and the layer is at risk of being committed into the client repo.
 
-The `git status` check is the one that matters most. Everything wired in is appended to the
-client repo's `.git/info/exclude`; if AI-layer paths show up there, the exclude step did
-not complete and the layer is at risk of being committed into the client repo.
+`verify.sh` also prints an **essence test** — questions whose answers exist only in a
+specific context file, split into a tier answerable from the root and a tier answerable only
+from a nested context. Wiring is not comprehension, and the two tiers keep those apart.
 
-Full behavior: [`setup.sh`](setup.sh), [`verify.sh`](verify.sh).
+---
 
-## 3. Surfaces
+## 5. What is in the layer
 
-**Two surfaces: Claude Code and Cursor.** They consume the layer the same way — a root
-entry file plus one nested file per surface directory, nearest file winning — and differ
-only in the filename each looks for.
-
-| Surface | Entry point | How it consumes the layer |
-| --- | --- | --- |
-| **Claude Code** | root `CLAUDE.md` → [`claude/CLAUDE.md`](claude/CLAUDE.md), plus `.claude/` → [`claude/`](claude/) | Root context always on; the nested `CLAUDE.md` in a surface directory loads as work happens there. Settings from `.claude/`. |
-| **Cursor** | root `AGENTS.md` + the nested `AGENTS.md` per surface directory | **Verified 2026-08-11** against Cursor's rules documentation: it reads `AGENTS.md` at the root *and* nested in subdirectories, more specific taking precedence — exactly the shape `link_context` produces. It ignores `.md` in `.cursor/rules/`, reading only `.mdc`, so this layer does not use that path. `.cursor/agents/` and `.cursor/contexts/` are findable reference copies, not auto-loaded. |
-
-| **Antigravity** | root + nested entry files, plus `.agent/agents/`, `.agent/contexts/` | **Unverified.** Everything is present and reachable; which of it Antigravity loads unprompted has not been established and its docs do not say. The install section gives a one-minute check. |
-
-Codex was dropped. `setup.sh` removes `.codex/` when it holds nothing but its own symlinks,
-and leaves it with a warning if it holds anything else. Skills were removed pending
-redefinition, so nothing mirrors them today.
-
-Nested context files are created by `link_context` in [`setup.sh`](setup.sh), the Cursor
-reference mirror by `mirror_dir`. Definitions are canonical under `.ai/` and linked
-outward, never copied.
-
-**Every surface directory gets both filenames.** `apps/api/CLAUDE.md` and
-`apps/api/AGENTS.md` are two links to one context file, because the tools disagree about
-which name they look for and guessing wrong means a surface silently gets no rules. The
-directory-to-context mapping is declared once in `setup.sh` as `CONTEXT_MAP`, and the
-exclude entries are derived from it — so a path can never be linked but left unhidden.
-
-## 4. Context layer
-
-The layer holds **surface knowledge only** — what is true about this codebase, in every
-phase of work. How work *moves* belongs to AI-DLC (section 6). That split is the rule:
-if something only makes sense inside one phase, it does not belong here.
-
-**Root context** — always on, and the same file on every surface.
-
-| File | Read it when |
+| Path | What it holds |
 | --- | --- |
-| [`claude/CLAUDE.md`](claude/CLAUDE.md) | Always. Where answers come from, stack, commands, architecture invariants, naming, aliases, the identity rule, code quality |
-| `claude/AGENTS.md` | Never separately — it is a symlink to `CLAUDE.md` |
-| [`claude/settings.json`](claude/settings.json) | Claude Code permissions and tool allow/deny lists |
+| [`claude/CLAUDE.md`](claude/CLAUDE.md) | The always-on root context. Also served as `AGENTS.md` |
+| [`claude/contexts/`](claude/contexts/) | Per-surface rules — [api](claude/contexts/api.md), [prisma](claude/contexts/prisma.md), [web](claude/contexts/web.md), [mobile](claude/contexts/mobile.md) |
+| [`claude/skills/`](claude/skills/) | Task-triggered procedures |
+| [`aidlc/`](aidlc/) | The delivery loop — agents, templates, guide |
+| [`vault/`](vault/) | Product knowledge migrated from Confluence |
+| [`setup.sh`](setup.sh) · [`verify.sh`](verify.sh) | Wire it · prove it |
 
-**Surface contexts** — dropped into the directory they govern by `link_context`.
+### Skills — task-triggered, deliberately narrow
 
-| File | Governs |
-| --- | --- |
-| [`claude/contexts/api.md`](claude/contexts/api.md) | `apps/api/` — layering, file patterns, the four global guards, feature checklist |
-| [`claude/contexts/prisma.md`](claude/contexts/prisma.md) | `apps/api/prisma/` — identity codes and how to derive them, when tenant scoping does **not** apply, migrations |
-| [`claude/contexts/web.md`](claude/contexts/web.md) | `apps/web/` — component layers, workspace patterns, theming, forms |
-| [`claude/contexts/mobile.md`](claude/contexts/mobile.md) | `apps/mobile/` — Expo Router, tokens, `StyleSheet`, secure storage |
-
-**Removed, and why.** The previous layer documented a second delivery flow — drop design
-images in a folder, say "implement the feature", five parallel agents deliver a full
-stack — which contradicts AI-DLC's inception → construction → reflection loop. Both were
-loading at once and telling an agent opposite things. The flow docs, the skills built for
-that flow, and the PNG-drop design intake are gone; recover any of them from git history if
-needed.
-
-`claude/rules/` was superseded by `claude/contexts/`, which was written by reading the
-codebase rather than by editing the old rules. That distinction matters: the old files
-described atomic design, `PRLT`, NestJS 10, Prisma 5 and unconditional tenant scoping, none
-of which are true.
-
-**Skills** — task-triggered, phase-independent, and deliberately narrow so they never
-compete with a phase agent. The previous set was removed because two of the four were
-alternative ways to run a feature end to end; these are not.
+Narrow so they never compete with a phase agent. An earlier set was removed because two of
+its four were alternative ways to run a feature end to end.
 
 | Skill | Fires on |
 | --- | --- |
-| [`commit`](claude/skills/commit/SKILL.md) | Starting a unit, rebasing, or writing a commit. Branch naming, rebase-from-`origin/main`, conventional commit format |
-| [`review-pr`](claude/skills/review-pr/SKILL.md) | Reviewing a PR, branch or diff — against the **vault** as well as the code. Cites product sources with their status, surfaces conflicts without adjudicating them |
-| [`lint-triage`](claude/skills/lint-triage/SKILL.md) | A failing gate. Separates your errors from the ~14 pre-existing ones by diffing against a baseline |
-| [`find-component`](claude/skills/find-component/SKILL.md) | Adding any UI component. Searches all nine `components/` directories, not just the atomic tiers |
-| [`debug-api`](claude/skills/debug-api/SKILL.md) | A failing endpoint. Status-code triage through four global guards, with the tenancy case checked early |
+| [`commit`](claude/skills/commit/SKILL.md) | Starting a unit, rebasing, writing a commit |
+| [`review-pr`](claude/skills/review-pr/SKILL.md) | Reviewing a PR — against the **vault** as well as the code |
+| [`lint-triage`](claude/skills/lint-triage/SKILL.md) | A failing gate — which errors are yours |
+| [`find-component`](claude/skills/find-component/SKILL.md) | Adding UI — searches all nine `components/` directories |
+| [`debug-api`](claude/skills/debug-api/SKILL.md) | A failing endpoint |
 
-Two of these exist because of measured failures rather than general good practice.
-`lint-triage` exists because `pnpm lint` fails before you touch anything. `find-component`
-exists because `components/ui` has more importers than any atomic tier, so the search the
-old docs prescribed missed the largest source in the app.
+Two exist because of measured failures rather than general good practice: `pnpm lint` fails
+before you touch anything, and `components/ui` has more importers than any atomic tier — so
+the search the old docs prescribed missed the largest source in the app.
 
-`review-pr` is the one that reads the vault. Its discipline there is the vault's own: index
-first, name every candidate when sources conflict, never pick a winner, and never present
-`unverified` content as settled — most of the vault is unverified.
+### Vault — product knowledge
 
-**Design intake** is being redesigned around the UI team's HTML/CSS handoff rather than
-images. Not yet specified.
-
-## 5. Vault
-
-Product and process documentation migrated from Confluence.
-
-**Retrieval is index-first, always.** Start at [`vault/INDEX.md`](vault/INDEX.md) — it
-states what exists, what each file answers, and the caveats that change how everything
-downstream reads. Where a topic has competing sources, the index routes you to a conflict
-stub rather than to one side of an unresolved disagreement. Opening a content file directly
-is how an agent ends up quoting one candidate as settled fact.
+**Retrieval is index-first, always.** Start at [`vault/INDEX.md`](vault/INDEX.md). Where a
+topic has competing sources it routes you to a conflict stub rather than one side of an
+unresolved disagreement. Opening a content file directly is how an agent ends up quoting a
+candidate as settled fact.
 
 | File | What it is |
 | --- | --- |
-| [`vault/INDEX.md`](vault/INDEX.md) | **The entry point.** Read before opening any content file |
-| [`vault/README.md`](vault/README.md) | Migration conventions, frontmatter schema, what was deliberately excluded and why |
-| [`vault/gaps.md`](vault/gaps.md) | The open-question register — unresolved conflicts and unsourced decisions |
+| [`vault/INDEX.md`](vault/INDEX.md) | **The entry point.** Read before any content file |
+| [`vault/README.md`](vault/README.md) | Migration conventions, frontmatter, deliberate exclusions |
+| [`vault/gaps.md`](vault/gaps.md) | Open questions — unresolved conflicts and unsourced decisions |
+| [`vault/sync/confluence-sync.md`](vault/sync/confluence-sync.md) | How the vault tracks a source that keeps moving |
 
-Statuses, verification state, conflict sets and their counts all live in the index and the
-gap register. They are deliberately not repeated here.
+Most of it is `status: unverified`. Statuses and counts live in the index and gap register,
+not here.
 
-## 6. AI-DLC
+---
 
-The delivery loop this layer is built around: a Jira ticket is captured as an **intent**;
-the **elaborator** turns that intent into a sourced **spec** and then stops to ask what it
-could not source; the spec is decomposed into vertically shippable **units**; units are
-built; and a **reflection** feeds what the spec missed and what the executor got wrong back
-into the rules. The **scrum** agent runs alongside the whole loop, unblocking developers
-from written sources or escalating honestly when nothing is written.
+## 6. AI-DLC — the delivery loop
 
-> **Start here: [`aidlc/GUIDE.md`](aidlc/GUIDE.md)** — how the loop works end to end, what
-> each agent does and refuses to do, why the tools exist, a full pass from ticket to
-> reflection, and what to expect on a first real run. Read it before running a ticket
-> through for the first time.
+> **Start here: [`aidlc/GUIDE.md`](aidlc/GUIDE.md)** — the loop end to end, what each agent
+> does and refuses to do, why the tools exist, a full worked pass, and what to expect on a
+> first real run.
 
-**Agents are organised by phase**, and each phase folder carries a README explaining why
-its agents belong together and what leaves that phase. Roles stay in the filename; only
-folders carry phase, so moving an agent between phases never breaks a reference.
+A ticket becomes an **intent**; the elaborator turns it into a sourced **spec** and stops to
+ask what it could not source; the spec is decomposed into shippable **units**; units are
+built and checked; a **reflection** feeds what was missed back into the rules.
 
-See [`aidlc/agents/README.md`](aidlc/agents/README.md) for the layout rule, the handoff
-contract, and what every agent in the loop shares.
+**Not every ticket runs the full loop.** That is the *feature* path. A bug whose correct
+behaviour is already specified goes straight to construction; a one-line UI change needs no
+phase at all. The valve that keeps the short paths honest: **any path becomes the full loop
+the moment someone has to decide something nobody specified.** See the GUIDE's *Not every
+ticket runs the full loop*.
 
 | Phase | Agent | What it does |
 | --- | --- | --- |
 | [inception](aidlc/agents/inception/) | [`tcg-elaborator`](aidlc/agents/inception/tcg-elaborator.md) | Intent → sourced spec, then stops and asks. Never implements |
-| | [`tcg-decomposer`](aidlc/agents/inception/tcg-decomposer.md) | Approved spec → vertical units that ship alone. Never builds |
-| [construction](aidlc/agents/construction/) | [`tcg-executor`](aidlc/agents/construction/tcg-executor.md) | One unit → working code. Stops where the spec stops |
-| | [`tcg-analyst`](aidlc/agents/construction/tcg-analyst.md) | Reviews the built unit, tagging every finding VERIFIED or INFERRED |
-| [reflection](aidlc/agents/reflection/) | [`tcg-reflector`](aidlc/agents/reflection/tcg-reflector.md) | What the loop missed → proposed rule changes. Proposes, never applies |
-| [tools](aidlc/agents/tools/) | [`tcg-contract-tracer`](aidlc/agents/tools/tcg-contract-tracer.md) | An API shape changed — what breaks across web and mobile. Reports, never fixes |
-| | [`tcg-prisma-guardian`](aidlc/agents/tools/tcg-prisma-guardian.md) | Is this schema change safe, isolated and efficient. Isolation first, because scoping here is conditional |
-| — | [`tcg-scrum`](aidlc/agents/tcg-scrum.md) | Unblocks from written sources or escalates. Never guesses. Runs alongside every phase |
+| | [`tcg-decomposer`](aidlc/agents/inception/tcg-decomposer.md) | Spec → vertical units that ship alone. Never builds |
+| [construction](aidlc/agents/construction/) | [`tcg-executor`](aidlc/agents/construction/tcg-executor.md) | One unit → code. Stops where the spec stops |
+| | [`tcg-analyst`](aidlc/agents/construction/tcg-analyst.md) | Reviews it, tagging every finding VERIFIED or INFERRED |
+| [reflection](aidlc/agents/reflection/) | [`tcg-reflector`](aidlc/agents/reflection/tcg-reflector.md) | What the loop missed → proposed rule changes. Never applies them |
+| [tools](aidlc/agents/tools/) | [`tcg-contract-tracer`](aidlc/agents/tools/tcg-contract-tracer.md) | An API shape changed — what breaks in web and mobile |
+| | [`tcg-prisma-guardian`](aidlc/agents/tools/tcg-prisma-guardian.md) | Schema change — safe, isolated, efficient? Isolation first |
+| — | [`tcg-scrum`](aidlc/agents/tcg-scrum.md) | Unblocks from written sources or escalates. Never guesses |
 
-Model tier is assigned by how much judgement the task needs, not by seniority: elaborator,
-decomposer, analyst, reflector and scrum ask for the strong tier; executor, contract-tracer
-and prisma-guardian sit at mid tier. See the tier table in
-[`aidlc/agents/README.md`](aidlc/agents/README.md).
+Model tier follows **how much judgement the task needs**, not seniority. Strong: elaborator,
+decomposer, analyst, reflector, scrum. Mid: executor, contract-tracer, prisma-guardian.
+Layout and tier reasoning in [`aidlc/agents/README.md`](aidlc/agents/README.md).
 
 **Branching and commits.** One unit, one branch, one PR —
 `<type>/SCRUM-###-u<n>-<slug>`, branched from `origin/main` and rebased onto it before
-pushing. Conventional commits with a body that says why, and what was deliberately left
-out. The executor enforces it; the mechanics live in the `commit` skill.
+pushing. The executor enforces it; mechanics live in the `commit` skill.
 
-**Templates** — required-field checklists. A field is never deleted; an unfillable field
-stays and is marked, so a gap is visible rather than silent.
+**Templates** fix the field set for each artifact. A field is never deleted — an unfillable
+one is marked, so a gap is visible rather than silent.
+[`intent`](aidlc/templates/intent.md) · [`spec`](aidlc/templates/spec.md) ·
+[`units`](aidlc/templates/units.md) · [`reflection`](aidlc/templates/reflection.md)
 
-| File | Filled when |
-| --- | --- |
-| [`aidlc/templates/intent.md`](aidlc/templates/intent.md) | Capturing a Jira ticket, before elaboration |
-| [`aidlc/templates/spec.md`](aidlc/templates/spec.md) | Produced by the elaborator; the document an executor builds from |
-| [`aidlc/templates/units.md`](aidlc/templates/units.md) | Decomposing an approved spec into vertical slices |
-| [`aidlc/templates/reflection.md`](aidlc/templates/reflection.md) | After units ship, before the ticket closes |
-
-**Plan**
-
-[`aidlc/context-restructure-plan.md`](aidlc/context-restructure-plan.md) — the context-layer
-restructure. Unapplied, and gated on PRE-FLIGHT 0.
+---
 
 ## 7. Conventions
 
-- **Everything under `.ai/`.** All real content lives here. Paths outside are symlinks
-  pointing back in, created by [`setup.sh`](setup.sh).
-- **Never write to the client repo.** Not source, not config, not docs, not whitespace. If
-  a change appears to require it, stop and raise it instead.
-- **One branch per change.** Branch from `main`, one logical change per branch, merged by
-  PR — matching the history this repo already has.
-- **One fact, one home.** If a fact lives in two files it will diverge. Link to the owner
-  rather than restating it; that rule applies to this README first.
+- **Everything under `.ai/`.** Paths outside are symlinks created by `setup.sh`.
+- **Never write to the client repo.** Not source, not config, not docs, not whitespace. If a
+  change seems to require it, stop and raise it.
+- **One branch per change**, merged by PR — matching this repo's history.
+- **One fact, one home.** A fact in two files diverges. Link to the owner rather than
+  restating it. This README goes first: it explains mechanism and links for content.
+- **Verified and inferred are never blended.** Say which a claim is, and name the command
+  that established it. This applies to the agents, the reviews, and these documents.
+
+---
+
+## 8. Known open items
+
+Honest state, so nobody rediscovers them.
+
+- **Nested-context loading is not yet confirmed by observation.** The root is. `/context`
+  settles it in seconds (§4.2); it has not been run.
+- **Antigravity's loading behaviour is unestablished** — reachable, but unproven (§4.3).
+- **The loop has never run a real ticket end to end.** Written is not working.
+- **`apps/web` does not glob its tests** — `package.json` passes 14 filenames explicitly, so
+  a web test not hand-added never runs and nothing says so. Fix before trusting web coverage.
+- [`aidlc/context-restructure-plan.md`](aidlc/context-restructure-plan.md) is **partly
+  superseded** — its per-block disposition was written against a `CLAUDE.md` that has since
+  been rewritten. Its PRE-FLIGHT 0 gate is answerable with `/context`.
+- [`aidlc/skills-and-rails-analysis.md`](aidlc/skills-and-rails-analysis.md) is a **dated
+  record**, deliberately not updated. It references files that no longer exist; that is what
+  makes it evidence.
