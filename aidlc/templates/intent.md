@@ -97,7 +97,7 @@ Notes for the elaborator:
 
 - A `yes` on `apps/api/prisma` means a committed migration under
   `apps/api/prisma/migrations/` is mandatory (CLAUDE.md → Web UI Rules 12,
-  `.ai/claude/rules/prisma.md`).
+  `.ai/claude/contexts/prisma.md`).
 - A `yes` on `packages/shared` means both web and mobile are downstream whether or not
   they are marked here.
 
@@ -125,7 +125,7 @@ Follow the Identity Convention: UUID PK, per-tenant prefixed code, child FKs by 
 
 | Kind | Reference |
 | --- | --- |
-| Figma / design images | *path under `.ai/claude/design/<feature>/` or a link*, or `NOT ON TICKET` |
+| Design handoff | *path to the UI team's HTML/CSS delivery, or a link*, or `NOT ON TICKET` |
 | Jira attachments | |
 | Related tickets | `SCRUM-###` — *how it relates* |
 | Existing repo docs | *e.g.* `docs/notifications-architecture.md` |
@@ -161,5 +161,5 @@ records them as undecided.
 
 ---
 
-**Next step:** run the elaborator (`.ai/aidlc/agents/tcg-elaborator.md`) against this file.
+**Next step:** run the elaborator (`.ai/aidlc/agents/inception/tcg-elaborator.md`) against this file.
 It produces `spec.md` beside it and then stops to ask its questions. It will not implement.

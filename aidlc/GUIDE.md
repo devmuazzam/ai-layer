@@ -300,8 +300,10 @@ Expect, in rough order of likelihood:
   reflector.
 - **A unit that is not really vertical.** Apply the ships-alone test hard on the first pass;
   it is the easiest thing to get wrong and the most expensive to discover at merge.
-- **Stale references.** `templates/reflection.md` still points at `.ai/claude/rules/`, which
-  is now `contexts/`. Propose fixes through the reflector rather than editing mid-run.
+- **Stale references.** A sweep on 2026-08-12 repointed the templates, the elaborator's
+  surface table and the skill references at their current paths. Expect more: this layer has
+  been restructured twice and a reference that still resolves is not proof it is current.
+  Propose fixes through the reflector rather than editing mid-run.
 
 ### Make sure the agent actually has the context
 

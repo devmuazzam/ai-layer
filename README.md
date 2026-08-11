@@ -237,18 +237,6 @@ first, name every candidate when sources conflict, never pick a winner, and neve
 **Design intake** is being redesigned around the UI team's HTML/CSS handoff rather than
 images. Not yet specified.
 
-**Skills** — task-triggered instructions, provider-neutral.
-
-[`commit`](claude/skills/commit/SKILL.md) ·
-[`debug-api`](claude/skills/debug-api/SKILL.md) ·
-[`new-feature`](claude/skills/new-feature/SKILL.md) ·
-[`review-pr`](claude/skills/review-pr/SKILL.md)
-
-**Design intake** — drop images in a folder under [`claude/design/`](claude/design/) and
-describe the feature. [`claude/design/README.md`](claude/design/README.md) explains the
-convention; [`claude/design/example-feature/specs.md`](claude/design/example-feature/specs.md)
-is the worked example.
-
 ## 5. Vault
 
 Product and process documentation migrated from Confluence.
@@ -308,7 +296,7 @@ and prisma-guardian sit at mid tier. See the tier table in
 **Branching and commits.** One unit, one branch, one PR —
 `<type>/SCRUM-###-u<n>-<slug>`, branched from `origin/main` and rebased onto it before
 pushing. Conventional commits with a body that says why, and what was deliberately left
-out. The executor enforces it; the mechanics live in the `branch-commit` skill.
+out. The executor enforces it; the mechanics live in the `commit` skill.
 
 **Templates** — required-field checklists. A field is never deleted; an unfillable field
 stays and is marked, so a gap is visible rather than silent.

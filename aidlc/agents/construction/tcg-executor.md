@@ -50,7 +50,7 @@ branching from it silently reverts merged work into the new branch with nothing 
 Rebase onto `origin/main` again before pushing, so the branch carries whatever else landed
 while you worked.
 
-Mechanics, naming and the commit format are in the `branch-commit` skill. Two things are
+Mechanics, naming and the commit format are in the `commit` skill. Two things are
 yours to enforce regardless of who does the git:
 
 - **Never work on `main` directly**, not even for a one-line fix.

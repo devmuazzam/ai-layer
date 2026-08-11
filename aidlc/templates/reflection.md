@@ -95,9 +95,9 @@ The output that matters. Each row must be specific enough to apply without rewri
 
 | # | File | Section | Exact change | Prevents | Accepted |
 | --- | --- | --- | --- | --- | --- |
-| R1 | `.ai/claude/rules/prisma.md` | *heading* | *add/change this line* | SD-1 | pending |
+| R1 | `.ai/claude/contexts/prisma.md` | *heading* | *add/change this line* | SD-1 | pending |
 | R2 | `.ai/aidlc/templates/spec.md` | *§n* | *add this required field* | SD-2 | pending |
-| R3 | `.ai/aidlc/agents/tcg-elaborator.md` | *§n* | | ED-1 | pending |
+| R3 | `.ai/aidlc/agents/inception/tcg-elaborator.md` | *§n* | | ED-1 | pending |
 
 - **Rejected proposals, and why:** *keeping these stops the same idea being re-proposed
   every sprint*
