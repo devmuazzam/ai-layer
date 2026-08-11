@@ -323,7 +323,7 @@ unfilteredItemCount={employees.length}
 
 ## Project Skills (all providers)
 
-Canonical skill definitions live in `.claude/skills/<name>/SKILL.md` ([Agent Skills spec](https://agentskills.io)). After clone, run `pnpm setup:agents` to link them for Cursor (`.cursor/skills/`), Claude Code (`.claude/skills/`), Codex (`.codex/skills/`), and Antigravity (`.agent/skills/`).
+Canonical skill definitions live in `.claude/skills/<name>/SKILL.md` ([Agent Skills spec](https://agentskills.io)). After clone, run `bash .ai/setup.sh` to link them for Cursor (`.cursor/skills/`), Claude Code (`.claude/skills/`), Codex (`.codex/skills/`), and Antigravity (`.agent/skills/`).
 
 | Skill         | Trigger                                           | Path                                  |
 | ------------- | ------------------------------------------------- | ------------------------------------- |
