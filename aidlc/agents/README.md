@@ -55,6 +55,13 @@ someone has to decide something nobody specified.** See
 
 - **Sources are cited and status-tagged.** A claim that cannot be cited is not made. Most of
   the vault is unverified and says so; a spec that hides that has laundered its sources.
+- **The two tags do different jobs, and only one of them stops work.** `[OPEN]` — nobody has
+  answered — blocks a unit outright at every phase. `[UNVERIFIED]` — someone answered and
+  nobody confirmed it is current — blocks nothing, because it applies to almost every
+  requirement there is. It travels with the requirement as a **reversibility constraint**:
+  build it, but do not make it expensive to undo without saying so first. The pair
+  *unverified × irreversible* is what each phase watches for, and the reflection is where the
+  layer finds out whether the tag ever predicted anything.
 - **Conflicts are surfaced, never resolved and never merged.** Merging two disagreeing
   documents invents a third that nobody wrote and nobody can be asked about.
 - **Rules govern how we build, never what to build.** A rule can make a requirement
@@ -69,9 +76,24 @@ someone has to decide something nobody specified.** See
 | **Strong** (Opus-class) | elaborator, decomposer, analyst, reflector, scrum | Judgement: is this requirement genuinely sourced, do these documents actually conflict, does this unit ship alone, does this finding survive refutation. A weaker model gets all of those wrong **in the same direction** — toward the confident, complete, fabricated answer |
 | **Mid** (Sonnet-class) | executor, contract-tracer, prisma-guardian | Building to a fixed spec, or exhaustive checking against a known rule. Breadth matters more than judgement, and the failure mode is *missing* something rather than *misjudging* it |
 
-The executor sits at mid tier with one caveat stated in its own file: the part that does
-need care is noticing it has hit something the spec never specified, and stopping instead of
-filling it in.
+**The executor is the awkward one, and the resolution is structural rather than a caveat.**
+Its most important behaviour — stopping when the spec is silent — is a judgement call, which
+is exactly what the row above says mid-tier models get wrong in the same direction. An
+earlier version of this README noted that as a caveat and left it there. A caveat is not a
+resolution: it names a mismatch and then tolerates it.
+
+So the stop was rewritten to stop being a judgement. The executor's authorised surface is
+**the rows of its unit's slice-contents table plus the `REQ-nn` items it covers**, and
+anything not traceable to one of those is out of scope *by rule*
+([`construction/tcg-executor.md`](construction/tcg-executor.md) §2). That converts "notice
+you are guessing" — which fails precisely when an invented default feels like knowledge —
+into "check whether this is on the list", which is a lookup and does not depend on the model
+correctly assessing its own certainty.
+
+That is this layer's own thesis applied to itself: **a rule that depends on remembering is
+not a rule.** If the first live tickets show executors filling gaps anyway, the honest read
+is that the mechanical rule was insufficient — and the fix is strong tier, not a firmer
+reminder.
 
 Cheap-tier work — commit messages, branch naming, running a gate — is not agent work at
 all. That belongs in a skill; see `claude/skills/commit/`.
