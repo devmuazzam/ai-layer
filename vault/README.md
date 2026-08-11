@@ -42,7 +42,7 @@ title:           original Confluence page title
 source:          confluence/<SPACE_KEY>/<original title>
 migrated:        2026-08-10
 updated:         the page's Confluence last-updated date
-status:          verified | unverified | superseded
+status:          verified | unverified | superseded | reference
 conflicts_with:  vault-root-relative paths of sibling files on the same topic
 jira:            SCRUM-### ids referenced in the body
 topics:          3–8 subject-area tags, controlled vocabulary
@@ -101,6 +101,18 @@ Marking them is better than letting generated navigation pass as source material
 - **`superseded`** — a known-outdated copy retained for reference. No file currently
   carries this status; superseded Confluence pages were not migrated, and the pages that
   replaced them record the fact in `supersedes:`.
+- **`reference`** — **not migrated content at all.** Added 2026-08-11, deliberately, for
+  definitional entries sourced from a person or from outside Confluence. The other three
+  statuses are a *migration-confidence* axis: they answer "has anyone adjudicated this page
+  against its rivals?" That question does not apply to a file that was never a page. Marking
+  an external definition `unverified` would imply it is a migrated document awaiting
+  verification, which misstates where it came from — and honest provenance is the whole point
+  of this field. A `reference` file must carry a `source:` naming the actual origin (a person,
+  a URL) rather than a `confluence/` path, and must say in its body what it does **not**
+  authorise. Currently one file: `domain/fcc-nexgen-fms.md`.
+
+  **`reference` is not a licence to specify from.** These entries resolve vocabulary. They do
+  not describe behaviour, and no requirement may rest on one.
 
 ## Filenames
 
@@ -237,6 +249,62 @@ When product resolves a conflict set:
 4. Clear `conflicts_with` on the winner, and update the corresponding `gaps.md` entry to
    `Status: resolved` with a link to the decision note.
 
+## How the vault stays in step with Confluence
+
+This vault was built as a **one-time snapshot** on 2026-08-10. Confluence is a **living
+source**. Those two facts do not reconcile themselves, so the standing relationship between
+them has to be stated rather than assumed.
+
+**The principle, which decides every specific case: sync is detect-and-triage, never
+auto-absorb.** A Confluence page changing is a signal to *review*, not a trigger to
+*overwrite*. The moment newest-wins flows straight into the vault, the thing the vault is for
+is gone — a stable, source-tagged, conflict-marked artifact that agents and people can stand
+on. *Recency is not authority* is already binding on the agents that read this vault; it binds
+the process that maintains it too.
+
+### The loop
+
+Human-in-the-loop and cheap, on purpose. A real bidirectional Confluence sync is a large piece
+of engineering and is not needed at this stage.
+
+1. **Detect.** Find pages changed since the last migration, by timestamp or version
+   (`lastmodified >= <last migration date>`).
+2. **Report.** Produce a change report. It is a list of what moved, not a set of edits.
+3. **Triage each entry by type.** Most entries are not migrations:
+   - **Non-content — skip.** Personal-space pages are not TCG's and do not belong in the vault
+     at all; empty pages are nothing. Both were already excluded by policy at migration.
+   - **A change that contradicts marked content — goes to the conflict or gap machinery.**
+     Append it as evidence to the existing `gaps.md` entry, or file a new conflict stub the way
+     the others were filed. **Never as an overwrite.** New values appearing in a second place
+     is a data point *inside* a conflict, never the resolution of it.
+   - **A new page on a topic the vault already covers — a conflict stub**, not a replacement.
+   - **A stable, substantive revision of a migrated page — re-migrate**, deliberately.
+4. **Re-migrate only what is stable.** A page edited minutes ago, or carrying obvious
+   in-progress defects (broken heading numbering, duplicate ids, missing sections), is
+   **not** re-migrated. Stamping a half-finished document `migrated: <today>` is worse than
+   leaving the vault a few days stale, because the staleness is visible in the frontmatter and
+   the half-finished import is not.
+5. **Re-migration is the documented procedure, not a hand-edit.** Byte-faithful, split by the
+   same rules if it exceeds 15 KB, with `source:`, `migrated:`, `updated:` and `status:`
+   re-stamped. Editing a vault file to "catch it up" breaks the guarantee that every byte of
+   a page lives in exactly one part.
+
+### Who does what
+
+An agent may run steps 1–3: detect drift, report it, and file it into `gaps.md` or a conflict
+stub. That is recording, and recording is safe.
+
+**Step 4–5 stay a deliberate human procedure.** Whether a page is stable enough to re-migrate
+is a judgement about someone else's unfinished work, and it is not an agent's call to make.
+
+### Recorded drift
+
+- **2026-08-11** — six pages had changed since the migration. Triage: two personal/empty pages
+  skipped; the Sprint 8 report noted against the *Sprint 7 date range* gap; lunch thresholds
+  appearing on the Atom user-stories page appended as evidence to the *Lunch thresholds* gap
+  (which stays **open**); a second mobilization page filed as a new conflict stub
+  (`product/mob-demob-INDEX.md`). **Nothing was re-migrated** — the Atom page was mid-edit.
+
 ## Conversion notes
 
 - Confluence tables became markdown tables. Single-cell tables used as visual banners
@@ -256,19 +324,29 @@ When product resolves a conflict set:
   the candidates and none is verified" rather than on a document that looks settled.
   Split-document parts carry no wikilinks, to preserve their byte-exact reassembly.
 
-## Glossary — missing, and known to be missing
+## Glossary — one entry, seven terms still missing
 
-There is **no glossary anywhere in this vault**, and eight crane-domain terms are used
-throughout as though understood: `tailboard-jsa` (13 files), `das` (12), `boom-time` (9),
-`craft-code` (6), `fcc` (5), `build-up` (4), `loadout` (4), `mob-demob` (1).
-`fcc` is the highest-value unknown — it is referenced as an existing system of record
-("Customer-FCC", "need to verify from FCC if its customer contact or seperate job site
-contact") and nothing says what it is.
+The migration produced no glossary. One entry has been added since:
+`domain/fcc-nexgen-fms.md` (`status: reference`, 2026-08-11) defines **FCC** as Fleet Cost &
+Care, the legacy fleet-management vendor whose NexGen desktop system and Atom mobile app this
+platform replaces. It was the highest-value unknown — referenced throughout as an existing
+system of record ("Customer-FCC", "need to verify from FCC if its customer contact or
+seperate job site contact") with nothing saying what it was.
 
-A ninth, `comp-code`, exists in the domain but its only documentation was in the
+That entry **resolves the term and nothing else.** It records what NexGen and Atom are, not
+how they behave. No spec may cite "FCC/NexGen does X" as the basis for a requirement unless
+that behaviour is written down in the vault or a ticket.
+
+Seven crane-domain terms are still used throughout as though understood and defined nowhere:
+`tailboard-jsa` (13 files), `das` (12), `boom-time` (9), `craft-code` (6), `build-up` (4),
+`loadout` (4), `mob-demob` (1).
+
+An eighth, `comp-code`, exists in the domain but its only documentation was in the
 personnel content excluded by policy, so it has to be sourced from a person rather than
 a document. That is the first real cost of the exclusion policy showing up.
 
-Definitions should land in `domain/` as ordinary files with `status: unverified` until
-someone with actual crane-domain authority confirms them — the same discipline as
-everything else here.
+Definitions land in `domain/`, with the status matching where the definition actually came
+from: `status: reference` when it came from a person or an external source and was never a
+Confluence page, `status: unverified` when it was migrated from a page but nobody has
+adjudicated it. Do not use `verified` for either — that is reserved for content a human
+resolved against competing copies.

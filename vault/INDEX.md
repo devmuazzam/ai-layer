@@ -5,7 +5,7 @@ Read this first. 153 files, migrated from Confluence 2026-08-10.
 ## Read these four lines before you answer anything
 
 1. **Nothing here is verified except the six `domain/` SOP files.** Everything else is `status: unverified` — migrated faithfully, never adjudicated. It is not necessarily current.
-2. **Seven open conflicts.** If a file's `conflicts_with` is non-empty, do not pick one and answer from it. Read the conflict stub instead. List below.
+2. **Eight open conflicts.** If a file's `conflicts_with` is non-empty, do not pick one and answer from it. Read the conflict stub instead. List below. One of the eight was found *after* the migration, by a drift check against Confluence — the source keeps moving, so this list is not closed.
 3. **`FR-FOP-NNN` ids are ambiguous.** Both field-ops FRDs number their requirements from 001, so `FR-FOP-013` is *Lunch Monitoring* in one document and *Lunch Timer and Alerts* in the other. **Always cite the document as well as the id.** A bare "FR-FOP-013" identifies nothing.
 4. **`meetings/` is retrospective, not forward-looking.** Every sprint plan there was written after its sprint had already started; one was written four days after it ended. Do not read them as commitments.
 
@@ -18,9 +18,10 @@ Read this first. 153 files, migrated from Confluence 2026-08-10.
 | anything about the mobile / field-worker app | [product/field-ops-mobile-INDEX.md](product/field-ops-mobile-INDEX.md) first — 3 competing documents |
 | anything about vendors or agencies | [product/agencies-vendors-INDEX.md](product/agencies-vendors-INDEX.md) first — 4 sources, 2 entities |
 | anything about dispatch / DAS | [product/daily-allocation-INDEX.md](product/daily-allocation-INDEX.md) first |
+| anything about mobilization / demobilization | [product/mob-demob-INDEX.md](product/mob-demob-INDEX.md) first — 2 sources, only 1 migrated |
 | a specific field-ops requirement | the FR-FOP tables at the bottom of this file, then the leaf file |
-| how the team runs sprints / Jira / reviews | `domain/` — the only verified content in the vault |
-| what a crane-domain term means | nothing — there is no glossary. See "Undefined terms" below |
+| how the team runs sprints / Jira / reviews | the six SOP files in `domain/` — the only `verified` content in the vault |
+| what `FCC` or `NexGen` means | [domain/fcc-nexgen-fms.md](domain/fcc-nexgen-fms.md) — the only glossary entry. Every other domain term is still undefined; see "Undefined terms" below |
 | why something is missing | [README.md](README.md) → *What this vault does not contain* |
 
 ## Open conflicts — all unresolved
@@ -34,6 +35,7 @@ Full entries with candidates, sizes and dates in [gaps.md](gaps.md).
 | Customer | 5 | [customers-INDEX.md](product/customers-INDEX.md) |
 | Agencies and vendors | 4 | [agencies-vendors-INDEX.md](product/agencies-vendors-INDEX.md) |
 | Daily Allocation System | 2 | [daily-allocation-INDEX.md](product/daily-allocation-INDEX.md) |
+| Mobilization & Demobilization | 2 (1 migrated) | [mob-demob-INDEX.md](product/mob-demob-INDEX.md) — found by drift check 2026-08-11, not by the migration |
 | Sprint 7 date range | — | [gaps.md](gaps.md) — unrecoverable from the page; 30 seconds to fix with Jira access |
 | Punch lists not scoped to their module | 4 | [gaps.md](gaps.md) — structural, deliberately not fixed |
 
@@ -197,10 +199,12 @@ Every file carries `topics:` (subject area) and `entities:` (what it actually sp
 
 `field-ops-mobile` is an anchor tag on all 102 field-ops files, so it finds the area but does not discriminate within it. Every other topic tag discriminates.
 
-## Undefined terms — there is no glossary
+## Undefined terms — the glossary has one entry
 
-These are used throughout as if understood, and defined nowhere in the vault. Ordered by usage, which is the order to ask about them:
+**Defined:** `fcc` (and `nexgen`, `atom`) — [domain/fcc-nexgen-fms.md](domain/fcc-nexgen-fms.md), `status: reference`. It resolves the term only: FCC is the legacy Fleet Cost & Care system this platform replaces. **It is not a requirement source** — no spec may cite "FCC/NexGen does X" unless that behaviour is written down in the vault or a ticket.
 
-`fcc` (5 files — an existing system of record; the single highest-value unknown) · `tailboard-jsa` (13) · `das` (12) · `boom-time` (9) · `craft-code` (6) · `build-up` (4) · `loadout` (4) · `mob-demob` (1)
+**Still undefined**, used throughout as if understood and defined nowhere. Ordered by usage, which is the order to ask about them:
 
-`comp-code` is a ninth: it exists in the domain but its only documentation was in the excluded personnel content, so it must be sourced from a person. Definitions should land in `domain/` as `status: unverified` until someone with crane-domain authority confirms them.
+`tailboard-jsa` (13 files) · `das` (12) · `boom-time` (9) · `craft-code` (6) · `build-up` (4) · `loadout` (4) · `mob-demob` (1)
+
+`comp-code` is an eighth: it exists in the domain but its only documentation was in the excluded personnel content, so it must be sourced from a person. Definitions land in `domain/`: `status: reference` when sourced externally or from a team member (not migrated content), `status: unverified` when migrated from a page but not yet adjudicated.
