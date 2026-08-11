@@ -21,6 +21,13 @@ that description will mislead you. There are `atoms/`, `molecules/` and `organis
 directories, they are real and in use, but they are three of *nine* directories under
 `components/` and they are not the primary source of primitives.
 
+> **`ATOMIC_DESIGN_SYSTEM.md` at the repo root contradicts this file. Ignore it.** It is a
+> ~19 KB guide in the client repo describing the hierarchy above as the app's architecture.
+> It is stale, it is not part of this layer, and it is not ours to delete. If you find
+> yourself citing it, you are citing an intention rather than the codebase — the counts in
+> the table below were measured, and `components/ui` alone has more importers than any
+> atomic tier.
+
 ## The shared library — five systems, overlapping
 
 | Directory | Files | Imported by | What it is |

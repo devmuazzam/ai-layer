@@ -71,6 +71,19 @@ else
   note "fix: re-run 'bash .ai/setup.sh' — the exclude step did not complete"
 fi
 
+head_ "Stale pointers  (a doc removed from the overlay must not leave a link behind)"
+DANGLING=""
+for f in *.md; do
+  [ -L "$f" ] && [ ! -e "$f" ] && DANGLING="$DANGLING $f"
+done
+if [ -z "$DANGLING" ]; then
+  ok "no dangling doc links at the repo root"
+else
+  bad "dangling at repo root:$DANGLING"
+  note "these resolve to nothing; an agent following one gets an error, not a rule"
+  note "fix: re-run 'bash .ai/setup.sh'"
+fi
+
 head_ "Surface mirrors  (reference copies; not the loading mechanism)"
 for s in .cursor .agent; do
   if [ -d "$s" ]; then
@@ -97,6 +110,54 @@ cat <<'EOF'
                 guards does this API register, and which?" (four:
                 AccessToken, Roles, Permissions, Throttler). If it cannot say,
                 point it at .ai/claude/CLAUDE.md explicitly.
+EOF
+
+head_ "Known stale docs in the CLIENT repo  (not ours to delete)"
+if [ -f "ATOMIC_DESIGN_SYSTEM.md" ]; then
+  note "ATOMIC_DESIGN_SYSTEM.md — describes atomic design as the web architecture."
+  note "  contexts/web.md contradicts it and was measured against the codebase."
+  note "  Harmless if your agent reads the context; a wrong answer below means it did not."
+else
+  ok "no known stale client docs present"
+fi
+
+head_ "Essence test  (wiring is not comprehension — ask your agent these)"
+cat <<'EOF'
+  Each question has a stale answer and a correct one. A stale answer tells you
+  exactly which file failed to reach the agent.
+
+  1. "How is apps/web organised?"
+       stale   atomic design, atoms -> molecules -> organisms
+       correct feature-first; components/ui has the most importers
+       ................................................ contexts/web.md
+
+  2. "How many global guards does the API register, and which?"
+       stale   two — AccessTokenGuard and RolesGuard
+       correct four — AccessToken, Roles, Permissions, Throttler
+       ................................................ contexts/api.md
+
+  3. "What code prefix do price listings mint?"
+       stale   PRLT
+       correct PRCL
+       ................................................ contexts/prisma.md
+
+  4. "Is every query automatically tenant-scoped?"
+       stale   yes, Prisma middleware handles it
+       correct no — a $extends extension, skipped in three cases
+       ................................................ contexts/prisma.md
+
+  5. "Which NestJS and Prisma major versions is this on?"
+       stale   NestJS 10, Prisma 5
+       correct NestJS 11, Prisma 7
+       ................................................ claude/CLAUDE.md
+
+  Ask 2-4 from a file inside the matching app directory, so the nested context
+  is the nearest one. Ask 1 and 5 anywhere.
+
+  All correct  -> the layer is reaching the agent.
+  Any stale    -> that file is not loading. Re-run setup.sh, then start a NEW
+                  session: an agent that began before the files existed cannot
+                  see them, and cannot reliably tell you so.
 EOF
 
 head_ "Result"
