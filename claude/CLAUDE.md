@@ -67,7 +67,12 @@ is yours before chasing it.
 
 - **API:** `presentation → usecase → service → orm`. Never import upward. NestJS module
   registration is the sanctioned exception — a usecase module imports its controller.
-- **Web:** atoms → molecules → organisms → templates → pages. Never import upward.
+- **Web:** **feature-first.** `src/features/<feature>/` holds most of the app; `components/`
+  is a shared library spread over nine directories, of which `ui/` (shadcn) has the most
+  consumers. **It is not an atomic-design hierarchy** — `atoms/`, `molecules/` and
+  `organisms/` exist but are three of the nine. Features may import from `components/`;
+  `components/` must not import from `features/`. Detail in `contexts/web.md`.
+- **Mobile:** persona-driven — Expo Router groups are personas, not pages.
 - Barrel `index.ts` at every layer boundary.
 
 ## Naming

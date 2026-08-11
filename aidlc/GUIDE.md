@@ -305,28 +305,36 @@ Expect, in rough order of likelihood:
 
 ### Make sure the agent actually has the context
 
-The surface contexts (`contexts/api.md`, `web.md`, `prisma.md`, `mobile.md`) are nested
-files. **They appear to load when the agent reads or edits a file in that directory — not
-when a shell command happens to `cd` there.**
+**Status as of 2026-08-12: the root `CLAUDE.md` is confirmed to load. No run has yet
+confirmed a nested surface context loading.** That is an open question, not a settled one,
+and the two are worth keeping apart.
 
-Observed on 2026-08-12: a session asked *"how is this app organised?"* explored `apps/web`
-with `find` and `ls` only, never opening a file there. It answered from its own inspection —
-correct that the app is feature-sliced, but it described the atomic tiers as the shared
-library, listed five of the nine `components/` directories, put `ui/` last despite its 308
-importers, and never mentioned the three overlapping primitive libraries. That is the exact
-framing `contexts/web.md` exists to correct. In the same answer it got tenancy right and
-**cited "the prisma context" by name** — it had opened `apps/api/prisma/CLAUDE.md` after
-seeing it in an `ls`.
+The history is worth reading, because it is a good example of a test that could not fail
+correctly:
 
-So before asking an agent to work on a surface, **have it open a file there first**. A
-one-line `Read` is enough. This is inferred from one session rather than proven; if a
-surface still answers stale *after* a file in it has been opened, the context genuinely is
-not loading and that is worth chasing rather than working around.
+Two sessions were asked *"how is this app organised?"* Both answered well — versions,
+tenancy as a `$extends` client extension rather than middleware, the sanctioned
+module-registration exception, the lint caveat, the vault routing. That looked like strong
+evidence the layer was landing. **It was not.** Every one of those facts also appears in the
+root `CLAUDE.md`, so the test could not distinguish "the root loaded" from "everything
+loaded".
 
-Practical version for a real ticket: the executor will open files in the surface as its
-first act anyway, so this mostly bites on the *questions you ask before work starts* —
-planning, review and orientation, which is exactly when the wrong mental model is cheapest
-to acquire and most expensive to keep.
+Both sessions also described `apps/web` as an atomic-design hierarchy — and that turned out
+to be **a defect in the root file, not a loading failure.** The root still carried the old
+`atoms → molecules → organisms` line, written before the FE drift was discovered and never
+corrected when `contexts/web.md` was. The agents read it correctly and repeated it. Two
+loaded files contradicting each other, which is the same failure this layer documents
+elsewhere as D3.
+
+Both are now fixed: the root states feature-first and explicitly says it is not atomic
+design, and the essence test in `verify.sh` is split into two tiers — Tier A answerable from
+the root alone, Tier B answerable **only** from a nested context. Tier B is the one that
+settles the open question.
+
+Practically, until Tier B passes somewhere: **have an agent open a file in the surface
+before asking it to reason about that surface.** A single `Read` is enough, and the executor
+does it as its first act anyway — so this mostly bites on the questions asked *before* work
+starts, which is when a wrong mental model is cheapest to acquire and most expensive to keep.
 
 **Pick a small, well-specified ticket first.** The loop's value shows on a thin one, but its
 *failure modes* are much easier to read on a ticket where you already know the answer.

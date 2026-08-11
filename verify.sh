@@ -131,58 +131,53 @@ fi
 
 head_ "Essence test  (wiring is not comprehension — ask your agent these)"
 cat <<'EOF'
-  Each question has a stale answer and a correct one. A stale answer tells you
-  exactly which file failed to reach the agent.
+  TWO TIERS, and they must be kept apart. Tier A is answerable from the root
+  CLAUDE.md alone; Tier B is answerable ONLY from a nested surface context.
+  Passing A tells you the root loaded. It tells you NOTHING about the nested
+  files — an earlier version of this test conflated them and read a root-only
+  pass as full coverage.
 
-  1. "How is apps/web organised?"
-       stale   atomic design, atoms -> molecules -> organisms
-       correct feature-first; components/ui has the most importers
-       ................................................ contexts/web.md
+  TIER A — proves the root loaded
+  1. "Which NestJS and Prisma major versions is this on?"
+       stale   NestJS 10, Prisma 5          correct  NestJS 11, Prisma 7
+  2. "Is every query automatically tenant-scoped?"
+       stale   yes, Prisma middleware       correct  no — a $extends extension
+  3. "How is apps/web organised?"
+       stale   atomic design hierarchy      correct  feature-first; not atomic
 
-  2. "How many global guards does the API register, and which?"
-       stale   two — AccessTokenGuard and RolesGuard
+  TIER B — proves a NESTED context loaded. These facts appear in no other file.
+  4. "How many global guards does the API register, and which?"
        correct four — AccessToken, Roles, Permissions, Throttler
-       ................................................ contexts/api.md
+       ................................. ONLY in contexts/api.md
+  5. "Which components directory has the most importers, and how many?"
+       correct components/ui — 308. And components/application has zero.
+       ................................. ONLY in contexts/web.md
+  6. "Name the three cases where tenant scoping is skipped."
+       correct no request context; SUPER_ADMIN; model absent from the allowlist
+       ................................. ONLY in contexts/prisma.md
+  7. "What styling API does mobile use?"
+       correct StyleSheet.create with theme/tokens.ts — not Tailwind; 48px targets
+       ................................. ONLY in contexts/mobile.md
 
-  3. "What code prefix do price listings mint?"
-       stale   PRLT
-       correct PRCL
-       ................................................ contexts/prisma.md
+  HOW TO ASK
 
-  4. "Is every query automatically tenant-scoped?"
-       stale   yes, Prisma middleware handles it
-       correct no — a $extends extension, skipped in three cases
-       ................................................ contexts/prisma.md
+    Ask Tier B AFTER opening a file in the matching directory —
+    `cat apps/api/src/main.ts`, then ask Q4. A `cd` inside a bash command
+    may not be enough; reading a file there is the reliable trigger.
 
-  5. "Which NestJS and Prisma major versions is this on?"
-       stale   NestJS 10, Prisma 5
-       correct NestJS 11, Prisma 7
-       ................................................ claude/CLAUDE.md
+  STATUS, stated honestly as of 2026-08-12: no run has yet confirmed a nested
+  context loading. Two sessions answered the old test well, but every fact they
+  got right also appears in the root CLAUDE.md, so the test could not tell the
+  two apart. Tier B exists to settle that. Its facts are in no other file.
 
-  HOW TO ASK, and this part decides the result:
-
-    OPEN A FILE in the matching directory first, then ask.
-    A `cd` inside a bash command is NOT enough.
-
-  Nested context appears to load when the agent reads or edits a file in that
-  directory — not when a shell command happens to run there. Observed 2026-08-12:
-  a session that explored apps/web only with find/ls answered the web question
-  from its own inspection and reproduced none of contexts/web.md, while
-  answering the prisma question correctly and citing that context by name —
-  it had opened apps/api/prisma/CLAUDE.md after spotting it in an ls.
-
-  So: `cat apps/web/src/app/layout.tsx` (or open any file there), then ask Q1.
-  Same for apps/api before Q2, apps/api/prisma before Q3 and Q4.
-
-  This is inferred from one session, not proven. If a question still answers
-  stale AFTER opening a file in that directory, the context genuinely is not
-  loading and that is worth chasing.
-
-  All correct  -> the layer is reaching the agent.
-  Any stale    -> re-check with a file open first. If still stale: re-run
-                  setup.sh, then start a NEW session — an agent that began
-                  before the files existed cannot see them, and cannot
-                  reliably tell you so.
+  READING THE RESULT
+    A pass, B pass   -> the whole layer is reaching the agent.
+    A pass, B stale  -> only the root is loading. The nested mechanism is the
+                        problem; re-ask with a file open first, and if it is
+                        still stale that is a real defect worth chasing.
+    A stale          -> nothing is loading. Re-run setup.sh, then start a NEW
+                        session — an agent that began before the files existed
+                        cannot see them, and cannot reliably tell you so.
 EOF
 
 head_ "Result"
