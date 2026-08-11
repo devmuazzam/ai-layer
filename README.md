@@ -16,9 +16,8 @@ contains it and never sees it.
 The stealth model, in three moves, all performed by [`setup.sh`](setup.sh):
 
 1. **Clone** — the overlay lives at `.ai/`, its own git repo with its own history.
-2. **Symlink in** — `.claude` → `.ai/claude`, root `CLAUDE.md` → `.claude/CLAUDE.md`, and
-   the same for the other surfaces' entry points. The tools see ordinary files at ordinary
-   paths.
+2. **Symlink in** — every path a tool looks at is a symlink pointing back into `.ai/`. The
+   tools see ordinary files at ordinary paths; nothing is copied. Full map below.
 3. **Hide** — every wired-in path is appended to the client repo's `.git/info/exclude`, so
    `git status` in the client repo shows nothing. `.git/info/exclude` is local-only and is
    never committed, so the exclusion does not travel to the client either.
@@ -28,6 +27,39 @@ The stealth model, in three moves, all performed by [`setup.sh`](setup.sh):
 > existence to the client in the very act of hiding it from git. `.git/info/exclude` does
 > the identical job and is never committed. This is the whole reason `setup.sh` writes
 > there, and it is the one part of the stealth model that a well-meaning cleanup breaks.
+
+### The symlink map
+
+Every one of these is created and repaired by `setup.sh`. Nothing here is a copy.
+
+```
+.claude              -> .ai/claude                       (the whole directory)
+CLAUDE.md            -> .claude/CLAUDE.md                -> .ai/claude/CLAUDE.md
+AGENTS.md            -> .claude/AGENTS.md -> CLAUDE.md   -> .ai/claude/CLAUDE.md
+
+apps/api/CLAUDE.md         ┐
+apps/api/AGENTS.md         ┘ -> ../../.ai/claude/contexts/api.md
+apps/api/prisma/CLAUDE.md  ┐
+apps/api/prisma/AGENTS.md  ┘ -> ../../../.ai/claude/contexts/prisma.md
+apps/web/CLAUDE.md         ┐
+apps/web/AGENTS.md         ┘ -> ../../.ai/claude/contexts/web.md
+apps/mobile/CLAUDE.md      ┐
+apps/mobile/AGENTS.md      ┘ -> ../../.ai/claude/contexts/mobile.md
+
+.cursor/{skills,agents,contexts}/*   -> ../../.ai/...    (reference mirrors)
+.agent/{skills,agents,contexts}/*    -> ../../.ai/...
+```
+
+Three things worth knowing when one of these looks wrong:
+
+- **`AGENTS.md` is a three-hop chain.** `readlink AGENTS.md` prints `.claude/AGENTS.md`,
+  which is *itself* a symlink to `CLAUDE.md` in the same directory. So both root entry
+  points end at one file and cannot drift. Use `cat`, not `readlink`, to see content.
+- **Link prefixes are computed from depth**, not hardcoded — `../../` at `apps/web`,
+  `../../../` at `apps/api/prisma`. `prefix_for` in `setup.sh` does this, so moving a
+  surface deeper does not silently break its link.
+- **A dangling link means a source was deleted from the overlay.** `bash .ai/verify.sh`
+  reports them per surface; `bash .ai/setup.sh` prunes them.
 
 Consequence worth internalising: **all real content lives under `.ai/`.** Anything outside
 it is a symlink pointing back in. Never write AI-layer content into the client tree.
