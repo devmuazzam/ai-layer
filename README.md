@@ -23,6 +23,12 @@ The stealth model, in three moves, all performed by [`setup.sh`](setup.sh):
    `git status` in the client repo shows nothing. `.git/info/exclude` is local-only and is
    never committed, so the exclusion does not travel to the client either.
 
+> **Never add these paths to the client repo's `.gitignore`.** It is a tracked, committed
+> file, so listing `.ai/`, `CLAUDE.md` or `.cursor/` there would announce the layer's
+> existence to the client in the very act of hiding it from git. `.git/info/exclude` does
+> the identical job and is never committed. This is the whole reason `setup.sh` writes
+> there, and it is the one part of the stealth model that a well-meaning cleanup breaks.
+
 Consequence worth internalising: **all real content lives under `.ai/`.** Anything outside
 it is a symlink pointing back in. Never write AI-layer content into the client tree.
 
@@ -47,59 +53,79 @@ what it changed. Real files it would otherwise overwrite are backed up, never de
 **Re-run it after `pnpm install`** — husky resets the git hooks path, and the script says
 so when it finishes.
 
-### What you get, per tool
+### What you get
 
-| Your tool | Reads | Wired by |
+**Two supported tools: Claude Code and Cursor.** Both receive the identical content
+through the identical mechanism — a root entry file plus one nested file per surface
+directory, where **the file nearest your edit wins**. They differ only in the filename each
+one looks for, and both filenames are always present.
+
+| Your tool | Reads | Status |
 | --- | --- | --- |
-| **Claude Code** | root `CLAUDE.md`, and a nested `CLAUDE.md` in each surface directory that loads automatically as you work there | root + nested symlinks |
-| **Codex** | root `AGENTS.md`, and a nested `AGENTS.md` in each surface directory | root + nested symlinks |
-| **Cursor** | `.cursor/skills/`, `.cursor/agents/`, `.cursor/contexts/`, `.cursor/rules/` | `mirror_dir` |
-| **Antigravity** | `.agent/skills/`, `.agent/agents/`, `.agent/contexts/` | `mirror_dir` |
-| **Anything else** | `.ai/claude/CLAUDE.md` as the entry point; `.ai/claude/contexts/<surface>.md` for depth | nothing needed — point it at the path |
+| **Claude Code** | root `CLAUDE.md`, plus the nearest `apps/*/CLAUDE.md` as you work | **verified** — nested `CLAUDE.md` confirmed by probe, 2026-08-11 |
+| **Cursor** | root `AGENTS.md`, plus the nearest `apps/*/AGENTS.md` | **verified** against Cursor's rules documentation, 2026-08-11 |
+| **Antigravity** | all of the above are present, plus `.agent/agents/` and `.agent/contexts/` | **unverified** — see below |
 
 Root `AGENTS.md` and root `CLAUDE.md` resolve to **the same file**. They cannot drift,
 because there is only one.
 
-### If your tool is not in that table
+**Cursor does not use `.cursor/rules/`.** Its rules system reads `.mdc` only and ignores
+`.md`, so an earlier version of this layer that mirrored `.md` rules there was never read
+at all. `.cursor/agents/` and `.cursor/contexts/` exist as findable reference copies; they
+are not auto-loaded and nothing depends on them.
 
-Nothing special is required. Every surface directory carries **both** a `CLAUDE.md` and an
-`AGENTS.md` pointing at the same context file, so a tool that auto-loads either convention
-is already served. A tool that auto-loads neither still works: give it
-[`claude/CLAUDE.md`](claude/CLAUDE.md) as its project instructions, and it names the
-context paths to open by hand.
+**Antigravity is wired but unconfirmed.** Both root entry filenames and both nested
+filenames are present, and `.agent/` mirrors the content, so it is *reachable*. Which of
+those it loads by itself has not been established, and its published docs do not say. Check
+it in a minute: open a file under `apps/api/` and ask something only `contexts/api.md`
+answers — *"how many global guards does this API register, and which?"* The answer is four:
+AccessToken, Roles, Permissions, Throttler. If it cannot say, point it at
+[`claude/CLAUDE.md`](claude/CLAUDE.md) explicitly; that file names every context path.
 
-If you wire a new surface, add it to `mirror_dir` in [`setup.sh`](setup.sh) rather than
-copying files — copies drift, links cannot.
+Codex is **not supported**. `setup.sh` removes `.codex/` if an earlier run created it,
+unless you have put real files there.
 
-### Verifying it worked
+### Confirming it worked
 
 ```bash
-cat CLAUDE.md | head -3          # resolves into the overlay
-cat apps/api/CLAUDE.md | head -3 # the API surface context
-git status --short               # must show nothing from the AI layer
+bash .ai/verify.sh
 ```
 
-The third is the one that matters. Everything wired in is appended to the client repo's
-`.git/info/exclude`, so if AI-layer paths appear in `git status`, the exclude step did not
-complete and the layer is at risk of being committed to the client repo.
+It checks that the overlay is a clone, that both root entry points resolve to one file,
+that every surface directory carries both filenames pointing at the right context, that
+nothing from the layer is visible to the client repo's `git status`, and that no mirror
+holds a dangling link. It prints what your agent will read, exits non-zero on any failure,
+and names the fix.
 
-Full behavior: [`setup.sh`](setup.sh).
+Run it after install, and any time an agent seems to be ignoring the rules — "is it wired
+or is the model ignoring it?" is otherwise a very expensive question to answer by hand.
+
+The `git status` check is the one that matters most. Everything wired in is appended to the
+client repo's `.git/info/exclude`; if AI-layer paths show up there, the exclude step did
+not complete and the layer is at risk of being committed into the client repo.
+
+Full behavior: [`setup.sh`](setup.sh), [`verify.sh`](verify.sh).
 
 ## 3. Surfaces
 
-Several tools consume this layer, and they do **not** consume it the same way.
+**Two surfaces: Claude Code and Cursor.** They consume the layer the same way — a root
+entry file plus one nested file per surface directory, nearest file winning — and differ
+only in the filename each looks for.
 
 | Surface | Entry point | How it consumes the layer |
 | --- | --- | --- |
-| **Claude Code** | root `CLAUDE.md` → [`claude/CLAUDE.md`](claude/CLAUDE.md), plus `.claude/` → [`claude/`](claude/) | Root context always on; a nested `CLAUDE.md` in each surface directory loads as work happens there. Settings from `.claude/`. |
-| **Codex** | root `AGENTS.md`, plus `.codex/agents/`, `.codex/contexts/` | `AGENTS.md` is a symlink to the same root context file. A nested `AGENTS.md` sits in each surface directory. **Whether it auto-loads nested files is unverified** — see the plan's cross-surface section. |
-| **Cursor** | `.cursor/agents/`, `.cursor/contexts/` | Mirrored from the overlay. **Status: provisional** — whether Cursor reads mirrored `.md` with this frontmatter is unverified; the plan marks it CONVERT and it is not yet done. |
-| **Antigravity** | `.agent/agents/`, `.agent/contexts/` | Mirrored as above. |
+| **Claude Code** | root `CLAUDE.md` → [`claude/CLAUDE.md`](claude/CLAUDE.md), plus `.claude/` → [`claude/`](claude/) | Root context always on; the nested `CLAUDE.md` in a surface directory loads as work happens there. Settings from `.claude/`. |
+| **Cursor** | root `AGENTS.md` + the nested `AGENTS.md` per surface directory | **Verified 2026-08-11** against Cursor's rules documentation: it reads `AGENTS.md` at the root *and* nested in subdirectories, more specific taking precedence — exactly the shape `link_context` produces. It ignores `.md` in `.cursor/rules/`, reading only `.mdc`, so this layer does not use that path. `.cursor/agents/` and `.cursor/contexts/` are findable reference copies, not auto-loaded. |
 
-Skills were removed pending redefinition, so no surface mirrors them today.
+| **Antigravity** | root + nested entry files, plus `.agent/agents/`, `.agent/contexts/` | **Unverified.** Everything is present and reachable; which of it Antigravity loads unprompted has not been established and its docs do not say. The install section gives a one-minute check. |
 
-Mirroring is done by `mirror_dir` in [`setup.sh`](setup.sh) and the nested context files by
-`link_context`. Definitions are canonical under `.ai/` and linked outward, never copied.
+Codex was dropped. `setup.sh` removes `.codex/` when it holds nothing but its own symlinks,
+and leaves it with a warning if it holds anything else. Skills were removed pending
+redefinition, so nothing mirrors them today.
+
+Nested context files are created by `link_context` in [`setup.sh`](setup.sh), the Cursor
+reference mirror by `mirror_dir`. Definitions are canonical under `.ai/` and linked
+outward, never copied.
 
 **Every surface directory gets both filenames.** `apps/api/CLAUDE.md` and
 `apps/api/AGENTS.md` are two links to one context file, because the tools disagree about

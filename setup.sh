@@ -72,6 +72,21 @@ mirror_dir() {
   done
 }
 
+# prune_broken <dir> — remove dangling symlinks anywhere under <dir>, then drop any
+# directory left empty. mirror_dir cannot do this: it returns early when its SOURCE is
+# missing, so a mirror whose source was deleted from the overlay leaves its dead links
+# behind forever. That is exactly what happened to .cursor/rules and */skills, and it is
+# what a machine set up before those were removed will still be carrying.
+prune_broken() {
+  local dir="$1" entry
+  [ -d "$dir" ] || return 0
+  while IFS= read -r entry; do
+    [ -n "$entry" ] || continue
+    rm "$entry"; PRUNED=$((PRUNED + 1))
+  done < <(find "$dir" -type l ! -exec test -e {} \; -print 2>/dev/null)
+  find "$dir" -mindepth 1 -type d -empty -delete 2>/dev/null || true
+}
+
 # link_context <surface-dir> <context-file> — drop a location-triggered context file
 # into a client-repo directory, under BOTH filenames, because the surfaces disagree on
 # which one they read: Claude Code auto-loads a nested CLAUDE.md, several other tools
@@ -124,19 +139,34 @@ done
 [ -f "$AI_DIR/.mcp.json" ] && safe_link "$AI_DIR/.mcp.json" ".mcp.json"
 
 # ------------------------------------------------------ 3. surface mirrors ---
-# .agent/ is Antigravity's surface, not a dead drop — see claude/AGENTS.md
-# "Project Skills (all providers)" for the provider map. Whether to keep
-# mirroring it is a team question ("is anyone actually using Antigravity?"),
-# not something discoverable from this repo, so it stays until someone answers.
-# Skills were removed pending redefinition, and claude/rules/ was superseded by
-# claude/contexts/. mirror_dir no-ops on a missing source and prunes the dead links its
-# previous run left behind, so nothing here needs a migration step.
-for surface in .cursor .agent .codex; do
-  mirror_dir "$AI_DIR/claude/skills"   "$surface/skills"
+# Three surfaces are supported: Claude Code, Cursor and Antigravity. Codex was dropped.
+#
+# These mirrors are findable reference copies, NOT the loading mechanism. Claude Code and
+# Cursor both receive this layer through the root + nested entry files in section 3b.
+# Antigravity's auto-load mechanism is unverified, so the mirror is what makes the content
+# reachable there at all — see the README.
+#
+# prune_broken runs first because claude/skills/ and claude/rules/ were removed from the
+# overlay and earlier versions of this script linked them. Cursor never read
+# .cursor/rules/*.md in any case: its rules system loads .mdc only, so those links were
+# inert even while they resolved.
+for surface in .cursor .agent; do
+  prune_broken "$surface"
   mirror_dir "$AI_DIR/aidlc/agents"    "$surface/agents"
   mirror_dir "$AI_DIR/claude/contexts" "$surface/contexts"
-  mirror_dir "$AI_DIR/claude/rules"    "$surface/rules"
 done
+
+# Retire Codex. Only removed when every file under it is a symlink — i.e. everything there
+# was created by this script and nothing of anyone's own is inside. If a human put a real
+# file there, it is left alone and reported instead.
+if [ -d ".codex" ]; then
+  if [ -z "$(find .codex ! -type d ! -type l -print -quit 2>/dev/null)" ]; then
+    rm -rf ".codex"; PRUNED=$((PRUNED + 1))
+    say "Removed .codex/ — that surface is no longer supported."
+  else
+    warn ".codex/ contains real files; left in place. Delete it by hand once you have checked it."
+  fi
+fi
 
 # ------------------------------------------- 3b. location-triggered contexts --
 # Surface contexts are dropped into the directory they govern. On Claude Code the
