@@ -159,16 +159,30 @@ cat <<'EOF'
        correct StyleSheet.create with theme/tokens.ts — not Tailwind; 48px targets
        ................................. ONLY in contexts/mobile.md
 
-  HOW TO ASK
+  CHECK THE LOADING MECHANICALLY FIRST — do not start with the questions.
 
-    Ask Tier B AFTER opening a file in the matching directory —
-    `cat apps/api/src/main.ts`, then ask Q4. A `cd` inside a bash command
-    may not be enough; reading a file there is the reliable trigger.
+    Claude Code:  cat apps/api/src/main.ts     # reading a file is the trigger
+                  /context                      # look under "Memory files"
 
-  STATUS, stated honestly as of 2026-08-12: no run has yet confirmed a nested
-  context loading. Two sessions answered the old test well, but every fact they
-  got right also appears in the root CLAUDE.md, so the test could not tell the
-  two apart. Tier B exists to settle that. Its facts are in no other file.
+    /context reports which instruction files actually loaded. It is an
+    observation, not a self-report, so it beats asking the model — and asking
+    a model what is in its own context is the one method that cannot be
+    trusted for this.
+
+    For a permanent record, the InstructionsLoaded hook logs which instruction
+    files load, when, and why. See the Claude Code hooks documentation.
+
+  WHY READING A FILE IS THE TRIGGER — confirmed in Claude Code's own docs:
+  subdirectory CLAUDE.md files are "included when Claude reads files in those
+  directories" rather than at launch. A `cd` inside a bash command does not
+  count. Two sessions on 2026-08-12 explored apps/web with find and ls only,
+  never opened a file there, and correctly did not load contexts/web.md.
+
+  Note also: after /compact, nested contexts are NOT re-injected. They reload
+  the next time a file in that directory is read.
+
+  The questions below are the behavioural backstop for when /context is
+  unavailable, or when a file is loaded but not being followed.
 
   READING THE RESULT
     A pass, B pass   -> the whole layer is reaching the agent.
