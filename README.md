@@ -28,7 +28,7 @@ it is a symlink pointing back in. Never write AI-layer content into the client t
 
 See also [`.gitignore`](.gitignore) for what the overlay itself does not track.
 
-## 2. Install
+## 2. Install — works for any agent, not just Claude
 
 From the client repo root:
 
@@ -36,10 +36,52 @@ From the client repo root:
 git clone <overlay-remote> .ai && bash .ai/setup.sh
 ```
 
-After that, `bash .ai/setup.sh` again any time — it is idempotent and safe to re-run. It
-pulls the overlay, creates or repairs every symlink, mirrors the surfaces, prunes links
-whose source was deleted, appends any missing exclude entries, and reports what it actually
-changed. Real files it would otherwise overwrite are backed up, never destroyed.
+That is the whole install, whichever tool you use. One script wires every surface; there
+is no per-tool variant to pick and nothing to configure.
+
+Re-run `bash .ai/setup.sh` any time — it is idempotent. It pulls the overlay, creates or
+repairs every symlink, mirrors the surfaces, drops the location-triggered context files,
+prunes links whose source was deleted, appends any missing exclude entries, and reports
+what it changed. Real files it would otherwise overwrite are backed up, never destroyed.
+
+**Re-run it after `pnpm install`** — husky resets the git hooks path, and the script says
+so when it finishes.
+
+### What you get, per tool
+
+| Your tool | Reads | Wired by |
+| --- | --- | --- |
+| **Claude Code** | root `CLAUDE.md`, and a nested `CLAUDE.md` in each surface directory that loads automatically as you work there | root + nested symlinks |
+| **Codex** | root `AGENTS.md`, and a nested `AGENTS.md` in each surface directory | root + nested symlinks |
+| **Cursor** | `.cursor/skills/`, `.cursor/agents/`, `.cursor/contexts/`, `.cursor/rules/` | `mirror_dir` |
+| **Antigravity** | `.agent/skills/`, `.agent/agents/`, `.agent/contexts/` | `mirror_dir` |
+| **Anything else** | `.ai/claude/CLAUDE.md` as the entry point; `.ai/claude/contexts/<surface>.md` for depth | nothing needed — point it at the path |
+
+Root `AGENTS.md` and root `CLAUDE.md` resolve to **the same file**. They cannot drift,
+because there is only one.
+
+### If your tool is not in that table
+
+Nothing special is required. Every surface directory carries **both** a `CLAUDE.md` and an
+`AGENTS.md` pointing at the same context file, so a tool that auto-loads either convention
+is already served. A tool that auto-loads neither still works: give it
+[`claude/CLAUDE.md`](claude/CLAUDE.md) as its project instructions, and it names the
+context paths to open by hand.
+
+If you wire a new surface, add it to `mirror_dir` in [`setup.sh`](setup.sh) rather than
+copying files — copies drift, links cannot.
+
+### Verifying it worked
+
+```bash
+cat CLAUDE.md | head -3          # resolves into the overlay
+cat apps/api/CLAUDE.md | head -3 # the API surface context
+git status --short               # must show nothing from the AI layer
+```
+
+The third is the one that matters. Everything wired in is appended to the client repo's
+`.git/info/exclude`, so if AI-layer paths appear in `git status`, the exclude step did not
+complete and the layer is at risk of being committed to the client repo.
 
 Full behavior: [`setup.sh`](setup.sh).
 
@@ -49,46 +91,63 @@ Several tools consume this layer, and they do **not** consume it the same way.
 
 | Surface | Entry point | How it consumes the layer |
 | --- | --- | --- |
-| **Claude Code** | root `CLAUDE.md` → [`claude/CLAUDE.md`](claude/CLAUDE.md), plus `.claude/` → [`claude/`](claude/) | Reads the root context file, plus skills and settings from `.claude/`. Location-triggered nested context files are what the restructure moves to — see [the plan](aidlc/context-restructure-plan.md). |
-| **Cursor** | `.cursor/rules/`, `.cursor/skills/`, `.cursor/agents/` | Mirrored from [`claude/rules/`](claude/rules/), [`claude/skills/`](claude/skills/) and [`aidlc/agents/`](aidlc/agents/). **Status: provisional** — whether the mirrored rules are actually read is unresolved; see the plan's cross-surface section. |
-| **Codex** | root `AGENTS.md` → [`claude/AGENTS.md`](claude/AGENTS.md), plus `.codex/skills/`, `.codex/agents/` | Reads `AGENTS.md`; skills and agents mirrored as above. **Status: nested-context support unverified** — see the plan. |
-| **Antigravity** | `.agent/skills/`, `.agent/agents/` | Skills and agents mirrored as above. See the *Project Skills* section of [`claude/AGENTS.md`](claude/AGENTS.md) for the provider skill map. |
+| **Claude Code** | root `CLAUDE.md` → [`claude/CLAUDE.md`](claude/CLAUDE.md), plus `.claude/` → [`claude/`](claude/) | Root context always on; a nested `CLAUDE.md` in each surface directory loads as work happens there. Settings from `.claude/`. |
+| **Codex** | root `AGENTS.md`, plus `.codex/agents/`, `.codex/contexts/` | `AGENTS.md` is a symlink to the same root context file. A nested `AGENTS.md` sits in each surface directory. **Whether it auto-loads nested files is unverified** — see the plan's cross-surface section. |
+| **Cursor** | `.cursor/agents/`, `.cursor/contexts/` | Mirrored from the overlay. **Status: provisional** — whether Cursor reads mirrored `.md` with this frontmatter is unverified; the plan marks it CONVERT and it is not yet done. |
+| **Antigravity** | `.agent/agents/`, `.agent/contexts/` | Mirrored as above. |
 
-Mirroring for all four is done by `mirror_dir` in [`setup.sh`](setup.sh); the skill
-definitions are canonical in [`claude/skills/`](claude/skills/) and linked outward, never
-copied.
+Skills were removed pending redefinition, so no surface mirrors them today.
+
+Mirroring is done by `mirror_dir` in [`setup.sh`](setup.sh) and the nested context files by
+`link_context`. Definitions are canonical under `.ai/` and linked outward, never copied.
+
+**Every surface directory gets both filenames.** `apps/api/CLAUDE.md` and
+`apps/api/AGENTS.md` are two links to one context file, because the tools disagree about
+which name they look for and guessing wrong means a surface silently gets no rules. The
+directory-to-context mapping is declared once in `setup.sh` as `CONTEXT_MAP`, and the
+exclude entries are derived from it — so a path can never be linked but left unhidden.
 
 ## 4. Context layer
 
-**This layer is mid-restructure.** It is being reorganised from always-loaded to
-location-triggered, and the design, sequencing and open checks live in
-[`aidlc/context-restructure-plan.md`](aidlc/context-restructure-plan.md). That plan is
-**gated on an unrun check (PRE-FLIGHT 0)** and nothing in it has been applied. Read it
-before changing anything below, and prefer adding to the plan over editing these files
-piecemeal.
+The layer holds **surface knowledge only** — what is true about this codebase, in every
+phase of work. How work *moves* belongs to AI-DLC (section 6). That split is the rule:
+if something only makes sense inside one phase, it does not belong here.
 
-**Root context**
+**Root context** — always on, and the same file on every surface.
 
 | File | Read it when |
 | --- | --- |
-| [`claude/CLAUDE.md`](claude/CLAUDE.md) | The always-loaded project context — stack, architecture, naming, identity convention, code quality |
-| [`claude/AGENTS.md`](claude/AGENTS.md) | Multi-agent workflow, and the provider skill map |
-| [`claude/DESIGN.md`](claude/DESIGN.md) | Implementing a feature from design images |
-| [`claude/AUTOMATED-FEATURES.md`](claude/AUTOMATED-FEATURES.md) | The automated feature-implementation flow end to end |
-| [`claude/QUICK-REFERENCE.md`](claude/QUICK-REFERENCE.md) | Fast lookup for common tasks |
-| [`claude/SETUP-SUMMARY.md`](claude/SETUP-SUMMARY.md) | How the layer was originally assembled |
-| [`claude/DESIGN-FOLDER-UPDATE.md`](claude/DESIGN-FOLDER-UPDATE.md) | History of the design-folder convention |
+| [`claude/CLAUDE.md`](claude/CLAUDE.md) | Always. Where answers come from, stack, commands, architecture invariants, naming, aliases, the identity rule, code quality |
+| `claude/AGENTS.md` | Never separately — it is a symlink to `CLAUDE.md` |
 | [`claude/settings.json`](claude/settings.json) | Claude Code permissions and tool allow/deny lists |
 
-**Surface rules** — each scoped to the paths it governs.
+**Surface contexts** — dropped into the directory they govern by `link_context`.
 
 | File | Governs |
 | --- | --- |
-| [`claude/rules/api.md`](claude/rules/api.md) | NestJS clean-architecture layering, controllers, repositories, DTOs, guards |
-| [`claude/rules/prisma.md`](claude/rules/prisma.md) | Schema conventions, the business-ID/UUID identity rules, migrations |
-| [`claude/rules/web.md`](claude/rules/web.md) | Next.js list tables — search placeholders, filter empty states, column layout |
-| [`claude/rules/design-system.md`](claude/rules/design-system.md) | Theming, component reuse, CVA variants, workspace page patterns, accessibility |
-| [`claude/rules/mobile.md`](claude/rules/mobile.md) | Expo structure, components, forms, secure storage, navigation |
+| [`claude/contexts/api.md`](claude/contexts/api.md) | `apps/api/` — layering, file patterns, the four global guards, feature checklist |
+| [`claude/contexts/prisma.md`](claude/contexts/prisma.md) | `apps/api/prisma/` — identity codes and how to derive them, when tenant scoping does **not** apply, migrations |
+| [`claude/contexts/web.md`](claude/contexts/web.md) | `apps/web/` — component layers, workspace patterns, theming, forms |
+| [`claude/contexts/mobile.md`](claude/contexts/mobile.md) | `apps/mobile/` — Expo Router, tokens, `StyleSheet`, secure storage |
+
+**Removed, and why.** The previous layer documented a second delivery flow — drop design
+images in a folder, say "implement the feature", five parallel agents deliver a full
+stack — which contradicts AI-DLC's inception → construction → reflection loop. Both were
+loading at once and telling an agent opposite things. The flow docs, the skills built for
+that flow, and the PNG-drop design intake are gone; recover any of them from git history if
+needed.
+
+`claude/rules/` was superseded by `claude/contexts/`, which was written by reading the
+codebase rather than by editing the old rules. That distinction matters: the old files
+described atomic design, `PRLT`, NestJS 10, Prisma 5 and unconditional tenant scoping, none
+of which are true.
+
+**Skills** are removed pending redefinition. They will be re-introduced as task-triggered
+tools that are phase-independent — the kind of thing anyone needs at any point — rather
+than as an alternative way to run a feature end to end.
+
+**Design intake** is being redesigned around the UI team's HTML/CSS handoff rather than
+images. Not yet specified.
 
 **Skills** — task-triggered instructions, provider-neutral.
 
@@ -130,18 +189,24 @@ built; and a **reflection** feeds what the spec missed and what the executor got
 into the rules. The **scrum** agent runs alongside the whole loop, unblocking developers
 from written sources or escalating honestly when nothing is written.
 
-**The loop is partial today.** The elaborator and scrum agents exist. The downstream
-agents — decomposer, executors, analyst, reflector — do **not** exist yet; their templates
-are written and their field contracts are fixed, but nothing consumes them. By the project's
-own sequencing they are authored after the context restructure, so they are written once
-against the trimmed layer instead of reworked after it moves.
+**Agents are organised by phase**, and each phase folder carries a README explaining why
+its agents belong together and what leaves that phase. Roles stay in the filename; only
+folders carry phase, so moving an agent between phases never breaks a reference.
 
-**Agents**
+See [`aidlc/agents/README.md`](aidlc/agents/README.md) for the layout rule, the handoff
+contract, and what every agent in the loop shares.
 
-| File | What it does |
-| --- | --- |
-| [`aidlc/agents/tcg-elaborator.md`](aidlc/agents/tcg-elaborator.md) | Intent → sourced spec, then stops and asks. Never implements |
-| [`aidlc/agents/tcg-scrum.md`](aidlc/agents/tcg-scrum.md) | Answers "how is this supposed to work" from written sources, or escalates. Never guesses |
+| Phase | Agent | What it does |
+| --- | --- | --- |
+| [inception](aidlc/agents/inception/) | [`tcg-elaborator`](aidlc/agents/inception/tcg-elaborator.md) | Intent → sourced spec, then stops and asks. Never implements |
+| | [`tcg-decomposer`](aidlc/agents/inception/tcg-decomposer.md) | Approved spec → vertical units that ship alone. Never builds |
+| [construction](aidlc/agents/construction/) | [`tcg-executor`](aidlc/agents/construction/tcg-executor.md) | One unit → working code. Stops where the spec stops |
+| | [`tcg-analyst`](aidlc/agents/construction/tcg-analyst.md) | Reviews the built unit, tagging every finding VERIFIED or INFERRED |
+| [reflection](aidlc/agents/reflection/) | [`tcg-reflector`](aidlc/agents/reflection/tcg-reflector.md) | What the loop missed → proposed rule changes. Proposes, never applies |
+| — | [`tcg-scrum`](aidlc/agents/tcg-scrum.md) | Unblocks from written sources or escalates. Never guesses. Runs alongside every phase |
+
+All six ask for the stronger model tier available, because every one of them is judgement
+work — see the tier note in the agents README.
 
 **Templates** — required-field checklists. A field is never deleted; an unfillable field
 stays and is marked, so a gap is visible rather than silent.

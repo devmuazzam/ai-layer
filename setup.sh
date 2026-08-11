@@ -72,6 +72,21 @@ mirror_dir() {
   done
 }
 
+# link_context <surface-dir> <context-file> — drop a location-triggered context file
+# into a client-repo directory, under BOTH filenames, because the surfaces disagree on
+# which one they read: Claude Code auto-loads a nested CLAUDE.md, several other tools
+# look for a nested AGENTS.md, and tools that auto-load neither can still be pointed at
+# the path by the root context file. One target, three ways in.
+# No-ops when the directory is absent, so a partial checkout does not break the run.
+link_context() {
+  local dir="$1" ctx="$2" prefix
+  [ -d "$dir" ] || return 0
+  [ -f "$AI_DIR/claude/contexts/$ctx" ] || { warn "missing context: contexts/$ctx"; return 0; }
+  prefix="$(prefix_for "$dir")"
+  safe_link "$prefix$AI_DIR/claude/contexts/$ctx" "$dir/CLAUDE.md"
+  safe_link "$prefix$AI_DIR/claude/contexts/$ctx" "$dir/AGENTS.md"
+}
+
 # ------------------------------------------------- 1. fetch/update overlay ---
 if [ ! -d "$AI_DIR/.git" ]; then
   if [ -e "$AI_DIR" ]; then
@@ -92,7 +107,12 @@ fi
 # is backed up by safe_link, not deleted — first run on each machine migrates it.
 safe_link "$AI_DIR/claude" ".claude"
 
-ROOT_DOCS="AGENTS.md CLAUDE.md DESIGN.md AUTOMATED-FEATURES.md QUICK-REFERENCE.md DESIGN-FOLDER-UPDATE.md"
+# AGENTS.md is a symlink to CLAUDE.md inside the overlay, so both root entry points
+# resolve to one file and cannot drift. The flow-era docs (DESIGN.md,
+# AUTOMATED-FEATURES.md, QUICK-REFERENCE.md, DESIGN-FOLDER-UPDATE.md) were removed; they
+# stay in the exclude list below so machines that still have their symlinks get them
+# pruned rather than left dangling.
+ROOT_DOCS="AGENTS.md CLAUDE.md"
 for f in $ROOT_DOCS; do
   if [ -f "$AI_DIR/claude/$f" ]; then
     safe_link ".claude/$f" "$f"          # via .claude, so tracked docs that
@@ -108,19 +128,45 @@ done
 # "Project Skills (all providers)" for the provider map. Whether to keep
 # mirroring it is a team question ("is anyone actually using Antigravity?"),
 # not something discoverable from this repo, so it stays until someone answers.
+# Skills were removed pending redefinition, and claude/rules/ was superseded by
+# claude/contexts/. mirror_dir no-ops on a missing source and prunes the dead links its
+# previous run left behind, so nothing here needs a migration step.
 for surface in .cursor .agent .codex; do
-  mirror_dir "$AI_DIR/claude/skills" "$surface/skills"
-  mirror_dir "$AI_DIR/aidlc/agents"  "$surface/agents"
+  mirror_dir "$AI_DIR/claude/skills"   "$surface/skills"
+  mirror_dir "$AI_DIR/aidlc/agents"    "$surface/agents"
+  mirror_dir "$AI_DIR/claude/contexts" "$surface/contexts"
+  mirror_dir "$AI_DIR/claude/rules"    "$surface/rules"
 done
-# Cursor gets the rules too (audit: rules currently reach Claude only).
-mirror_dir "$AI_DIR/claude/rules" ".cursor/rules"
+
+# ------------------------------------------- 3b. location-triggered contexts --
+# Surface contexts are dropped into the directory they govern. On Claude Code the
+# nested file loads automatically when work happens there; on every other surface it
+# is simply a file at a predictable path, and the root context file names that path.
+# Either way the content is identical and lives in exactly one place.
+#
+# Declared once. Section 4 derives its exclude entries from this same list, so the
+# "what we link" and "what we hide" lists cannot drift apart — a link that is not
+# excluded shows up as an untracked file in the client repo, which is the one failure
+# that breaks the stealth model.
+CONTEXT_MAP="apps/api:api.md apps/api/prisma:prisma.md apps/web:web.md apps/mobile:mobile.md"
+
+for pair in $CONTEXT_MAP; do
+  link_context "${pair%%:*}" "${pair##*:}"
+done
 
 # --------------------------------------------- 4. hide from the client repo --
 EXCLUDE="$GIT_DIR/info/exclude"
 mkdir -p "$(dirname "$EXCLUDE")"
-for p in "/$AI_DIR/" "/.claude" "/CLAUDE.md" "/AGENTS.md" "/DESIGN.md" \
-         "/AUTOMATED-FEATURES.md" "/QUICK-REFERENCE.md" "/DESIGN-FOLDER-UPDATE.md" \
-         "/.mcp.json" "/.cursor/" "/.codex/" "/.agent/" "*.$STAMP" "*.backup-*"; do
+EXCLUDE_PATHS="/$AI_DIR/ /.claude /CLAUDE.md /AGENTS.md /DESIGN.md \
+/AUTOMATED-FEATURES.md /QUICK-REFERENCE.md /DESIGN-FOLDER-UPDATE.md \
+/.mcp.json /.cursor/ /.codex/ /.agent/ *.$STAMP *.backup-*"
+
+# Nested context triggers, derived from CONTEXT_MAP rather than restated.
+for pair in $CONTEXT_MAP; do
+  EXCLUDE_PATHS="$EXCLUDE_PATHS /${pair%%:*}/CLAUDE.md /${pair%%:*}/AGENTS.md"
+done
+
+for p in $EXCLUDE_PATHS; do
   grep -qxF "$p" "$EXCLUDE" 2>/dev/null || echo "$p" >> "$EXCLUDE"
 done
 
