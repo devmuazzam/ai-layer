@@ -303,6 +303,31 @@ Expect, in rough order of likelihood:
 - **Stale references.** `templates/reflection.md` still points at `.ai/claude/rules/`, which
   is now `contexts/`. Propose fixes through the reflector rather than editing mid-run.
 
+### Make sure the agent actually has the context
+
+The surface contexts (`contexts/api.md`, `web.md`, `prisma.md`, `mobile.md`) are nested
+files. **They appear to load when the agent reads or edits a file in that directory — not
+when a shell command happens to `cd` there.**
+
+Observed on 2026-08-12: a session asked *"how is this app organised?"* explored `apps/web`
+with `find` and `ls` only, never opening a file there. It answered from its own inspection —
+correct that the app is feature-sliced, but it described the atomic tiers as the shared
+library, listed five of the nine `components/` directories, put `ui/` last despite its 308
+importers, and never mentioned the three overlapping primitive libraries. That is the exact
+framing `contexts/web.md` exists to correct. In the same answer it got tenancy right and
+**cited "the prisma context" by name** — it had opened `apps/api/prisma/CLAUDE.md` after
+seeing it in an `ls`.
+
+So before asking an agent to work on a surface, **have it open a file there first**. A
+one-line `Read` is enough. This is inferred from one session rather than proven; if a
+surface still answers stale *after* a file in it has been opened, the context genuinely is
+not loading and that is worth chasing rather than working around.
+
+Practical version for a real ticket: the executor will open files in the surface as its
+first act anyway, so this mostly bites on the *questions you ask before work starts* —
+planning, review and orientation, which is exactly when the wrong mental model is cheapest
+to acquire and most expensive to keep.
+
 **Pick a small, well-specified ticket first.** The loop's value shows on a thin one, but its
 *failure modes* are much easier to read on a ticket where you already know the answer.
 

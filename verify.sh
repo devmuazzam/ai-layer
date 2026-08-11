@@ -159,13 +159,30 @@ cat <<'EOF'
        correct NestJS 11, Prisma 7
        ................................................ claude/CLAUDE.md
 
-  Ask 2-4 from a file inside the matching app directory, so the nested context
-  is the nearest one. Ask 1 and 5 anywhere.
+  HOW TO ASK, and this part decides the result:
+
+    OPEN A FILE in the matching directory first, then ask.
+    A `cd` inside a bash command is NOT enough.
+
+  Nested context appears to load when the agent reads or edits a file in that
+  directory — not when a shell command happens to run there. Observed 2026-08-12:
+  a session that explored apps/web only with find/ls answered the web question
+  from its own inspection and reproduced none of contexts/web.md, while
+  answering the prisma question correctly and citing that context by name —
+  it had opened apps/api/prisma/CLAUDE.md after spotting it in an ls.
+
+  So: `cat apps/web/src/app/layout.tsx` (or open any file there), then ask Q1.
+  Same for apps/api before Q2, apps/api/prisma before Q3 and Q4.
+
+  This is inferred from one session, not proven. If a question still answers
+  stale AFTER opening a file in that directory, the context genuinely is not
+  loading and that is worth chasing.
 
   All correct  -> the layer is reaching the agent.
-  Any stale    -> that file is not loading. Re-run setup.sh, then start a NEW
-                  session: an agent that began before the files existed cannot
-                  see them, and cannot reliably tell you so.
+  Any stale    -> re-check with a file open first. If still stale: re-run
+                  setup.sh, then start a NEW session — an agent that began
+                  before the files existed cannot see them, and cannot
+                  reliably tell you so.
 EOF
 
 head_ "Result"
