@@ -1,5 +1,5 @@
 ---
-name: branch-commit
+name: commit
 description: Create the branch for a unit or ticket, rebase it onto main, and write conventional commits. Use when starting work on a unit, before pushing, or when asked to commit, stage, or write a commit message.
 ---
 
