@@ -144,6 +144,19 @@ for f in $ROOT_DOCS; do
   fi
 done
 
+# Sweep the repo root for dangling links into .claude/. The ROOT_DOCS loop above only
+# prunes names still IN that list, so a doc removed from the overlay AND from ROOT_DOCS
+# would dangle forever — which is exactly what happened to DESIGN.md,
+# AUTOMATED-FEATURES.md, QUICK-REFERENCE.md and DESIGN-FOLDER-UPDATE.md. Keyed on the
+# link target so it can only ever touch links this script created.
+for f in *.md; do
+  [ -L "$f" ] || continue
+  [ -e "$f" ] && continue
+  case "$(readlink "$f")" in
+    .claude/*|"$AI_DIR"/*) rm "$f"; PRUNED=$((PRUNED + 1)) ;;
+  esac
+done
+
 [ -f "$AI_DIR/.mcp.json" ] && safe_link "$AI_DIR/.mcp.json" ".mcp.json"
 
 # ------------------------------------------------------ 3. surface mirrors ---
