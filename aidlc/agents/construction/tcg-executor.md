@@ -36,6 +36,26 @@ say so. A contract edited by the party fulfilling it is not a contract.
 
 ---
 
+## 0. Branch before you build
+
+One unit, one branch, one PR. Before the first edit:
+
+```bash
+git fetch origin
+git switch -c <type>/SCRUM-###-u<n>-<slug> origin/main
+```
+
+**From `origin/main`, never local `main`** — local is stale more often than not, and
+branching from it silently reverts merged work into the new branch with nothing complaining.
+Rebase onto `origin/main` again before pushing, so the branch carries whatever else landed
+while you worked.
+
+Mechanics, naming and the commit format are in the `branch-commit` skill. Two things are
+yours to enforce regardless of who does the git:
+
+- **Never work on `main` directly**, not even for a one-line fix.
+- **Never commit unless asked.** Finishing a unit is not permission to commit it.
+
 ## 1. One unit. Not the next one.
 
 Build the unit you were given, completely — every row of its slice-contents table, its

@@ -2,9 +2,17 @@
 # setup.sh — installs the TCG AI layer from the private overlay repo.
 #
 # LIVES IN THE OVERLAY REPO (.ai/setup.sh), NOT in the client repo.
-# First-time bootstrap (run once, from the client repo root):
-#   git clone git@github.com:codingcops/tcg-ai-layer.git .ai && bash .ai/setup.sh
+#
+# First-time bootstrap (run once, from the client repo root) — use YOUR OWN remote URL:
+#   git clone <your-overlay-remote> .ai && bash .ai/setup.sh
 # After that, just:  bash .ai/setup.sh   (safe to re-run any time)
+#
+# AI_REMOTE below defaults to an SSH host ALIAS (dev_codingcops_github.com) that only
+# resolves on a machine with that entry in ~/.ssh/config. On any other machine, either
+# clone manually as above, or override it:
+#   AI_REMOTE=git@github.com:<org>/tcg-ai-layer.git bash .ai/setup.sh
+# Once .ai/ is a clone the default is never used again — the script pulls from whatever
+# origin that clone already has.
 #
 # Replaces the zip-era scripts/setup-skills.sh. Fixes from the audit:
 #  - no unconditional rm -f: real files/dirs are backed up, never destroyed
@@ -152,6 +160,7 @@ done
 # inert even while they resolved.
 for surface in .cursor .agent; do
   prune_broken "$surface"
+  mirror_dir "$AI_DIR/claude/skills"   "$surface/skills"
   mirror_dir "$AI_DIR/aidlc/agents"    "$surface/agents"
   mirror_dir "$AI_DIR/claude/contexts" "$surface/contexts"
 done

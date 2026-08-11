@@ -96,6 +96,24 @@ users who were never asked.
 An executor that reports its own stops honestly will produce few of these. One that reports
 none at all on a spec with `[OPEN]` requirements is the case to look at hardest.
 
+## 3b. The standing hazard list
+
+Check these on every review, whether or not the unit mentions them. Each is silent, each is
+unenforced, and each has cost this codebase already.
+
+| Hazard | What to check |
+| --- | --- |
+| **Isolation** | Any new or modified model: does it hold tenant data, and is it in the scoping allowlist in `prisma.service.ts`? Scoping is conditional. A model outside the allowlist is not isolated — this is the highest-severity finding available to you |
+| **Impersonation** | `SUPER_ADMIN` bypasses tenant scoping by design. Does this diff widen who reaches that path, or use it where a scoped query would do? |
+| **Timezone** | New timestamp columns must be `@db.Timestamptz` — ~285 columns are. A bare `DateTime` is a bug that only appears for a user in another zone |
+| **Enum exhaustiveness** | If a status enum gained a member, every `switch` and mapping over it needs a case. A missing one renders blank rather than throwing |
+| **Migration** | Schema moved without a committed migration is an incomplete change, not a pending one |
+| **Contract** | Did a DTO or response shape change? The frontends do not import API types, so nothing catches it at build time. Delegate to `tcg-contract-tracer` rather than eyeballing it |
+
+For a schema-touching unit, delegate the depth to `tcg-prisma-guardian` and report its
+verdict alongside yours. Two agents finding the same leak independently is cheap; neither
+finding it is not.
+
 ## 4. Check against the unit, not against your taste
 
 The unit's slice-contents table is the scope. Three questions, in order:

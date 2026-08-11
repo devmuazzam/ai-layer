@@ -12,6 +12,7 @@ agents/
 ├── inception/      tcg-elaborator, tcg-decomposer
 ├── construction/   tcg-executor, tcg-analyst
 ├── reflection/     tcg-reflector
+├── tools/          tcg-contract-tracer, tcg-prisma-guardian
 └── tcg-scrum.md    the unblocker — outside the phase model
 ```
 
@@ -51,16 +52,26 @@ one of them stops instead, because the alternative — filling a gap with someth
 - **Stopping is a result.** "Nothing is written about this" is a finding, delivered with the
   question that would settle it — not a failure to be worked around.
 
-## Model tier
+## Model tier — assigned by how much judgement the task needs
 
-Every agent here states its own tier, and they all ask for the **stronger** model available
-in whatever tool is running them. That is not padding: each one's core work is judgement —
-whether a requirement is genuinely sourced, whether two documents actually conflict,
-whether a unit ships alone, whether a finding is real. A weaker model gets all of those
-wrong **in the same direction**, toward the confident, complete, fabricated answer.
+| Tier | Agents | Why |
+| --- | --- | --- |
+| **Strong** (Opus-class) | elaborator, decomposer, analyst, reflector, scrum | Judgement: is this requirement genuinely sourced, do these documents actually conflict, does this unit ship alone, does this finding survive refutation. A weaker model gets all of those wrong **in the same direction** — toward the confident, complete, fabricated answer |
+| **Mid** (Sonnet-class) | executor, contract-tracer, prisma-guardian | Building to a fixed spec, or exhaustive checking against a known rule. Breadth matters more than judgement, and the failure mode is *missing* something rather than *misjudging* it |
 
-Cheap-tier work — commit messages, formatting, running a gate — is not phase work and does
-not belong to an agent in this folder.
+The executor sits at mid tier with one caveat stated in its own file: the part that does
+need care is noticing it has hit something the spec never specified, and stopping instead of
+filling it in.
+
+Cheap-tier work — commit messages, branch naming, running a gate — is not agent work at
+all. That belongs in a skill; see `claude/skills/branch-commit/`.
+
+## Tools — phase-independent specialists
+
+`tools/` holds agents that answer one narrow question on demand rather than owning a phase:
+`tcg-contract-tracer` (what breaks in web and mobile when an API shape changes) and
+`tcg-prisma-guardian` (is this schema change safe, isolated and efficient). Any phase may
+call them. See [`tools/README.md`](tools/README.md).
 
 ## Status
 
