@@ -44,6 +44,8 @@ dev forgot X".
 | Reflected on | `YYYY-MM-DD` |
 | Reviewer(s) | |
 | Open questions at build time | *count; how many were answered before the executor started* |
+| `[UNVERIFIED]` requirements built | *count, and how many turned out to be wrong or stale — see §3* |
+| Unverified × irreversible | *how many, and whether each was flagged before the build or found during it* |
 
 ## 1. Spec defects — what the spec missed
 

@@ -202,7 +202,16 @@ bottom of the spec.
 
 A requirement inherits the worst status among its sources, and the flag goes in its
 heading. A spec where the unverified requirements are indistinguishable from the verified
-ones has laundered its sources, and the executor will treat all of them as settled.
+ones has laundered its sources, and every phase after you will treat all of them as settled.
+
+**The tag has downstream consequences, so place it accurately rather than defensively.**
+`[UNVERIFIED]` never blocks anything — tagging generously costs nothing and buys the
+decomposer real information. What it drives is *reversibility*: the decomposer records the
+weakest tag per unit and flags any unit that would make an unverified requirement expensive
+to undo, the analyst checks that pair on every review, and the reflection records whether
+unverified sources actually turned out wrong. That last count is the only evidence the layer
+will ever get about whether the vault needs verifying in bulk or leaving alone — and it is
+only as good as the tags you set here.
 
 Two weak-signal sources to name explicitly whenever you lean on them:
 

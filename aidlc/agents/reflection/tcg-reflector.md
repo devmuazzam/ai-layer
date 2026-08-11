@@ -67,6 +67,14 @@ defensiveness and no change.
 through it explicitly:
 
 - **Sources that turned out wrong or stale** — path, what it says, what is actually true.
+  Record whether each was tagged `[UNVERIFIED]` in the spec. **This is the only place the
+  layer learns whether the tag predicts anything.** If unverified sources keep proving
+  correct, the tag is noise and the vault should be promoted in bulk; if they keep proving
+  wrong, verification is the highest-value work available and the sync's promote step is
+  where it lands. Neither conclusion is reachable without this count.
+- **Unverified requirements that were made hard to reverse** — the pair the analyst watches
+  for. Whether it was flagged before the build or discovered during it is the finding; a
+  pattern of discovering it late is a decomposer rule change, not an executor mistake.
 - **Conflicts that surfaced only during build** — these are the most valuable, because
   nobody found them by reading.
 - **Questions a named human answered during the build.** These are lost unless they land in

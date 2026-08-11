@@ -188,9 +188,14 @@ rest, log the question.
 `NOT SPECIFIED` is a complete answer. A unit 80% built with a named blocker beats one 100%
 built on four invented details.
 
-**Existing code is not permission.** This repo will actively mislead you: ~142 upward API
-imports, ~593 hardcoded colour values, three overlapping component libraries. Matching a
-violation is not consistency.
+**Existing code is not permission.** This repo will actively mislead you: 421 upward API
+import lines across 151 files, 593 hardcoded colour values, three overlapping component
+libraries. Matching a violation is not consistency.
+
+Read those counts precisely — **most of the 421 are type-only imports that compile away**,
+and 11 are genuine runtime inversions. The distinction matters here because the raw number
+is what makes upward imports look normal, and the eleven are what actually couple the
+layers. `.ai/SUCCESS.md` §1 carries the split and how it was measured.
 
 ### `tcg-analyst` · code → verdict · strong tier
 

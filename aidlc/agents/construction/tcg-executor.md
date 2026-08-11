@@ -85,6 +85,48 @@ whether a field is nullable, what happens on the empty state.
 **`NOT SPECIFIED` is a complete answer.** Handing back a unit that is 80% built with a
 named blocker is a better outcome than a unit that is 100% built on four invented details.
 
+### How to know you have hit one — by lookup, not by judgement
+
+"Notice when you are guessing" is the hardest thing asked of you, and it is unreliable
+precisely when it matters: an invented default feels like knowledge. So do not rely on
+noticing. **Check a list.**
+
+Your authorised surface is exactly two things:
+
+1. the rows of this unit's **slice-contents table**, and
+2. the `REQ-nn` items under its **Requirements covered**, as written in the spec.
+
+Anything you need in order to proceed that is not traceable to one of those is out of scope
+**by rule** — regardless of how obvious, how small, or how confident you feel. That is a
+lookup with a yes/no answer, and it does not depend on you correctly assessing your own
+certainty.
+
+Run it at the moment you are about to write a concrete value — a length, a default, a sort
+order, an enum member, a piece of copy. Ask *which row or which REQ is this from?* If the
+answer is "it's standard" or "it matches the neighbouring module", you have found a gap, and
+§2's four steps apply.
+
+## 2b. `[UNVERIFIED]` is not a stop — but it caps what you may make permanent
+
+Most requirements you receive are tagged `[UNVERIFIED]`: sourced, migrated faithfully, never
+confirmed current. **Build them.** Stopping on unverified sources would stop everything, and
+the tag is a statement about the vault's condition, not about this requirement's quality.
+
+One thing changes. Where a requirement is `[UNVERIFIED]` **and** the code implementing it is
+expensive to reverse, say so before you make it permanent rather than after:
+
+- a migration that drops or renames a column, or that is otherwise one-way
+- a backfill over existing rows
+- an enum member or a response shape other code will start depending on
+
+The decomposer should have flagged the combination in the unit's *Risk* block. If it did
+not, and you find it while building, that is a report — not a reason to stop the unit. Build
+the reversible parts, and name the irreversible one with the source it rests on.
+
+The trap is the reverse direction: **finding code that agrees with an unverified requirement
+does not verify it.** Matching behaviour is exactly what a stale requirement produces. Note
+the agreement if it is useful; do not let it upgrade the tag.
+
 ## 3. Existing code is not intent, and not permission
 
 Read `contexts/` for how to build. Read the vault for what to build. **Read the codebase
@@ -92,8 +134,12 @@ only to find out what exists today.**
 
 This matters more here than anywhere, because this repo will actively mislead you:
 
-- Layering is violated in ~142 places on the API side and 13 in web components. Nothing
-  lints it. Matching a violation is not consistency.
+- **Layering is breached in 151 API files** (421 import lines) and **16 web component
+  files**, measured 2026-08-12. Nothing lints any of it. Matching a violation is not
+  consistency. Most of those are type-only imports that compile away; **11 are runtime
+  inversions** — nine usecase services taking a presentation gateway as a constructor
+  parameter, two repositories importing executed query builders from usecase. Do not add to
+  either category, and do not treat the first as permission for the second.
 - Several hundred hardcoded colour values exist against a rule that forbids them.
 - Three overlapping component libraries do the same job in `apps/web`, and which is
   canonical is unresolved.

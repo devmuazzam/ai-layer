@@ -40,6 +40,10 @@ A unit may not depend on an `[OPEN]` requirement. If it does, either the questio
 answered first or the unit is cut down to the part that does not depend on it — and the
 cut is recorded in *Deliberately not in this unit*.
 
+An `[UNVERIFIED]` requirement is different and much weaker: it **does not** block a unit.
+Almost every requirement carries it. It constrains *how* the unit is built, not whether —
+see **Risk** below.
+
 ---
 
 ## Unit ledger
@@ -81,10 +85,16 @@ cut is recorded in *Deliberately not in this unit*.
 
 ### Risk
 
+- **Weakest source:** `[VERIFIED]` / `[UNVERIFIED]` — *the weakest tag among the requirements
+  this unit covers. `[UNVERIFIED]` is the normal case and is not a blocker on its own.*
 - **Migration reversible:** yes / no — *if no, say what makes it one-way*
 - **Behind a flag:** yes / no — *name it*
 - **Touches existing data:** yes / no — *backfill described where*
 - **Blast radius:** *what breaks if this is wrong*
+
+**`[UNVERIFIED]` + not reversible is the combination that must be raised before the unit is
+built.** Either alone is routine. Together they mean a source nobody has confirmed is about
+to be made expensive to undo — name it in the ledger and say what would settle the source.
 
 ### Deliberately not in this unit
 

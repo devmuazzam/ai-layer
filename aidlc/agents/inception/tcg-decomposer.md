@@ -87,6 +87,35 @@ something obvious is missing — an index, an error state, a permission check �
 finding for `gaps.md` and a note to the elaborator, not a unit. The spec is the contract; a
 decomposer that adds to it has made the review that approved it meaningless.
 
+## 2b. `[UNVERIFIED]` does not block a unit. It constrains how you sequence it.
+
+`[OPEN]` means nobody has answered. `[UNVERIFIED]` means someone answered and nobody has
+confirmed the answer is still current — and it applies to **almost every requirement you
+will ever slice**, so treating it as a blocker would stop all work. Build on it.
+
+What it changes is **reversibility**. Record the weakest source tag across each unit's
+requirements in its *Risk* block, and then apply one rule:
+
+> **`[UNVERIFIED]` + a change that is expensive to undo = raise it before the unit is
+> built, not after.**
+
+Expensive to undo means, concretely: a one-way migration, a dropped or renamed column, an
+enum member other code will start depending on, a backfill over existing rows, a published
+API shape, anything already-shipped data will conform to. Either alone is routine and needs
+no comment. **Together they mean an unconfirmed source is about to become costly to correct.**
+
+Two moves, and you may take both:
+
+1. **Sequence to delay commitment.** If the unverified part can ride in a later unit, put it
+   there — the source may be settled by then, and the earlier units prove the rest of the plan.
+2. **Name it in the ledger** under the unit, with what would settle the source: the vault
+   path to re-confirm, or the question for `gaps.md`.
+
+What you may **not** do is quietly upgrade an unverified requirement by finding code that
+agrees with it. The codebase is not a source; matching behaviour is how a stale requirement
+survives review. If the code and the requirement agree, that is worth stating — as an
+observation, next to the tag, not instead of it.
+
 ## 3. Coverage is checked, not assumed
 
 The ledger carries every requirement in the spec. Before you finish:
