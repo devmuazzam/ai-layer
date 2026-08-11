@@ -15,10 +15,17 @@ Every command below runs from the client repo root and is copy-pasteable. Re-run
 monthly, or before any claim that things improved.
 
 ```bash
-# Layering: API use-case services importing upward from presentation
-grep -rln "from '@presentation" apps/api/src/usecase --include='*.service.ts' | wc -l
+# Layering, RUNTIME: usecase services constructor-injecting presentation gateways
+grep -rln "from '@presentation/.*gateway'" apps/api/src/usecase --include='*.service.ts' | wc -l
 
-# Layering: repositories importing from presentation or usecase
+# Layering, RUNTIME: repositories importing executable helpers from usecase
+grep -rn "^import {" -A6 apps/api/src/service/vendors/vendors.repository.ts \
+  apps/api/src/service/employee/employee.repository.ts | grep -c "buildVendor\|buildEmployee"
+
+# Layering, TYPE-LEVEL: usecase services importing presentation DTOs
+grep -rln "from '@presentation/.*dto" apps/api/src/usecase --include='*.service.ts' | wc -l
+
+# Layering, TYPE-LEVEL: repositories importing upward at all
 grep -rln "from '@presentation\|from '@usecase" apps/api/src/service | wc -l
 
 # Layering: shared components importing from features (dependency inversion)
@@ -35,19 +42,49 @@ grep -rc "^const formatInternalId" apps/api/src --include='*.ts' | grep -v ':0' 
 grep -c '^- Status: open' .ai/vault/gaps.md
 ```
 
-| Metric | 2026-08-12 | Direction |
-| --- | --- | --- |
-| API services importing upward | **38** | down |
-| Repositories importing upward | **6** | down |
-| Shared components importing features | **16** | down |
-| Files with hardcoded hex | **113** | down |
-| Hardcoded hex occurrences | **593** | down |
-| `formatInternalId` copies | **7** | down |
-| Open gaps | **13** | **not necessarily down** — see §3 |
+| Metric | 2026-08-12 | Severity | Direction |
+| --- | --- | --- | --- |
+| Usecase services injecting presentation **gateways** | **9** | runtime inversion | down |
+| Repositories importing **executable helpers** from usecase | **2** | runtime inversion | down |
+| Usecase services importing presentation **DTOs** | **35** | type-level only | flat is fine |
+| Repositories importing upward (any kind) | **6** | 2 runtime, 4 type-only | down to 4 |
+| Shared components importing features | **16** | runtime | down |
+| Files with hardcoded hex | **113** | — | down |
+| Hardcoded hex occurrences | **593** | — | down |
+| `formatInternalId` copies | **7** | — | down |
+| Open gaps | **13** | — | **not necessarily down** — see §3 |
 
 **Do not read these as a scorecard.** They are the standing debt the layer was built to stop
 *growing*. The first honest success is that they hold flat while features ship. Falling is a
 later, separate win that belongs to the revamp.
+
+### Why the layering rows are split — a correction
+
+An earlier version of this file reported **"38 services importing upward"** and **"6
+repositories importing upward"** as single violation counts. That was one grep labelled as a
+finding. Reading the imports splits them into two categories with very different cost:
+
+**Runtime inversion — 11 files.** Nine usecase services import a WebSocket gateway from
+`@presentation` and take it as a **constructor parameter of an `@Injectable()` class**
+(`jobs.service.ts:82-83`), so Nest's DI resolves it and the module graph carries a real edge
+from usecase up to presentation. `DasGateway` accounts for eight of them; `JobsGateway` and
+`NotificationsGateway` one each. Two repositories do the same in effect, importing *executed*
+query builders rather than types — `buildVendorActivityAllocationWhere` and
+`vendorActivityAllocationSelect` in `vendors.repository.ts:6-9`, `buildEmployeeListOrderBy`
+and `buildEmployeeListWhere` in `employee.repository.ts:12-18`. **These are the violations.**
+
+**Type-level coupling — 35 services, 4 repositories.** Everything else is a DTO or a type
+alias used in a method signature. `tsconfig.base.json:17` sets `emitDecoratorMetadata`, so a
+class in a *constructor* parameter survives to runtime — but these appear in ordinary
+undecorated methods (`plans.service.ts:285`), where TypeScript elides the import at emit.
+They compile away. The coupling is real — usecase cannot be lifted out without presentation's
+`dto/` folders — but it is a DTO-placement question and a common NestJS layout, not a
+runtime dependency, and treating it as equivalent to the nine overstates the problem by 4×.
+
+**The rail in §5 must encode this distinction.** `import/no-restricted-paths` applied naively
+flags all 44 at once. Nobody triages 44 errors; they disable the rule, and the nine that
+matter go with it. Ban value imports across the boundary, allow `import type`, and the rule
+lands on 11 real findings.
 
 ### One that is a live bug, not a baseline
 
@@ -120,7 +157,10 @@ generating unanswered questions. **The count going up is only good if the count 
 down.** Track both directions; a rising count with no resolutions is worse than no register.
 
 **Reviews blend verified and inferred again.** If findings stop naming the command that
-established them, the review is back to assertion with `file:line` precision attached.
+established them, the review is back to assertion with `file:line` precision attached. This
+document did it in its own first draft — see §1's correction, where a grep count was labelled
+a violation count without anyone reading the imports. A number is evidence; the word for what
+it means is a claim, and the two need separate justification.
 
 **A doc contradicts a doc.** This layer has already reintroduced that failure four times in
 one day — root versus context on the web architecture, templates asserting a deleted
@@ -154,7 +194,7 @@ reminders into mechanism, each hours rather than days:
 | Rail | Closes | Priority |
 | --- | --- | --- |
 | A test asserting every model with `tenantCompanyId` is in the `$extends` allowlist | **tenant leaks** — silent, invisible to every gate, data-exposure class | **first** |
-| `import/no-restricted-paths` (or `boundaries/*`) on the API layers | the 38 + 6 upward imports | high |
+| `import/no-restricted-paths` (or `boundaries/*`) on the API layers, **value imports only — `import type` allowed** | the 11 runtime inversions; see §1's correction for why the naive version fails | high |
 | Glob the `apps/web` test runner | 3 tests that never run, and every future one | high — cheapest of the five |
 | Pre-commit: `schema.prisma` changed → migration staged | incomplete schema changes | medium |
 | Lint rule for hex literals in `.tsx` | the 593 | medium |
