@@ -53,6 +53,60 @@ refuse. That is the feature, and it is the part that will feel wrong on day one.
 
 **One artifact per phase, and the next phase reads it.** Nothing is passed by conversation.
 
+### Not every ticket runs the full loop
+
+The diagram above is the **feature** path. Running it for a bug or a one-line UI change is
+absurd, and pretending otherwise is how a process gets abandoned in week two.
+
+The expensive half of the loop — elaboration and decomposition — exists to answer *"what
+should this do?"* On most bugs and small changes that answer already exists: the system
+claims a behaviour and fails to deliver it, or the change is stated on the ticket. Skipping
+those phases is not cutting a corner. It is not paying twice for an answer you have.
+
+| Ticket | Path | What runs |
+| --- | --- | --- |
+| **New behaviour**, anything needing product intent | **A — full loop** | intent → spec → units → execute → analyse → reflect |
+| **Bug** — the behaviour is specified, or the bug *is* the deviation | **B — repro → fix → check** | reproduce, `tcg-executor` against the repro, `tcg-analyst`. No spec, no units |
+| **Small change** — copy, spacing, a column, a variant | **C — just build it** | `find-component` if it is UI, build, self-review. One branch, one PR |
+
+Reflection is worth running on B whenever the bug had a *cause worth recording* — a missing
+rule, a third repeat. It is almost never worth it on C.
+
+### The escalation rule is what makes B and C safe
+
+**Any path becomes Path A the moment you have to decide something nobody specified.**
+
+Without that valve, C becomes the default and the whole discipline evaporates — "it's only a
+small change" is precisely how unspecified decisions get made and never noticed.
+
+Escalate when:
+
+- **Fixing the bug means deciding what correct is.** "Fix the sort order" usually means
+  choosing one. That is a product question wearing a bug's clothes, and it is the single
+  most common escalation.
+- The ticket says *"make it consistent with X"* and X is ambiguous, or X is one side of an
+  open conflict in the vault.
+- The change touches **schema, tenancy, or an API response shape** — at minimum call
+  `tcg-prisma-guardian` or `tcg-contract-tracer`, whatever the path.
+- You catch yourself writing a value nobody stated: a length, a default, a threshold, a page
+  size.
+
+Escalating is cheap. A bug that turns out to need a spec has just found a real gap at the
+cheapest possible moment, and `gaps.md` is where it goes.
+
+### What runs on every path
+
+The tools and skills are phase-independent **by design**, which is exactly why this works:
+
+- `commit` — one unit or ticket, one branch, one PR. Always.
+- `tcg-prisma-guardian` / `tcg-contract-tracer` — whenever schema or a contract moves.
+- `tcg-scrum` — whenever anyone is blocked on how something is meant to work.
+- `review-pr` — the ad-hoc review path when there is no unit for `tcg-analyst` to check
+  against. This is the normal reviewer for B and C.
+
+So a bug fix still gets the isolation check, the contract check, the branch discipline and a
+vault-aware review. It just does not get a spec it did not need.
+
 ---
 
 ## 3. Three rules that bind everything
