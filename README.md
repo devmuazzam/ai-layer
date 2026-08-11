@@ -323,7 +323,18 @@ one is marked, so a gap is visible rather than silent.
 
 ---
 
-## 8. Known open items
+## 8. Is it working?
+
+[`SUCCESS.md`](SUCCESS.md) — the baseline numbers with the exact commands that produce them,
+the leading signals to read off real artifacts, how this dies quietly, the five missing rails
+that would make the numbers hold, and the one falsifiable question that decides whether the
+discipline is worth its cost.
+
+Short version: the layer's core claim is that stopping instead of guessing is cheaper.
+That is testable — *does an `[OPEN]` marker ever get answered and turn out to have
+mattered?* — and you will know inside two or three tickets.
+
+## 9. Known open items
 
 Honest state, so nobody rediscovers them.
 
