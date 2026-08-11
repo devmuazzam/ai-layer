@@ -161,22 +161,36 @@ cat <<'EOF'
 
   CHECK THE LOADING MECHANICALLY FIRST — do not start with the questions.
 
-    Claude Code:  cat apps/api/src/main.ts     # reading a file is the trigger
-                  /context                      # look under "Memory files"
+    BOTH LINES GO IN THE CLAUDE CODE CHAT, NOT IN THIS TERMINAL:
 
-    /context reports which instruction files actually loaded. It is an
-    observation, not a self-report, so it beats asking the model — and asking
-    a model what is in its own context is the one method that cannot be
-    trusted for this.
+        read apps/api/src/main.ts
+        /context
+
+    Then look under "Memory files" for apps/api/CLAUDE.md.
+
+    /context is a Claude Code slash command. Typing it in a shell gives you
+    "no such file or directory".
+
+    It reports which instruction files actually loaded — an observation, not a
+    self-report. Asking a model what is in its own context is the one method
+    that cannot be trusted for this.
 
     For a permanent record, the InstructionsLoaded hook logs which instruction
     files load, when, and why. See the Claude Code hooks documentation.
 
-  WHY READING A FILE IS THE TRIGGER — confirmed in Claude Code's own docs:
-  subdirectory CLAUDE.md files are "included when Claude reads files in those
-  directories" rather than at launch. A `cd` inside a bash command does not
-  count. Two sessions on 2026-08-12 explored apps/web with find and ls only,
-  never opened a file there, and correctly did not load contexts/web.md.
+  WHAT COUNTS AS THE TRIGGER — confirmed in Claude Code's own docs:
+  subdirectory CLAUDE.md files are "included when CLAUDE reads files in those
+  directories" rather than at launch.
+
+    triggers:      Claude using its Read tool on a file in that directory
+    does NOT:      a `cd` inside a bash command
+    does NOT:      you running `cat` yourself in a terminal — Claude is not
+                   involved, so nothing loads
+    probably not:  Claude running `cat` via bash; the trigger is tied to
+                   reading a file, so ask it to read, not to cat
+
+  Two sessions on 2026-08-12 explored apps/web with find and ls only, never had
+  Claude read a file there, and correctly did not load contexts/web.md.
 
   Note also: after /compact, nested contexts are NOT re-injected. They reload
   the next time a file in that directory is read.
