@@ -309,21 +309,35 @@ Expect, in rough order of likelihood:
 
 **Check it mechanically. Do not ask the model.**
 
-```bash
-cat apps/api/src/main.ts     # reading a file in the directory is the trigger
-/context                      # look under "Memory files"
+Both lines go in the **Claude Code chat**, not in a terminal:
+
+```
+read apps/api/src/main.ts
+/context
 ```
 
-`/context` reports which instruction files actually loaded. That is an observation rather
-than a self-report, which matters: asking a model what is in its own context is the single
-method that cannot be trusted for this, and it is the reason PRE-FLIGHT 0 sat open. For a
-permanent record, the `InstructionsLoaded` hook logs which files load, when, and why.
+Then look under **Memory files** for `apps/api/CLAUDE.md`.
 
-**Why reading a file is the trigger — confirmed in Claude Code's documentation**, not
-inferred: subdirectory `CLAUDE.md` files are *"included when Claude reads files in those
-directories"* rather than loaded at launch. A `cd` inside a bash command does not count.
+`/context` is a Claude Code slash command — typing it in a shell just gives you
+`no such file or directory`. It reports which instruction files actually loaded, which is an
+observation rather than a self-report. That distinction is the whole reason PRE-FLIGHT 0 sat
+open: asking a model what is in its own context is the single method that cannot be trusted
+for this. For a permanent record, the `InstructionsLoaded` hook logs which files load, when,
+and why.
+
+**What counts as the trigger — confirmed in Claude Code's documentation**, not inferred:
+subdirectory `CLAUDE.md` files are *"included when Claude reads files in those directories"*
+rather than loaded at launch.
+
+| | Loads the nested context? |
+| --- | --- |
+| Claude using its **Read tool** on a file in that directory | **yes** |
+| A `cd` inside a bash command | no |
+| **You** running `cat` in your own terminal | no — Claude is not involved at all |
+| Claude running `cat` via bash | probably not — the trigger is reading a file, so ask it to *read* |
+
 Related: after `/compact`, nested contexts are **not** re-injected — they reload the next
-time a file in that directory is read.
+time Claude reads a file in that directory.
 
 **Status as of 2026-08-12: the root `CLAUDE.md` is confirmed to load. No run has yet
 confirmed a nested surface context loading** — but every run so far explored the surfaces
