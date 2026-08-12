@@ -272,11 +272,22 @@ chmod +x "$GIT_DIR/hooks/pre-commit"
 cat > "$GIT_DIR/hooks/pre-push" <<'EOF'
 #!/usr/bin/env bash
 # Branch guard + G3 quality gates + optional private CI mirror. Installed by .ai/setup.sh.
-# Emergency bypass: SKIP_GATES=1 git push   (use sparingly — gates fail open enough already)
+#
+# TWO bypasses, deliberately separate:
+#   SKIP_GATES=1 git push          skips lint/test/build. The branch guard still runs.
+#   SKIP_BRANCH_GUARD=1 git push   skips the branch guard. Almost never correct.
+#
+# They are separate because `pnpm lint` currently exits 1 on ~14 pre-existing errors in
+# apps/web, so the G3 gate cannot pass and SKIP_GATES=1 is a habit rather than an
+# emergency. A branch guard sitting behind that switch would be disabled by the very
+# habit the broken gate creates — enforcement inheriting the weakest link above it.
 set -euo pipefail
-[ "${SKIP_GATES:-0}" = "1" ] && { echo "pre-push: gates skipped"; exit 0; }
 
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "${SKIP_BRANCH_GUARD:-0}" = "1" ]; then
+  echo "pre-push: branch guard skipped (SKIP_BRANCH_GUARD=1)"
+else
 
 # --- branch guard ------------------------------------------------------------
 # The branch rule was stated in three documents and enforced by none of them, which
@@ -309,7 +320,9 @@ case "$BRANCH" in
   feat/*|fix/*|refactor/*|docs/*|chore/*|style/*|test/*|perf/*|build/*|ci/*) ;;
   *) echo "pre-push: note — '$BRANCH' is not <type>/SCRUM-###-<slug>. Not blocking." ;;
 esac
+fi
 
+[ "${SKIP_GATES:-0}" = "1" ] && { echo "pre-push: G3 gates skipped"; exit 0; }
 echo "pre-push: G3 gates — lint, test, build"
 pnpm lint
 pnpm -r --if-present test
