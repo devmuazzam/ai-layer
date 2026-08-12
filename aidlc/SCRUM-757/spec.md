@@ -82,7 +82,7 @@ page would be inventing a requirement, so it is recorded here and used nowhere b
 
 | Req | Title | Surface | Flag | Sources | Blocks build? |
 | --- | --- | --- | --- | --- | --- |
-| REQ-01 | Which screen "the Plan Comments page" is | web | `[OPEN]` | none | **yes** |
+| REQ-01 | Which screen "the Plan Comments page" is | web | `[VERIFIED]` | `decisions/2026-08-12-plan-comments-page-scope.md` | no — **answered 2026-08-12** |
 | REQ-02 | Comment entry stays usable as the comment thread grows | web | `[UNVERIFIED]` | `SCRUM-757` | no |
 | REQ-03 | What counts as acceptable responsiveness | web | `[OPEN]` | none | **yes** |
 | REQ-04 | A single page open does not repeat the same request | web | `[UNVERIFIED]` | `SCRUM-757` | no |
@@ -90,11 +90,40 @@ page would be inventing a requirement, so it is recorded here and used nowhere b
 | REQ-06 | The 401 responses — defect or the designed refresh cycle | web / api | `[OPEN]` | none | **yes** |
 | REQ-07 | Comment volume, length and pagination | web / api / schema | `[OPEN]` | none | **yes** |
 
-Counts: **7** total — **0** verified, **2** unverified, **0** conflicted, **5** open.
+Counts as of **2026-08-12**: **7** total — **1** verified, **2** unverified, **0** conflicted,
+**4** open. *(At elaboration on 2026-08-11: 0 verified, 5 open. REQ-01 was answered — see
+below.)*
+
+**Still not buildable.** REQ-01 resolving scopes the ticket to a known screen; it settles no
+other requirement. Q2, Q3, Q4 and Q5 remain open, and a unit may not depend on an `[OPEN]`
+requirement.
 
 ## 2. Requirements
 
-### REQ-01 — Which screen "the Plan Comments page" is `[OPEN]`
+### REQ-01 — Which screen "the Plan Comments page" is `[VERIFIED]`
+
+> **Answered 2026-08-12** — `decisions/2026-08-12-plan-comments-page-scope.md`.
+>
+> **Statement:** "The Plan Comments page" is the **plan detail view** at
+> `/projects/{id}/plans/{id}` —
+> `apps/web/src/app/(protected)/projects/[id]/plans/[planId]/page.tsx`, rendering
+> `PlanViewPageContent` and `AddCommentModal`, with comment data read via
+> `useActivityLogs`. It is **not** the project In-House Comments tab, so `SCRUM-763`
+> (Blocked) is a separate concern on a different screen and neither blocks the other.
+>
+> **Source:** `decisions/2026-08-12-plan-comments-page-scope.md` — `[VERIFIED]` — kind:
+> decision — syed haris (assignee), 2026-08-12. Answered by the assignee rather than the
+> nominated owner (the reporter), and from knowledge of the screen rather than from the
+> ticket's attachments, which remain unopened.
+>
+> **Acceptance:** n/a — this requirement identified a scope, and the scope is now fixed.
+>
+> **What this does and does not unblock.** Every other requirement is now scoped to a known
+> screen, and the two code observations recorded under REQ-02 are confirmed to sit on it.
+> They stay observations: neither is a diagnosis, and this decision authorises no fix.
+> REQ-03, REQ-05, REQ-06 and REQ-07 are untouched and still `[OPEN]`.
+
+The original text is kept below as the record of what was open at elaboration.
 
 - **Statement:** `OPEN — the ticket names "the Plan Comments page" as the surface under
   test; no source in the vault, Jira or the repo defines a screen by that name, and the repo

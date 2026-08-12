@@ -230,7 +230,14 @@ from these sets — surface the conflict and cite all candidates.
   unidentified screen.
 - Owner: product team — in practice Aiman Farooq (reporter of `SCRUM-757`), or anyone who can
   open the ticket's attachments.
-- Status: open
+- Answer: the **plan detail view** at `/projects/{id}/plans/{id}` — the first of the two
+  candidates. Not the project In-House Comments tab, so `SCRUM-763` is a separate concern
+  against a different screen. Confirmed against the route
+  `apps/web/src/app/(protected)/projects/[id]/plans/[planId]/page.tsx`, which renders
+  `PlanViewPageContent` and `AddCommentModal`. Answered by the assignee rather than the
+  reporter, and from knowledge of the screen rather than from the attachments — which are
+  still unopened and are still the fastest way to settle Q3.
+- Status: resolved — see `decisions/2026-08-12-plan-comments-page-scope.md`
 
 ## Plan comment performance target
 
