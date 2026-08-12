@@ -106,12 +106,18 @@ The output that matters. Each row must be specific enough to apply without rewri
 
 ## 5. Recurrence check
 
-- **Has this appeared in an earlier reflection?** *list the ticket ids*
-- **If yes, why did the previous fix not hold:** *the rule was not written / was written in
-  a file nobody reads / was written and ignored*
-- **Escalate:** *when the same defect class recurs a third time, it is not a reminder
+Checked against `.ai/aidlc/reflections/INDEX.md`, by grepping each defect's class. Not by
+reading every earlier reflection — that scan is skipped exactly when it matters.
+
+| Defect | Class | Prior rows | Occurrence | Why the previous fix did not hold |
+| --- | --- | --- | --- | --- |
+| SD-1 | *from the index vocabulary* | *ticket ids, or none* | *1st / 2nd / **3rd*** | *not written / written where nobody reads / written and ignored — or N/A* |
+
+- **Escalate:** *when the same defect class reaches a third occurrence, it is not a reminder
   problem — say what structural change is needed (a lint rule, a guard, a template field,
   a check in the executor's own instructions)*
+- **New class added to the index?** *name it and why none of the existing ones fit — or "no"*
+- **Rows appended to `reflections/INDEX.md`:** *one per defect in §1 and §2. yes / no*
 
 ## 6. Kept as-is
 

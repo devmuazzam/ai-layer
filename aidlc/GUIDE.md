@@ -289,7 +289,8 @@ breadth matters more than judgement and the failure mode is *missing* something 
 
 | Skill | Fires on |
 | --- | --- |
-| `commit` | Branch naming, rebase from `origin/main`, conventional commits |
+| `commit` | Branch naming, rebase from `origin/main` at start **and on resume**, conventional commits |
+| `close-ticket` | A PR merged — the writeback that merging does not do by itself |
 | `review-pr` | Ad-hoc PR review — **against the vault as well as the code** |
 | `lint-triage` | Which failures are mine vs the ~14 pre-existing |
 | `find-component` | Search all nine `components/` directories before creating |
@@ -312,10 +313,25 @@ built through the loop; the skill is the ad-hoc path for a PR with no unit behin
   units.md        the decomposer's output — vertical slices
   reflection.md   after units ship, before the ticket closes
 
+.ai/aidlc/reflections/INDEX.md
+                  every defect from every ticket, one line each — the loop's memory
+                  across tickets, and the queue for proposed rule changes
+
 .ai/vault/        product knowledge — INDEX.md first, always
 .ai/vault/gaps.md the open-question register — 13 open today
+.ai/vault/decisions/  what a named human settled, and why
 .ai/claude/contexts/  how to build, per surface
 ```
+
+**Three memories, three clocks, and they are not interchangeable.** `vault/` is what the
+product should do and only a human changes it. `contexts/` is how we build and only an
+accepted reflection changes it. `aidlc/SCRUM-###/` is one ticket and goes inert when it
+closes. `reflections/INDEX.md` is the only thing that spans tickets, which is why the
+recurrence rule reads it rather than the reflections themselves.
+
+**Nothing writes shipped behaviour back into `vault/`, ever.** That is not an omission. If
+code becomes a source there, the next spec is sourced from the last implementation and the
+loop validates itself.
 
 **Templates fix the field set.** A field is never deleted; an unfillable one is marked
 `NOT SPECIFIED`, `N/A — <reason>` or `OPEN — <question>`. A blank field and a deleted field
@@ -337,8 +353,15 @@ mode with eight people filling them.
 5. **Review.** `tcg-analyst` — and delegate to `prisma-guardian` if the schema moved, or
    `contract-tracer` if a response shape changed.
 6. **Merge, then repeat 4–5** for each unit.
-7. **Reflect** once the units have shipped. Apply the rule changes you accept — the
+7. **Close the ticket** — the `close-ticket` skill. Reflect, disposition the reflection's
+   vault findings, write any decision a human gave you during the build, append to
+   `reflections/INDEX.md`, push the overlay. Apply the rule changes you accept; the
    reflector proposes, humans apply.
+
+   **Merging updates no memory by itself.** Nothing fails when this step is skipped, which
+   is exactly why it needs to be a step: the branch is deleted, the reflection is never
+   written, and the answer a human gave in a call on day two exists only in the code that
+   assumed it.
 
 ---
 

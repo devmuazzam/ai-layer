@@ -29,13 +29,45 @@ The client repo currently has three competing conventions in flight — `task/SC
 `scrum-866`, `fixes/minor-ui-11aug`. Use the form above for new work; do not rename
 anyone's existing branch.
 
-## 2. Rebase onto main — at start, and before pushing
+## 2. Rebase onto main — at three moments, not one
+
+**Starting a unit:**
 
 ```bash
 git fetch origin
-git switch -c <type>/SCRUM-###-u<n>-<slug> origin/main   # starting
-# ... work ...
-git fetch origin && git rebase origin/main               # before pushing
+git switch -c <type>/SCRUM-###-u<n>-<slug> origin/main
+```
+
+**Resuming one — the next morning, or after any break:**
+
+```bash
+git stash list                                    # anything set aside last session?
+git fetch origin
+git switch <type>/SCRUM-###-u<n>-<slug>           # no -c; the branch already exists
+git rebase origin/main
+```
+
+`git switch -c` on day two fails with `a branch named ... already exists`, and that failure
+is the harmless case — you see it and fix it. The expensive case is the branch resumed
+*without* the fetch and built on for three days against a `main` that moved on day one.
+Nothing complains, and the conflict surfaces at the PR, where it is three days deep and
+partly someone else's to untangle.
+
+Rebase on resume, not only before pushing. Rebasing daily means resolving one day of drift
+at a time against changes you still remember.
+
+Check `git stash list` **before** you start, not after. A stash from a previous session is
+invisible otherwise — the overlay repo is currently carrying one (`SCRUM-757 spec — set
+aside 2026-08-11, not committed anywhere`) that survived precisely because nothing in this
+procedure told anyone to look.
+
+If you have uncommitted work when you resume, `git stash` before the rebase and
+`git stash pop` after.
+
+**Before pushing:**
+
+```bash
+git fetch origin && git rebase origin/main
 ```
 
 **Always branch from `origin/main`, never from local `main`.** Local `main` is stale more
@@ -46,6 +78,16 @@ Rebase before pushing so the branch carries whatever else has landed. If the reb
 conflicts, stop and say so — do not resolve someone else's conflict on their behalf.
 
 Never rebase a branch someone else has checked out, and never force-push `main`.
+
+After a rebase, updating your own PR branch needs `git push --force-with-lease` — never a
+bare `--force`, which discards a teammate's push to that branch without telling you.
+
+**Two of these are now enforced.** The `pre-push` hook installed by `.ai/setup.sh` refuses a
+direct push to `main`, and refuses a push from a branch behind `origin/main`. It warns on
+branch naming rather than blocking, because the client repo has three conventions in flight
+and renaming someone's branch is worse than the inconsistency. `SKIP_GATES=1 git push`
+bypasses all of it — and the hook disappears entirely after `pnpm install` until
+`bash .ai/setup.sh` is re-run, so it is a rail with a known hole, not a guarantee.
 
 ## 3. Commit message — conventional, with a body that explains why
 

@@ -1,3 +1,9 @@
+---
+name: tcg-executor
+description: Build exactly one unit from units.md — branch from origin/main first, build every row of its slice-contents table, run the gates, and stop on anything the spec never settled. Use when implementing a unit. Builds one unit only, never the next.
+model: inherit
+---
+
 # TCG Executor — one unit, built to the spec, stopping where the spec stops
 
 You build **one unit** from `units.md`, following the surface contexts for whatever it
@@ -49,6 +55,26 @@ git switch -c <type>/SCRUM-###-u<n>-<slug> origin/main
 branching from it silently reverts merged work into the new branch with nothing complaining.
 Rebase onto `origin/main` again before pushing, so the branch carries whatever else landed
 while you worked.
+
+**Resuming a unit you started in an earlier session** — a different day, or after any break.
+This is a different command, and using the start command here fails:
+
+```bash
+git stash list                                    # anything set aside last session?
+git fetch origin
+git switch <type>/SCRUM-###-u<n>-<slug>           # no -c; the branch exists
+git rebase origin/main
+```
+
+Rebase on resume, not only before pushing. A unit built over three days against a `main`
+that moved on day one produces a conflict nobody sees until the PR. **Check for uncommitted
+or stashed work before you touch anything** — a partly-built unit is not visible in
+`units.md`, which records the plan and never the progress, so `git status`, `git stash list`
+and `git log origin/main..HEAD` are the only record of where you actually stopped.
+
+If you cannot branch — the command is refused, or the working tree is dirty with someone
+else's work — **stop and say so. Do not start editing on whatever branch you are on.** An
+edit made on `main` is the failure this whole section exists to prevent.
 
 Mechanics, naming and the commit format are in the `commit` skill. Two things are
 yours to enforce regardless of who does the git:
