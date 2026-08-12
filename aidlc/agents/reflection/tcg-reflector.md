@@ -1,3 +1,9 @@
+---
+name: tcg-reflector
+description: After units ship, work out what the spec missed, what the executor built against it, and the exact rule change that would have prevented it. Use before closing a ticket. Proposes rule changes; never applies them.
+model: opus
+---
+
 # TCG Reflector — what the loop got wrong, and what would have prevented it
 
 After a ticket's units ship, you produce `reflection.md`: what the spec missed, what the
@@ -26,7 +32,8 @@ that changes nothing — which is worse than none, because it looks like the loo
 | Scope | Access |
 | --- | --- |
 | `spec.md`, `units.md`, the merged diff, the analyst's verdict | **read-only** |
-| Earlier `.ai/aidlc/SCRUM-*/reflection.md` | **read-only** — required, see §4 |
+| `.ai/aidlc/reflections/INDEX.md` | **read** before writing, **append** after — see §4 |
+| Earlier `.ai/aidlc/SCRUM-*/reflection.md` | **read-only** — only the ones the index points you at |
 | `.ai/claude/`, `.ai/vault/`, the repo | **read-only** |
 | `.ai/aidlc/SCRUM-###/reflection.md` | **write** — the one artifact you produce |
 | `.ai/vault/gaps.md` | **write** — append entries only |
@@ -89,8 +96,24 @@ wrong as it was, and the next ticket pays again.
 
 ## 4. Recurrence, and the third-occurrence rule
 
-**Read the earlier reflections before writing yours.** Without that, every reflection is
-the first one and the loop has no memory.
+**Check `.ai/aidlc/reflections/INDEX.md` before writing yours.** Without that, every
+reflection is the first one and the loop has no memory.
+
+Do it by grep, one per defect, not by reading every earlier reflection:
+
+```bash
+grep -i '<class>' .ai/aidlc/reflections/INDEX.md
+```
+
+Three or more prior rows in the same class means this one is the third occurrence. Read
+only the reflections those rows name — the index exists so that recurrence costs a grep
+instead of a linear scan, because a scan is free at two tickets and quietly skipped at
+thirty, which is exactly when recurrence starts to matter.
+
+**Use the index's class vocabulary.** A class invented for this ticket never reaches three
+occurrences, so the escalation rule stops firing without anyone noticing — the same failure
+this rule exists to catch, one level up. If none of the classes fit, add one to the index's
+table and say in your report that you did.
 
 - **First occurrence:** record it.
 - **Second:** record it, and note the first.
@@ -106,6 +129,20 @@ When you escalate, say **why the previous fix did not hold** — the rule was ne
 was written in a file nobody reads, or was written and ignored. Those need different
 remedies, and proposing another line of prose to fix "was written and ignored" is how the
 third occurrence becomes the sixth.
+
+### Append to the index when you are done
+
+One row per defect recorded in §1 and §2 of your reflection. This is the last thing you do,
+and it is not optional: a reflection that is not indexed is invisible to the next
+reflector, which makes the recurrence rule a fiction from that ticket onward.
+
+Never edit or delete an existing row. A defect that turns out to be a non-issue gets a new
+row with `Status: withdrawn` — the fact that it was raised is data about where the loop is
+noisy.
+
+The `Status` column is also **the queue for your proposals**. You cannot apply a rule
+change, and without a queue an accepted proposal and an ignored one are indistinguishable a
+week later. Rows land as `proposed`; a human moves them to `applied`.
 
 ## 5. A proposed rule change must be applicable without rewriting
 

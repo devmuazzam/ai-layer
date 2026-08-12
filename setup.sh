@@ -95,6 +95,28 @@ prune_broken() {
   find "$dir" -mindepth 1 -type d -empty -delete 2>/dev/null || true
 }
 
+# link_agents — flat-link every tcg-*.md into claude/agents/, which is where Claude Code
+# discovers subagents. mirror_dir CANNOT do this job, and the reason is the whole bug:
+# .claude is a symlink to .ai/claude, so a link created at .claude/agents/x resolves its
+# relative target from the PHYSICAL directory .ai/claude/agents/. mirror_dir computes its
+# prefix from the string ".claude/agents" and would emit ../../.ai/aidlc/... — resolving to
+# .ai/.ai/aidlc/..., which does not exist. Written relative to the physical location instead.
+#
+# Flat, because the agents are nested by phase (inception/, construction/, ...) and a flat
+# directory is the shape every surface agrees on. The phase directories stay the source of
+# truth; this is a discovery index over them.
+link_agents() {
+  local src="$AI_DIR/aidlc/agents" dst="$AI_DIR/claude/agents" entry name
+  [ -d "$src" ] || return 0
+  mkdir -p "$dst"
+  while IFS= read -r entry; do
+    [ -n "$entry" ] || continue
+    name="$(basename "$entry")"
+    safe_link "../../${entry#"$AI_DIR/"}" "$dst/$name"
+  done < <(find "$src" -name 'tcg-*.md' -type f | sort)
+  prune_broken "$dst"
+}
+
 # link_context <surface-dir> <context-file> — drop a location-triggered context file
 # into a client-repo directory, under BOTH filenames, because the surfaces disagree on
 # which one they read: Claude Code auto-loads a nested CLAUDE.md, several other tools
@@ -178,6 +200,14 @@ for surface in .cursor .agent; do
   mirror_dir "$AI_DIR/claude/contexts" "$surface/contexts"
 done
 
+# Claude Code is NOT a mirror surface — it loads .claude/skills and .claude/agents for real.
+# Skills already worked because they live under claude/. The agents did not: they live under
+# aidlc/, the loop above only ever mirrored them into .cursor and .agent, and claude/agents/
+# was never created at all. Every agent in aidlc/GUIDE.md was therefore uninvokable on the
+# one surface this layer is written for, with nothing reporting it — the loop simply had no
+# executor to call. Agents also need YAML frontmatter to register; they now carry it.
+link_agents
+
 # Retire Codex. Only removed when every file under it is a symlink — i.e. everything there
 # was created by this script and nothing of anyone's own is inside. If a human put a real
 # file there, it is left alone and reported instead.
@@ -241,10 +271,45 @@ chmod +x "$GIT_DIR/hooks/pre-commit"
 
 cat > "$GIT_DIR/hooks/pre-push" <<'EOF'
 #!/usr/bin/env bash
-# G3 quality gates + optional private CI mirror. Installed by .ai/setup.sh.
+# Branch guard + G3 quality gates + optional private CI mirror. Installed by .ai/setup.sh.
 # Emergency bypass: SKIP_GATES=1 git push   (use sparingly — gates fail open enough already)
 set -euo pipefail
 [ "${SKIP_GATES:-0}" = "1" ] && { echo "pre-push: gates skipped"; exit 0; }
+
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+# --- branch guard ------------------------------------------------------------
+# The branch rule was stated in three documents and enforced by none of them, which
+# made it a reminder rather than a rail. These are the two failures that are silent
+# until someone else pays for them.
+if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
+  echo "pre-push: refusing to push '$BRANCH' directly." >&2
+  echo "          Branch first, even for a one-line fix — see the 'commit' skill." >&2
+  exit 1
+fi
+
+# Rebase check. Against FETCH_HEAD rather than refs/remotes/origin/main, because
+# 'git fetch origin main' is not guaranteed to update the tracking ref, and a check
+# that silently compares against a stale ref is worse than no check.
+if git fetch origin main --quiet 2>/dev/null; then
+  BEHIND="$(git rev-list --count HEAD..FETCH_HEAD 2>/dev/null || echo 0)"
+  if [ "$BEHIND" -gt 0 ]; then
+    echo "pre-push: '$BRANCH' is $BEHIND commit(s) behind origin/main." >&2
+    echo "          Rebase now, so the conflict is yours and not the reviewer's:" >&2
+    echo "              git fetch origin && git rebase origin/main" >&2
+    exit 1
+  fi
+else
+  echo "pre-push: could not reach origin — rebase check skipped. Gates still run."
+fi
+
+# Naming is a warning, never a block: the client repo has three conventions already in
+# flight and renaming someone's existing branch is worse than the inconsistency.
+case "$BRANCH" in
+  feat/*|fix/*|refactor/*|docs/*|chore/*|style/*|test/*|perf/*|build/*|ci/*) ;;
+  *) echo "pre-push: note — '$BRANCH' is not <type>/SCRUM-###-<slug>. Not blocking." ;;
+esac
+
 echo "pre-push: G3 gates — lint, test, build"
 pnpm lint
 pnpm -r --if-present test
@@ -269,7 +334,7 @@ say "AI layer ready."
 say "  links created/updated : $CHANGED"
 say "  stale links pruned    : $PRUNED"
 say "  local edits backed up : $BACKED_UP$( [ "$BACKED_UP" -gt 0 ] && printf ' (see *.%s)' "$STAMP" )"
-say "  hooks                 : pre-commit (husky delegate), pre-push (G3 + mirror)"
+say "  hooks                 : pre-commit (husky delegate), pre-push (branch guard + G3 + mirror)"
 say ""
 say "Reminder: after 'pnpm install', run 'bash .ai/setup.sh' again"
 say "(husky resets the hooks path on install)."

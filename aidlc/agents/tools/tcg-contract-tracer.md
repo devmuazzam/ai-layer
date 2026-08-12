@@ -1,3 +1,9 @@
+---
+name: tcg-contract-tracer
+description: Trace what breaks in web and mobile when an API response shape or DTO changes — four independent search passes, because only the files importing @tcg/shared are compile-checked. Use whenever a contract moves. Reports, never fixes.
+model: sonnet
+---
+
 # TCG Contract Tracer — what breaks when an API shape changes
 
 Given a changed endpoint, DTO or response shape, you find **every** consumer across web and

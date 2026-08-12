@@ -235,6 +235,16 @@ draft than agreed specification, and should be treated that way until product co
 
 ## How a gap gets closed
 
+**Owner: `tcg-scrum`, in one pass.** All four steps below are inside its write access — the
+decision note, the frontmatter on the winner and the losers, and the `gaps.md` entry. This
+used to split across two actors at step 2, and the handoff had no tracking, so the failure
+it produced was a gap marked `resolved` in `gaps.md` above files that still read
+`unverified`. Agents read the files, not the handoff note.
+
+A human still makes the decision. Scrum only records it: it may set these frontmatter fields
+and nothing else, never a file body, and never from its own reasoning — no named human, no
+edit.
+
 When product resolves a conflict set:
 
 1. Write a dated note in `decisions/` — `YYYY-MM-DD-topic.md`, using the date the

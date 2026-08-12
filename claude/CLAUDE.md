@@ -26,6 +26,36 @@ where several documents disagree. If a file's `conflicts_with` is non-empty, do 
 one and answer from it — read the conflict stub. Open questions live in
 `.ai/vault/gaps.md`.
 
+## One memory, every tool
+
+Eight developers on four or more AI tools. **The memory is the files under `.ai/`, and
+nothing else counts.** Same content, same paths, whichever tool you are in — the overlay is
+one repo, symlinked into place, so two tools cannot hold different versions of a fact.
+
+**Never store a project fact in your tool's own memory.** Not Claude Code's memory, not
+Cursor Rules or memories, not Antigravity's, not a `.md` in your home directory, not a
+saved prompt. A fact kept there is invisible to the other seven people and to every other
+tool, it survives no machine but yours, and **nothing anywhere reports the divergence** —
+you find out when two developers confidently give different answers.
+
+Anything worth keeping goes to exactly one of these, and each has an owner:
+
+| What you learned | Where it goes | Who writes it |
+| --- | --- | --- |
+| A named human decided something | `.ai/vault/decisions/` | `tcg-scrum` |
+| An open question nobody has answered | `.ai/vault/gaps.md` | any agent, append |
+| How we build — a convention, a rail | `.ai/claude/contexts/` | a human, from an accepted reflection |
+| A defect the loop made | `.ai/aidlc/reflections/INDEX.md` | `tcg-reflector` |
+
+**The test: if deleting your tool's local state would lose it, it is not memory yet.**
+
+Two consequences worth stating, because both are load-bearing. The overlay is a separate
+repo — a written fact reaches nobody until it is committed and pushed there, which is why
+`close-ticket` ends with that step. And **skills and subagents are Claude Code features**:
+on other tools the same procedures are still readable at their paths
+(`.ai/claude/skills/<name>/SKILL.md`, `.ai/aidlc/agents/`), they just are not invoked for
+you. The knowledge is portable; the automation is not. Open the file by path.
+
 ## Surface contexts
 
 Deeper rules live per surface. On Claude Code these load automatically when you work in
