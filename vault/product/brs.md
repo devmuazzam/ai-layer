@@ -10,6 +10,24 @@ topics: [requirements-spec, lunch-breaks, labor-payroll, time-tracking, notifica
 entities: [lunch-record, field-ticket, notification, labor-record, deficiency, signature, employee, union-code, downtime, job]
 ---
 
+> **Migration note, added 2026-08-13 — not part of the source document.**
+> Three rules below are marked as needing documentation or validation, and a payroll document
+> set migrated on 2026-08-13 (from a OneDrive drop, not Confluence) speaks directly to them:
+>
+> - **`BRS-LUNCH-005` Lunch Threshold Values** (📄 Needs Supporting Documentation) —
+>   [payroll/wtl-charts.md](../payroll/wtl-charts.md) gives four thresholds (5:01, 10.5:01,
+>   16:01, 21.5:01); the union agreement gives the underlying 5-consecutive-hour rule.
+> - **`BRS-LUNCH-002` Multiple Lunch Threshold Support** (✓ Confirmed) — lists **three** known
+>   lunches. Payroll models **four**. **These disagree, and the BRS side is marked Confirmed.**
+> - **`BRS-PAY-003` Previous Day Rest Validation** (⚠ Needs Client Validation) — the eight-hour
+>   rest rule is contract text in
+>   [payroll/mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](../payroll/mcog-l12-mla-2025-2028/01-article-iii-working-rules.md)
+>   and is already implemented in the legacy Payroll App.
+>
+> This note does **not** resolve those statuses — a payroll document is not a client validation,
+> and the two sets were written by different people for different modules. See
+> [gaps.md](../gaps.md) → *Field-ops lunch capture vs payroll WTL*.
+
 **The BRS is not a place to design future behavior.**
 
 The BRS is a place to **capture discovered business rules**, identify **gaps**, and record **unknowns that require validation**.

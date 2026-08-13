@@ -304,3 +304,251 @@ from these sets — surface the conflict and cite all candidates.
   question in §3 of `.ai/aidlc/SCRUM-757/spec.md`.
 - Owner: product team
 - Status: open
+
+---
+
+# Payroll gaps
+
+Raised by the OneDrive payroll migration of 2026-08-13. Unlike the entries above, these are
+**not** conflicts between competing documents — the payroll sources agree with each other. They
+are questions the source documents themselves mark as unanswered, and in most cases name the
+person or function who has to answer them.
+
+## Payroll rule applicability by Payroll Group
+
+- Question: which payroll rules apply to which of the five Payroll Groups?
+- Candidates: none — this is unanswered, not contested.
+- Note: **this is the single largest open area in payroll, and both independent sources say so.**
+  The legacy Payroll App grew from an L12 union baseline, so its current behaviour reflects
+  "what was built first", not a decision. `payroll/payroll-app-current-state/08-known-issues-and-next-decisions.md`
+  names it "the highest priority next design area"; `payroll/erp-payroll-module-frd/11-security-decisions-and-acceptance.md`
+  lists eight of its 24 required decisions under it. Specifically unresolved: which L12 rules
+  apply to **mechanics** (the applicability matrix says "Confirm" on eleven separate rows); the
+  final **non-union hourly** overtime matrix; whether **non-union salary** rows should be
+  payroll-calculated, audit-only, or excluded entirely; whether WTL tokens should be required
+  only for L12 union rows; and whether subsistence applicability varies by group.
+  **Do not infer the answer from what the legacy system does — that is the thing being questioned.**
+- Blocked: any payroll rule implementation that is not L12-Field-only.
+- Owner: TCG management, payroll leadership, and labor counsel — named as such in both documents.
+- Status: open
+
+## The 24 decisions required before the payroll rule catalog is final
+
+- Question: the ERP requirements document's section 25 list, in full.
+- Candidates: none.
+- Note: reproduced in `payroll/erp-payroll-module-frd/11-security-decisions-and-acceptance.md`.
+  Beyond the payroll-group questions above, they include: the **half-hour rounding method**;
+  **source priority** between labor times and job-ticket times; **cross-midnight day-type
+  policy**; whether a **Sunday minimum** applies; the exact **reporting-time and
+  crane-remains-on-job decision tree**; **long-boom and lattice-boom** source-data requirements;
+  the **higher-rate-for-the-entire-day** interpretation; **worked-meal calculation for weekdays
+  vs weekends and holidays**; replacing **WTL comment tokens with structured meal records**;
+  **subsistence distance calculation** and the employer-election workflow; the **apprentice-hour
+  accumulation source**; **fringe-benefit treatment per paid component**; **which errors block
+  payroll approval**; **who may reopen a processed period**; and the **record-retention period**.
+- Note also: the document is **Draft 0.1** and states it "should not be interpreted as final
+  legal advice". The rule matrix carries a per-rule "Confirmation / Open Decision" column that is
+  populated for all 68 rules, and leaves all ten implementation-tracking columns blank.
+- Blocked: treating any payroll rule as specified.
+- Owner: TCG management, payroll team, labor counsel, union representatives.
+- Status: open
+
+## ADP export mapping — 9 open decisions, 6 blocking
+
+- Question: which ADP codes, tax treatments and import methods do the new pay components use?
+- Candidates: none.
+- Note: enumerated as D-001…D-009 in `payroll/adp-bucket-crosswalk.md`, which marks six of them
+  **"Blocks CodingCops: Yes"**. The blocking six: a complete live **ADP validation-table export**
+  (D-001); codes for **guaranteed hours** ST/OT/DT (D-002); a code for the **rest-period premium**
+  (D-003); a code for the **WTL/missed-meal premium** (D-004); a dedicated **Special Saturday**
+  code (D-005); confirmation that **HDD means Holiday Double and HOL means Holiday Triple** in the
+  live ADP setup (D-006); plus accumulator/hours-flag settings for every new code (D-009).
+- Note also: an identifier collision that is not yet a decision but will bite — the current
+  paydata workbook uses **ADP Co Code 4RZ** while the validation-table export in the same drop is
+  stamped **Company Code 631**. The crosswalk instructs treating them as different identifiers
+  until ADP confirms. The 631 export is also **incomplete**: it lacks the lattice premiums, the
+  shift differentials and `LBT`, all of which the crosswalk marks CURRENT - implemented.
+- Blocked: the ADP export rule (`PR-067` in the rule matrix, `PR-055` in the requirements
+  document — see the id warning).
+- Owner: payroll manager, ADP administrator, HR/accounting depending on the decision.
+- Status: open
+
+## Union agreement — three source PDFs are unreadable scans
+
+- Question: not a product question — a retrieval gap worth recording.
+- Note: three of the five full copies of the Local 12 Master Labor Agreement in the source drop
+  are **scanned images with no text layer**. `pdftotext` returns zero characters. They are
+  `MCOG-O. E. Local 12 Truck Crane Master Labor Agreement 2025-2028.pdf` (3.4 MB),
+  `07.01.2025 truck crane MLA (1).pdf` (2.6 MB), and `OE-Local-12-MLA-25-28-Comp.pdf` (2.4 MB).
+  The payroll-relevant articles are available via the extract in
+  `payroll/mcog-l12-mla-2025-2028/`, so this blocks nothing today — but **any question that
+  reaches outside the payroll articles cannot currently be answered from the vault**, and would
+  need OCR or the SCCA-hosted copy.
+- Note also: the workbook that cites the SCCA copy warns its own text extraction "may [contain]
+  some minor (but important) errors when converting".
+- Blocked: nothing today.
+- Owner: whoever next needs a non-payroll article of the agreement.
+- Status: open
+
+## Field-ops lunch capture vs payroll WTL
+
+- Question: the mobile app captures lunch events and the payroll module prices them, but the two
+  document sets were written independently and disagree. Which side is right on each point, and
+  who owns the reconciliation?
+- Candidates: not a choice between documents — a seam between two modules, both specified,
+  neither citing the other.
+  - Capture side: `product/brs.md` (BRS-LUNCH-001…005, BRS-PAY-003), plus `FR-FOP-013`
+    Lunch Monitoring / Lunch Timer and Alerts, `FR-FOP-014` Lunch Recording, `FR-FOP-015` Work
+    Through Lunch, `FR-FOP-023` Labor Details. **The `FR-FOP-NNN` ids are themselves ambiguous
+    across the two field-ops FRDs** — see *Field operations mobile app* above.
+  - Pricing side: `payroll/wtl-charts.md`, `payroll/mcog-l12-mla-2025-2028/01-article-iii-working-rules.md`
+    (Meal Periods, Rest Periods), `payroll/payroll-app-current-state/03-payroll-rule-catalog.md`
+    (`WTL_MEAL_DEDUCT`, `WTL_DT_FLOOR`, `WTL_APPLICABLE_ADD`, `REST_PERIOD_PREMIUM`).
+- **Updated 2026-08-13 after the Confluence drift re-migration.** The Atom user-stories page
+  (Confluence v10, updated 2026-08-11) now states lunch thresholds explicitly for the first time,
+  which turns a silence into a **numeric contradiction**:
+
+  | Lunch | Atom mobile app (v10) | Payroll WTL charts (rev. 2026-01-23) | |
+  | --- | --- | --- | --- |
+  | 1 | before **5** hours | marker at **5:01** | consistent |
+  | 2 | before **10.5** hours | marker at **10.5:01** | consistent |
+  | 3 | before **16.5** hours | marker at **16:01** | **disagree by 0.5 h** |
+  | 4 | before **22** hours | marker at **21.5:01** | **disagree by 0.5 h** |
+
+  The payroll charts cite the L12 Master Labor Agreement, page 26 section F, and were revised by
+  Danny Bryan and Mike Vlaming. The Atom page is a CodingCops-authored user story with no cited
+  source. **A missed third or fourth meal is a double-time penalty, so this is a money
+  difference.** An alert fired on the wrong threshold causes the penalty it exists to prevent.
+  Neither value should be implemented until reconciled.
+
+- Three further discrepancies:
+  1. **How many lunch thresholds exist.** `BRS-LUNCH-002` lists **three** (First, Second, Third)
+     and is marked **✓ Confirmed**. The payroll charts define **four**, and the Atom page (v10)
+     now also defines **four** (Lunch 1–4). Two independent sources say four; the ✓ Confirmed BRS
+     rule says three. **The BRS is now the outlier** and is most likely simply stale.
+  2. **Lunch threshold values.** `BRS-LUNCH-005` is marked **📄 Needs Supporting Documentation**.
+     The payroll drop supplies exactly that documentation — but it arrived four months later from
+     a different source, and a payroll chart is not the same thing as a validated business rule.
+     The charts are also hand-built and contain arithmetic that does not always reconcile (noted
+     in `payroll/wtl-charts.md`).
+  3. **Previous-day rest.** `BRS-PAY-003` is marked **⚠ Needs Client Validation** and mentions
+     "eight-hour rest periods, double-time implications". This is contract text in MLA Article III
+     and is already implemented (`app.usp_Apply_RestPeriod_Premium`, punitive until 8 hours rest
+     is received). The validation the BRS asks for may already exist in a form nobody connected.
+- Partially closed 2026-08-13: `BRS-LUNCH-003` (*Lunch Notification Timing*, ⚠ Needs Client
+  Validation) now has a candidate answer — the Atom page v10 specifies a notification **1 hour
+  before** each lunch is due. Nothing states that this page constitutes the client validation the
+  BRS asked for, so the status is not changed here.
+- Note: there is also a **silence**, not a disagreement. The payroll module's anchor-date rule —
+  a cross-midnight labor entry belongs to its *start* date — is stated only in
+  `payroll/payroll-concepts-shift-job-labor-entry.md`. **No field-ops requirement states it.**
+  So whether the capture side assigns cross-midnight entries the same way is unspecified, and the
+  ERP requirements document separately lists cross-midnight day-type policy among its 24 open
+  decisions. Getting this wrong puts hours in the wrong pay period, at the wrong multiplier.
+- Note also: this seam is why `payroll/` is not simply a sibling of `product/`. Payroll consumes
+  field-ops output. A change to lunch capture is a payroll change.
+- Blocked: nothing today — no ticket has reached the WTL/meal rule. It will block the first one
+  that does, and it will block any field-ops work that changes lunch capture.
+- Owner: product team to reconcile the BRS against the payroll sources; the three-vs-four
+  threshold count needs a payroll-team or union answer, not a product decision.
+- Status: open
+
+---
+
+# Gaps from the meeting minutes of 2026-08-05 / 07 / 12
+
+Raised by three sets of client meeting minutes supplied on 2026-08-13. These differ from every
+other entry here: they are not conflicts between documents but **named, owed deliverables** and
+**modules with no vault coverage at all**.
+
+## Labor Compliance module — no vault coverage
+
+- Question: what is the Labor Compliance module, end to end?
+- Candidates: [meetings/2026-08-07-labor-compliance-certified-payroll.md](meetings/2026-08-07-labor-compliance-certified-payroll.md)
+  is the **only source in the vault**. There is no FRD, no user stories, no BRS section.
+- Note: the module name was **agreed in that meeting** — "Labor Compliance" chosen as the primary
+  name because it encompasses Certified Payroll, Davis-Bacon and related requirements. It spans
+  quotation (a compliance indicator captured at quote time), payroll (Certified Payroll reports
+  generated from payroll data), and billing (processing fees, recurring compliance charges,
+  Non-Performance reporting). It also has an external integration, the **LCP Tracker**, linked by
+  project name.
+- The stated failure mode is worth repeating: **if a job is not marked as a Labor Compliance job
+  it will never appear in Certified Payroll reports.** Missed compliance reporting delays customer
+  payment. That argues the flag cannot be a field added later.
+- Blocked: any Labor Compliance work; also the Compliance Checklist action item on CC, which
+  cannot be specified before Corrina supplies the Davis-Bacon identification criteria.
+- Owner: Corrina (TCG) for the Davis-Bacon business rules and identification criteria; TCG for the
+  Labor Compliance setup form and Tracking Register; CC for the checklist evaluation.
+- Status: open
+
+## Sell-side scheduling artefacts — no vault coverage
+
+- Question: what are the Job Schedule Master, the Ready-to-Schedule Checklist, the One-Page
+  Customer Intake, the Geographic Heat Map, and "Red Path"?
+- Candidates: [meetings/2026-08-12-sell-side-workflow-and-scheduling.md](meetings/2026-08-12-sell-side-workflow-and-scheduling.md)
+  only. Brian Petros shared source files in the meeting; **those files are not in the vault**.
+- Note: **"Red Path" is undefined.** It is used as though established. Add it to the undefined-terms
+  list. Two scheduling rules stated in the meeting — cranes under maintenance must not be
+  selectable, and double booking must be *supported* where short jobs allow — belong to the Daily
+  Allocation System, and neither of that area's two conflicting sources covers either rule.
+- Note also: **permits** (annual vs job-specific, city eligibility, crane-travel permits) have no
+  vault coverage. The field-ops FRD lists permits only as a *Pending* BRS topic.
+- Blocked: the Customer Intake action item on CC, which depends on TCG confirming the intake
+  questions, fields and business rules.
+- Owner: TCG team for intake questions/fields/rules; Brian Petros for the workflow source files.
+- Status: open
+
+## Integrations — HubSpot, Microsoft 365, Dialpad, Mapsly
+
+- Question: what do the existing integrations do, and what should move into the ERP?
+- Candidates: **none of substance.** HubSpot appears once, in `product/user-story-and-tasks.md`,
+  which was migrated from an individual's personal Confluence space and carries a
+  `provenance_note` warning it may be a private draft rather than agreed specification.
+  **Dialpad, Mapsly and Microsoft 365 appear nowhere in the vault.**
+- Note: the 12 August minutes record that Patrick will demonstrate the working solution at the next
+  meeting. Until then there is no written source, and the one HubSpot mention should not be treated
+  as one.
+- Blocked: the action item to review existing integrations for ERP incorporation.
+- Owner: Patrick (demo), then whoever writes it down.
+- Status: open
+
+## ADP codes — TCG owes an updated export
+
+- Question: what are the ~16 new ADP payroll codes, and which existing codes changed?
+- Candidates: none. [payroll/adp-hour-earning-codes.md](payroll/adp-hour-earning-codes.md) is a
+  24-code export dated 2026-06-04, already known to be missing the lattice and shift-differential
+  codes the crosswalk marks as implemented.
+- Note: this is the **same request** as crosswalk decision **D-001**, which is marked
+  *Blocks CodingCops: Yes*. The 5 August meeting turned it into a named action item on the TCG
+  team. It is one gap, recorded in two places, and closing it closes both.
+- Blocked: the ADP export rule and any earning-code mapping work.
+- Owner: TCG team (payroll / ADP administrator).
+- Status: open
+
+## Payroll calculation logic — Brian owes a revised version
+
+- Question: has the payroll calculation logic changed since the documents in `payroll/`?
+- Candidates: the vault holds the 2026-08-05 rule matrix and the 2026-06-23 rule catalog. Brian
+  (TCG) undertook on 2026-08-05 to share **revised** calculation logic, plus comprehensive
+  documentation of all payroll rules, plus Corrina's Value Engineering / Payroll Workflow
+  documentation. **None has arrived.**
+- Note: until it does, the migrated payroll documents stand as written. **Do not assume a rule has
+  changed because a revision was promised.** When it arrives it may supersede parts of
+  [payroll/codingcops-rule-matrix.md](payroll/codingcops-rule-matrix.md) — treat that as a
+  re-migration, not an edit.
+- Blocked: nothing yet; it will block rule implementation that the revision touches.
+- Owner: Brian Petros (TCG); Corrina (TCG) for the Value Engineering workflow.
+- Status: open
+
+## Lattice Crane identification
+
+- Question: can Lattice Crane work be identified automatically, or must it be entered manually?
+- Candidates: today it is **manual** — the ADP crosswalk drives `LPR/LPO/LPD/LPT` and
+  `LOR/LOO/LOD/LOT` from `LATT_OPER` and `LATT_OILER` comment tokens.
+- Note: Brian raised on 2026-08-05 that this needs discussion with business stakeholders (Kyle and
+  Joe) to determine whether automatic identification is possible. Related but not identical:
+  `PR-044` *Lattice-boom premium* in the rule matrix is marked **New ERP requirement**, with
+  "Confirm interaction with long boom" outstanding.
+- Blocked: `PR-044`, and the lattice earning-code mappings.
+- Owner: Kyle and Joe (TCG business stakeholders), via Brian.
+- Status: open

@@ -44,3 +44,20 @@ FOP-002 and "Lunch Timer and Alerts" in FOP-001. Always cite the document as wel
 the requirement id.
 
 See the full entry in [`gaps.md`](../gaps.md) → *Field operations mobile app*.
+
+## What this app feeds
+
+_Added 2026-08-13._ This app is the **capture side** of payroll. Lunch events
+(`FR-FOP-013`/`014`/`015`), labor detail (`FR-FOP-023`), and start/end work
+(`FR-FOP-012`/`016`) become the labor entries the payroll module prices.
+
+Before specifying anything in that area, read [payroll/INDEX.md](../payroll/INDEX.md) — a
+separate document set, migrated 2026-08-13 from a OneDrive drop, which carries the union rules
+those captures have to satisfy. It is not one of the three candidates above and does not resolve
+the conflict between them; it is a **fourth source that none of them cites**.
+
+Two specific disagreements are already visible, both recorded in
+[`gaps.md`](../gaps.md) → *Field-ops lunch capture vs payroll WTL*:
+
+- the BRS lists **three** lunch thresholds and marks that ✓ Confirmed; payroll models **four**
+- the BRS marks lunch threshold **values** as missing documentation; payroll has them

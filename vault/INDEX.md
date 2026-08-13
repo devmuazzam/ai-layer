@@ -1,13 +1,15 @@
 # TCG vault index
 
-Read this first. 153 files, migrated from Confluence 2026-08-10.
+Read this first. 153 files migrated from Confluence 2026-08-10, plus 37 payroll files migrated
+from a OneDrive drop 2026-08-13.
 
-## Read these four lines before you answer anything
+## Read these five lines before you answer anything
 
 1. **Nothing here is verified except the six `domain/` SOP files.** Everything else is `status: unverified` — migrated faithfully, never adjudicated. It is not necessarily current.
 2. **Eight open conflicts.** If a file's `conflicts_with` is non-empty, do not pick one and answer from it. Read the conflict stub instead. List below. One of the eight was found *after* the migration, by a drift check against Confluence — the source keeps moving, so this list is not closed.
 3. **`FR-FOP-NNN` ids are ambiguous.** Both field-ops FRDs number their requirements from 001, so `FR-FOP-013` is *Lunch Monitoring* in one document and *Lunch Timer and Alerts* in the other. **Always cite the document as well as the id.** A bare "FR-FOP-013" identifies nothing.
-4. **`meetings/` is retrospective, not forward-looking.** Every sprint plan there was written after its sprint had already started; one was written four days after it ended. Do not read them as commitments.
+4. **`PR-NNN` ids are ambiguous too, and for the same reason.** The payroll requirements document and the payroll rule matrix each number their rules from 001, so `PR-010` is *Non-Union Salary Rate* in one and *L12 union base rate* in the other. Cite the document. See [payroll/INDEX.md](payroll/INDEX.md).
+5. **`meetings/` is retrospective, not forward-looking.** Every sprint plan there was written after its sprint had already started; one was written four days after it ended. Do not read them as commitments.
 
 ## Start here
 
@@ -19,6 +21,7 @@ Read this first. 153 files, migrated from Confluence 2026-08-10.
 | anything about vendors or agencies | [product/agencies-vendors-INDEX.md](product/agencies-vendors-INDEX.md) first — 4 sources, 2 entities |
 | anything about dispatch / DAS | [product/daily-allocation-INDEX.md](product/daily-allocation-INDEX.md) first |
 | anything about mobilization / demobilization | [product/mob-demob-INDEX.md](product/mob-demob-INDEX.md) first — 2 sources, only 1 migrated |
+| **anything about payroll, wages, overtime, union rules or ADP** | [payroll/INDEX.md](payroll/INDEX.md) first — a separate source, a separate migration, and its own four caveats |
 | a specific field-ops requirement | the FR-FOP tables at the bottom of this file, then the leaf file |
 | how the team runs sprints / Jira / reviews | the six SOP files in `domain/` — the only `verified` content in the vault |
 | what `FCC` or `NexGen` means | [domain/fcc-nexgen-fms.md](domain/fcc-nexgen-fms.md) — the only glossary entry. Every other domain term is still undefined; see "Undefined terms" below |
@@ -52,7 +55,13 @@ Full entries with candidates, sizes and dates in [gaps.md](gaps.md).
 | [domain/sprint-closing-sop.md](domain/sprint-closing-sop.md) | How does a sprint get formally closed? | 3.8 |
 | [domain/jira-sop.md](domain/jira-sop.md) | What must a ticket contain before it enters a sprint? | 2.9 |
 
-## meetings/ — sprint plans (retrospective, see caveat 4)
+## meetings/ — sprint plans (retrospective, see caveat 5) and client minutes
+
+**Two different kinds of file live here.** The sprint plans are retrospective Confluence pages;
+caveat 5 applies to them. The client meeting minutes are **forward-looking**, carry named action
+items, and caveat 5 does **not** apply.
+
+### Sprint plans (retrospective)
 
 | File | Answers | KB |
 | --- | --- | --- |
@@ -61,10 +70,58 @@ Full entries with candidates, sizes and dates in [gaps.md](gaps.md).
 | [meetings/2026-06-17-sprint-5-planning.md](meetings/2026-06-17-sprint-5-planning.md) | What was Sprint 5's goal? (body misdated 2025) | 0.7 |
 | [meetings/2026-07-14-sprint-6-plan.md](meetings/2026-07-14-sprint-6-plan.md) | What was Sprint 6's scope? | 1.1 |
 | [meetings/2026-07-30-sprint-8-planning.md](meetings/2026-07-30-sprint-8-planning.md) | What was Sprint 8's scope? (83 work items) | 0.9 |
+| [meetings/2026-07-30-sprint-8-report.md](meetings/2026-07-30-sprint-8-report.md) | Sprint 8's **goal** and the 4 in-scope field-worker app statements. Same 83-item count, still not listed. Added 2026-08-13 — the 3–7 report exclusion does not cover Sprint 8 | 1.9 |
+
+### Client meeting minutes (forward-looking, added 2026-08-13)
+
+| File | Answers | KB |
+| --- | --- | --- |
+| [meetings/2026-08-05-payroll-module-design-review.md](meetings/2026-08-05-payroll-module-design-review.md) | What was agreed about the Payroll Management module, and what does TCG owe us? | 6.5 |
+| [meetings/2026-08-07-labor-compliance-certified-payroll.md](meetings/2026-08-07-labor-compliance-certified-payroll.md) | **What is Labor Compliance / Certified Payroll?** The only source for a module with no other coverage | 7.5 |
+| [meetings/2026-08-12-sell-side-workflow-and-scheduling.md](meetings/2026-08-12-sell-side-workflow-and-scheduling.md) | What is the sell-side workflow — scheduling, permits, customer intake? | 6.0 |
+
+**Every action item in these three is outstanding** unless someone has confirmed otherwise. They
+are itemised in [gaps.md](gaps.md).
 
 ## decisions/ — empty by design
 
 Nothing in the source was a clean dated decision. See README for how a resolved gap lands here.
+
+---
+
+## payroll/ — the payroll module (separate source, migrated 2026-08-13)
+
+**Not from Confluence.** Migrated from a OneDrive drop dated 2026-08-11 — the payroll document
+set TCG assembled for CodingCops. 37 files. Read
+[payroll/INDEX.md](payroll/INDEX.md) first: it carries its own four caveats, of which the
+`PR-NNN` ambiguity (caveat 4 above) is one.
+
+**Confluence has no payroll documentation.** A search of the whole site on 2026-08-13 found the
+word "payroll" on six pages, all six already in this vault, all six field-ops or project pages
+mentioning it in passing. The payroll knowledge exists **only** in the OneDrive set. What
+Confluence *does* have is a pointer to it: the field-ops FRD's *BRS References* table
+([product/field-ops-frd/10-brs-references.md](product/field-ops-frd/10-brs-references.md)) links
+four SharePoint documents, and all four are files in this drop, filenames matching exactly. That
+table was omitted by the 2026-08-10 migration as out of scope and was **restored on 2026-08-13**
+now that its targets are here. It is the formal link between the two areas.
+
+| File | Answers | KB |
+| --- | --- | --- |
+| [payroll/INDEX.md](payroll/INDEX.md) | **Where do payroll answers come from, and what is unsettled?** | 6.0 |
+| [payroll/erp-payroll-module-frd/INDEX.md](payroll/erp-payroll-module-frd/INDEX.md) | What must the ERP payroll module do? Draft 0.1, 11 parts, 55 `PR-###` rules | 47.0 |
+| [payroll/codingcops-rule-matrix.md](payroll/codingcops-rule-matrix.md) | **Which rule do I build, and what is still undecided about it?** 68 rules | 20.8 |
+| [payroll/mcog-l12-mla-2025-2028/INDEX.md](payroll/mcog-l12-mla-2025-2028/INDEX.md) | What does the union contract actually say? 5 parts | 74.0 |
+| [payroll/payroll-app-current-state/INDEX.md](payroll/payroll-app-current-state/INDEX.md) | How does the legacy Payroll App behave today? 9 files | 51.0 |
+| [payroll/adp-bucket-crosswalk.md](payroll/adp-bucket-crosswalk.md) | How does a pay component become an ADP paydata field? 9 open decisions | 22.3 |
+| [payroll/adp-hour-earning-codes.md](payroll/adp-hour-earning-codes.md) | Which ADP Hours/Earnings codes exist? (partial export) | 2.9 |
+| [payroll/adp-sop-v3.8.md](payroll/adp-sop-v3.8.md) | How is payroll produced today, step by step? (the process being replaced) | 11.7 |
+| [payroll/payroll-concepts-shift-job-labor-entry.md](payroll/payroll-concepts-shift-job-labor-entry.md) | What is a Shift vs a Job vs a Labor Entry, and what is the anchor date? | 3.0 |
+| [payroll/wtl-charts.md](payroll/wtl-charts.md) | How do worked-through-lunch penalties land against Reg/OT/DT? 3 charts | 24.0 |
+| [payroll/rule-examples-catalog.md](payroll/rule-examples-catalog.md) | Which real labor entry demonstrates this rule? 28 test seeds | 11.4 |
+| [payroll/source-manifest.md](payroll/source-manifest.md) | Was this source file migrated, and if not why? All 33 | 7.1 |
+
+Three source PDFs of the union agreement **could not be read at all** — they are scans with no
+text layer. See the manifest.
 
 ---
 
@@ -83,11 +140,13 @@ Nothing in the source was a clean dated decision. See README for how a resolved 
 | ├ [01](product/frd-new-format-draft/01-overview.md) · [02](product/frd-new-format-draft/02-problem-statement.md) · [03](product/frd-new-format-draft/03-feature-scope.md) · [04](product/frd-new-format-draft/04-role-responsibility-model.md) | Overview, problem, scope, role model | 4.1 |
 | ├ [05-functional-requirements/](product/frd-new-format-draft/05-functional-requirements/INDEX.md) | **40 FR-FOP requirements** — see table below | 44.4 |
 | └ [06](product/frd-new-format-draft/06-key-user-flows.md) · [07](product/frd-new-format-draft/07-non-functional-requirements.md) · [08](product/frd-new-format-draft/08-open-questions.md) | User flows, non-functional reqs, open questions | 6.7 |
-| [atom-mobile-app-user-stories/INDEX.md](product/atom-mobile-app-user-stories/INDEX.md) | Same app as user stories — 20 stories, 5 EPICs | 0.9 |
-| ├ [01-authentication-onboarding.md](product/atom-mobile-app-user-stories/01-authentication-onboarding.md) | How do field staff and temp/vendor users sign in? | 1.4 |
-| ├ [02-home-dashboard.md](product/atom-mobile-app-user-stories/02-home-dashboard.md) | What does the crew see on opening the app? | 0.7 |
-| ├ [03-ticket-workflow.md](product/atom-mobile-app-user-stories/03-ticket-workflow.md) | The whole ticket lifecycle, US-5 → US-17 | 10.4 |
-| └ [04-safety-emergency.md](product/atom-mobile-app-user-stories/04-safety-emergency.md) · [05-employee-self-service.md](product/atom-mobile-app-user-stories/05-employee-self-service.md) | Incident reporting, SOS; profile and history | 1.3 |
+| [atom-mobile-app-user-stories/INDEX.md](product/atom-mobile-app-user-stories/INDEX.md) | Same app as user stories — **re-migrated 2026-08-13 from Confluence v10: now 22 stories, EPIC 1–17** | 4.0 |
+| ├ [00-overview.md](product/atom-mobile-app-user-stories/00-overview.md) · [01-authentication-and-dashboard.md](product/atom-mobile-app-user-stories/01-authentication-and-dashboard.md) | Workflow summary; sign-in, vendor OTP, dashboard | 4.2 |
+| ├ [02-ticket-assignment-and-pre-trip.md](product/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md) | Accept/reject, ticket details, pre-trip, left yard, travel, arrival, JSA | 7.4 |
+| ├ [03-work-execution-and-lunch.md](product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md) | Boom time, build-up/breakdown — and **lunch thresholds that contradict the payroll charts** | 6.7 |
+| ├ [04-completion-and-return.md](product/atom-mobile-app-user-stories/04-completion-and-return.md) | Final signature, return travel, arrive yard, post-trip | 5.0 |
+| ├ [05-compliance-labor-and-review.md](product/atom-mobile-app-user-stories/05-compliance-labor-and-review.md) | **The payroll handoff** — compliance attestation, labor & unit details, review | 6.4 |
+| └ [06-safety-and-self-service.md](product/atom-mobile-app-user-stories/06-safety-and-self-service.md) | Incident reporting, SOS; profile and certifications | 2.8 |
 | [brs.md](product/brs.md) | Business requirements behind the field-ops app | 9.2 |
 
 ## product/ — quotations
