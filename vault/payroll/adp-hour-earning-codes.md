@@ -15,16 +15,29 @@ entities: [adp-code, earning-code, hours-earnings]
 Exported 2026-06-04. This is the ADP-side list of Hours/Earnings codes the payroll export can
 target.
 
-> **Identifier warning.** This export is stamped **Company Code 631**, while the current paydata
-> workbook uses **ADP Co Code 4RZ**. The crosswalk instructs that these be treated as *different*
-> ADP identifiers until ADP confirms their intended contexts — **do not substitute one for the
-> other**. See [adp-bucket-crosswalk.md](adp-bucket-crosswalk.md), decision **D-001**.
+> ## ⚠ SUPERSEDED 2026-08-13
+>
+> **Use [adp-api-responses/pay-data-input-meta.md](adp-api-responses/pay-data-input-meta.md)
+> instead.** A live call to ADP's Payroll Data Input `/meta` endpoint returned the complete
+> current table — **52 codes** against this file's 24 — and settled both warnings below.
+>
+> This file is kept as the historical record of what was believed on 2026-06-04, and because the
+> `Accumulators` / `Category` / `Include in Total Hours Worked` columns it carries are **not**
+> returned by the API. For those attributes it remains the only source, partial as it is
+> (crosswalk **D-009**).
 
-> **Incomplete for the target design.** Several codes the crosswalk depends on are **absent** from
-> this export — notably the lattice premiums (`LPR/LPO/LPD/LPT`, `LOR/LOO/LOD/LOT`), the shift
-> differentials (`S2R/S2O/S2D/S2T`, `S3R/S3O/S3D/S3T`), and `LBT`. Two codes (`LOB`, `OTH`) carry
-> no description at all. Crosswalk decision **D-001** asks for a complete re-export; treat this
-> file as partial evidence, not the validation table.
+> **Identifier warning — RESOLVED.** This export is stamped **Company Code 631**, while the
+> paydata workbook uses **4RZ**. ADP's live response gives the company codes as **`4RZ`**
+> (THE CRANE GUYS LLC) and **`4RY`** (The Crane Guys, LLC - Ventura). **`631` is not a company
+> code**, so the two were never competing values for the same field. Do not carry the ambiguity
+> forward.
+
+> **Incomplete — CONFIRMED, and now closed.** The codes flagged missing here really are absent
+> from this export: the lattice premiums (`LPR/LPO/LPD/LPT`, `LOR/LOO/LOD/LOT`), the shift
+> differentials (`S2R/S2O/S2D/S2T`, `S3R/S3O/S3D/S3T`), and `LBT`. **All of them exist in ADP** —
+> this export was partial, not evidence of absence. Also missing from it and live in ADP: the
+> Foreman codes `FRR/FRO/FRD/FRT`, the Military codes `MLR/MLO/MLD/MLT`, plus `CAO`, `1XQ`, `1XX`
+> and `VT1`. One code listed here, **`LOB`**, does **not** appear in the live table at all.
 
 
 | Code | Description-English (US) | Classification | Default Field Number | Status | Short Description | Accumulators | Category | Include in Total Hours Worked |

@@ -47,7 +47,12 @@ that produced the rest of the vault.
 | **which rule to build, and its status** | [codingcops-rule-matrix.md](codingcops-rule-matrix.md) — 68 rules, each with trigger, required inputs, expected output, baseline status, open decision |
 | what the union contract actually says | [mcog-l12-mla-2025-2028/INDEX.md](mcog-l12-mla-2025-2028/INDEX.md) — contract text, payroll articles |
 | how the current system behaves | [payroll-app-current-state/INDEX.md](payroll-app-current-state/INDEX.md) — legacy app, 9 files |
+| **what the legacy code actually implements** | [legacy-payroll-app-code-extract.md](legacy-payroll-app-code-extract.md) — rules extracted from the real source (`projects.rar`, Jul 2026). Rule-applicability answered for current behaviour; the ADP File # validation bug; foreman/military premiums confirmed never implemented |
 | how payroll reaches ADP | [adp-bucket-crosswalk.md](adp-bucket-crosswalk.md), then [adp-hour-earning-codes.md](adp-hour-earning-codes.md) |
+| **what ADP's API actually permits** | [adp-integration-capabilities.md](adp-integration-capabilities.md) — researched 2026-08-13. **Read before designing any ERP↔ADP sync** |
+| **how ADP events work** | [adp-event-notifications.md](adp-event-notifications.md) — 147 subscribable events, polling vs webhook is exclusive, and notifications fire on **issue** date not effective date |
+| **which ADP codes actually exist** | [adp-api-responses/](adp-api-responses/INDEX.md) — **live responses from production ADP**, captured 2026-08-13. The real code table, the real company codes. Where this and a design document disagree, this wins |
+| the Foreman and Military Base premiums | [foreman-and-military-premiums.md](foreman-and-military-premiums.md) — **in no other document**; supplied by Brian Petros 2026-08-09 |
 | how payroll is produced *today* | [adp-sop-v3.8.md](adp-sop-v3.8.md) — the Excel/Power Query/VBA process being replaced |
 | what Shift vs Job vs Labor Entry means | [payroll-concepts-shift-job-labor-entry.md](payroll-concepts-shift-job-labor-entry.md) — **read before any time-based rule** |
 | how worked-through-lunch actually lands | [wtl-charts.md](wtl-charts.md) — the payroll team's own lookup charts |

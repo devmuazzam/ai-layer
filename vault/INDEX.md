@@ -96,6 +96,14 @@ set TCG assembled for CodingCops. 37 files. Read
 [payroll/INDEX.md](payroll/INDEX.md) first: it carries its own four caveats, of which the
 `PR-NNN` ambiguity (caveat 4 above) is one.
 
+**Two files added 2026-08-13 that are not from either migration.**
+[payroll/foreman-and-military-premiums.md](payroll/foreman-and-military-premiums.md) records the
+Foreman ($3/hr) and Military Base ($10/hr) premiums supplied by Brian Petros over chat on
+2026-08-09 — rules that exist in **no specification document**, in his own words. And
+[payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md) documents what
+ADP's API actually permits — **read it before designing any ERP↔ADP sync**, because ADP's own
+guide states the sync is one-way and reconciliation is manual.
+
 **Confluence has no payroll documentation.** A search of the whole site on 2026-08-13 found the
 word "payroll" on six pages, all six already in this vault, all six field-ops or project pages
 mentioning it in passing. The payroll knowledge exists **only** in the OneDrive set. What

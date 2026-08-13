@@ -23,13 +23,13 @@ never reconciled. Cite all three and say they disagree, or point the reader here
 | --- | --- | --- | --- | --- |
 | [frd-new-format-draft/INDEX.md](frd-new-format-draft/INDEX.md) | 55.6 KB, 9 parts | 2026-06-09 | **FR-TCG-FOP-001 v1.1 — REVIEWED** | 40 numbered requirements (FR-FOP-001…040). Only document with time rounding, auto-save, audit trail, live ticket visibility, signature fraud prevention, and a non-functional requirements section. Carries `_(Updated v1.1)_` / `_(New v1.1)_` revision markers. |
 | [field-ops-frd/INDEX.md](field-ops-frd/INDEX.md) | 46.2 KB, 12 parts | 2026-06-16 | **FR-TCG-FOP-002 v2.0 — DRAFT** | 30 numbered requirements (FR-FOP-001…030). Only document with role definitions, an operational workflow overview, a requirements summary, workflow-affecting business rules, and ticket draft management. |
-| [atom-mobile-app-user-stories/INDEX.md](atom-mobile-app-user-stories/INDEX.md) | 15.0 KB, 6 parts | 2026-07-22 | none | 20 user stories in 5 EPICs, written as user stories with acceptance criteria rather than numbered requirements. Only document with the end-to-end step flow written as a single line, and with temporary/vendor OTP access. |
+| [atom-mobile-app-user-stories/INDEX.md](atom-mobile-app-user-stories/INDEX.md) | **34.5 KB, 7 parts** | **2026-08-11** | none | **22 user stories, EPIC 1\u201317 as labelled** (re-migrated 2026-08-13 from Confluence v10 \u2014 the page roughly doubled). Written as user stories with acceptance criteria rather than numbered requirements. Only document with the end-to-end step flow written as a single line, with temporary/vendor OTP access, and \u2014 new in v10 \u2014 **explicit lunch thresholds, Build-Up/Breakdown/Boom Time, and the compliance + labor handoff to payroll**. |
 
 ## Why this cannot be resolved by any rule
 
 Every ordering heuristic gives a different winner:
 
-- **Newest** → the 15 KB user-story page
+- **Newest** → the Atom user-story page (now 2026-08-11, and no longer the smallest)
 - **Largest** → FR-TCG-FOP-001
 - **Only one marked REVIEWED** → FR-TCG-FOP-001
 - **Highest version number** → FR-TCG-FOP-002
