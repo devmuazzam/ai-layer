@@ -13,8 +13,13 @@ agents/
 ├── construction/   tcg-executor, tcg-analyst
 ├── reflection/     tcg-reflector
 ├── tools/          tcg-contract-tracer, tcg-prisma-guardian
+├── examples/       each agent's three worked cases — read on demand, not loaded with the agent
 └── tcg-scrum.md    the unblocker — outside the phase model
 ```
+
+`examples/` files are deliberately **not** named `tcg-*.md`: `setup.sh` flat-links every
+`tcg-*.md` into `claude/agents/` as a registered subagent, and an examples file must not
+register as one.
 
 **Agent names stay role-based; only the folders carry phase.** A role is what an agent
 *is* and it does not change; a phase is *when it runs* and it may. Renaming files to match
@@ -69,12 +74,20 @@ someone has to decide something nobody specified.** See
 - **Stopping is a result.** "Nothing is written about this" is a finding, delivered with the
   question that would settle it — not a failure to be worked around.
 
-## Model tier — assigned by how much judgement the task needs
+## Model tier — Sonnet by default, Opus by explicit escalation
 
-| Tier | Agents | Why |
+| Default | Agents | Why |
 | --- | --- | --- |
-| **Strong** (Opus-class) | elaborator, decomposer, analyst, reflector, scrum | Judgement: is this requirement genuinely sourced, do these documents actually conflict, does this unit ship alone, does this finding survive refutation. A weaker model gets all of those wrong **in the same direction** — toward the confident, complete, fabricated answer |
-| **Mid** (Sonnet-class) | executor, contract-tracer, prisma-guardian | Building to a fixed spec, or exhaustive checking against a known rule. Breadth matters more than judgement, and the failure mode is *missing* something rather than *misjudging* it |
+| **Opus** | scrum | Runs rarely and briefly — one question, one answer — and the answer becomes a durable decision. The judgement is worth the spend and the spend is small |
+| **Sonnet** | elaborator, decomposer, analyst, reflector, contract-tracer, prisma-guardian | Every seat is on a $20 plan; an Opus elaboration can spend most of a five-hour window on its own. Each of these agents names, in its own *Model tier* section, the cases where one Opus run is worth it — an open conflict, payroll/ADP, prisma/tenancy/auth, a third occurrence — and the run is requested explicitly ("run tcg-elaborator on opus"), never made the default |
+| **Inherits the session** | executor | Set the session to Sonnet before invoking it. Building to a fixed spec does not need the top tier; the one judgement call it has to make was rewritten as a lookup — see below |
+
+The original design put the first four on Opus, on the argument that judgement work fails
+*in the same direction* on a weaker model — toward the confident, complete, fabricated
+answer. That argument is still right, which is why every one of those agents also carries a
+procedural check a Sonnet run can be held to (the source-count self-check, the coverage
+table, the refutation pass, §5's applicability test), and why the escalation triggers exist.
+The full budget discipline is `aidlc/GUIDE.md` §14.
 
 **The executor is the awkward one, and the resolution is structural rather than a caveat.**
 Its most important behaviour — stopping when the spec is silent — is a judgement call, which
@@ -92,8 +105,8 @@ correctly assessing its own certainty.
 
 That is this layer's own thesis applied to itself: **a rule that depends on remembering is
 not a rule.** If the first live tickets show executors filling gaps anyway, the honest read
-is that the mechanical rule was insufficient — and the fix is strong tier, not a firmer
-reminder.
+is that the mechanical rule was insufficient — and the fix is one Opus run on the units
+that keep failing, not a firmer reminder.
 
 Cheap-tier work — commit messages, branch naming, running a gate — is not agent work at
 all. That belongs in a skill; see `claude/skills/commit/`.

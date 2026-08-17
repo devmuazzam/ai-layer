@@ -24,7 +24,8 @@ Two things about the vault that change how you read it: most of it is `status:
 unverified` (migrated from Confluence, never adjudicated), and it has open conflicts
 where several documents disagree. If a file's `conflicts_with` is non-empty, do not pick
 one and answer from it — read the conflict stub. Open questions live in
-`.ai/vault/gaps.md`.
+`.ai/vault/gaps.md` (product) and `.ai/vault/payroll/gaps.md` (payroll, ADP). **Read either by
+section** — `grep -n '^## '` first, then only your entries — never whole.
 
 ## One memory, every tool
 
@@ -43,7 +44,7 @@ Anything worth keeping goes to exactly one of these, and each has an owner:
 | What you learned | Where it goes | Who writes it |
 | --- | --- | --- |
 | A named human decided something | `.ai/vault/decisions/` | `tcg-scrum` |
-| An open question nobody has answered | `.ai/vault/gaps.md` | any agent, append |
+| An open question nobody has answered | `.ai/vault/gaps.md`, or `payroll/gaps.md` for payroll and ADP | any agent, append |
 | How we build — a convention, a rail | `.ai/claude/contexts/` | a human, from an accepted reflection |
 | A defect the loop made | `.ai/aidlc/reflections/INDEX.md` | `tcg-reflector` |
 
@@ -154,6 +155,6 @@ convention was followed.
 ## Elsewhere
 
 - `.ai/vault/INDEX.md` — product knowledge, read first
-- `.ai/vault/gaps.md` — open product questions
+- `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` — open questions, product and payroll
 - `.ai/aidlc/agents/` — the AI-DLC phase agents
 - `.ai/vault/sync/confluence-sync.md` — how the vault tracks Confluence
