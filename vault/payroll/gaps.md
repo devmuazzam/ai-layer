@@ -591,9 +591,31 @@ someone has confirmed otherwise.
   subscription, and its price is not public. The sandbox, the client certificate and the Postman
   collections are **all provisioned with the API Central project** — they are not publicly
   available and cannot be obtained by having an ADP account alone.
-- Blocked: every part of the ERP↔ADP integration, including any estimate of it.
+- **Sandbox — RESOLVED 2026-08-17: there is no client sandbox on API Central.** Sourced:
+  1. ADP's *Marketplace Partner Development Learning Guide*, ch. 2 (last modified 2026-06-22):
+     the test sandbox is requested via the **Partner Self Service Portal** ("integration projects
+     (DEV and PROD), request a test sandbox instance"; "Click into your Development project …
+     click on Test Instance … Request A Test Instance"). That portal and that sandbox belong to
+     Marketplace **partners**; TCG is an API Central **client** on the Launchpad.
+  2. API Central's own overview / features / adp.com product pages list certificate and
+     credential management, use-case templates and ticketed support — **no sandbox, test
+     environment or test data**.
+  3. The Postman collection ADP generated for the *TCG ERP Integration* project contains 32
+     request URLs, **all `https://api.adp.com`** — no test host.
+  4. Third-party confirmation (JobsPipe ADP API guide, Jul 2026): clients get credentials via
+     their ADP rep; partners "integrate against ADP's sandbox"; "no public self-serve testing
+     tier". (Fern, May 2026, mentions a sandbox "tied to API Central registration" — the partner
+     one.)
+  **Consequence:** the only safe write target for a client is a **test company code inside TCG's
+  own WFN instance, created by ADP on TCG's request**. Whether `4RY` (Ventura — no pay schedule)
+  is or could become that is a question for TCG/ADP. Whether an API credential can be scoped to
+  one company code is **unknown** — ask ADP; do not assert it.
+  Until then: read-only calls only; validate payloads locally against the captured
+  `pay-data-input.modify/meta`; a mock endpoint for ERP integration tests; any live write only
+  as a supervised, immediately-deleted batch with TCG payroll present — a TCG decision.
+- Blocked: write-path testing, until a test company exists.
 - Owner: TCG (ADP account administrator), with ADP.
-- Status: open
+- Status: open — product and entitlement resolved; **test company requested from TCG 2026-08-17**
 
 ## ERP↔ADP round trip — what happens when a practitioner edits the batch
 
