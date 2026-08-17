@@ -239,6 +239,13 @@ Consequences worth deciding before requesting it:
   laptop, not a shared drive. It is a production payroll credential from the moment it is issued.
 - **Rotation is a planned event, not an incident response.** ADP offers expiry tracking on this
   page, which is worth using.
+- **`invalid_client` is what a wrong *key* looks like, not only a wrong secret.** Learned the hard
+  way 2026-08-13/17: a token request presenting the right certificate with the wrong private-key
+  file gets the identical `{"error":"invalid_client"}` 401 (with ADP headers, `X-Ca-Err: 3003201`)
+  that a bad secret gets. Diagnose secret + certificate + key as one unit; verify the key matches
+  the certificate (`openssl x509 -pubkey` vs `openssl pkey -pubout`, compare hashes) before
+  resetting a credential. Full account in [gaps.md](gaps.md) → *`invalid_client` from ADP does not
+  mean the credentials are wrong*.
 
 ### What kind of certificate — and where it can come from
 

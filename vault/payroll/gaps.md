@@ -714,37 +714,39 @@ someone has confirmed otherwise.
 - Owner: Ehtesham Anwar (CodingCops) — has the role to do it directly.
 - Status: open — and the cheapest item on this entire list to close.
 
-## Changing an API Central project's entitlements disturbs the credential
+## `invalid_client` from ADP does not mean the credentials are wrong — RESOLVED 2026-08-17
 
-- Question: how long is the credential invalid after a project is modified, and does the secret
-  rotate or merely lapse?
-- **Observed 2026-08-13.** A working `client_credentials` token request began returning
-  `{"error": "invalid_client", "error_description": "The given client credentials were not valid"}`
-  **immediately after subscribing to the `pay-data-input.modify` event**. Same client ID
-  (`446ce6aa-…`), same token host, same certificate, and a token had been minted successfully
-  minutes earlier.
-- **Not a certificate problem.** A clean JSON OAuth error proves the mTLS handshake succeeded; a
-  certificate fault produces a socket/TLS failure instead. Useful diagnostic to remember.
-- Candidates: re-provisioning lag after an entitlement change, or a silent secret rotation. ADP
-  documents neither. Their Quick Start guide only notes that *"credentials are automatically
-  generated as soon as you start a new project and you can reset your credentials at any time"* —
-  so a reset on the Credentials page is the escape hatch.
-- **Why this matters far beyond today.** The pay period closes Friday and money moves the following
-  Thursday — a **six-day processing window**
-  ([payroll/adp-api-responses/pay-schedule.md](payroll/adp-api-responses/pay-schedule.md)). If
-  anyone adds an API or event subscription to the project mid-week and the credential lapses, **the
-  ERP cannot submit payroll**, with no warning and an error that looks nothing like a payroll
-  problem.
-- **Consequences for the build:**
-  1. **Treat API Central project changes as deployment events**, scheduled outside the submission
-     window — not as console tweaks anyone can make on a Tuesday.
-  2. **The ERP must handle `invalid_client` distinctly**: alert a human, do not retry blindly, and
-     never silently drop a batch. It is a credential-lifecycle failure, not a transient one.
-  3. **Whoever holds the `P` (Project user) role can trigger this.** Access to modify the project
-     is effectively access to interrupt payroll submission.
-- Blocked: nothing today. This is an operational rail for the integration.
-- Owner: CodingCops, with TCG payroll to agree a change window.
-- Status: open — duration and cause unconfirmed
+- Question (as first written 2026-08-13): does changing an API Central project's entitlements
+  invalidate the credential? **No. Retracted.**
+- **What was observed.** Right after subscribing to the `pay-data-input.modify` event, a Postman
+  token request began returning
+  `{"error": "invalid_client", "error_description": "The given client credentials were not valid"}`.
+  It was recorded here as a credential lapse caused by the project change.
+- **What it actually was (2026-08-17).** The failing Postman was on a **different machine
+  (Windows)** using a key file named `private.txt`; the working calls (curl, and the earlier
+  Postman) were on the Mac using `private.key` — the file that verifiably matches the project
+  certificate (public-key hashes compared 2026-08-17). Same client ID, same secret, same
+  certificate: only the private key file differed. The credential was never invalid; the event
+  subscription had nothing to do with it. Proven by a clean token from the Mac on 2026-08-17 with
+  unchanged credentials.
+- **The lesson that survives, and it is a sharper one:** ADP answers a *wrong or unusable client
+  key* with the **same** `invalid_client` message it uses for a wrong secret — a full HTTP 401 with
+  ADP headers (`Adp-Correlationid`, `X-Ca-Err: 3003201`), not a TLS failure. So `invalid_client`
+  means "the identity I saw does not match this client ID", and the identity is
+  **secret + certificate + private key together**. Check the key file before resetting anything.
+- **The earlier reasoning error, so nobody repeats it:** "a clean JSON error proves the mTLS
+  handshake succeeded, therefore it is not a certificate problem" — the handshake did succeed, but
+  that only proves *a* key/cert pair (or none) was presented, not that it was the *right* one.
+- **Consequences for the build (still valid, re-based on the real cause):**
+  1. The ERP must hold cert + key + secret as one unit in a secret manager, and log which
+     certificate serial it presented — so an `invalid_client` can be diagnosed in one look.
+  2. `invalid_client` is a configuration failure, not a transient one: alert a human, do not retry
+     blindly, never silently drop a batch. (Unchanged.)
+  3. Treating API Central project changes as scheduled deployment events remains sensible
+     hygiene, but it is no longer backed by an observed failure.
+- Owner: CodingCops.
+- Status: **closed** — cause found; the operational rails above are recorded in
+  [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
 
 ## Where do webhook events live in API Central, and what fires?
 
