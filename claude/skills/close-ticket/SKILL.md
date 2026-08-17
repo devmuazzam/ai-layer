@@ -81,7 +81,7 @@ Whatever path the ticket took, the executor and analyst may have appended to
 names an owner. A gap nobody owns is a note.
 
 ```bash
-git -C .ai diff origin/main -- vault/gaps.md
+git -C .ai diff origin/main -- vault/gaps.md vault/payroll/gaps.md
 ```
 
 ## 5. Push the overlay

@@ -132,7 +132,7 @@ one marked DRAFT.
 
 ## 4. Inception — what are we building?
 
-### `tcg-elaborator` · intent → `spec.md` · strong tier
+### `tcg-elaborator` · intent → `spec.md` · Sonnet default, Opus on escalation
 
 Reads the ticket, the vault (index first, then the conflict stub, then the file), and the
 rules for the surfaces involved. Produces a spec where every requirement carries its sources
@@ -149,7 +149,7 @@ still zero sources — it means one person was consistent.
 
 *Expect:* on a thin ticket, a spec that is mostly `[OPEN]`. That is correct output.
 
-### `tcg-decomposer` · spec → `units.md` · strong tier
+### `tcg-decomposer` · spec → `units.md` · Sonnet default, Opus on escalation
 
 Slices an approved spec into **vertical units**: schema → API → UI → tests for one piece of
 behaviour, each reviewable alone.
@@ -174,7 +174,7 @@ which is the laundering both exist to prevent.
 
 ## 5. Construction — build it, then check it honestly
 
-### `tcg-executor` · one unit → code · mid tier
+### `tcg-executor` · one unit → code · inherits the session — set it to Sonnet
 
 Branches from `origin/main` (`<type>/SCRUM-###-u<n>-<slug>`), builds the unit completely,
 runs the gates, stops.
@@ -197,7 +197,7 @@ and 11 are genuine runtime inversions. The distinction matters here because the 
 is what makes upward imports look normal, and the eleven are what actually couple the
 layers. `.ai/SUCCESS.md` §1 carries the split and how it was measured.
 
-### `tcg-analyst` · code → verdict · strong tier
+### `tcg-analyst` · code → verdict · Sonnet default, Opus on escalation
 
 Reviews the built unit against the unit and the spec. **Every finding is tagged VERIFIED
 (with the command that established it) or INFERRED (reasoned from reading), never blended.**
@@ -224,7 +224,7 @@ gap it filled is invisible to it, because from the inside those were not decisio
 
 ## 6. Reflection — so the next ticket is cheaper
 
-### `tcg-reflector` · what shipped → `reflection.md` · strong tier
+### `tcg-reflector` · what shipped → `reflection.md` · Sonnet default, Opus on third occurrence
 
 Three questions: what did the spec miss, what did the executor build against it, and which
 rule would have prevented it.
@@ -245,7 +245,7 @@ violated hundreds of times because nothing checked them.
 
 ---
 
-## 7. Alongside: `tcg-scrum` · strong tier
+## 7. Alongside: `tcg-scrum` · Opus — the one agent that keeps it
 
 Not a phase. Answers *"how is this supposed to work?"* from written sources at any point in
 the loop, or escalates honestly.
@@ -318,7 +318,8 @@ built through the loop; the skill is the ad-hoc path for a PR with no unit behin
                   across tickets, and the queue for proposed rule changes
 
 .ai/vault/        product knowledge — INDEX.md first, always
-.ai/vault/gaps.md the open-question register — 13 open today
+.ai/vault/gaps.md the open-question register, product half — read by section
+.ai/vault/payroll/gaps.md   the payroll and ADP half — same format, same rules
 .ai/vault/decisions/  what a named human settled, and why
 .ai/claude/contexts/  how to build, per surface
 ```
@@ -472,3 +473,74 @@ question is right now — before the code exists.
 - **Mechanical rails** — nothing enforces module boundaries, duplication, reuse, or
   hardcoded colour. Every one of those is currently a reminder, and the reflector is written
   to escalate when a reminder fails three times.
+
+---
+
+## 14. Token budget — the rules, per tool
+
+Everyone on the team is on a $20 plan. The loop as first written assumed the top model tier
+on five of eight agents and treated context as free; by the second sprint people were hitting
+their window mid-unit. What follows is what changed on 2026-08-17 and the discipline that
+keeps it fixed. **These are rules on how we run the loop, same standing as §3.**
+
+### What actually costs
+
+The fixed context — `CLAUDE.md`, the surface context, an agent's own prompt — is sent once
+and cached; it is not where the budget goes. **The budget goes on what gets read into the
+conversation and re-sent on every turn after that**: an 88 KB `gaps.md` read whole, a 40 KB
+spec, a full `git diff` of a long branch, a pasted log. And on the model multiplier — an
+Opus turn draws roughly five times what a Sonnet turn does from the same window. So the two
+levers, in order: **which model**, then **what you read**.
+
+### The rules
+
+1. **Sonnet is the default for every agent and every session.** `tcg-elaborator`,
+   `tcg-decomposer`, `tcg-analyst`, `tcg-reflector` and both tools declare `model: sonnet`;
+   `tcg-executor` inherits, so **set the session to Sonnet before invoking it.** Only
+   `tcg-scrum` stays on Opus — it runs rarely and briefly. Each agent's *Model tier* section
+   names its own escalation triggers (open conflict, payroll/ADP, prisma/tenancy/auth, a
+   third occurrence). Escalate **for one run, explicitly** — "run tcg-elaborator on opus" —
+   never by changing the default back.
+2. **Read by section, never whole.** `gaps.md`, `payroll/gaps.md`, any spec over ~15 KB, any
+   vault file over ~20 KB: `grep -n '^#'` first, then `sed -n` the section you need. The
+   only vault file meant to be read whole is `INDEX.md`, and it is a routing table — follow
+   its pointer, do not also read the neighbours.
+3. **One unit per session.** Start a fresh session (Claude Code) or chat (Cursor,
+   Antigravity) for each unit, and for each phase boundary. `units.md` is written to be
+   read cold; if it is not, that is a decomposer defect for the reflector, not a reason to
+   keep one long session.
+4. **Pick the path (§2) before you pick the agent.** Path B and C exist because running
+   inception on a bug is the most expensive way to learn the answer was on the ticket.
+5. **Tail, do not paste.** Logs, test output, diffs — the last 40 lines, or the failing
+   test, or `git diff --stat` and then one file. The agent can ask for more.
+6. **Worked examples are on demand.** Each loop agent's three examples now live in
+   `aidlc/agents/examples/<agent>.md` and are read only when a case is ambiguous. Do not
+   paste them back into the agent prompt.
+7. **Search with a cheap reader.** In Claude Code, broad "where is X used" questions go to
+   the built-in read-only Explore agent, not the main session. In Cursor, use codebase
+   search / `@` a specific file — never `@` a whole folder such as `.ai/vault` or
+   `.ai/aidlc`.
+
+### Per tool
+
+| | Model | Session hygiene | Check |
+| --- | --- | --- | --- |
+| **Claude Code** | `/model sonnet` at start. Agents carry their own `model:`; override per run by asking for it. | `/clear` between units. `/compact` if `/context` shows >60% before a long phase. Disable MCP servers and plugins this repo does not need — every attached server adds tool schemas to every session (`claude mcp list`, `/plugins`). | `/context` at start, `/usage` at end. |
+| **Cursor** | Model picker per chat: a Sonnet-class model or *Auto* for executor and analyst. **MAX mode off** for loop work. | New chat per unit. Open agent files by path (`.cursor/agents/<phase>/tcg-*.md`) — they are procedures, not attachments. `@` specific files, never folders. Root `AGENTS.md` is always attached, which is why nothing gets added to it casually. | Cursor's usage page in settings. |
+| **Antigravity** | Model picker per conversation, same rule as Cursor. | New conversation per unit; open `.agent/agents/...` by path. Its auto-load behaviour is unverified (README §4.3), so assume nothing is loaded that you did not open. | Its own usage view. |
+| **GitHub Copilot** (if used) | Its model picker; Sonnet-class. | Reads root `AGENTS.md` and nested `apps/*/AGENTS.md` like Cursor does; the same read-by-section and one-unit rules apply. | — |
+
+### What changed on 2026-08-17, with numbers
+
+- Agent defaults: four loop agents Opus → Sonnet; executor documented as "set the session".
+- `vault/gaps.md` 88 KB → 24 KB, payroll and ADP entries moved to `vault/payroll/gaps.md`
+  (64 KB, and read by section). Product-loop agents no longer carry the payroll register.
+- `vault/INDEX.md` 24 KB → 19 KB: FR-FOP numbering tables → `product/fr-fop-numbering.md`,
+  tag vocabulary → `tags.md`, payroll narrative and sprint-plan rows collapsed to pointers.
+- Agent prompts: worked examples moved to `aidlc/agents/examples/` — elaborator 25 → 21 KB,
+  scrum 21 → 15 KB, executor 14 → 12 KB, reflector 13 → 10 KB, decomposer 12 → 10 KB,
+  analyst 11 → 10 KB.
+
+If the window is still the constraint after this, the next lever is not more trimming — it is
+moving the one or two people who run inception most onto a higher plan, which is cheaper than
+the whole team stalling mid-unit.
