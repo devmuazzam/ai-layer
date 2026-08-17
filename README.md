@@ -295,9 +295,10 @@ ticket runs the full loop*.
 | | [`tcg-prisma-guardian`](aidlc/agents/tools/tcg-prisma-guardian.md) | Schema change — safe, isolated, efficient? Isolation first |
 | — | [`tcg-scrum`](aidlc/agents/tcg-scrum.md) | Unblocks from written sources or escalates. Never guesses |
 
-Model tier follows **how much judgement the task needs**, not seniority. Strong: elaborator,
-decomposer, analyst, reflector, scrum. Mid: executor, contract-tracer, prisma-guardian.
-Layout and tier reasoning in [`aidlc/agents/README.md`](aidlc/agents/README.md).
+Model tier: **Sonnet by default for every agent, Opus by explicit per-run escalation.** Only
+`tcg-scrum` stays on Opus. Each agent's *Model tier* section names when one Opus run is worth
+it. Reasoning in [`aidlc/agents/README.md`](aidlc/agents/README.md); the budget rules in §10
+below and [`aidlc/GUIDE.md`](aidlc/GUIDE.md) §14.
 
 **Branching and commits.** One unit, one branch, one PR —
 `<type>/SCRUM-###-u<n>-<slug>`, branched from `origin/main` and rebased onto it before
@@ -350,3 +351,80 @@ Honest state, so nobody rediscovers them.
 - [`aidlc/skills-and-rails-analysis.md`](aidlc/skills-and-rails-analysis.md) is a **dated
   record**, deliberately not updated. It references files that no longer exist; that is what
   makes it evidence.
+
+---
+
+## 10. Token budget — running the loop on a $20 plan
+
+Every seat on the team is on a Pro-tier plan. The loop as first written assumed the top model
+tier on five of eight agents and treated context as free; people were hitting their window
+mid-unit. This section is the guide for staying inside it, on every tool. The owner of these
+rules is [`aidlc/GUIDE.md`](aidlc/GUIDE.md) §14 — this is the same content, kept here so a new
+person meets it before their first ticket.
+
+### 10.1 What actually costs
+
+- **The fixed context is cheap.** `CLAUDE.md`, the surface context, an agent's own prompt —
+  sent once, cached. Trimming those helps a little; it is not where the budget goes.
+- **What you read into the conversation is expensive**, because it is re-sent on every turn
+  after that: an 88 KB gaps register read whole, a 40 KB spec, a full `git diff` of a long
+  branch, a pasted log.
+- **The model is a multiplier on all of it.** An Opus turn draws roughly five times what a
+  Sonnet turn does from the same window.
+
+So the two levers, in order: **which model**, then **what you read**.
+
+### 10.2 The seven rules
+
+1. **Sonnet is the default — every agent, every session.** `tcg-elaborator`,
+   `tcg-decomposer`, `tcg-analyst`, `tcg-reflector`, `tcg-contract-tracer` and
+   `tcg-prisma-guardian` declare `model: sonnet`. `tcg-executor` inherits the session, so
+   **set the session to Sonnet before invoking it**. Only `tcg-scrum` stays on Opus — it runs
+   rarely and briefly. Escalate to Opus **for one run, explicitly** ("run tcg-elaborator on
+   opus") when the agent's own *Model tier* section says so: the ticket touches an open
+   conflict, is payroll or ADP, the unit touches `prisma`/tenancy/auth, or the reflector sees a
+   third occurrence. Never by changing the default back.
+2. **Read by section, never whole.** `vault/gaps.md`, `vault/payroll/gaps.md`, any spec over
+   ~15 KB, any vault file over ~20 KB: `grep -n '^#'` first, then `sed -n` the section you
+   need. The only vault file meant to be read whole is `vault/INDEX.md`, and it is a routing
+   table — follow its pointer, do not also read the neighbours.
+3. **One unit per session.** A fresh session (Claude Code) or chat (Cursor, Antigravity) per
+   unit and per phase boundary. `units.md` is written to be read cold; if it is not, that is a
+   decomposer defect for the reflector, not a reason to keep one long session.
+4. **Pick the path before the agent.** Path B (bug) and C (small change) in the GUIDE's *Not
+   every ticket runs the full loop* exist because running inception on a bug is the most
+   expensive way to learn the answer was already on the ticket.
+5. **Tail, do not paste.** The last 40 lines of a log, the failing test, `git diff --stat`
+   then one file. The agent can ask for more.
+6. **Worked examples are on demand.** Each loop agent's three examples live in
+   [`aidlc/agents/examples/`](aidlc/agents/examples/) and are read only when a case is
+   ambiguous. Do not paste them back into a prompt.
+7. **Search with a cheap reader.** Claude Code: broad "where is X used" questions go to the
+   built-in read-only Explore agent, not the main session. Cursor: codebase search or `@` a
+   specific file — never `@` a whole folder such as `.ai/vault` or `.ai/aidlc`.
+
+### 10.3 Per tool
+
+| | Model | Session hygiene | Check |
+| --- | --- | --- | --- |
+| **Claude Code** | `/model sonnet` at start. Agents carry their own `model:`; override per run by asking for it. | `/clear` between units. `/compact` if `/context` shows >60% before a long phase. Disable MCP servers and plugins this repo does not need — every attached server adds tool schemas to every session (`claude mcp list`, `/plugins`). | `/context` at start, `/usage` at end. |
+| **Cursor** | Model picker per chat: a Sonnet-class model or *Auto* for executor and analyst. **MAX mode off** for loop work. | New chat per unit. Open agent files by path (`.cursor/agents/<phase>/tcg-*.md`) — they are procedures, not attachments. `@` specific files, never folders. Root `AGENTS.md` is always attached, which is why nothing is added to it casually. | Cursor's usage page in settings. |
+| **Antigravity** | Model picker per conversation, same rule as Cursor. | New conversation per unit; open `.agent/agents/...` by path. Its auto-load behaviour is unverified (§4.3) — assume nothing is loaded that you did not open. | Its own usage view. |
+| **GitHub Copilot** (if used) | Its model picker; Sonnet-class. | Reads root `AGENTS.md` and nested `apps/*/AGENTS.md` like Cursor does; the same read-by-section and one-unit rules apply. | — |
+
+### 10.4 What changed on 2026-08-17, with numbers
+
+| Lever | Before | After |
+| --- | --- | --- |
+| Agent model defaults | 5 of 8 on Opus, executor inherits | 1 of 8 on Opus (`tcg-scrum`); four loop agents on Sonnet; executor documented as "set the session to Sonnet" |
+| `vault/gaps.md` | 88 KB, one register | 24 KB product + [`vault/payroll/gaps.md`](vault/payroll/gaps.md) 64 KB; both open with a read-by-section rule; all 57 entries kept |
+| `vault/INDEX.md` | 24 KB | 19 KB — FR-FOP numbering → [`product/fr-fop-numbering.md`](vault/product/fr-fop-numbering.md), tags → [`tags.md`](vault/tags.md), payroll narrative and sprint-plan rows collapsed to pointers |
+| Agent prompts | examples inline | examples in `aidlc/agents/examples/` — elaborator 25→21 KB, scrum 21→15, executor 14→12, reflector 13→10, decomposer 12→10, analyst 11→10 |
+
+### 10.5 Measure it
+
+Ask each developer to run `/context` at session start and `/usage` at session end (or the
+tool's usage page) for one week and post the numbers. Without a baseline nobody can tell which
+lever moved the needle. **If the window is still the constraint after this, the next lever is
+not more trimming** — it is moving the one or two people who run inception most onto a higher
+plan, which is cheaper than the whole team stalling mid-unit.
