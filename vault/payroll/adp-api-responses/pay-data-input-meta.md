@@ -48,7 +48,7 @@ partial and stamped with a wrong identifier.
    field. **Decision D-001's identifier question is closed.**
 2. **There is a second company — Ventura, `4RY`.** It appears nowhere else in this vault. Every
    payroll document assumes a single company. Whether Ventura has employees, runs its own
-   payroll cycle, and needs its own batch is **unanswered** — see [../../gaps.md](../../gaps.md).
+   payroll cycle, and needs its own batch is **unanswered** — see [payroll/gaps.md](../gaps.md).
 
 **Every code list below carries `foreignKey: "4RZ"`** — these are 4RZ's codes. The equivalent
 list for `4RY` has not been pulled.
@@ -166,7 +166,7 @@ present. **D-001's blocking status can drop.**
 **`CAO — CA OT` needs a decision.** The crosswalk routes all non-union California overtime to
 the generic `O/T Hours` field, marked *"APPROVED DESIGN - reuse O/T Hours"*. But a dedicated
 California OT code exists, and somebody created it deliberately. Recorded in
-[../../gaps.md](../../gaps.md).
+[payroll/gaps.md](../gaps.md).
 
 ---
 

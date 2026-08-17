@@ -167,4 +167,4 @@ business agent" as a state, with a person and a date, or it will silently guess.
   [rule-applicability-by-Payroll-Group](INDEX.md) question the vault already flags as the largest
   open design area.
 
-All recorded in [gaps.md](../gaps.md).
+All recorded in [payroll/gaps.md](gaps.md).

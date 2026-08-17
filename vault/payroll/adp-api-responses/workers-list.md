@@ -47,7 +47,7 @@ rate from *"Employee master PayRate"*
 ([erp-payroll-module-frd/03](../erp-payroll-module-frd/03-payroll-groups-and-rate-determination.md)).
 That value is **not readable from ADP**. Union rates were always going to come from the craft
 table, but non-union rates now have no upstream source either — they must be mastered in the ERP,
-migrated from FCC. Recorded in [../../gaps.md](../../gaps.md).
+migrated from FCC. Recorded in [payroll/gaps.md](../gaps.md).
 
 `effectiveDate` **is** returned, and is genuinely useful: many active workers show
 `2026-07-01`, which is the MLA wage-increase date. That is evidence the 1 July 2026 union
@@ -228,7 +228,7 @@ carry an envelope" was too strong: the field is always there, and populated only
 This still does **not** settle whether a successful `POST` to `pay-data-input.modify` returns a
 populated `confirmMessage` with a GUID. It does make it more plausible, since the field is part of
 the standard response envelope rather than an error-only structure. Remains open in
-[../../gaps.md](../../gaps.md).
+[payroll/gaps.md](../gaps.md).
 
 ---
 
@@ -298,4 +298,4 @@ workers/workAssignments/assignmentStatus
 workers/workAssignments/payrollGroupCode
 ```
 
-Recorded as a closed decision in [../../gaps.md](../../gaps.md).
+Recorded as a closed decision in [payroll/gaps.md](../gaps.md).

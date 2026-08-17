@@ -265,7 +265,7 @@ confirming:
 **The first two matter.** TCG's California daily-OT, seventh-day and FLSA rules all need work
 dates, and the generic schema has fields for exactly that — but the WFN meta does not offer them.
 If WFN supported `workDate`, the ERP could send per-day attribution instead of weekly totals.
-**Worth one question to ADP.** Recorded in [../gaps.md](../gaps.md).
+**Worth one question to ADP.** Recorded in [payroll/gaps.md](gaps.md).
 
 Also note `_modificationTypeCode` is documented here as **`add`, `change`, or `remove`**, whereas
 ADP's WFN examples use `Add` and `Append`. Another generic-vs-WFN divergence — trust `/meta`.

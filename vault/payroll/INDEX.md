@@ -29,7 +29,7 @@ that produced the rest of the vault.
    **24 decisions** required before the rule catalog is final. The rule matrix marks **68 rules**
    with a per-rule "Confirmation / Open Decision" and leaves every implementation-tracking column
    blank. The ADP crosswalk carries **9 open decisions, 6 of them blocking**. Every one of these
-   is in [gaps.md](../gaps.md).
+   is in [payroll/gaps.md](gaps.md).
 3. **Neither the requirements document nor the rule matrix is legal advice, and both say so.**
    Union contract interpretation and California payroll law need TCG management, the payroll team,
    labor counsel and union representatives. Do not resolve a contract question by reading the
@@ -59,6 +59,7 @@ that produced the rest of the vault.
 | a test case for a specific rule | [rule-examples-catalog.md](rule-examples-catalog.md) — 28 real labor entries, one per rule variation |
 | a payroll term nobody has defined | [payroll-app-current-state/09-glossary.md](payroll-app-current-state/09-glossary.md) |
 | whether a source file was migrated | [source-manifest.md](source-manifest.md) — all 33 files, including the 3 that could not be read |
+| **what is still unanswered** about payroll or ADP | [gaps.md](gaps.md) — the payroll half of the open-question register, 41 entries. `grep -n '^## '` first; read only your section |
 
 ## The spine of the domain
 
@@ -115,7 +116,7 @@ Lunch, and `FR-FOP-023` Labor Details all specify the capture side of data payro
 
 The payroll documents in this folder are **not** an approved answer to those open BRS items —
 they are a source that was not available when the BRS was written. Someone has to decide whether
-they resolve it. See [gaps.md](../gaps.md) → *Field-ops lunch capture vs payroll WTL*.
+they resolve it. See [payroll/gaps.md](gaps.md) → *Field-ops lunch capture vs payroll WTL*.
 
 ## Where the biggest unknown is
 

@@ -110,7 +110,7 @@ are opened, giving ADP true job-level attribution.
 
 **That is a company-wide Workforce Now payroll configuration change**, affecting every existing
 labour-distribution report and any historical comparison. It belongs to Payroll, not to
-development. Recorded in [../../gaps.md](../../gaps.md).
+development. Recorded in [payroll/gaps.md](../gaps.md).
 
 > **Naming caution.** The code-list path says **`cost-numbers`**; the validation-table write
 > endpoint says **`cost-centers`**. ADP uses both words. Do not assume they address the same

@@ -144,7 +144,7 @@ outcome computed by the ERP, not an employee attribute.
 
 If TCG has populated these, two systems are holding multiplier logic and the ERP's output could
 be multiplied twice. **Check whether any worker has a value here before designing the OT/DT
-calculation.** Recorded in [../../gaps.md](../../gaps.md).
+calculation.** Recorded in [payroll/gaps.md](../gaps.md).
 
 ### `occupationalClassifications` — the last craft candidate
 

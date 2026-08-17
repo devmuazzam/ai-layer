@@ -90,7 +90,7 @@ precondition, not a sufficient one. A submission into an `OPEN` period whose cyc
 returned for a wrong company code.
 
 **No endpoint found so far exposes the payroll cycle status.** Recorded in
-[../../gaps.md](../../gaps.md).
+[payroll/gaps.md](../gaps.md).
 
 ## 4. Response shape
 

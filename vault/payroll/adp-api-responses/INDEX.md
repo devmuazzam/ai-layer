@@ -60,7 +60,7 @@ example responses**, so the response shapes are otherwise unrecorded anywhere.
 - **Cost-number vs department allocation** — a Workforce Now configuration decision that belongs
   to Payroll
 
-All recorded in [../../gaps.md](../../gaps.md).
+All recorded in [payroll/gaps.md](../gaps.md).
 
 ## Conventions for adding to this folder
 

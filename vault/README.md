@@ -185,7 +185,8 @@ Recency in particular is actively wrong in this vault. Worked examples, all real
 - Before migration, the newest "tools and rigging" page in Confluence was a 38-character
   stub that would have beaten a 3.7 KB specification.
 
-Every unresolved set has an entry in [`gaps.md`](./gaps.md) with candidates, sizes, and
+Every unresolved set has an entry in [`gaps.md`](./gaps.md) — or, for payroll and ADP, in
+[`payroll/gaps.md`](./payroll/gaps.md) — with candidates, sizes, and
 dates, and the five biggest have a stub at `product/<topic>-INDEX.md`. When you hit one,
 read the stub and point the reader at the gap entry.
 

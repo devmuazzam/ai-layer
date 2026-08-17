@@ -44,7 +44,7 @@ and `WTL_APPLICABLE_ADD`
 >
 > **And they do not agree on how many lunches exist.** `BRS-LUNCH-002` lists three (First,
 > Second, Third). This chart and the Payroll App's `WTL_0`…`WTL_4` token states model **four**.
-> Do not silently pick one. See [gaps.md](../gaps.md) → *Field-ops lunch capture vs payroll WTL*.
+> Do not silently pick one. See [payroll/gaps.md](gaps.md) → *Field-ops lunch capture vs payroll WTL*.
 
 **Qualifying-lunch verbiage (as written):** "You are not eligible for a lunch break unless you
 work 5.5 hours or more, in accordance with California / Union meal period requirements."

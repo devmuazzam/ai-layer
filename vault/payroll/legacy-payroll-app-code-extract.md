@@ -152,7 +152,7 @@ in the mobile app removes an entire failure class.
 produce `WTL_MEAL_DEDUCT` (time deducted), worked-through meals produce a paid add**;
 `WTLAddAmount` and `WTLMealDeductAmount` tracked separately; `WTL_ErrorCount` +
 `Has_ConflictingWTLTokens` error paths. Four meals modeled. **The threshold values are in the
-SQL, not this repo — the 16.5 vs 16:01 conflict in [gaps.md](../gaps.md) remains open.** (The
+SQL, not this repo — the 16.5 vs 16:01 conflict in [payroll/gaps.md](gaps.md) remains open.** (The
 UI paints meal markers at a flat 5-hour cadence — `sliceIndex = mealNo * 10` — but that is
 display placement, not the engine threshold.)
 
@@ -216,5 +216,5 @@ Searched both projects for `foreman|military|apprentice|certified|epip|paydata|e
   *explained* (copied from legacy validation) and *corrected* (live schema wins).
 - [payroll-app-current-state/04](payroll-app-current-state/04-payroll-group-and-rule-applicability.md)
   — rule applicability now has a code-verified current-behaviour table (§2 above).
-- [gaps.md](../gaps.md) — WTL thresholds still open (values in SQL we don't have);
+- [payroll/gaps.md](gaps.md) — WTL thresholds still open (values in SQL we don't have);
   foreman/military premiums confirmed never-implemented.

@@ -57,7 +57,7 @@ outrank content a human adjudicated. The sync must never encode "newer wins".
 | --- | --- |
 | **Reads** | Confluence Cloud, space `TCG`, via the Atlassian API (read-only scopes) |
 | **Writes** | `.ai/vault/sync/**` **only** — manifest, run reports, staging queue, `.conflict` |
-| **Never writes** | `vault/product/`, `vault/domain/`, `vault/meetings/`, `vault/decisions/`, `vault/INDEX.md`, `vault/README.md`, `vault/gaps.md` |
+| **Never writes** | `vault/product/`, `vault/domain/`, `vault/meetings/`, `vault/decisions/`, `vault/INDEX.md`, `vault/README.md`, `vault/gaps.md`, `vault/payroll/gaps.md` |
 | **Cadence** | **Nightly** (decided 2026-08-11; see §10) |
 | **Owner of the promote step** | `<OPEN — review-and-promote queue owner not named; see §10>` |
 

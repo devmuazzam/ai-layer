@@ -69,4 +69,4 @@ These constrain every rule below them, so read part 01 before any other part:
 
 Section 25 lists **24 issues that must be resolved before CodingCops treats the rule catalog as
 final** — see part 11. Those are open product questions, not implementation detail, and they are
-recorded in [../../gaps.md](../../gaps.md).
+recorded in [payroll/gaps.md](../gaps.md).

@@ -1,7 +1,8 @@
 # TCG vault index
 
-Read this first. 153 files migrated from Confluence 2026-08-10, plus 37 payroll files migrated
-from a OneDrive drop 2026-08-13.
+Read this first — **then read only what the tables point you at.** 153 files migrated from Confluence
+2026-08-10, plus 37 payroll files from a OneDrive drop 2026-08-13. This index is a routing table: it
+tells you which file answers which question, and it is the only vault file meant to be read whole.
 
 ## Read these five lines before you answer anything
 
@@ -22,14 +23,15 @@ from a OneDrive drop 2026-08-13.
 | anything about dispatch / DAS | [product/daily-allocation-INDEX.md](product/daily-allocation-INDEX.md) first |
 | anything about mobilization / demobilization | [product/mob-demob-INDEX.md](product/mob-demob-INDEX.md) first — 2 sources, only 1 migrated |
 | **anything about payroll, wages, overtime, union rules or ADP** | [payroll/INDEX.md](payroll/INDEX.md) first — a separate source, a separate migration, and its own four caveats |
-| a specific field-ops requirement | the FR-FOP tables at the bottom of this file, then the leaf file |
+| a specific field-ops requirement | [product/fr-fop-numbering.md](product/fr-fop-numbering.md) to pick the right document, then the leaf file |
 | how the team runs sprints / Jira / reviews | the six SOP files in `domain/` — the only `verified` content in the vault |
 | what `FCC` or `NexGen` means | [domain/fcc-nexgen-fms.md](domain/fcc-nexgen-fms.md) — the only glossary entry. Every other domain term is still undefined; see "Undefined terms" below |
 | why something is missing | [README.md](README.md) → *What this vault does not contain* |
 
 ## Open conflicts — all unresolved
 
-Full entries with candidates, sizes and dates in [gaps.md](gaps.md).
+Full entries with candidates, sizes and dates in [gaps.md](gaps.md). Payroll and ADP questions are
+in [payroll/gaps.md](payroll/gaps.md). **Read either by section** (`grep -n '^## '`), never whole.
 
 | Conflict | Sources | Stub |
 | --- | --- | --- |
@@ -63,14 +65,9 @@ items, and caveat 5 does **not** apply.
 
 ### Sprint plans (retrospective)
 
-| File | Answers | KB |
-| --- | --- | --- |
-| [meetings/2026-05-20-sprint-3-planning.md](meetings/2026-05-20-sprint-3-planning.md) | What was in Sprint 3, per developer? (26 tickets) | 1.0 |
-| [meetings/2026-06-09-sprint-4-planning.md](meetings/2026-06-09-sprint-4-planning.md) | What was in Sprint 4, per developer? (12 tickets) | 0.8 |
-| [meetings/2026-06-17-sprint-5-planning.md](meetings/2026-06-17-sprint-5-planning.md) | What was Sprint 5's goal? (body misdated 2025) | 0.7 |
-| [meetings/2026-07-14-sprint-6-plan.md](meetings/2026-07-14-sprint-6-plan.md) | What was Sprint 6's scope? | 1.1 |
-| [meetings/2026-07-30-sprint-8-planning.md](meetings/2026-07-30-sprint-8-planning.md) | What was Sprint 8's scope? (83 work items) | 0.9 |
-| [meetings/2026-07-30-sprint-8-report.md](meetings/2026-07-30-sprint-8-report.md) | Sprint 8's **goal** and the 4 in-scope field-worker app statements. Same 83-item count, still not listed. Added 2026-08-13 — the 3–7 report exclusion does not cover Sprint 8 | 1.9 |
+Six files, `meetings/2026-0[5-7]-*-sprint-*-{planning,plan,report}.md`, one per sprint 3–6 and two
+for sprint 8. Each answers only "what was in sprint N, per developer". Sprint 8's report carries the
+goal and the four in-scope field-worker statements; nothing else lists its 83 items.
 
 ### Client meeting minutes (forward-looking, added 2026-08-13)
 
@@ -81,7 +78,7 @@ items, and caveat 5 does **not** apply.
 | [meetings/2026-08-12-sell-side-workflow-and-scheduling.md](meetings/2026-08-12-sell-side-workflow-and-scheduling.md) | What is the sell-side workflow — scheduling, permits, customer intake? | 6.0 |
 
 **Every action item in these three is outstanding** unless someone has confirmed otherwise. They
-are itemised in [gaps.md](gaps.md).
+are itemised in [gaps.md](gaps.md) (modules, integrations) and [payroll/gaps.md](payroll/gaps.md) (ADP).
 
 ## decisions/ — empty by design
 
@@ -91,27 +88,11 @@ Nothing in the source was a clean dated decision. See README for how a resolved 
 
 ## payroll/ — the payroll module (separate source, migrated 2026-08-13)
 
-**Not from Confluence.** Migrated from a OneDrive drop dated 2026-08-11 — the payroll document
-set TCG assembled for CodingCops. 37 files. Read
-[payroll/INDEX.md](payroll/INDEX.md) first: it carries its own four caveats, of which the
-`PR-NNN` ambiguity (caveat 4 above) is one.
-
-**Two files added 2026-08-13 that are not from either migration.**
-[payroll/foreman-and-military-premiums.md](payroll/foreman-and-military-premiums.md) records the
-Foreman ($3/hr) and Military Base ($10/hr) premiums supplied by Brian Petros over chat on
-2026-08-09 — rules that exist in **no specification document**, in his own words. And
-[payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md) documents what
-ADP's API actually permits — **read it before designing any ERP↔ADP sync**, because ADP's own
-guide states the sync is one-way and reconciliation is manual.
-
-**Confluence has no payroll documentation.** A search of the whole site on 2026-08-13 found the
-word "payroll" on six pages, all six already in this vault, all six field-ops or project pages
-mentioning it in passing. The payroll knowledge exists **only** in the OneDrive set. What
-Confluence *does* have is a pointer to it: the field-ops FRD's *BRS References* table
-([product/field-ops-frd/10-brs-references.md](product/field-ops-frd/10-brs-references.md)) links
-four SharePoint documents, and all four are files in this drop, filenames matching exactly. That
-table was omitted by the 2026-08-10 migration as out of scope and was **restored on 2026-08-13**
-now that its targets are here. It is the formal link between the two areas.
+**Not from Confluence** — a OneDrive drop of 37 files, plus two written from chat and research
+(the Foreman/Military premiums, and what ADP's API permits). Confluence has no payroll content of
+its own; the field-ops FRD's *BRS References* table is the formal link between the two areas.
+Read [payroll/INDEX.md](payroll/INDEX.md) first — it carries its own caveats and its own gaps
+register.
 
 | File | Answers | KB |
 | --- | --- | --- |
@@ -142,11 +123,11 @@ text layer. See the manifest.
 | ├ [01](product/field-ops-frd/01-executive-overview.md) · [02](product/field-ops-frd/02-problem-statement.md) · [03](product/field-ops-frd/03-objectives.md) · [04](product/field-ops-frd/04-scope.md) | Overview, problem, objectives, scope | 2.8 |
 | ├ [05-role-definitions.md](product/field-ops-frd/05-role-definitions.md) | Which field roles exist and what can each do? | 1.5 |
 | ├ [06](product/field-ops-frd/06-operational-workflow-overview.md) · [07](product/field-ops-frd/07-functional-requirements-summary.md) | Workflow overview and requirements summary | 1.9 |
-| ├ [08-functional-requirements/](product/field-ops-frd/08-functional-requirements/INDEX.md) | **30 FR-FOP requirements** — see table below | 38.0 |
+| ├ [08-functional-requirements/](product/field-ops-frd/08-functional-requirements/INDEX.md) | **30 FR-FOP requirements** — see [fr-fop-numbering.md](product/fr-fop-numbering.md) | 38.0 |
 | └ [09](product/field-ops-frd/09-workflow-affecting-business-rules.md) · [10](product/field-ops-frd/10-brs-references.md) · [11](product/field-ops-frd/11-open-questions-future-considerations.md) | Business rules, omitted BRS refs, open questions | 1.7 |
 | [frd-new-format-draft/INDEX.md](product/frd-new-format-draft/INDEX.md) | FR-TCG-FOP-**001** v1.1 REVIEWED — 9 sections, 40 requirements | 1.1 |
 | ├ [01](product/frd-new-format-draft/01-overview.md) · [02](product/frd-new-format-draft/02-problem-statement.md) · [03](product/frd-new-format-draft/03-feature-scope.md) · [04](product/frd-new-format-draft/04-role-responsibility-model.md) | Overview, problem, scope, role model | 4.1 |
-| ├ [05-functional-requirements/](product/frd-new-format-draft/05-functional-requirements/INDEX.md) | **40 FR-FOP requirements** — see table below | 44.4 |
+| ├ [05-functional-requirements/](product/frd-new-format-draft/05-functional-requirements/INDEX.md) | **40 FR-FOP requirements** — see [fr-fop-numbering.md](product/fr-fop-numbering.md) | 44.4 |
 | └ [06](product/frd-new-format-draft/06-key-user-flows.md) · [07](product/frd-new-format-draft/07-non-functional-requirements.md) · [08](product/frd-new-format-draft/08-open-questions.md) | User flows, non-functional reqs, open questions | 6.7 |
 | [atom-mobile-app-user-stories/INDEX.md](product/atom-mobile-app-user-stories/INDEX.md) | Same app as user stories — **re-migrated 2026-08-13 from Confluence v10: now 22 stories, EPIC 1–17** | 4.0 |
 | ├ [00-overview.md](product/atom-mobile-app-user-stories/00-overview.md) · [01-authentication-and-dashboard.md](product/atom-mobile-app-user-stories/01-authentication-and-dashboard.md) | Workflow summary; sign-in, vendor OTP, dashboard | 4.2 |
@@ -222,49 +203,17 @@ text layer. See the manifest.
 
 ---
 
-## FR-FOP requirements — the two sets are NOT the same numbering
+## FR-FOP requirements — two numberings
 
-**`product/field-ops-frd/08-functional-requirements/` — FOP-002 v2.0 DRAFT, 30 reqs**
-
-```
-001 Bottom Navigation · 002 Home Dashboard · 003 Jobs List · 004 Ticket Details
-005 Ticket Acceptance · 006 Ticket Rejection · 007 Ticket Draft Management · 008 Pre-Trip Checklist
-009 Leave Yard · 010 Arrive Job Site · 011 Job Safety Analysis (JSA) · 012 Start Work
-013 Lunch Monitoring · 014 Lunch Recording · 015 Work Through Lunch · 016 End Work
-017 Compliance Checklist · 018 Customer Signatures · 019 Leave Job Site · 020 Arrive Yard
-021 Post-Trip Checklist · 022 Submit Ticket · 023 Labor Details · 024 Downtime Management
-025 Deficiency Reporting · 026 Escalation Handling · 027 Notification Center · 028 Certifications
-029 Tasks · 030 Inspection History
-```
-
-**`product/frd-new-format-draft/05-functional-requirements/` — FOP-001 v1.1 REVIEWED, 40 reqs**
-
-```
-001 Bottom Navigation · 002 Home Dashboard · 003 Jobs List · 004 Ticket Notification
-005 Accept / Reject Ticket · 006 Ticket Detail View · 007 Guided Ticket Workflow · 008 Leave Yard
-009 Pre-Trip Checklist · 010 Arrive Job · 011 JSA / Safety Checklist · 012 Start Work
-013 Lunch Timer and Alerts · 014 Start / End Lunch · 015 Work-Through-Lunch Authorization · 016 Initial Customer Signature
-017 Final Customer Signature · 018 Signature Quality / Fraud Prevention · 019 End Work · 020 Leave Job
-021 Arrive Yard · 022 Compliance Checklist · 023 Labor Detail Entry · 024 Boom Pay / Craft Modifier Selection
-025 Submit Ticket · 026 Incomplete Ticket Handling · 027 Deficiency Capture · 028 Blocking Issue / Emergency Escalation
-029 Notification Center · 030 Downtime and Delay Capture · 031 Live Ticket Visibility · 032 View Certifications
-033 Certification Expiry Notification and Upload · 034 Field Task List · 035 Labor History and Audit · 036 Field User Profile
-037 Emergency Contacts · 038 Time Rounding · 039 Auto-Save · 040 Audit Trail
-```
-
-Filenames are `fr-fop-NNN-<slug>.md` inside the folder above. Only 001, 002, 003, 008/009 (Leave Yard), 012 (Start Work) and 021/020 (Arrive Yard) describe roughly the same thing in both sets — everything else diverges.
+The two field-ops FRDs number from 001 and diverge after 003. Both lists, side by side, are in
+[product/fr-fop-numbering.md](product/fr-fop-numbering.md). Cite the document with the id — see caveat 3.
 
 ---
 
 ## Tag vocabulary
 
-Every file carries `topics:` (subject area) and `entities:` (what it actually specifies). Search these rather than grepping prose.
-
-**topics (50)** — `agencies` `assets` `authentication` `billing-codes` `categories` `certifications` `compliance` `crm-integration` `customers` `daily-allocation` `dashboard` `deficiencies` `dispatch` `document-metadata` `documents-attachments` `downtime-delays` `engineering-process` `escalation` `field-ops-mobile` `geolocation` `inspections` `job-sites` `jobs` `labor-payroll` `lift-plans` `lunch-breaks` `mobilization` `navigation-ui` `notifications` `offline-reliability` `open-questions` `permissions-roles` `permits` `pricing` `projects` `purchase-orders` `quotations` `reporting` `requirements-spec` `safety` `scheduling` `scrum-process` `signatures` `sprint-planning` `ticket-workflow` `time-tracking` `tools-rigging` `vendors` `yard-operations` `yards`
-
-**entities (40)** — `agency` `asset` `attachment` `billing-code` `boom-time` `build-up` `category` `certification` `craft-code` `customer` `das` `deficiency` `downtime` `employee` `fcc` `field-ticket` `industry-code` `inspection` `job` `job-site` `labor-record` `lift-plan` `loadout` `lunch-record` `mob-demob` `notification` `permit` `price-list` `project` `purchase-order` `quotation` `schedule` `signature` `sprint` `tailboard-jsa` `task` `tool-rigging` `union-code` `vendor` `yard`
-
-`field-ops-mobile` is an anchor tag on all 102 field-ops files, so it finds the area but does not discriminate within it. Every other topic tag discriminates.
+Every file carries `topics:` and `entities:` frontmatter — search those rather than grepping prose.
+The 50 topics and 40 entities are listed in [tags.md](tags.md).
 
 ## Undefined terms — the glossary has one entry
 
