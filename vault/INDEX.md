@@ -80,9 +80,15 @@ goal and the four in-scope field-worker statements; nothing else lists its 83 it
 **Every action item in these three is outstanding** unless someone has confirmed otherwise. They
 are itemised in [gaps.md](gaps.md) (modules, integrations) and [payroll/gaps.md](payroll/gaps.md) (ADP).
 
-## decisions/ — empty by design
+## decisions/ — dated, named, agreed
 
-Nothing in the source was a clean dated decision. See README for how a resolved gap lands here.
+Nothing in the *migrated source* was a clean dated decision; these were decided since. See README
+for how a resolved gap lands here.
+
+| Decision | What it settles |
+| --- | --- |
+| [decisions/2026-06-30-adp-erp-employee-data-ownership.md](decisions/2026-06-30-adp-erp-employee-data-ownership.md) | Who owns which employee field — ADP vs ERP vs QuickBooks — and that the ERP *initiates* onboarding while ADP performs it. Brian Petros + Ehtesham Anwar, agreed 2026-06-30 |
+| [decisions/2026-08-12-plan-comments-page-scope.md](decisions/2026-08-12-plan-comments-page-scope.md) | Which screen "the Plan Comments page" means in `SCRUM-757` |
 
 ---
 
