@@ -27,8 +27,10 @@ unreachable"). Both caveats are now closed: this folder *is* rank 1 and 2 of the
 pack's own source-of-truth order. **Where this folder and any older payroll-app document
 disagree, this folder wins** — it is the code.
 
-The readable rendering of all of it is the artifact *TCG Payroll Engine*
-(https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878).
+The readable renderings: the artifact *TCG Payroll Engine*
+(https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878) and its plain-language companion
+*TCG Pay Rules, One at a Time* (https://claude.ai/code/artifact/1a754dab-82d4-4736-b23c-d51593c34c6c) — the
+latter is [rules-plain-language.md](rules-plain-language.md) rendered.
 
 ## Files
 
