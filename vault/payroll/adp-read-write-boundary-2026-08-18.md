@@ -129,13 +129,63 @@ jurisdictions…) is validated against the **dynamic** code lists above.
 ADP has **no craft/classification field** in worker or pay-data schemas (confirmed against
 `/hr/v2/workers/meta` and the pay-data `/meta`). Options, all of which the ERP must own the
 meaning of:
-1. **Custom field** on the worker (`customFieldGroup.codeField` / `stringField`) — created once
-   in WFN, then written via `worker.person.custom-field.*.change`; readable back in `/hr/v2/workers`.
+1. **Custom field** on the worker — the payroll profile's `CustomArea1–4` string fields (writable at
+   onboarding, `applicantPayrollProfile.customFieldGroup.stringFields`) or an HR custom field
+   (`worker.person.custom-field.*.change`); readable back in `/hr/v2/workers`.
 2. **Job title** (`jobCode`) — a validation table we can extend via API, but today it holds 10
    generic titles (e.g. `OPERATOR`) and one title cannot carry the nine L12 wage groups.
 3. **Labor profile / union local** codes on the work assignment — union membership, not craft.
 Craft, craft modifier and rates stay ERP-side (as in the legacy app); ADP receives hours (and
 the temp rate for boom lines), not the craft.
+
+## 6a. Groups in ADP — which exist, which we can create
+
+| "Group" | What it is in WFN | Create via API? |
+| --- | --- | --- |
+| Company / payroll group code (`4RZ`, `4RY`) | the legal payroll company; every batch and code list is scoped to it | No — ADP sets it up |
+| Pay group (`codelists/payroll/v4/…/pay-groups`) | pay-frequency group inside a company | No — WFN setup |
+| Department, cost number, business unit, location | organisational units; a worker's home units, and pay-data allocation dimensions | **Yes** — validation-table POSTs |
+| Job title | job code table (10 values today) | Yes — validation-table POST |
+| Union code / union local / labor profile / bargaining unit | membership fields on the work assignment | No API to create the codes; assignable per worker |
+| Benefits eligibility class, pay grade | worker groupings | codes not creatable via API (`eligibility-classes` is 403 for TCG); assignable per worker |
+| Custom fields (`CustomArea1–4` payroll, `customFieldGroup` HR) | free string/code fields on the worker | field created in WFN once; values writable via API |
+
+There is **no ADP concept matching TCG's payroll groups** (L12 Field / Mechanic / Non-Union Admin
+Hourly…). If ADP must know them, carry the value in a custom field or a department/business unit
+— the ERP stays the owner of the meaning.
+
+## 6b. Do the codes carry a rate? — no; rates live on the employee or on the pay line
+
+- Earning / deduction / memo codes in `/meta` are `codeValue + longName` only — **no rate**.
+  Department / cost-number / job-title lists likewise.
+- Rates exist in two places: **on the employee** — `baseRemuneration.hourlyRateAmount` plus up to
+  eight additional rates `Rate2Amount … Rate9Amount` (`additionalRemunerations`), settable at
+  onboarding or via `base-remuneration.change` / `additional-remuneration.add`; and **on the pay
+  line** — `earningInputs[].rate.rateValue` (what the ADP sheet calls *Temporary Rate*, used for the
+  boom adder) or `rateCode` (points at an employee rate slot; no code list via API).
+- Reading rates back: `/hr/v2/workers` returned `baseRemuneration` **without `amountValue`** for
+  TCG (entitlement) — so the ERP cannot rely on reading rates from ADP.
+
+## 6c. New-hire onboarding — what to send (`POST /hcm/v2/applicant.onboard`)
+
+**Minimum that ADP accepts (creates an in-progress hire the practitioner completes in WFN):**
+`onboardingTemplateCode.code`, `onboardingStatus.statusCode "inprogress"`,
+`applicantPersonalProfile.birthName{givenName, familyName}`, `applicantWorkerProfile.hireDate`,
+`applicantPayrollProfile.payrollGroupCode` (= `4RZ`).
+
+**What TCG should send for a field employee (status `complete`, from the ERP employee record):**
+
+| Section | Fields | TCG source |
+| --- | --- | --- |
+| Template / status | `onboardingTemplateCode` (from `/meta`), `onboardingStatus complete`, `preHireIndicator`, `onboardingExperienceCode` (`default_w2`) | fixed |
+| Personal | legal/birth name, `birthDate`, `genderCode`, SSN (`governmentIDs`, or `AppliedFor`), `legalAddress`, phones, personal email (`notificationIndicator true` sends the onboarding invite), marital status, race/ethnicity (EEO), language | employee master |
+| Worker | `hireDate`, `hireReasonCode`, `homeWorkLocation`, `homeOrganizationalUnits` (BusinessUnit, **HomeDepartment**, HomeCostNumber, LegalEntity, LaborProfile), `reportsTo.positionID`, `job.jobCode` (job title), `wageLawCoverages` (FLSA E/N), EEO/NAICS classifications, `workerTypeCode` (F/P), `benefitsEligibilityClassCode`, `payGradeCode`, **`laborUnion.laborUnionCode`** (`L12`), `bargainingUnit`, ACA code, business email/phone | employee master + yard/department |
+| Payroll | **`payrollGroupCode 4RZ`**, **`payrollFileNumber`** (our ADP File Number), `overtimeEligibilityIndicator`, `standardHours`, `baseRemuneration{recordingBasisCode hourly, payPeriodRateAmount}` (union rate = craft rate at hire), `additionalRemunerations Rate2…Rate9`, `wageEntityCode`, **`customFieldGroup.stringFields CustomArea1–4`** — the natural home for **craft code / craft modifier / TCG payroll group** | employee master, craft table |
+| Tax | federal W-4 (`applicantTaxProfile.usFederalTaxInstruction`), state (`usStateTaxInstructions`, `suiTaxInstruction`), local | usually left to the employee's onboarding tasks; optional |
+| I-9 / time | `employmentEligibilityProfile.employerOrganization.locationNameCode`, `applicantTimeProfile` (badge, time zone) | optional |
+
+Everything coded above must already exist in the corresponding WFN validation table
+(department, location, job title, union code, pay group, template).
 
 ## 7. What we need to connect
 
