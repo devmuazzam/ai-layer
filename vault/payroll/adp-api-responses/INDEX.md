@@ -2,7 +2,7 @@
 title: Live ADP API responses - captured index
 source: live-api/TCG ERP Integration project, ADP API Central
 migrated: 2026-08-13
-updated: 2026-08-13
+updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
@@ -28,6 +28,7 @@ example responses**, so the response shapes are otherwise unrecorded anywhere.
 | --- | --- |
 | [pay-data-input-meta.md](pay-data-input-meta.md) | **The live code table.** 52 earning codes, 65 deduction codes, 16 memo codes, company codes, allocation types, field requirements. The single most load-bearing file here |
 | [codelist-departments.md](codelist-departments.md) | The 12 departments, and why `cost-numbers` returning `204` decides how job attribution works |
+| [validation-tables-report-2026-08-18.md](validation-tables-report-2026-08-18.md) | **WFN "Validation Tables" report (UI, 2026-08-18)** — every code TCG actually holds: 12 departments, 4 cost numbers (no company code → the `204`), 10 job titles, locations `DEF`/`VEN`, 18 worker categories incl. `APP`/`L12`, 65 deductions, hire/termination/comp-change/job-change reason codes (`NEW`, `CURR`, `L12 CT`, `PAYCH`…), tax jurisdictions |
 | [codelist-worker-management.md](codelist-worker-management.md) | `union-codes`, `locations`, `business-units`, `eligibility-classes`, `job-titles`. **Also holds the only observed ADP error envelope** — the shape the ERP's error handling must be written against |
 | [workers-meta.md](workers-meta.md) | The worker schema. **Every field is read-only**, the File Number regex the crosswalk gets wrong, and the `$select` lever that keeps PII out of the ERP |
 | [workers-list.md](workers-list.md) | Real worker records. **No pay rates are returned**, `occupationalClassifications` turns out to be workers' comp, and union membership is recorded two ways that disagree |
