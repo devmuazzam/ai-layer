@@ -1055,6 +1055,10 @@ someone has confirmed otherwise.
   `gaps.md` under the same heading.
 - **Recency is not authority.** A recording is a data point inside the conflict, not its
   resolution — several of these are TCG changing its mind between meetings. Do not pick a side.
+- **Confluence and Jira are CodingCops' record, not the client's.** TCG does not use Confluence.
+  A recording that disagrees with a vault file or a ticket is therefore first a defect in *our*
+  write-up of what the client said; it becomes a client question only where TCG itself said two
+  different things, or where CC agreed to something on the call and never wrote it down.
 - Note: room-mic recordings label Lisette, Dylan, Liz and Wes as "Brian Petros"; speakers below
   are inferred from content.
 - Pairs:
