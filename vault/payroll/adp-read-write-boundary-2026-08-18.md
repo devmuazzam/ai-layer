@@ -201,6 +201,23 @@ Everything coded above must already exist in the corresponding WFN validation ta
   by department (TCG's current) vs cost number, batch-id convention from `payPeriodID`, and how
   rest premium / WTL are represented (no column on the current worksheets).
 
+## API Central use cases (screenshot 2026-08-18) — none of this needs Marketplace
+"Create new project for ADP Workforce Now" offers nine use cases: Worker Demographic Data (Read
+Only) · Time & Attendance (Read Only) · **Worker Demographics & Pay Profile (Read/Write)** — "update
+existing employee data, including pay rates and deductions" · Time & Attendance (Read/Write) ·
+**New Hire Onboarding (Read/Write)** — "send new hires, onboard completed hires, read and rehire
+existing employees" · **Payroll Input (Read/Write)** — "read worker demographic data, receive event
+notifications, read and write validation tables departments and cost numbers, send payroll inputs"
+· Paid Time Off · Recruitment and Staffing · Talent and Skills. Onboarding and editing employees are
+therefore API Central; only Payroll Output is Marketplace-partner-only.
+
+The onboarding field-by-field reference (required / template / optional / not-via-API, payloads,
+and the change API for each part of the record) is the artifact *ADP Employee Onboarding via API
+Central* — https://claude.ai/code/artifact/cd806009-fd67-4c55-b23a-6850c4e0df25. Two constraints
+from ADP's guide worth holding: an in-progress hire cannot be completed by re-POSTing (F154681,
+creates a second record), and HR-level custom fields are not supported by the onboard API (payroll
+Custom Area 1–4 are).
+
 ## Related artifacts (rendered views of the legacy-app findings)
 - *TCG Payroll Engine* — https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878
 - *TCG Pay Rules, One at a Time* — https://claude.ai/code/artifact/1a754dab-82d4-4736-b23c-d51593c34c6c
