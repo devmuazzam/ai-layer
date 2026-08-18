@@ -227,6 +227,16 @@ G2L2` (no company code → API `204` with `?companyCode`) · locations `DEF`/`VE
 [adp-api-responses/validation-tables-report-2026-08-18.md](adp-api-responses/validation-tables-report-2026-08-18.md).
 Where to see them in WFN: **Reports & Analytics › Standard › Setup › Validation Tables** (run as PDF).
 
+## The agreed ownership model (decision, 2026-06-30)
+Everything here is written on the assumption settled in
+[../decisions/2026-06-30-adp-erp-employee-data-ownership.md](../decisions/2026-06-30-adp-erp-employee-data-ownership.md):
+**one owning system per data domain**. ADP keeps the payroll/legal HR profile (legal record, SSN,
+tax, direct deposit, final payroll), the ERP owns the operational profile (union/craft/modifier,
+dispatch eligibility, certifications, job costing, payroll-rule classification) and *initiates*
+onboarding; QuickBooks is GL only. The **ADP file number is ADP's** — the ERP stores it, never
+mints it. Craft/modifier/payroll-group in `CustomArea1–4` is therefore optional mirroring, not a
+requirement.
+
 ## Related artifacts (rendered views of the legacy-app findings)
 - *TCG Payroll Engine* — https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878
 - *TCG Pay Rules, One at a Time* — https://claude.ai/code/artifact/1a754dab-82d4-4736-b23c-d51593c34c6c
