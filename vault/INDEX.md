@@ -95,8 +95,10 @@ for how a resolved gap lands here.
 ## payroll/ — the payroll module (separate source, migrated 2026-08-13)
 
 **Not from Confluence** — a OneDrive drop of 37 files, plus two written from chat and research
-(the Foreman/Military premiums, and what ADP's API permits). Confluence has no payroll content of
-its own; the field-ops FRD's *BRS References* table is the formal link between the two areas.
+(the Foreman/Military premiums, and what ADP's API permits). Confluence had no payroll content of
+its own until 2026-08-18, when two user-story pages appeared (`Payroll management`, `Craft codes`
+— **unmigrated**, see [payroll/gaps.md](payroll/gaps.md) → *Confluence payroll user stories*); the
+field-ops FRD's *BRS References* table is the formal link between the two areas.
 Read [payroll/INDEX.md](payroll/INDEX.md) first — it carries its own caveats and its own gaps
 register.
 

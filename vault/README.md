@@ -315,6 +315,19 @@ is a judgement about someone else's unfinished work, and it is not an agent's ca
   appearing on the Atom user-stories page appended as evidence to the *Lunch thresholds* gap
   (which stays **open**); a second mobilization page filed as a new conflict stub
   (`product/mob-demob-INDEX.md`). **Nothing was re-migrated** — the Atom page was mid-edit.
+- **2026-08-19** — nine pages modified since 2026-08-11 (`type = page AND lastmodified >=
+  "2026-08-11"`). Triage: three personal-space / untitled live docs skipped; the three pages
+  triaged on 2026-08-11 (Atom user stories 95158273, Sprint 8 report 136740865, Mob & demob
+  143458306) still show `lastModified` 2026-08-11 and were not re-examined; **three new TCG-space
+  pages, none migrated**: `13-august-QA` (145195009, Aiman Farooq, edited 2026-08-17 — a QA punch
+  list with `SCRUM-890`…`904` smartlinks, several empty numbered items, so mid-edit; noted under
+  the *Feedback punch lists* gap), and two payroll user-story pages by Umair Khan edited the
+  evening of 2026-08-18 — `Payroll management` (150110210, `PAY-WP-01`…`04`) and `Craft codes`
+  (151388161, `PAY-CC-01`…`02`). Both are under 24 hours old at the time of the check and are the
+  **first payroll content Confluence has ever carried**; recorded in `payroll/gaps.md` (*Confluence
+  payroll user stories*), and the "Confluence has no payroll content" line in `INDEX.md` corrected.
+  Deletions and renames were **not** checked — CQL cannot list trashed pages and no manifest exists
+  yet (`sync/confluence-sync.md` §3.2). **Nothing was re-migrated.**
 
 ## Conversion notes
 

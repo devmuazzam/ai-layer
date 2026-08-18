@@ -990,3 +990,50 @@ someone has confirmed otherwise.
   the key present.
 - Owner: CodingCops (Ehtesham holds the **C** role) with TCG security sign-off on key custody.
 - Status: open — issuance done, **custody and rotation undecided**.
+
+## Confluence payroll user stories — first payroll pages in Confluence, unmigrated
+
+- Question: do the two new Confluence pages `Payroll management` (page id 150110210,
+  `PAY-WP-01`…`04`) and `Craft codes` (page id 151388161, `PAY-CC-01`…`02`) — both by Umair
+  Khan, both edited the evening of 2026-08-18, found by the 2026-08-19 drift check — supersede,
+  restate or contradict the payroll documents in this folder?
+- Candidates: **not migrated.** Under 24 hours old at the check, so held per the sync rule
+  (`README.md` → *Re-migrate only what is stable*). Until a human re-migrates them, the
+  OneDrive-sourced documents stand as written. This entry records what the pages *say* so nobody
+  reads them as settled and nobody misses them either.
+- What `Payroll management` adds that is **in no vault document**:
+  - A **third `PAY-` id scheme** beside the two `PR-###` schemes already flagged in
+    [payroll/INDEX.md](INDEX.md) caveat 1. `PAY-WP-` (weekly payroll) and `PAY-CC-` (craft codes)
+    do not collide with `PR-###`, but they are epic-scoped user stories, not rules — do not
+    cite them as rules.
+  - Weekly-payroll **week statuses**: *In Progress, Needs Processing, Submitted to ADP, Closed*
+    (`PAY-WP-04` AC 7).
+  - **Send Back** targets *Crane Super or Worker*, worker gets a mobile notification and may edit
+    the ticket after send-back (`PAY-WP-03` AC 3–4); Crane Super may *Approve* or *Override*;
+    *Approve the Week* is a week-level action (`PAY-WP-04`).
+  - Employee profile calculation panel: *pay breakdown, rate resolution, pricing slices, granted
+    hours, rest-period audit* (`PAY-WP-02` AC 9) — vocabulary that matches the legacy
+    [db-extract](legacy-payroll-app-db-extract/INDEX.md) slice model, which suggests the page
+    is written against that engine.
+  - Each of these is a *specific* the 2026-08-05 minutes
+    ([meetings/2026-08-05-payroll-module-design-review.md](../meetings/2026-08-05-payroll-module-design-review.md))
+    only discuss in general terms (Edit/Override, send to Crane Supervisor, ticket status).
+- What `Craft codes` adds:
+  - The first written definition candidate for **`craft-code`**, one of the seven undefined
+    domain terms in the main README: *the group/pay classification at which employees are paid*;
+    groups are *Apprentice 1–6 and Groups 1–9*; carries the **base rate only** (OT/DT derive from
+    it); rates vary **by fiscal year**; kept **separate from Craft Code Modifiers** (`PAY-CC-01`).
+    This is consistent with the legacy `FMS_UNION_CRAFT` + craft-modifier split in the db-extract,
+    and with the closed entry *ADP job titles are not craft codes* above. It is **not** a
+    `domain/` glossary entry until re-migrated or sourced to a person.
+  - An **employee-specific additional rate on top of the craft rate**, maintained on the employee
+    profile, that does not change the craft rate (`PAY-CC-02` AC 4–6). Check against the legacy
+    `v_UI_Employee_TypeRate` resolution in the db-extract before treating as new.
+- Note: `payroll/INDEX.md` and the main `INDEX.md` said Confluence had no payroll content. That
+  was true on 2026-08-13 and is not true now; the main index line was corrected 2026-08-19.
+- Blocked: nothing yet — but any payroll unit that builds week statuses, send-back targets or
+  the craft-code shape should cite these pages *as unverified Confluence*, not as the vault.
+- Owner: whoever re-migrates (human, per README *Who does what*); Umair Khan for whether the pages
+  are finished.
+- Status: open
+

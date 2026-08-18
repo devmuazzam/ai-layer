@@ -158,6 +158,20 @@ will be about your ticket.
 - Deliberately not done during the 2026-08-10 restructure: splitting these is content
   restructuring and needs its own pass with its own byte-level verification, not a side
   effect of indexing.
+- Update 2026-08-19 — the drift check found a **fifth** cross-module punch list, **not
+  migrated**: `confluence/TCG/13-august-QA` (page id 145195009, created by Aiman Farooq,
+  edited 2026-08-17). Sections Auth, Customer, Quotation, Project, DAS, Yard Operations,
+  Across App, Devs Feedback; several numbered items are empty (`DAS 1.`, `Yard Operations
+  1. e`), so it is mid-edit and was held. Unlike the four above it is **QA-authored, not
+  client-authored**, and most items already carry a ticket: `SCRUM-890`, `895`, `896`, `897`,
+  `898`, `899`, `900`, `902`, `903`, `904`. Five items state product intent beyond a bug —
+  *delete is being replaced by archive across the app* (896), *in-house comment should be
+  chat across the app* (898), *tools & rigging not editable on a job* (899), *a mobile ticket
+  cannot start before load-out* (902), *offline save in yard operations, marked "(client
+  feedback)"* (904). None of those five is written in the vault; the ticket is the only
+  source. One item ("quotation marked Signed auto-created Project and Job without Convert to
+  Job / Create Project") is a behaviour question, not a bug report, and has no ticket on the
+  page.
 - Owner: product team
 - Status: open
 
