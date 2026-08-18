@@ -34,7 +34,7 @@ person or function who has to answer them.
   rule to any labor row whose `CraftCode LIKE 'L12%'` (Field and Mechanic identically); Non-Union
   Admin Hourly rows are repriced by `app.usp_Apply_CA_NonUnionAdminHourly_OT` (daily 8/12, weekly
   40, 7th day) with every union field zeroed; `ADMIN-*` crafts are the only ones exempt from
-  minimum pay. Salary rows are never priced. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
+  minimum pay. No salary-specific rule exists (the CA proc applies only to PayType `H`). Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## The 24 decisions required before the payroll rule catalog is final
 

@@ -34,6 +34,7 @@ The readable rendering of all of it is the artifact *TCG Payroll Engine*
 
 | File | Answers |
 | --- | --- |
+| [rules-plain-language.md](rules-plain-language.md) | **Start here if you are not reading SQL** — who is who (union / non-union, payroll groups, L12 wage groups, apprentice steps, boom brackets) and then every rule separately: when it applies, how, the formula, one number, where in code |
 | [calculations.md](calculations.md) | **How every rule is computed**, B1–B12, with verbatim SQL and `sql/…:line` anchors. The primary document |
 | [open-questions.md](open-questions.md) | The 11 direct answers: boom length, minimums, shift/rest/CA values, base-rate sources, foreman/military/lattice/hazmat, ADP, week/day, tests |
 | [worked-examples.md](worked-examples.md) | 13 real masked entries: plain day, boom actual, boom-window-no-modifier, boom minimum, rest forced/overlap, WTL, subsistence, Sat/Sun/holiday/special-Sat, CA non-union, missing rate, cross-midnight, shift 2 |
