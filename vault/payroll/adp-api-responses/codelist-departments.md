@@ -2,7 +2,7 @@
 title: Live ADP response — departments code list, and the cost-numbers 204
 source: live-api/GET https://api.adp.com/codelists/hr/v3/worker-management/{departments,cost-numbers}/WFN/1
 migrated: 2026-08-13
-updated: 2026-08-13
+updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
@@ -27,9 +27,16 @@ GET /codelists/hr/v3/worker-management/cost-numbers/WFN/1?companyCode=4RZ   → 
 `204 No Content` is **not an error**. The request was valid, authenticated and authorised —
 ADP is stating there is no data.
 
-**TCG has no cost numbers defined in ADP. It has departments.**
+**Correction (2026-08-18, from the WFN Validation Tables report):** TCG *does* have four cost
+numbers — `G1L1`, `G1L2`, `G2L1`, `G2L2` (grade × level placeholders) — but they carry **no
+company code**, so the `?companyCode=4RZ` filter excludes them and the API answers `204`. Call
+`cost-numbers` without the company filter to see them. They are not used for job attribution;
+the department conclusion below still stands. See
+[validation-tables-report-2026-08-18.md](validation-tables-report-2026-08-18.md).
 
-This is almost certainly configuration rather than an unpopulated table. The Payroll Data Input
+~~TCG has no cost numbers defined in ADP.~~ It allocates by department.
+
+The absence under `4RZ` is configuration rather than an unpopulated table. The Payroll Data Input
 guide requires, for cost-number allocation:
 
 > `Setup > Payroll > Company Options > Labor Distribution` → **Cost Number**

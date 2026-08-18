@@ -145,7 +145,8 @@ the temp rate for boom lines), not the craft.
 | Company / payroll group code (`4RZ`, `4RY`) | the legal payroll company; every batch and code list is scoped to it | No — ADP sets it up |
 | Pay group (`codelists/payroll/v4/…/pay-groups`) | pay-frequency group inside a company | No — WFN setup |
 | Department, cost number, business unit, location | organisational units; a worker's home units, and pay-data allocation dimensions | **Yes** — validation-table POSTs |
-| Job title | job code table (10 values today) | Yes — validation-table POST |
+| Job title | job code table (10 values today: `ACCOUNTG ADM DISPATCH MECHANIC MNGMT OILDRV OPERATOR SAFETY SALES YARD`) | Yes — validation-table POST |
+| Worker category (`workerCategoryCode`) | 18 values incl. **`APP` Apprentice** and **`L12` Local 12** — a native place to mark union / apprentice on the worker | No API to create; assignable per worker |
 | Union code / union local / labor profile / bargaining unit | membership fields on the work assignment | No API to create the codes; assignable per worker |
 | Benefits eligibility class, pay grade | worker groupings | codes not creatable via API (`eligibility-classes` is 403 for TCG); assignable per worker |
 | Custom fields (`CustomArea1–4` payroll, `customFieldGroup` HR) | free string/code fields on the worker | field created in WFN once; values writable via API |
@@ -217,6 +218,14 @@ Central* — https://claude.ai/code/artifact/cd806009-fd67-4c55-b23a-6850c4e0df2
 from ADP's guide worth holding: an in-progress hire cannot be completed by re-POSTing (F154681,
 creates a second record), and HR-level custom fields are not supported by the onboard API (payroll
 Custom Area 1–4 are).
+
+## TCG's real code values (WFN Validation Tables report, 2026-08-18)
+Departments `OPRDEP` (Operators), `ODRDEP` (Oilers/Drivers), `MECDEP`, `PPEDEP` (Field), `YRDDEP`,
+`SADMIN`, `SALOFF`, `ACTDEP`, `DISDEP`, `SAFDEP`, `SLSDEP`, `MNGDEP` · cost numbers `G1L1 G1L2 G2L1
+G2L2` (no company code → API `204` with `?companyCode`) · locations `DEF`/`VEN` · hire reasons `NEW`/
+`CURR` · comp-change reason **`L12 CT`** L12 Contract Increase · job-change `PAYCH`/`XFR`. Full list:
+[adp-api-responses/validation-tables-report-2026-08-18.md](adp-api-responses/validation-tables-report-2026-08-18.md).
+Where to see them in WFN: **Reports & Analytics › Standard › Setup › Validation Tables** (run as PDF).
 
 ## Related artifacts (rendered views of the legacy-app findings)
 - *TCG Payroll Engine* — https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878
