@@ -27,13 +27,16 @@ unreachable"). Both caveats are now closed: this folder *is* rank 1 and 2 of the
 pack's own source-of-truth order. **Where this folder and any older payroll-app document
 disagree, this folder wins** — it is the code.
 
-The readable rendering of all of it is the artifact *TCG Payroll Engine*
-(https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878).
+The readable renderings: the artifact *TCG Payroll Engine*
+(https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878) and its plain-language companion
+*TCG Pay Rules, One at a Time* (https://claude.ai/code/artifact/1a754dab-82d4-4736-b23c-d51593c34c6c) — the
+latter is [rules-plain-language.md](rules-plain-language.md) rendered.
 
 ## Files
 
 | File | Answers |
 | --- | --- |
+| [rules-plain-language.md](rules-plain-language.md) | **Start here if you are not reading SQL** — who is who (union / non-union, payroll groups, L12 wage groups, apprentice steps, boom brackets) and then every rule separately: when it applies, how, the formula, one number, where in code |
 | [calculations.md](calculations.md) | **How every rule is computed**, B1–B12, with verbatim SQL and `sql/…:line` anchors. The primary document |
 | [open-questions.md](open-questions.md) | The 11 direct answers: boom length, minimums, shift/rest/CA values, base-rate sources, foreman/military/lattice/hazmat, ADP, week/day, tests |
 | [worked-examples.md](worked-examples.md) | 13 real masked entries: plain day, boom actual, boom-window-no-modifier, boom minimum, rest forced/overlap, WTL, subsistence, Sat/Sun/holiday/special-Sat, CA non-union, missing rate, cross-midnight, shift 2 |
