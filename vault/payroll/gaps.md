@@ -529,6 +529,12 @@ someone has confirmed otherwise.
 - Blocked: `PR-044`, and the lattice earning-code mappings.
 - Owner: Kyle and Joe (TCG business stakeholders), via Brian.
 - Status: open
+- **2026-08-19:** the 2026-08-04 "Payroll Process" recording has **Joe answering this directly** —
+  crawler crane only, every dispatch qualifies, lattice on any other crane is a jib extension /
+  luffing jib earning boom pay only; Corrina adds operator-and-oiler-only and that lattice **stacks**
+  with boom pay. Not written up as a decision (a transcript is not minutes). See
+  §*Lattice — Joe settled it on the recording, nothing records it* for the wording and the
+  confirmation question.
 - Legacy behaviour (2026-08-18): the payroll app has **no lattice concept at all** — no `LATT*`
   comment token, no branch, no code; the only boom concept is the craft-modifier bracket
   (`OP-BP/OI-BP`) adder. Lattice identification is a new build. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
@@ -1114,6 +1120,339 @@ someone has confirmed otherwise.
     distributed); statuses cascade from the payroll module — *vault/ticket:* CONTRADICTS:
     payroll/gaps.md → "Confluence payroll user stories" PAY-WP-04 AC 7 lists week statuses In
     Progress / Needs Processing / Submitted to ADP / Closed — no Processing / Received / Paid
+- **Disposition, 2026-08-19 (`tcg-scrum` pass).** Each pair was retrieved in full — `INDEX.md`,
+  `payroll/INDEX.md`, the cited vault files, `decisions/`, the named Jira issues, and the plain-text
+  transcript passage. **The list above contains 11 pairs, not 10** (`2026-05-26` appears twice —
+  lunch thresholds and time rounding); the main `INDEX.md` conflict table already says 11. Three
+  states, and no pair was resolved from a transcript:
+  - `2026-05-28` Wes / all HR in-house — **superseded by
+    [../decisions/2026-06-30-adp-erp-employee-data-ownership.md](../decisions/2026-06-30-adp-erp-employee-data-ownership.md)**
+    (Brian Petros + Ehtesham Anwar, agreed 2026-06-30, 33 days later). Kept as record; not open.
+  - `2026-06-25` owners want ERP to own onboarding — **superseded by the same decision note**
+    (5 days later). Kept as record; not open.
+  - `2026-06-23` ADP import layout, company code 631 — **resolved by live API observation, not by a
+    human decision**; see §*ADP export mapping* (D-001, 2026-08-13) and §*ADP File Number*
+    (**closed**). One residual: §*What `631` actually is*.
+  - `2026-05-21` subsistence — open → §*Subsistence — the recording and the engine disagree on both the amount and the trigger*
+  - `2026-05-26` lunch thresholds — needs confirmation → §*Lunch thresholds — the recording is the origin, and it disagrees with the WTL charts*
+  - `2026-05-26` time rounding — needs confirmation → §*Time rounding — nearest half hour, or start-down/end-up?*
+  - `2026-06-09` lunch alert lead time — open → §*Lunch alert lead time — one hour or thirty minutes?*
+  - `2026-07-09` fill-in employees — open, and it **post-dates** the 06-30 decision → §*Fill-in field employees vs the ADP-onboarding dispatch block*
+  - `2026-08-04` lattice — needs confirmation → §*Lattice — Joe settled it on the recording, nothing records it*
+  - `2026-08-13` rate does not follow role — needs confirmation → §*Pay rate follows the employee, not the role worked — Kyle and Corrina, unrecorded*
+  - `2026-08-13` week statuses — open → §*Weekly payroll week statuses — two CodingCops sources, no TCG statement*
 - Blocked: nothing yet — each pair blocks the unit that touches it.
 - Owner: `tcg-scrum` to put each pair to the named TCG person; the answer goes to `decisions/`.
+- Status: **partly disposed** — 2 superseded by `decisions/2026-06-30-adp-erp-employee-data-ownership.md`, 1 resolved by live ADP observation, 8 still open or awaiting confirmation, each with its own entry below.
+
+## Subsistence — the recording and the engine disagree on both the amount and the trigger
+
+- Question: for **long** subsistence on a **weekday**, is the allowance **$85** (what the legacy
+  engine pays) or **$200 per day** (what Melissa described), and is eligibility computed from
+  **yard-to-job distance** or entered manually as a `SUB_SHORT` / `SUB_LONG` comment token?
+- Candidates:
+  - Recording **2026-05-21 "Crane-Configurations / Job-Tickets"**, Melissa McNutt at 55:53:
+    *"if it's like 45 and a half miles, they get short subsistence, which is $85. And then if it's
+    over 44 and a half miles, and it goes to long subsistence, and it's $200 per day."* At 56:34
+    she confirms the distance measured is **yard location to job location**, not the employee's
+    home. No weekday/weekend split is mentioned. **The two mileage figures as spoken (45.5 / 44.5)
+    overlap and cannot both be the cut-off** — the threshold itself is unrecovered.
+  - `payroll/legacy-payroll-app-db-extract/rules-plain-language.md` §11 and
+    `payroll/legacy-payroll-app-db-extract/sql/app/usp_Apply_SubsistencePay.PROC.sql:92-95` —
+    the engine as built: `SUBSISTENCE_SHORT_85` **$85 any day**, `SUBSISTENCE_LONG_WEEKDAY_85`
+    **$85 Mon–Fri**, `SUBSISTENCE_LONG_WEEKEND_200` **$200 Sat/Sun**. Driven by the `SUB_SHORT` /
+    `SUB_LONG` comment token, **not by any distance calculation** — there is no mileage input.
+  - `payroll/erp-payroll-module-frd/07-rest-meal-and-subsistence.md` PR-037 / PR-038 (note the
+    `PR-###` ambiguity, `payroll/INDEX.md` caveat 1) — PR-037 ties the **$85** to an *overnight
+    stay away from home* plus distance and equipment-remains-on-job; PR-038 ties **$200/day** to
+    **weekend** long-distance work, with an employer election to pay portal travel instead.
+    PR-037 lists *employee home base* **and** *equipment home yard* among required inputs, which
+    the recording says is wrong.
+  - `payroll/payroll-app-current-state/03-payroll-rule-catalog.md:147-157` — same three tokens,
+    "comment-token driven and payable-only".
+  - `SCRUM-876` *Compliance Checklist & Attestation* (**QA**, reporter Umair Khan, created
+    2026-08-11) — the employee selects *"Long Sub, Short Sub or N/A"*. It carries **no amounts and
+    no distance rule**, so it does not settle this; it does mean the capture side is already built
+    as a manual employee selection, matching the legacy token, not a computed distance.
+- Note: three separate disagreements, and they should be answered separately — (a) the weekday
+  long amount, (b) distance-computed vs manually flagged, (c) whether employee home base is an
+  input at all. Melissa is the only named source for the distance model; the engine is the only
+  source for the amounts. **Do not reconcile by preferring the recording: it is one speaker,
+  unminuted, and internally inconsistent on the mileage.**
+- Blocked: PR-037 / PR-038 in `payroll/erp-payroll-module-frd/`, the subsistence pay components,
+  and the ADP **SUB PAY** mapping in `payroll/adp-bucket-crosswalk.md`.
+- Owner: Melissa McNutt (she stated the distance model); Corrina Bustos to confirm what is
+  actually paid today.
+- Status: open
+
+## Lunch thresholds — the recording is the origin, and it disagrees with the WTL charts
+
+- Question: are the lunch deadlines **5 / 10.5 / 16.5 / 22** hours (recording and `SCRUM-864`) or
+  **5:01 / 10.5:01 / 16:01 / 21.5:01** (`payroll/wtl-charts.md`)? Lunches 3 and 4 differ by half an
+  hour, which is a double-time penalty either way.
+- Candidates:
+  - Recording **2026-05-26 "Job-Tickets / mobile-app demo"** — Corrina Bustos explains first lunch
+    (29:00 area: *"the first lunch is going to have to be before 5.5 hours… the union is in half
+    hour increments, so even if they only work 5 hours and one minute, technically we still have to
+    pay 5 and a half"*); **Ryan Adams at 29:07**: *"first lunch, 5 hours within the ship, second
+    lunch, 10.5, and third, 16.5"*; at 29:23, fourth = *"22 hours"*. Ehtesham proposes at 28:0x:
+    *"whenever the lunch needs to be due, we send them notification one hour before that time"* —
+    unopposed. **This meeting is the origin of the numbers** that `../gaps.md` §*Lunch thresholds and
+    work-through-lunch authorization* records as citing no origin.
+  - `SCRUM-864` *Lunch & Work Through Lunch Management* — **QA** (not "In Progress"; reporter Umair
+    Khan, created 2026-08-06, updated 2026-08-12). AC: Lunch 1 before 5 h, Lunch 2 before 10.5 h,
+    Lunch 3 before 16.5 h, Lunch 4 before 22 h, notification **1 hour before** each. **Matches the
+    recording exactly** and is already through build.
+  - `product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md` — 5 / 10.5 / 16.5 / 22,
+    1 hour before. Matches.
+  - `payroll/wtl-charts.md:34-37` — the payroll team's own charts: first **5:01**, second
+    **10.5:01**, third **16:01**, fourth **21.5:01**. **Third and fourth are half an hour earlier.**
+  - `product/brs.md` BRS-LUNCH-002 lists **three** lunches and is marked ✓ Confirmed; BRS-LUNCH-005
+    *Lunch Threshold Values* is 📄 Needs Supporting Documentation. Both FRDs list the thresholds as
+    an open question (`product/field-ops-frd/11-open-questions-future-considerations.md` Q1;
+    `product/frd-new-format-draft/08-open-questions.md` Q4, owner Corrina).
+- Note: this is state (c) — a named TCG person stated the values on a recording, and no minutes or
+  decision note record it. **A decision note has not been written**, because "Ryan said it on a call
+  while Corrina was explaining something adjacent" is not the same as Corrina adjudicating the
+  charts she owns. The charts are the payroll team's own artefact, so the recording does not
+  automatically beat them.
+- Blocked: nothing hard — both FRDs require the thresholds to be configurable without a code change,
+  so building them as server-driven config keeps the answer a config change. But `SCRUM-864` has
+  shipped one side of an unresolved disagreement.
+- Owner: Corrina Bustos (owns the WTL charts and Q4 in FR-TCG-FOP-001); Ryan Adams stated the values.
+- Status: open — needs confirmation
+
+## Time rounding — nearest half hour, or start-down/end-up?
+
+- Question: does payroll round every time event to the **nearest** 30 minutes (9:15 and later → 9:30,
+  before 9:15 → 9:00), or does it round the entry **start down and the end up** as the legacy engine
+  does?
+- Candidates:
+  - Recording **2026-05-26 "Job-Tickets / mobile-app demo"**, Corrina Bustos at 1:08:49 →
+    *"is there a way that you can make it to where the time automatically is in 30 minute
+    increments… if it's 904, it would actually be 9:00 because that's how we pay and bill"*; at
+    1:09:11 *"that's company-wide, not just payroll. So it's billing, everything. Yeah, union
+    rule."*; at 1:09:32–1:09:46 Ehtesham asks whether 9:24 counts as 9:00 or 9:30, Corrina answers
+    **"930"**, and confirms *"correct"* to *"915 onwards is 930, if 915 below it's 9 o'clock"*.
+    Ehtesham commits: exact times are logged, **payroll uses 30-minute increments**.
+  - `payroll/legacy-payroll-app-db-extract/rules-plain-language.md:208` — the engine as built:
+    *"the entry's start is rounded **down** and end **up** to 30 minutes, then cut into 30-minute
+    slices"* (`app.usp_Prepare_Continuous_Labor`). **This is employee-favourable and is not
+    nearest-half-hour** — a 9:24 start rounds to 9:00 under the engine and to 9:30 under Corrina.
+  - `product/frd-new-format-draft/05-functional-requirements/fr-fop-038-time-rounding.md`
+    (FR-TCG-FOP-**001** — cite the document, `INDEX.md` caveat 3) — requires both exact and rounded
+    times to be stored and says *"rounding rules are configurable"*. It **does not state the rule**,
+    so it cannot arbitrate.
+  - `product/brs.md` BRS-TIME-004 *Union Rounding Rules* — ⚠ Needs Client Validation.
+- Note: state (c). Corrina is the right person and she answered a direct question with a worked
+  example, but nothing records it as a decision, and the difference is systematic, not marginal —
+  under nearest-half-hour an employee loses up to 15 minutes at the start of every shift, which is
+  exactly the outcome the legacy engine's down/up rule was built to avoid. Ask whether the legacy
+  behaviour is the intended rule or a legacy artefact before implementing either.
+- Blocked: the slice formula in the ERP pricing engine, every downstream hour bucket, and billing —
+  Corrina states the rule is company-wide, not payroll-only.
+- Owner: Corrina Bustos.
+- Status: open — needs confirmation
+
+## Lunch alert lead time — one hour or thirty minutes?
+
+- Question: is the lunch reminder sent **1 hour** before the lunch is due, or **30 minutes** before?
+- Candidates:
+  - Recording **2026-05-26**, Ehtesham Anwar: *"as a rule of thumb, let's say whenever the lunch
+    needs to be due, we send them notification one hour before that time"* — nobody objects. Earlier
+    in the same call Brian Petros asks for prompts *"at 4.5 hours"* against a 5-hour first lunch,
+    which is also a 30-minute lead.
+  - Recording **2026-06-09 "Payroll-App demo-01"**, Ehtesham at 54:42: *"they are going to be
+    automatically highlighted whenever the time comes. So we decided **30 minutes** before the time
+    hits, right? So we are going to highlight them. They are required to just click on that and it
+    automatically logs for half an hour."* Corrina Bustos answers **"Yes."** Two lines later, asked
+    *"is it always half an hour or can the time change for lunch?"*, Corrina: **"Always half hour."**
+  - `SCRUM-864` (**QA**) — *"System sends a notification **1 hour before** each applicable lunch is
+    due."* Built to the 05-26 figure.
+  - `product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md` — 1 hour before.
+  - `product/brs.md` BRS-LUNCH-003 — ⚠ Needs Client Validation.
+- Note: the two recordings are two weeks apart and the second one says *"we decided"*, so this looks
+  like TCG (or CodingCops) changing the number between meetings rather than a documentation error.
+  Corrina's **"Yes"** is to a compound statement (highlight 30 min before **+** one tap logs a fixed
+  half hour), so it is not safe to read it as ratifying the lead time specifically — which is why no
+  decision note was written. **The 30-minute fixed lunch duration is a separate fact and is not in
+  dispute**: Corrina states it unprompted and no vault file contradicts it.
+- Blocked: the mobile lunch reminder in `SCRUM-864`, already in QA at 1 hour.
+- Owner: Corrina Bustos.
+- Status: open
+
+## What `631` actually is
+
+- Question: `631` is not an ADP company code — so what is it? A Workforce Now **batch** or client
+  identifier, the old FCC/NexGen company number, or something else?
+- Candidates:
+  - Recording **2026-06-23 "Mobile App / Payroll ADP and draft workflows"**, Brian Petros at 41:32:
+    *"the company code is, this is going to be always **631**, which is crane guys"*, describing the
+    paydata import layout; *"file number is ADP's version of employee ID… it's really a six-digit
+    code. So there's three zeros and then this is the employee ID."*
+  - `payroll/gaps.md` §*ADP export mapping* (D-001, resolved 2026-08-13 by a live call to
+    `GET /events/payroll/v1/pay-data-input.modify/meta`,
+    `payroll/adp-api-responses/pay-data-input-meta.md`): **the company codes are `4RZ` (THE CRANE
+    GUYS LLC) and `4RY` (The Crane Guys, LLC – Ventura). `631` is not a company code at all.**
+  - `payroll/gaps.md` §*ADP File Number — the crosswalk's format rule is wrong* (**closed**): ADP's
+    own validation is `^0*(5[1-9]|[6-9][0-9]|[1-9][0-9]{2,5})$` — digits only, minimum value 51,
+    leading zeros allowed and not counted toward the 6-character limit. Brian's "six digits with
+    leading zeros" is compatible; his implied fixed width is not a rule ADP enforces.
+- Note: **this pair is resolved against the recording, but by live API evidence, not by a decision
+  from a named human** — do not record it in `decisions/`. The rest of Brian's layout description
+  (Reg/OT/DT lines, extra lines per boom rate carrying their own rate, base rate assumed from the
+  employee's union group, sub pay, holiday DT/triple, sick pay) is **not** contradicted by anything
+  in the vault and is corroborated by
+  `payroll/legacy-payroll-app-db-extract/` (the observed ADP worksheet layout). Only the company
+  code is wrong. The residual question matters because whatever `631` is, it is what payroll types
+  today, and the ERP export must not carry it into the API payload.
+- Blocked: nothing — the export must use `4RZ` / `4RY`. This entry exists so nobody re-derives `631`
+  from the recording.
+- Owner: Brian Petros (he supplied the layout and holds the ADP file facts).
+- Status: open — low priority; the build-blocking half is already answered
+
+## Fill-in field employees vs the ADP-onboarding dispatch block
+
+- Question: may a **fill-in field employee** be dispatched, allocated to a job and file tickets and
+  labor from a basic ERP record **before** ADP onboarding completes — or does step 5 of the
+  2026-06-30 decision (ERP blocks scheduling, equipment assignment and job allocation until ADP
+  reports onboarding complete) apply to them too?
+- Candidates:
+  - Recording **2026-07-09 "ADP and Data Migration"**, Brian Petros at 34:43: *"they would be
+    entered in the ERP, but maybe the ADP information isn't completed yet. So maybe we would want to
+    identify like the basic information for field employees to be entered in the ERP so that they
+    can fill in their job tickets, information, their labor, and then… it still gives them a few
+    days to get the documents into ADP. Right. So that's one special process."* Corrina Bustos at
+    35:10 confirms the current practice: *"right now with the fill-ins I give them until like Sunday
+    to fill out all the ADP stuff because the payroll is generated every Monday, Tuesday."*
+  - `../decisions/2026-06-30-adp-erp-employee-data-ownership.md` step 5 — *"Until ADP reports
+    onboarding **complete**, the ERP treats the employee as pending and **blocks scheduling,
+    equipment assignment and job allocation**."* `status: verified`, Brian Petros + Ehtesham Anwar.
+  - `product/daily-allocation-system.md` §*Temporary Employee management in DAS* — temps are
+    assignable *"without creating full HR profiles"*, get a "Temp" tag, a "Fill In" placeholder, a
+    secure link, and *"payroll and billing teams can see the temp employee assignment"*. No ADP
+    gating anywhere in the story.
+  - `SCRUM-254` *Temporary Employee management in DAS* (**Done**, created 2026-05-01) and
+    `SCRUM-304` *Temporary employees* (**Done**, created 2026-05-06) — both shipped before the
+    decision note and neither mentions ADP onboarding status.
+- Note: **the sharpest of the eleven, and the only one where the recording post-dates the decision
+  it contradicts** — Brian raised this on 07-09, nine days *after* he agreed to step 5 on 06-30. So
+  it reads as an amendment request from the same person, not as a statement the decision supersedes.
+  Do not resolve it by recency in either direction. Two shipped tickets already implement the
+  unblocked behaviour, so the ERP today does **not** enforce step 5 for temps; whichever way this
+  goes, one side needs changing.
+- Blocked: `SCRUM-254` / `SCRUM-304` are Done and may need reopening; any ERP↔ADP onboarding-status
+  gate; the employee-creation push described in `payroll/adp-read-write-boundary-2026-08-18.md`.
+- Owner: Brian Petros (raised it, and co-owns the 06-30 decision); Corrina Bustos for the
+  until-Sunday practice.
+- Status: open
+
+## Lattice — Joe settled it on the recording, nothing records it
+
+- Question: is the lattice-pay trigger settled as **the crawler crane only, every time it is
+  dispatched**, with lattice on any other crane treated as a jib extension / luffing jib that earns
+  boom pay only — as Joe Schacatano stated on 2026-08-04?
+- Candidates:
+  - Recording **2026-08-04 "Payroll Process"**, 56:45–57:40. Brian Petros: *"So every time the
+    crawler crane gets dispatched, then it is qualifying for lattice. Is that correct?"* **Joe
+    Schacatano: "Yes."** Brian asks about the other cranes; Joe: *"Don't even worry… That's all that
+    would be applicable to boom pay. That's it."* and *"We're not going to call them lattices on the
+    other one. We're going to call them jib extensions or luffing jibs… we're talking two different
+    things. We're talking boom pay and then the lattice adder pay for the hourly rate."*
+  - Same recording, 52:15 — **Corrina Bustos**: *"only the oiler and the operator qualify for it.
+    The third man does not. And there have been times where the third men have tried to get the pay,
+    and I've had to take it off."* At 58:17, asked whether boom pay and lattice are mutually
+    exclusive, Corrina: *"No, it's on top of… if they are using the crawler, they can also qualify
+    for BoomPay."* — **lattice stacks with boom pay.**
+  - Same recording, 53:11 — Melissa McNutt proposes the mechanism: the salesman marks lattice in the
+    crane configuration, and if the person is assigned as third man the option does not appear on
+    the labor side. Ehtesham suggests holding it on the **asset configuration**; Brian: *"it can be
+    based on the crane."* **The asset-based trigger is a CodingCops/Brian suggestion, not Joe's
+    words** — Joe settled *which crane*, not *which table*.
+  - `payroll/gaps.md` §*Lattice Crane identification* — **still open**, owner Kyle and Joe via
+    Brian, recording M-0805's *"requires further discussion with Kyle and Joe"*. Legacy behaviour
+    (2026-08-18): the payroll app has **no lattice concept at all**; identification is a new build.
+  - `payroll/codingcops-rule-matrix.md` PR-044 *Lattice-boom premium* — marked **New ERP
+    requirement**, "Confirm interaction with long boom" outstanding. Corrina's 58:17 answer appears
+    to settle that interaction; nothing records it.
+- Note: state (c). Joe is the named person the open gap names as owner, and he answered a direct
+  yes/no question. **No decision note has been written, because a transcript is not minutes** — and
+  the recording is a room mic, so speaker attribution is inferred in places (see the combined entry's
+  attribution caveat). A one-line "yes" on the confirmation question below is enough to write it up.
+- Blocked: PR-044 in `payroll/codingcops-rule-matrix.md`; the `LPR/LPO/LPD/LPT` and `LOR/LOO/LOD/LOT`
+  ADP mappings; the crane-configuration / asset field that would carry the flag.
+- Owner: Joe Schacatano (stated it), with Kyle Harlow — the two named on the open gap.
+- Status: open — needs confirmation
+
+## Pay rate follows the employee, not the role worked — Kyle and Corrina, unrecorded
+
+- Question: when an employee dispatched as an operator at $70/h is allocated to a job as a **rigger**,
+  is he paid **$70** (his own rate, per Kyle and Corrina) or the **union craft rate for the rigger
+  craft code on the labor entry** (per PR-007 and the legacy engine)?
+- Candidates:
+  - Recording **2026-08-13 "Payroll Process"**, 23:57–24:42. **Kyle Harlow**: *"Even if they fill a
+    different position, we have to keep it at that rate."* **Corrina Bustos**: *"everybody is
+    allocated at one base rate. So say he gets paid 70 bucks an hour as an operator and he's
+    dispatched to us at that rate. Even if he goes out on a job as a rigger, he still has to be paid
+    as… the $70.00."* **Brian Petros** then proposes the rule: *"any secondary must be a higher rate
+    than the primary, because… that's the only time that they are paid out at a different rate is
+    when it's a higher, they're working at a higher capacity, right, Corrina?"* — **Kyle: "Yes, yes.
+    Correct. That would make good sense."** Effectively a floor at the employee's primary rate.
+  - `payroll/erp-payroll-module-frd/03-payroll-groups-and-rate-determination.md` PR-007 *L12 Union
+    Base Rate* (note the `PR-###` ambiguity) — *"The current ERP target design is: **L12 base rate =
+    union craft rate for the labor-entry CraftCode**"*, obtained by joining the labor-entry CraftCode
+    to the effective-dated union craft rate. **No floor at the employee's own craft.** It also
+    records that a later TCG design decision moved the target model away from `Source_Rate_Raw`.
+  - `payroll/legacy-payroll-app-db-extract/rules-plain-language.md:208-218` — the engine as built
+    agrees with PR-007: *"If the labor craft and the employee's craft differ, **the labor row's craft
+    wins**."* So **both written sources say the opposite of the recording.**
+  - Same recording, 25:13–25:18 — Kyle adds that operators are **not** all on one rate (*"different
+    groups… different agreements"*) and asks for an **over-scale** box on the employee profile,
+    which `payroll/gaps.md` §*Confluence payroll user stories* also finds in `PAY-CC-02` AC 4–6 as
+    an employee-specific additional rate on top of the craft rate. That part is corroborated.
+    At 54:40–54:49 Corrina gives the counter-case that keeps this from being trivial: someone paid
+    at group 9 can go out as an oiler and **qualify for oiler long boom**, or as a third man and
+    **not** qualify — so the role still governs *premium eligibility* even if it does not govern the
+    base rate.
+- Note: state (c), and the highest-value of the eleven — it inverts rate resolution, which every
+  downstream pay component multiplies. **No decision note written**: Kyle and Corrina described
+  current practice rather than adjudicating PR-007, and the "secondary must be higher" rule was
+  Brian's proposal with Kyle agreeing, which is a design suggestion in a working call, not a
+  recorded product decision. Confirm the rule *and* whether it applies to L12 only or to all five
+  payroll groups.
+- Blocked: PR-007 in `payroll/erp-payroll-module-frd/03-payroll-groups-and-rate-determination.md`;
+  the ERP rate-resolution service; every premium that multiplies the base rate; the secondary
+  craft-code UI demoed at 21:50 in the same call.
+- Owner: Kyle Harlow (stated it) and Corrina Bustos (worked the example); Brian Petros proposed the
+  higher-rate-secondary rule.
+- Status: open — needs confirmation
+
+## Weekly payroll week statuses — two CodingCops sources, no TCG statement
+
+- Question: what are the week statuses on the weekly payroll screen — **In Progress / Submitted /
+  Processing / Received / Paid** (demoed 2026-08-13) or **In Progress / Needs Processing / Submitted
+  to ADP / Closed** (`PAY-WP-04` AC 7)?
+- Candidates:
+  - Recording **2026-08-13 "Payroll Process"**, 30:42–33:39 — the five statuses and their meanings
+    are described by **Ehtesham Anwar (CodingCops)**, demoing the screen: *Submitted* = hours sent to
+    ADP; *Processing* = ADP accepted and is creating checks; *Received* = payroll has the checks but
+    has not distributed them; *Paid* = checks distributed; *In Progress* = the current week, nothing
+    submitted. He states the statuses **cascade** from the payroll module to each employee profile.
+    The only TCG response in the passage is Corrina Bustos asking an unrelated question about open
+    tickets. **No TCG person accepts or rejects the status set on the recording.**
+  - `payroll/gaps.md` §*Confluence payroll user stories* — Confluence page `Payroll management`
+    (page id 150110210, `PAY-WP-04` AC 7), **by Umair Khan (CodingCops)**, edited 2026-08-18,
+    **unmigrated**: *In Progress, Needs Processing, Submitted to ADP, Closed*.
+  - `../meetings/2026-08-05-payroll-module-design-review.md` — discusses ticket status, Edit/Override
+    and send-to-Crane-Supervisor in general terms only; **does not name week statuses**.
+- Note: **both sides of this pair are CodingCops artefacts** — a demo narration and an unmigrated
+  Confluence page by two different CodingCops authors, six days apart. It is therefore an internal
+  inconsistency rather than a recording-vs-TCG contradiction, and neither side carries TCG
+  ratification. It still needs a TCG answer because the status set encodes an operational fact only
+  payroll knows: whether *checks received but not distributed* is a state they need to see. Cite
+  `PAY-WP-04` as **unverified Confluence**, not as the vault, per the entry above.
+- Blocked: the weekly payroll screen and the per-employee week status cascade; any ERP→ADP
+  submission state machine.
+- Owner: Corrina Bustos (whether *Received* and *Paid* are states payroll needs); Umair Khan for
+  whether the Confluence page is finished.
 - Status: open
