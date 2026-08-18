@@ -100,7 +100,8 @@ register.
 | [payroll/erp-payroll-module-frd/INDEX.md](payroll/erp-payroll-module-frd/INDEX.md) | What must the ERP payroll module do? Draft 0.1, 11 parts, 55 `PR-###` rules | 47.0 |
 | [payroll/codingcops-rule-matrix.md](payroll/codingcops-rule-matrix.md) | **Which rule do I build, and what is still undecided about it?** 68 rules | 20.8 |
 | [payroll/mcog-l12-mla-2025-2028/INDEX.md](payroll/mcog-l12-mla-2025-2028/INDEX.md) | What does the union contract actually say? 5 parts | 74.0 |
-| [payroll/payroll-app-current-state/INDEX.md](payroll/payroll-app-current-state/INDEX.md) | How does the legacy Payroll App behave today? 9 files | 51.0 |
+| [payroll/payroll-app-current-state/INDEX.md](payroll/payroll-app-current-state/INDEX.md) | How does the legacy Payroll App behave today? 9 files (2026-06 pack; corrected by the db-extract) | 51.0 |
+| [payroll/legacy-payroll-app-db-extract/INDEX.md](payroll/legacy-payroll-app-db-extract/INDEX.md) | **How does the legacy Payroll App actually calculate pay?** Full DB extract 2026-08-18 — all SQL, all config, worked examples, ADP worksheet layout | 12.6 |
 | [payroll/adp-bucket-crosswalk.md](payroll/adp-bucket-crosswalk.md) | How does a pay component become an ADP paydata field? 9 open decisions | 22.3 |
 | [payroll/adp-hour-earning-codes.md](payroll/adp-hour-earning-codes.md) | Which ADP Hours/Earnings codes exist? (partial export) | 2.9 |
 | [payroll/adp-sop-v3.8.md](payroll/adp-sop-v3.8.md) | How is payroll produced today, step by step? (the process being replaced) | 11.7 |

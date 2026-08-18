@@ -2,7 +2,7 @@
 title: Payroll module - vault index
 source: onedrive/OneDrive_1_8-11-2026/
 migrated: 2026-08-13
-updated: 2026-08-11
+updated: 2026-08-18
 status: unverified
 conflicts_with: []
 jira: []
@@ -47,7 +47,8 @@ that produced the rest of the vault.
 | **which rule to build, and its status** | [codingcops-rule-matrix.md](codingcops-rule-matrix.md) — 68 rules, each with trigger, required inputs, expected output, baseline status, open decision |
 | what the union contract actually says | [mcog-l12-mla-2025-2028/INDEX.md](mcog-l12-mla-2025-2028/INDEX.md) — contract text, payroll articles |
 | how the current system behaves | [payroll-app-current-state/INDEX.md](payroll-app-current-state/INDEX.md) — legacy app, 9 files |
-| **what the legacy code actually implements** | [legacy-payroll-app-code-extract.md](legacy-payroll-app-code-extract.md) — rules extracted from the real source (`projects.rar`, Jul 2026). Rule-applicability answered for current behaviour; the ADP File # validation bug; foreman/military premiums confirmed never implemented |
+| **how the legacy app actually calculates pay** | [legacy-payroll-app-db-extract/INDEX.md](legacy-payroll-app-db-extract/INDEX.md) — **the full database extract, 2026-08-18**: all 141 SQL definitions, every config row, the slice formula, every rule with its code, worked examples, the observed ADP worksheet layout. **Where any older payroll-app document disagrees, this wins** |
+| what the legacy API/UI implements | [legacy-payroll-app-code-extract.md](legacy-payroll-app-code-extract.md) — the C#/Next.js layer (`projects.rar`, Jul 2026): rule shapes, the ADP File # validation bug, no ADP export. Its "SQL not in repo" caveat is now closed by the db-extract |
 | how payroll reaches ADP | [adp-bucket-crosswalk.md](adp-bucket-crosswalk.md), then [adp-hour-earning-codes.md](adp-hour-earning-codes.md) |
 | **what ADP's API actually permits** | [adp-integration-capabilities.md](adp-integration-capabilities.md) — researched 2026-08-13. **Read before designing any ERP↔ADP sync** |
 | **how ADP events work** | [adp-event-notifications.md](adp-event-notifications.md) — 147 subscribable events, polling vs webhook is exclusive, and notifications fire on **issue** date not effective date |

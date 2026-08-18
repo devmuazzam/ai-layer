@@ -30,6 +30,11 @@ person or function who has to answer them.
 - Blocked: any payroll rule implementation that is not L12-Field-only.
 - Owner: TCG management, payroll leadership, and labor counsel — named as such in both documents.
 - Status: open
+- Legacy behaviour (2026-08-18, code-verified — not a policy answer): the engine applies every L12
+  rule to any labor row whose `CraftCode LIKE 'L12%'` (Field and Mechanic identically); Non-Union
+  Admin Hourly rows are repriced by `app.usp_Apply_CA_NonUnionAdminHourly_OT` (daily 8/12, weekly
+  40, 7th day) with every union field zeroed; `ADMIN-*` crafts are the only ones exempt from
+  minimum pay. Salary rows are never priced. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## The 24 decisions required before the payroll rule catalog is final
 
@@ -171,6 +176,14 @@ person or function who has to answer them.
 **From the client meeting minutes of 2026-08-05 / 07 / 12** — named, owed deliverables and
 ADP behaviours discovered while testing the API. Every action item is outstanding unless
 someone has confirmed otherwise.
+- Legacy behaviour (2026-08-18, code-verified): the payroll app's meal entitlement is
+  `cfg.WTL_MaxMealThreshold` — shift span 0.5–5.0 h → 0 meals, 5.5–10.5 → 1, **11.0–16.0 → 2,
+  16.5–21.5 → 3**, 22.0–27.0 → 4 (30-minute granularity, so "16.5" is the first span in the 3-meal
+  bracket and 16.0 the last in the 2-meal bracket — the 16:01 wording does not appear in the
+  code); opportunities modelled at 5.0 / 10.5 / 16.0 / 21.5 h; token `(PAY:WTL_n)` = meals worked
+  through, no token ⇒ 0 with a warning; taken meal deducts the full priced slice incl. boom,
+  worked-through adds 0.5 h × (base+shift) × 2.0 (or × (2.0 − mult) on weekday ST-start blocks).
+  Which of these the ERP should keep is still the open question. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) calculations B7.
 
 ## ADP codes — TCG owes an updated export
 
@@ -368,6 +381,10 @@ someone has confirmed otherwise.
 - Owner: CodingCops (design), TCG payroll (confirm whether a second API Central project scoped to
   compensation is wanted).
 - Status: open
+- Legacy behaviour (2026-08-18): the payroll app takes the non-union rate from
+  `FMS_EMPLOYEES.PayRate` (NexGen employee master) — `api.v_UI_Employee_TypeRate`,
+  `BaseHourlyRateSource = 'Employee.PayRate'`; union rates from `FMS_UNION_CRAFT.PayRate` by the
+  labor row's craft. So the upstream today is NexGen, not ADP. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## Union membership is recorded twice in ADP, and the two disagree
 
@@ -512,6 +529,9 @@ someone has confirmed otherwise.
 - Blocked: `PR-044`, and the lattice earning-code mappings.
 - Owner: Kyle and Joe (TCG business stakeholders), via Brian.
 - Status: open
+- Legacy behaviour (2026-08-18): the payroll app has **no lattice concept at all** — no `LATT*`
+  comment token, no branch, no code; the only boom concept is the craft-modifier bracket
+  (`OP-BP/OI-BP`) adder. Lattice identification is a new build. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## Foreman premium — granularity, multiplier and capture
 
@@ -535,6 +555,8 @@ someone has confirmed otherwise.
 - Owner: Brian Petros (TCG); Jeff Kelley (crane superintendent) for how foreman assignment is
   actually decided and recorded per job.
 - Status: open
+- Legacy behaviour (2026-08-18): confirmed again against the full database — no object, column
+  or config row for a foreman premium in any of the 141 definitions. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## Military Base premium — job-level scope, Davis-Bacon list, and the phone call
 
@@ -559,6 +581,9 @@ someone has confirmed otherwise.
 - Blocked: implementation of the military premium; job-site data model; Davis-Bacon identification.
 - Owner: Corrina (TCG) for Davis-Bacon criteria; Brian Petros for the ADP codes.
 - Status: open
+- Legacy behaviour (2026-08-18): confirmed against the full database — nothing for military /
+  Davis-Bacon / prevailing wage in the calculation; certified payroll exists only as a label flag
+  (`UseCertifiedPayroll`). Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## Premium stacking and no-pyramiding
 
@@ -572,6 +597,12 @@ someone has confirmed otherwise.
 - Blocked: any implementation where both premiums could apply to the same hour.
 - Owner: TCG management / payroll, with labor counsel and the union rep.
 - Status: open
+- Legacy behaviour (2026-08-18, code-verified): the engine prices each 30-min slice as
+  `0.5 × (Rate_Base + Rate_Shift + boom?Rate_Boom) × Final_Multiplier` — the shift and boom
+  **adders are multiplied by the OT/DT/Sat/Sun/Holiday multiplier**, and one multiplier controls a
+  slice (holiday > Sunday > special-Sat > DT > outside-window OT > OT > Saturday). Rest premium
+  pays only the delta up to a ×1.5/×2 floor. That is the current stacking rule; whether it is
+  the contract's is the open question. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) calculations B2.
 
 ## ADP product, API Central entitlement and sandbox
 
@@ -657,6 +688,12 @@ someone has confirmed otherwise.
   delivery mechanism (special Excel column vs earning code).
 - Owner: TCG payroll + CodingCops, jointly. Needs an explicit decision.
 - Status: open
+- Observed 2026-08-18 (ADP Workforce Now screenshots, company 4RZ, weekly #31, 07/18–07/24):
+  the batches ROLL (Field Roll, 85 people) and SALARY (29) are marked **Manual Entry**; PTO001
+  is Paid Time Off. ROLL columns: Reg / OT / DT / Holiday 2x / Holiday 3x hours, Shift Diff 2/3
+  code+amount, **Temporary Rate + LB REG/OT/DBL/TRI** (one row per boom adder), SUB PAY, Sick,
+  PTO. The legacy app produces no file — the sheet is keyed/imported outside it. Layout recorded in
+  [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## Employee master — who creates a worker, ERP or ADP
 

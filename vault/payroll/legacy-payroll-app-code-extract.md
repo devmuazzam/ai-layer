@@ -2,7 +2,7 @@
 title: Legacy Payroll App - rules extracted from the actual source code
 source: user-supplied/projects.rar (tcg-payroll-api Program.cs 2296 lines + tcg-payroll-ui Next.js app, files dated Feb-Jul 2026)
 migrated: 2026-08-13
-updated: 2026-08-13
+updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
@@ -19,11 +19,17 @@ API, `Program.cs`, 2,296 lines) and `tcg-payroll-ui` (Next.js 15). This is more 
 Jun-2026 knowledge pack in [payroll-app-current-state/](payroll-app-current-state/INDEX.md)
 (files dated through **Jul 21, 2026**) and it is *code*, not a description of code.
 
-**One caveat that bounds everything here:** the calculation engine itself is SQL Server —
-`api.tvf_*` functions and `usp_*` procedures — and **the SQL is not in this repo**. The archive
-holds the API layer (which names every rule's inputs and outputs) and the UI (which names every
-rule's presentation). Rule *shapes* below are code-verified; numeric *thresholds* mostly live in
-the missing SQL and stay unverified except where noted.
+> **Superseded in part, 2026-08-18.** The SQL *is* now in the vault:
+> [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) holds all 141
+> definitions, every config row and the calculation narrative. This file remains correct for the
+> API/UI layer; wherever it says a threshold "lives in the missing SQL", read the db-extract
+> instead — every one of those values is now known.
+
+**Original caveat (now closed):** the calculation engine itself is SQL Server —
+`api.tvf_*` functions and `usp_*` procedures — and at the time of writing the SQL was not in this
+repo. The archive holds the API layer (which names every rule's inputs and outputs) and the UI
+(which names every rule's presentation). Rule *shapes* below are code-verified; numeric
+*thresholds* were unverified until the 2026-08-18 extract.
 
 ---
 
@@ -124,7 +130,10 @@ adding it again.
 `TriggeredFlag`/`SatisfiedFlag`; gap hours are allocated to entries by
 **`LastLaborEntryInShift`** or **`LastEligibleBoomEntryInShift`**, with pay-component basis
 **`BaseShift`** or **`BoomOnly`**. So the FRD's "allocate to last entry of shift" is
-code-verified — and there is a **boom-only guarantee variant** no design document mentions.
+code-verified — and there is a **boom-only guarantee variant** no design document mentions
+(2026-08-18: it is `LONG_BOOM_MIN_4` — 4 boom hours per shift, capped at shift length, priced at
+the boom adder × the boom slices' multiplier; see
+[legacy-payroll-app-db-extract/calculations.md](legacy-payroll-app-db-extract/calculations.md) B5).
 
 **Rest period** (`api.usp_UI_RestPeriod_SliceDetail`): per half-hour slice —
 `NormalMultiplier`, `RestChainHoursBeforeSlice`, `RestMultiplier`,
@@ -151,10 +160,14 @@ in the mobile app removes an entire failure class.
 **WTL**: `EntryExpectedMealCount` and `WTL_Token_MissedMeals` from the engine; **taken meals
 produce `WTL_MEAL_DEDUCT` (time deducted), worked-through meals produce a paid add**;
 `WTLAddAmount` and `WTLMealDeductAmount` tracked separately; `WTL_ErrorCount` +
-`Has_ConflictingWTLTokens` error paths. Four meals modeled. **The threshold values are in the
-SQL, not this repo — the 16.5 vs 16:01 conflict in [payroll/gaps.md](gaps.md) remains open.** (The
-UI paints meal markers at a flat 5-hour cadence — `sliceIndex = mealNo * 10` — but that is
-display placement, not the engine threshold.)
+`Has_ConflictingWTLTokens` error paths. Four meals modeled. **Threshold values — now known
+(2026-08-18):** `cfg.WTL_MaxMealThreshold` maps shift span 0.5–5.0 h → 0 meals, 5.5–10.5 → 1,
+11.0–16.0 → 2, 16.5–21.5 → 3, 22.0–27.0 → 4; opportunities are modelled at 5.0 / 10.5 / 16.0 /
+21.5 h from group start; `MealPeriodHours = 0.5`, `AddMultiplier = 2.0`, add basis base+shift
+excluding boom, deduct = full priced slice. See
+[legacy-payroll-app-db-extract/calculations.md](legacy-payroll-app-db-extract/calculations.md) B7.
+(The UI's flat 5-hour meal markers `sliceIndex = mealNo * 10` are display placement and happen to
+match the first opportunity only.)
 
 **Two grosses, reconciled.** Every entry resolves `LaborGross_BeforeWTL` → `WTLAdjustment` →
 `LaborGross_AfterWTL` (labor gross), then `+ PayableOnlyAmount` (subsistence) →
@@ -205,7 +218,9 @@ Searched both projects for `foreman|military|apprentice|certified|epip|paydata|e
   ([foreman-and-military-premiums.md](foreman-and-military-premiums.md)) — **but no system has
   ever computed them**. They are handled inside the manual Excel step today, or not at all.
   For the ERP these are new builds, not ports.
-- **No apprentice-step logic** visible at the API/UI layer.
+- **No apprentice-step logic** visible at the API/UI layer. (2026-08-18: the DB confirms — apprentice
+  steps exist only as craft codes `L12-APP1..6-A` with their own `FMS_UNION_CRAFT.PayRate`
+  (40.90 → 61.34); no step-progression logic anywhere.)
 - **No certified-payroll output** — only pass-through employee flags `UseCertifiedPayroll` /
   `CertPay`.
 - **No ADP export** (§1).

@@ -2,7 +2,7 @@
 title: Payroll source manifest - OneDrive drop 2026-08-11
 source: onedrive/OneDrive_1_8-11-2026/
 migrated: 2026-08-13
-updated: 2026-08-11
+updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
@@ -30,6 +30,15 @@ This exists so nobody has to re-derive whether something was missed, and so the 
 | `PAYROLL for ADP v3.0 - current/PAYROLL for ADP - SOP v3.8.docx` | 1027 KB | [adp-sop-v3.8.md](adp-sop-v3.8.md) |
 | `PAYROLL_APP_build/ADP-specific_files/HOUR_EARNING_CODES_…csv` | 1 KB | [adp-hour-earning-codes.md](adp-hour-earning-codes.md) |
 | `PAYROLL_APP_build/PayrollAPP_LABOR-LOGIC-EXAMPLES.xlsx` | 20 MB | [rule-examples-catalog.md](rule-examples-catalog.md) — `Examples_Catalog` sheet only |
+
+## Later drops (not part of the OneDrive folder)
+
+| Source | Received | Became |
+| --- | --- | --- |
+| `projects.rar` — `tcg-payroll-api` (Program.cs) + `tcg-payroll-ui` (Next.js), files to Jul 2026 | 2026-08-13 / re-sent 2026-08-17 | [legacy-payroll-app-code-extract.md](legacy-payroll-app-code-extract.md) |
+| `DATABASE_STORED_PROCEDURES.md` — object/parameter/table reference generated on the client machine | 2026-08-17 | folded into [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) (superseded by the full extract) |
+| `PAYROLL_CALC_EXTRACT.zip` (464 KB) — read-only extract of `TCG_PayrollAPP`: 141 SQL definitions, DDL, config rows, distinct codes, source feed, tests, worked examples | 2026-08-18 | [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) — everything except the extract's `parts/` provenance copies |
+| 4 ADP Workforce Now screenshots (Manage Regular Payroll #31, ROLL / SALARY / PTO001 worksheets, company 4RZ) | 2026-08-18 | the ADP hand-off section of [legacy-payroll-app-db-extract/INDEX.md](legacy-payroll-app-db-extract/INDEX.md) |
 
 ## Not migrated, and why
 

@@ -2,7 +2,7 @@
 title: TCG Payroll App (legacy) - Payroll group and rule applicability matrix
 source: onedrive/OneDrive_1_8-11-2026/PAYROLL_APP_build/PayrollAPP_0.5/TCG_PayrollAPP_AI_Knowledge_Pack_2026-06-23.zip#06_EMPLOYEE_TYPE_AND_RULE_MATRIX.md
 migrated: 2026-08-13
-updated: 2026-06-23
+updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
@@ -10,6 +10,15 @@ topics: [payroll, payroll-app, payroll-group, rule-eligibility]
 entities: [payroll-group, rule-eligibility, union-craft-rate]
 part_of: payroll/payroll-app-current-state/INDEX.md
 ---
+
+> **2026-08-18 — current behaviour is now code-verified.** For the "Confirm" cells below: the
+> engine keys every L12 rule on `CraftCode LIKE 'L12%'`, so **L12 Mechanic entries run the same
+> path as L12 Field** (standard day, outside-window OT, Sat/Sun/holiday/special-Sat, guarantees,
+> boom modifier, rest premium, WTL, subsistence tokens). Non-Union Admin Hourly is repriced by
+> `app.usp_Apply_CA_NonUnionAdminHourly_OT`, which zeroes every union field. `ADMIN-A/B/C` are
+> the only crafts with `ApplyMinimumPay = 0`. Policy confirmation with management is still a
+> separate question; this note states what the system does. Source:
+> [../legacy-payroll-app-db-extract/](../legacy-payroll-app-db-extract/INDEX.md).
 
 ## Terminology
 
