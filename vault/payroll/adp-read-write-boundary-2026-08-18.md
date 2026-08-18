@@ -237,6 +237,16 @@ onboarding; QuickBooks is GL only. The **ADP file number is ADP's** — the ERP 
 mints it. Craft/modifier/payroll-group in `CustomArea1–4` is therefore optional mirroring, not a
 requirement.
 
-## Related artifacts (rendered views of the legacy-app findings)
-- *TCG Payroll Engine* — https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878
-- *TCG Pay Rules, One at a Time* — https://claude.ai/code/artifact/1a754dab-82d4-4736-b23c-d51593c34c6c
+## The three artifacts and their status (2026-08-18)
+
+| Artifact | Covers | Status |
+| --- | --- | --- |
+| *TCG Payroll Engine* — https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878 | the legacy client payroll app end to end: workflow, formula, every calculation with its SQL object, gross assembly, worked examples, findings | **Closed.** Everything traceable to `projects.rar` + `PAYROLL_CALC_EXTRACT.zip`; what is unknown is named in *Findings* / *Not in the system* (where the nightly is scheduled, where the ADP hand-off workbook lives, the write-tests never run). Re-open only if the client hands over the scheduler or the workbook. |
+| *TCG Pay Rules, One at a Time* — https://claude.ai/code/artifact/1a754dab-82d4-4736-b23c-d51593c34c6c | groups and client terminology first, then each rule separately (boom, guarantees, shifts, rest, WTL, subsistence, CA OT) | **Closed.** Same sourcing. Silent on salaried staff on purpose — the legacy code has no salary rule; that is a product gap, not a doc gap. |
+| *ADP Employee Onboarding via API Central* — https://claude.ai/code/artifact/cd806009-fd67-4c55-b23a-6850c4e0df25 | how an employee is created and edited in ADP; every validation-table code TCG holds; a swagger reference with an ADP source link per API; and a second tab mocking our own employee form with the ADP fields | **Closed as documentation, open on proof.** Nothing further can be written without calling TCG's tenant. The remaining items are listed on the page itself and need: the New Hire Onboarding use case on the API Central project, WFN security access to the *HR + Payroll TCG* template, and one test onboard. Request set ready: `TCG-ADP-onboarding-close-out.postman_collection.json`. |
+
+Open items on the third artifact, verbatim: TCG's template *codes* (names known), the salary
+`recordingBasisCode` value, pay-group codes, union-locals, Custom Area labels, default field
+department (OPRDEP vs PPEDEP), whether WFN auto-assigns file numbers, how the ERP learns an
+onboarding finished (event queue reachable but empty — polling is the only proven route today),
+duplicate/retry handling, and end-to-end proof.
