@@ -388,3 +388,122 @@ other entry here: they are not conflicts between documents but **named, owed del
 - Blocked: the action item to review existing integrations for ERP incorporation.
 - Owner: Patrick (demo), then whoever writes it down.
 - Status: open
+
+## Meeting recordings disagree with the vault — 2026-08-19 review
+
+- Question: which side is right, in each of the pairs below?
+- Candidates: the OneDrive drop `OneDrive_1_8-19-2026` (55 TCG–CodingCops meeting recordings,
+  2026-01-15 → 2026-08-13) was read in full on 2026-08-19 and every product ask checked against
+  the vault and all 902 SCRUM issues. Full report (1,501 items; 502 with no ticket and no
+  vault coverage, 348 in the vault with no ticket):
+  https://claude.ai/code/artifact/8d4b706b-9eaa-4369-a9b2-d78fe26233db . The rows below are the
+  ones where a recording **contradicts** a vault file or a ticket. Payroll ones are in
+  `payroll/gaps.md` under the same heading.
+- **Recency is not authority.** A recording is a data point inside the conflict, not its
+  resolution — several of these are TCG changing its mind between meetings. Do not pick a side.
+- Note: room-mic recordings label Lisette, Dylan, Liz and Wes as "Brian Petros"; speakers below
+  are inferred from content.
+- Pairs:
+  - **2026-03-06** — Customer show page has an internal Comments section for
+    accounting/dispatch/anyone interacting with the customer — *vault/ticket:*
+    product/customer-and-job-sites.md ("Notes - do TCG team use this feature?") — *jira:*
+    SCRUM-49 (Remove Comments Section from Customer Show Page — Done), SCRUM-52 (Not
+  - **2026-03-06** — Quotation form carries a PO number field ("the PO number is going to be
+    available") — *vault/ticket:* product/quotation.md ("Customer PO"),
+    product/customer-and-job-sites.md (associate customer POs) — *jira:* SCRUM-149 (PO number
+    field — remove it, Done), SCRUM-575 (Pre-Quote Data Form &
+  - **2026-03-06** — Approved quote is automatically converted into a Project (draft) once
+    transmitted to dispatch — *vault/ticket:*
+    product/project-module/01-create-and-track-projects.md says salesperson clicks "Create
+    Project" on a signed quotation (manual one-click), and a project can also be created without
+    a quotation — *jira:* SCRUM-894 (Prevent Automatic Project and Job Creation Before
+    Conversion, To Do),
+  - **2026-03-06** — Row 184 phased rollout: "Phase 1 = mirror existing FCC functionality
+    (customers, quotes, jobs) … within ~6 months; subsequent phases = project layer, safety,
+    CRM, analytics" — transcript (1969-1970) has Ans putting the *project… — *vault/ticket:*
+    none
+  - **2026-03-12** — Rename "billing codes" to "price list" for simplicity. — *vault/ticket:*
+    product/billing-code-and-price-list.md keeps both entities — *jira:* SCRUM-80 and SCRUM-97
+    keep both
+  - **2026-03-12** — POs must be creatable at quotation level, at job level, and standalone for
+    the business; every PO must have a trail to why it exists; job-level POs auto-link; PO
+    cancelled if quote lost. — *vault/ticket:* product/sprint-4-additional.md says "Every PO
+    must be linked to a job number — required, not optional" — *jira:* SCRUM-518, SCRUM-473
+  - **2026-03-20** — Customer statuses: Active, Inactive, Prospect, plus new "On hold". —
+    *vault/ticket:* CONTRADICTS: product/user-story-and-tasks.md:102-107 defines status as
+    auto-calculated colour indicators (Active / Inactive 6 months / Inactive 1 year) — no
+    Prospect or On hold
+  - **2026-03-20** — Credit limit is needed on the customer. — *vault/ticket:*
+    product/customer-and-job-sites.md:40 says "Remove credit limit and forecast from show page"
+    — *jira:* SCRUM-20, SCRUM-715 (Credit Limit)
+  - **2026-03-20** — Comments wanted at the customer level. — *vault/ticket:*
+    product/customer.md:37-40 (notes) — *jira:* CONTRADICTS: SCRUM-49 "Remove Comments Section
+    from Customer Show Page" (Done);
+  - **2026-03-20** — Keep Notes and Tasks on customers (task manager per customer; CRM to be
+    built on top). — *vault/ticket:* CONTRADICTS: product/customer-and-job-sites.md:25 "Remove
+    tasks from customers"; :26 asks whether TCG uses notes (answered: yes) — *jira:* SCRUM-198
+    (job-site tabs incl. notes/tasks during creation), SCRUM-52
+  - **2026-03-20** — Employees can be assigned to multiple companies and multiple yards, not a
+    single default. — *vault/ticket:* none — *jira:* CONTRADICTS: SCRUM-468 "Yard Field in
+    Employee Creation" associates an employee
+  - **2026-03-26** — On-site scope of work / "site scope plan" (same paper form as lift plan,
+    different heading, handwritten on site, JSA alongside) becomes a digital form in the mobile
+    app; operators enter actual measurements; changes mid-lift mus… — *vault/ticket:*
+    product/project-module/04-create-and-approve-lift-plans.md "User Story 4: Create a Site
+    Plan" (Project Engineer creates in portal with approval — DIFFERENT actor/flow);
+    product/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md (… —
+    *jira:* SCRUM-236 Create a Site Plan (portal); SCRUM-862 JSA / Tailboard (mobile) — no m
+  - **2026-03-31** — New "Project" entity: an approved quotation gets a "Create Project" button
+    (replacing "Convert to Job"); project carries the job-location name, all quotation data,
+    KPIs (total/active jobs, unassigned jobs), tabs for quotations,… — *vault/ticket:*
+    product/project-module/01-create-and-track-projects.md (Create Project on signed quotation,
+    tab bar) — *jira:* SCRUM-231; but SCRUM-312 ("replace resend/void actions with Convert to
+    Job CTA")
+  - **2026-04-09** — Renewal reminders for asset annual permits should fire ~90 days out. —
+    *vault/ticket:* CONTRADICTS: product/project-module/05-create-and-track-permits.md says
+    "Permit expiry alerts are triggered 30 days in advance" — *jira:* SCRUM-372 (expiry reminder
+    scheduler)
+  - **2026-04-21** — Jobs panel has compact chip view and detailed list view (list view also
+    shows required crane size); Lisette prefers the "squares" layout. — *vault/ticket:*
+    product/daily-allocation-system.md (compact/list toggle) — *jira:* SCRUM-331; note SCRUM-784
+    "Remove card . grid view toggles" (Done, from 07-16 pu
+  - **2026-05-14** — Who fills the ticket: crane + one truck → the oiler fills ONE ticket
+    covering himself and the operator (crane, tractor, trailer, both names); every other
+    driver/equipment gets its own ticket; two crew riding in one truck may sh… — *vault/ticket:*
+    product/frd-new-format-draft/04-role-responsibility-model.md ("The Oiler owns the main
+    ticket… Operator's labor is captured within the shared ticket"); fr-fop-009 (oiler checklist
+    covers crane, tractor, trailer, support loads) — *jira:* SCRUM-249 (fetched) creates a
+    ticket "against all employees that had allocations
+  - **2026-06-17** — Dispatch changes the dispatched asset only in the dispatch (DAS) view; the
+    job's requested resources stay as the client-approved record; both are retained —
+    *vault/ticket:* CONTRADICTS: product/project-module/02-view-manage-job-details.md says
+    "Dispatcher can add new resources, update existing ones, or remove them" on the job
+    Resources tab — *jira:* SCRUM-580 (Done)
+  - **2026-06-18** — Asset on a permit becomes optional (was default); when a permit carries an
+    asset, DAS auto-attaches that asset to the job for that date — *vault/ticket:*
+    product/project-module/05-create-and-track-permits.md (asset in permit form; active permits
+    auto-link to dispatch); CONTRADICTS: product/job-project-das.md ("auto create travel permit
+    request based on assets required – before navigating to next step, add as… — *jira:*
+    SCRUM-517 (Done), SCRUM-533 (Done), SCRUM-625 (Done)
+  - **2026-06-18** — SOS options: 911, safety officer, crane superintendent, nearest hospital,
+    broadcast to office — and add Dispatch — *vault/ticket:*
+    product/atom-mobile-app-user-stories/06-safety-and-self-service.md US-21 (911, Safety, Crane
+    Super, hospital — no Dispatch, no broadcast) — *jira:* SCRUM-880 (In Review) — AC list 911 /
+    Safety / Crane Superintendent / hospital o
+  - **2026-08-11** — Schedule fields: sales coordinator, salesperson, job location, status
+    Scheduled/Tentative/Hold/Cancelled/Maintenance, scheduled hours; cranes in maintenance must
+    not be selectable; double-booking allowed for short jobs — *vault/ticket:* M-0812;
+    `product/daily-allocation-system.md` says in-maintenance assets are greyed out but still
+    draggable with a warning — Ryan wants non-selectable;
+    `product/project-module/03-create-manage-job-schedule.md` (warning on double assignment) —
+    *jira:* SCRUM-502 (Asset Availability & Maintenance Status), SCRUM-234
+  - **2026-08-12** — Photo of the customer signer must be optional / consent-based — a customer
+    may refuse to be photographed; today it is required in the app; CC agrees to make it
+    optional ("not a huge change"); TCG will encourage but not fight fo… — *vault/ticket:*
+    product/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md
+    (photo capture is a configurable per-deployment toggle); CONTRADICTS:
+    product/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md line 136… —
+    *jira:* SCRUM-861 Arrive Job & Customer First Authorization (QA) — flow, not the optiona
+- Blocked: nothing yet — each pair blocks the unit that touches it.
+- Owner: `tcg-scrum` to put each pair to the named TCG person; the answer goes to `decisions/`.
+- Status: open

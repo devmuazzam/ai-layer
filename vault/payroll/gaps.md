@@ -1037,3 +1037,83 @@ someone has confirmed otherwise.
   are finished.
 - Status: open
 
+## Meeting recordings disagree with the vault — 2026-08-19 review
+
+- Question: which side is right, in each of the pairs below?
+- Candidates: the OneDrive drop `OneDrive_1_8-19-2026` (55 TCG–CodingCops meeting recordings,
+  2026-01-15 → 2026-08-13) was read in full on 2026-08-19 and every product ask checked against
+  the vault and all 902 SCRUM issues. Full report (1,501 items; 502 with no ticket and no
+  vault coverage, 348 in the vault with no ticket):
+  https://claude.ai/code/artifact/8d4b706b-9eaa-4369-a9b2-d78fe26233db . The rows below are the
+  ones where a recording **contradicts** a vault file or a ticket. Product ones are in
+  `gaps.md` under the same heading.
+- **Recency is not authority.** A recording is a data point inside the conflict, not its
+  resolution — several of these are TCG changing its mind between meetings. Do not pick a side.
+- Note: room-mic recordings label Lisette, Dylan, Liz and Wes as "Brian Petros"; speakers below
+  are inferred from content.
+- Pairs:
+  - **2026-05-21** — Subsistence for report-to-site: based on yard-to-job distance (not employee
+    home): short subsistence $85 (~45 miles), long subsistence $200 per day over ~44.5 miles. —
+    *vault/ticket:* CONTRADICTS: payroll/erp-payroll-module-frd/07-rest-meal-and-subsistence.md
+    and payroll/payroll-app-current-state/03-payroll-rule-catalog.md say long subsistence is $85
+    on weekdays (SUBSISTENCE_LONG_WEEKDAY_85) and $200 only on weekends (PR-038 Long-Distanc… —
+    *jira:* SCRUM-876 (compliance checklist captures Long/Short Sub)
+  - **2026-05-26** — Lunch thresholds: 1st lunch by 5 h (penalty from 5.5 h because union pays
+    in 30-min increments), 2nd by 10.5 h, 3rd by 16.5 h, 4th at 22 h; notification one hour
+    before each (first at the 4-h mark) — *vault/ticket:* ATOM/03-work-execution-and-lunch.md
+    (5/10.5/16.5/22, 1 h before — matches); gaps.md → "Lunch thresholds and work-through-lunch
+    authorization" says the numbers "cite no origin" — this meeting IS the origin (Corrina +
+    Ryan). CONTRADICTS: payroll/wtl-charts.md… — *jira:* SCRUM-864
+  - **2026-05-26** — Times captured to the minute but payroll/billing rounds to 30-min
+    increments company-wide; halfway rule (9:15+ → 9:30, below → 9:00) — *vault/ticket:*
+    FOP1/fr-fop-038-time-rounding.md, BRS BRS-TIME-004 ("30-minute increments,
+    employee-favorable" — Needs Client Validation). CONTRADICTS:
+    payroll/legacy-payroll-app-db-extract/rules-plain-language.md (start rounded DOWN, end UP —
+    not nearest half-hour); also …
+  - **2026-05-28** — Wes: all HR functionality must live in-house in the ERP; keep ADP only for
+    cheque processing, payroll taxes/fees "at their most basic function" — *vault/ticket:*
+    CONTRADICTS: decisions/2026-06-30-adp-erp-employee-data-ownership.md — ADP remains owner of
+    legal HR record and performs onboarding; "rebuilding ADP's onboarding inside the ERP"
+    explicitly rejected (Brian, 2026-06-30)
+  - **2026-06-09** — Mobile: show one lunch button per allowed lunch (from BRS rules),
+    auto-highlighted 30 minutes before the threshold; tap logs a fixed 30-min lunch (Corrina
+    confirms lunch is always 30 min) — *vault/ticket:*
+    product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md ("notification 1 hour
+    before"); product/brs.md BRS-LUNCH-003 (⚠ Needs Client Validation) — *jira:* SCRUM-864 ("1
+    hour before")
+  - **2026-06-23** — ADP import layout: company code 631 (Crane Guys), file number = ADP
+    employee ID (6 digits, leading zeros), Reg/OT/DT hours, extra lines per boom rate with rate,
+    sub pay, holiday DT and holiday triple hours, sick pay (non-union … — *vault/ticket:*
+    payroll/adp-bucket-crosswalk.md; CONTRADICTS: payroll/gaps.md:74 says "631 is not a company
+    code at all" (Co Code 4RZ), and §"ADP File Number — the crosswalk's format rule is wrong"
+  - **2026-06-25** — Owners want the ERP to be the system where employee data and onboarding
+    live, pushing to ADP (not ADP → ERP as Joe's workflows showed) — *vault/ticket:*
+    CONTRADICTS: decisions/2026-06-30-adp-erp-employee-data-ownership.md says ADP stays owner of
+    legal/payroll fields; ERP *initiates* onboarding, ADP *performs* it; "rebuilding ADP's
+    onboarding inside the ERP" explicitly rejected (superseded 5 days later)
+  - **2026-07-09** — Fill-in field employees need basic info in ERP so they can do tickets/labor
+    before ADP onboarding completes (Corrina gives them until Sunday) — *vault/ticket:*
+    product/daily-allocation-system.md (Temp employee management: "Fill In" placeholder);
+    decisions/2026-06-30-… step 5 says ERP blocks scheduling until ADP onboarding complete —
+    CONTRADICTS Brian's ask here — *jira:* SCRUM-254 (Temporary Employee management in DAS),
+    SCRUM-304
+  - **2026-08-04** — Lattice pay: crawler crane is the only lattice unit; only operator and
+    oiler qualify (third man does not); it is an hourly base-rate adder for the whole job, not
+    boom pay; it stacks with boom pay; Joe: trigger it from the asset… — *vault/ticket:*
+    CONTRADICTS: M-0805 says lattice identification "requires further discussion with Kyle and
+    Joe" and `payroll/gaps.md` §"Lattice Crane identification" is open, owner Kyle/Joe — the
+    recording shows Joe settling it (asset-based, crawler only); also `payroll/co…
+  - **2026-08-13** — Correction: pay rate does NOT follow the role worked — an employee
+    dispatched at $70 as operator stays at $70 even if allocated as rigger; rule: a secondary
+    craft code must carry a higher rate than the primary; effectively pay … — *vault/ticket:*
+    CONTRADICTS: payroll/erp-payroll-module-frd/03-payroll-groups-and-rate-determination.md
+    PR-007 — "L12 base rate = union craft rate for the labor-entry CraftCode" (rate from the
+    role on the labor entry, no floor at the employee-master craft)
+  - **2026-08-13** — Per-employee week statuses: In Progress (current week), Submitted (hours
+    sent to ADP), Processing (ADP accepted), Received (checks received by payroll), Paid (checks
+    distributed); statuses cascade from the payroll module — *vault/ticket:* CONTRADICTS:
+    payroll/gaps.md → "Confluence payroll user stories" PAY-WP-04 AC 7 lists week statuses In
+    Progress / Needs Processing / Submitted to ADP / Closed — no Processing / Received / Paid
+- Blocked: nothing yet — each pair blocks the unit that touches it.
+- Owner: `tcg-scrum` to put each pair to the named TCG person; the answer goes to `decisions/`.
+- Status: open

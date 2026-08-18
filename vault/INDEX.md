@@ -7,7 +7,7 @@ tells you which file answers which question, and it is the only vault file meant
 ## Read these five lines before you answer anything
 
 1. **Nothing here is verified except the six `domain/` SOP files.** Everything else is `status: unverified` — migrated faithfully, never adjudicated. It is not necessarily current.
-2. **Eight open conflicts.** If a file's `conflicts_with` is non-empty, do not pick one and answer from it. Read the conflict stub instead. List below. One of the eight was found *after* the migration, by a drift check against Confluence — the source keeps moving, so this list is not closed.
+2. **Nine open conflicts.** If a file's `conflicts_with` is non-empty, do not pick one and answer from it. Read the conflict stub instead. List below. One of the nine was found *after* the migration, by a drift check against Confluence, and one by reading the meeting recordings against the vault — the source keeps moving, so this list is not closed.
 3. **`FR-FOP-NNN` ids are ambiguous.** Both field-ops FRDs number their requirements from 001, so `FR-FOP-013` is *Lunch Monitoring* in one document and *Lunch Timer and Alerts* in the other. **Always cite the document as well as the id.** A bare "FR-FOP-013" identifies nothing.
 4. **`PR-NNN` ids are ambiguous too, and for the same reason.** The payroll requirements document and the payroll rule matrix each number their rules from 001, so `PR-010` is *Non-Union Salary Rate* in one and *L12 union base rate* in the other. Cite the document. See [payroll/INDEX.md](payroll/INDEX.md).
 5. **`meetings/` is retrospective, not forward-looking.** Every sprint plan there was written after its sprint had already started; one was written four days after it ended. Do not read them as commitments.
@@ -43,6 +43,7 @@ in [payroll/gaps.md](payroll/gaps.md). **Read either by section** (`grep -n '^##
 | Mobilization & Demobilization | 2 (1 migrated) | [mob-demob-INDEX.md](product/mob-demob-INDEX.md) — found by drift check 2026-08-11, not by the migration |
 | Sprint 7 date range | — | [gaps.md](gaps.md) — unrecoverable from the page; 30 seconds to fix with Jira access |
 | Punch lists not scoped to their module | 4 | [gaps.md](gaps.md) — structural, deliberately not fixed |
+| Meeting recordings vs the vault (2026-08-19 review) | 32 pairs | [gaps.md](gaps.md) (21 product) and [payroll/gaps.md](payroll/gaps.md) (11 payroll) — a recording says one thing, a vault file or ticket says another; unadjudicated |
 
 ---
 
