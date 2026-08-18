@@ -2,7 +2,7 @@
 title: Payroll Bucket to ADP Import Crosswalk
 source: onedrive/OneDrive_1_8-11-2026/Payroll_ADP_Bucket_Crosswalk.xlsx
 migrated: 2026-08-13
-updated: 2026-08-05
+updated: 2026-08-18
 status: unverified
 conflicts_with: []
 jira: []
@@ -11,6 +11,14 @@ entities: [adp-code, adp-file-number, pay-component, earning-code, temp-rate-row
 ---
 
 # Payroll Bucket to ADP Import Crosswalk — Draft v1
+
+> **Observed on the ADP side, 2026-08-18.** The Workforce Now ROLL worksheet for company 4RZ
+> shows these fields as named columns — Reg Hours, OT Hours, DT Hours, Holiday 2x/3x Hours,
+> Shift Diff 2/3 (code, amount), **Temporary Rate with LB REG / LB OT / LB DBL / LB TRI**, SUB
+> PAY, Sick, P.T.O. — with one extra row per distinct boom adder (the temp rates equal the legacy
+> app's `OI-BP/OP-BP` bracket values). Batches are marked *Manual Entry*. Layout and the legacy
+> figures that feed each column: [legacy-payroll-app-db-extract/INDEX.md](legacy-payroll-app-db-extract/INDEX.md).
+
 
 Prepared 2026-08-05. Developer-facing source of truth for how ERP payroll components are
 translated into ADP paydata fields and Hours/Earnings codes.

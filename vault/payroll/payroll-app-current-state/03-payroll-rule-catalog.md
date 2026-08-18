@@ -168,6 +168,12 @@ Current design direction:
 - OT should be based on actual hours worked.
 - Do not apply Local 12-specific rules unless explicitly confirmed.
 
+> **2026-08-18 correction:** these are no longer "potential" — the six codes below are live in
+> `fms.Payroll_PayComponent`, written by `app.usp_Rebuild_PayComponentLedger_NonUnionAdminHourly_CA_NonExempt`
+> after `app.usp_Apply_CA_NonUnionAdminHourly_OT`. Thresholds (8/12/40 h, 7th day, Sat–Fri week)
+> are hard-coded in that proc; rate = `Employee.PayRate`. See
+> [../legacy-payroll-app-db-extract/calculations.md](../legacy-payroll-app-db-extract/calculations.md) B9.
+
 Potential component code prefix:
 
 ```text

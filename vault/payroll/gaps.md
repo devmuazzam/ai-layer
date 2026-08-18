@@ -30,6 +30,11 @@ person or function who has to answer them.
 - Blocked: any payroll rule implementation that is not L12-Field-only.
 - Owner: TCG management, payroll leadership, and labor counsel — named as such in both documents.
 - Status: open
+- Legacy behaviour (2026-08-18, code-verified — not a policy answer): the engine applies every L12
+  rule to any labor row whose `CraftCode LIKE 'L12%'` (Field and Mechanic identically); Non-Union
+  Admin Hourly rows are repriced by `app.usp_Apply_CA_NonUnionAdminHourly_OT` (daily 8/12, weekly
+  40, 7th day) with every union field zeroed; `ADMIN-*` crafts are the only ones exempt from
+  minimum pay. Salary rows are never priced. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## The 24 decisions required before the payroll rule catalog is final
 
@@ -171,6 +176,14 @@ person or function who has to answer them.
 **From the client meeting minutes of 2026-08-05 / 07 / 12** — named, owed deliverables and
 ADP behaviours discovered while testing the API. Every action item is outstanding unless
 someone has confirmed otherwise.
+- Legacy behaviour (2026-08-18, code-verified): the payroll app's meal entitlement is
+  `cfg.WTL_MaxMealThreshold` — shift span 0.5–5.0 h → 0 meals, 5.5–10.5 → 1, **11.0–16.0 → 2,
+  16.5–21.5 → 3**, 22.0–27.0 → 4 (30-minute granularity, so "16.5" is the first span in the 3-meal
+  bracket and 16.0 the last in the 2-meal bracket — the 16:01 wording does not appear in the
+  code); opportunities modelled at 5.0 / 10.5 / 16.0 / 21.5 h; token `(PAY:WTL_n)` = meals worked
+  through, no token ⇒ 0 with a warning; taken meal deducts the full priced slice incl. boom,
+  worked-through adds 0.5 h × (base+shift) × 2.0 (or × (2.0 − mult) on weekday ST-start blocks).
+  Which of these the ERP should keep is still the open question. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) calculations B7.
 
 ## ADP codes — TCG owes an updated export
 
@@ -368,6 +381,10 @@ someone has confirmed otherwise.
 - Owner: CodingCops (design), TCG payroll (confirm whether a second API Central project scoped to
   compensation is wanted).
 - Status: open
+- Legacy behaviour (2026-08-18): the payroll app takes the non-union rate from
+  `FMS_EMPLOYEES.PayRate` (NexGen employee master) — `api.v_UI_Employee_TypeRate`,
+  `BaseHourlyRateSource = 'Employee.PayRate'`; union rates from `FMS_UNION_CRAFT.PayRate` by the
+  labor row's craft. So the upstream today is NexGen, not ADP. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## Union membership is recorded twice in ADP, and the two disagree
 
@@ -512,6 +529,9 @@ someone has confirmed otherwise.
 - Blocked: `PR-044`, and the lattice earning-code mappings.
 - Owner: Kyle and Joe (TCG business stakeholders), via Brian.
 - Status: open
+- Legacy behaviour (2026-08-18): the payroll app has **no lattice concept at all** — no `LATT*`
+  comment token, no branch, no code; the only boom concept is the craft-modifier bracket
+  (`OP-BP/OI-BP`) adder. Lattice identification is a new build. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## Foreman premium — granularity, multiplier and capture
 
@@ -535,6 +555,8 @@ someone has confirmed otherwise.
 - Owner: Brian Petros (TCG); Jeff Kelley (crane superintendent) for how foreman assignment is
   actually decided and recorded per job.
 - Status: open
+- Legacy behaviour (2026-08-18): confirmed again against the full database — no object, column
+  or config row for a foreman premium in any of the 141 definitions. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## Military Base premium — job-level scope, Davis-Bacon list, and the phone call
 
@@ -559,6 +581,9 @@ someone has confirmed otherwise.
 - Blocked: implementation of the military premium; job-site data model; Davis-Bacon identification.
 - Owner: Corrina (TCG) for Davis-Bacon criteria; Brian Petros for the ADP codes.
 - Status: open
+- Legacy behaviour (2026-08-18): confirmed against the full database — nothing for military /
+  Davis-Bacon / prevailing wage in the calculation; certified payroll exists only as a label flag
+  (`UseCertifiedPayroll`). Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## Premium stacking and no-pyramiding
 
@@ -572,6 +597,12 @@ someone has confirmed otherwise.
 - Blocked: any implementation where both premiums could apply to the same hour.
 - Owner: TCG management / payroll, with labor counsel and the union rep.
 - Status: open
+- Legacy behaviour (2026-08-18, code-verified): the engine prices each 30-min slice as
+  `0.5 × (Rate_Base + Rate_Shift + boom?Rate_Boom) × Final_Multiplier` — the shift and boom
+  **adders are multiplied by the OT/DT/Sat/Sun/Holiday multiplier**, and one multiplier controls a
+  slice (holiday > Sunday > special-Sat > DT > outside-window OT > OT > Saturday). Rest premium
+  pays only the delta up to a ×1.5/×2 floor. That is the current stacking rule; whether it is
+  the contract's is the open question. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) calculations B2.
 
 ## ADP product, API Central entitlement and sandbox
 
@@ -591,9 +622,31 @@ someone has confirmed otherwise.
   subscription, and its price is not public. The sandbox, the client certificate and the Postman
   collections are **all provisioned with the API Central project** — they are not publicly
   available and cannot be obtained by having an ADP account alone.
-- Blocked: every part of the ERP↔ADP integration, including any estimate of it.
+- **Sandbox — RESOLVED 2026-08-17: there is no client sandbox on API Central.** Sourced:
+  1. ADP's *Marketplace Partner Development Learning Guide*, ch. 2 (last modified 2026-06-22):
+     the test sandbox is requested via the **Partner Self Service Portal** ("integration projects
+     (DEV and PROD), request a test sandbox instance"; "Click into your Development project …
+     click on Test Instance … Request A Test Instance"). That portal and that sandbox belong to
+     Marketplace **partners**; TCG is an API Central **client** on the Launchpad.
+  2. API Central's own overview / features / adp.com product pages list certificate and
+     credential management, use-case templates and ticketed support — **no sandbox, test
+     environment or test data**.
+  3. The Postman collection ADP generated for the *TCG ERP Integration* project contains 32
+     request URLs, **all `https://api.adp.com`** — no test host.
+  4. Third-party confirmation (JobsPipe ADP API guide, Jul 2026): clients get credentials via
+     their ADP rep; partners "integrate against ADP's sandbox"; "no public self-serve testing
+     tier". (Fern, May 2026, mentions a sandbox "tied to API Central registration" — the partner
+     one.)
+  **Consequence:** the only safe write target for a client is a **test company code inside TCG's
+  own WFN instance, created by ADP on TCG's request**. Whether `4RY` (Ventura — no pay schedule)
+  is or could become that is a question for TCG/ADP. Whether an API credential can be scoped to
+  one company code is **unknown** — ask ADP; do not assert it.
+  Until then: read-only calls only; validate payloads locally against the captured
+  `pay-data-input.modify/meta`; a mock endpoint for ERP integration tests; any live write only
+  as a supervised, immediately-deleted batch with TCG payroll present — a TCG decision.
+- Blocked: write-path testing, until a test company exists.
 - Owner: TCG (ADP account administrator), with ADP.
-- Status: open
+- Status: open — product and entitlement resolved; **test company requested from TCG 2026-08-17**
 
 ## ERP↔ADP round trip — what happens when a practitioner edits the batch
 
@@ -635,6 +688,12 @@ someone has confirmed otherwise.
   delivery mechanism (special Excel column vs earning code).
 - Owner: TCG payroll + CodingCops, jointly. Needs an explicit decision.
 - Status: open
+- Observed 2026-08-18 (ADP Workforce Now screenshots, company 4RZ, weekly #31, 07/18–07/24):
+  the batches ROLL (Field Roll, 85 people) and SALARY (29) are marked **Manual Entry**; PTO001
+  is Paid Time Off. ROLL columns: Reg / OT / DT / Holiday 2x / Holiday 3x hours, Shift Diff 2/3
+  code+amount, **Temporary Rate + LB REG/OT/DBL/TRI** (one row per boom adder), SUB PAY, Sick,
+  PTO. The legacy app produces no file — the sheet is keyed/imported outside it. Layout recorded in
+  [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 
 ## Employee master — who creates a worker, ERP or ADP
 
@@ -714,37 +773,39 @@ someone has confirmed otherwise.
 - Owner: Ehtesham Anwar (CodingCops) — has the role to do it directly.
 - Status: open — and the cheapest item on this entire list to close.
 
-## Changing an API Central project's entitlements disturbs the credential
+## `invalid_client` from ADP does not mean the credentials are wrong — RESOLVED 2026-08-17
 
-- Question: how long is the credential invalid after a project is modified, and does the secret
-  rotate or merely lapse?
-- **Observed 2026-08-13.** A working `client_credentials` token request began returning
-  `{"error": "invalid_client", "error_description": "The given client credentials were not valid"}`
-  **immediately after subscribing to the `pay-data-input.modify` event**. Same client ID
-  (`446ce6aa-…`), same token host, same certificate, and a token had been minted successfully
-  minutes earlier.
-- **Not a certificate problem.** A clean JSON OAuth error proves the mTLS handshake succeeded; a
-  certificate fault produces a socket/TLS failure instead. Useful diagnostic to remember.
-- Candidates: re-provisioning lag after an entitlement change, or a silent secret rotation. ADP
-  documents neither. Their Quick Start guide only notes that *"credentials are automatically
-  generated as soon as you start a new project and you can reset your credentials at any time"* —
-  so a reset on the Credentials page is the escape hatch.
-- **Why this matters far beyond today.** The pay period closes Friday and money moves the following
-  Thursday — a **six-day processing window**
-  ([payroll/adp-api-responses/pay-schedule.md](payroll/adp-api-responses/pay-schedule.md)). If
-  anyone adds an API or event subscription to the project mid-week and the credential lapses, **the
-  ERP cannot submit payroll**, with no warning and an error that looks nothing like a payroll
-  problem.
-- **Consequences for the build:**
-  1. **Treat API Central project changes as deployment events**, scheduled outside the submission
-     window — not as console tweaks anyone can make on a Tuesday.
-  2. **The ERP must handle `invalid_client` distinctly**: alert a human, do not retry blindly, and
-     never silently drop a batch. It is a credential-lifecycle failure, not a transient one.
-  3. **Whoever holds the `P` (Project user) role can trigger this.** Access to modify the project
-     is effectively access to interrupt payroll submission.
-- Blocked: nothing today. This is an operational rail for the integration.
-- Owner: CodingCops, with TCG payroll to agree a change window.
-- Status: open — duration and cause unconfirmed
+- Question (as first written 2026-08-13): does changing an API Central project's entitlements
+  invalidate the credential? **No. Retracted.**
+- **What was observed.** Right after subscribing to the `pay-data-input.modify` event, a Postman
+  token request began returning
+  `{"error": "invalid_client", "error_description": "The given client credentials were not valid"}`.
+  It was recorded here as a credential lapse caused by the project change.
+- **What it actually was (2026-08-17).** The failing Postman was on a **different machine
+  (Windows)** using a key file named `private.txt`; the working calls (curl, and the earlier
+  Postman) were on the Mac using `private.key` — the file that verifiably matches the project
+  certificate (public-key hashes compared 2026-08-17). Same client ID, same secret, same
+  certificate: only the private key file differed. The credential was never invalid; the event
+  subscription had nothing to do with it. Proven by a clean token from the Mac on 2026-08-17 with
+  unchanged credentials.
+- **The lesson that survives, and it is a sharper one:** ADP answers a *wrong or unusable client
+  key* with the **same** `invalid_client` message it uses for a wrong secret — a full HTTP 401 with
+  ADP headers (`Adp-Correlationid`, `X-Ca-Err: 3003201`), not a TLS failure. So `invalid_client`
+  means "the identity I saw does not match this client ID", and the identity is
+  **secret + certificate + private key together**. Check the key file before resetting anything.
+- **The earlier reasoning error, so nobody repeats it:** "a clean JSON error proves the mTLS
+  handshake succeeded, therefore it is not a certificate problem" — the handshake did succeed, but
+  that only proves *a* key/cert pair (or none) was presented, not that it was the *right* one.
+- **Consequences for the build (still valid, re-based on the real cause):**
+  1. The ERP must hold cert + key + secret as one unit in a secret manager, and log which
+     certificate serial it presented — so an `invalid_client` can be diagnosed in one look.
+  2. `invalid_client` is a configuration failure, not a transient one: alert a human, do not retry
+     blindly, never silently drop a batch. (Unchanged.)
+  3. Treating API Central project changes as scheduled deployment events remains sensible
+     hygiene, but it is no longer backed by an observed failure.
+- Owner: CodingCops.
+- Status: **closed** — cause found; the operational rails above are recorded in
+  [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
 
 ## Where do webhook events live in API Central, and what fires?
 

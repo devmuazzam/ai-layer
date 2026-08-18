@@ -2,7 +2,7 @@
 title: TCG Payroll App (legacy) - AI Knowledge Pack
 source: onedrive/OneDrive_1_8-11-2026/PAYROLL_APP_build/PayrollAPP_0.5/TCG_PayrollAPP_AI_Knowledge_Pack_2026-06-23.zip
 migrated: 2026-08-13
-updated: 2026-06-23
+updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
@@ -52,9 +52,14 @@ When sources conflict, the pack ranks them:
 5. Most recent handoff notes and validated screenshots/results.
 6. The older March walkthrough and early design notes.
 
-**Note what that ordering means for us:** items 1 and 2 are the legacy codebase, which is not in
-this repo. Nobody here can reach the top two ranks of the pack's own hierarchy. So a claim
-sourced only from these files is, at best, rank 3.
+**Note what that ordering means for us (updated 2026-08-18):** items 1 and 2 — the SQL
+definitions and the C#/Next.js source — are now in the vault:
+[../legacy-payroll-app-db-extract/](../legacy-payroll-app-db-extract/INDEX.md) (all 141 SQL
+definitions, DDL, every config row, extracted 2026-08-18) and
+[../legacy-payroll-app-code-extract.md](../legacy-payroll-app-code-extract.md) (API + UI,
+`projects.rar`). **Where this pack (rank 3, dated 2026-06-23) and the db-extract disagree, the
+db-extract wins.** Known corrections are flagged in [03](03-payroll-rule-catalog.md) and
+[04](04-payroll-group-and-rule-applicability.md).
 
 ## Baseline Local 12 values as implemented
 
