@@ -1,5 +1,14 @@
 # Gaps
 
+**RETIRED 2026-08-20 — do not append here.** This single-register design (one growing file
+covering every product topic) is being replaced by gaps that live inside a per-module vault
+folder mirroring the backend's module structure, so lookup is scoped instead of blind. That
+restructure hasn't happened yet — the plan is to do it as each module's vault content is
+cleaned up and moved into its own folder, at which point that module's gaps move with it.
+Until then, no agent should append a new entry here or treat this file as the live gaps
+mechanism. The 24 entries below are kept for their content — still citable by anchor, e.g.
+from a conflict stub — but are a historical snapshot, not an active register.
+
 Open questions raised by the Confluence migration of 2026-08-10 and by everything since.
 Each product entry is a conflict the migration deliberately did not resolve. Agents must not
 pick a winner from these sets — surface the conflict and cite all candidates.
@@ -11,8 +20,8 @@ ticket: the migrated Confluence backlog, and product-wide questions raised outsi
 
 **Two registers, one format.** Product and process gaps live here. **Payroll and ADP gaps
 live in [`payroll/gaps.md`](payroll/gaps.md)** — same entry shape, same rules, split out
-because that register is three times this size and belongs to a separate source set. Append a
-payroll or ADP question there, not here.
+because that register is three times this size and belongs to a separate source set. Both
+are retired under the same note above.
 
 **Read by section, never whole.** `grep -n '^## ' .ai/vault/gaps.md` lists every entry in one
 screen; then read only the entries for the area you are working on. Reading this file top to

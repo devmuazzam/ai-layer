@@ -41,8 +41,10 @@ report one of four outcomes:
 it — so "the vault agrees" is weaker evidence than it sounds, and "the vault disagrees" may
 mean the vault is stale. Report the disagreement; do not adjudicate it.
 
-If the change turns on something nobody has written down, append the question to
-`.ai/vault/gaps.md` and name it in the review rather than assuming the author knew.
+If the change turns on something nobody has written down, name it in the review as
+Unsourced rather than assuming the author knew. `.ai/vault/gaps.md` is retired — do not
+append the question there; there is no register for it until the per-module gaps redesign
+lands.
 
 Two standing traps:
 
@@ -86,8 +88,8 @@ PR review: <branch> → main   (<n> files, ticket <SCRUM-###|none>)
 
 PRODUCT — against the vault
   Sourced:      <behaviour> — <path> — status: <verified|unverified>
-  Conflicted:   <behaviour> — candidates: <paths> — gaps.md#<anchor> — NOT adjudicated
-  Unsourced:    <behaviour> — searched: <what> — logged: gaps.md#<anchor>
+  Conflicted:   <behaviour> — candidates: <paths> — conflict stub, or gaps.md#<anchor> if a pre-retirement entry already covers it — NOT adjudicated
+  Unsourced:    <behaviour> — searched: <what> — no register to log it in (gaps.md retired); name it here
   Contradicted: <behaviour> — vault says <x>, diff does <y> — <path>
 
 CODE — most consequential first

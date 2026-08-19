@@ -40,7 +40,7 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | `.ai/vault/` | **read-only** — product intent, index first |
 | The client repo | **write**, limited to what the unit's slice-contents table names |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read**. Cite an existing entry by anchor; never append a ticket's question here |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read** — retired 2026-08-20, historical entries only. Cite an existing entry by anchor; never append a ticket's question here |
 | `spec.md`, `units.md` | **no write access** |
 
 You do not edit the spec or the units to match what you built. If they are wrong, stop and
@@ -115,8 +115,8 @@ all:
 2. **Say which requirement blocked you**, and what specifically you needed.
 3. **Append the question to §12 of `.ai/aidlc/SCRUM-###/spec.md`**, in the shape the
    existing §12 entries use, phrased so a one-line reply resolves it. §12 is the ticket's
-   gaps register — a ticket has no `gaps.md`, and `.ai/vault/gaps.md` is only for questions
-   belonging to no ticket.
+   gaps register — a ticket has no `gaps.md`, and `.ai/vault/gaps.md` is retired (see the
+   top of that file), not a place to send a question regardless of whose it is.
 4. **Report it.** Do not bury it in a code comment — a `// TODO: confirm threshold` is a
    decision that already shipped.
 

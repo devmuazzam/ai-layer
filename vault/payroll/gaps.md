@@ -1,9 +1,14 @@
 # Payroll and ADP gaps
 
+**RETIRED 2026-08-20 — do not append here.** Same retirement as [`../gaps.md`](../gaps.md):
+this register is being replaced by per-module gaps files once payroll's vault content is
+reorganised to mirror the backend's module structure. Not done yet — no agent should append
+here or treat this as the live mechanism until it is. The entries below are kept for their
+content and remain citable by anchor.
+
 The payroll half of the open-question register. Product and process gaps are in
 [`../gaps.md`](../gaps.md); the entry format and the rules — never pick a winner, cite all
-candidates, phrase every question so a one-line reply resolves it — are the same. Append
-payroll and ADP questions **here**.
+candidates, phrase every question so a one-line reply resolves it — are the same.
 
 **Read by section, never whole.** `grep -n '^## ' .ai/vault/payroll/gaps.md` lists every entry;
 read only the ones for the rule, code or integration in front of you.

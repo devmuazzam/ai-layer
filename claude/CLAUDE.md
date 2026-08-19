@@ -25,13 +25,15 @@ unverified` (migrated from Confluence, never adjudicated), and it has open confl
 where several documents disagree. If a file's `conflicts_with` is non-empty, do not pick
 one and answer from it — read the conflict stub.
 
-Open questions live in two places, and which one is not a matter of taste. **A question a
-ticket raised belongs to that ticket** — §12 of `.ai/aidlc/SCRUM-###/spec.md`, the section
-that also blocks its sign-off. A ticket folder has no `gaps.md`. `.ai/vault/gaps.md` (product) and `.ai/vault/payroll/gaps.md` (payroll, ADP) hold only
-what belongs to no ticket: the migrated Confluence backlog, and product-wide questions raised
-outside the loop. **Read the vault ones by section** — `grep -n '^## '` first, then only your
-entries — never whole. To see what is open across every ticket:
-`grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`.
+**A question a ticket raised belongs to that ticket** — §12 of `.ai/aidlc/SCRUM-###/spec.md`,
+the section that also blocks its sign-off. A ticket folder has no `gaps.md`. To see what is
+open across every ticket: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`.
+
+`.ai/vault/gaps.md` and `.ai/vault/payroll/gaps.md` are **retired as of 2026-08-20** — do
+not append a product-wide question there. They hold a historical snapshot (24 + 50 entries,
+still citable by anchor) pending a redesign that puts a module's gaps in that module's own
+vault folder, mirroring the backend's structure. Until that redesign lands, a product-wide
+open question belonging to no ticket has nowhere to go but this conversation — say so.
 
 ## One memory, every tool
 
@@ -51,7 +53,7 @@ Anything worth keeping goes to exactly one of these, and each has an owner:
 | --- | --- | --- |
 | A named human decided something | `.ai/vault/decisions/` | `tcg-scrum` |
 | An open question raised by a ticket | `.ai/aidlc/SCRUM-###/spec.md` §12 | any agent, append |
-| An open question belonging to no ticket | `.ai/vault/gaps.md`, or `payroll/gaps.md` for payroll and ADP | any agent, append |
+| An open question belonging to no ticket | **retired 2026-08-20** — `.ai/vault/gaps.md` / `payroll/gaps.md` hold historical entries only; do not append. Pending a per-module gaps redesign | — |
 | How we build — a convention, a rail | `.ai/claude/contexts/` | a human, from an accepted reflection |
 | A defect the loop made | `.ai/aidlc/reflections/INDEX.md` | `tcg-reflector` |
 
@@ -181,6 +183,6 @@ convention was followed.
 
 - `.ai/vault/INDEX.md` — product knowledge, read first
 - `.ai/aidlc/SCRUM-###/spec.md` §12 — open questions raised by a ticket
-- `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` — open questions belonging to no ticket
+- `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` — retired, historical only (see above)
 - `.ai/aidlc/agents/` — the AI-DLC phase agents
 - `.ai/vault/sync/confluence-sync.md` — how the vault tracks Confluence

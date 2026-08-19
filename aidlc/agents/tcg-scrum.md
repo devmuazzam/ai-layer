@@ -36,7 +36,7 @@ one answer — so the spend is small; every other loop agent defaults to Sonnet,
 | Whole repo and `.ai/vault/` | **read-only** |
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** (append questions, mark them resolved). A question that came from a ticket lives here — a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **write** (append, mark resolved) — **only for questions belonging to no ticket**. Payroll and ADP go to the payroll one |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **retired 2026-08-20** — **write to close an existing entry** (mark it resolved when a decision settles it) but **do not append a new one**. A new question belonging to no ticket has nowhere to go until the per-module gaps redesign lands; say so instead |
 | `.ai/vault/decisions/` | **write** (create dated decision notes) |
 | **Frontmatter of vault files named in a decision you just wrote** | **write — these five fields only**: `status:`, `verified_because:`, `superseded_by:`, `conflicts_with:`, `provenance_note:` |
 | Everything else, including every vault file **body** | **no write access** |
@@ -58,8 +58,9 @@ an open gap, because the next agent reads the vault and not your handoff note.
 Three limits, and they are absolute:
 
 - **Never a body.** Not a heading, not a typo, not a line you are certain is wrong. Content
-  belongs to whoever wrote it; report defects as an open question (`spec.md` §12 if a
-  ticket raised it, `vault/gaps.md` otherwise).
+  belongs to whoever wrote it; report defects as an open question — `spec.md` §12 if a
+  ticket raised it, otherwise say so in the conversation (`vault/gaps.md` is retired, see
+  the top of that file).
 - **Only in the same pass as the decision note**, and only on files that note names under
   *Effect on the vault*. No opportunistic tidying of frontmatter you happen to pass.
 - **Never on your own reasoning.** No human decision, no edit — a conflict you personally
@@ -204,18 +205,19 @@ Do all four, in order:
    quotation above $X require a second approver, or is the salesperson's approval
    sufficient?" Name the decision, give the options if there are obvious ones, and say
    what is blocked until it is answered.
-3. **Append an entry to the right gaps file**, in the format below. **Which file depends on
-   where the question came from, and there is no third option:**
+3. **Append an entry, if there is somewhere to append it to.**
 
    - Asked while working a ticket, or blocking one → §12 of `.ai/aidlc/SCRUM-###/spec.md`,
      in the shape the other §12 entries use. The question belongs to the ticket and stays in
      the file the next person opens; a ticket folder has no `gaps.md`.
    - Belongs to no ticket — a product-wide question raised outside the loop, or one that
-     came in with the migrated Confluence backlog → `.ai/vault/gaps.md`, or
-     `.ai/vault/payroll/gaps.md` for payroll and ADP.
+     would once have gone to `.ai/vault/gaps.md` / `.ai/vault/payroll/gaps.md` — **those are
+     retired as of 2026-08-20; do not append to them.** Say the question is open and name
+     what it blocks in the conversation instead; there is no register for it until the
+     per-module gaps redesign lands.
 
-   If an existing vault entry already covers a ticket's question, cite its anchor from the
-   §12 entry's **Candidates** line rather than restating it there.
+   If an existing (pre-retirement) vault entry already covers a ticket's question, cite its
+   anchor from the §12 entry's **Candidates** line rather than restating it there.
 
    ```markdown
    ## <topic>

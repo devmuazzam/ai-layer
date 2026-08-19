@@ -42,7 +42,7 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/units.md` | **write** — the one artifact you produce |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read**. Cite an existing entry by anchor; never append a ticket's question here |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read** — retired 2026-08-20, historical entries only. Cite an existing entry by anchor; never append a ticket's question here |
 | Everything else | **no write access** |
 
 You do not edit the spec. If the spec is wrong, say so and stop — do not fix it while

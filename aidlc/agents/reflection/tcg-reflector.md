@@ -41,7 +41,7 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | `.ai/claude/`, `.ai/vault/`, the repo | **read-only** |
 | `.ai/aidlc/SCRUM-###/reflection.md` | **write** — the one artifact you produce |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read**. Cite an existing entry by anchor; never append a ticket's question here |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read** — retired 2026-08-20, historical entries only. Cite an existing entry by anchor; never append a ticket's question here |
 | Rules, contexts, templates, agents, source | **no write access** |
 
 ---
