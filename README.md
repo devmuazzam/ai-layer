@@ -64,8 +64,11 @@ apps/web/AGENTS.md         ┘ -> ../../.ai/claude/contexts/web.md
 apps/mobile/CLAUDE.md      ┐
 apps/mobile/AGENTS.md      ┘ -> ../../.ai/claude/contexts/mobile.md
 
-.cursor/{skills,agents,contexts}/*   -> ../../.ai/...    (reference mirrors)
-.agent/{skills,agents,contexts}/*    -> ../../.ai/...
+.claude/agents/tcg-*.md              -> ../../aidlc/agents/<phase>/...  (flat index)
+.cursor/{skills,agents}/*            -> ../../.ai/...    (LOADED, not a mirror)
+.cursor/contexts/*                   -> ../../.ai/...    (reference mirror)
+.agent/{skills,agents}/*             -> ../../.ai/...    (LOADED, not a mirror)
+.agent/contexts/*                    -> ../../.ai/...    (reference mirror)
 ```
 
 ### 2.3 Four things that surprise people
@@ -193,14 +196,33 @@ when, and why — the Claude Code docs name lazy-loaded subdirectory files as it
 
 | Tool | Reads | Status |
 | --- | --- | --- |
-| **Claude Code** | root `CLAUDE.md` + nearest `apps/*/CLAUDE.md` | **verified** |
-| **Cursor** | root `AGENTS.md` + nearest `apps/*/AGENTS.md`, nearest wins | **verified** against Cursor's rules docs, 2026-08-11 |
-| **Antigravity** | everything above is present, plus `.agent/` mirrors | **unverified** — reachable, but what it auto-loads is unestablished |
+| **Claude Code** | root `CLAUDE.md` + nearest `apps/*/CLAUDE.md`; `.claude/skills/`, `.claude/agents/` | **verified** |
+| **Cursor** | root `AGENTS.md` + nearest `apps/*/AGENTS.md`, nearest wins; `.cursor/skills/`, `.cursor/agents/` | contexts **verified** 2026-08-11; skills/subagents **wiring verified** 2026-08-19 against the docs, not yet on a real install |
+| **Antigravity** | root `AGENTS.md`/`GEMINI.md` + nested `AGENTS.md`; `.agent/skills/`, `.agent/agents/` | **wired, unconfirmed** — nobody has run it |
 
-**Cursor does not use `.cursor/rules/`.** Its rules system reads `.mdc` only and ignores
-`.md`, so an earlier version of this layer that mirrored `.md` rules there was never read at
-all. `.cursor/agents/` and `.cursor/contexts/` are findable reference copies, not a loading
-mechanism — nothing depends on them.
+**Skills and subagents are no longer a Claude Code exclusive.** Cursor shipped Agent Skills
+and Subagents, and Antigravity shipped Skills (IDE 1.14.2) and Subagents (2.0, I/O 2026).
+All three now discover the same two shapes:
+
+- a skill is `skills/<name>/SKILL.md`, frontmatter `name` (**must** match the folder) and
+  `description`. Auto-invoked: the tool preloads every description and pulls in the body
+  when it judges one relevant. This is why descriptions here are written as trigger
+  phrasing ("Use when…") rather than summaries.
+- a subagent is `agents/<name>.md`, **flat**, with YAML frontmatter. The overlay stores
+  agents nested by phase, so `setup.sh` flat-links them per surface — mirroring the phase
+  tree publishes directories, and every tool finds nothing. See `link_agents`.
+
+**This was broken here until 2026-08-19**, and all 22 checks in `verify.sh` passed
+throughout: `.cursor/agents/` held four phase directories, a README and one stray agent, so
+Cursor could discover one agent of eight and would have read `examples/` as real ones.
+`verify.sh` now asserts the flat shape and the skill `name`/folder match on every surface —
+the check that would have caught it.
+
+**Cursor still does not use `.cursor/rules/`.** Its rules system reads `.mdc` only and
+ignores `.md`, so an earlier version of this layer that mirrored `.md` rules there was never
+read at all. That is Cursor's **rules** system and it says nothing about skills or
+subagents — which load from the paths above, in `.md`. Conflating the two is what kept this
+layer manual on Cursor for months longer than it needed to be.
 
 Codex is **not supported**; `setup.sh` removes `.codex/` unless you have put real files there.
 
@@ -413,8 +435,8 @@ So the two levers, in order: **which model**, then **what you read**.
 | | Model | Session hygiene | Check |
 | --- | --- | --- | --- |
 | **Claude Code** | `/model sonnet` at start. Agents carry their own `model:`; override per run by asking for it. | `/clear` between units. `/compact` if `/context` shows >60% before a long phase. Disable MCP servers and plugins this repo does not need — every attached server adds tool schemas to every session (`claude mcp list`, `/plugins`). | `/context` at start, `/usage` at end. |
-| **Cursor** | Model picker per chat: a Sonnet-class model or *Auto* for executor and analyst. **MAX mode off** for loop work. | New chat per unit. Open agent files by path (`.cursor/agents/<phase>/tcg-*.md`) — they are procedures, not attachments. `@` specific files, never folders. Root `AGENTS.md` is always attached, which is why nothing is added to it casually. | Cursor's usage page in settings. |
-| **Antigravity** | Model picker per conversation, same rule as Cursor. | New conversation per unit; open `.agent/agents/...` by path. Its auto-load behaviour is unverified (§4.3) — assume nothing is loaded that you did not open. | Its own usage view. |
+| **Cursor** | Model picker per chat: a Sonnet-class model or *Auto* for executor and analyst. **MAX mode off** for loop work. | New chat per unit. Skills and subagents are auto-invoked — ask for the task, not the file; `/tcg-elaborator` or `/commit` to force one. `@` specific files, never folders. Root `AGENTS.md` is always attached, which is why nothing is added to it casually. | Cursor's usage page in settings. |
+| **Antigravity** | Model picker per conversation, same rule as Cursor. | New conversation per unit. Skills and subagents are wired (§4.3) but unconfirmed on a real install — if a task that should reach for one does not, open `.agent/agents/tcg-*.md` by path and say so in `#ai-dlc`. | Its own usage view. |
 | **GitHub Copilot** (if used) | Its model picker; Sonnet-class. | Reads root `AGENTS.md` and nested `apps/*/AGENTS.md` like Cursor does; the same read-by-section and one-unit rules apply. | — |
 
 ### 10.4 What changed on 2026-08-17, with numbers

@@ -71,13 +71,45 @@ else
   note "fix: re-run 'bash .ai/setup.sh' — the exclude step did not complete"
 fi
 
-head_ "Skills  (Claude Code discovers these at session start)"
-SKILLS="commit review-pr lint-triage find-component debug-api"
+head_ "Skills  (auto-invoked on all three surfaces, by description match)"
+SKILLS="commit review-pr lint-triage find-component debug-api close-ticket"
 for s in $SKILLS; do
-  if [ -f "$AI_DIR/claude/skills/$s/SKILL.md" ]; then ok "skills/$s"; else
-    bad "skills/$s — missing"; fi
+  f="$AI_DIR/claude/skills/$s/SKILL.md"
+  if [ ! -f "$f" ]; then bad "skills/$s — missing"; continue; fi
+  # Cursor requires `name` to match the folder, and uses `description` to decide
+  # relevance. A skill missing either is silently never auto-invoked there.
+  n="$(sed -n 's/^name: *//p' "$f" | head -1)"
+  if [ "$n" != "$s" ]; then
+    bad "skills/$s — frontmatter name is \"$n\", must match the folder name"
+  elif ! grep -q '^description:' "$f"; then
+    bad "skills/$s — no description: the model has nothing to match a request against"
+  else
+    ok "skills/$s"
+  fi
 done
 note "not in your agent's list? it started before these existed — restart the session"
+
+head_ "Subagents  (every surface discovers these as FLAT <name>.md, never a tree)"
+# The overlay stores agents nested by phase. Every surface scans a flat directory, so a
+# mirror of the phase tree publishes directories instead of agents and the tools find
+# nothing — which is exactly what happened to .cursor and .agent until 2026-08-19, with
+# all 22 checks here passing throughout. That is the failure this block exists to catch.
+AGENT_COUNT="$(find "$AI_DIR/aidlc/agents" -name 'tcg-*.md' -type f 2>/dev/null | wc -l | tr -d ' ')"
+for pair in ".claude:Claude Code" ".cursor:Cursor" ".agent:Antigravity"; do
+  d="${pair%%:*}/agents"; tool="${pair##*:}"
+  if [ ! -d "$d" ]; then note "$d/ not present — fine unless you use $tool"; continue; fi
+  flat="$(find "$d" -maxdepth 1 -name 'tcg-*.md' 2>/dev/null | wc -l | tr -d ' ')"
+  trees="$(find "$d" -maxdepth 1 -mindepth 1 ! -name 'tcg-*.md' 2>/dev/null | wc -l | tr -d ' ')"
+  if [ "$flat" != "$AGENT_COUNT" ]; then
+    bad "$d — $flat of $AGENT_COUNT agents discoverable by $tool"
+    note "fix: re-run 'bash .ai/setup.sh'"
+  elif [ "$trees" != "0" ]; then
+    bad "$d — $trees non-agent entr(ies) present; $tool may load examples/ as real agents"
+    note "fix: re-run 'bash .ai/setup.sh'"
+  else
+    ok "$d — all $AGENT_COUNT agents flat and discoverable"
+  fi
+done
 
 head_ "Stale pointers  (a doc removed from the overlay must not leave a link behind)"
 DANGLING=""
@@ -92,7 +124,7 @@ else
   note "fix: re-run 'bash .ai/setup.sh'"
 fi
 
-head_ "Surface mirrors  (reference copies; not the loading mechanism)"
+head_ "Surface mirrors  (skills/ and agents/ load for real; contexts/ is a reference copy)"
 for s in .cursor .agent; do
   if [ -d "$s" ]; then
     broken="$(find "$s" -type l ! -exec test -e {} \; -print 2>/dev/null | wc -l | tr -d ' ')"
@@ -106,18 +138,26 @@ done
 head_ "What your agent will read"
 cat <<'EOF'
   Claude Code   root CLAUDE.md, plus the nearest apps/*/CLAUDE.md as you work.
-                VERIFIED.
+                Skills and .claude/agents/ both auto-invoke. VERIFIED.
   Cursor        root AGENTS.md, plus the nearest apps/*/AGENTS.md. VERIFIED.
-                Cursor ignores .md in .cursor/rules — only .mdc is read there,
-                which is why this layer does not use that path at all.
-  Antigravity   UNVERIFIED. Both root entry files and both nested filenames are
-                present, and .agent/{agents,contexts} mirror the content, so it
-                is reachable — but which of those it loads on its own has not
-                been confirmed. To check: open a file under apps/api/ and ask it
-                something only contexts/api.md answers, e.g. "how many global
-                guards does this API register, and which?" (four:
-                AccessToken, Roles, Permissions, Throttler). If it cannot say,
-                point it at .ai/claude/CLAUDE.md explicitly.
+                Skills in .cursor/skills/<name>/SKILL.md are auto-invoked by
+                description match; subagents in .cursor/agents/<name>.md are
+                delegated to by Agent. WIRING VERIFIED 2026-08-19 against
+                cursor.com/docs/{skills,subagents}; that Cursor then follows a
+                SYMLINKED skills dir is NOT yet confirmed on a real install.
+                Note: Cursor ignores .md in .cursor/rules — only .mdc is read
+                there. That is its RULES system and says nothing about skills or
+                subagents; it was long misread as ruling those out too.
+  Antigravity   root AGENTS.md/GEMINI.md (native since v1.20.3), nested
+                AGENTS.md per directory, .agent/skills/ and .agent/agents/
+                (subagents shipped in 2.0 at I/O 2026). Wiring is in place;
+                UNCONFIRMED on a real install — nobody has run it.
+
+  To confirm on Cursor or Antigravity, ask for something only a skill or agent
+  knows, and watch whether the tool pulls it in without being told the path:
+    "which lint failures here are mine?"        -> should reach for lint-triage
+    "is there already a badge component?"       -> should reach for find-component
+  If it answers from general knowledge instead, the skill did not load.
 EOF
 
 head_ "Known stale docs in the CLIENT repo  (not ours to delete)"

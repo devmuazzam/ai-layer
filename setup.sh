@@ -95,26 +95,55 @@ prune_broken() {
   find "$dir" -mindepth 1 -type d -empty -delete 2>/dev/null || true
 }
 
-# link_agents — flat-link every tcg-*.md into claude/agents/, which is where Claude Code
-# discovers subagents. mirror_dir CANNOT do this job, and the reason is the whole bug:
-# .claude is a symlink to .ai/claude, so a link created at .claude/agents/x resolves its
-# relative target from the PHYSICAL directory .ai/claude/agents/. mirror_dir computes its
-# prefix from the string ".claude/agents" and would emit ../../.ai/aidlc/... — resolving to
-# .ai/.ai/aidlc/..., which does not exist. Written relative to the physical location instead.
+# link_agents <dest-dir> <target-root> — flat-link every tcg-*.md into <dest-dir>, one
+# file per agent. This is how EVERY surface discovers subagents: a flat directory of
+# <name>.md files carrying YAML frontmatter. Claude Code reads .claude/agents/, Cursor
+# reads .cursor/agents/ (cursor.com/docs/subagents), Antigravity reads .agent/agents/.
 #
-# Flat, because the agents are nested by phase (inception/, construction/, ...) and a flat
-# directory is the shape every surface agrees on. The phase directories stay the source of
-# truth; this is a discovery index over them.
+# mirror_dir CANNOT do this job, and the reason is two separate bugs:
+#
+#  1. Shape. The overlay stores agents nested by phase (inception/, construction/, ...).
+#     Mirroring that tree publishes four DIRECTORIES, a README and one stray flat agent —
+#     so a surface scanning for <name>.md finds one of eight, and would pick up the six
+#     examples/ agents that are not ours. Flat is the shape every surface agrees on; the
+#     phase directories stay the source of truth and this is a discovery index over them.
+#
+#  2. Prefix. .claude is itself a symlink to .ai/claude, so a link created at
+#     .claude/agents/x resolves its relative target from the PHYSICAL directory
+#     .ai/claude/agents/ and needs ../../ + aidlc/... — while .cursor/agents/x is a real
+#     directory in the client root and needs ../../ + .ai/aidlc/... mirror_dir computes
+#     one prefix from the string path and gets the .claude case wrong every time.
+#     Hence <target-root>: what to prepend to the agent's path inside the overlay.
 link_agents() {
-  local src="$AI_DIR/aidlc/agents" dst="$AI_DIR/claude/agents" entry name
+  local dst="$1" target_root="$2" src="$AI_DIR/aidlc/agents" entry name
   [ -d "$src" ] || return 0
   mkdir -p "$dst"
   while IFS= read -r entry; do
     [ -n "$entry" ] || continue
     name="$(basename "$entry")"
-    safe_link "../../${entry#"$AI_DIR/"}" "$dst/$name"
+    safe_link "$target_root${entry#"$AI_DIR/"}" "$dst/$name"
   done < <(find "$src" -name 'tcg-*.md' -type f | sort)
   prune_broken "$dst"
+}
+
+# drop_nested_agent_mirror <dir> — remove the old nested-shape links (construction/,
+# inception/, reflection/, tools/, examples/, README.md) that earlier versions mirrored
+# into a surface's agents directory. prune_broken will not touch them: they RESOLVE
+# perfectly, they are simply the wrong shape for agent discovery, which is the failure
+# mode this whole layer is built to make impossible to have silently.
+#
+# Keyed on the link target, so it can only ever remove a link this script created — a
+# real file, or someone's own agent, is left alone.
+drop_nested_agent_mirror() {
+  local dir="$1" entry
+  [ -d "$dir" ] || return 0
+  for entry in "$dir"/*; do
+    [ -L "$entry" ] || continue
+    case "$(basename "$entry")" in tcg-*.md) continue ;; esac
+    case "$(readlink "$entry")" in
+      *aidlc/agents*) rm "$entry"; PRUNED=$((PRUNED + 1)) ;;
+    esac
+  done
 }
 
 # link_context <surface-dir> <context-file> — drop a location-triggered context file
@@ -184,29 +213,42 @@ done
 # ------------------------------------------------------ 3. surface mirrors ---
 # Three surfaces are supported: Claude Code, Cursor and Antigravity. Codex was dropped.
 #
-# These mirrors are findable reference copies, NOT the loading mechanism. Claude Code and
-# Cursor both receive this layer through the root + nested entry files in section 3b.
-# Antigravity's auto-load mechanism is unverified, so the mirror is what makes the content
-# reachable there at all — see the README.
+# skills/ and agents/ are NOT reference copies any more — they are the loading mechanism
+# on Cursor and Antigravity, both of which shipped Skills and Subagents in 2026:
+#
+#   Cursor       .cursor/skills/<name>/SKILL.md   auto-invoked; the model matches the
+#                                                 request against each description
+#                .cursor/agents/<name>.md         Agent delegates on description
+#   Antigravity  .agent/skills/<name>/SKILL.md    SKILL.md, description required
+#                .agent/agents/<name>.md          subagent: true, via invoke_subagent
+#
+# So the skills mirror was already the real thing: <name>/SKILL.md with `name` matching
+# the folder and a `description` written as trigger phrasing is exactly what both tools
+# require. The AGENTS mirror was not — see link_agents for the two bugs.
+#
+# contexts/ stays a findable reference copy: all three surfaces get the contexts for real
+# through the nested CLAUDE.md/AGENTS.md files in section 3b.
 #
 # prune_broken runs first because claude/skills/ and claude/rules/ were removed from the
-# overlay and earlier versions of this script linked them. Cursor never read
-# .cursor/rules/*.md in any case: its rules system loads .mdc only, so those links were
-# inert even while they resolved.
+# overlay and earlier versions of this script linked them. (The old note here — "Cursor
+# never read .cursor/rules/*.md, only .mdc" — is still true and still why this layer does
+# not use that path. It describes Cursor's RULES system, which is not how skills or
+# subagents load, and it was being read as though it settled those too.)
 for surface in .cursor .agent; do
   prune_broken "$surface"
   mirror_dir "$AI_DIR/claude/skills"   "$surface/skills"
-  mirror_dir "$AI_DIR/aidlc/agents"    "$surface/agents"
   mirror_dir "$AI_DIR/claude/contexts" "$surface/contexts"
+  drop_nested_agent_mirror "$surface/agents"
+  link_agents "$surface/agents" "$(prefix_for "$surface/agents")$AI_DIR/"
 done
 
-# Claude Code is NOT a mirror surface — it loads .claude/skills and .claude/agents for real.
-# Skills already worked because they live under claude/. The agents did not: they live under
-# aidlc/, the loop above only ever mirrored them into .cursor and .agent, and claude/agents/
-# was never created at all. Every agent in aidlc/GUIDE.md was therefore uninvokable on the
-# one surface this layer is written for, with nothing reporting it — the loop simply had no
+# Claude Code loads .claude/skills and .claude/agents for real. Skills already worked
+# because they live under claude/. The agents did not: they live under aidlc/, the loop
+# above only ever mirrored them into .cursor and .agent, and claude/agents/ was never
+# created at all. Every agent in aidlc/GUIDE.md was therefore uninvokable on the one
+# surface this layer is written for, with nothing reporting it — the loop simply had no
 # executor to call. Agents also need YAML frontmatter to register; they now carry it.
-link_agents
+link_agents "$AI_DIR/claude/agents" "../../"
 
 # Retire Codex. Only removed when every file under it is a symlink — i.e. everything there
 # was created by this script and nothing of anyone's own is inside. If a human put a real
