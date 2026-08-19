@@ -64,6 +64,7 @@ that produced the rest of the vault.
 | whether a source file was migrated | [source-manifest.md](source-manifest.md) — all 33 files, including the 3 that could not be read |
 | **a specific filename from the drop** | [sources/](sources/INDEX.md) — **one page per file, named after the file**, so any filename resolves |
 | what a column in the weekly ADP workbook means | [adp-workbook-column-rules.md](adp-workbook-column-rules.md) — the rules the workbook implements, no employee data |
+| **who says a rule, and where sources disagree** | [source-attribution-and-conflicts.md](source-attribution-and-conflicts.md) — every rule tagged by source family, plus a 21-item conflict register |
 | **what is still unanswered** about payroll or ADP | [gaps.md](gaps.md) — the payroll half of the open-question register, 41 entries. `grep -n '^## '` first; read only your section |
 
 ## The spine of the domain
