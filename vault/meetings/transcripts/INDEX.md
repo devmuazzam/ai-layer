@@ -1,6 +1,6 @@
 # meetings/transcripts/ — raw client meeting transcripts
 
-**56 files, 2026-01-15 → 2026-08-13.** Migrated 2026-08-19 from a OneDrive/Teams/
+**57 files, 2026-01-15 → 2026-08-18.** Migrated 2026-08-19 from a OneDrive/Teams/
 Read.ai/Fireflies export (see `../../sync/` — there is no automated pipeline for this;
 it was a one-time manual pull). Each file is a transcript **as captured**, not curated —
 no analysis, no cross-referencing, no conflict-flagging. That work exists separately for
@@ -83,3 +83,4 @@ and two dates in July have `no-recording` at all.
 | 2026-08-11 | Sales Process | Transcript | 60.6 | [2026-08-11-sales-process.md](2026-08-11-sales-process.md) |
 | 2026-08-12 | ERP Sprint Review | Transcript | 39.3 | [2026-08-12-erp-sprint-review.md](2026-08-12-erp-sprint-review.md) |
 | 2026-08-13 | Payroll Process | Transcript | 69.2 | [2026-08-13-payroll-process.md](2026-08-13-payroll-process.md) |
+| 2026-08-18 | Accounting Process | Transcript | 58.1 | [2026-08-18-accounting-process.md](2026-08-18-accounting-process.md) |
