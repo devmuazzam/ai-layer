@@ -1239,3 +1239,14 @@ will be about your ticket.
   Kyle Harlow for the field consequence. CodingCops owes the ticket regardless of the answer.
 - Status: open — needs confirmation
 
+## Quantity-based DAS sets
+
+- Question: when a quoted line has qty N, does each of the N dispatch sets carry the full line rate, or 1/N of the line amount? Should backfill rewrite already-dispatched jobs?
+- Candidates:
+  - Jira SCRUM-892 / SCRUM-907 — N assets → N DAS/Yard sets; no comment on money split or backfill.
+  - `decisions/2026-08-20-quantity-based-das-sets.md` — Fouzan Shakil: quote stays one billed line; job clones are qty=1 with **rate copied in full** and **amounts/hours split 1/N** (remainder on last clone); backfill **skips jobs that already have allocations** unless `--include-allocated`.
+- Note: raised by the SCRUM-907 PR review (`tcg-scrum`). Cite the decision file, not this table.
+- Blocked: nothing once the decision file is cited.
+- Owner: Fouzan Shakil (assignee); Brian Petros if product wants to reverse the money split.
+- Status: resolved — see `decisions/2026-08-20-quantity-based-das-sets.md`
+
