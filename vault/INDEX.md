@@ -1,9 +1,10 @@
 # TCG vault index
 
 Read this first — **then read only what the tables point you at.** 153 files migrated from Confluence
-2026-08-10, plus 37 payroll files from a OneDrive drop 2026-08-13, plus 65 client-meeting files
-(transcripts/summaries/assets) from a OneDrive drop 2026-08-19. This index is a routing table: it
-tells you which file answers which question, and it is the only vault file meant to be read whole.
+2026-08-10, plus 37 payroll files from a OneDrive drop 2026-08-13, plus 66 client-meeting files
+(transcripts/summaries/assets) from a OneDrive drop, plus 34 per-file payroll source pages
+(`payroll/sources/`), all added 2026-08-19. This index is a routing table: it tells you which file
+answers which question, and it is the only vault file meant to be read whole.
 
 ## Read these five lines before you answer anything
 
@@ -91,7 +92,7 @@ instead of taken on trust.
 
 | Folder | What's in it | Index |
 | --- | --- | --- |
-| `meetings/transcripts/` | 56 raw client-meeting transcripts, 2026-01-15 → 2026-08-13, one file per meeting date | [meetings/transcripts/INDEX.md](meetings/transcripts/INDEX.md) |
+| `meetings/transcripts/` | 57 raw client-meeting transcripts, 2026-01-15 → 2026-08-18, one file per meeting date | [meetings/transcripts/INDEX.md](meetings/transcripts/INDEX.md) |
 | `meetings/summaries/` | 7 third-party AI-generated summaries (Read.ai / Fireflies / an unnamed export) — not human-written, not curated | [meetings/summaries/INDEX.md](meetings/summaries/INDEX.md) |
 | `meetings/assets/` | Non-text artifacts from a meeting (currently one diagram from 2026-03-06) | [meetings/assets/README.md](meetings/assets/README.md) |
 
@@ -138,6 +139,9 @@ register.
 | [payroll/wtl-charts.md](payroll/wtl-charts.md) | How do worked-through-lunch penalties land against Reg/OT/DT? 3 charts | 24.0 |
 | [payroll/rule-examples-catalog.md](payroll/rule-examples-catalog.md) | Which real labor entry demonstrates this rule? 28 test seeds | 11.4 |
 | [payroll/source-manifest.md](payroll/source-manifest.md) | Was this source file migrated, and if not why? All 33 | 7.1 |
+| [payroll/sources/INDEX.md](payroll/sources/INDEX.md) | **Is `<filename>` in the vault?** One page per source file, named after the file, all 33 | 4.0 |
+| [payroll/adp-workbook-column-rules.md](payroll/adp-workbook-column-rules.md) | What does each column in the weekly ADP workbook mean, and what rule governs it? No employee data | 11.0 |
+| [payroll/source-attribution-and-conflicts.md](payroll/source-attribution-and-conflicts.md) | **Who says a payroll rule, and where do the four source families disagree?** 21-item conflict register | 28.0 |
 
 Three source PDFs of the union agreement **could not be read at all** — they are scans with no
 text layer. See the manifest.

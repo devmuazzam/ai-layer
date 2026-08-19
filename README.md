@@ -265,6 +265,8 @@ candidate as settled fact.
 | [`vault/README.md`](vault/README.md) | Migration conventions, frontmatter, deliberate exclusions |
 | [`vault/gaps.md`](vault/gaps.md) | Open questions — unresolved conflicts and unsourced decisions |
 | [`vault/sync/confluence-sync.md`](vault/sync/confluence-sync.md) | How the vault tracks a source that keeps moving |
+| [`vault/payroll/`](vault/payroll/INDEX.md) | The payroll module — a **separate source** (OneDrive, not Confluence), its own index and gap register |
+| [`vault/meetings/`](vault/meetings/) | Sprint plans and curated client minutes, plus three raw-material subfolders: `transcripts/`, `summaries/`, `assets/` — see `vault/README.md` § Folders |
 
 Most of it is `status: unverified`. Statuses and counts live in the index and gap register,
 not here.

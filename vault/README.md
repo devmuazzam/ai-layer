@@ -25,13 +25,38 @@ is stated once instead of being rediscovered file by file.
 | Folder | Holds |
 | --- | --- |
 | `product/` | Behaviour and module specs, user stories, FRDs, feedback punch lists |
-| `meetings/` | Sprint planning pages that carry real plan content |
+| `payroll/` | The payroll module — separate source (OneDrive, not Confluence), its own [`INDEX.md`](payroll/INDEX.md) and gap register |
+| `meetings/` | Sprint planning pages, curated client-meeting minutes, and three raw-material subfolders — see below |
 | `domain/` | The team's Scrum SOP set — shared process vocabulary |
-| `decisions/` | Dated decisions. **Currently empty by design** — see below |
+| `decisions/` | Dated, named decisions — a human settled something and it was written down before it could be re-asked |
+| `sync/` | How the vault tracks Confluence, a source that keeps moving |
 
-`decisions/` is empty because nothing in the source Confluence was a clean dated
-decision. The closest candidate (a sprint review feedback log carrying per-item
-Approved / Deferred / Pending statuses) sits in the excluded client-feedback set.
+### `meetings/` has four layers, deliberately kept apart
+
+The loose `.md` files directly in `meetings/` are two different things at once — retrospective
+sprint plans (caveat: written after the sprint had already started) and **human-curated client
+minutes** (forward-looking, carry action items). Below them, three subfolders hold raw material,
+never merged into the curated files above:
+
+| Subfolder | Holds |
+| --- | --- |
+| [`meetings/transcripts/`](meetings/transcripts/INDEX.md) | Raw client-meeting transcripts, one file per meeting, ASR-normalized (see its `NORMALIZATION.md`) but **not** curated or cross-referenced |
+| [`meetings/summaries/`](meetings/summaries/INDEX.md) | Third-party auto-generated summaries (Read.ai / Fireflies) — not written or reviewed by a human |
+| [`meetings/assets/`](meetings/assets/README.md) | Non-text artifacts from a meeting (a diagram, a screenshot) |
+
+Read [`meetings/transcripts/INDEX.md`](meetings/transcripts/INDEX.md) before quoting a transcript
+line — it flags the two dates with no recording at all and the three that are an invite thread or
+an agenda, not a discussion.
+
+### `payroll/sources/` — one page per source file, named after the file
+
+[`payroll/sources/`](payroll/sources/INDEX.md) answers "is `<filename>` in the vault?" without
+requiring anyone to read it first. One page per file from the 2026-08-11 OneDrive drop, carrying
+what the file is and where its content went — including the files deliberately **not** migrated,
+so "we don't have that" is a written answer rather than a guess. The live payroll workbooks and
+CSVs are excluded under the redaction rule (real employee pay rows); their pages carry sheet
+structure only. The rules those workbooks implement, with no employee data, are written up
+separately in [`payroll/adp-workbook-column-rules.md`](payroll/adp-workbook-column-rules.md).
 
 ## Frontmatter
 
