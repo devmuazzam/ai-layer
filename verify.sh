@@ -62,7 +62,7 @@ done
 
 head_ "Stealth  (the layer must be invisible to the client repo)"
 LEAKED="$(git status --porcelain 2>/dev/null \
-  | grep -E ' (\.ai/|\.claude|CLAUDE\.md|AGENTS\.md|\.cursor/|\.codex/|\.agent/)' || true)"
+  | grep -E ' (\.ai/|\.claude|CLAUDE\.md|AGENTS\.md|\.cursor/|\.codex/|\.agents?/)' || true)"
 if [ -z "$LEAKED" ]; then
   ok "git status shows no AI-layer paths"
 else
@@ -95,7 +95,8 @@ head_ "Subagents  (every surface discovers these as FLAT <name>.md, never a tree
 # nothing — which is exactly what happened to .cursor and .agent until 2026-08-19, with
 # all 22 checks here passing throughout. That is the failure this block exists to catch.
 AGENT_COUNT="$(find "$AI_DIR/aidlc/agents" -name 'tcg-*.md' -type f 2>/dev/null | wc -l | tr -d ' ')"
-for pair in ".claude:Claude Code" ".cursor:Cursor" ".agent:Antigravity"; do
+for pair in ".claude:Claude Code" ".cursor:Cursor" \
+            ".agents:Antigravity" ".agent:Antigravity (legacy path)"; do
   d="${pair%%:*}/agents"; tool="${pair##*:}"
   if [ ! -d "$d" ]; then note "$d/ not present — fine unless you use $tool"; continue; fi
   flat="$(find "$d" -maxdepth 1 -name 'tcg-*.md' 2>/dev/null | wc -l | tr -d ' ')"
@@ -125,7 +126,7 @@ else
 fi
 
 head_ "Surface mirrors  (skills/ and agents/ load for real; contexts/ is a reference copy)"
-for s in .cursor .agent; do
+for s in .cursor .agents .agent; do
   if [ -d "$s" ]; then
     broken="$(find "$s" -type l ! -exec test -e {} \; -print 2>/dev/null | wc -l | tr -d ' ')"
     if [ "$broken" = "0" ]; then ok "$s — no dangling links"; else
@@ -142,16 +143,21 @@ cat <<'EOF'
   Cursor        root AGENTS.md, plus the nearest apps/*/AGENTS.md. VERIFIED.
                 Skills in .cursor/skills/<name>/SKILL.md are auto-invoked by
                 description match; subagents in .cursor/agents/<name>.md are
-                delegated to by Agent. WIRING VERIFIED 2026-08-19 against
-                cursor.com/docs/{skills,subagents}; that Cursor then follows a
-                SYMLINKED skills dir is NOT yet confirmed on a real install.
+                delegated to by Agent. VERIFIED ON A REAL INSTALL 2026-08-19 —
+                /lint-triage resolved through the symlinked skills dir, which
+                was the open question (every skill here is a symlink into .ai/).
                 Note: Cursor ignores .md in .cursor/rules — only .mdc is read
                 there. That is its RULES system and says nothing about skills or
                 subagents; it was long misread as ruling those out too.
   Antigravity   root AGENTS.md/GEMINI.md (native since v1.20.3), nested
-                AGENTS.md per directory, .agent/skills/ and .agent/agents/
-                (subagents shipped in 2.0 at I/O 2026). Wiring is in place;
-                UNCONFIRMED on a real install — nobody has run it.
+                AGENTS.md per directory, plus .agents/skills/ and
+                .agents/agents/ (Skills in IDE 1.14.2, Subagents in 2.0).
+                Wiring is in place; UNCONFIRMED on a real install.
+                .agents/ (plural) is the current default; .agent/ (singular) is
+                the legacy path, still supported, still written here.
+                Its planner delegates via invoke_subagent on the description
+                rather than routing automatically, so a subagent may need
+                naming out loud more often than on the other two.
 
   To confirm on Cursor or Antigravity, ask for something only a skill or agent
   knows, and watch whether the tool pulls it in without being told the path:

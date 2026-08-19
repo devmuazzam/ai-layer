@@ -66,9 +66,9 @@ apps/mobile/AGENTS.md      ┘ -> ../../.ai/claude/contexts/mobile.md
 
 .claude/agents/tcg-*.md              -> ../../aidlc/agents/<phase>/...  (flat index)
 .cursor/{skills,agents}/*            -> ../../.ai/...    (LOADED, not a mirror)
-.cursor/contexts/*                   -> ../../.ai/...    (reference mirror)
-.agent/{skills,agents}/*             -> ../../.ai/...    (LOADED, not a mirror)
-.agent/contexts/*                    -> ../../.ai/...    (reference mirror)
+.agents/{skills,agents}/*            -> ../../.ai/...    (LOADED — Antigravity default)
+.agent/{skills,agents}/*             -> ../../.ai/...    (LOADED — Antigravity legacy)
+{.cursor,.agents,.agent}/contexts/*  -> ../../.ai/...    (reference mirror)
 ```
 
 ### 2.3 Four things that surprise people
@@ -197,8 +197,8 @@ when, and why — the Claude Code docs name lazy-loaded subdirectory files as it
 | Tool | Reads | Status |
 | --- | --- | --- |
 | **Claude Code** | root `CLAUDE.md` + nearest `apps/*/CLAUDE.md`; `.claude/skills/`, `.claude/agents/` | **verified** |
-| **Cursor** | root `AGENTS.md` + nearest `apps/*/AGENTS.md`, nearest wins; `.cursor/skills/`, `.cursor/agents/` | contexts **verified** 2026-08-11; skills/subagents **wiring verified** 2026-08-19 against the docs, not yet on a real install |
-| **Antigravity** | root `AGENTS.md`/`GEMINI.md` + nested `AGENTS.md`; `.agent/skills/`, `.agent/agents/` | **wired, unconfirmed** — nobody has run it |
+| **Cursor** | root `AGENTS.md` + nearest `apps/*/AGENTS.md`, nearest wins; `.cursor/skills/`, `.cursor/agents/` | contexts **verified** 2026-08-11; skills/subagents **verified on a real install** 2026-08-19 |
+| **Antigravity** | root `AGENTS.md`/`GEMINI.md` + nested `AGENTS.md`; `.agents/skills/`, `.agents/agents/` | **wired, unconfirmed** — nobody has run it |
 
 **Skills and subagents are no longer a Claude Code exclusive.** Cursor shipped Agent Skills
 and Subagents, and Antigravity shipped Skills (IDE 1.14.2) and Subagents (2.0, I/O 2026).
@@ -211,6 +211,14 @@ All three now discover the same two shapes:
 - a subagent is `agents/<name>.md`, **flat**, with YAML frontmatter. The overlay stores
   agents nested by phase, so `setup.sh` flat-links them per surface — mirroring the phase
   tree publishes directories, and every tool finds nothing. See `link_agents`.
+
+**Surface directories are not one per tool.** `.agents/` (plural) is Antigravity's current
+default *and* a second path Cursor scans for skills — it is becoming the cross-tool
+standard. `.agent/` (singular) is Antigravity's legacy path: still supported, no longer the
+default, still written so a machine on an older build loses nothing. `setup.sh` writes all
+of `.cursor/`, `.agents/`, `.agent/`, and derives the `.git/info/exclude` entries from the
+same list — gitignore patterns are exact, `/.agent/` does **not** cover `/.agents/`, and
+hand-maintaining the two lists was one typo away from publishing the layer.
 
 **This was broken here until 2026-08-19**, and all 22 checks in `verify.sh` passed
 throughout: `.cursor/agents/` held four phase directories, a README and one stray agent, so
@@ -436,7 +444,7 @@ So the two levers, in order: **which model**, then **what you read**.
 | --- | --- | --- | --- |
 | **Claude Code** | `/model sonnet` at start. Agents carry their own `model:`; override per run by asking for it. | `/clear` between units. `/compact` if `/context` shows >60% before a long phase. Disable MCP servers and plugins this repo does not need — every attached server adds tool schemas to every session (`claude mcp list`, `/plugins`). | `/context` at start, `/usage` at end. |
 | **Cursor** | Model picker per chat: a Sonnet-class model or *Auto* for executor and analyst. **MAX mode off** for loop work. | New chat per unit. Skills and subagents are auto-invoked — ask for the task, not the file; `/tcg-elaborator` or `/commit` to force one. `@` specific files, never folders. Root `AGENTS.md` is always attached, which is why nothing is added to it casually. | Cursor's usage page in settings. |
-| **Antigravity** | Model picker per conversation, same rule as Cursor. | New conversation per unit. Skills and subagents are wired (§4.3) but unconfirmed on a real install — if a task that should reach for one does not, open `.agent/agents/tcg-*.md` by path and say so in `#ai-dlc`. | Its own usage view. |
+| **Antigravity** | Model picker per conversation, same rule as Cursor. | New conversation per unit. Skills and subagents are wired (§4.3) but unconfirmed on a real install — its planner delegates via `invoke_subagent` on the description rather than routing automatically, so expect to name an agent out loud more often. If a task that should reach for one does not, open `.agents/agents/tcg-*.md` by path and say so in `#ai-dlc`. | Its own usage view. |
 | **GitHub Copilot** (if used) | Its model picker; Sonnet-class. | Reads root `AGENTS.md` and nested `apps/*/AGENTS.md` like Cursor does; the same read-by-section and one-unit rules apply. | — |
 
 ### 10.4 What changed on 2026-08-17, with numbers

@@ -219,8 +219,16 @@ done
 #   Cursor       .cursor/skills/<name>/SKILL.md   auto-invoked; the model matches the
 #                                                 request against each description
 #                .cursor/agents/<name>.md         Agent delegates on description
-#   Antigravity  .agent/skills/<name>/SKILL.md    SKILL.md, description required
-#                .agent/agents/<name>.md          subagent: true, via invoke_subagent
+#   Antigravity  .agents/skills/<name>/SKILL.md   description required; name defaults
+#                                                 to the folder
+#                .agents/agents/<name>.md         subagent: true (the default), then
+#                                                 invoke_subagent
+#
+# SURFACE DIRECTORIES ARE NOT ONE PER TOOL. `.agents/` (plural) is Antigravity's current
+# default AND a second path Cursor scans for skills — it is becoming the cross-tool
+# standard. `.agent/` (singular) is Antigravity's legacy path: still supported, no longer
+# the default, kept here so a machine on an older build does not silently lose everything.
+# Both are written; neither is authoritative over the other.
 #
 # So the skills mirror was already the real thing: <name>/SKILL.md with `name` matching
 # the folder and a `description` written as trigger phrasing is exactly what both tools
@@ -234,7 +242,8 @@ done
 # never read .cursor/rules/*.md, only .mdc" — is still true and still why this layer does
 # not use that path. It describes Cursor's RULES system, which is not how skills or
 # subagents load, and it was being read as though it settled those too.)
-for surface in .cursor .agent; do
+SURFACES=".cursor .agents .agent"
+for surface in $SURFACES; do
   prune_broken "$surface"
   mirror_dir "$AI_DIR/claude/skills"   "$surface/skills"
   mirror_dir "$AI_DIR/claude/contexts" "$surface/contexts"
@@ -283,7 +292,16 @@ EXCLUDE="$GIT_DIR/info/exclude"
 mkdir -p "$(dirname "$EXCLUDE")"
 EXCLUDE_PATHS="/$AI_DIR/ /.claude /CLAUDE.md /AGENTS.md /DESIGN.md \
 /AUTOMATED-FEATURES.md /QUICK-REFERENCE.md /DESIGN-FOLDER-UPDATE.md \
-/.mcp.json /.cursor/ /.codex/ /.agent/ *.$STAMP *.backup-*"
+/.mcp.json /.codex/ *.$STAMP *.backup-*"
+
+# Surface directories, derived from SURFACES rather than restated — a surface added to
+# that list but missed here would show up as untracked files in the CLIENT repo, which is
+# the one failure that breaks the stealth model. Note that gitignore patterns are exact:
+# "/.agent/" does NOT cover "/.agents/", so listing them by hand was one typo away from
+# publishing the whole layer.
+for surface in $SURFACES; do
+  EXCLUDE_PATHS="$EXCLUDE_PATHS /$surface/"
+done
 
 # Nested context triggers, derived from CONTEXT_MAP rather than restated.
 for pair in $CONTEXT_MAP; do
