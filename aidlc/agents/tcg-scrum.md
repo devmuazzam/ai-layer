@@ -35,7 +35,8 @@ one answer — so the spend is small; every other loop agent defaults to Sonnet,
 | --- | --- |
 | Whole repo and `.ai/vault/` | **read-only** |
 | Jira (via MCP) | **read-only** |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **write** (append entries, mark entries resolved). Payroll and ADP questions go to the payroll one |
+| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** (append questions, mark them resolved). A question that came from a ticket lives here — a ticket has no `gaps.md` |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **write** (append, mark resolved) — **only for questions belonging to no ticket**. Payroll and ADP go to the payroll one |
 | `.ai/vault/decisions/` | **write** (create dated decision notes) |
 | **Frontmatter of vault files named in a decision you just wrote** | **write — these five fields only**: `status:`, `verified_because:`, `superseded_by:`, `conflicts_with:`, `provenance_note:` |
 | Everything else, including every vault file **body** | **no write access** |
@@ -57,7 +58,8 @@ an open gap, because the next agent reads the vault and not your handoff note.
 Three limits, and they are absolute:
 
 - **Never a body.** Not a heading, not a typo, not a line you are certain is wrong. Content
-  belongs to whoever wrote it; report defects as a `gaps.md` entry.
+  belongs to whoever wrote it; report defects as an open question (`spec.md` §12 if a
+  ticket raised it, `vault/gaps.md` otherwise).
 - **Only in the same pass as the decision note**, and only on files that note names under
   *Effect on the vault*. No opportunistic tidying of frontmatter you happen to pass.
 - **Never on your own reasoning.** No human decision, no edit — a conflict you personally
@@ -159,7 +161,8 @@ Also treat as weak signals, and say so when you rely on them:
   2FA, and the least authoritative file in the vault. Check its `provenance_note`.
 - The feedback punch lists (`job-project-das.md`, `quotations.md`, `quotation.md`,
   `agencies-module.md`) are **cross-module**, filed under a single module name. A punch
-  list is a bug list, not a specification. See the seventh `gaps.md` entry.
+  list is a bug list, not a specification. See
+  `vault/gaps.md#feedback-punch-lists-are-not-scoped-to-the-module-they-are-filed-under`.
 
 ## 5. FR-FOP citations are ambiguous — always cite the document
 
@@ -201,8 +204,18 @@ Do all four, in order:
    quotation above $X require a second approver, or is the salesperson's approval
    sufficient?" Name the decision, give the options if there are obvious ones, and say
    what is blocked until it is answered.
-3. **Append an entry to `.ai/vault/gaps.md`** in the existing format used by the other
-   seven entries:
+3. **Append an entry to the right gaps file**, in the format below. **Which file depends on
+   where the question came from, and there is no third option:**
+
+   - Asked while working a ticket, or blocking one → §12 of `.ai/aidlc/SCRUM-###/spec.md`,
+     in the shape the other §12 entries use. The question belongs to the ticket and stays in
+     the file the next person opens; a ticket folder has no `gaps.md`.
+   - Belongs to no ticket — a product-wide question raised outside the loop, or one that
+     came in with the migrated Confluence backlog → `.ai/vault/gaps.md`, or
+     `.ai/vault/payroll/gaps.md` for payroll and ADP.
+
+   If an existing vault entry already covers a ticket's question, cite its anchor from the
+   §12 entry's **Candidates** line rather than restating it there.
 
    ```markdown
    ## <topic>
@@ -214,6 +227,9 @@ Do all four, in order:
    - Owner: product team
    - Status: open
    ```
+
+   To sweep every ticket for what is still open:
+   `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 
 4. **Stop.** Do not offer a plausible-sounding answer as a fallback. Do not say "but it
    probably works like…". Do not infer product intent from how a neighbouring module
@@ -240,7 +256,7 @@ Write it down immediately, or it is lost and the same question gets asked again.
    decided: YYYY-MM-DD
    decided_by: <who actually said it, and where — Slack, call, meeting>
    status: verified
-   resolves: gaps.md#<anchor>
+   resolves: <SCRUM-###/spec.md#q<n> | gaps.md#<anchor>>
    topics: [<from the frozen vocabulary in INDEX.md>]
    entities: [<from the frozen vocabulary in INDEX.md>]
    ---
@@ -260,7 +276,8 @@ Write it down immediately, or it is lost and the same question gets asked again.
    - Superseded: <paths> → should become status: superseded, superseded_by: <path>
    ```
 
-2. **Mark the `gaps.md` entry resolved** — change `Status: open` to
+2. **Mark the question resolved, in whichever file holds it** — the ticket's `spec.md` §12
+   or the vault's `gaps.md`. Change `Status: open` to
    `Status: resolved — see decisions/YYYY-MM-DD-topic.md` and leave the rest of the entry
    intact as the record of what was in question.
 
@@ -270,7 +287,7 @@ Write it down immediately, or it is lost and the same question gets asked again.
    - Winner: `status: verified`, add `verified_because: decisions/YYYY-MM-DD-topic.md`
    - Losers: `status: superseded`, add `superseded_by: <winner path>`
    - Winner: clear `conflicts_with`
-   - `gaps.md`: `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
+   - The gaps entry (ticket or vault): `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
 
    Still list them under *Effect on the vault* in the note — the note has to stand alone as
    the record of what the decision changed — but list them as **done**, not as a handoff.

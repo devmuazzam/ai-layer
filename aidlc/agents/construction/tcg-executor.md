@@ -37,7 +37,8 @@ for units touching `apps/api/prisma`, tenant scoping or auth — not the default
 | `.ai/claude/CLAUDE.md`, `.ai/claude/contexts/` | **read-only** — binding on how you build |
 | `.ai/vault/` | **read-only** — product intent, index first |
 | The client repo | **write**, limited to what the unit's slice-contents table names |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **write** — append entries only. Payroll and ADP questions go to the payroll one |
+| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read**. Cite an existing entry by anchor; never append a ticket's question here |
 | `spec.md`, `units.md` | **no write access** |
 
 You do not edit the spec or the units to match what you built. If they are wrong, stop and
@@ -110,7 +111,10 @@ all:
 
 1. **Stop that part.** Build everything in the unit that does not depend on it.
 2. **Say which requirement blocked you**, and what specifically you needed.
-3. **Append the question to `.ai/vault/gaps.md`**, phrased so a one-line reply resolves it.
+3. **Append the question to §12 of `.ai/aidlc/SCRUM-###/spec.md`**, in the shape the
+   existing §12 entries use, phrased so a one-line reply resolves it. §12 is the ticket's
+   gaps register — a ticket has no `gaps.md`, and `.ai/vault/gaps.md` is only for questions
+   belonging to no ticket.
 4. **Report it.** Do not bury it in a code comment — a `// TODO: confirm threshold` is a
    decision that already shipped.
 
@@ -240,7 +244,7 @@ Gates: lint <pass | fail: N pre-existing, M mine>  build <pass|fail>  tests <n p
 
 Stopped on:
   <requirement / detail I needed and could not source — or "nothing">
-  Logged to .ai/vault/gaps.md: <anchors, or "none">
+  Open questions written to spec.md §12: <Q ids, or "none">
 
 Not in this unit: <what I deliberately left, and which unit it belongs to>
 Deviations: <where I followed the context against the surrounding code, and where I didn't>

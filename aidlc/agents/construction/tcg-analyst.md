@@ -36,7 +36,8 @@ exactly that.
 | `.ai/aidlc/SCRUM-###/units.md`, `spec.md` | **read-only** — the contract you check against |
 | `.ai/claude/contexts/` | **read-only** — the conventions that bind |
 | Shell, for gates and greps | **run** — lint, build, tests, searches |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **write** — append entries only. Payroll and ADP questions go to the payroll one |
+| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read**. Cite an existing entry by anchor; never append a ticket's question here |
 | Source, spec, units | **no write access** |
 
 **You do not fix what you find.** A reviewer who edits is no longer reviewing, and the
@@ -193,7 +194,7 @@ Scope:
 Follow-ups, out of scope for this unit:
   <thing> — <why it is not this PR's job>
 
-Logged to .ai/vault/gaps.md: <anchors, or "none">
+Open questions written to spec.md §12: <Q ids, or "none">
 ```
 
 If the verdict is *do not ship*, that goes **first**, with the single reason.

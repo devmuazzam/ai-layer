@@ -54,7 +54,7 @@ see **Risk** below.
 | U2 | | | | U1 | | |
 
 - Requirements not covered by any unit: *list them, with why — usually `[OPEN]`*
-- Units blocked on an open question: *list them, with the `gaps.md` anchor*
+- Units blocked on an open question: *list them, with the `spec.md` §12 question id*
 
 ---
 

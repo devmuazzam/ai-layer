@@ -20,7 +20,7 @@
 | Intent | **MISSING** — `.ai/aidlc/SCRUM-757/intent.md` does not exist. Retrieval step 1 could not be performed; this spec was elaborated from the Jira ticket directly. Any field the intent capture would normally have carried (surfaces, `NOT ON TICKET` markers, capture date) is absent, so absences below are this elaboration's findings, not the capture's. |
 | Elaborated on | 2026-08-11 |
 | Vault state at elaboration | 153 files per `INDEX.md` (151 content files); six `domain/` files verified, everything else `unverified`; **8** entries open in `gaps.md` before this spec |
-| Gaps opened by this spec | `gaps.md#scope-of-the-plan-comments-page-in-scrum-757`, `gaps.md#plan-comment-performance-target`, `gaps.md#source-of-the-400-and-401-responses-on-the-plan-page`, `gaps.md#plan-comment-volume-length-and-pagination` |
+| Open questions raised by this spec | 5, all in §12 |
 | Rules consulted | `.ai/claude/rules/web.md`, `.ai/claude/rules/api.md`, `.ai/claude/rules/prisma.md`, `.ai/claude/rules/design-system.md`, `CLAUDE.md` → Web UI Rules, Frontend Patterns, Identity Convention |
 
 > **Note added 2026-08-12 — the rule paths cited in this spec no longer resolve.**
@@ -75,7 +75,7 @@ Performance row anywhere in the vault: *"Ticket screens, checklist rendering, an
 capture must load within acceptable response times under field network conditions."* It is
 scoped to the **field-ops mobile app**, it names no threshold, and it sits inside the
 unresolved field-ops conflict set (`conflicts_with` is non-empty; see
-`gaps.md#field-operations-mobile-app`). Borrowing it as a performance target for a web plan
+`vault/gaps.md#field-operations-mobile-app`). Borrowing it as a performance target for a web plan
 page would be inventing a requirement, so it is recorded here and used nowhere below.
 
 ## 1. Requirements ledger
@@ -140,7 +140,7 @@ The original text is kept below as the record of what was open at elaboration.
 - **Conflict:** n/a
 - **Open question:** Which screen is "the Plan Comments page" — the plan detail view's
   comment surface, the project **In-House Comments** tab, or a third screen? Logged at
-  `gaps.md#scope-of-the-plan-comments-page-in-scrum-757`
+  §12
 - **Acceptance:** `OPEN — cannot be stated until the question above is answered.`
 - **Notes for the executor:** blocked. Everything else in this spec is scoped to whichever
   screen this resolves to. For the reader's orientation only, the repo currently has two
@@ -175,7 +175,7 @@ The original text is kept below as the record of what was open at elaboration.
     **not** cited as sources for this requirement because neither states that the issue is
     the one in this ticket; whether they describe the same defect is unknown and worth
     asking alongside Q1. Note also that this file is one of the four cross-module punch
-    lists flagged in `gaps.md#feedback-punch-lists-are-not-scoped-to-the-module-they-are-filed-under`.
+    lists flagged in `vault/gaps.md#feedback-punch-lists-are-not-scoped-to-the-module-they-are-filed-under`.
   - Two code observations, offered as questions and not as proposals — neither is a
     diagnosis, and neither should be actioned before REQ-01 resolves:
     (a) plan comments are persisted as **project activity-log entries**, not as rows of a
@@ -209,7 +209,7 @@ The original text is kept below as the record of what was open at elaboration.
     this is an absence, not a policy omission.
 - **Conflict:** n/a
 - **Open question:** What is the acceptance threshold — and against what comment volume?
-  Logged at `gaps.md#plan-comment-performance-target`
+  Logged at §12
 - **Acceptance:** `OPEN — cannot be stated until the question above is answered.`
 - **Notes for the executor:** blocked, and it blocks REQ-02's sign-off. Without a number,
   "fixed" is whoever last looked at it deciding it feels fine, which is how this ticket
@@ -250,7 +250,7 @@ The original text is kept below as the record of what was open at elaboration.
     siblings; the vault (no source discusses API error responses on any web page).
 - **Conflict:** n/a
 - **Open question:** Which requests return 400, and are any of them expected? Logged at
-  `gaps.md#source-of-the-400-and-401-responses-on-the-plan-page`
+  §12
 - **Acceptance:** `OPEN — cannot be stated until the question above is answered.`
 - **Notes for the executor:** blocked. A 400 with no named endpoint cannot be specified;
   it can only be reproduced. The cheapest resolution is the reporter re-running the steps
@@ -272,7 +272,7 @@ The original text is kept below as the record of what was open at elaboration.
 - **Conflict:** n/a
 - **Open question:** Are the observed 401s the designed access-token-expiry → refresh →
   retry cycle, or unauthenticated calls that should not be issued at all? Logged at
-  `gaps.md#source-of-the-400-and-401-responses-on-the-plan-page`
+  §12
 - **Acceptance:** `OPEN — cannot be stated until the question above is answered.`
 - **Notes for the executor:** blocked. Note the direction of the risk: if these 401s are the
   designed refresh cycle, "fixing" them means weakening the auth flow to make a console look
@@ -292,7 +292,7 @@ The original text is kept below as the record of what was open at elaboration.
 - **Conflict:** n/a
 - **Open question:** How many comments must the page hold at full responsiveness, is there
   a maximum comment length, and should the list paginate or load in full? Logged at
-  `gaps.md#plan-comment-volume-length-and-pagination`
+  §12
 - **Acceptance:** `OPEN — cannot be stated until the question above is answered.`
 - **Notes for the executor:** blocked, and it gates the shape of the fix. Pagination,
   virtualization and a length cap are three different features with three different data
@@ -473,10 +473,16 @@ Invented validation is still invention. A max length nobody wrote down is `NOT S
   Drive file would settle it in seconds — they were not opened during this elaboration.
 - **Blocked:** REQ-01, and through it every other requirement here — none of them can be
   scoped, reproduced or accepted against an unidentified screen.
+- **Candidates:** none in the vault. `product/project-module/04-create-and-approve-lift-plans.md`
+  (3.5 KB, 2026-04-30) specifies a Plans tab and an approve / request-changes-with-comments
+  workflow but describes no comments page. `product/job-project-das.md` (1.7 KB, 2026-07-16)
+  records `Plan — rich text field - UI issue` and `Project — in house comments – design update
+  needed` without detail. A vault-wide grep for `comment` returns 40 hits, all field-ops
+  ticket-workflow or quotation content. `SCRUM-757` names the page and identifies nothing.
 - **Owner:** Aiman Farooq (reporter) — or anyone who can open the ticket's attachments.
-- **Logged:** `.ai/vault/gaps.md#scope-of-the-plan-comments-page-in-scrum-757` — `Status: open`
 - **Workaround, if any:** none. Opening the two attachments is faster than any workaround
   and removes the question entirely.
+- **Status:** open
 
 ### Q2 — What is the performance target
 
@@ -490,12 +496,19 @@ Invented validation is still invention. A max length nobody wrote down is `NOT S
   this down.
 - **Blocked:** REQ-03, and the sign-off of REQ-02 — without a number, "fixed" is a matter of
   opinion and the ticket reopens.
+- **Candidates:** none. The only Performance requirement anywhere in the vault is
+  `product/frd-new-format-draft/07-non-functional-requirements.md` — scoped to the field-ops
+  **mobile** app, stating no number, and inside the unresolved field-ops conflict set
+  (`vault/gaps.md#field-operations-mobile-app`). `product/customer.md` ("Tooltips are very
+  slow") and `product/quotation.md` ("Auto api call on page refresh") are different modules
+  and set no target. No `.ai/claude/contexts/*.md` file and no `CLAUDE.md` section sets a web
+  performance budget.
 - **Owner:** product team
-- **Logged:** `.ai/vault/gaps.md#plan-comment-performance-target` — `Status: open`
 - **Workaround, if any:** none that is safe to call a fix. A profiling pass that *measures*
   current behavior — comment count vs. input latency vs. request count — is not blocked by
   this question and would give the answerer real numbers to set a threshold against. That is
   measurement, explicitly not a change.
+- **Status:** open
 
 ### Q3 — Which requests produce the 400s, and what counts as a "repeated" request
 
@@ -506,11 +519,14 @@ Invented validation is still invention. A max length nobody wrote down is `NOT S
   names no endpoint, no payload and no count. Nothing in the vault discusses API error
   responses on any web page. The evidence exists only in the attachments.
 - **Blocked:** REQ-05, and the acceptance criterion of REQ-04.
+- **Candidates:** none. `SCRUM-757` states both symptoms and names no endpoint, no payload
+  and no count. No vault file discusses API error responses on any web page. The evidence
+  exists only in the ticket's two attachments (Loom, Google Drive), not opened during
+  elaboration.
 - **Owner:** Aiman Farooq (reporter)
-- **Logged:** `.ai/vault/gaps.md#source-of-the-400-and-401-responses-on-the-plan-page` —
-  `Status: open`
 - **Workaround, if any:** none. Re-running the reproduction and pasting the request lines
   answers it directly.
+- **Status:** open
 
 ### Q4 — Are the 401s the designed refresh cycle
 
@@ -523,13 +539,15 @@ Invented validation is still invention. A max length nobody wrote down is `NOT S
   *produces* 401s by design; it does not tell us whether the ones in the ticket are those.
   The ticket asserts they are unnecessary and cites nothing.
 - **Blocked:** REQ-06.
+- **Candidates:** none. Same search as Q3 — the vault is silent on web API error responses.
+  `CLAUDE.md` → Auth System and `apps/web/src/lib/base-api.ts:92` establish that the system
+  produces 401s by design, but neither is a source for whether *these* 401s are those.
 - **Owner:** product team / whoever owns the auth flow — the answer determines whether this
   is a defect or expected behavior to close as "working as designed".
-- **Logged:** `.ai/vault/gaps.md#source-of-the-400-and-401-responses-on-the-plan-page` —
-  `Status: open`
 - **Workaround, if any:** none, and there is a risk in guessing: if these 401s are the
   designed refresh cycle, suppressing them means weakening the auth flow to clean up a
   console.
+- **Status:** open
 
 ### Q5 — Comment volume, length and list behavior
 
@@ -541,10 +559,13 @@ Invented validation is still invention. A max length nobody wrote down is `NOT S
   `04-create-and-approve-lift-plans.md` is the closest thing to a plan specification and is
   silent on all three.
 - **Blocked:** REQ-07, the shape of the fix for REQ-02, and §3's schema question.
+- **Candidates:** none. `product/project-module/04-create-and-approve-lift-plans.md` (3.5 KB,
+  2026-04-30) is the closest thing to a plan specification and is silent on all three.
+  `SCRUM-757`, `SCRUM-763` and `SCRUM-211` state no limit or list behaviour.
 - **Owner:** product team
-- **Logged:** `.ai/vault/gaps.md#plan-comment-volume-length-and-pagination` — `Status: open`
 - **Workaround, if any:** none. Pagination, virtualization and a length cap are three
   different products; choosing one in code decides the question without asking it.
+- **Status:** open
 
 ## 13. What this spec deliberately does not specify
 
@@ -575,7 +596,7 @@ Invented validation is still invention. A max length nobody wrote down is `NOT S
 - [ ] Every `[CONFLICT]` requirement has a decision note in `.ai/vault/decisions/` — *none in
       this spec*
 - [ ] Answers written back into `spec.md` with their new sources and flags
-- [ ] `gaps.md` entries updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
+- [ ] Every §12 question updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
 - [ ] Decomposed into vertical units — `units.md`
 
 Answered by: ______________  Date: ______________

@@ -63,11 +63,11 @@ because nothing downstream fails when you skip it. Every line needs an outcome:
 
 | Finding | What it becomes |
 | --- | --- |
-| A source that turned out wrong or stale | A `gaps.md` entry. **Never an edit to the source** |
-| A conflict that surfaced during the build | A `gaps.md` entry, or evidence appended to an existing one |
+| A source that turned out wrong or stale | A `spec.md` §12 question. **Never an edit to the source** |
+| A conflict that surfaced during the build | A `spec.md` §12 question, or evidence appended to an existing one |
 | A question a named human answered during the build | `tcg-scrum` → `vault/decisions/YYYY-MM-DD-topic.md`, **now** |
 | A gap this ticket should close | `tcg-scrum` → the four-step closure, in one pass |
-| An undefined term hit | `gaps.md`, tagged with the term |
+| An undefined term hit | `spec.md` §12, tagged with the term |
 
 The one with a deadline is the third. An answer given in a call during the build exists
 only in whoever's memory and in the code that assumed it; a week later nobody can say
@@ -76,12 +76,19 @@ next sprint and may get a different answer.
 
 ## 4. Gaps opened during the work
 
-Whatever path the ticket took, the executor and analyst may have appended to
-`.ai/vault/gaps.md`. Check they are phrased so a one-line reply resolves them, and that each
-names an owner. A gap nobody owns is a note.
+Whatever path the ticket took, the executor and analyst may have appended questions to §12
+of the ticket's `spec.md`. Check they are phrased so a one-line reply resolves them, and that
+each names an owner. A gap nobody owns is a note.
+
+Ticket questions stay in §12 — they are not promoted to the vault at close. What does move
+is the **answer**: a question a human settled during the build becomes
+`vault/decisions/YYYY-MM-DD-topic.md` via `tcg-scrum`, and the §12 entry's `Status:` line is
+flipped to point at it.
 
 ```bash
-git -C .ai diff origin/main -- vault/gaps.md vault/payroll/gaps.md
+git -C .ai diff origin/main -- aidlc/SCRUM-###/spec.md
+git -C .ai diff origin/main -- vault/gaps.md vault/payroll/gaps.md   # should be empty for a ticket
+grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md                # everything still open, all tickets
 ```
 
 ## 5. Fill in the ledger row, then push the overlay

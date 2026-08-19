@@ -4,6 +4,11 @@ Open questions raised by the Confluence migration of 2026-08-10 and by everythin
 Each product entry is a conflict the migration deliberately did not resolve. Agents must not
 pick a winner from these sets — surface the conflict and cite all candidates.
 
+**Not for ticket questions.** A question raised while working a ticket goes to that ticket's
+§12 of `.ai/aidlc/SCRUM-###/spec.md` — never here. This file holds only what belongs to no
+ticket: the migrated Confluence backlog, and product-wide questions raised outside the loop.
+`grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md` sweeps the ticket registers.
+
 **Two registers, one format.** Product and process gaps live here. **Payroll and ADP gaps
 live in [`payroll/gaps.md`](payroll/gaps.md)** — same entry shape, same rules, split out
 because that register is three times this size and belongs to a separate source set. Append a
@@ -230,113 +235,6 @@ will be about your ticket.
   deliberately **not** re-migrated: the page was mid-edit when observed (two sections numbered
   US-11, an epic titled "PIC 10", epics 5-9 absent, US-12 missing).
 - Status: open
-
-## Scope of the Plan Comments page in SCRUM-757
-
-- Question: Which screen is "the Plan Comments page" — the comment surface on the plan
-  detail view, the project In-House Comments tab, or a third screen?
-- Candidates: none in the vault. `product/project-module/04-create-and-approve-lift-plans.md`
-  (3.5 KB, updated 2026-04-30) specifies a Plans tab and an approve / request-changes-with-comments
-  workflow but describes no comments page. `product/job-project-das.md` (1.7 KB, 2026-07-16)
-  records `Plan — rich text field - UI issue` and `Project — in house comments – design update
-  needed` without detail. A vault-wide grep for `comment` returns 40 hits, all field-ops
-  ticket-workflow or quotation content. `SCRUM-757` names the page and identifies nothing.
-- Note: the repo has two plausible surfaces —
-  `apps/web/src/features/plans/components/plan-view-sidebar.tsx` (an Add Comment action, with
-  comments rendered in a Recent Activity card) and
-  `apps/web/src/features/projects/components/project-detail-comments-tab.tsx` (In-House
-  Comments, against which `SCRUM-763` is open and Blocked). Neither is named "Plan Comments",
-  and the code cannot say which the reporter was looking at. `SCRUM-757` links a Loom
-  recording and a Google Drive file that would settle this immediately; they were not opened
-  during elaboration on 2026-08-11.
-- Blocked: `SCRUM-757` REQ-01, and through it every other requirement in
-  `.ai/aidlc/SCRUM-757/spec.md` — none can be scoped, reproduced or accepted against an
-  unidentified screen.
-- Owner: product team — in practice Aiman Farooq (reporter of `SCRUM-757`), or anyone who can
-  open the ticket's attachments.
-- Answer: the **plan detail view** at `/projects/{id}/plans/{id}` — the first of the two
-  candidates. Not the project In-House Comments tab, so `SCRUM-763` is a separate concern
-  against a different screen. Confirmed against the route
-  `apps/web/src/app/(protected)/projects/[id]/plans/[planId]/page.tsx`, which renders
-  `PlanViewPageContent` and `AddCommentModal`. Answered by the assignee rather than the
-  reporter, and from knowledge of the screen rather than from the attachments — which are
-  still unopened and are still the fastest way to settle Q3.
-- Status: resolved — see `decisions/2026-08-12-plan-comments-page-scope.md`
-
-## Plan comment performance target
-
-- Question: What is the acceptance threshold for the Plan Comments page being "responsive" —
-  a page-load budget, an input-latency budget, or both — and at what comment count and
-  comment length must it hold?
-- Candidates: none. The only Performance requirement anywhere in the vault is
-  `product/frd-new-format-draft/07-non-functional-requirements.md` ("Ticket screens, checklist
-  rendering, and signature capture must load within acceptable response times under field
-  network conditions") — scoped to the field-ops **mobile** app, stating no number, and inside
-  the unresolved field-ops conflict set. `product/customer.md` ("Tooltips are very slow") and
-  `product/quotation.md` ("Auto api call on page refresh") are different modules and set no
-  target. No `.ai/claude/rules/*.md` file and no `CLAUDE.md` section sets a web performance
-  budget.
-- Note: `README.md` → *What this vault does not contain* does not list non-functional
-  requirements among the deliberate exclusions, so this is an absence, not policy. Without a
-  number, "fixed" is whoever last looked at it deciding it feels fine, which is how the ticket
-  reopens. A profiling pass that measures current behaviour is not blocked by this question and
-  would give the answerer real numbers to set a threshold against.
-- Blocked: `SCRUM-757` REQ-03, and the sign-off of REQ-02.
-- Owner: product team
-- Status: open
-
-## Source of the 400 and 401 responses on the plan page
-
-- Question: Which specific requests return 400 on the page in `SCRUM-757`, which requests did
-  the reporter see repeated (with counts, and against which build), and are the observed 401s
-  the designed access-token-expiry → refresh → retry cycle or calls that should not be issued?
-- Candidates: none. `SCRUM-757` states both symptoms and names no endpoint, no payload and no
-  count. No vault file discusses API error responses on any web page. The evidence exists only
-  in the ticket's two attachments (Loom, Google Drive), not opened during elaboration.
-- Note: `CLAUDE.md` → Auth System documents a 15-minute access token, and
-  `apps/web/src/lib/base-api.ts:92` implements a silent-refresh interceptor that turns a 401
-  into `POST /auth/refresh` plus one rate-limited retry. That establishes the system produces
-  401s **by design**; it does not establish that the ticket's 401s are those. The direction of
-  risk matters here — if they are the designed cycle, "fixing" them means weakening the auth
-  flow to clean up a console. Separately, the global TanStack Query defaults already set
-  `refetchOnWindowFocus: false` with a non-zero `staleTime`
-  (`apps/web/src/providers/query-provider.tsx`), and some plan-adjacent hooks take a
-  deliberate `refetchInterval`, so which observed repeats are duplicates and which are designed
-  is part of the same unknown.
-- Blocked: `SCRUM-757` REQ-05 and REQ-06, and the acceptance criterion of REQ-04.
-- Owner: product team — the 400/repeat identification sits with Aiman Farooq (reporter); the
-  expected-vs-defect call on the 401s sits with whoever owns the auth flow.
-- Status: open
-
-## Plan comment volume, length and pagination
-
-- Question: How many comments must a plan's comment page hold while staying responsive, is
-  there a maximum length for a single comment, and should the list paginate, virtualize or
-  load in full?
-- Candidates: none. `product/project-module/04-create-and-approve-lift-plans.md` (3.5 KB,
-  2026-04-30) is the closest thing to a plan specification and is silent on all three.
-  `SCRUM-757`, `SCRUM-763` and `SCRUM-211` state no limit or list behaviour.
-- Note: pagination, virtualization and a length cap are three different features with three
-  different data models behind them, so choosing one in code decides the product question
-  without asking it — including a max-length validator added "for safety", which would be
-  enforced on users who were never told about it. Relevant current state: there is no
-  `PlanComment` model; plan comments are appended as **project activity-log entries**
-  (`apps/api/src/presentation/plans/plans.controller.ts:137-146`), so a plan's comment list may
-  grow with the whole project's activity. Whether that is the intended home for plan comments
-  is itself unstated.
-- Blocked: `SCRUM-757` REQ-07, the shape of any fix for REQ-02, and the schema/migration
-  question in §3 of `.ai/aidlc/SCRUM-757/spec.md`.
-- Owner: product team
-- Status: open
-
----
-
-# Gaps from the meeting minutes of 2026-08-05 / 07 / 12
-
-Raised by three sets of client meeting minutes supplied on 2026-08-13. These differ from every
-other entry here: they are not conflicts between documents but **named, owed deliverables** and
-**modules with no vault coverage at all**. The ADP and payroll items from the same minutes are in
-[`payroll/gaps.md`](payroll/gaps.md).
 
 ## Labor Compliance module — no vault coverage
 
@@ -1331,3 +1229,4 @@ other entry here: they are not conflicts between documents but **named, owed del
 - Owner: Melissa McNutt (raised the consent question — best available attribution, see caveat), with
   Kyle Harlow for the field consequence. CodingCops owes the ticket regardless of the answer.
 - Status: open — needs confirmation
+

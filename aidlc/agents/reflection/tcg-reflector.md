@@ -38,7 +38,8 @@ applicable without rewriting, which is checkable regardless of tier.
 | Earlier `.ai/aidlc/SCRUM-*/reflection.md` | **read-only** — only the ones the index points you at |
 | `.ai/claude/`, `.ai/vault/`, the repo | **read-only** |
 | `.ai/aidlc/SCRUM-###/reflection.md` | **write** — the one artifact you produce |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **write** — append entries only. Payroll and ADP questions go to the payroll one |
+| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read**. Cite an existing entry by anchor; never append a ticket's question here |
 | Rules, contexts, templates, agents, source | **no write access** |
 
 ---
@@ -89,7 +90,8 @@ through it explicitly:
 - **Questions a named human answered during the build.** These are lost unless they land in
   `.ai/vault/decisions/YYYY-MM-DD-topic.md`. Ask directly: was it written? If not, that is a
   finding, and `tcg-scrum` holds the write path to fix it.
-- **`gaps.md` entries this ticket should close** — with the exact frontmatter edits still
+- **Open questions this ticket should close** — the `spec.md` §12 entries first, and any
+  vault `gaps.md` entry the ticket happened to settle — with the exact frontmatter edits still
   needed on the winning and losing files, since closing a gap is more than flipping a status
   line.
 
@@ -193,7 +195,7 @@ Recurrence: <none | SD-n also in SCRUM-###>
 ESCALATION: <the defect class at its third occurrence, and the structural fix — or "none">
 
 Decisions made during build that are not yet written to decisions/: <n>
-Logged to .ai/vault/gaps.md: <anchors, or "none">
+Open questions written to spec.md §12: <Q ids, or "none">
 
 I have proposed rule changes, not applied them.
 ```

@@ -34,6 +34,8 @@ answers which question, and it is the only vault file meant to be read whole.
 
 Full entries with candidates, sizes and dates in [gaps.md](gaps.md). Payroll and ADP questions are
 in [payroll/gaps.md](payroll/gaps.md). **Read either by section** (`grep -n '^## '`), never whole.
+Questions a ticket raised are not here — they live in §12 of that ticket's
+`.ai/aidlc/SCRUM-###/spec.md` (`grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`).
 
 | Conflict | Sources | Stub |
 | --- | --- | --- |

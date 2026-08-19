@@ -211,7 +211,8 @@ Recency in particular is actively wrong in this vault. Worked examples, all real
   stub that would have beaten a 3.7 KB specification.
 
 Every unresolved set has an entry in [`gaps.md`](./gaps.md) — or, for payroll and ADP, in
-[`payroll/gaps.md`](./payroll/gaps.md) — with candidates, sizes, and
+[`payroll/gaps.md`](./payroll/gaps.md), or, when a ticket raised the question, in §12 of
+that ticket's `.ai/aidlc/SCRUM-###/spec.md` — with candidates, sizes, and
 dates, and the five biggest have a stub at `product/<topic>-INDEX.md`. When you hit one,
 read the stub and point the reader at the gap entry.
 
@@ -282,7 +283,8 @@ When product resolves a conflict set:
 3. Set the losing files to `status: superseded` and add `superseded_by:` naming the
    winner. Do not delete them — a superseded file with a pointer is more useful than a
    missing one, because it stops the same question being reopened.
-4. Clear `conflicts_with` on the winner, and update the corresponding `gaps.md` entry to
+4. Clear `conflicts_with` on the winner, and update the corresponding entry — the ticket's
+   `spec.md` §12 question if a ticket raised it, this vault's `gaps.md` otherwise — to
    `Status: resolved` with a link to the decision note.
 
 ## How the vault stays in step with Confluence

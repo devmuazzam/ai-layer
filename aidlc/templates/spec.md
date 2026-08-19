@@ -16,7 +16,7 @@ block.** A field you cannot fill keeps its heading and takes one of:
 | --- | --- |
 | `NOT SPECIFIED` | No source says anything about this. |
 | `N/A — <reason>` | Does not apply to this feature. |
-| `OPEN — <question>` | Blocked on a human. Must also appear in §12 and in `.ai/vault/gaps.md`. |
+| `OPEN — <question>` | Blocked on a human. Must also appear in §12. |
 
 A spec that is 40% `NOT SPECIFIED` is an honest spec of a thin ticket. A spec where those
 sections were deleted is a spec that lies by omission — the executor cannot tell "nobody
@@ -76,7 +76,7 @@ reads as competence.
 | Intent | `.ai/aidlc/SCRUM-###/intent.md`, captured `YYYY-MM-DD` |
 | Elaborated on | `YYYY-MM-DD` |
 | Vault state at elaboration | *N files; six `domain/` files verified; N entries open in `gaps.md`* |
-| Gaps opened by this spec | `gaps.md#<anchor>`, … or `none` |
+| Open questions raised by this spec | *N, all in §12* — or `none` |
 | Rules consulted | *list the `.ai/claude/contexts/*.md` files that bind this feature* |
 
 ## 1. Requirements ledger
@@ -253,6 +253,16 @@ Invented validation is still invention. A max length nobody wrote down is `NOT S
 
 **The elaborator stops here.** Nothing below is built until these are answered.
 
+**This section is the ticket's gaps register — there is no separate `gaps.md` in a ticket
+folder.** Every question this ticket raised lives here, with the search that produced it, and
+stays here when it is answered: mark it resolved and point at the decision note, so the
+question and its answer are read together. `.ai/vault/gaps.md` holds only what belongs to no
+ticket. To sweep every ticket for what is still open:
+
+```bash
+grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
+```
+
 Each question must be answerable in one line by the person named. If it takes a meeting to
 answer, it is two questions.
 
@@ -262,10 +272,12 @@ answer, it is two questions.
 - **Why it cannot be answered from what is written:** *what you read, and what it did not
   settle*
 - **Blocked:** REQ-nn *(and what cannot ship without it)*
+- **Candidates:** *every vault file consulted, with size and date — or "none: nothing
+  written". This is the search record: it stops the next person repeating it*
 - **Owner:** product team / *named person, where a vault open-question names one*
-- **Logged:** `.ai/vault/gaps.md#<anchor>` — `Status: open`
 - **Workaround, if any:** *the smallest change that does not depend on the answer,
   explicitly labelled as a workaround*
+- **Status:** open *— or* `resolved — see decisions/YYYY-MM-DD-topic.md`
 
 ### Q2 — …
 
@@ -275,14 +287,14 @@ Anything the intent asked for that no source supports, listed once, plainly. Thi
 exists so nobody mistakes the spec's silence for the feature's simplicity.
 
 - *thing* — no source; see Q*n*
-- *thing* — sources conflict; see REQ-nn and `gaps.md#<anchor>`
+- *thing* — sources conflict; see REQ-nn and `vault/gaps.md#<anchor>`
 
 ## 14. Sign-off before build
 
 - [ ] Every `[OPEN]` requirement is answered, or explicitly deferred by a named person
 - [ ] Every `[CONFLICT]` requirement has a decision note in `.ai/vault/decisions/`
 - [ ] Answers written back into `spec.md` with their new sources and flags
-- [ ] `gaps.md` entries updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
+- [ ] Every §12 question updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
 - [ ] Decomposed into vertical units — `units.md`
 
 Answered by: ______________  Date: ______________
