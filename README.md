@@ -134,8 +134,11 @@ every symlink, drops the nested context files, mirrors the surfaces, prunes link
 source was deleted, appends missing exclude entries, and reports what it changed. A real
 file it would otherwise overwrite is **backed up, never destroyed**.
 
-**Re-run it after `pnpm install`** — husky resets the git hooks path. The script says so when
-it finishes.
+It no longer touches git hooks. Since the client repo's Nx merge (PR #363, 2026-08-19) the
+hooks are tracked in `.husky/` and `pnpm install` wires them (`core.hooksPath=.husky`); the
+overlay used to install a competing pre-push in `.git/hooks`, which is why re-running after
+`pnpm install` was once required. `setup.sh` now only repairs a machine that still points at
+the old location, and prunes its own stale hook files.
 
 ---
 

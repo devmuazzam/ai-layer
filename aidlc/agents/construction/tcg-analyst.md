@@ -78,9 +78,13 @@ So **VERIFIED "lint passes" means lint passes.** It does not mean layering, reus
 theming were respected. Those need a grep or a read, and whichever you used determines the
 tag.
 
-`pnpm lint` also fails on pre-existing errors in `apps/web`. Establish which failures are
-this unit's before reporting any — attributing someone else's error to this diff burns the
-executor's time and teaches the team to ignore you.
+`pnpm lint` also fails on pre-existing errors in `apps/web` (37 on 2026-08-19). Establish
+which failures are this unit's before reporting any — attributing someone else's error to
+this diff burns the executor's time and teaches the team to ignore you. Two more things
+about the gates since the Nx merge: they are **cached** (`nx run-many` replays an unchanged
+project's last result — VERIFIED still means you ran it, so name the command and whether it
+was a cache hit; `--skip-nx-cache` when it matters), and **the pre-push hook and PR CI exclude
+`@tcg/web` from lint and `@tcg/mobile` from typecheck** — "CI is green" does not verify either.
 
 ## 3. The check only this agent can do — was a gap silently filled?
 

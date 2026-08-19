@@ -35,29 +35,36 @@ mine.forEach(x => console.log("  " + x));
 '
 ```
 
-## 2. Known baseline, as of 2026-08-11
+## 2. Known baseline, as of 2026-08-19 (post-Nx merge, PR #363)
 
-`apps/web` carried **14 errors** before any recent work:
+`apps/web` carried **37 errors** on `main` (up from 14 on 2026-08-11 — the import-order rule
+and the customer-edit workspace added the rest):
 
 | Rule | Count | Where |
 | --- | --- | --- |
-| `no-magic-numbers` | 10 | `features/permits/components/print/*` |
-| `complexity` | 2 | `permits-listing.tsx:73`, `print/permit-print-model.ts:169` |
-| `max-lines-per-function` | 1 | `print/permit-print-document.tsx:160` |
-| `max-lines` | 1 | `print/permit-print-document.tsx:301` |
+| `no-empty-function` | 17 | mostly `features/customers/workspace/edit/*` |
+| `no-magic-numbers` | 11 | `features/permits/components/print/*` |
+| `max-lines-per-function` / `max-lines` | 3 + 3 | `permits/components/print/*`, `lib/*` |
+| `complexity`, `no-constant-binary-expression`, `require-unicode-regexp` | 1 each | `permits-listing.tsx`, `lib/*` |
 
-If your failures are in `features/permits/components/print/`, suspect the baseline first.
-**Re-measure rather than trusting this table** — it is a snapshot and the point of the skill
-is not to need it.
+If your failures are in `features/permits/components/print/` or
+`features/customers/workspace/edit/`, suspect the baseline first. **Re-measure rather than
+trusting this table** — it is a snapshot and the point of the skill is not to need it.
 
-## 3. Know which workspaces actually run
+## 3. Know which projects actually run, and where
 
-- `pnpm lint` → `pnpm -r lint`, every workspace.
-- `pnpm lint:local` → `@tcg/shared` then `@tcg/api`. **`@tcg/shared`'s lint is
-  `echo "no lint configured yet"`**, so `lint:local` covers `apps/api` alone. It passing
-  tells you nothing about web or mobile.
-- `apps/api`'s lint script runs `eslint src/ --fix` — it **mutates your working tree**.
-  Check `git status` after running it.
+- `pnpm lint` → `pnpm nx run-many -t lint` — all four projects, **cached**. A replayed cache
+  hit prints the old result; when in doubt `pnpm nx run @tcg/web:lint --skip-nx-cache`.
+- `pnpm lint:local` → `nx run-many -t lint -p @tcg/shared @tcg/api`. Both are real ESLint now
+  (`@tcg/shared` got a config in the Nx merge). It passing still says nothing about web or
+  mobile.
+- No `lint` script mutates the tree any more; the `lint:fix` targets do, and are `cache: false`.
+  `lint-staged` in the pre-commit hook **does** run `eslint --fix` + Prettier on your staged
+  files — re-read `git diff --staged` after a commit attempt.
+- **The pre-push hook and PR CI (`.github/workflows/affected.yml`) run
+  `nx affected -t lint --exclude=@tcg/web`** and `typecheck --exclude=@tcg/mobile`. So a web
+  lint error or one of mobile's two pre-existing TS2339s never blocks a push or a PR — which is
+  exactly why the baseline above keeps growing. Run `pnpm web:lint` yourself before you hand back.
 
 ## 4. What lint does not check
 

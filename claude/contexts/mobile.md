@@ -7,8 +7,11 @@ Expo SDK 54 + Expo Router. The field-operations app.
 File-based routing via Expo Router. Feature code sits alongside it in `features/`,
 `components/`, `hooks/`, `services/`, `session/`, `lib/` and `design-system/`.
 
-Aliases: `@/*` maps to the app root (**not** `./src/*` as on web — mobile has no `src/`),
-and `@tcg/shared` maps to `packages/shared/src`.
+Aliases: `@/*` maps to the app root (**not** `./src/*` as on web — mobile has no `src/`).
+`@tcg/shared` is a `workspace:*` dependency resolved to its **built `dist/`** — the old
+`paths` alias to `packages/shared/src` is gone; do not re-add it. Nx builds shared before
+`mobile:start`; if you are editing shared while the app runs, keep
+`pnpm --filter @tcg/shared dev` (`tsc --watch`) open.
 
 ## Styling — not Tailwind
 

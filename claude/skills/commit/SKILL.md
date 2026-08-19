@@ -36,6 +36,7 @@ anyone's existing branch.
 ```bash
 git fetch origin
 git switch -c <type>/SCRUM-###-u<n>-<slug> origin/main
+pnpm install          # in a linked worktree: required, or the tracked hooks refuse to commit
 ```
 
 **Resuming one — the next morning, or after any break:**
@@ -82,12 +83,21 @@ Never rebase a branch someone else has checked out, and never force-push `main`.
 After a rebase, updating your own PR branch needs `git push --force-with-lease` — never a
 bare `--force`, which discards a teammate's push to that branch without telling you.
 
-**Two of these are now enforced.** The `pre-push` hook installed by `.ai/setup.sh` refuses a
-direct push to `main`, and refuses a push from a branch behind `origin/main`. It warns on
-branch naming rather than blocking, because the client repo has three conventions in flight
-and renaming someone's branch is worse than the inconsistency. `SKIP_GATES=1 git push`
-bypasses all of it — and the hook disappears entirely after `pnpm install` until
-`bash .ai/setup.sh` is re-run, so it is a rail with a known hole, not a guarantee.
+**One of these is now enforced, by the client repo itself.** Since the Nx merge (PR #363)
+the hooks are tracked files in `.husky/` and run in the main checkout and every linked worktree
+(`pnpm install` sets `core.hooksPath=.husky`). `pre-push` refuses a direct push of `main`, then
+runs `nx affected` lint (web excluded), typecheck (mobile excluded) and build against
+`origin/main`. `SKIP_GATES=1 git push` skips the gates, never the branch guard; `--no-verify`
+skips everything — treat that as a decision, not a habit. **The rebase-behind check is not
+enforced by anything any more** — `.ai/setup.sh` no longer installs its own hook, because two
+`core.hooksPath` values cannot coexist and the tracked hooks won — so *rebase before you push*
+is back to being your discipline. Branch naming is not checked either.
+
+`pre-commit` runs `lint-staged` (ESLint `--fix` + Prettier on the staged files) and then
+`nx affected -t build`. Two consequences: the hook can rewrite what you staged, so re-read
+`git diff --staged` if the commit was rejected and retried; and a worktree without
+`node_modules` refuses to commit at all — `pnpm install` there first (fast, linked from the
+store).
 
 ## 3. Commit message — conventional, with a body that explains why
 
@@ -95,9 +105,10 @@ bypasses all of it — and the hook disappears entirely after `pnpm install` unt
 <type>(<scope>): <description>
 
 <body — what changed and why, not how. Wrap at ~90 columns.>
-
-Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 ```
+
+No `Co-Authored-By` / "Generated with" trailer on commits or PRs in either repo — that was
+asked for explicitly and repeatedly.
 
 **Header:** imperative mood, lowercase, no trailing period. Scope is the module or area —
 `api`, `web`, `mobile`, `vault`, `aidlc`, `setup`, or a feature name like `quotations`.
