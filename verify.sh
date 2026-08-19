@@ -100,16 +100,35 @@ for pair in ".claude:Claude Code" ".cursor:Cursor" \
   d="${pair%%:*}/agents"; tool="${pair##*:}"
   if [ ! -d "$d" ]; then note "$d/ not present — fine unless you use $tool"; continue; fi
   flat="$(find "$d" -maxdepth 1 -name 'tcg-*.md' 2>/dev/null | wc -l | tr -d ' ')"
-  trees="$(find "$d" -maxdepth 1 -mindepth 1 ! -name 'tcg-*.md' 2>/dev/null | wc -l | tr -d ' ')"
+
+  # Split what is NOT one of our flat agents into two piles, because they need
+  # opposite advice. STALE is the old nested mirror — our own symlinks into
+  # aidlc/agents; setup.sh removes those, so "re-run setup" is the fix. FOREIGN is
+  # anything else: a real directory left by an older setup, or a developer's own
+  # subagent. setup.sh deliberately never touches those (it keys on the link target),
+  # so telling someone to re-run it would loop forever on a failure it cannot clear.
+  stale=0; foreign=0
+  for e in "$d"/*; do
+    [ -e "$e" ] || [ -L "$e" ] || continue
+    case "$(basename "$e")" in tcg-*.md) continue ;; esac
+    if [ -L "$e" ] && case "$(readlink "$e")" in *aidlc/agents*) true ;; *) false ;; esac; then
+      stale=$((stale + 1))
+    else
+      foreign=$((foreign + 1))
+    fi
+  done
+
   if [ "$flat" != "$AGENT_COUNT" ]; then
     bad "$d — $flat of $AGENT_COUNT agents discoverable by $tool"
     note "fix: re-run 'bash .ai/setup.sh'"
-  elif [ "$trees" != "0" ]; then
-    bad "$d — $trees non-agent entr(ies) present; $tool may load examples/ as real agents"
+  elif [ "$stale" != "0" ]; then
+    bad "$d — $stale leftover entr(ies) from the old nested mirror; $tool may read examples/ as real agents"
     note "fix: re-run 'bash .ai/setup.sh'"
   else
     ok "$d — all $AGENT_COUNT agents flat and discoverable"
   fi
+  [ "$foreign" = "0" ] || \
+    note "$d — $foreign entr(ies) here are not ours and were left alone; delete by hand if unwanted"
 done
 
 head_ "Stale pointers  (a doc removed from the overlay must not leave a link behind)"
