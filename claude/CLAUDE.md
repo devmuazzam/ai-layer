@@ -78,21 +78,31 @@ the directory; **on other tools they do not — open them by path.**
 | Mobile | `apps/mobile/` | Expo SDK 54 + Expo Router | 8081 |
 | Shared | `packages/shared/` | Pure TypeScript | — |
 
-Node 22.22.0 (`.nvmrc`), pnpm workspaces.
+Node 22.22.0 (`.nvmrc`), pnpm 10 workspaces, orchestrated by **Nx** (package-based — every
+`package.json` script is a target; Nx owns ordering, caching and affected-only runs; the apps
+still run `nest`/`next`/`expo` exactly as before). `@tcg/shared` is consumed by every app as
+its **built `dist/`** — never alias it to `src` in a tsconfig. Always invoke Nx as `pnpm nx …`,
+never `npx nx` (the root script sets `NX_LOAD_DOT_ENV_FILES=false`; without it the API's `.env`
+leaks into every task and breaks `next build`).
 
 ## Commands
 
 ```bash
-pnpm install                    # install
-pnpm api:dev / web:dev          # dev servers
+pnpm install                    # install; also wires the tracked git hooks (core.hooksPath=.husky)
+pnpm api:dev / web:dev          # dev servers (build @tcg/shared first, or restore it from cache)
 pnpm mobile:start               # Expo
 pnpm db:migrate                 # create + run a migration
 pnpm db:studio                  # Prisma Studio
-pnpm lint && pnpm build         # quality gate (runs every workspace)
+pnpm lint && pnpm build         # quality gate — every project, cached by Nx
+pnpm test / pnpm typecheck      # api jest · web node --test · mobile jest / web + mobile tsc
+pnpm affected                   # lint + build + test only for projects changed vs main
+pnpm nx run @tcg/api:build --skip-nx-cache   # force a real run when a cached result looks wrong
 ```
 
-`pnpm lint` currently fails on pre-existing errors in `apps/web`. Check whether a failure
-is yours before chasing it.
+`pnpm lint` still fails on pre-existing errors in `apps/web` (37 as of 2026-08-19). Check
+whether a failure is yours before chasing it — `lint-triage` skill. **The pre-push hook and PR
+CI run `nx affected -t lint --exclude=@tcg/web`**, so web lint never blocks a push; the only
+place it runs is `pnpm lint` / `pnpm web:lint` by hand.
 
 ## Architecture invariants
 
@@ -121,7 +131,7 @@ is yours before chasing it.
 - **API:** `@orm/* @presentation/* @usecase/* @service/* @config/* @guard/* @decorator/*
   @strategy/* @utility/* @filter/* @interceptor/* @context/*`
 - **Web:** `@/*` → `./src/*`
-- **Mobile:** `@/*` → `./*`, `@tcg/shared` → `packages/shared/src`
+- **Mobile:** `@/*` → `./*`. `@tcg/shared` is a workspace dependency resolved to its built `dist/`, on every surface — no `src` alias anywhere
 
 ## Identity — UUID primary keys, per-tenant business codes
 
@@ -145,8 +155,16 @@ Never assume a query is tenant-scoped without checking.
 
 ## Code quality
 
-Strict TypeScript, no `any`. Named exports only, except Next.js pages. ESLint + Prettier,
-Husky pre-commit. JSDoc on public APIs.
+Strict TypeScript, no `any`. Named exports only, except Next.js pages. ESLint + one root
+Prettier config (never per-app copies); an import-order rule (`import-x/order`) on all four
+projects. JSDoc on public APIs.
+
+**Git hooks are tracked files in `.husky/` and run in every worktree** (a worktree without
+`node_modules` refuses to commit — `pnpm install` there first). `pre-commit`: `lint-staged`
+(ESLint `--fix` + Prettier on staged files — it can rewrite what you staged; re-read
+`git diff --staged`) then `nx affected -t build`. `pre-push`: refuses a direct push of `main`,
+then `nx affected` lint (web excluded), typecheck (mobile excluded), build. `SKIP_GATES=1 git
+push` skips the gates, never the branch guard.
 
 **Lint does not enforce most of the conventions in this file.** There is no rule for
 module boundaries, duplication, or hardcoded colours. Passing lint is not evidence a

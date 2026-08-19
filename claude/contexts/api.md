@@ -61,8 +61,10 @@ remember-me branch that uses the third value.
 Presentation, usecase and service folders; Prisma model plus a committed migration if the
 schema changes; register the module in `app.module.ts`; barrel exports throughout.
 
-Verify with `pnpm lint && pnpm build`. Note that `pnpm lint` fails on pre-existing errors
-in `apps/web` — check whether a failure is yours.
+Verify with `pnpm api:lint && pnpm api:build && pnpm api:test` (or `pnpm affected`). The
+whole-workspace `pnpm lint` still fails on pre-existing errors in `apps/web` — check whether a
+failure is yours (`lint-triage`). `apps/api`'s `lint` no longer mutates the tree; `lint:fix`
+does, and is uncached on purpose.
 
 ## Tenancy
 

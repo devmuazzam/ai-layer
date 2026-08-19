@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quote → Project → Job Hierarchy</title>
+<style>
+  :root {
+    --bg:           #f2f2f7;
+    --surface:      #ffffff;
+    --surface2:     #f9f9fb;
+    --divider:      rgba(60,60,67,0.12);
+    --shadow-sm:    0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md:    0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+    --label-primary:   #1c1c1e;
+    --label-secondary: #636366;
+    --label-tertiary:  #aeaeb2;
+    --apple-blue:   #007aff;
+    --apple-teal:   #32ade6;
+    --apple-green:  #34c759;
+    --apple-orange: #ff9500;
+    --apple-purple: #af52de;
+    --apple-red:    #ff3b30;
+    --apple-indigo: #5856d6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    color: var(--label-primary);
+    min-height: 100vh;
+    padding: 48px 28px 72px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .header { text-align: center; margin-bottom: 40px; }
+  .header-eyebrow {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.11em;
+    text-transform: uppercase; color: var(--apple-blue); margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em;
+    color: var(--label-primary); line-height: 1.2;
+  }
+  .header p { font-size: 0.875rem; color: var(--label-secondary); margin-top: 6px; }
+  .legend {
+    display: flex; gap: 18px; justify-content: center;
+    margin-bottom: 34px; flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 0.75rem; font-weight: 500; color: var(--label-secondary); }
+  .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .diagram { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+  /* Node cards */
+  .node-card {
+    background: var(--surface); border-radius: 16px;
+    box-shadow: var(--shadow-md); overflow: hidden; width: 100%; border: 1px solid var(--divider);
+  }
+  .node-card-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px; border-bottom: 1px solid var(--divider);
+  }
+  .node-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .node-title { font-size: 1.0rem; font-weight: 600; letter-spacing: -0.01em; color: var(--label-primary); }
+  .node-subtitle { font-size: 0.72rem; font-weight: 500; color: var(--label-secondary); margin-top: 1px; }
+  .node-badge {
+    margin-left: auto; font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.02em; padding: 4px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+  }
+  .node-body { padding: 14px 20px 16px; display: flex; flex-wrap: wrap; gap: 7px; }
+  .pill {
+    font-size: 0.72rem; font-weight: 500; color: var(--label-secondary);
+    background: var(--surface2); border: 1px solid var(--divider); border-radius: 20px; padding: 4px 11px;
+  }
+  /* Colour variants */
+  .v-orange .node-card  { border-top: 3px solid var(--apple-orange); }
+  .v-orange .node-icon  { background: rgba(255,149,0,0.12); }
+  .v-orange .node-title { color: #b86e00; }
+  .v-orange .node-badge { background: rgba(255,149,0,0.10); color: #b86e00; border: 1px solid rgba(255,149,0,0.25); }
+  .v-blue .node-card  { border-top: 3px solid var(--apple-blue); }
+  .v-blue .node-icon  { background: rgba(0,122,255,0.10); }
+  .v-blue .node-title { color: var(--apple-blue); }
+  .v-blue .node-badge { background: rgba(0,122,255,0.08); color: var(--apple-blue); border: 1px solid rgba(0,122,255,0.2); }
+  .v-teal .node-card  { border-top: 3px solid var(--apple-teal); }
+  .v-teal .node-icon  { background: rgba(50,173,230,0.10); }
+  .v-teal .node-title { color: #0a84be; }
+  .v-teal .node-badge { background: rgba(50,173,230,0.08); color: #0a84be; border: 1px solid rgba(50,173,230,0.2); }
+  .v-indigo .node-card  { border-top: 3px solid var(--apple-indigo); }
+  .v-indigo .node-icon  { background: rgba(88,86,214,0.10); }
+  .v-indigo .node-title { color: var(--apple-indigo); }
+  .v-indigo .node-badge { background: rgba(88,86,214,0.08); color: var(--apple-indigo); border: 1px solid rgba(88,86,214,0.2); }
+  /* Connectors */
+  .connector { display: flex; flex-direction: column; align-items: center; width: 100%; }
+  .conn-line { width: 1.5px; height: 22px; background: var(--divider); }
+  .conn-label {
+    font-size: 0.67rem; font-weight: 600; letter-spacing: 0.04em;
+    color: var(--label-tertiary); background: var(--bg);
+    border: 1px solid var(--divider); border-radius: 20px;
+    padding: 3px 10px; white-space: nowrap; z-index: 1; margin: -1px 0;
+  }
+  .conn-arrow {
+    width: 0; height: 0;
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 7px solid var(--divider); margin-top: 1px;
+  }
+  /* Job children grid */
+  .job-children { width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; align-items: start; }
+  .job-col { display: flex; flex-direction: column; align-items: center; }
+  /* Sub-cards */
+  .sub-card {
+    background: var(--surface); border-radius: 13px;
+    box-shadow: var(--shadow-sm); border: 1px solid var(--divider); width: 100%; overflow: hidden;
+  }
+  .sub-card-header { display: flex; align-items: center; gap: 10px; padding: 13px 16px; border-bottom: 1px solid var(--divider); }
+  .sub-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+  .sub-title { font-size: 0.875rem; font-weight: 600; letter-spacing: -0.01em; }
+  .sub-meta { margin-left: auto; font-size: 0.62rem; font-weight: 500; color: var(--label-tertiary); font-style: italic; white-space: nowrap; }
+  .sub-body { padding: 10px 16px 13px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .sub-pill { font-size: 0.68rem; font-weight: 500; color: var(--label-secondary); background: var(--surface2); border: 1px solid var(--divider); border-radius: 20px; padding: 3px 9px; }
+  /* Ticket sections */
+  .ticket-sections { padding: 11px 16px 14px; display: flex; flex-direction: column; gap: 9px; }
+  .tsec { background: var(--surface2); border: 1px solid var(--divider); border-radius: 10px; padding: 9px 12px; }
+  .tsec-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; margin-bottom: 7px; }
+  .tsec-items { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tsec-item { font-size: 0.65rem; font-weight: 500; color: var(--label-secondary); background: var(--surface); border: 1px solid var(--divider); border-radius: 12px; padding: 2px 8px; }
+  /* Rules */
+  .rules-row { width: 100%; max-width: 1080px; margin: 28px auto 0; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .rule-card { background: var(--surface); border-radius: 14px; box-shadow: var(--shadow-sm); border: 1px solid var(--divider); padding: 16px 18px; }
+  .rule-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em; color: var(--apple-blue); margin-bottom: 7px; display: flex; align-items: center; gap: 6px; }
+  .rule-card p { font-size: 0.775rem; color: var(--label-secondary); line-height: 1.6; }
+  .rule-card strong { color: var(--label-primary); font-weight: 600; }
+  .footer { text-align: center; margin-top: 40px; font-size: 0.72rem; color: var(--label-tertiary); letter-spacing: 0.02em; }
+  @media (max-width: 720px) { .job-children, .rules-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">System Architecture</div>
+  <h1>Quote → Project → Job</h1>
+  <p>Entity hierarchy &amp; data relationships — custom operations platform</p>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--apple-orange)"></div>Customer</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--apple-blue)"></div>Quote</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--apple-teal)"></div>Project</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--apple-indigo)"></div>Job</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--apple-purple)"></div>Job Ticket</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--apple-green)"></div>Unit</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--apple-red)"></div>Employee</div>
+</div>
+
+<div class="diagram">
+
+  <!-- CUSTOMER -->
+  <div class="v-orange" style="width:100%;max-width:580px;">
+    <div class="node-card">
+      <div class="node-card-header">
+        <div class="node-icon">🏢</div>
+        <div><div class="node-title">Customer</div><div class="node-subtitle">Top-level entity</div></div>
+        <span class="node-badge">Top Level</span>
+      </div>
+      <div class="node-body">
+        <span class="pill">Company &amp; Contact Info</span>
+        <span class="pill">Billing Terms</span>
+        <span class="pill">Multiple Contacts (billing, on-site, etc.)</span>
+        <span class="pill">Customer Price List (optional override)</span>
+        <span class="pill">Internal Comments</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector" style="max-width:580px;">
+    <div class="conn-line"></div>
+    <span class="conn-label">1 Customer → Many Quotes</span>
+    <div class="conn-line" style="height:16px;"></div>
+    <div class="conn-arrow"></div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="v-blue" style="width:100%;max-width:580px;">
+    <div class="node-card">
+      <div class="node-card-header">
+        <div class="node-icon">📋</div>
+        <div><div class="node-title">Quote</div><div class="node-subtitle">Belongs to one Customer</div></div>
+        <span class="node-badge">1 Customer Only</span>
+      </div>
+      <div class="node-body">
+        <span class="pill">Auto-generated Quote #</span>
+        <span class="pill">Quoted-To Customer &amp; Contact</span>
+        <span class="pill">Job Site Info</span>
+        <span class="pill">PO Number</span>
+        <span class="pill">Units &amp; Equipment</span>
+        <span class="pill">Pricing / Estimates</span>
+        <span class="pill">Tools &amp; Rigging</span>
+        <span class="pill">Dates &amp; Times</span>
+        <span class="pill">Comments / Notes</span>
+        <span class="pill">Quote Status</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector" style="max-width:580px;">
+    <div class="conn-line"></div>
+    <span class="conn-label">1 Quote → 1 Project (system auto-creates)</span>
+    <div class="conn-line" style="height:16px;"></div>
+    <div class="conn-arrow"></div>
+  </div>
+
+  <!-- PROJECT -->
+  <div class="v-teal" style="width:100%;max-width:580px;">
+    <div class="node-card">
+      <div class="node-card-header">
+        <div class="node-icon">📁</div>
+        <div><div class="node-title">Project</div><div class="node-subtitle">Auto-generated from approved Quote</div></div>
+        <span class="node-badge">System Generated</span>
+      </div>
+      <div class="node-body">
+        <span class="pill">Linked to Quote</span>
+        <span class="pill">Project Reference #</span>
+        <span class="pill">Customer &amp; Job Site</span>
+        <span class="pill">Financial Overview (budget vs. actuals)</span>
+        <span class="pill">Phase Tracking / Status</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector" style="max-width:580px;">
+    <div class="conn-line"></div>
+    <span class="conn-label">1 Project → 1 or More Jobs</span>
+    <div class="conn-line" style="height:16px;"></div>
+    <div class="conn-arrow"></div>
+  </div>
+
+  <!-- JOB -->
+  <div class="v-indigo" style="width:100%;">
+    <div class="node-card">
+      <div class="node-card-header">
+        <div class="node-icon">🔧</div>
+        <div><div class="node-title">Job</div><div class="node-subtitle">A consecutive date range of work within a Project</div></div>
+        <span class="node-badge">Consecutive Date Range</span>
+      </div>
+      <div class="node-body">
+        <span class="pill">Job # / Reference</span>
+        <span class="pill">Start Date → End Date</span>
+        <span class="pill">Job Site Details</span>
+        <span class="pill">Dispatch Notes</span>
+        <span class="pill">Status</span>
+        <span class="pill" style="background:rgba(88,86,214,0.07);border-color:rgba(88,86,214,0.25);color:var(--apple-indigo);">⚠ Non-consecutive periods = separate Jobs</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector" style="max-width:100%;">
+    <div class="conn-line" style="height:26px;"></div>
+  </div>
+
+  <!-- JOB CHILDREN -->
+  <div class="job-children">
+
+    <!-- COL 1: Units → Employees via Unit -->
+    <div class="job-col">
+      <div class="connector" style="width:100%;">
+        <div class="conn-line"></div>
+        <span class="conn-label">1 Job → 1+ Units</span>
+        <div class="conn-line" style="height:14px;"></div>
+        <div class="conn-arrow"></div>
+      </div>
+      <div class="sub-card" style="border-top:3px solid var(--apple-green);">
+        <div class="sub-card-header">
+          <div class="sub-icon" style="background:rgba(52,199,89,0.10);">🏗</div>
+          <span class="sub-title" style="color:#248a3d;">Unit</span>
+        </div>
+        <div class="sub-body">
+          <span class="sub-pill">Equipment / Crane Type</span>
+          <span class="sub-pill">Unit ID / Asset #</span>
+          <span class="sub-pill">Rate / Hours</span>
+          <span class="sub-pill" style="color:#248a3d;border-color:rgba(52,199,89,0.3);">Employee optional</span>
+        </div>
+      </div>
+      <div class="connector" style="width:100%;">
+        <div class="conn-line"></div>
+        <span class="conn-label">0+ Employees per Unit</span>
+        <div class="conn-line" style="height:14px;"></div>
+        <div class="conn-arrow"></div>
+      </div>
+      <div class="sub-card" style="border-top:3px solid var(--apple-red);">
+        <div class="sub-card-header">
+          <div class="sub-icon" style="background:rgba(255,59,48,0.10);">👤</div>
+          <span class="sub-title" style="color:#c0392b;">Employee</span>
+          <span class="sub-meta">via Unit</span>
+        </div>
+        <div class="sub-body">
+          <span class="sub-pill">Employee ID / Name</span>
+          <span class="sub-pill">Role / Craft</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 2: Direct Employee -->
+    <div class="job-col">
+      <div class="connector" style="width:100%;">
+        <div class="conn-line"></div>
+        <span class="conn-label">0+ Direct Employees</span>
+        <div class="conn-line" style="height:14px;"></div>
+        <div class="conn-arrow"></div>
+      </div>
+      <div class="sub-card" style="border-top:3px solid var(--apple-red);">
+        <div class="sub-card-header">
+          <div class="sub-icon" style="background:rgba(255,59,48,0.10);">👥</div>
+          <span class="sub-title" style="color:#c0392b;">Employee</span>
+          <span class="sub-meta">direct / no Unit</span>
+        </div>
+        <div class="sub-body">
+          <span class="sub-pill">Employee ID / Name</span>
+          <span class="sub-pill">Role / Craft</span>
+          <span class="sub-pill" style="color:#c0392b;border-color:rgba(255,59,48,0.25);">Assigned independently of any Unit</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COL 3: Job Tickets -->
+    <div class="job-col">
+      <div class="connector" style="width:100%;">
+        <div class="conn-line"></div>
+        <span class="conn-label">1 Job → 1+ Job Tickets</span>
+        <div class="conn-line" style="height:14px;"></div>
+        <div class="conn-arrow"></div>
+      </div>
+      <div class="sub-card" style="border-top:3px solid var(--apple-purple);">
+        <div class="sub-card-header">
+          <div class="sub-icon" style="background:rgba(175,82,222,0.10);">🎫</div>
+          <span class="sub-title" style="color:var(--apple-purple);">Job Ticket</span>
+        </div>
+        <div class="ticket-sections">
+          <div class="tsec" style="border-color:rgba(0,122,255,0.2);">
+            <div class="tsec-title" style="color:var(--apple-blue);">📝 Checklists</div>
+            <div class="tsec-items">
+              <span class="tsec-item">Unit Inspection Checklist</span>
+              <span class="tsec-item">Customer Signature Capture</span>
+              <span class="tsec-item">Custom Checklist Items</span>
+            </div>
+          </div>
+          <div class="tsec" style="border-color:rgba(50,173,230,0.2);">
+            <div class="tsec-title" style="color:#0a84be;">⏱ Job Activity</div>
+            <div class="tsec-items">
+              <span class="tsec-item">~10 Phase Timestamps</span>
+              <span class="tsec-item">Modifiable</span>
+              <span class="tsec-item">Arrival / Setup</span>
+              <span class="tsec-item">Lift Start / End</span>
+              <span class="tsec-item">Break Times</span>
+              <span class="tsec-item">Departure</span>
+              <span class="tsec-item">+ Additional Phases</span>
+            </div>
+          </div>
+          <div class="tsec" style="border-color:rgba(175,82,222,0.2);">
+            <div class="tsec-title" style="color:var(--apple-purple);">⚒ Labor Components</div>
+            <div class="tsec-items">
+              <span class="tsec-item">Per Employee</span>
+              <span class="tsec-item">Craft Code Entry</span>
+              <span class="tsec-item">Hours / Labor Details</span>
+              <span class="tsec-item">Labor Notes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end job-children -->
+</div><!-- end diagram -->
+
+<!-- BUSINESS RULES -->
+<div class="rules-row">
+  <div class="rule-card">
+    <div class="rule-title">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.25" stroke="#007aff" stroke-width="1.5"/><path d="M8 7v5" stroke="#007aff" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.75" fill="#007aff"/></svg>
+      Quote / Project Rule
+    </div>
+    <p>A Quote is created for <strong>one Customer only</strong>. The system automatically generates a <strong>Project</strong> for each approved Quote — the Project is the operational container linking back to that Quote.</p>
+  </div>
+  <div class="rule-card">
+    <div class="rule-title">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.25" stroke="#007aff" stroke-width="1.5"/><path d="M8 7v5" stroke="#007aff" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.75" fill="#007aff"/></svg>
+      Job Date Range Rule
+    </div>
+    <p>Each Job covers a <strong>consecutive date range</strong>. If work within a Project is <strong>non-consecutive</strong> (e.g., two separate mobilizations weeks apart), each period becomes its <strong>own separate Job</strong> under the same Project.</p>
+  </div>
+  <div class="rule-card">
+    <div class="rule-title">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.25" stroke="#007aff" stroke-width="1.5"/><path d="M8 7v5" stroke="#007aff" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.75" fill="#007aff"/></svg>
+      Unit &amp; Employee Flexibility
+    </div>
+    <p>Units may be added to a Job <strong>without an Employee</strong> assigned. Employees may also be assigned <strong>directly to a Job</strong> independent of any Unit — covering labor-only or support roles.</p>
+  </div>
+</div>
+
+<div class="footer">Generated March 2026 &nbsp;·&nbsp; Custom Operations Platform &nbsp;·&nbsp; Confidential</div>
+
+</body>
+</html>

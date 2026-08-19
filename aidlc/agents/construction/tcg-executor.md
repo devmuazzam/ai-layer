@@ -59,6 +59,13 @@ branching from it silently reverts merged work into the new branch with nothing 
 Rebase onto `origin/main` again before pushing, so the branch carries whatever else landed
 while you worked.
 
+**Working in a linked git worktree** (the usual case for an agent): run `pnpm install` in
+that worktree before the first commit. Since the Nx merge (PR #363) the hooks are tracked in
+`.husky/` and fire in every worktree — that was the point of the change: worktrees used to get
+**no** hooks, so nothing linted there — but they refuse to run ungated when the worktree has no
+`node_modules`, and the commit fails with a message saying so. `pnpm install` there is fast
+(links from the shared store).
+
 **Resuming a unit you started in an earlier session** — a different day, or after any break.
 This is a different command, and using the start command here fails:
 
@@ -202,11 +209,17 @@ feature unit makes the diff unreviewable.
 
 ## 6. Finish means the gates ran
 
-Before you hand back: `pnpm lint` and `pnpm build`, plus the unit's tests.
+Before you hand back: `pnpm lint` and `pnpm build`, plus the unit's tests (`pnpm affected`
+covers all three for the projects your branch touched; the surface commands —
+`pnpm api:lint`, `pnpm web:lint`, `pnpm nx run @tcg/mobile:typecheck` — when you want one).
+Everything runs through Nx and is cached; a replayed cache hit is a real result for an
+unchanged project, but if a green looks wrong, `--skip-nx-cache` before you argue with it.
 
-`pnpm lint` currently fails on pre-existing errors in `apps/web`. **Check whether a failure
-is yours** — and say which, explicitly, in your report. "Lint fails" without that
-distinction wastes the reviewer's time and trains everyone to ignore the gate.
+`pnpm lint` currently fails on pre-existing errors in `apps/web` (37 on 2026-08-19). **Check
+whether a failure is yours** (`lint-triage`) — and say which, explicitly, in your report.
+"Lint fails" without that distinction wastes the reviewer's time and trains everyone to
+ignore the gate. Know also that **the pre-push hook and PR CI exclude `@tcg/web` from lint
+and `@tcg/mobile` from typecheck** — a green push is not evidence web lint passed. Run it.
 
 ---
 

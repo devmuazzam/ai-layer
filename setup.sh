@@ -24,7 +24,7 @@ set -euo pipefail
 
 AI_REMOTE="${AI_REMOTE:-git@dev_codingcops_github.com:devCodingcops/tcg-ai-layer.git}"
 AI_DIR=".ai"
-MIRROR_URL="${MIRROR_URL:-}"          # optional: private CI mirror of the CLIENT repo
+MIRROR_URL="${MIRROR_URL:-}"          # optional: private CI mirror of the CLIENT repo (remote only; push to it by hand — the overlay no longer installs a hook)
 MIRROR_REMOTE="private"
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" \
@@ -252,88 +252,32 @@ for p in $EXCLUDE_PATHS; do
   grep -qxF "$p" "$EXCLUDE" 2>/dev/null || echo "$p" >> "$EXCLUDE"
 done
 
-# ------------------------------------------ 5. hooks: G3 gates + CI mirror ---
-# Husky sets core.hooksPath=.husky, and .husky/ is tracked (client-visible),
-# so the pre-push gate can't live there. We point hooksPath at .git/hooks
-# (local config, invisible), delegate pre-commit back to husky so existing
-# behavior is preserved, and add our pre-push.
-# CAVEAT: husky's prepare script re-flips hooksPath on every pnpm install —
-# re-run this script after installs. It prints a reminder for that reason.
-git config core.hooksPath "$GIT_DIR/hooks"
-
-cat > "$GIT_DIR/hooks/pre-commit" <<'EOF'
-#!/usr/bin/env bash
-# Delegates to husky so tracked pre-commit behavior is unchanged.
-[ -f .husky/pre-commit ] && exec bash .husky/pre-commit "$@"
-exit 0
-EOF
-chmod +x "$GIT_DIR/hooks/pre-commit"
-
-cat > "$GIT_DIR/hooks/pre-push" <<'EOF'
-#!/usr/bin/env bash
-# Branch guard + G3 quality gates + optional private CI mirror. Installed by .ai/setup.sh.
+# ------------------------------------------------- 5. hooks: defer to .husky ---
+# Since the client repo's Nx merge (PR #363, 2026-08-19) the git hooks are TRACKED files in
+# .husky/ and run in the main checkout and every linked worktree — `pnpm install` sets
+# core.hooksPath=.husky (relative, so it resolves inside each worktree). pre-commit runs
+# lint-staged + `nx affected -t build`; pre-push refuses a direct push of main and runs
+# affected lint/typecheck/build. That is everything the overlay's own pre-push used to do
+# except the rebase-behind check and the private CI mirror push.
 #
-# TWO bypasses, deliberately separate:
-#   SKIP_GATES=1 git push          skips lint/test/build. The branch guard still runs.
-#   SKIP_BRANCH_GUARD=1 git push   skips the branch guard. Almost never correct.
-#
-# They are separate because `pnpm lint` currently exits 1 on ~14 pre-existing errors in
-# apps/web, so the G3 gate cannot pass and SKIP_GATES=1 is a habit rather than an
-# emergency. A branch guard sitting behind that switch would be disabled by the very
-# habit the broken gate creates — enforcement inheriting the weakest link above it.
-set -euo pipefail
-
-BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-
-if [ "${SKIP_BRANCH_GUARD:-0}" = "1" ]; then
-  echo "pre-push: branch guard skipped (SKIP_BRANCH_GUARD=1)"
-else
-
-# --- branch guard ------------------------------------------------------------
-# The branch rule was stated in three documents and enforced by none of them, which
-# made it a reminder rather than a rail. These are the two failures that are silent
-# until someone else pays for them.
-if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
-  echo "pre-push: refusing to push '$BRANCH' directly." >&2
-  echo "          Branch first, even for a one-line fix — see the 'commit' skill." >&2
-  exit 1
-fi
-
-# Rebase check. Against FETCH_HEAD rather than refs/remotes/origin/main, because
-# 'git fetch origin main' is not guaranteed to update the tracking ref, and a check
-# that silently compares against a stale ref is worse than no check.
-if git fetch origin main --quiet 2>/dev/null; then
-  BEHIND="$(git rev-list --count HEAD..FETCH_HEAD 2>/dev/null || echo 0)"
-  if [ "$BEHIND" -gt 0 ]; then
-    echo "pre-push: '$BRANCH' is $BEHIND commit(s) behind origin/main." >&2
-    echo "          Rebase now, so the conflict is yours and not the reviewer's:" >&2
-    echo "              git fetch origin && git rebase origin/main" >&2
-    exit 1
-  fi
-else
-  echo "pre-push: could not reach origin — rebase check skipped. Gates still run."
-fi
-
-# Naming is a warning, never a block: the client repo has three conventions already in
-# flight and renaming someone's existing branch is worse than the inconsistency.
-case "$BRANCH" in
-  feat/*|fix/*|refactor/*|docs/*|chore/*|style/*|test/*|perf/*|build/*|ci/*) ;;
-  *) echo "pre-push: note — '$BRANCH' is not <type>/SCRUM-###-<slug>. Not blocking." ;;
+# Two core.hooksPath values cannot coexist, and the tracked hooks won. Earlier versions of
+# this script pointed hooksPath at .git/hooks and wrote a pre-commit/pre-push there; that
+# now only ever *disables* the tracked hooks. So: repair, don't compete.
+HOOKS_PATH="$(git config --get core.hooksPath || true)"
+case "$HOOKS_PATH" in
+  ""|.husky|"$ROOT/.husky") ;;   # already right (empty: `pnpm install` will set it)
+  *)
+    git config core.hooksPath .husky
+    say "core.hooksPath was '$HOOKS_PATH' — reset to .husky (tracked hooks; see README)."
+    ;;
 esac
-fi
-
-[ "${SKIP_GATES:-0}" = "1" ] && { echo "pre-push: G3 gates skipped"; exit 0; }
-echo "pre-push: G3 gates — lint, test, build"
-pnpm lint
-pnpm -r --if-present test
-pnpm build
-if git remote get-url private >/dev/null 2>&1; then
-  echo "pre-push: mirroring to private CI remote"
-  git push private HEAD --force-with-lease \
-    || echo "pre-push: mirror push failed (non-blocking)"
-fi
-EOF
-chmod +x "$GIT_DIR/hooks/pre-push"
+for h in pre-commit pre-push; do
+  f="$GIT_DIR/hooks/$h"
+  if [ -f "$f" ] && grep -q "Installed by .ai/setup.sh\|Delegates to husky" "$f" 2>/dev/null; then
+    rm -f "$f"
+    say "Removed stale overlay hook $f (superseded by tracked .husky/$h)."
+  fi
+done
 
 # Optional: register the private CI mirror remote for the client repo.
 if [ -n "$MIRROR_URL" ] && ! git remote get-url "$MIRROR_REMOTE" >/dev/null 2>&1; then
@@ -347,7 +291,4 @@ say "AI layer ready."
 say "  links created/updated : $CHANGED"
 say "  stale links pruned    : $PRUNED"
 say "  local edits backed up : $BACKED_UP$( [ "$BACKED_UP" -gt 0 ] && printf ' (see *.%s)' "$STAMP" )"
-say "  hooks                 : pre-commit (husky delegate), pre-push (branch guard + G3 + mirror)"
-say ""
-say "Reminder: after 'pnpm install', run 'bash .ai/setup.sh' again"
-say "(husky resets the hooks path on install)."
+say "  hooks                 : tracked .husky/ (client repo) — overlay installs none"

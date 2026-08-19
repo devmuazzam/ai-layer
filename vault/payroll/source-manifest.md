@@ -16,6 +16,12 @@ Every file in `OneDrive_1_8-11-2026/`, and what happened to it on 2026-08-13. **
 This exists so nobody has to re-derive whether something was missed, and so the ones that could
 *not* be converted are a written fact rather than a silent gap.
 
+> **Per-file pages added 2026-08-19: [sources/](sources/INDEX.md).** Every one of the 33 files now
+> has its own page *named after the file*, carrying what the file is, its internal structure, and
+> where its content went. Name any file from this drop and it resolves — including the ones
+> deliberately not migrated, so "we don't have that" is a written answer rather than a guess.
+> This page stays the drop-level narrative; that folder is the per-file index.
+
 ## Migrated
 
 | Source file | Size | Became |

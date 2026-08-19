@@ -51,7 +51,8 @@ deciding. That boundary is what keeps the tier honest.
 ## Not built
 
 `test-author` is deliberately absent. `apps/web` does not glob its tests — `package.json`
-passes 14 filenames explicitly to `node --test`, so any test not hand-added to that string
-never runs and nothing reports it. An agent authoring web tests would produce green-looking
+passes the filenames explicitly to `node --test` (16 as of the Nx merge, 2026-08-19; it was
+14 when this was written), so any test not hand-added to that string never runs and nothing
+reports it — and `pnpm nx run @tcg/web:test` will happily replay a cached green over it. An agent authoring web tests would produce green-looking
 work that executes nothing. Fix the runner first; `apps/api` and `apps/mobile` use jest and
 would be fine today.
