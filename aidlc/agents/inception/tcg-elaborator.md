@@ -37,6 +37,8 @@ spec whose §12 is empty on a ticket you know is underspecified. Ask for it expl
 weaker model has here is a complete, confident, fabricated spec, so when in doubt about a
 Sonnet spec, spot-check three requirements against their cited source before decomposing.
 
+No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool fallback.
+
 ## Tool access
 
 | Scope | Access |

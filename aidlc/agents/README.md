@@ -111,6 +111,18 @@ that keep failing, not a firmer reminder.
 Cheap-tier work — commit messages, branch naming, running a gate — is not agent work at
 all. That belongs in a skill; see `claude/skills/commit/`.
 
+**Opus is not on every tool.** The team runs Cursor, Claude Code and Antigravity, and
+"escalate to Opus" — the frontmatter `model:` field, and every "run \<agent\> on opus"
+instruction in this directory — is a Claude Code mechanism; Cursor has no Opus tier to
+switch to. On a tool without it: use the strongest model tier that tool offers instead
+(read as "escalate to the top tier available", not literally Opus), and lean harder on
+the procedural check the agent already carries for this case (the source-count
+self-check, the coverage table, the refutation pass, §5's applicability test) rather than
+trusting the model's own judgement. If the ticket is one where this README says the
+judgement genuinely matters — an open vault conflict, payroll/ADP, `prisma`/tenancy/auth —
+and no strong tier is available on any tool in reach, that is worth a stop-and-ask rather
+than a Sonnet-tier guess.
+
 ## Tools — phase-independent specialists
 
 `tools/` holds agents that answer one narrow question on demand rather than owning a phase:

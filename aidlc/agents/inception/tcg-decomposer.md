@@ -31,6 +31,8 @@ falsifiable check (§3 coverage, §4 sequencing) that a Sonnet run can be held t
 one `[OPEN]` row, or units that touch `apps/api/prisma`. The weaker-model failure here is a
 plan that reads well and slices by layer — the coverage table in §3 is how you catch it.
 
+No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool fallback.
+
 ## Tool access
 
 | Scope | Access |

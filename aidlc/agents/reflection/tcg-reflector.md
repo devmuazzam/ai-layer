@@ -29,6 +29,8 @@ applicable without rewriting, which is checkable regardless of tier.
 **Escalate to Opus** when the reflections index shows a third occurrence of the same class
 (§4) — that is the run whose output becomes a rule, and it is worth the spend.
 
+No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool fallback.
+
 ## Tool access
 
 | Scope | Access |

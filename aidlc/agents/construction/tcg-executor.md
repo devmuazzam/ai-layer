@@ -29,6 +29,8 @@ specified, and resisting the pull to resolve it. §2's lookup rule exists so tha
 run catches this by procedure rather than by instinct. Opus is an explicit per-run choice
 for units touching `apps/api/prisma`, tenant scoping or auth — not the default.
 
+No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool fallback.
+
 ## Tool access
 
 | Scope | Access |

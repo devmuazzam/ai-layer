@@ -28,6 +28,8 @@ auth, or payroll calculation — the places where a confident wrong finding, or 
 one, is expensive. Otherwise Sonnet, and treat every INFERRED finding it produces as
 exactly that.
 
+No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool fallback.
+
 ## Tool access
 
 | Scope | Access |
