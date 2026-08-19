@@ -11,6 +11,8 @@ topics: [product-sync]
 entities: []
 meeting_date: 2026-03-26
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 2
 ---
 
 # TCG CC Product Sync Demo — 2026-03-26
@@ -164,7 +166,7 @@ March 26, 2026, 6:53PM
  Wes Staley   24:22 Mhm. We, it's like B. 30.5 and 1920 point 1926.2.
  Ehtesham   24:25 Everyone.
  Wes Staley   24:31 Here that I think are the two. governing things we have to we have to look at with cranes.
- Ehtesham   24:39 Okay, yeah, please do send over. Maybe there is some kind of automation that we can do while we are creating with the system. In terms of just like you said, capacity, you have to be under 75% and then if in planning we can identify that. And in quotation, we can identify that because we have the other information of how much weight is needed to be pulled, right? And if we can give this feedback to the person who's creating quotation or maybe to the dispatch manager, we can we can. easily identify before we have sent the green in the field.
+ Ehtesham   24:39 Okay, yeah, please do send over. Maybe there is some kind of automation that we can do while we are creating with the system. In terms of just like you said, capacity, you have to be under 75% and then if in planning we can identify that. And in quotation, we can identify that because we have the other information of how much weight is needed to be pulled, right? And if we can give this feedback to the person who's creating quotation or maybe to the dispatch manager, we can we can. easily identify before we have sent the crane in the field.
  Wes Staley   25:25 And I guess we could identify if what we're quoting is what we're seeing in the field. That is a big deal. Is Google worth working our efforts working out in the field? Because if customers calling up 10 feet, you know, 10 feet up, 50 feet in, we're sitting on a big crane and they know it's going to be a big crane.
  Ehtesham   25:27 Okay.
  Wes Staley   25:44 and it's 20 feet up, 100 feet in, and they're just using it for it, that would be great for reference. And it would just be great for reference on, hey guys, I think we're about 5 feet off on most of our measurements. Let's make sure our tapes are right, you know?
@@ -342,7 +344,7 @@ March 26, 2026, 6:53PM
  Melissa McNutt   1:02:50 And what does SAS stand for? Sorry.
  Ehtesham   1:02:54 SaaS stand for Software as a Service.
  Melissa McNutt   1:02:57 Okay.
- jahanzaib.nadeem   1:02:59 Like we can also sell this software, as in like software as a service, or also like platform as a service, where we can just like deliver a complete independent platform to any of the customer, just like the train guys. So it will, like you will also have this functionality as well.
+ jahanzaib.nadeem   1:02:59 Like we can also sell this software, as in like software as a service, or also like platform as a service, where we can just like deliver a complete independent platform to any of the customer, just like the crane guys. So it will, like you will also have this functionality as well.
  Melissa McNutt   1:03:19 Okay.
  Wes Staley   1:03:19 So we'll have the capabilities to do everything she's asking for there. on either selling it to our competitors to use it or we just take over the country and use it ourselves and keep it keep the secret, you know.
  Ehtesham   1:03:30 Yeah. Yeah, you will have the capability. It's just the clarification was that in initial scope we did not add the subscription system. So what we are going to do is after we are done with this initial 12 month scope of building all of these modules for you guys.

@@ -11,6 +11,8 @@ topics: [sales-quoting]
 entities: []
 meeting_date: 2026-03-12
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 8
 ---
 
 # Sales Pricing In FCC — 2026-03-12
@@ -66,7 +68,7 @@ March 12, 2026, 3:26PM
  Joe Schacatano   14:33 That way it makes sense with what I'm kind of explaining. So I I can, I can get those done today and make sure you guys get those.
  ehtesham.anwar   14:33 No. Yeah, it would be great if if you can share the screenshots and if you have other thoughts on price lists, 'cause this is the only piece that I see is completely, completely hidden from us, but up until now, apart from that. If I just quickly go through the flow, so we have added the ability to create multiple yards and all of the information from the from the FCC is here that you can create.
  Joe Schacatano   15:05 This is.
- ehtesham.anwar   15:17 Multiple yards and once these yards are created, you see a list of yards. And. Then when once you're creating the assets, we are using the yard location. You can set one yard as as your main yard or it it will have a drop down of all of the yards that are available within the system. So you can tie the asset like a green truck trailer to a particular yard.
+ ehtesham.anwar   15:17 Multiple yards and once these yards are created, you see a list of yards. And. Then when once you're creating the assets, we are using the yard location. You can set one yard as as your main yard or it it will have a drop down of all of the yards that are available within the system. So you can tie the asset like a crane truck trailer to a particular yard.
  Joe Schacatano   15:59 And and real quick, sorry to cut you off. If you want to, when we're going done going through this, I can always share my screen and actually walk you through it so you can see what it looks like and you can snap it too if you want. You tell me what you prefer.
  ehtesham.anwar   16:16 Yeah, I think let's go through this flow and there might be more, some more, some more questions that I have. And then once we are done with the designs, we'll go through those questions one by one through your system.
  Joe Schacatano   16:31 OK, cool. Yeah, I was. I was just, I was referring to specifically the price list, so.
@@ -136,13 +138,13 @@ March 12, 2026, 3:26PM
  ehtesham.anwar   29:54 And the and the functionality is that you have all of your categorizations and you can create a new unit type where you select your category from this list and then you select the unit.
  ans.nisar   30:08 Mm.
  ehtesham.anwar   30:09 That are available against these categories. Once you select that, you'll be able to add. Subcategories. What are the assets and employees that needs to be sent and allocated when the screen is going in the field? And all of these things will also have another feature. That if it is required or not. If it is not required, it's going to be shown in the estimates, but you will be able to a salesperson will be able to remove this role. Otherwise if it is a required field then they won't be able to remove this. Particular acid. So for example, you added a tractor at some employee. That employee is an operator. Maybe you can add multiple oilers as well and you add a trailer and you say OK, two of these things are required and one of them is not. That's me.
- ans.nisar   31:15 So you're saying like you're so if I just do it again, so unit type will be. Let's say I create a new unit type which is the mobile train, right? And I would create a unit type for the mobile unit train.
+ ans.nisar   31:15 So you're saying like you're so if I just do it again, so unit type will be. Let's say I create a new unit type which is the mobile crane, right? And I would create a unit type for the mobile unit crane.
  ehtesham.anwar   31:22 Yeah.
  ans.nisar   31:32 And let's say for example I have I have two. Mobile planes, let's say.
  ehtesham.anwar   31:40 OK.
  ans.nisar   31:41 I will be creating 2 unit types. Yeah, that's a problem, right? So in my opinion.
  ehtesham.anwar   31:47 So.
- ans.nisar   31:52 Because it's gonna be in my so maybe if Ryan or anyone can answer. So for let's say if it's a mobile train or any sort of type of unit, the all units or subcategories units will be the same across all the units. But the same category, is that correct? Joe, Ryan, anyone?
+ ans.nisar   31:52 Because it's gonna be in my so maybe if Ryan or anyone can answer. So for let's say if it's a mobile crane or any sort of type of unit, the all units or subcategories units will be the same across all the units. But the same category, is that correct? Joe, Ryan, anyone?
  Ryan Adams   32:15 Joe, do we have any? Do we have any?
  Wes Staley   32:16 I don't. I don't. I don't know what you're saying. What do you what do you mean by subcategories across all the units?
  Ryan Adams   32:21 So, so for example is a is a crane that's 110 ton. If we have 510 tons, are they all the same exact price or is there a or is there a factor in there that it may take an extra support truck to load that up or 1101110 maybe? Cost more than the next.
@@ -208,7 +210,7 @@ March 12, 2026, 3:26PM
  ehtesham.anwar   45:46 OK and.
  Joe Schacatano   45:46 So what's I think what what Ryan is saying and it's a good idea too is let's let's not let's not refer to it on equipment side for for vendors yet. Let's just say it's a third party providing a service that we don't. If they're within the quote and it generates, you know, the PO, the margins and everything ahead of it, it saves a lot on the back end that could be lost in translation, you know, between scheduling of the job.
  ehtesham.anwar   46:12 Mhm.
- Ryan Adams   46:23 Yeah. And I think you know, I think you know that there, Joe. So a lot of times for an example is although we may be selling a train, a crane, we may need to like a third party trucking company to pick the item up to bring to our job site, right. So we would consider that like a third party trucking.
+ Ryan Adams   46:23 Yeah. And I think you know, I think you know that there, Joe. So a lot of times for an example is although we may be selling a crane, a crane, we may need to like a third party trucking company to pick the item up to bring to our job site, right. So we would consider that like a third party trucking.
  ehtesham.anwar   46:23 OK.
  Joe Schacatano   46:23 Is that does that make sense to you?
  Ryan Adams   46:42 Now if I if I go over and try to get appeal, I'm like, hey, I'm looking for a third party trucking, this is what it is, right? So then they got to tie it back to a job somehow and somehow the quotes got to get approved. So there's a lot of questions being asked where if we were able to add it here and it would create a PO, it would take away a lot of the questions from from the beginning. Now while that truck was there and the item was getting loaded, the the people loading it took all day to load it. There is gonna be a change order for that, right? And the idea here is as a change order comes in, we just doesn't. We don't go get a new PO and then forget to add it to the job, which which could happen very easily.
@@ -293,7 +295,7 @@ March 12, 2026, 3:26PM
  ans.nisar   1:01:17 Yeah, exactly.
  Joe Schacatano   1:01:18 Yeah, exactly. And then that's how we have it right now, too.
  ans.nisar   1:01:23 OK, OK.
- ehtesham.anwar   1:01:24 Yeah, that that's the idea behind the unit types. You can add any item here is it does not have to be on the asset itself. You can have these items there within the unit type and for example if somebody added. Standard lift plan to this unit type and 40 done green was selected. It will auto populate this standard lift plan under this.
+ ehtesham.anwar   1:01:24 Yeah, that that's the idea behind the unit types. You can add any item here is it does not have to be on the asset itself. You can have these items there within the unit type and for example if somebody added. Standard lift plan to this unit type and 40 done crane was selected. It will auto populate this standard lift plan under this.
  ans.nisar   1:01:48 Yeah.
  ehtesham.anwar   1:02:00 I think Ryan, if we if you can show us the BO creation system and how it affects your system right now and what are the operations that go around it, it would be great for us.
  Ryan Adams   1:02:18 I do not have access to that yet. I'm I'm still coming in. I'm just looking at some time saving things that I've utilized before in the past that really helped, right? So being able to put a third party in the name, pick the name and being able to generate a PO number directly from a quote. Was really useful because not only did it attach to the quote, but when it went out for authorization. So if it goes to Joe, for example, when he pulls it up and says hey, what's this for? It's over $2000, over $1000, over 10,000, whatever the case may be, it pops up the quote he could see. Exactly what it's being utilized for. Also, as we go get a PO number and something cancels or something, what ends up happening is yet PO stays open and it starts affecting the books. It looks like we have money out there. Where if if the if the job goes away, we we go ahead and put lost to the job and it cancels out that quote immediately. So the back end is always really clear on what's open and what's closed. So that's where I've seen it in the past be utilized.
@@ -430,7 +432,7 @@ March 12, 2026, 3:26PM
  Joe Schacatano   1:23:38 It's just gonna, it's gonna overdo the whole, the whole population of whatever you have that you're putting into the quote of the job. So this, this is, this is the bare minimum that has to go with that resource or unit.
  ans.nisar   1:23:41 Mhm. Got it.
  ehtesham.anwar   1:23:56 OK.
- ans.nisar   1:23:58 Got it. So, so Shamli, you can see here is this the in in our case the unit type is the schedule type which is a mobile train or a crawler train. So you can define that type, right?
+ ans.nisar   1:23:58 Got it. So, so Shamli, you can see here is this the in in our case the unit type is the schedule type which is a mobile crane or a crawler crane. So you can define that type, right?
  ehtesham.anwar   1:24:00 And in here.
  ans.nisar   1:24:14 And under that type you can also define all the, you know, units that is being required for that type as well, right? And when you are actually creating that unit or resource, just like I want to create or add a let's say 200 ton.
  ehtesham.anwar   1:24:22 Yeah.

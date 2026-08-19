@@ -11,6 +11,8 @@ topics: [dispatch-scheduling]
 entities: []
 meeting_date: 2026-02-27
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 2
 ---
 
 # Dispatch Scheduling Demo — 2026-02-27
@@ -104,7 +106,7 @@ February 27, 2026, 4:57PM
  Lisette Anzaldo   22:08 A day before.
  Muhammad Ans   22:10 A day before, OK.
  Lisette Anzaldo   22:12 And we are calling, yes, some customers and then we are emailing others a day before.
- Muhammad Ans   22:20 OK. Are you guys also like tracking something like, you know, let's say for example, a train's supposed to be there or start the job at let's say 8:00 AM in the morning. Are you guys like tracking somewhere like is it actually really started at 8:00 AM or it was actually like 9:00 AM?
+ Muhammad Ans   22:20 OK. Are you guys also like tracking something like, you know, let's say for example, a crane's supposed to be there or start the job at let's say 8:00 AM in the morning. Are you guys like tracking somewhere like is it actually really started at 8:00 AM or it was actually like 9:00 AM?
  Lisette Anzaldo   22:35 Yeah, they have. The tickets are sent out to them. Their dispatch lamp tickets are sent out to them. So they are assigned a time to leave, which is the time that they start their ticket and they're given a time to be at the job. So they they are the ones that click those boxes. Saying that they were running behind, they were running late, then they will communicate with us and we will contact the customer and let them know that they're running a little bit behind in the event that they were late.
  ehtesham.anwar   22:57 Mhm.
  Muhammad Ans   23:05 Got it.
@@ -249,7 +251,7 @@ February 27, 2026, 4:57PM
  Lisette Anzaldo   56:37 That's not here.
  Brian Petros   56:39 Yeah, you got it. That would be wonderful. Beautiful.
  Joe Schacatano   56:41 Yeah, and and and then real quick, something I want to bring up while it's fresh, fresh on my mind on top of the resources and everything. So we have telematics which tell us where everything is at at all times.
- Lisette Anzaldo   56:43 Over to the $65.00 medium size grain, you'll probably need to. So you're looking off to the second. 25.
+ Lisette Anzaldo   56:43 Over to the $65.00 medium size crane, you'll probably need to. So you're looking off to the second. 25.
  Joe Schacatano   56:58 I think with within a job, if we can have visual on those specific assets inside of the job, it would be very advantageous because right now what we're having to do is look at a job.
  Lisette Anzaldo   57:02 Yeah, I think you know it's there. Yeah, we'll have to be able to do more on that. I'll be able to make it.
  Joe Schacatano   57:14 Look at the address, go to our telematics system and cross reference. Whereas if we can go into the single job and it automatically has a window where it's there or it's under the resources and you have to open it up to generate that, it would it would help us extremely because we not only use.

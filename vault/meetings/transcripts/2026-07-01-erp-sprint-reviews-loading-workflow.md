@@ -11,6 +11,8 @@ topics: [dispatch-scheduling, erp-sprint-review]
 entities: []
 meeting_date: 2026-07-01
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 8
 ---
 
 # ERP Sprint Reviews Loading Workflow — 2026-07-01
@@ -60,7 +62,7 @@ July 1, 2026, 6:58PM
  Melissa McNutt   5:45 So, is there a view that would just say, like, 102 needs, you know, 10K spreader bar, like, where it simplifies it for him?
  jahanzaib.nadeem   5:54 So, we can add different filters here, but currently that functionality is not implemented, but we can apply different filters through which they want to, like, we can apply filters on three different things: employees, assets, and two lender gig. So, just for example, if Dylan want to checks like...
  Melissa McNutt   6:00 Okay.
- jahanzaib.nadeem   6:13 How many jobs are there in which we need to send like 200 and train so? We can apply that 210 train filter and all the jobs that will require 200 train will be shown in the page.
+ jahanzaib.nadeem   6:13 How many jobs are there in which we need to send like 200 and crane so? We can apply that 210 crane filter and all the jobs that will require 200 crane will be shown in the page.
  Melissa McNutt   6:26 Okay, for Dylan for the yard, he'll just need to know the asset number and then the tool that needs to go to that with that asset.
  jahanzaib.nadeem   6:27 So. Okay, so we can apply those couple of filters here that will like filter out the jobs.
  Melissa McNutt   6:42 Okay.
@@ -84,7 +86,7 @@ July 1, 2026, 6:58PM
  Melissa McNutt   9:06 Morning. Mhm.
  ehtesham.anwar   9:19 While we were figuring out the flows for those, we said that salespeople have this requirement and they enter this into the system.
  Melissa McNutt   9:31 Yes.
- ehtesham.anwar   9:31 Do they know which tools and regains go to which trucks and which grains?
+ ehtesham.anwar   9:31 Do they know which tools and regains go to which trucks and which cranes?
  Melissa McNutt   9:39 No, so like typically when they're adding it, like every crane comes stacked with tools and rigging on it. It's when they need additional stuff. So we have like a rigging bin, kind of like a container box, a shipping container box that Dylan keeps extra rigging in. So the sales guys go to the job and they add that. So Dylan has to go to that rigging box.
  mohsin.ali   9:45 Yeah.
  ehtesham.anwar   10:02 Yeah.
@@ -100,7 +102,7 @@ July 1, 2026, 6:58PM
  Brian Petros   11:25 As far as the association.
  jahanzaib.nadeem   11:26 So, Melissa, like, is this anything?
  Brian Petros   11:29 Sorry, go ahead.
- jahanzaib.nadeem   11:31 So I was just asking, like, is this something that is like frequently changing? Just for example, 150 10 train might need a... 10K bar one time and not on the second job. Or is it sort of fixed? Because if it's like fixed terminology or like fixed routine, then we can associate it automatically as well. Just for example, if a 1510 train is added to a job and a 10K bar is also added.
+ jahanzaib.nadeem   11:31 So I was just asking, like, is this something that is like frequently changing? Just for example, 150 10 crane might need a... 10K bar one time and not on the second job. Or is it sort of fixed? Because if it's like fixed terminology or like fixed routine, then we can associate it automatically as well. Just for example, if a 1510 crane is added to a job and a 10K bar is also added.
  Melissa McNutt   11:44 Mhm.
  Brian Petros   11:49 Right.
  jahanzaib.nadeem   12:01 We can add, like, make the association by default.
@@ -115,7 +117,7 @@ July 1, 2026, 6:58PM
  Melissa McNutt   15:54 I'm thinking.
  ehtesham.anwar   16:11 It, as Brian said, Jason.
  jahanzaib.nadeem   16:12 We just...
- ehtesham.anwar   16:17 Apologies, voice is like a bit delayed, so I might cut off someone. Apologies for that in advance. Jason, I think Brian just explained that most of the times they might know, but the real problem is whenever the trailer... Our train, the actual Lisette is going to come and we need to have the assignment of. Fear 30. Support is going, know that, OK, we on quotation, we are, yeah, exact, that's it, yeah, so, OK, I'll figure out a way, we'll figure out a way to.
+ ehtesham.anwar   16:17 Apologies, voice is like a bit delayed, so I might cut off someone. Apologies for that in advance. Jason, I think Brian just explained that most of the times they might know, but the real problem is whenever the trailer... Our crane, the actual Lisette is going to come and we need to have the assignment of. Fear 30. Support is going, know that, OK, we on quotation, we are, yeah, exact, that's it, yeah, so, OK, I'll figure out a way, we'll figure out a way to.
  Melissa McNutt   16:46 Yeah, because when the sales guys quote it, they don't know the exact message.
  jahanzaib.nadeem   16:48 Me too. We can, we can apply on both of the places. Like, we can assign it on both of the places. Just for example, the first first time the sales person will apply the tool and rigging within the quotation, and then definitely Dylan will also have the ability to like change it or add or remove the tool and rigging as well.
  ehtesham.anwar   17:00 But if...
@@ -193,7 +195,7 @@ July 1, 2026, 6:58PM
  Melissa McNutt   39:35 Okay.
  jahanzaib.nadeem   39:52 any incoming phone calls. And based on those incoming phone calls, we just like need to create a lead.
  Melissa McNutt   39:58 Yes, and it like feeds into HubSpot and it can like track how like it'll take the data that's on the phone call, who it was, how many, I mean, and if you can, if you have it, then I'll probably talk to have you talk to Ryan because he knows a lot more than I do about it. But the simple version, yes, but there's probably more to that.
- jahanzaib.nadeem   40:16 I think if we also need to capture the details that is being discussed in the phone call, that may require another expertise or maybe we need to have an AI agent that is being added to the phone call. Because just for example, if I am talking to Melissa and I am saying like, my name is Jay Z, I am based in Pakistan, and I want to have a lift plan, or I need to like move a particular building from one place to another, and I will require like 500 and train. So if we need to capture all this information, in that case, we need to like attach any LLM agent. or maybe any chat bot, AI chat bot, that will capture all the details and send it to the HubSpot.
+ jahanzaib.nadeem   40:16 I think if we also need to capture the details that is being discussed in the phone call, that may require another expertise or maybe we need to have an AI agent that is being added to the phone call. Because just for example, if I am talking to Melissa and I am saying like, my name is Jay Z, I am based in Pakistan, and I want to have a lift plan, or I need to like move a particular building from one place to another, and I will require like 500 and crane. So if we need to capture all this information, in that case, we need to like attach any LLM agent. or maybe any chat bot, AI chat bot, that will capture all the details and send it to the HubSpot.
  Melissa McNutt   41:03 Right, and I don't know if HubSpot already has an AI agent, and that's why Ryan would know. I don't know if we already have that, but yeah, if not, we would definitely need that.
  jahanzaib.nadeem   41:14 Let us also do some R&D and maybe I can sync with the relevant teams who have worked on CMs and the A agents and maybe I can get back to you in the next call or maybe the next Tuesday use this call.
  Melissa McNutt   41:19 Okay. Perfect. That'd be awesome. Thank you.

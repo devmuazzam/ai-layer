@@ -11,6 +11,8 @@ topics: [dispatch-scheduling]
 entities: []
 meeting_date: 2026-05-14
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 7
 ---
 
 # Loading Scheduling Pre Ticketing — 2026-05-14
@@ -74,13 +76,13 @@ May 14, 2026, 7:00PM
  Brian Petros   8:14 Yeah, you said per shift?
  ehtesham.anwar   8:14 on a particular job. Yeah.
  Brian Petros   8:16 Per shift? Yeah, that the wording is really tricky. So we want to be careful to define what shift means. One ticket per customer.
- jahanzaib.nadeem   8:29 And like who is responsible for like filling in this ticket? Just for example, if there is a particular job and like one train, one trailer, one truck is going over there along with like 5 resources or five employees. So who is responsible to fill in the information of this ticket? Because there might be a chance like.
+ jahanzaib.nadeem   8:29 And like who is responsible for like filling in this ticket? Just for example, if there is a particular job and like one crane, one trailer, one truck is going over there along with like 5 resources or five employees. So who is responsible to fill in the information of this ticket? Because there might be a chance like.
  Brian Petros   8:30 IT.
  jahanzaib.nadeem   8:49 If I want to reach to a particular job site, I may reach like 10 minutes earlier than Ehtesham, or maybe like Brian has reached like 30 minutes earlier. So who is responsible to fill in the check-in time and like all the relevant information inside that ticket?
  Brian Petros   9:07 So for the operator and the oiler, when it's just crane plus one truck only, it's the oiler. He does all the paperwork for the operator. So he includes both of their timing. They each drive one piece of equipment, so each one drives one, but they follow each other. So they will arrive at the same time. When they, we do have other cranes that have the operator, the oiler, and then four other trucks, each other driver will do their own ticket.
  ehtesham.anwar   9:33 Mhm. Okay, so per equipment we are sending one ticket.
  Brian Petros   9:41 It will be 1 ticket. per employee. on the same job.
- ehtesham.anwar   9:47 Mhm. OK, so if, for example, for a train, Euler and operator are going, we will have two tickets, one could, and if...
+ ehtesham.anwar   9:47 Mhm. OK, so if, for example, for a crane, Euler and operator are going, we will have two tickets, one could, and if...
  Brian Petros   9:56 One. Wine with both of them in it.
  ehtesham.anwar   10:00 Okay, and if a truck is going, but there's two crew members that are going in that truck, are we going to send one ticket to them as well, or separate tickets for them?
  Brian Petros   10:12 We can do one ticket and then put them on the same equipment. If they're going to write together, if that person is going to write together, then I can just do one ticket with both of them on that ticket and then one of them can complete it. Like you guys mentioned before, if it like what if one gets there before the other? But in this case, since they're on the same piece of equipment, they will arrive at the same time. So the same ticket can be used.
@@ -112,7 +114,7 @@ May 14, 2026, 7:00PM
  Brian Petros   14:58 It's going to be one person and one piece of equipment. The only, the only one, the only other time that they're going to be doing like the, that one person's going to be doing the ticket for someone else is like the Oilers. So the equipment that has the crane and the operator and the oiler. The oiler does everything. So in his ticket, it should include the crane, his tractor, and the trailer, and then three pieces of equipment, and then his name and the operator's name.
  ehtesham.anwar   15:28 Mhm. Okay, alright.
  Brian Petros   15:35 But that one's going to come up automatically.
- ehtesham.anwar   15:38 All right, and the equipment that we are loading, the Dylan is loading on a job for a particular job. Can he define on which truck or train he loaded that equipment? Is that needed?
+ ehtesham.anwar   15:38 All right, and the equipment that we are loading, the Dylan is loading on a job for a particular job. Can he define on which truck or crane he loaded that equipment? Is that needed?
  Brian Petros   15:54 You're saying you guys are going to add that option for him to be able to add it?
  ehtesham.anwar   15:59 Right now, right now, our tools and recordings are just in a way that they are placed there. So let me open up that screen. So when he opens up the job, Dylan, he's going to see Lyft information, he's going to see all of the assets and employees attached to it because he's not like managing their allocations. But the main thing that he needs to manage is tools and riggings and their availability. And we haven't like associated these tools and riggings to. The mean. assets. Do we want this categorization as well?
  Brian Petros   16:38 Yes.
@@ -142,7 +144,7 @@ May 14, 2026, 7:00PM
  Brian Petros   21:03 But yeah, we have no control over them actually loading it how we load it. They'll load it the way they want, and then we'll just have to go in and find it all and offload it.
  ehtesham.anwar   21:11 Mhm. But Eiler needs to know once they arrive on the job where the extra tools and rankings are, right?
  Brian Petros   21:22 Yeah.
- ehtesham.anwar   21:23 And since we are not like attaching oilers, do we need to like give them the extra information? Because this person who was assigned to the truck, they will have the information of what is in the truck at that point, right? So do we want to give all of the information to oiler as well that okay, they have train information, they have support load information, and then they also have tools and rigging out?
+ ehtesham.anwar   21:23 And since we are not like attaching oilers, do we need to like give them the extra information? Because this person who was assigned to the truck, they will have the information of what is in the truck at that point, right? So do we want to give all of the information to oiler as well that okay, they have crane information, they have support load information, and then they also have tools and rigging out?
  Brian Petros   21:48 Yes. Yeah. Yes.
  ehtesham.anwar   21:49 Information. OK, and while they are leaving the yard. Do we need to, or do we need to ask Euler that, okay, all of these tools and regains, all of the like assets, they are with them and they have been handed over all of these items, or do we ask each of these people who are assigned? to us particular piece of recruitment.
  Brian Petros   22:15 Like almost like a pre-trip type thing. The notes will be on their job that it requires this extra. So when they do see the job comments description, they'll see that it requires this extra equipment. So they will be looking for it. I think the fact that we're going to
@@ -183,7 +185,7 @@ May 14, 2026, 7:00PM
  ehtesham.anwar   29:09 Garrett.
  Brian Petros   29:26 that they do every single job before they do the lift.
  jahanzaib.nadeem   29:30 Okay, got it.
- ehtesham.anwar   29:36 All right, and then on of this, the Torrence information, Brian, we also like needed the configurations for trains. Remember we talked about this in, like, second last fall or third last? We need the how they are configured, so that we can we can make the same configuration and our portal as well.
+ ehtesham.anwar   29:36 All right, and then on of this, the Torrence information, Brian, we also like needed the configurations for cranes. Remember we talked about this in, like, second last fall or third last? We need the how they are configured, so that we can we can make the same configuration and our portal as well.
  Brian Petros   29:51 You should see. When you say configuration, are you talking about like, well, Lisette Dispatch, where these are normally paired with these, like the templates of how you would dispatch them together? Is that...
  ehtesham.anwar   30:11 Yes, let me show you something. So, for example...
  Brian Petros   30:13 Okay, you have that.
@@ -191,13 +193,13 @@ May 14, 2026, 7:00PM
  Brian Petros   30:54 Yeah, it needs to be it needs to be flexible enough to be able to change it, but we we still need like the typical template of what per vehicle, how many employees go with it, and then per main crane, or what how many support units go with it. Okay, I can I can send you that. Yeah, that's it. My sheet is kind of like that, so then I'll just...
  ehtesham.anwar   30:54 The same guy. Yeah. Yeah.
  Brian Petros   31:13 Okay, yeah, yeah, Lisette already knows that, knows that's about, we'll translate it into something and send that to you. So that's the configuration, creating configurations, and.
- ehtesham.anwar   31:14 Thanks. And because this is the same configuration that we are creating in the assets, and if you have seen the deployed app and you have seen individual assets where individual subcategories actually where we have field assets, right? So that's where we are going to attach them and it's going to be the same set that pops up when a particular train is selected in quotation.
+ ehtesham.anwar   31:14 Thanks. And because this is the same configuration that we are creating in the assets, and if you have seen the deployed app and you have seen individual assets where individual subcategories actually where we have field assets, right? So that's where we are going to attach them and it's going to be the same set that pops up when a particular crane is selected in quotation.
  Brian Petros   31:52 Right, so it was the crank configuration, and then there was something else that you needed. What was the other thing before that you mentioned?
  ehtesham.anwar   31:59 Mm. Uh, Dylan's uh information for for uh to their break-ins additional information.
  Brian Petros   32:08 And then the checklist.
  ehtesham.anwar   32:09 And maybe, maybe rule sets, if he, if he can give us the rule sets about the weights and and the lifts, and then we can see if we can create some kind of like automatic predictive analysis within the within the job process itself.
  Brian Petros   32:17 Yeah.
- ehtesham.anwar   32:33 What I'm thinking right now is it could be something like... A particular train is going and then there's a tool, sorry, and this is the old one. So a particular crane is going and then there is a bar that is requested. If there are some kind of rules in the that he checks against all of these tools and riggings, he can see system can tell him, okay, there is a crane going, there is no tools and riggings, but this crane usually requires additional tools and riggings. and also like reconvene from the lift information as well.
+ ehtesham.anwar   32:33 What I'm thinking right now is it could be something like... A particular crane is going and then there's a tool, sorry, and this is the old one. So a particular crane is going and then there is a bar that is requested. If there are some kind of rules in the that he checks against all of these tools and riggings, he can see system can tell him, okay, there is a crane going, there is no tools and riggings, but this crane usually requires additional tools and riggings. and also like reconvene from the lift information as well.
  Brian Petros   33:08 Yeah, so it might be it might be per crane or per vehicle or based on job information, maybe, yeah. Okay.
  ehtesham.anwar   33:17 Yeah, if we can get these kind of rules and cases, use cases from Dylan, we can incorporate them into the development and incorporate either way that system gives him information that we can start getting instead of just showing based on the lead time, we can also like add. another notification kind of alert where he can see, okay, this particular job requires his attention.
  Brian Petros   33:47 And it'll also be feeding in like specific areas of the quotation, like a communication channel from sales, right? Because you're getting a lot of information from sales, right? Yeah, so that.

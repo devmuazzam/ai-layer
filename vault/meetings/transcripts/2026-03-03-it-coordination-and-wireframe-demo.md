@@ -11,6 +11,8 @@ topics: []
 entities: []
 meeting_date: 2026-03-03
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 1
 ---
 
 # IT Coordination And Wireframe Demo — 2026-03-03
@@ -188,7 +190,7 @@ March 3, 2026, 5:59PM
  Brian Petros   36:12 That job and you'll see here like tickets, like there's a ticket every day. So it'll be like a yeah, it'll be a job with like 100 tickets on there, yeah.
  ans.nisar   36:17 Makes sense. Makes sense. I mean this last question that I have, maybe it's off the topic. Do you guys, what kind of equipment that you guys have with the crane?
  Brian Petros   36:32 Yeah, equipment. You mean like the supplies that they put on, they load on to it or the other vehicles that go out there with us?
- ans.nisar   36:36 Uh, yeah. Yeah, I was talking about, you know, you mentioned a camera, so there's a camera device attached to it, right? Because I'm just thinking of some other solution maybe for the future because thinking what a worker could actually come in and you know, scan something on the on on the train and then it could actually automatically.
+ ans.nisar   36:36 Uh, yeah. Yeah, I was talking about, you know, you mentioned a camera, so there's a camera device attached to it, right? Because I'm just thinking of some other solution maybe for the future because thinking what a worker could actually come in and you know, scan something on the on on the crane and then it could actually automatically.
  Brian Petros   36:45 OK.
  ans.nisar   37:00 You know, start the job automatically for the deliver ticket so they don't have to actually use your phone and stuff like that, right? So you you guys have, yeah.
  Brian Petros   37:07 Yeah, yeah. I like the way you're thinking. I like the way you're thinking cause really our next, our next like interview so to speak with like a real the experts in the field is gonna be the with the field employees. So I checked with our payroll manager. She just got back today and I got the name of like three of the.

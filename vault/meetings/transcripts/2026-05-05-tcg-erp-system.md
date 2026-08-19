@@ -11,6 +11,8 @@ topics: []
 entities: []
 meeting_date: 2026-05-05
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 10
 ---
 
 # TCG ERP System — 2026-05-05
@@ -140,7 +142,7 @@ May 5, 2026, 6:54PM
  ans.nisar   32:48 Yeah, so you see this billing, you see this billing code called 140 ton crane. So it's attached to a subcategory.
  Brian Petros   32:50 Would you update?
  jahanzaib.nadeem   32:51 Yeah.
- ans.nisar   33:01 So all of those, can you go back to the billing code, Sean? Let's go back to the billing code. Scroll down, where's that 140 ton grain?
+ ans.nisar   33:01 So all of those, can you go back to the billing code, Sean? Let's go back to the billing code. Scroll down, where's that 140 ton crane?
  ehtesham.anwar   33:15 It's going to be on the next year.
  ans.nisar   33:16 Should be on the next page, yeah. There you go, one for each turn crane, and you open up this type.
  ehtesham.anwar   33:27 This is the type.
@@ -148,7 +150,7 @@ May 5, 2026, 6:54PM
  Brian Petros   33:44 Okay.
  jahanzaib.nadeem   33:44 And secondly, if we want to apply any discounts or price hike, that will be linked with the price list. So for example, if in any specific price list, we have added this billing code, and that price list by default gives 10% discount to a particular customer. So when a quotation is being created for that particular customer, The price will automatically get reduced by 10% due to the discount that is applied on the price list.
  Brian Petros   34:13 Could you show me an example when you would do that for like the 140 ton frame instead of entering the price end, just do the discount and then go to the price list so I can see how that works?
- ehtesham.anwar   34:25 Yeah, let's do this. We have this price list that is named Ryan. Let's add a discount here. Let's say this is 10%. And we have added 140 time train within this price list. So this price list is linked to this customer and for this customer, this 140 time train amount is 240. Let's change it to 600 to make it more feasible. And on top of this 600 special rate, we are going to apply the discount.
+ ehtesham.anwar   34:25 Yeah, let's do this. We have this price list that is named Ryan. Let's add a discount here. Let's say this is 10%. And we have added 140 time crane within this price list. So this price list is linked to this customer and for this customer, this 140 time crane amount is 240. Let's change it to 600 to make it more feasible. And on top of this 600 special rate, we are going to apply the discount.
  Brian Petros   34:39 Ops. Yes, would that discount apply only to the 140 ton or for all the cranes in that? There's this, I think maybe you want to film this bulk, bulk rates. The bulk rates. The big rates is how you do it. Okay. Yeah, the bulk. There's this top section of discounts and price tags to the whole thing.
  ehtesham.anwar   35:05 St. So, all of the...
  jahanzaib.nadeem   35:13 Sound like if you've been...
@@ -297,7 +299,7 @@ May 5, 2026, 6:54PM
  Joe Schacatano   55:04 And I'll show you. I'll show you how it populates on a PDF. So then see how it only shows the mob and demob.
  ehtesham.anwar   55:31 Yeah.
  Joe Schacatano   55:32 Everything that was calculated in, it just shows that total item so they don't see how we actually came up with that number.
- ehtesham.anwar   55:43 But it also is showing the green.
+ ehtesham.anwar   55:43 But it also is showing the crane.
  Joe Schacatano   55:46 Yeah, so if you go to the estimate tab, so mobilization, demobilization typically cover the travel and the buildup, right? And then what we do is we keep the crane by itself, because if we're quoting it for, let's say, a week, we would put 40 hours there. So essentially, they would see the mobilization, demobilization, and then the 40 hours we quoted for the week. So hey, this is how much it costs to get the machine there.
  ehtesham.anwar   55:53 Mm-hmm.
  Joe Schacatano   56:08 work for the week, and then pack up the machine and take it home.
@@ -306,7 +308,7 @@ May 5, 2026, 6:54PM
  Melissa McNutt   56:18 Yeah.
  Joe Schacatano   56:18 You want me to open it again?
  Melissa McNutt   56:21 Sorry, I missed it.
- ehtesham.anwar   56:27 If you select the sub-item against the grain.
+ ehtesham.anwar   56:27 If you select the sub-item against the crane.
  Joe Schacatano   56:27 Yes.
  ehtesham.anwar   56:33 What happens?
  Joe Schacatano   56:35 What do you mean, like selecting this?
@@ -318,7 +320,7 @@ May 5, 2026, 6:54PM
  Joe Schacatano   57:04 But it never.
  ehtesham.anwar   57:07 Yeah, go ahead.
  Joe Schacatano   57:07 Go ahead. No, no, go for it.
- ehtesham.anwar   57:09 So, what's the difference between 265 ton on terrain train up top and at the bottom?
+ ehtesham.anwar   57:09 So, what's the difference between 265 ton on terrain crane up top and at the bottom?
  Joe Schacatano   57:16 So the up top all the way until the mobilization, where it's checked off in the sub-item, is what's coming, it's what totaling the mobilization.
  ehtesham.anwar   57:23 Mhm. Mhm.
  Joe Schacatano   57:27 And then the one that's down here, which is this one that's highlighted now, that's for like the actual work, you know, so doing the job itself.
@@ -335,7 +337,7 @@ May 5, 2026, 6:54PM
  Joe Schacatano   58:51 Correct.
  ehtesham.anwar   58:52 Okay, and the second line item for 265 ton altering drain, this is the charge for demobilization.
  Joe Schacatano   59:01 Correct.
- ehtesham.anwar   59:03 And then once the train is set up and is doing the job, these 40 hours are for that train itself.
+ ehtesham.anwar   59:03 And then once the crane is set up and is doing the job, these 40 hours are for that crane itself.
  Joe Schacatano   59:11 Exactly.
  ehtesham.anwar   59:12 OKOK.
  Brian Petros   59:13 Yeah, so if you check that crane box, then it would show those 40 hours of crane time. But the reason that that's separated is if we lay it all out, just like you see it on the screen, it gets very confusing for a customer. So what we try to do is we try to bundle it up as a mobilization, then just a crane time and a demobilization. So
@@ -464,7 +466,7 @@ May 5, 2026, 6:54PM
  Brian Petros   1:14:59 Like. I would say everybody, but whenever they add a custom line, let's make that a prompt too that we can review it. That will allow us to determine if we want to add it as a billing code in the future or not.
  ans.nisar   1:15:07 M.
  Brian Petros   1:15:16 Eventually, it will be gone. We'll have the billing codes lined up.
- ans.nisar   1:15:16 I do have a... Yeah. Have a better solution, so think of it like, you know. Someone from sales, not a manager, just selects a category and there's no billing code attached to it. And we just list it and just say mark it as red and just tell them there's no pricing attached to it so that he can call someone whatever. Right, make sure that the rate is there, because he has, he would have no idea, like, what's the rate of, let's say, 120 train, unless someone adds the billing code in the system. Yeah, it's a requirement, right? There has to be a rate assigned to a category.
+ ans.nisar   1:15:16 I do have a... Yeah. Have a better solution, so think of it like, you know. Someone from sales, not a manager, just selects a category and there's no billing code attached to it. And we just list it and just say mark it as red and just tell them there's no pricing attached to it so that he can call someone whatever. Right, make sure that the rate is there, because he has, he would have no idea, like, what's the rate of, let's say, 120 crane, unless someone adds the billing code in the system. Yeah, it's a requirement, right? There has to be a rate assigned to a category.
  ehtesham.anwar   1:16:09 Since we are going to introduce the. The acceptance and review system for managers to review all of the quotations that have rates lower than the price list or master price list. Let's add this to the to the review system as well, instead of creating a new functionality for this.
  ans.nisar   1:16:20 Mm.
  ehtesham.anwar   1:16:34 So for example, this test subcategory, this, I just created this category, subcategory, and it's asset, but I didn't create the billing code on it. Now, if I'm using this, it does not have a price. That by and by default means it does not have a billing code.
@@ -577,7 +579,7 @@ May 5, 2026, 6:54PM
  Ryan Adams   1:33:27 For third-party crane to take on the whole job.
  ehtesham.anwar   1:33:31 Yeah, yeah, so you see that not just one crane, even if you have one asset that needs to be that needs to come from a vendor, we can have that allocation if all of the things are and all of the requested equipment is coming from the vendor.
  Brian Petros   1:33:37 Yeah.
- ehtesham.anwar   1:33:50 we have that option as well. for a particular train, for a particular sport load, anything that we want. So we have all of the vendors that can be attached anywhere within the allocation system. And then allocation system knows, okay, this is a third party vendor that we are attaching. If we have information about their assets that we need them to send.
+ ehtesham.anwar   1:33:50 we have that option as well. for a particular crane, for a particular sport load, anything that we want. So we have all of the vendors that can be attached anywhere within the allocation system. And then allocation system knows, okay, this is a third party vendor that we are attaching. If we have information about their assets that we need them to send.
  Brian Petros   1:34:02 But.
  ehtesham.anwar   1:34:11 We can enter that, otherwise I just going to be Lisette and sales persons communication with that vendor, and also the PO creation is going to go through this flow as well. So once the allocation is complete, you will have a checklist and it is going to say that PO is required if it is not already there. If it is already created during the quotation or at the job level before the allocation, it's going to also show the PO number.
  Ryan Adams   1:34:27 Okay. And then Joe and Melissa, do we require one of our personnel to be on site if another crane company is doing our job?

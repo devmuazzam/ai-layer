@@ -11,6 +11,8 @@ topics: [payroll, field-ops-mobile]
 entities: []
 meeting_date: 2026-05-28
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 1
 ---
 
 # Mobile App Payroll — 2026-05-28
@@ -293,7 +295,7 @@ May 28, 2026, 6:59PM
  Melissa McNutt   48:14 Did you show them the labor unit details tab to where it showed where you put it?
  Corrina Bustos   48:22 So it's on their labor entry below their name. The craft code is their pay rate, like regular pay rate, and then the modifier is the extra long boom, as we're saying.
  ehtesham.anwar   48:26 Mhm. Okay, alright. Makes sense.
- jahanzaib.nadeem   48:39 Do you have any document prepared? Like this graph code is like payroll grid. So what does this like L12 stand for or like what are the different variations of these codes?
+ jahanzaib.nadeem   48:39 Do you have any document prepared? Like this craft code is like payroll grid. So what does this like L12 stand for or like what are the different variations of these codes?
  Melissa McNutt   48:51 So for the craft code, the way it's set up in FCC, L is for local 12, because that's our union. And then G3 is group 3, because they're grouped for the union in different groups based on the crane that they have. So we can send you that. And then
  Corrina Bustos   48:53 And. Yes.
  Melissa McNutt   49:10 FCC codes it: A is straight time, B is overtime, and C is double time.

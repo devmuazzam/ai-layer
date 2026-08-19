@@ -11,6 +11,8 @@ topics: [dispatch-scheduling, field-ops-mobile]
 entities: []
 meeting_date: 2026-07-02
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 7
 ---
 
 # Mobile App Dispatch — 2026-07-02
@@ -64,7 +66,7 @@ July 2, 2026, 7:01PM
  Melissa McNutt   5:13 Good, sorry, I was getting off another call.
  ehtesham.anwar   5:16 No worries, no worries. We were just talking about different things to wait for everybody. So you are here. We have initial designs. We have started working on Dispatch on the mobile. I would like figured out the evolve factor as of yet. On the mobile application, but as a start.
  Melissa McNutt   5:40 Okay.
- ehtesham.anwar   5:43 Right now what we have done is we have just like tried to convert everything from dashboard on the On the web to mobile application, and this is going to be some kind of a view for them on the dashboard, where they can see the total number of jobs and location which have completed, and if there is some jobs that need retention for any reason, and then they can. go to quick actions, daily jobs, total assets. If they go to daily jobs, they can see you on the day and they can even change the dates to see the jobs. And then each job have the same statuses, just like we have in task, means attention, partially allocated, open. is going to be nothing has been done on that or needs allocation. So you can see percentage of allocation is there. The requirements are at the top as well. The train requirements, the crew requirements, and if we go into any job. Dispatch will be seeing the progress of the job, job details will be here. We are going to add the quotation details and other document details into the burger menu up here. They can just click on anything so that they can start the allocation. For example, this train is required and click on that and then it shows all of the trainings.
+ ehtesham.anwar   5:43 Right now what we have done is we have just like tried to convert everything from dashboard on the On the web to mobile application, and this is going to be some kind of a view for them on the dashboard, where they can see the total number of jobs and location which have completed, and if there is some jobs that need retention for any reason, and then they can. go to quick actions, daily jobs, total assets. If they go to daily jobs, they can see you on the day and they can even change the dates to see the jobs. And then each job have the same statuses, just like we have in task, means attention, partially allocated, open. is going to be nothing has been done on that or needs allocation. So you can see percentage of allocation is there. The requirements are at the top as well. The crane requirements, the crew requirements, and if we go into any job. Dispatch will be seeing the progress of the job, job details will be here. We are going to add the quotation details and other document details into the burger menu up here. They can just click on anything so that they can start the allocation. For example, this crane is required and click on that and then it shows all of the trainings.
  Brian Petros   7:12 Who's sitting here? Nobody? Yeah, that's yours. OK, sorry.
  ehtesham.anwar   7:18 Hey, Lisette.
  Melissa McNutt   7:18 And if they have to schedule, assign a unit or a person, will it only pull up what's available?
@@ -132,7 +134,7 @@ July 2, 2026, 7:01PM
  Brian Petros   16:25 It can be multiple, yeah, but it just requires one as primary.
  Melissa McNutt   16:26 Become multiple.
  Kyle Harlow   16:29 Care.
- ehtesham.anwar   16:29 Then we also have to, Brian, I saw that one in the FCC, but there is a cache there. They are only like giving us options to add, for example, operator and then either those things, primary versus secondary, but they are not giving us, for example, if we want to classify within greens. They are, for example, they can do up until 100, but they cannot do above. We cannot do that in FCC, right?
+ ehtesham.anwar   16:29 Then we also have to, Brian, I saw that one in the FCC, but there is a cache there. They are only like giving us options to add, for example, operator and then either those things, primary versus secondary, but they are not giving us, for example, if we want to classify within cranes. They are, for example, they can do up until 100, but they cannot do above. We cannot do that in FCC, right?
  Kyle Harlow   16:57 Right.
  Melissa McNutt   16:58 And I think how we would have it is when we have a new unit or any units, all the assets are on there, like tonnage, maybe make and model of crane. And then under the employee profile, we select the exact cranes because it could be the same tonnage, but a different manufacturer that they may not know. So I think it needs to be crane make and model specific.
  Kyle Harlow   17:11 Which? The.
@@ -165,7 +167,7 @@ July 2, 2026, 7:01PM
  Kyle Harlow   18:43 Right.
  ehtesham.anwar   18:44 Um, Brian, based on craft mode.
  Brian Petros   18:45 Yeah.
- ehtesham.anwar   18:48 Based on graph code, it's a different period for them, right?
+ ehtesham.anwar   18:48 Based on craft code, it's a different period for them, right?
  Brian Petros   18:53 It is a different pay rate, but I was thinking that it might be a higher craft code group for the amount of tonnage crane that they could operate, but I guess it's not.
  Melissa McNutt   19:03 But yeah, there's still different manufacturers, so that's where it gets sticky.
  Brian Petros   19:07 Okay.
@@ -210,7 +212,7 @@ July 2, 2026, 7:01PM
  ehtesham.anwar   26:12 Okay, okay.
  Melissa McNutt   26:12 Crane and then tractors.
  Brian Petros   26:14 Tractors, yeah.
- ehtesham.anwar   26:15 What if we, so we have two options. One is we do three of these staffs. First is trains, second is trucks and trailers, and 3rd is employees. The other option is going to be asset and then we have a drop down here where it is all selected, create green and drugs both are selected and you can change the selection to just green or just drugs. What would you prefer?
+ ehtesham.anwar   26:15 What if we, so we have two options. One is we do three of these staffs. First is cranes, second is trucks and trailers, and 3rd is employees. The other option is going to be asset and then we have a drop down here where it is all selected, create crane and drugs both are selected and you can change the selection to just crane or just drugs. What would you prefer?
  Brian Petros   26:42 I like the tap in the in the on the top like the asset employees and then trucks and trailers.
  ehtesham.anwar   26:44 All right.
  Brian Petros   26:49 How do you know who's assigned to which? I just feel like it's easier to, like, look it on everything, yeah, like the assets and, I mean, but there's a there's a way to there's a way to for the system to know who's assigned to which one, yeah.

@@ -11,6 +11,8 @@ topics: [accounting-invoicing]
 entities: []
 meeting_date: 2026-07-23
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 13
 ---
 
 # Accounting Invoicing — 2026-07-23
@@ -226,7 +228,7 @@ July 23, 2026, 7:00PM
  Melissa McNutt   32:44 But we have to send for, yeah, so that's a little different.
  ehtesham.anwar   32:48 Yeah, I believe you, when we talked about the customer packet, you sent over the customer packet as well. And you said we have to send the second compliance.
  Melissa McNutt   32:57 Oh, the JSA. Yeah, copies of the JSA. Yeah, that right now, you can do the checklist, but you'd have to do it individually as well.
- ehtesham.anwar   32:59 Yeah. All right, and and that's the same GSA that is within the new field application that we are building, right? This one.
+ ehtesham.anwar   32:59 Yeah. All right, and and that's the same JSA that is within the new field application that we are building, right? This one.
  Melissa McNutt   33:14 Yes, the new paper one. So right here we have the old one because the system only allows us to do the check boxes, but the new one that we sent you that the guys are hand filling on paper, it's formatted completely different. So that one we would need to put in the ERP.
  ehtesham.anwar   33:25 Mhm. All right, all right, and we have talked, we I believe we haven't talked about some of the things like downtime, how we are going to manage that in the field employees application, and how we how it affects the invoicing since Accounting people are here, so let's talk about the downtime, how it affects the invoicing first. Okay.
  Brian Petros   33:54 Yeah, I think that's important, like all the things, remember how you're looking through the job ticket and you're looking for all these different things. Like in your mind that you know what to look for, but I think it's good to have a list, like anything from like drug testing to a flat tire to like an incident on the job, or there's probably at least 10.
@@ -351,16 +353,16 @@ July 23, 2026, 7:00PM
  Micaela Dipane   52:44 Yes, does it have to be LAUSD or can it be anyone?
  ehtesham.anwar   52:49 LAUSD or the other one that maybe Edison where we're using these where we are using these kind of codes which has everything combined in it.
  Micaela Dipane   52:53 Edison, OK, yeah.
- ehtesham.anwar   53:17 Mm. Okay. So, if can you can you go to? Board's estimate on the court. We are using, no, we have again have a separate operator load. We want to see. Line item where we are using maybe 9010 train, but it you guys are using a special code which has operator load in it. That's the one we are looking for.
+ ehtesham.anwar   53:17 Mm. Okay. So, if can you can you go to? Board's estimate on the court. We are using, no, we have again have a separate operator load. We want to see. Line item where we are using maybe 9010 crane, but it you guys are using a special code which has operator load in it. That's the one we are looking for.
  Micaela Dipane   53:58 I. Okay.
  Brian Petros   54:14 Yeah, now I'm curious about how FCC. determines which billing code to pick, you know, based on, I got to find the crosswalk in the system to find out how it's choosing based on the customer what line item to do.
- ehtesham.anwar   54:29 Brian is not choosing. What they are doing is they have set up, our team has set up it in a way that they are saying Edison, 140 train, and they have LAUSD 140 train. They have set up it in a way that they can select that billing code.
+ ehtesham.anwar   54:29 Brian is not choosing. What they are doing is they have set up, our team has set up it in a way that they are saying Edison, 140 crane, and they have LAUSD 140 crane. They have set up it in a way that they can select that billing code.
  Brian Petros   54:49 Okay.
  ehtesham.anwar   54:51 Yeah.
  Micaela Dipane   54:54 Sorry, I was trying to find a job really quick.
  ehtesham.anwar   54:58 Yeah, no worries. We would just want to see a job which is using this special kind of billing code which has operator load within it.
  Micaela Dipane   55:07 So those are only LAUSD.
- ehtesham.anwar   55:10 So, can we find a job that that was big for a bigger train, like 90 ton or bigger?
+ ehtesham.anwar   55:10 So, can we find a job that that was big for a bigger crane, like 90 ton or bigger?
  Micaela Dipane   55:14 Okay.
  Tia Brenneise   55:18 Okay, I have an invoice number for you.
  Micaela Dipane   55:20 Okay, what is it? Okay. Thank you. I. Let me open up the quote for you too real quick.
@@ -368,7 +370,7 @@ July 23, 2026, 7:00PM
  Micaela Dipane   55:54 She is.
  ehtesham.anwar   55:57 All right, okay, so we are, we are, yeah.
  Micaela Dipane   56:01 Yeah.
- ehtesham.anwar   56:03 So, for this job, a 9010 train requires operator load, right?
+ ehtesham.anwar   56:03 So, for this job, a 9010 crane requires operator load, right?
  Micaela Dipane   56:10 Yes.
  ehtesham.anwar   56:10 Always, always OK. Uh, can you can you pull up the job?
  Micaela Dipane   56:17 Yes.
@@ -446,7 +448,7 @@ July 23, 2026, 7:00PM
  Joe Schacatano   1:05:48 How so? Like you mean internally or like what do you mean?
  ehtesham.anwar   1:05:50 It's over now. Yeah, so one of the things clearly on top, like... In your billing codes, you are configuring. different billing codes for the same asset in a different way. So, right, but a simplest, the most simple approach would be that one asset is configured with different assets that are going to go into the field, and then we build the bills.
  Joe Schacatano   1:06:08 Gotcha.
- ehtesham.anwar   1:06:23 the rates on a general way and in the price list rate. And we only use that that way, even if you so, for example, uh, LA USA. For them, you will not add just one line item of 9010 green, just like everybody you are going to add. 90 done and it's going to populate operator load and operator and pilot.
+ ehtesham.anwar   1:06:23 the rates on a general way and in the price list rate. And we only use that that way, even if you so, for example, uh, LA USA. For them, you will not add just one line item of 9010 crane, just like everybody you are going to add. 90 done and it's going to populate operator load and operator and pilot.
  Joe Schacatano   1:06:51 Mm. Yeah.
  ehtesham.anwar   1:07:07 So that's what I mean by changing. Do you want to keep this invoicing formats and quotation formats as it is? Then we'll need to bake all of these, like to be very honest. not very useful, it's just the complexities that we have created within the system. And then the problem of obscurity starts that you need to manually mention that right now I'm billing.
  Joe Schacatano   1:07:34 Right.
@@ -460,9 +462,9 @@ July 23, 2026, 7:00PM
  Melissa McNutt   1:08:39 Yeah, I mean, it'd be nice if like we have it set up for the cranes and then once you have that customer's price list, like the billing codes would just flow into it.
  ehtesham.anwar   1:08:51 Yeah, we have that in the new system. The main difference of approaches that we are talking about is, so in this FCC system that you guys have configured, there are two billing codes for 10, 90 time frame, let's say. That's the example we are following so far, so let's keep that.
  Melissa McNutt   1:08:55 Okay.
- ehtesham.anwar   1:09:12 9010 train, there's one code that when you enter that into the system, that says only 9010 train. And for the new customer, it's configured in a way that it will say 9010 train plus operator load. That's two different configurations of assets and two different billing codes on the same asset. That creates this problem of having the oversight of people and relying on people to figure out what is the right configuration at every step. So quotation.
+ ehtesham.anwar   1:09:12 9010 crane, there's one code that when you enter that into the system, that says only 9010 crane. And for the new customer, it's configured in a way that it will say 9010 crane plus operator load. That's two different configurations of assets and two different billing codes on the same asset. That creates this problem of having the oversight of people and relying on people to figure out what is the right configuration at every step. So quotation.
  Melissa McNutt   1:09:37 Mhm.
- ehtesham.anwar   1:09:51 a salespeople are going to quote to the customer, then they have to carefully talk to the Dispatch and tell them, okay, this needs to be the configuration. do we need operator, do we need oiler, do we need operator load or not? But the new system that we are building is in a way that it has only one configuration of assets. It is, for example, 90 ton train has 90 ton train and associated assets of operator load, operator, and oiler. All A salesperson can do or decide on a quotation while selecting 90 ton train is do they need operate load? If they don't need operator load, automatically operator and operator load both like go away. Only one person is going automatically, right? Because it's configured in the asset. This new approach gives us...
+ ehtesham.anwar   1:09:51 a salespeople are going to quote to the customer, then they have to carefully talk to the Dispatch and tell them, okay, this needs to be the configuration. do we need operator, do we need oiler, do we need operator load or not? But the new system that we are building is in a way that it has only one configuration of assets. It is, for example, 90 ton crane has 90 ton crane and associated assets of operator load, operator, and oiler. All A salesperson can do or decide on a quotation while selecting 90 ton crane is do they need operate load? If they don't need operator load, automatically operator and operator load both like go away. Only one person is going automatically, right? Because it's configured in the asset. This new approach gives us...
  Melissa McNutt   1:10:44 Mhm.
  ehtesham.anwar   1:10:50 the ability to use this configuration at every single step. with 100% accuracy, without human oversight to the very detail, and also enable us to automate the process, right? But the old FCC system has like too many, too many decision points baked into the system and that does not allow it to create some kind of an automated system. Every step of the way salesperson is quoting, then they need to communicate that information that we quoted this, but we also need to send this, this, this. Because our billing course does not have the right, so... It's kind of customized on a way that you guys are like, you guys can see this, we need one line item, so it's going one line item, but on the invoicing, when you reach the invoicing, every person in the your operations from salesperson to Dispatch to yard operations. then field employees, everybody needs to communicate with everyone. to figure out the right configuration and make sure that right configuration is going up. So, that's the debate that we are having with Joe that. we can go with a simpler approach that we have already built into the new system, or we can bake all of these rules and then try to figure out the automations. And we might fail, our system might fail in the automations at a lot of points, and then the same problem goes. that our people who are at the specialized checkpoints, they need to talk to each other again.
  Joe Schacatano   1:12:39 Yeah, we don't want to go that route.

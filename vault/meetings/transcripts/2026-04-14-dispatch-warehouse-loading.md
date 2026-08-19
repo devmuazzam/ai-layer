@@ -11,6 +11,8 @@ topics: [dispatch-scheduling]
 entities: []
 meeting_date: 2026-04-14
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 4
 ---
 
 # Dispatch Warehouse Loading — 2026-04-14
@@ -70,7 +72,7 @@ April 14, 2026, 7:15PM
  Brian Petros   5:45 They, the sales guys put on their jobs, they'll put the counterweight that they need. And then based on the cities, then that's when I determine whether we're going to go through scouts or not. And then that's when I make the request to him to either remove more counterweight or just put the remaining on the trailer.
  ehtesham.anwar   5:47 The. No.
  Brian Petros   6:07 So we have to open the job and look at the cities to determine if there's going to if they're going to go through scales. Yeah, the sales guy just puts in how much counterweight he needs, and then me and Lisette talk about, all right, how are we going to where are we going to put it and how are we going to set it up? Basically, like how much counterweight we're going to haul.
- ehtesham.anwar   6:26 OK. Just give me a second to share. OK, so... These are the counterweight configurations, Lisette, that you are using within your sheet, right? So, 200 train has three counterweights.
+ ehtesham.anwar   6:26 OK. Just give me a second to share. OK, so... These are the counterweight configurations, Lisette, that you are using within your sheet, right? So, 200 crane has three counterweights.
  Brian Petros   6:44 Yeah, that's, yeah, that's for the larger crates, but for the one he's talking about for the forty-five, it's all the way on the left-hand side. And so he's talking about the 40 05 and 40 06. And you see how on 40 05 I have next to the customer, I put with full counterweight, and the job's in LA, so we're not going to go through scale. So he knows to just put the LA is for the city, and then he just knows to put the remaining slab.
  ehtesham.anwar   6:59 Okay. Ops. Yeah.
  Brian Petros   7:15 on the additional track.
@@ -78,7 +80,7 @@ April 14, 2026, 7:15PM
  Brian Petros   7:31 No.
  ehtesham.anwar   7:34 All right, I'm trying to find quotations.
  Brian Petros   7:38 So usually that information that I get, I do get it from the job and all the information in the job originally comes from the quote. So they do add it on the quote.
- ehtesham.anwar   7:48 Yeah, so in quotation creation, what we are asking from salespeople are they assign an asset and with that asset, they also assign, okay, if they need additional trucks or counterweights, and those, some of those are deleteable. from their view and some of them are not. So for example, they can say, okay, I don't need a sport door. I just want to remove that. If that, if they do that, they remove this workload, you will get a request with a 14 train. That means a tractor and an operator, 2 assets. Does that identify your question of how many counterways do we need to send to a particular job?
+ ehtesham.anwar   7:48 Yeah, so in quotation creation, what we are asking from salespeople are they assign an asset and with that asset, they also assign, okay, if they need additional trucks or counterweights, and those, some of those are deleteable. from their view and some of them are not. So for example, they can say, okay, I don't need a sport door. I just want to remove that. If that, if they do that, they remove this workload, you will get a request with a 14 crane. That means a tractor and an operator, 2 assets. Does that identify your question of how many counterways do we need to send to a particular job?
  Brian Petros   8:37 Ops. No, no.
  ehtesham.anwar   8:46 It does not.
  Brian Petros   8:49 I think it had an option, yeah, like... I think it should have the two different options of counterweight.
@@ -126,7 +128,7 @@ April 14, 2026, 7:15PM
  Brian Petros   17:39 operator, which is the main one, and then plus one, so that the other trigger, and they don't want the last one. So and they can do the same for the larger cranes in the event they needed that specific crane, but they didn't need the full count weight.
  ehtesham.anwar   17:55 Mhm.
  Brian Petros   17:55 The most part, those big cranks always go with all the counterweight and and that really doesn't happen. That's why I was saying on the dropdown, they can put the counterweight that comes with it and then that way they can just, on the quote itself, when it reflects what how much counterweight they need, and then when we see it on our end automatically, we just know that they selected 2 loads, 2 counterweight loads, so it's only going with two. Versus right now on the other system that we have, on the equipment requires section where they type. the crane that they need. Let's say they need a 265, they will put everything there. 265 operator load plus one. But now since we're going to have this other system where it's automatically going to tell us if it's a 90 ton, it's going to come up with the 90 ton crane, the operator, the trailer, the track. And if it's a 265 operator plus one, it would automatically just come in with filling in the blanks so that we can just drag the amount of trailers that we need. So automatically it would, it should come up there if they pre-select how many loads.
- ehtesham.anwar   19:12 All right, and these trailers and and these trailers and tractors, do you, as a Dispatch Manager, define which of exactly which are going on the field, or Dylan decides that? Or is it a pre-configured for every green?
+ ehtesham.anwar   19:12 All right, and these trailers and and these trailers and tractors, do you, as a Dispatch Manager, define which of exactly which are going on the field, or Dylan decides that? Or is it a pre-configured for every crane?
  Brian Petros   19:31 They're assigned for crane.
  ehtesham.anwar   19:35 And you are deciding.
  Melissa McNutt   19:35 And also. Sorry, also with that, there's with the trailers, sometimes if a tractor's down, Lisette will get a call to switch out tractors. So with the trailer, some of them are different weights. So with different trailer configurations, the 5th wheel axle and the tractor needs to be adjusted so we make the scale weight.
@@ -294,7 +296,7 @@ April 14, 2026, 7:15PM
  Brian Petros   39:18 Ops.
  ehtesham.anwar   39:22 All right, makes sense.
  Joe Schacatano   39:23 I get what you're saying. Yeah, yeah. I don't know how to like explain that or lay that out right now, but I get what you're saying.
- ehtesham.anwar   39:34 Alright. Okay, so, Brian. I have like an understanding of what loadout phase is and what are the things that we need to and how the information needs to flow. We need a couple of things. One of things is going to be the configuration, different configuration with the clinic trains and how the number of...
+ ehtesham.anwar   39:34 Alright. Okay, so, Brian. I have like an understanding of what loadout phase is and what are the things that we need to and how the information needs to flow. We need a couple of things. One of things is going to be the configuration, different configuration with the clinic cranes and how the number of...
  Brian Petros   39:47 Be.
  ehtesham.anwar   39:57 assets change because whenever a number of assets are going to change, then the billing is changing, right? And if that information needs to be flown from the salesperson side, from the quotations to the dispatch, or do we, whenever we change this decision in the dispatch,
  Brian Petros   39:59 Yeah.

@@ -11,6 +11,8 @@ topics: []
 entities: []
 meeting_date: 2026-06-25
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 1
 ---
 
 # CC TCG ERP System — 2026-06-25
@@ -100,7 +102,7 @@ June 25, 2026, 7:01PM
  Corrina Bustos   8:55 Okay. Okay. Thank you.
  ehtesham.anwar   8:56 All right. Thank you. Okay. Brian is not here. Melissa and Ryan and Kyle are here. Hello guys.
  Melissa McNutt   9:08 Hi, do you want me to see where Brian is? Do you need him?
- ehtesham.anwar   9:12 Um... Let me share the updates. If anybody can get hold of him, that's good. There are a couple of things that I wanted to share with you and the team that we need. So we, since we finalized the designs and the flows for the field employees, we have, we still haven't gotten. We might have gotten these things, but I'm not sure about these. We haven't gotten GSA, we haven't gotten a pre-trip, post-trip inspection forms, terms and conditions, and in the new application, as we talked about job walk, we haven't received information regarding what job walk is. is and how it is connected to anything within the system.
+ ehtesham.anwar   9:12 Um... Let me share the updates. If anybody can get hold of him, that's good. There are a couple of things that I wanted to share with you and the team that we need. So we, since we finalized the designs and the flows for the field employees, we have, we still haven't gotten. We might have gotten these things, but I'm not sure about these. We haven't gotten JSA, we haven't gotten a pre-trip, post-trip inspection forms, terms and conditions, and in the new application, as we talked about job walk, we haven't received information regarding what job walk is. is and how it is connected to anything within the system.
  Melissa McNutt   10:00 Okay. The JSA, I thought Brian sent that. I might have put it in the chat. Let me see. And then job Block. I don't know if we have. Like a list, we used this, let me ask Joe for like the list, like a SOP for the job box.
  ehtesham.anwar   10:24 All right, and what exactly are job box? Are they any way related to this? I'm just thinking out loud because I don't have total information.
  Melissa McNutt   10:33 Yeah, yeah, they're for the quote. So we'll go to the job and we'll take measurements of like the building, the site, figure out what the crane's going to set up, if there's any hazards. So the job walks are what you do before you can come up with a quote, if necessary.

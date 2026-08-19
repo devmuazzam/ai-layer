@@ -11,6 +11,8 @@ topics: [erp-sprint-review]
 entities: []
 meeting_date: 2026-08-12
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 2
 ---
 
 # ERP Sprint Review — 2026-08-12
@@ -110,7 +112,7 @@ August 12, 2026, 6:59PM
  Melissa McNutt   28:45 Can you share that person? Already, but... But just get consent, but if they say no, they're gonna have to go say no.
  abdulrehman   28:54 Yep. So. Yeah, so this is like, again, like a customer is doing on the operations for the customer for signature. He uploaded his video, or sorry, the image.
  Melissa McNutt   29:08 It does look required. It does look required.
- abdulrehman   29:14 Yeah, so image has been uploaded and also stored in the S3 bucket in the Amazon. And this is a job security GSA billboard.
+ abdulrehman   29:14 Yeah, so image has been uploaded and also stored in the S3 bucket in the Amazon. And this is a job security JSA billboard.
  Melissa McNutt   29:26 Could the person signing, could they deny getting a picture taken of them? Or is it is it required?
  abdulrehman   29:36 Could you please say it again?
  Melissa McNutt   29:38 For this, for the photo for the person signing, can they can they deny having their photo taken or is it required?
@@ -160,7 +162,7 @@ August 12, 2026, 6:59PM
  Melissa McNutt   45:38 Right. Ohh.
  ehtesham.anwar   45:56 Right, so we have now the architecture developed for the notifications, and we are planning on creating a notification panel within the task module, so that we can give all of these all of these updates on jobs on that notification panel, and Lisette can follow up. That, on the on that. For example, if there is a downtime. and real employees say there is an issue, they submit the issue on the mobile application, Dispatch is notified right there, they click on the issue, they see the job, what's the problem, and then they can do something about it, whatever they need. So they will have a focus section of notifications. Just for the the build within the dice.
  Melissa McNutt   46:47 Great, thank you.
- ehtesham.anwar   46:52 Okay, so guys, this is it for today. Tomorrow we are going to focus on payroll design updates. And just to give you an overview, on the first part of the designs, we discussed the weekly payroll and the ADB connection, right? Now, we have also added the updates to the employee profiles, because once a payroll is completed, sent to ADP, we also need to track per employee in their employee profile, what was their payroll, and what is the history of that payroll, right, and statuses. And also we have added graph codes and we are also processing the exact information ADP is going to send us back so that we can track that information and that's going to be the check information and add it right directly into the ERP.
+ ehtesham.anwar   46:52 Okay, so guys, this is it for today. Tomorrow we are going to focus on payroll design updates. And just to give you an overview, on the first part of the designs, we discussed the weekly payroll and the ADB connection, right? Now, we have also added the updates to the employee profiles, because once a payroll is completed, sent to ADP, we also need to track per employee in their employee profile, what was their payroll, and what is the history of that payroll, right, and statuses. And also we have added craft codes and we are also processing the exact information ADP is going to send us back so that we can track that information and that's going to be the check information and add it right directly into the ERP.
  Melissa McNutt   47:51 Sounds great.
  ehtesham.anwar   47:52 All right, that's good. We'll see you. We'll see you guys tomorrow. Thank you very much.
  Melissa McNutt   47:54 Thank you. Come on board, AJ. I like your predictive background. It's very exciting as a show. Thank you guys. Have a great one.

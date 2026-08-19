@@ -11,6 +11,8 @@ topics: [payroll]
 entities: []
 meeting_date: 2026-07-09
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 4
 ---
 
 # ADP And Data Migration — 2026-07-09
@@ -86,7 +88,7 @@ July 9, 2026, 7:00PM
  Corrina Bustos   7:55 And then, yeah, so the documents that they sign and go over, I physically go over them, like with them when they do their in-person orientation with me, just to verify that like everything is correct and yeah.
  ehtesham.anwar   8:13 All right, and what about this manager checklist? Do we have that implemented as well?
  Corrina Bustos   8:19 No, that's the one that we're we're working towards into in the next in the upgrade of the ADP.
- ehtesham.anwar   8:26 All right, because one of the things that I think was mentioned in earlier calls was... Uh, that train super has to, like... fill out some kind of a form. Are you guys going to give that form in the manager checklist now?
+ ehtesham.anwar   8:26 All right, because one of the things that I think was mentioned in earlier calls was... Uh, that crane super has to, like... fill out some kind of a form. Are you guys going to give that form in the manager checklist now?
  Corrina Bustos   8:47 Yeah, so instead of the paper like checklist, it'll be through this ADP manager checklist.
  ehtesham.anwar   8:53 Right, and it allows you to create custom forms.
  Corrina Bustos   8:58 Yes.
@@ -348,7 +350,7 @@ July 9, 2026, 7:00PM
  Brian Petros   47:29 Um...
  ehtesham.anwar   47:43 Then.
  Brian Petros   47:44 Can make it.
- ehtesham.anwar   47:45 Do not book green without PO. PO is always required. Some of the things we can convert them into actual like checklists so that we can, yeah, we can incorporate some kind of functional, functional like rules there to help people out instead of just showing them messages.
+ ehtesham.anwar   47:45 Do not book crane without PO. PO is always required. Some of the things we can convert them into actual like checklists so that we can, yeah, we can incorporate some kind of functional, functional like rules there to help people out instead of just showing them messages.
  Brian Petros   47:54 Yeah, yeah, I see it like functionality. Yeah, really good idea. Yeah, this is a, this is like a gold mine for like potential.
  ehtesham.anwar   48:11 Tia.
  Brian Petros   48:11 functionality that we could do to automate exactly. I love it. Yeah, you're right.
@@ -404,7 +406,7 @@ July 9, 2026, 7:00PM
  Brian Petros   56:18 Esq. Yeah, this is this is important: hourly salary.
  ehtesham.anwar   56:29 Yeah, and then we have code.
  Brian Petros   56:30 This is the union is important. Yeah, the craft code.
- ehtesham.anwar   56:35 Draft code is going to be really important. We need to also process how these are being used so that and also backtrack their own.
+ ehtesham.anwar   56:35 Craft code is going to be really important. We need to also process how these are being used so that and also backtrack their own.
  Brian Petros   56:38 Yeah.
  ehtesham.anwar   56:45 Table.
  Brian Petros   56:45 Right, for the for the for the non-union.
@@ -457,7 +459,7 @@ July 9, 2026, 7:00PM
  ehtesham.anwar   1:04:34 Room.
  Brian Petros   1:04:34 I should do this status of active. So this is a nice clean listing of all the craft codes plus the admin code.
  ehtesham.anwar   1:04:47 Makes sense.
- Brian Petros   1:04:47 and what they cover. And this HDR, just so you know, for the record or whatever, it's heavy duty repair. That's the mechanics, the mechanics, heavy duty repair. Okay, so that's the graph codes, union codes, employee types, basic employee types.
+ Brian Petros   1:04:47 and what they cover. And this HDR, just so you know, for the record or whatever, it's heavy duty repair. That's the mechanics, the mechanics, heavy duty repair. Okay, so that's the craft codes, union codes, employee types, basic employee types.
  ehtesham.anwar   1:04:49 Yeah.
  Brian Petros   1:05:06 the classifications. For class code, yeah.
  ehtesham.anwar   1:05:13 Mhm.

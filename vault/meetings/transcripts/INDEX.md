@@ -12,6 +12,15 @@ source (here: a live client call) rather than from Confluence. Nothing here has 
 adjudicated against the rest of the vault — that is exactly the gap this folder exists to
 close for future readers.
 
+**Domain vocabulary has been normalized — read [NORMALIZATION.md](NORMALIZATION.md) before
+quoting anything.** The ASR engines had no crane vocabulary and systematically mis-heard the
+two terms this business runs on: **`craft code` came out as "graph code"** (also "draft code",
+"graph board") and **`crane` came out as "train", "green", "grain" and "brain"**. 257
+substitutions across 40 files fixed those, plus `GSA`→`JSA`, `lettuce`→`lattice` and
+`substance`/`sustenance`→`subsistence`. Files that were touched say so in their frontmatter
+(`normalized:`, `normalized_substitutions:`). Speaker labels and every other ASR defect are
+**not** fixed — they are reproduced as captured.
+
 Four `kind` values distinguish what actually got captured — most are full `transcript`s,
 three early dates are only an `invite-thread` or `agenda-notes` (no verbatim discussion),
 and two dates in July have `no-recording` at all.

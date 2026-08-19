@@ -11,6 +11,8 @@ topics: [payroll]
 entities: []
 meeting_date: 2026-08-06
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 1
 ---
 
 # Certified Payroll Labor Compliance — 2026-08-06
@@ -473,7 +475,7 @@ August 6, 2026, 6:53PM
  Corrina Bustos   1:07:49 No, so the Davis-Bacon is a federal pricing. And what I was trying to explain, so with our union rule, if they're on a military base, they get paid $10 more an hour on top of their regular pay.
  ehtesham.anwar   1:07:52 Mhm. Okay.
  Corrina Bustos   1:08:04 and those that rate is higher than the federal requirement. So as long as we're paying higher, we're fine. We just can't pay less.
- ehtesham.anwar   1:08:13 We have right now in the system, Brian, correct me if I'm wrong, we have base feeds defined within the graph codes, right? That's the way we are figuring out the base rate. How are we figuring out to add $10 extra because they were on a military base?
+ ehtesham.anwar   1:08:13 We have right now in the system, Brian, correct me if I'm wrong, we have base feeds defined within the craft codes, right? That's the way we are figuring out the base rate. How are we figuring out to add $10 extra because they were on a military base?
  Corrina Bustos   1:08:24 Mhm.
  Brian Petros   1:08:34 Yeah, it's the first time I heard about the $10 increase. So basically, Corrina, this is like another example, like you were talking earlier today about the foreman, the foreman, same.
  Corrina Bustos   1:08:43 Yeah, same as the lattice pay. It would be set up the same way.

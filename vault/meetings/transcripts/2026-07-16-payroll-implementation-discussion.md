@@ -11,6 +11,8 @@ topics: [payroll, field-ops-mobile]
 entities: []
 meeting_date: 2026-07-16
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 3
 ---
 
 # Payroll Implementation Discussion — 2026-07-16
@@ -57,7 +59,7 @@ July 16, 2026, 7:00PM
  jahanzaib.nadeem   9:53 Yeah, so that is like that is a simple part. What my focus from the application would be like, like what is the exact logic through which we are calculating the boom payroll or the double time or the double overtime? So that's all the rule that we need to like implement in the in our application as well. So, but definitely like getting the basic details of the employees, for example, union codes, craft codes, certification, like that is sort of a simpler thing in my opinion.
  Brian Petros   10:24 Right, and then the next step would be is the little bit the part that's a little bit more complicated, because some of it is currently captured in in our system, and a lot of it, and then a lot of it is not the captured in our in our system, so We have to consider, and that's all the labor information, like on the ticket. So, there's like all the inputs from the ticket; some of the things we're capturing, like the different times on the ticket, and then there's other things that we are not capturing, like the more detailed information of all the lunches when they when they qualify for the lunches when they.
  jahanzaib.nadeem   10:50 Yeah.
- Brian Petros   11:07 That when they didn't, and what time that was, and. I mean, we're capturing some of that information in our system, but it's like in text fields or comment fields and some of it. Substance, like the sustenance, if they qualify or if they're qualifying for residence, which is the pay if they're working far away. And then there is also information which I don't know if we have in our system right now to identify a single day job, multi-day job. So...
+ Brian Petros   11:07 That when they didn't, and what time that was, and. I mean, we're capturing some of that information in our system, but it's like in text fields or comment fields and some of it. Subsistence, if they qualify or if they're qualifying for subsistence, which is the pay if they're working far away. And then there is also information which I don't know if we have in our system right now to identify a single day job, multi-day job. So...
  jahanzaib.nadeem   11:46 That is already there, like.
  Brian Petros   11:47 You know, there's many.
  jahanzaib.nadeem   11:49 When we schedule a job inside the project or for the daily allocation system, through that like schedule, we can identify or we already identify if it's like a single day job or if this job like spans for the multiple days.
@@ -118,7 +120,7 @@ July 16, 2026, 7:00PM
  Brian Petros   28:38 Okay, yeah.
  ehtesham.anwar   28:57 early periods, right? On Dispatch, we are not using all of that information. We are only using one information mainly. We are using certification information also, but for the sake of example and simplicity, let's take their availability, right? We are using their availability at a particular time to figure out the scheduling for the.
  Brian Petros   29:00 Greg.
- ehtesham.anwar   29:21 Lisette, once that happens, then in load out phases, we are not using employee information. is just a piece of information for the yard operations. Then in ticketing, we are actually using employees information and employee is creating the information, right? Up until this point, we have not used employees, all of the employees information. We haven't used graph codes, we haven't used hourly rates. Now comes the payroll, now we use all of this information. and system has assets, system has billing codes, system has price lists, all of that information combined with payroll information, combined with ticketing information, combined with job information and quotation information, all of that is going to be used in the accounting.
+ ehtesham.anwar   29:21 Lisette, once that happens, then in load out phases, we are not using employee information. is just a piece of information for the yard operations. Then in ticketing, we are actually using employees information and employee is creating the information, right? Up until this point, we have not used employees, all of the employees information. We haven't used craft codes, we haven't used hourly rates. Now comes the payroll, now we use all of this information. and system has assets, system has billing codes, system has price lists, all of that information combined with payroll information, combined with ticketing information, combined with job information and quotation information, all of that is going to be used in the accounting.
  Brian Petros   29:59 Okay.
  ehtesham.anwar   30:17 for customers so that there comes customer information and their accounting information, right? And at the end, they are going to build to the client. And while we are doing all of this, this is our main flow. Compliance is going to come in, right?
  Brian Petros   30:25 OK.

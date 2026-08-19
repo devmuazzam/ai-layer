@@ -11,6 +11,8 @@ topics: [sales-quoting]
 entities: []
 meeting_date: 2026-08-11
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 1
 ---
 
 # Sales Process — 2026-08-11
@@ -68,7 +70,7 @@ August 11, 2026, 6:55PM
  ehtesham.anwar   10:47 Mhm. Mm-hmm. All right.
  Brian Petros   10:57 For example, if I had a job in a Lisette Viejo, I would need five days before I could go do that job to reach out to the city. There's also rules on that. It would have to be before noon on Thursday because the cities are closed Friday, Saturday and Sunday. So those days don't even count as working days. So we would have to get the working days only Monday through Thursday, basically.
  ehtesham.anwar   11:02 Yeah. Mhm. Yep, makes sense.
- Brian Petros   11:22 Yeah. What the attempt was is while we're on the phone with the customer, we could go in here and we could see what trains are available. So today's the 11th and this is going to be a live sheet. So it's updating basically live time. I go to the month that I need and I go in here to August and I come right over to August. We know the dates right here. Do you have the keyboard? Yeah, hit delete there. So if I had a upcoming job for the 19th and all these were filled out, so these are my crane numbers, 41, 42, this is the 40 ton cranes, and then it goes all the way down to our bigger cranes.
+ Brian Petros   11:22 Yeah. What the attempt was is while we're on the phone with the customer, we could go in here and we could see what cranes are available. So today's the 11th and this is going to be a live sheet. So it's updating basically live time. I go to the month that I need and I go in here to August and I come right over to August. We know the dates right here. Do you have the keyboard? Yeah, hit delete there. So if I had a upcoming job for the 19th and all these were filled out, so these are my crane numbers, 41, 42, this is the 40 ton cranes, and then it goes all the way down to our bigger cranes.
  ehtesham.anwar   12:13 Mhm.
  Brian Petros   12:14 Under here, if I want to schedule on the 20th, basically I could go to my city. I could pick what city it is.
  ehtesham.anwar   12:23 Mhm.

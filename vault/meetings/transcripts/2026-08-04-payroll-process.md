@@ -11,6 +11,8 @@ topics: [payroll]
 entities: []
 meeting_date: 2026-08-04
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 12
 ---
 
 # Payroll Process — 2026-08-04
@@ -72,7 +74,7 @@ August 4, 2026, 6:55PM
  Corrina Bustos   12:52 Mhm.
  ehtesham.anwar   12:52 for the week that you're processing, it's going to show you what are the number of items that are ready to send to ADP. Then on that week, we are going to show each member and their overall ADP file, their actual Payables, total Payable amounts approved or not. And let's go into Sam. so that we can look into the individual person's profile. We are going to show the calculations, how it is being calculated, hours breakdown at the top for the week, and then on each ticket, we are going to show you the exact actual hours, Payable hours, standard rate, double time. if it was a holiday on 2x or 3x and if there is any adjustment. Whenever system is going to flag any entry, it's going to show you the flag. Otherwise, it's going to show you the clean flag. Clean flag means that there is no requirement for manual approval or there is no exception found within the rules that we have baked into the system. If we find it. Then we are going to show the flag entity, and we are also showing what is the rule exception that we have applied. If you want to send it to the crane super, you can just click on send back this entry. It's going to auto select that, and you can decide to send it to the supervisor. This is going to be our crane super and worker as well. If worker is selected, then They are going to receive a notification on their mobile phone, where we are going to give them the reason, whatever the reason is. Let's say there is no labor entry. and will allow them to add on that particular ticket whatever we need to do. Otherwise, they will never be able to edit their own ticket unless and until it is sent to them from your side.
  Corrina Bustos   14:55 Okay.
- ehtesham.anwar   14:56 The main flow works on the train super side, so we need his approval on stuff. whenever we need. Otherwise, all of these flag entities are also showing on his dashboard. I'm going to show after this how it's going to show on his dashboard. He needs to approve them. Once he approves any flag entity, we give it the status of clean. That means that it is approved from the crane super site. If you send back any entry to the crane super, again, it's going to also show the status when it was sent, the time, so that we can track, do we need to ask them to review this if there's an ample amount of time that has spent. But. They haven't replied on this.
+ ehtesham.anwar   14:56 The main flow works on the crane super side, so we need his approval on stuff. whenever we need. Otherwise, all of these flag entities are also showing on his dashboard. I'm going to show after this how it's going to show on his dashboard. He needs to approve them. Once he approves any flag entity, we give it the status of clean. That means that it is approved from the crane super site. If you send back any entry to the crane super, again, it's going to also show the status when it was sent, the time, so that we can track, do we need to ask them to review this if there's an ample amount of time that has spent. But. They haven't replied on this.
  Corrina Bustos   15:50 Is there a way we can set up like an auto reminder if they haven't replied?
  ehtesham.anwar   15:51 All of the can. Yes, absolutely we can. What should be the timeline? Like, do do you need auto auto reminder like on hourly basis or on our days basis?
  Corrina Bustos   16:10 Um... I would say like hourly is too much. I would say... like 3 hours if they haven't responded. Is that, that's possible.
@@ -110,9 +112,9 @@ August 4, 2026, 6:55PM
  Brian Petros   22:08 Rule and talk about. Talk about that.
  ehtesham.anwar   22:14 The best way to like process all of these rules is going to be Brian. We create documentation around it because we have talked about the rules a lot and if we still just keep on talking, we are not going to be able to like capture all of them in one place so that we can give. to the devs to develop them, right? And that's after this call, I'm going to start working on the documentation so that I'm also going to integrate the feedback from today's call and then start working on the documentation. Because as I said, this is just the prototype, right? of all of the functionalities, how we want to do this.
  Brian Petros   22:56 Right, yeah, yeah, I imagine it's something that I could, I'll get started, I'll create each rule and then what my thoughts, suggestions on where it might hit, and then you can translate it into the new system and what you think. Yeah.
- ehtesham.anwar   23:08 Yeah. And once all of this is done, we have quick options to override here. We are going to add the override if Corrina needs the override for individual as well. We can add it here. Corrina, is it going to be helpful or is it going to be helpful that we send it to the train super? for them to overfeed.
+ ehtesham.anwar   23:08 Yeah. And once all of this is done, we have quick options to override here. We are going to add the override if Corrina needs the override for individual as well. We can add it here. Corrina, is it going to be helpful or is it going to be helpful that we send it to the crane super? for them to overfeed.
  Corrina Bustos   23:33 I mean, in a perfect role, it would be crane super, but I'm trying to think of realistically if there can at least be an option where the payroll, whoever's processing it, does have that option to override as well.
- ehtesham.anwar   23:44 All right, we'll add that option in the flag sections and just like we have the send functionality to the grain super, we'll also add functionality to edit for you. Okay. Then this send back is also here. If we want to send back entries and select them, this is going to be all of the weeks job for this person. Then we have approved for the week or not. Another option is to select a different employee whenever this. New employee is going to be selected there, there. Care.
+ ehtesham.anwar   23:44 All right, we'll add that option in the flag sections and just like we have the send functionality to the crane super, we'll also add functionality to edit for you. Okay. Then this send back is also here. If we want to send back entries and select them, this is going to be all of the weeks job for this person. Then we have approved for the week or not. Another option is to select a different employee whenever this. New employee is going to be selected there, there. Care.
  Corrina Bustos   24:34 Listen.
  ehtesham.anwar   24:37 My screen is visible.
  Corrina Bustos   24:41 Yeah, it's visible. It's small again, but it's visible.
@@ -127,7 +129,7 @@ August 4, 2026, 6:55PM
  Corrina Bustos   25:25 Yeah, that would be great.
  ehtesham.anwar   25:28 And then we can use the same sendback functionality for the workers to remind them to complete.
  Corrina Bustos   25:33 Perfect, okay.
- ehtesham.anwar   25:36 All right, we'll do that. We'll add that into this as well. This is going to be the personal profile. and we do all of the operations here on this profile, then we go back. This is going to be just a dashboard where you can see all of the people whose entries are flagged that needs your review. If they are flagged for some particular reason. It's going to show the reason right there, why they are flagged. All of the approved entries, all of the sent back entries that you have sent to the train super again, and if you have any employee who does not have a DB file on them. I believe this is going to be important because we might not have them onboarded on the system, ADP system, or if they haven't completed that, that is going to be really crucial to have that insight for you. On the other hand, at the top, we have all of the KPIs, total employees, pending review, flat entries, send back entries, approved ones with nodes missing, ATP and average utilization per employee. Do you think and we need to show anything else here in this page?
+ ehtesham.anwar   25:36 All right, we'll do that. We'll add that into this as well. This is going to be the personal profile. and we do all of the operations here on this profile, then we go back. This is going to be just a dashboard where you can see all of the people whose entries are flagged that needs your review. If they are flagged for some particular reason. It's going to show the reason right there, why they are flagged. All of the approved entries, all of the sent back entries that you have sent to the crane super again, and if you have any employee who does not have a DB file on them. I believe this is going to be important because we might not have them onboarded on the system, ADP system, or if they haven't completed that, that is going to be really crucial to have that insight for you. On the other hand, at the top, we have all of the KPIs, total employees, pending review, flat entries, send back entries, approved ones with nodes missing, ATP and average utilization per employee. Do you think and we need to show anything else here in this page?
  Corrina Bustos   27:06 I think. Dean. Arturo. Hey. I don't think so off of this first.
  Brian Petros   27:34 Would there be a filter for type of employees?
  Melissa McNutt   27:35 And and can you? Yeah, I was like, can you filter by, like, route, like employee type?
@@ -179,19 +181,19 @@ August 4, 2026, 6:55PM
  Corrina Bustos   33:50 Okay, will it ping anything or it'll just be there?
  ehtesham.anwar   33:54 Depends on if we need notifications on particular stuff or not. If we don't, then the system is not going to. Otherwise, we are going to incorporate those notifications into the system.
  Corrina Bustos   34:06 Okay.
- ehtesham.anwar   34:11 So this is going to be the same payroll weekly, weekly payroll system that Green Super is going to see. It's going to show them approvals that need and that needs to go from their side. They are going to see the same entry at the last, why it is flat and what they can do about it. And if we go back, they can approve, they can also approve here, approve the week or override. and back to the workplace, they can also send it back to the worker as well. So this is how growing now we are going to flag all of these things and we are going to show the crane super as well as you at the same time.
+ ehtesham.anwar   34:11 So this is going to be the same payroll weekly, weekly payroll system that Crane super is going to see. It's going to show them approvals that need and that needs to go from their side. They are going to see the same entry at the last, why it is flat and what they can do about it. And if we go back, they can approve, they can also approve here, approve the week or override. and back to the workplace, they can also send it back to the worker as well. So this is how growing now we are going to flag all of these things and we are going to show the crane super as well as you at the same time.
  Corrina Bustos   35:00 Okay.
- ehtesham.anwar   35:10 On the incomplete tickets, I'll also add the incomplete ticket to the payroll for train super as well as your functionalities.
+ ehtesham.anwar   35:10 On the incomplete tickets, I'll also add the incomplete ticket to the payroll for crane super as well as your functionalities.
  Corrina Bustos   35:24 Okay.
  ehtesham.anwar   35:30 Anything else that you think Crane Super needs to look at or give us decisions on?
  Corrina Bustos   35:39 No.
- ehtesham.anwar   35:41 Any other communication that you want with the grain super?
+ ehtesham.anwar   35:41 Any other communication that you want with the crane super?
  Corrina Bustos   35:50 No, it's just approving. Yeah, approving. The new thing that has to chain in with accounting would be, and I don't know if it's been talked about yet, but would be if accounting had to adjust a bill.
  ehtesham.anwar   36:04 Mm-hmm.
  Corrina Bustos   36:04 On. Can it auto notify us and payroll that we need to also then adjust their pay?
  ehtesham.anwar   36:14 We are talking to, we have started talking to the Accounting people, so we'll bring it up with them and ask them how that process happens and what are the changes that they can request from you. And once they give us that information, we'll try to incorporate that into the payroll management.
  Corrina Bustos   36:33 Okay.
- ehtesham.anwar   36:36 All right, so this is going to be the payroll screens for the green super so that they can approve or override anything. The previous ones that I was showing that were specifically Corrina, let me share it again.
+ ehtesham.anwar   36:36 All right, so this is going to be the payroll screens for the crane super so that they can approve or override anything. The previous ones that I was showing that were specifically Corrina, let me share it again.
  Melissa McNutt   36:55 And we haven't touched on the tracking yet, right, with Samsara to verify the payroll hours.
  ehtesham.anwar   37:04 Yeah, with Sam Sarah, we got the access. We are looking through it, how we are going to get it integrated with the data from the mobile applications. So we are reviewing all of that. Once, so all of these things, all of the rules that Brian is also keeps talking about. We need to document them because these are the workflows that are needed. Then all of these rules, they get baked into these flagged entities, and then we can figure out, okay, if there is a particular thing that needs to be, like, needs to have its own UI element, we can add that.
  Brian Petros   37:49 So I would imagine how the Sam Sarah might work. is based on the geolocation and the time, right? So we may have to figure out what the threshold would be or what the acceptable time frame would be.
@@ -293,9 +295,9 @@ August 4, 2026, 6:55PM
  Brian Petros   53:37 Yeah, I'm hoping that can be automatically determined by the system based on what the salesperson identifies it as lattice being used. Yeah, probably as simple as that.
  ehtesham.anwar   53:45 Yeah.
  Corrina Bustos   53:46 Yeah, and even the long boom in general, like Melissa was saying, because there are still times where people that don't... qualify for it, they still try to sneak it in. Yeah.
- ehtesham.anwar   53:57 Yeah, we can we can start identifying that. It's less lettuce like can we treat it as tooth and wreckings? Maybe, Melissa, if you have the insight to that.
+ ehtesham.anwar   53:57 Yeah, we can we can start identifying that. It's less lattice like can we treat it as tooth and wreckings? Maybe, Melissa, if you have the insight to that.
  Melissa McNutt   54:12 I think it would be under the crane configuration.
- ehtesham.anwar   54:16 Uh-huh. And is this lettuce an asset or a tool?
+ ehtesham.anwar   54:16 Uh-huh. And is this lattice an asset or a tool?
  Melissa McNutt   54:26 It could be either. I don't know, Joe, what do you think? Should we put it as an asset? Because it's a part of the crane.
  Joe Schacatano   54:36 Yeah, I would think it's part of it's an asset because you're not going to want it as a tool.
  ehtesham.anwar   54:40 Mhm. So each screen has its own lattice or each screen.
@@ -333,7 +335,7 @@ August 4, 2026, 6:55PM
  Brian Petros   57:40 Ohh. Okay, I get it. Okay, so that makes it easy. It can be based on the crane. Yeah, and we just have that one.
  ehtesham.anwar   57:50 Excellent. Yeah. Yeah, we can add it to the um, asset configuration that this print is the latest screen.
  Brian Petros   58:03 All right, and then moving on this... Oh, sorry, go ahead.
- ehtesham.anwar   58:03 Thanks. Before we move on, whenever we have a boom pay. Lettuce cannot be applied, and whenever we have lettuce, we have, we we don't have Boom Bay, right?
+ ehtesham.anwar   58:03 Thanks. Before we move on, whenever we have a boom pay. Lattice cannot be applied, and whenever we have lattice, we have, we we don't have Boom Bay, right?
  Corrina Bustos   58:17 No, it's on top of, so, so if they have, if they are using the crawler, they can also qualify for BoomPay.
  ehtesham.anwar   58:19 Okay. Okay.
  Corrina Bustos   58:26 Yeah.

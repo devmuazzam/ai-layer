@@ -11,6 +11,8 @@ topics: [field-ops-mobile]
 entities: []
 meeting_date: 2026-06-04
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 1
 ---
 
 # Mobile App Job LEM Tickets — 2026-06-04
@@ -363,7 +365,7 @@ June 4, 2026, 6:57PM
  Corrina Bustos   50:54 Mhm. Yeah.
  Melissa McNutt   51:00 So it'd be nice if somewhere you could check, you could verify that.
  ehtesham.anwar   51:00 So... Instead of checking, can we configure this into the assets itself?
- Corrina Bustos   51:12 It would be cool if it could like... say like the 100 ton, if it only in this craft modifier selection, it only gave the options for what's available for that green.
+ Corrina Bustos   51:12 It would be cool if it could like... say like the 100 ton, if it only in this craft modifier selection, it only gave the options for what's available for that crane.
  Melissa McNutt   51:24 For that, Corrina.
  ehtesham.anwar   51:26 Mhm.
  Corrina Bustos   51:26 So like, it doesn't even have 300, so 300 wouldn't even be an option for them to click.

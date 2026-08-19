@@ -11,6 +11,8 @@ topics: [dispatch-scheduling]
 entities: []
 meeting_date: 2026-04-09
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 5
 ---
 
 # Dispatch Scheduling Figma Demo — 2026-04-09
@@ -65,7 +67,7 @@ April 9, 2026, 6:53PM
  Brian Petros   13:53 Night. Oh, previous night. OK.
  ehtesham.anwar   13:59 And the functionality remains the same. You can pick anybody who's available and you can drop it here in this row. Where they can be assigned. So for example, if you have picked the spoiler and you're trying to drop it and drag and drop it on the asset, it's not going to be assigned. System is going to tell you OK, no, this is not allowed. You can drag an oiler onto all of the jobs oiler places. Right, so you by default system is helping you assign the people and do the right operations.
  Brian Petros   14:38 OK.
- ehtesham.anwar   14:42 The second thing that you also mentioned if we can have. Different trains in in a sorted form. We have created this view. It is going to have a little bit of scroll, but we can figure out how to minimize that moving forward once we have all of the asset list. That you shared, we are going to extract and see what is the asset list. So in the in in the crane itself, you have its name, you have its capacity, you have its status. If it is assigned or not and you have its assigned time, so this start and end time automatically gets shown here if the crane is already assigned to a particular job and if it is not assigned it shows that it is available and you can just pick it and drop.
+ ehtesham.anwar   14:42 The second thing that you also mentioned if we can have. Different cranes in in a sorted form. We have created this view. It is going to have a little bit of scroll, but we can figure out how to minimize that moving forward once we have all of the asset list. That you shared, we are going to extract and see what is the asset list. So in the in in the crane itself, you have its name, you have its capacity, you have its status. If it is assigned or not and you have its assigned time, so this start and end time automatically gets shown here if the crane is already assigned to a particular job and if it is not assigned it shows that it is available and you can just pick it and drop.
  Brian Petros   15:24 It.
  ehtesham.anwar   15:38 But anywhere you want. And then you have KPIs up top of the team. By the way, all of this view this is for that particular day. All you would have to do to see the next day's availabilities jobs, you'll have to just click on icon and it all of these availabilities.
  Brian Petros   15:53 Look. Oh.
@@ -201,7 +203,7 @@ April 9, 2026, 6:53PM
  ehtesham.anwar   40:17 It it should be in the attachment sections.
  Brian Petros   40:20 Attachment section, yeah. So attachment like, uh, yeah, I think that that works better.
  ehtesham.anwar   40:24 It should say OK, this this is the plan and this is updated at this particular time so that even the employee who is looking at that team member who's looking at that, they knows OK, this particular piece of information was updated at this particular time.
- Brian Petros   40:40 So now there's there's annual permits. Those attachments are for the Caltrans only. So are the Caltrans. So we're gonna have it separated even though it's for the Caltrans. The way that I would think is you go, you go purple permit vehicles are the only vehicles that have to have those rules. So we on the asset section we mark the the asset with a purple permit. We know that that the rules say that that information has to be attached to those grains only. So it's not separate, it just doesn't add in grains that don't need it, and we do that from the asset section.
+ Brian Petros   40:40 So now there's there's annual permits. Those attachments are for the Caltrans only. So are the Caltrans. So we're gonna have it separated even though it's for the Caltrans. The way that I would think is you go, you go purple permit vehicles are the only vehicles that have to have those rules. So we on the asset section we mark the the asset with a purple permit. We know that that the rules say that that information has to be attached to those cranes only. So it's not separate, it just doesn't add in cranes that don't need it, and we do that from the asset section.
  ehtesham.anwar   41:18 Yep.
  Brian Petros   41:19 Did I answer that? But like I wanna make sure that I don't think I answered it though. I don't think she's I was wrong there. What are you looking?
  ehtesham.anwar   41:20 Yes. But.
@@ -345,7 +347,7 @@ April 9, 2026, 6:53PM
  Brian Petros   1:17:36 Hey guy, I think the hours need to be there up there. We can we can get rid of the priority list, but I I the hours need to be there because that will give her a full view on what's real. That would be my only comment back to that.
  ehtesham.anwar   1:17:36 No, not so many. All right. Alright, we can, we can do that. And Melissa sent over a message, an e-mail regarding multiple rules. One of the rules stick out and that was that for example if there is a second shift that that's going on.
  Kyle Harlow   1:18:09 So.
- ehtesham.anwar   1:18:10 For the same train, then the people who went to the last job with that train are entitled first to be added to the that second shift. That is one of.
+ ehtesham.anwar   1:18:10 For the same crane, then the people who went to the last job with that crane are entitled first to be added to the that second shift. That is one of.
  Kyle Harlow   1:18:23 Yeah, that's what I was just speaking, yeah.
  ehtesham.anwar   1:18:26 Yeah, and if if if they are not first consulted that they want to do the job or not basically offered that job, then union by the union rules, you guys are. You guys are entitled, they got, they are entitled to get another pay for that ship even though they did not work right so.
  Kyle Harlow   1:18:47 It. Yes.

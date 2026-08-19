@@ -11,6 +11,8 @@ topics: [sales-quoting]
 entities: []
 meeting_date: 2026-06-30
 kind: transcript
+normalized: 2026-08-19
+normalized_substitutions: 2
 ---
 
 # Mobile Sales Quotes — 2026-06-30
@@ -79,7 +81,7 @@ June 30, 2026, 6:58PM
  Ryan Adams   19:44 Let's say it's playing a park. See how it auto populates 4 days here.
  ehtesham.anwar   19:48 Mm-hmm.
  Ryan Adams   19:49 And if it's Fullerton, for example, well, that's supposed to be 10 days. I'm still working on it. So what I'm trying to do is get each city, but with the different types or how long it takes to get that permit. So then once we're within that permit range, I could automatically schedule it and then it could go to Dispatch. I'm not sure if this is the correct path to get there, though. I really want to refer to you guys on what you've seen in your experience, too.
- ehtesham.anwar   20:18 So we have not just one source. You are creating this sheet. Please continue that because this is going to give us the turnover time that we can add into agencies and use in the permitting notifications. But we have another information and that is we have annual permits for a lot of assets that are available for different cities, right? What we are trying to make into our own system is that we are going to take a... Job, we are going to see this is the, for example, 120 ton train is requested and if there is a 120 ton train available asset as an asset available that has already has a permit for that particular. City. Just like you're doing with the turnover time, right?
+ ehtesham.anwar   20:18 So we have not just one source. You are creating this sheet. Please continue that because this is going to give us the turnover time that we can add into agencies and use in the permitting notifications. But we have another information and that is we have annual permits for a lot of assets that are available for different cities, right? What we are trying to make into our own system is that we are going to take a... Job, we are going to see this is the, for example, 120 ton crane is requested and if there is a 120 ton crane available asset as an asset available that has already has a permit for that particular. City. Just like you're doing with the turnover time, right?
  Ryan Adams   21:17 So we do have annual permits, but I don't think it's as many as you think. So these are all the cities we could work in currently and within our local 12 jurisdiction. And if we look at the bottom, there's just over 400.
  ehtesham.anwar   21:28 Mhm.
  Ryan Adams   21:35 So. Close to 500, as you can see here. What I'm trying to do is go through and put how many days it takes to get the permit from each one. Because I would say we probably have annuals for very few of this, actually. I would say Melissa could speak better. She worked in Dispatch, but if we
