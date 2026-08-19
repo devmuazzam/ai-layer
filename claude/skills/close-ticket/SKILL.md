@@ -9,8 +9,8 @@ Merging is the moment the loop's memory either updates or silently does not. Eve
 here is recoverable for about a day and expensive to reconstruct after that — which is why
 this is a checklist and not a habit.
 
-**Not every step runs on every ticket.** Steps 1, 4 and 5 always run. Steps 2 and 3 depend
-on the path the ticket took, and §"How much of this runs" says which.
+**Not every step runs on every ticket.** Steps 1, 4, 5 and 6 always run. Steps 2 and 3
+depend on the path the ticket took, and §"How much of this runs" says which.
 
 ---
 
@@ -43,7 +43,7 @@ Name the units that shipped, and the ones that did not. A unit that was cut, aba
 partly built is the most valuable line in the reflection and the easiest to forget once the
 branch is deleted.
 
-If units are still open, this is not a close — it is a checkpoint. Do steps 4 and 5 and
+If units are still open, this is not a close — it is a checkpoint. Do steps 4, 5 and 6 and
 stop.
 
 ## 2. Reflect — `tcg-reflector`
@@ -84,7 +84,13 @@ names an owner. A gap nobody owns is a note.
 git -C .ai diff origin/main -- vault/gaps.md vault/payroll/gaps.md
 ```
 
-## 5. Push the overlay
+## 5. Fill in the ledger row, then push the overlay
+
+Find this ticket's row in `.ai/aidlc/processed.log` (written by `commit` at branch
+creation) and fill in the `pr` column with the merged PR number — that row is the only
+proof, for a path B/C ticket, that it ever ran the loop. Never edit any other column.
+
+## 6. Push the overlay
 
 ```bash
 git -C .ai status --short
@@ -106,13 +112,15 @@ Matching the paths in `aidlc/GUIDE.md` → *Not every ticket runs the full loop*
 
 | Path | Steps |
 | --- | --- |
-| **A — full loop** | All five |
-| **B — bug fix** | 1, 4, 5 always. Step 2 when the bug had a cause worth recording — a missing rule, or a third occurrence of something. Step 3 whenever the bug came from the documentation being wrong, which for a bug is common |
-| **C — small change** | 1, 4, 5. Reflection almost never |
+| **A — full loop** | All six |
+| **B — bug fix** | 1, 4, 5, 6 always. Step 2 when the bug had a cause worth recording — a missing rule, or a third occurrence of something. Step 3 whenever the bug came from the documentation being wrong, which for a bug is common |
+| **C — small change** | 1, 4, 5, 6. Reflection almost never |
 
-**Steps 4 and 5 have no exemption.** They are the ones that cost nothing and lose everything
-— an unpushed overlay makes every other step on this list private, and a C-path change that
-opened a gap is exactly as important as an A-path one that did.
+**Steps 4, 5 and 6 have no exemption.** They are the ones that cost nothing and lose
+everything — an unpushed overlay makes every other step on this list private, a C-path
+change that opened a gap is exactly as important as an A-path one that did, and a ledger row
+never filled in with its PR number is the only place a path B/C ticket's completion was ever
+going to be recorded.
 
 ---
 
@@ -126,6 +134,7 @@ Reflection:   <path | skipped — path B/C, no cause worth recording>
 Index rows:   <n appended, classes — or none>
 Decisions:    <paths written | none — no human answered anything during the build>
 Gaps:         opened <n>, closed <n>, partially closed <n — name them>
+Ledger:       processed.log row filled in with PR #<n> | NOT FOUND — <why>
 Overlay:      pushed <sha> | NOT PUSHED — <why>
 Rule changes: <n proposed, n applied by me, n left as proposed>
 ```

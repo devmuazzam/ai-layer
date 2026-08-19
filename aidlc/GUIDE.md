@@ -94,6 +94,18 @@ Escalate when:
 Escalating is cheap. A bug that turns out to need a spec has just found a real gap at the
 cheapest possible moment, and `gaps.md` is where it goes.
 
+### Every path leaves one line, even the ones with no folder
+
+Path A gets `.ai/aidlc/SCRUM-###/` as visible proof it ran. Paths B and C are designed to
+skip that folder — and by design, that also means nothing anywhere records that they ran at
+all. There is no way to tell "path C, correctly skipped the folder" from "never touched the
+loop" apart from this.
+
+The `commit` skill appends one line to `.ai/aidlc/processed.log` at branch creation, on
+every path: ticket, path taken, branch, date, who. `close-ticket` fills in the PR number
+once it merges. It is the one artifact every ticket produces regardless of path, and it is
+what "was this ticket processed?" actually greps.
+
 ### What runs on every path
 
 The tools and skills are phase-independent **by design**, which is exactly why this works:
@@ -312,6 +324,11 @@ built through the loop; the skill is the ad-hoc path for a PR with no unit behin
   spec.md         the elaborator's output — what an executor builds from
   units.md        the decomposer's output — vertical slices
   reflection.md   after units ship, before the ticket closes
+
+.ai/aidlc/processed.log
+                  one line per ticket, every path — written by `commit` at branch
+                  creation, PR number filled in by `close-ticket`. The only record that
+                  a path B/C ticket ever entered the loop
 
 .ai/aidlc/reflections/INDEX.md
                   every defect from every ticket, one line each — the loop's memory

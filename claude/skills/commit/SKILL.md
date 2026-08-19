@@ -39,6 +39,12 @@ git switch -c <type>/SCRUM-###-u<n>-<slug> origin/main
 pnpm install          # in a linked worktree: required, or the tracked hooks refuse to commit
 ```
 
+**Then log it — every path, not just A.** Append one line to `.ai/aidlc/processed.log`:
+date, ticket, path (A/B/C — see `aidlc/GUIDE.md` §2), branch name, you, `pr: -` (filled in
+by `close-ticket` once opened), one-line note. This is the only record that a bug or small
+change ever entered the loop at all, since paths B and C never get a `SCRUM-###/` folder.
+Do this once per branch, at creation — not on resume.
+
 **Resuming one — the next morning, or after any break:**
 
 ```bash

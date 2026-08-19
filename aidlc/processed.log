@@ -1,0 +1,26 @@
+# AI-DLC processed-ticket ledger — append-only
+
+One line per ticket, written the moment work starts (the `commit` skill, at branch
+creation). This is the only artifact that exists for **every** ticket regardless of path —
+paths B and C deliberately skip `.ai/aidlc/SCRUM-###/`, so without this line there is
+nothing anywhere to distinguish "ran path C, correctly skipped the folder" from "never
+touched the loop at all". See `GUIDE.md` §2.
+
+Never edit or delete a row. If a path changes mid-ticket (a bug escalates to path A because
+the fix turned out to need a spec), append a new row for the same ticket rather than
+rewriting the old one — the fact that it escalated is itself worth keeping.
+
+## Columns
+
+date       YYYY-MM-DD, the day the branch was created
+ticket     SCRUM-###
+path       A | B | C — see GUIDE.md §2
+branch     the branch name from the commit skill
+by         whoever ran it
+pr         PR number once opened, or "-" if not yet
+note       one line — what the ticket was, free text
+
+## Format
+
+date        ticket      path  branch                              by    pr    note
+----        ------      ----  ------                              --    --    ----
