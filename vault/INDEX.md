@@ -1,7 +1,8 @@
 # TCG vault index
 
 Read this first — **then read only what the tables point you at.** 153 files migrated from Confluence
-2026-08-10, plus 37 payroll files from a OneDrive drop 2026-08-13. This index is a routing table: it
+2026-08-10, plus 37 payroll files from a OneDrive drop 2026-08-13, plus 65 client-meeting files
+(transcripts/summaries/assets) from a OneDrive drop 2026-08-19. This index is a routing table: it
 tells you which file answers which question, and it is the only vault file meant to be read whole.
 
 ## Read these five lines before you answer anything
@@ -79,6 +80,25 @@ goal and the four in-scope field-worker statements; nothing else lists its 83 it
 
 **Every action item in these three is outstanding** unless someone has confirmed otherwise. They
 are itemised in [gaps.md](gaps.md) (modules, integrations) and [payroll/gaps.md](payroll/gaps.md) (ADP).
+
+### Raw transcripts and auto-summaries (added 2026-08-19, kept separate from the above)
+
+The three curated files above are **human-written minutes** — someone read the meeting and wrote
+what mattered. The two folders below are **not that**: they are the underlying source material,
+migrated as-is, so a claim like "the client said X" can be checked against what was actually said
+instead of taken on trust.
+
+| Folder | What's in it | Index |
+| --- | --- | --- |
+| `meetings/transcripts/` | 56 raw client-meeting transcripts, 2026-01-15 → 2026-08-13, one file per meeting date | [meetings/transcripts/INDEX.md](meetings/transcripts/INDEX.md) |
+| `meetings/summaries/` | 7 third-party AI-generated summaries (Read.ai / Fireflies / an unnamed export) — not human-written, not curated | [meetings/summaries/INDEX.md](meetings/summaries/INDEX.md) |
+| `meetings/assets/` | Non-text artifacts from a meeting (currently one diagram from 2026-03-06) | [meetings/assets/README.md](meetings/assets/README.md) |
+
+**Do not treat these as adjudicated.** They carry `status: reference`, not `verified` — nobody has
+checked a transcript's claims against the rest of the vault yet, which is exactly what the
+*Recordings vs. Confluence Audit* is doing separately, meeting by meeting. Two dates
+(2026-07-14, 2026-07-15) have no recording at all; three early dates (01-15, 01-26, 02-09) are an
+invite thread or an agenda, not a transcript — each says so in its own frontmatter (`kind:`).
 
 ## decisions/ — dated, named, agreed
 
