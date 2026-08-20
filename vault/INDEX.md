@@ -24,6 +24,7 @@ answers which question, and it is the only vault file meant to be read whole.
 | anything about vendors or agencies | [product/agencies-vendors-INDEX.md](product/agencies-vendors-INDEX.md) first — 4 sources, 2 entities |
 | anything about dispatch / DAS | [product/daily-allocation-INDEX.md](product/daily-allocation-INDEX.md) first |
 | quantity N on a quote becoming N DAS/Yard sets | [decisions/2026-08-20-quantity-based-das-sets.md](decisions/2026-08-20-quantity-based-das-sets.md) — named decision, SCRUM-907 |
+| when a Project Job becomes Completed after DAS/Yard | [decisions/2026-08-20-job-completed-on-last-day-offload.md](decisions/2026-08-20-job-completed-on-last-day-offload.md) — named decision, SCRUM-903 |
 | anything about mobilization / demobilization | [product/mob-demob-INDEX.md](product/mob-demob-INDEX.md) first — 2 sources, only 1 migrated |
 | **anything about payroll, wages, overtime, union rules or ADP** | [payroll/INDEX.md](payroll/INDEX.md) first — a separate source, a separate migration, and its own four caveats |
 | a specific field-ops requirement | [product/fr-fop-numbering.md](product/fr-fop-numbering.md) to pick the right document, then the leaf file |
