@@ -29,6 +29,24 @@ The client repo currently has three competing conventions in flight — `task/SC
 `scrum-866`, `fixes/minor-ui-11aug`. Use the form above for new work; do not rename
 anyone's existing branch.
 
+**Mirror the branch in the overlay repo, at creation — not only at `close-ticket`.** The
+overlay (`.ai/`) is a separate git repo (§ "One memory, every tool" in `CLAUDE.md`), and
+any `.ai/` file a ticket touches (spec, units, decisions, processed.log) is work-in-progress
+on that ticket, same as the client-repo code. Leaving it uncommitted in the overlay until
+`close-ticket` is why the overlay has carried unreviewed, unpushed changes past a ticket
+that was otherwise done — the loop ran, the client repo shipped, and the overlay's record
+of it sat local, on `main`, indistinguishable from every other tool's uncommitted scratch
+state. Create the same branch name in `.ai/` the moment you branch the client repo:
+
+```bash
+cd .ai && git fetch origin && git switch -c <type>/SCRUM-###-u<n>-<slug> origin/main
+```
+
+Use the identical branch name in both repos — that is what makes `git status` in `.ai/`
+during a review answer "which ticket is this" without cross-referencing anything. Commit
+`.ai/` changes into that branch as they happen (spec updates, unit files, `processed.log`
+append), not as one batch at the end.
+
 ## 2. Rebase onto main — at three moments, not one
 
 **Starting a unit:**
@@ -76,6 +94,22 @@ If you have uncommitted work when you resume, `git stash` before the rebase and
 ```bash
 git fetch origin && git rebase origin/main
 ```
+
+**Do this in both repos, every time — never push one without the other.** A push that
+updates the client repo's branch but leaves `.ai/`'s matching branch behind (or vice versa)
+is how the two repos drift out of the "one memory, every tool" invariant: the branch name
+matches but the content behind it doesn't, which is worse than an obvious mismatch because
+nothing flags it. Fetch and rebase `.ai/` onto its `origin/main` in the same pass as the
+client repo, then push both:
+
+```bash
+cd .ai && git fetch origin && git rebase origin/main && git push
+cd ..    && git fetch origin && git rebase origin/main && git push
+```
+
+If one push succeeds and the other fails (conflict, rejected, gate failure), stop and
+resolve it before continuing — do not leave the two repos' branches pointing at
+inconsistent states of the same ticket.
 
 **Always branch from `origin/main`, never from local `main`.** Local `main` is stale more
 often than not — on this project it was once 10 commits behind, and branching from it would
