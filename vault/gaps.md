@@ -183,7 +183,9 @@ will be about your ticket.
   chat across the app* (898), *tools & rigging not editable on a job* (899), *a mobile ticket
   cannot start before load-out* (902), *offline save in yard operations, marked "(client
   feedback)"* (904). None of those five is written in the vault; the ticket is the only
-  source. One item ("quotation marked Signed auto-created Project and Job without Convert to
+  source. For SCRUM-899 the Job Details UI shipped read-only in PR #379; the open scope
+  question (all tools vs quote-inherited only) lives in `aidlc/SCRUM-899/spec.md` §12 Q1 —
+  do not treat the punch-list line as adjudicated product law. One item ("quotation marked Signed auto-created Project and Job without Convert to
   Job / Create Project") is a behaviour question, not a bug report, and has no ticket on the
   page.
 - Owner: product team
