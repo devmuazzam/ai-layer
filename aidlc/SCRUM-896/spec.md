@@ -15,7 +15,7 @@
 | Shipped behaviour | Plan save/submit → detail; plan create → listing; row/bulk archive + All/Archived filter on project Plans tab; edit-page hard-delete removed |
 | Not shipped | Withdrawing `DELETE /plans/:planId` (still open per decision); admin hard-delete escape hatch |
 | Still present | `DELETE /plans/:planId` API — hard delete, disposition undecided |
-| Open questions raised by this ticket | 1 — §12 Q3 open (Q1, Q2 resolved) |
+| Open questions raised by this ticket | 0 — Q1, Q2, Q3 all resolved 2026-08-20 (Fouzan Shakil); residual unsettled items listed in each decision note and in §13 |
 
 ## 12. Open questions — the stop-and-ask list
 
@@ -58,11 +58,13 @@
   - `apps/api/src/service/permits/permits.repository.ts` `findAllForTracker` — same `archivedAt: null` hard exclude (code precedent only)
 - **Owner:** product team (named product owner — not QA)
 - **Workaround, if any:** Tracker hides archived plans; restore remains available from the project Plans tab (Archived filter). Labelled a workaround until Q3 is answered.
-- **Status:** open
+- **Answer (2026-08-20, Fouzan Shakil):** The Planning Tracker should have **filters which can be changed to show archived plans** — so the `archivedAt: null` exclude is a **default, not permanent product law**, and `GET /plans/tracker` must eventually accept a parameter that relaxes it. **Implementation is deferred to a follow-up ticket, explicitly not this PR**, so no code change falls out of Q3 for `SCRUM-896`; the shipped default is confirmed correct and its workaround label is discharged. **Still open and deliberately not answered:** the filter's UI shape, the API parameter shape (`includeArchived` vs `onlyArchived` vs tri-state), **whether the Permits tracker follows the same rule**, whether this generalises to other tracker/listing surfaces (unlike Q1 and Q2 this was *not* stated app-wide), whether restore is possible from the tracker, how an archived row renders and whether it counts toward status totals, and who may switch the filter on. See the note's *What this does not settle*.
+- **Status:** resolved — see `.ai/vault/decisions/2026-08-20-planning-tracker-archived-filter.md`
 
 ## 13. What this deliberately does not specify
 
 - Whether `DELETE /plans/:planId` is withdrawn — still open in `decisions/2026-08-20-archive-instead-of-delete-app-wide.md`
 - Whether an admin hard-delete escape hatch exists — same note
 - Post-save navigation for modules other than plans — convention is app-wide but retro-fit sequencing is open in `decisions/2026-08-20-post-save-navigation-convention.md`
-- Whether the Planning Tracker shows archived plans — see Q3
+- The Planning Tracker's archived filter — **decided** (it must have one, `decisions/2026-08-20-planning-tracker-archived-filter.md`) but **not built here**; the filter's UI and API shape, whether restore works from the tracker, and how an archived row renders are all still open
+- Whether the **Permits** tracker gains the same filter — not decided; `permits.repository.ts` `findAllForTracker` carries the identical `archivedAt: null` exclude and was not part of Q3's answer
