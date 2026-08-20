@@ -15,7 +15,7 @@
 | Shipped behaviour | Plan save/submit → detail; plan create → listing; row/bulk archive + All/Archived filter on project Plans tab; edit-page hard-delete removed |
 | Not shipped | Withdrawing `DELETE /plans/:planId` (still open per decision); admin hard-delete escape hatch |
 | Still present | `DELETE /plans/:planId` API — hard delete, disposition undecided |
-| Open questions raised by this ticket | 0 — §12 Q1, Q2 resolved |
+| Open questions raised by this ticket | 1 — §12 Q3 open (Q1, Q2 resolved) |
 
 ## 12. Open questions — the stop-and-ask list
 
@@ -47,8 +47,22 @@
 - **Answer (2026-08-20, Fouzan Shakil):** App-wide convention, not plan-only — **after editing an entity, go to that entity's detail page; after creating one, go to the listing (table) page.** The shipped plan update behaviour is confirmed correct, and plan create already lands on the listing (checked 2026-08-20), so **no code change falls out of Q2 for this ticket**. **Still open:** cancel and error paths, modal/nested/wizard creates, "save and add another", whether mobile follows the same rule, and the sequencing of any retro-fit to other modules.
 - **Status:** resolved — see `.ai/vault/decisions/2026-08-20-post-save-navigation-convention.md`
 
+### Q3 — Should the Planning Tracker ever show archived plans?
+
+- **Question:** Once a plan is archived, should it stay permanently out of `GET /plans/tracker` (Planning Tracker columns, including "All Plans"), or should that endpoint gain `includeArchived` / `onlyArchived` (or an equivalent) so archived plans can be viewed or restored from that surface?
+- **Why it cannot be answered from what is written:** Branch `scrum-896` added `archivedAt: null` to `plans.repository.ts` `findAllForTracker` so archived plans disappear from the tracker, with no filter parameter on `QueryPlanTrackerDto` / `GET /plans/tracker`. Neither `SCRUM-896`, §12 Q1/Q2, `decisions/2026-08-20-archive-instead-of-delete-app-wide.md`, nor `product/project-module/04-create-and-approve-lift-plans.md` mentions the Planning Tracker and archive. The same hard exclude exists on permits (`permits.repository.ts` `findAllForTracker`), but code is not a requirement source.
+- **Blocked:** Nothing for the project Plans-tab archive ship. Blocked for treating "tracker never shows archived plans" as settled product law, and for adding tracker archive filters / restore UX without a further decision or ticket.
+- **Candidates:**
+  - `SCRUM-896` / this PR — introduced the tracker exclude as a side effect of making Plan archivable
+  - `decisions/2026-08-20-archive-instead-of-delete-app-wide.md` — settles archive-vs-delete; silent on trackers
+  - `apps/api/src/service/permits/permits.repository.ts` `findAllForTracker` — same `archivedAt: null` hard exclude (code precedent only)
+- **Owner:** product team (named product owner — not QA)
+- **Workaround, if any:** Tracker hides archived plans; restore remains available from the project Plans tab (Archived filter). Labelled a workaround until Q3 is answered.
+- **Status:** open
+
 ## 13. What this deliberately does not specify
 
 - Whether `DELETE /plans/:planId` is withdrawn — still open in `decisions/2026-08-20-archive-instead-of-delete-app-wide.md`
 - Whether an admin hard-delete escape hatch exists — same note
 - Post-save navigation for modules other than plans — convention is app-wide but retro-fit sequencing is open in `decisions/2026-08-20-post-save-navigation-convention.md`
+- Whether the Planning Tracker shows archived plans — see Q3
