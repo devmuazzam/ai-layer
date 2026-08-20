@@ -66,6 +66,7 @@ that produced the rest of the vault.
 | what a column in the weekly ADP workbook means | [adp-workbook-column-rules.md](adp-workbook-column-rules.md) — the rules the workbook implements, no employee data |
 | **who says a rule, and where sources disagree** | [source-attribution-and-conflicts.md](source-attribution-and-conflicts.md) — every rule tagged by source family, plus a 21-item conflict register |
 | **what is still unanswered** about payroll or ADP | [gaps.md](gaps.md) — the payroll half of the open-question register, 41 entries. `grep -n '^## '` first; read only your section |
+| what a payroll SME said verbally, not yet in the rule matrix | [2026-08-20-payroll-rules-meeting-notes.md](2026-08-20-payroll-rules-meeting-notes.md) — WTL, rest period, subsistence, craft-code rate overrides. `status: unverified`, cleaned from a call transcript |
 
 ## The spine of the domain
 
