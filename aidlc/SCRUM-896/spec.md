@@ -12,10 +12,10 @@
 | Path | C |
 | Branch | `scrum-896` |
 | PR | — |
-| Shipped behaviour | Plan save/submit redirects to `/projects/{id}/plans/{planId}`; row + bulk delete removed from the project Plans tab |
-| Not shipped | Archive. `Plan` has no `archivedAt`; there is no archive/unarchive API or archived filter |
-| Still present | Delete on the plan edit page; `DELETE /plans/:planId` — still a hard delete |
-| Open questions raised by this ticket | 2 — §12 Q1, Q2 |
+| Shipped behaviour | Plan save/submit → detail; plan create → listing; row/bulk archive + All/Archived filter on project Plans tab; edit-page hard-delete removed |
+| Not shipped | Withdrawing `DELETE /plans/:planId` (still open per decision); admin hard-delete escape hatch |
+| Still present | `DELETE /plans/:planId` API — hard delete, disposition undecided |
+| Open questions raised by this ticket | 0 — §12 Q1, Q2 resolved |
 
 ## 12. Open questions — the stop-and-ask list
 
@@ -49,6 +49,6 @@
 
 ## 13. What this deliberately does not specify
 
-- Whether `Plan` gains `archivedAt` and an archive API — see Q1
-- Whether the edit-page delete and `DELETE /plans/:planId` are withdrawn — see Q1
-- Post-save navigation for any module other than plans — see Q2
+- Whether `DELETE /plans/:planId` is withdrawn — still open in `decisions/2026-08-20-archive-instead-of-delete-app-wide.md`
+- Whether an admin hard-delete escape hatch exists — same note
+- Post-save navigation for modules other than plans — convention is app-wide but retro-fit sequencing is open in `decisions/2026-08-20-post-save-navigation-convention.md`
