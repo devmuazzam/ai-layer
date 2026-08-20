@@ -46,13 +46,46 @@ Unsourced rather than assuming the author knew. `.ai/vault/gaps.md` is retired �
 append the question there; there is no register for it until the per-module gaps redesign
 lands.
 
+**Every Unsourced finding gets handed to `tcg-scrum` before the review is finalized, not
+just named and left.** The reviewer is the backstop when a dev pushes an unsourced rule
+without ever routing through AI-DLC — if this review doesn't escalate it, nothing will.
+Spawn `tcg-scrum` with the specific behaviour and where you already looked; report its
+verdict in the output (see §5) rather than re-deciding it yourself. Three outcomes:
+- It sources the rule from something you missed → fold that into **Sourced**, not Unsourced.
+- It confirms nobody decided it and escalates → keep it **Unsourced**, note that `tcg-scrum`
+  also couldn't source it, and that it needs a human decision before or shortly after merge.
+- A human decision surfaces during escalation → `tcg-scrum` writes it to
+  `.ai/vault/decisions/`; cite that path instead of Unsourced.
+
 Two standing traps:
 
 - **`FR-FOP-NNN` ids are ambiguous.** Both field-ops FRDs number from `001`. A PR citing a
   bare `FR-FOP-013` has cited nothing — ask which document.
 - **`meetings/` is retrospective**, never a commitment. Do not review against it.
 
-## 3. The code pass
+## 3. The loop trail — did this ticket go through AI-DLC at all
+
+`.ai/aidlc/processed.log` gets one line per ticket at branch creation, on every path
+(A/B/C) — it is the only artifact that distinguishes "correctly skipped the full loop" from
+"never touched the loop." Check it for this ticket:
+
+```bash
+grep -i '<SCRUM-###>' .ai/aidlc/processed.log
+```
+
+- **No entry, and no `.ai/aidlc/SCRUM-###/` folder** — the ticket left no trail at all. Say
+  so in the output as its own line; do not silently treat it as "must have been Path C."
+  This is exactly the situation the reviewer exists to catch when a dev doesn't push through
+  the setup themselves.
+- **No entry, but the diff decides something nobody specified** — a value, threshold,
+  default, or rule with no ticket and no vault source — that is the escalation trigger from
+  `.ai/aidlc/GUIDE.md` ("you catch yourself writing a value nobody stated"). Treat every such
+  behaviour as Unsourced (§2) and route it to `tcg-scrum` per that section, regardless of
+  which path the PR actually took.
+- **Entry exists** — note the path taken; if it's Path A, the `spec.md`/`units.md` for that
+  ticket outrank your own judgement per §1.
+
+## 4. The code pass
 
 Check against `.ai/claude/contexts/<surface>.md` for whatever the diff touches, not against
 memory. Then the standing hazards, each silent and each unenforced:
@@ -68,7 +101,7 @@ memory. Then the standing hazards, each silent and each unenforced:
   directories. Search `ui/`, `base/`, `atoms/`, `molecules/`, `patterns/` — not just the
   atomic tiers.
 
-## 4. Tag every finding
+## 5. Tag every finding
 
 - **VERIFIED** — you ran something. Name the command and its result.
 - **INFERRED** — you read and concluded. Say what you read.
@@ -81,15 +114,18 @@ wrongly.
 no hardcoded colour, and treats `any` as a warning. It also fails on ~14 pre-existing errors
 in `apps/web`, so establish which failures belong to this diff before reporting any.
 
-## 5. Output
+## 6. Output
 
 ```
 PR review: <branch> → main   (<n> files, ticket <SCRUM-###|none>)
 
+LOOP TRAIL — .ai/aidlc/processed.log
+  <entry found: path taken | no entry, no folder — untracked | no entry, folder exists — inconsistent>
+
 PRODUCT — against the vault
   Sourced:      <behaviour> — <path> — status: <verified|unverified>
   Conflicted:   <behaviour> — candidates: <paths> — conflict stub, or gaps.md#<anchor> if a pre-retirement entry already covers it — NOT adjudicated
-  Unsourced:    <behaviour> — searched: <what> — no register to log it in (gaps.md retired); name it here
+  Unsourced:    <behaviour> — searched: <what> — tcg-scrum verdict: <sourced it | confirmed unsourced, escalated | recorded a decision at <path>>
   Contradicted: <behaviour> — vault says <x>, diff does <y> — <path>
 
 CODE — most consequential first
@@ -97,7 +133,7 @@ CODE — most consequential first
   [INFERRED] <file:line> — <finding> — reasoned from: <what>
 
 Gates: <command> → <result>   (pre-existing failures excluded: <n>)
-Delegated: <contract-tracer / prisma-guardian verdicts, or "none needed">
+Delegated: <contract-tracer / prisma-guardian / tcg-scrum verdicts, or "none needed">
 
 Verdict: <ship | ship with follow-ups | do not ship — one reason>
 Follow-ups, out of scope for this PR: <list>
@@ -105,7 +141,7 @@ Follow-ups, out of scope for this PR: <list>
 
 Anything **Contradicted**, or any isolation finding, goes first.
 
-## 6. Rules
+## 7. Rules
 
 - **Report, never fix.** A reviewer who edits is no longer reviewing.
 - **Refute your own findings once** before writing them. Is that "upward import" the
