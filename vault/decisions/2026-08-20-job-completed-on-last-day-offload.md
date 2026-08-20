@@ -45,12 +45,11 @@ neighbouring code.
 - **No winner/loser flip.** No product vault file specifies parent Job completion
   after yard offload. Conflict-set closure does not apply.
 - `aidlc/SCRUM-903/spec.md` §12 Q1 and Q2 → resolved (see this note).
-- Q3 (jobs that never go through yard offload) and Q4 (historical backfill) were
-  **not answered** on the ticket and stay open in that §12.
+- Q3 / Q4 → resolved separately in
+  `decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md`.
 
 ## What this does not settle
 
-- Whether vendor-covered / no-yard-ops jobs need a separate completion path (Q3).
-- Whether already-finished jobs still showing Open need a one-time backfill (Q4).
+- Covered by the scope-limits note: vendor/no-yard path and historical backfill.
 - Wiring `dasStage` → `TICKET_SUBMITTED` when field tickets submit (out of scope;
   tickets are not the completion trigger).

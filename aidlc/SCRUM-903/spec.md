@@ -14,10 +14,10 @@
 | PR | — |
 | Source punch list | Confluence `13-august-QA` — after DAS/Yard completion, Project → Jobs stayed open |
 | Clarification | Umair Khan (description): status = **Completed**, not Closed |
-| Product answers | Umair Khan, Jira comment 2026-08-20 — last scheduled day + offload; not after first day |
+| Product answers | Umair Khan (Q1/Q2, Jira 2026-08-20); Fouzan Shakil assignee (Q3/Q4, working session 2026-08-20) |
 | Shipped behaviour (branch) | On full/force/defer offload complete → sub-job `dasStage` COMPLETED; parent `Job.status` ACTIVE → COMPLETED when every non-cancelled sub-job is done |
-| Not shipped | Ticket-submit stage wiring; historical backfill; vendor/no-yard completion path |
-| Open questions raised by this ticket | 2 open (Q3, Q4) — Q1, Q2 resolved 2026-08-20 |
+| Not shipped | Ticket-submit stage wiring; vendor/no-yard completion path; historical Job.status backfill |
+| Open questions raised by this ticket | 0 — Q1–Q4 resolved 2026-08-20 |
 
 ## 12. Open questions — the stop-and-ask list
 
@@ -52,24 +52,25 @@
   - `SCRUM-903` Q3 (unanswered)
   - `decisions/2026-08-20-job-completed-on-last-day-offload.md` — settles yard last-day offload only
 - **Owner:** product team
-- **Workaround, if any:** Branch only rolls up from yard offload completion. Labelled workaround until Q3 is answered.
-- **Status:** open
+- **Answer (2026-08-20, Fouzan Shakil, assignee):** **OK that they do not auto-complete** on this ticket. No separate vendor/no-yard completion path. Follow-up ticket when product defines that trigger.
+- **Status:** resolved — see `.ai/vault/decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md`
 
 ### Q4 — Historical backfill
 
 - **Question:** Existing jobs already finished in DAS/Yard but still showing **Open** in Project → Jobs — one-time backfill, or fix going forward only?
 - **Why it cannot be answered from what is written:** Umair's comment did not address backfill. No vault retention/migration rule for Job.status.
-- **Blocked:** Nothing for forward-looking completions. Blocked for writing a backfill script or leaving stale Open badges as accepted debt without a named choice.
+- **Blocked:** Nothing for forward-looking completions. Was blocking writing a backfill vs accepting stale Open badges.
 - **Candidates:**
-  - `SCRUM-903` Q4 (unanswered)
+  - `SCRUM-903` Q4
   - `decisions/2026-08-20-quantity-based-das-sets.md` — different ticket; shows backfill can be explicit opt-in, not a precedent for jobs
 - **Owner:** product team
-- **Workaround, if any:** Forward-only on this branch. Labelled workaround until Q4 is answered.
-- **Status:** open
+- **Answer (2026-08-20, Fouzan Shakil, assignee):** **Forward-only.** No historical backfill in this PR. Stale Open badges remain until a follow-up opts into a rewrite.
+- **Status:** resolved — see `.ai/vault/decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md`
 
 ## 13. What this deliberately does not specify
 
-- Vendor / no-yard completion — see Q3
-- Historical backfill — see Q4
+- Vendor / no-yard completion trigger — deferred; see Q3 decision
+- Historical backfill mechanics — deferred; see Q4 decision
 - `TICKET_SUBMITTED` stage transition on field-ticket submit — not required for parent Completed per Q1
 - Whether `ON_HOLD` / `INVOICED` jobs can move to `COMPLETED` — branch leaves non-ACTIVE statuses alone
+- Manual Project → Jobs status editing — no UI/API added
