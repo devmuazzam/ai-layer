@@ -11,7 +11,7 @@
 | Ticket | `SCRUM-903` (Task, epic `SCRUM-232`, reported by Aiman Farooq / QA) |
 | Path | B |
 | Branch | `fix/SCRUM-903-job-completed-status` (client + overlay) |
-| PR | — |
+| PR | [#384](https://github.com/TheCraneGuys/craneguys-platform/pull/384) (platform); overlay [#20](https://github.com/devCodingcops/tcg-ai-layer/pull/20) |
 | Source punch list | Confluence `13-august-QA` — after DAS/Yard completion, Project → Jobs stayed open |
 | Clarification | Umair Khan (description): status = **Completed**, not Closed |
 | Product answers | Umair Khan (Q1/Q2, Jira 2026-08-20); Fouzan Shakil assignee (Q3/Q4, working session 2026-08-20) |
