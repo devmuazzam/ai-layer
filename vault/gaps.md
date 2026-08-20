@@ -186,6 +186,10 @@ will be about your ticket.
   source. For SCRUM-899 the Job Details UI shipped read-only in PR #379; the open scope
   question (all tools vs quote-inherited only) lives in `aidlc/SCRUM-899/spec.md` §12 Q1 —
   do not treat the punch-list line as adjudicated product law. One item ("quotation marked Signed auto-created Project and Job without Convert to
+  source. For SCRUM-896 the listing delete was removed and post-save goes to plan detail
+  on branch `scrum-896`; the open questions (plan archive vs hard delete; post-save
+  convention scope) live in `aidlc/SCRUM-896/spec.md` §12 — do not treat the punch-list
+  line as adjudicated product law. One item ("quotation marked Signed auto-created Project and Job without Convert to
   Job / Create Project") is a behaviour question, not a bug report, and has no ticket on the
   page.
 - Owner: product team
