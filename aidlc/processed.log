@@ -28,3 +28,4 @@ date        ticket      path  branch                              by    pr    no
 2026-08-20  SCRUM-896   C     scrum-896                           fouzan  -     after plan update go to detail; remove listing delete (no plan archive API yet)
 2026-08-20  SCRUM-903   B     fix/SCRUM-903-job-completed-status   fouzan  -     after DAS/yard offload complete, set Job.status=COMPLETED (not Closed)
 2026-08-20  SCRUM-899   C     scrum-899                           fouzan  379   Jobs Tool/Rigging view-only on job details; scope open in §12
+2026-08-21  SCRUM-888   C     feat/SCRUM-888-root-to-dashboard   areeba  -     redirect root URL / to /dashboard
