@@ -116,8 +116,6 @@ for how a resolved gap lands here.
 | --- | --- |
 | [decisions/2026-06-30-adp-erp-employee-data-ownership.md](decisions/2026-06-30-adp-erp-employee-data-ownership.md) | Who owns which employee field — ADP vs ERP vs QuickBooks — and that the ERP *initiates* onboarding while ADP performs it. Brian Petros + Ehtesham Anwar, agreed 2026-06-30 |
 | [decisions/2026-08-12-plan-comments-page-scope.md](decisions/2026-08-12-plan-comments-page-scope.md) | Which screen "the Plan Comments page" means in `SCRUM-757` |
-| [decisions/2026-08-13-secondary-craft-code-rate-floor.md](decisions/2026-08-13-secondary-craft-code-rate-floor.md) | An employee filling a secondary role is paid `MAX(primary_rate, secondary_rate)`, never less than their primary. Brian Petros + Kyle Harlow + Corrina Bustos, agreed 2026-08-13 |
-| [decisions/2026-08-13-boom-craft-modifier-configuration-and-override.md](decisions/2026-08-13-boom-craft-modifier-configuration-and-override.md) | Boom/craft-modifier eligibility comes from crane configuration + job setup, not salesperson free text; field overrides are flagged for payroll/crane-super review. Joe Schacatano (2026-08-04) + Corrina Bustos/Kyle Harlow/Ehtesham Anwar (2026-08-13) |
 
 ---
 
