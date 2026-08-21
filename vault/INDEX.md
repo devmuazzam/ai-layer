@@ -116,6 +116,10 @@ for how a resolved gap lands here.
 | --- | --- |
 | [decisions/2026-06-30-adp-erp-employee-data-ownership.md](decisions/2026-06-30-adp-erp-employee-data-ownership.md) | Who owns which employee field — ADP vs ERP vs QuickBooks — and that the ERP *initiates* onboarding while ADP performs it. Brian Petros + Ehtesham Anwar, agreed 2026-06-30 |
 | [decisions/2026-08-12-plan-comments-page-scope.md](decisions/2026-08-12-plan-comments-page-scope.md) | Which screen "the Plan Comments page" means in `SCRUM-757` |
+| [decisions/2026-08-20-quantity-based-das-sets.md](decisions/2026-08-20-quantity-based-das-sets.md) | Quantity N on a quotation line becomes N DAS/Yard sets. Fouzan Shakil, `SCRUM-907` / `SCRUM-892` |
+| [decisions/2026-08-20-archive-instead-of-delete-app-wide.md](decisions/2026-08-20-archive-instead-of-delete-app-wide.md) | Archive replaces delete **app-wide**, on the existing `archivedAt` pattern — `Plan` included. Fouzan Shakil, resolves `SCRUM-896` §12 Q1. Delete endpoints and an admin hard-delete escape hatch are **not** settled |
+| [decisions/2026-08-20-post-save-navigation-convention.md](decisions/2026-08-20-post-save-navigation-convention.md) | After **edit** → the entity's detail page; after **create** → the listing page. App-wide. Fouzan Shakil, resolves `SCRUM-896` §12 Q2 |
+| [decisions/2026-08-20-planning-tracker-archived-filter.md](decisions/2026-08-20-planning-tracker-archived-filter.md) | The Planning Tracker must have a **filter that shows archived plans** — the tracker's `archivedAt: null` exclude is a default, not permanent. **Implementation deferred to a follow-up ticket.** Fouzan Shakil, resolves `SCRUM-896` §12 Q3. Filter shape, restore-from-tracker and the **Permits** tracker are **not** settled |
 
 ---
 
