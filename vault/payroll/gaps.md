@@ -712,6 +712,11 @@ someone has confirmed otherwise.
 
 - Question: who creates TCG's earning codes inside ADP Workforce Now, and when?
 - Candidates: [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
+- **2026-08-24, from the client-message batch:** Brian (June-era) — the new import workbook
+  needs "a few more fields in ADP"; a **meeting with the ADP rep** was planned to confirm.
+  Owner emerging: **Brian + the ADP rep**. Reconcile against the **52 live codes** captured
+  2026-08-18 (`adp-api-responses/pay-data-input-meta.md`) to enumerate what is still missing —
+  and ask what the rep meeting concluded.
 - Note: **ADP supplies no unified or standard code set.** It reserves only `R` (Regular) and `O`
   (Overtime), plus Memo Code `5` / Earnings Code `T` as structural requirements. Every other code
   — `FRR`/`FRO`/`FRD`/`FRT`, `LPR`, `LOO`, the shift differentials — is **client-defined and

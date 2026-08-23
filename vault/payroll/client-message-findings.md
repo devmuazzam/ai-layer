@@ -150,3 +150,17 @@ manual workload the ERP must absorb, the other is an underpayment pattern to qua
 full day? straight time?) so PAY-056 stops being example-free, and confirm the billing side
 excludes those hours automatically rather than by hand-edit.
 
+## 2026-08-24 batch — PAYROLL_CURRENT workbooks + ADP fields (Brian Petros; 3.7.1 zip inspected)
+
+| Claim / observable | Verdict | Register |
+| --- | --- | --- |
+| New Excel (NEW_PAYROLL v1.1) structured for ADP import; Corrina testing the partial sample | ✅ both files migrated 2026-08-19 and **byte-identical** in the newer 2026-08-19 zip — `adp-workbook-column-rules.md` remains current | PAY-067 |
+| "Power Query backend not fully developed" | 🆕 status fact, previously unrecorded | PAY-067 |
+| "Meeting ADP rep… need to create a few more fields in ADP" | ✅ corroborates the open **earning-code-setup** gap ("a manual prerequisite nobody owns") — owner now emerging (Brian + rep). ADP held **52 live codes** at 2026-08-18: the reconciliation baseline | gaps → *Earning-code setup* |
+| 3.7.1 zip (2026-08-19, 349 MB) vs migrated drop | ✅ fully inspected: everything byte-identical **except** the live `July 25-31` week and the **v3.7 Mac master template** (both drifted 2026-08-19 03:0x — drift notes added to their source pages) | sources ×2 |
+
+**Client questions from this message:** (13) what did the ADP-rep meeting conclude, and
+which fields/earning codes were actually created? We can pre-compute the missing list by
+diffing the crosswalk's required codes against the 52 live codes from 2026-08-18 — then the
+question becomes "confirm this exact list", not "tell us everything."
+
