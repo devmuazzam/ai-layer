@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm Labor Day emergency workflow
+- **Gap placement semantics:** holiday/special-Sat shortfall pays at **the day's own multiplier** (×3 / ×2) on the day's latest entry — "as if worked that day", agreeing with the client's added-hours doctrine.

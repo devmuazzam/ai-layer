@@ -26,3 +26,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm union-notification data
 - **Conflict:** Into-the-rate vs on-top (see PAY-011).
+- **Placement doctrine confirmed (see PAY-036):** +1.5 h at (base + shift) × last-slice multiplier, appended after actual work — matches the client's added-hours message exactly.

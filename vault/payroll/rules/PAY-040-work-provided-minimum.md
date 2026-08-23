@@ -25,3 +25,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm exclusions
+- **Gap placement semantics (client doctrine vs engine):** consistent — the daily-min shortfall pays (base + shift) × 1.0 on the shift's last entry; since a sub-4-hour shift is all straight time anyway, "as if worked at the end" and the engine's flat ×1.0 coincide.

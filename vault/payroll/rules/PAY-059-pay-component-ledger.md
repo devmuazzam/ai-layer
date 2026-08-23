@@ -25,3 +25,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm ERP component taxonomy
 - **The bucket model, confirmed (client, after a live correction dance):** **five buckets** for total-hours split — ST · OT · DT · Holiday 2× · Holiday 3× (client's "triple time = holiday triple time" retraction) — plus the **long-boom parallel set** (LB REG/OT/DBL[/TRI]) and **rule-added hours** (guarantees — "not actual work time"). Matches the extract's ADP sheet columns exactly (Reg · OT · DT · Holiday 2x · Holiday 3x · LB REG/OT/DBL/TRI).
+- **Reporting purpose confirmed by the client:** "categorized/accounted for any/all results of each rule separately… can report how much each rule increased payroll" — the per-component ledger design goal, which this vault has already exercised (the −$669k WTL-deduct total came straight from component sums).

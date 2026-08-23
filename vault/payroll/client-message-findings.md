@@ -231,3 +231,20 @@ deliberately changed from its default — folded into question 7.
 **Note for question 14:** all local backups predate the July-1 rollover. A **post-July pull**
 of `UNION_CRAFT` (or the new rate sheet) is the artifact that answers the FY2026-27 rates.
 
+## 2026-08-24 batch — added-hours doctrine (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| WTL / guarantees / shift-diff add hours, priced "as if worked", placement matters | ✅ doctrine confirmed — **verbatim** for shift adds (last-slice multiplier, appended at end); holiday gaps at the day's multiplier; daily-min coincides at ×1.0 | PAY-033/036/037/040 |
+| WTL Type 1 placement: actual time if known, else 5-hour schedule | ✅ exactly the engine's opportunity placement | PAY-046/047 |
+| Deduct-then-add-back framing; Type 1 → double | ✅ literally the engine's model (`WTL_DT_FLOOR`) | PAY-047 |
+| **Type 2 penalty → triple during triple-time periods** | ⚠️ **contradicts the engine**: flat ×2.0 in formula and config, no ×3 branch. Client-stated intent vs as-built | PAY-047 |
+| "As if worked" for long-boom gap | ⚠️ nuance: engine pays **boom adder only**, not full rate | PAY-043 |
+| Added hours invisible to overlap/back-to-back logic | ✅ by construction (components, not windows) — now an explicit ERP invariant | PAY-029 |
+| Per-rule componentized reporting | ✅ the ledger's design goal, already exercised by this very log | PAY-059 |
+
+**Client question from this message:** (18) the holiday WTL penalty — your message says the
+30-minute add becomes **triple** in triple-time periods; the engine pays a **flat ×2.0**
+(config `cfg.WTL_Rule`, no ×3 branch). Which is the rule? (The WTL charts and the MLA meal
+clause should decide; on 9 holidays a year the difference is real money.)
+

@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm blocking severity
 - **Back-to-back must not flag:** the split convention (PAY-004) produces touching windows by design; overlap warnings key on *negative* gaps (`Warn_Overlap … GapMinRaw=-60` in the extract data). Zero-gap adjacency is legitimate — encode that explicitly in the ERP's overlap rule.
+- **Phantom-hours exclusion (client requirement, verified by construction):** guarantee gaps, shift hours-adds and WTL adds exist as **ledger components and `Gap_Hrs` columns, not time windows** — so overlap and back-to-back detection, which run on actual entry windows, structurally never see them. Carry this into the ERP as an explicit invariant: added hours must never materialize as time ranges.
