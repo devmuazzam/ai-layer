@@ -23,3 +23,5 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm configuration ownership
+- **The why, verified (client message + source feed):** FCC's `UNION_CRAFT` has `StartDate`/`EndDate` columns but uses neither — **rates are overwritten in place** (sample rows: `ModifiedBy=corrinab, ModifiedDate=2025-08-26` — last year's rollover), one row per craft, no history. Union rates change **every fiscal year (July–June)** per the MLA; the 2026 rollover happened "tonight at midnight" (≈2026-06-30) per the client. Effective-dating in the ERP must cover **wage and billing rates both**.
+- **Migration asset:** the DB extract was built from the **2026-06-23 backup** — the vault holds the complete **pre-rollover FY25-26 rate table** that FCC itself can no longer produce. Pre-July-2026 recalculation is recoverable from it; earlier years from the MLA columns + per-row `Source_Rate_Raw`.

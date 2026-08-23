@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm rate-effective-date handling
 - **Client confirmation, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** `Base hourly rate = Employee.PayRate` ("very important"), CA DIR overtime rules linked (dir.ca.gov/dlse/faq_overtime). Display approximations ×40 / ×2080/12 / ×2080 confirmed as-built in `v_UI_Employee_TypeRate.VIEW.sql`.
+- **Blocking item grounded:** "confirm rate-effective-date handling" is no longer abstract — FCC overwrites `Employee.PayRate` in place too; the ERP's employee-rate model needs effective dating for the same reason the union table does (PAY-008).

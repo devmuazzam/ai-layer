@@ -77,3 +77,16 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Status: open
 - **From (frozen original):** [gaps.md#customer-po-on-the-quotation-which-of-three-things-does-it-mean](../gaps.md#customer-po-on-the-quotation-which-of-three-things-does-it-mean)
 
+## Billing-rate effective dating for pricing sheets — raised by the client, no design yet
+
+- **Status:** open
+- **Asked:** 2026-08-24 — client-message batch (Brian Petros, rate-rollover message; payroll-side counterpart on `payroll/rules/PAY-008`)
+- **Question:** union *wage* rates change every fiscal year and the ERP will effective-date them
+  (PAY-008). The client is "not sure yet about the FCC billing rates for invoicing (pricing
+  sheets)" and expects the ERP to do better. Where do billing rates live in the ERP
+  (price-listings / billing codes), and how are they versioned over time so an old job invoices
+  at the rate in force on its work date?
+- **Sources checked:** FCC `UNION_CRAFT.BillingRate` exists but is **0.000 on every sampled row**
+  — a dead path; billing actually comes from pricing sheets. Vault: [billing-code-and-price-list.md](billing-code-and-price-list.md)
+  (status draft/in-progress/active discussed 2026-03-12, no effective-dating design anywhere).
+

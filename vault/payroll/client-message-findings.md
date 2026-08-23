@@ -164,3 +164,19 @@ which fields/earning codes were actually created? We can pre-compute the missing
 diffing the crosswalk's required codes against the 52 live codes from 2026-08-18 — then the
 question becomes "confirm this exact list", not "tell us everything."
 
+## 2026-08-24 batch — rate changes over time / fiscal-year rollover (Brian Petros, ≈2026-06-30)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| ERP must manage rate change over time, wages **and** billing | ✅ is PAY-008 ("New ERP requirement") — message supplies the missing *why* | PAY-008, PAY-012 |
+| "FCC has no effective dates for union base rates" | ✅ **verified, refined**: `StartDate`/`EndDate` columns exist but are vestigial — rates **overwritten in place** (`corrinab, 2025-08-26`), one row per craft | PAY-008 |
+| Historical rates only via previous labor records | ✅ — and better: `Source_Rate_Raw` per-row audit (now load-bearing) **plus** the vault's extract holds the complete **pre-rollover FY25-26 table** (06-23 backup) that FCC can no longer produce | PAY-014, PAY-008 |
+| Fiscal-year (July–June) change per group/type; "changing rates tonight at midnight" | ✅ MLA increase table confirms 7/1 cadence; three-way tie-out (MLA $66.03/$67.87 = FCC rows = extract examples). ⚠️ **FY2026-27 per-group rates are underivable** — MLA shows the $5.00 total, allocation column blank | PAY-010 |
+| Billing rates for invoicing — "not sure yet" | 🆕 `UNION_CRAFT.BillingRate` is a dead path (0.000 everywhere); pricing-sheet effective-dating has **no design** — new quotations-side gap entry | quotations/gaps.md |
+
+**Client questions from this message:** (14) the **FY2026-27 rate sheet** — per-group wage
+allocation of the $5.00 increase, in writing, plus the updated craft-modifier amounts; confirm
+our reading that the 06-23 extract snapshot is the authoritative FY25-26 historical table for
+migration-era recalculation. And the billing side: where should pricing-sheet rates be
+versioned in the ERP (the quotations gap)?
+
