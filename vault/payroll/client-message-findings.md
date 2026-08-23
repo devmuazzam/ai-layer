@@ -88,3 +88,17 @@ the rule, the engine behaviour, the config row, and the open question. His takea
 (explain from user experience) and #2 (config tables) are both standing answers now, not
 presentation work.
 
+## 2026-08-24 — ADP product identity (team exchange; Patrick via client)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| "We are with workforce" | ✅ agrees — gap already resolved 2026-08-13 as **classic WFN**, from a live practitioner-session screenshot | PAY-067, gaps → *ADP product…* |
+| "…upgrading to next level soon" (WFN **Next Generation**) | 🆕 **material new fact** — the 2026-08-13 resolution explicitly ruled *"classic WFN, not Next Generation — the documentation set is therefore the correct one."* Every ADP reference doc now carries a validity caveat; an undated upgrade is a timer on all of it | PAY-067; caveats on adp-api-responses/, adp-read-write-boundary |
+| Interim: manual CSV upload in the ADP browser UI | 🆕 stated bridge process — refines, does not decide, the open **Excel-or-API** submission gap | PAY-067, gaps → *Excel or API* |
+| Patrick | TCG systems/IT side (transcripts: "it's kind of more of a Patrick thing"); now the named owner of the upgrade question | — |
+
+**Client questions from this message:** (9) WFN Next Generation upgrade — **date, scope, and
+whether API Central entitlements/endpoints carry over**, in writing from Patrick; agree that
+the ADP integration research gets re-validated at upgrade, and ideally that the upgrade is
+sequenced *around* the ERP integration build, not into the middle of it.
+

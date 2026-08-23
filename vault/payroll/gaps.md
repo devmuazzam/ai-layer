@@ -595,6 +595,12 @@ someone has confirmed otherwise.
   Central Help Center** are both entitled, with live `Launch App` buttons. No purchase, no
   procurement, no lead time. Credentials are obtainable today.
 - Remaining under this heading: only the "Company Code 631" vs "Co Code 4RZ" identifier conflict.
+- **2026-08-24, via client team exchange — Patrick:** *"For adp. We are with workforce but
+  upgrading to next level soon."* Product confirmation ✅ (matches the 2026-08-13 resolution).
+  **New sub-question — the upgrade:** WFN **Next Generation** timing, scope, and whether API
+  Central entitlements/endpoints carry over. Every ADP document in this vault is keyed to
+  *classic* WFN; an undated upgrade puts a validity timer on all of it. Owner: Patrick (TCG),
+  via Brian.
 - Note: the "Company Code 631" vs "Co Code 4RZ" conflict flagged in the crosswalk is **not**
   resolved by this — the product is settled, the company code is not.
 - Note: API access is a **separate paid purchase** (ADP API Central), not part of a Workforce Now
@@ -660,6 +666,8 @@ someone has confirmed otherwise.
   Query/VBA process the ERP is meant to replace.
   [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md) documents the
   API.
+- **Interim path stated (client, 2026-08-24 exchange):** while deciding, TCG is setting up
+  **manual CSV upload through the ADP browser UI** — the bridge process, not the decision.
 - Note: **these are alternatives, not stages.** A spreadsheet imported through the ADP UI produces
   no machine-readable response at all — the only feedback is what the practitioner sees on their
   own screen. Every ERP screen that displays an ADP response, confirmation ID or API status
