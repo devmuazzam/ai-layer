@@ -11,8 +11,8 @@ topics: []
 entities: []
 meeting_date: 2026-06-25
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 1
+normalized: 2026-08-24
+normalized_substitutions: 2
 ---
 
 # CC TCG ERP System — 2026-06-25
@@ -84,7 +84,7 @@ June 25, 2026, 7:01PM
  Corrina Bustos   6:10 Yes, that's how it is. Yeah, that's how it is currently.
  ehtesham.anwar   6:15 All right, okay, and we want to change this.
  Corrina Bustos   6:19 Yeah, they're wanting to change it to where everything goes in the ERP and then pushes to whatever other system is needed.
- ehtesham.anwar   6:26 All right, all right. That's good. We captured it here because after looking at the workflows, I was thinking that we might have to shift. So we have the platform set up in a way that it is going to be source approach. So we'll keep it this way and we'll figure out the integration with ATP once we get the API access.
+ ehtesham.anwar   6:26 All right, all right. That's good. We captured it here because after looking at the workflows, I was thinking that we might have to shift. So we have the platform set up in a way that it is going to be source approach. So we'll keep it this way and we'll figure out the integration with ADP once we get the API access.
  Corrina Bustos   6:49 Perfect, okay.
  ehtesham.anwar   6:50 Can we, can I go to Support and talk to anybody from here? Maybe I can start and. See how I can. Expedite this, but...
  Corrina Bustos   7:02 Oh, I have a, I have a, because we have a direct salesperson, because it would be like an added function that we would have to pay for to attach to our account. So I reached out to him. I just got off the phone with them about 10 minutes ago, so I reached out to him to let him know to give us a call.

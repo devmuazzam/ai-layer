@@ -11,6 +11,8 @@ topics: [roles-permissions]
 entities: []
 meeting_date: 2026-03-19
 kind: transcript
+normalized: 2026-08-24
+normalized_substitutions: 9
 ---
 
 # Roles Permissions Figma Demo — 2026-03-19
@@ -50,12 +52,12 @@ March 19, 2026, 6:56PM
  ehtesham.anwar   5:30 Yeah, absolutely.
  Brian Petros   5:35 parts added later. Yeah, so
  ehtesham.anwar   5:36 Yeah, absolutely. That's how we are going to.
- Brian Petros   5:39 We have Karina.
+ Brian Petros   5:39 We have Corrina.
  ehtesham.anwar   5:42 Yeah, look.
- Brian Petros   5:42 Yeah, sorry. We have Karina on the call as well today. Just to at least, yeah, she's our payroll manager and and HR manager and many things. But I've been working, we've been working on trying to get the payroll logic done because that's quite complicated. I shared with you guys.
+ Brian Petros   5:42 Yeah, sorry. We have Corrina on the call as well today. Just to at least, yeah, she's our payroll manager and and HR manager and many things. But I've been working, we've been working on trying to get the payroll logic done because that's quite complicated. I shared with you guys.
  Corrina Bustos   5:46 Hi.
  ehtesham.anwar   5:59 Mhm.
- Brian Petros   6:02 The union rules. So, so, but of course I wanted to see if Karina could join us to at least listen in because today we're gonna be starting to get into like the roles and permissions, which is kind of more IT related. But still good to get familiar with what you guys have built. And then there's gonna be a lot of work on the employee side of it, like the onboarding and all the things related to employees, even before we get to the payroll stuff, right?
+ Brian Petros   6:02 The union rules. So, so, but of course I wanted to see if Corrina could join us to at least listen in because today we're gonna be starting to get into like the roles and permissions, which is kind of more IT related. But still good to get familiar with what you guys have built. And then there's gonna be a lot of work on the employee side of it, like the onboarding and all the things related to employees, even before we get to the payroll stuff, right?
  ehtesham.anwar   6:17 Mhm. Yeah, absolutely. That's good that. Hi, it's good that you have joined us today 'cause we are going to go over departments flow, how we are going to enable, yeah, and how we are going to enable departments and the roles under the departments and then the permissions.
  Corrina Bustos   6:39 OK. OK. Perfect.
  ehtesham.anwar   6:52 That's me. No, I believe everyone is here. Brian, is someone joining?
@@ -76,7 +78,7 @@ March 19, 2026, 6:56PM
  Brian Petros   14:18 Yeah, I'm trying to think if there's any. Maybe Patrick can help me think of an example if possible, if there if there's any type of user or role. Or person in the system that's not an employee. The only one I can think of is customer contacts. You know what I mean? I'm just thinking of any type of person, maybe a salesperson.
  IT Support   14:37 No, all, all of them, most of all of them would be an employee with the exception of a very slim. So let's say like we if we have a contractor there's going to be, there's going to be a distinguished name on their like via their company. Like again, we set up for something for coding cops. Rouse was a different one, but other than that, for the most part, this is all pretty much employees only because they have an employee number attached to that.
  Melissa McNutt   15:02 OK.
- IT Support   15:12 At least the the way that with the, excuse me, at least the way that with Fleet and NextGen is built, they would have an employee number attached to that.
+ IT Support   15:12 At least the the way that with the, excuse me, at least the way that with Fleet and NexGen is built, they would have an employee number attached to that.
  jahanzaib.nadeem   15:26 We can also have like the employee type field example if there is like any contractor or is it like a permanent employee. So through that like we we can differentiate the employees as well.
  Brian Petros   15:26 OK, what? OK, well, for the user roles themselves, you said that they're always tied to a department.
  ehtesham.anwar   15:50 Yeah.
@@ -232,13 +234,13 @@ March 19, 2026, 6:56PM
  ehtesham.anwar   43:58 Yeah, absolutely.
  Ryan Adams   44:01 And have you guys got the dispatch yet or dispatch is still coming up correct? Perfect. Thank you.
  ehtesham.anwar   44:06 Yeah.
- Brian Petros   44:08 And then while we have Karina on the phone, could we talk through the the idea about the employee versus temp employee? I saw that on the mock up. I just don't remember explaining your thoughts on how it would be different. Yeah, if you could show that real quick, that'd be good because Karina, I don't think Karina's seen the different.
+ Brian Petros   44:08 And then while we have Corrina on the phone, could we talk through the the idea about the employee versus temp employee? I saw that on the mock up. I just don't remember explaining your thoughts on how it would be different. Yeah, if you could show that real quick, that'd be good because Corrina, I don't think Corrina's seen the different.
  ehtesham.anwar   44:22 Yeah.
  Brian Petros   44:25 Mock ups yet. I'll still send it to her, but yeah, I was curious how that works, specifically the concept of like a employee visiting us, so to speak, or we have what they call fill in employees. So we're not supposed to have any fill in technically in the system. They're all supposed to be entered in the system, but.
  ehtesham.anwar   44:31 The. Mhm.
  Brian Petros   44:43 You know, sometimes there's a last minute type of someone coming in, they're part of the union, but they're not regularly working with us and but we get busy or that we need to have them called in. So how do we get that? How do we enable that so we can get them in the system and are they like a different status? So basically like in FCC, there's just like active employee or inactive employee, but it seems like the way that you could be setting it up or that you already have set up in the mock up is that there's like maybe different types of active employees, right? Where there's this temp, OK.
  ehtesham.anwar   45:04 Mm-hmm.
- Brian Petros   45:16 Yeah. So maybe you can help us understand how that's set up and then Karina can help us understand how what we need.
+ Brian Petros   45:16 Yeah. So maybe you can help us understand how that's set up and then Corrina can help us understand how what we need.
  ehtesham.anwar   45:21 Absolutely. So this temp temp employees idea, we ported it over from the RCS team. What they're using is it is for the people who come in as a replacement, last time replacements from the union itself, so. To capture their data, they have the temp temp employees. By default, they know all of the employees that are within this tab. They are not their active employees. They are the people who come in as replacements of of actual employees and. Sometimes whenever they are going to get assigned into a job, that's when they are active, otherwise they are not active and that's how they they track that and later on we can track that with the for our payroll stuff as well that these are the temporary employees they came on the job. And then they left and that was the employment period that we need to pay them.
  Corrina Bustos   46:19 OK, that makes sense.
  Brian Petros   46:20 OK, good. This is one of the. This is a good example of one of the modules that you have from RCS that you could use in the system, right? It's a similar process because they're union as well.
@@ -260,7 +262,7 @@ March 19, 2026, 6:56PM
  ehtesham.anwar   50:31 Hmm.
  Brian Petros   50:40 And and Corrina could could help me better understand all the different things that she's doing with related to the HR related things. But there's quite a few things. I mean not just birthdays of course, but but like, but you know, like certificates and I don't know, Corrina could probably help us by creating a list of all the different things.
  ehtesham.anwar   50:52 Um.
- Brian Petros   50:58 That would we could probably check off and say, OK, yeah, this, this is not, we're never going to touch this if we just keep going the route of just like touching a module by module. So yeah, I'm just throwing that out there. I'm I'm not sure when it would be a good time to sort of break and maybe have a separate meeting with Karina.
+ Brian Petros   50:58 That would we could probably check off and say, OK, yeah, this, this is not, we're never going to touch this if we just keep going the route of just like touching a module by module. So yeah, I'm just throwing that out there. I'm I'm not sure when it would be a good time to sort of break and maybe have a separate meeting with Corrina.
  ehtesham.anwar   51:08 Hmm.
  Brian Petros   51:14 Or if we just should continue on to get to the level of dispatch and jobs 1st and then we could cycle back around and say, OK, what did we miss with it related to employees? I'm thinking that might be a good way to go about it. What do you think?
  ehtesham.anwar   51:19 Mhm. I think all of these HR related and payroll related, most of the things are going to get incorporated into our system when we start processing dispatch, dispatching itself, 'cause that's where all of the people are coming in, all of the assets are coming in and then later on after.

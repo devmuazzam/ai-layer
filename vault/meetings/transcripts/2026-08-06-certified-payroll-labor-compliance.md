@@ -11,8 +11,8 @@ topics: [payroll]
 entities: []
 meeting_date: 2026-08-06
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 1
+normalized: 2026-08-24
+normalized_substitutions: 2
 ---
 
 # Certified Payroll Labor Compliance — 2026-08-06
@@ -302,7 +302,7 @@ August 6, 2026, 6:53PM
  Corrina Bustos   39:55 Um... With this, we have with the certified payroll. A goal would be to be able to communicate with our payroll side to, because every, let's see. This one. Projects trying to pull up a completed, um, let me go back here. There's a specific form that has to be generated and we have to add in their hours, their... Okay, well, this is not. Oh, here we go. So this form, let me turn it. Okay. So this form also has to be generated with each time we work on site. And it has to have all of this information. So it has to have the project ending week, our company information, the job site information, our workers comp information. has to have the employee's information, address, social, name, their fringe benefits have to be marked, and then it has to, we have to pull from each job however many hours that they worked on that specific day for that specific job, and then all of their check deductions. fringe benefits and all their taxes have to be generated on this sheet right now. The systems don't communicate, so this is all manually done. So if there would be a way to pull... that be able to sync the check information with the... payroll information, because right now all of the taxes are stored in ADP, it doesn't filter back into our current program. So if there would be a way where it could filter back into when necessary, and then just auto generate this whole, all of this information, that would be a time saver.
  ehtesham.anwar   42:20 Okay. Yeah. All of these FAD taxes and state taxes, all of these things right now, ADP is doing that for us.
  Corrina Bustos   42:45 Yes.
- ehtesham.anwar   42:47 All right, okay, then we'll have to look into ADB API once we submit the file to them. Do they give us this text reduction information or not?
+ ehtesham.anwar   42:47 All right, okay, then we'll have to look into ADP API once we submit the file to them. Do they give us this text reduction information or not?
  Melissa McNutt   43:01 Also another one, the check copies, Corrina pulls a report from ADP that shows all the check copies for that week. If we could automate that report as well, that would be helpful.
  Corrina Bustos   43:08 Mhm.
  ehtesham.anwar   43:09 Mhm. Check copies.

@@ -11,8 +11,8 @@ topics: [dispatch-scheduling, sales-quoting, field-ops-mobile]
 entities: []
 meeting_date: 2026-06-02
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 1
+normalized: 2026-08-24
+normalized_substitutions: 4
 ---
 
 # Mobile App Sales Dispatch — 2026-06-02
@@ -411,7 +411,7 @@ June 2, 2026, 6:57PM
  Melissa McNutt   56:27 I don't know.
  Ryan Adams   56:29 Oh, I'll look, I'll look into it, yeah.
  Melissa McNutt   56:29 We can look into that. Okay.
- ehtesham.anwar   56:32 Yeah, if some Sarah can give us just the location. So for example, it says we need to go from point A to point B and it tells us, okay, these are the cities or counties that you are moving through. Just give us the names and we can identify within our system if we have permit for that particular asset. that can be applied. If not, we are going to auto-generate the request.
+ ehtesham.anwar   56:32 Yeah, if Samsara can give us just the location. So for example, it says we need to go from point A to point B and it tells us, okay, these are the cities or counties that you are moving through. Just give us the names and we can identify within our system if we have permit for that particular asset. that can be applied. If not, we are going to auto-generate the request.
  Ryan Adams   56:58 Yeah, let me see what I could pull from sources and see what I can get over to you. That might have to be a call where we walk through together to make sure you have enough information that it would work for you.
  ehtesham.anwar   57:08 Mhm. Yeah, absolutely, absolutely. Alright, Lisette, you can continue.
  Brian Petros   57:20 Okay, so for this one, after that I would add the truck.
@@ -420,7 +420,7 @@ June 2, 2026, 6:57PM
  ehtesham.anwar   57:42 Can you? Mhm.
  Brian Petros   58:02 So I was actually just mentioning that to Melissa the other day. So that's why I have to put more information.
  ehtesham.anwar   58:03 Mhm.
- Brian Petros   58:09 So then right here I have the, I have the operator, so I go ahead and save it. So you see I have the operator, and then I need one more employee for. To be the rigor.
+ Brian Petros   58:09 So then right here I have the, I have the operator, so I go ahead and save it. So you see I have the operator, and then I need one more employee for. To be the rigger.
  ehtesham.anwar   58:25 Mhm.
  Brian Petros   58:31 Why does it say query there?
  ehtesham.anwar   58:35 Search.
@@ -450,7 +450,7 @@ June 2, 2026, 6:57PM
  ehtesham.anwar   1:02:10 Second. Yeah.
  Brian Petros   1:02:17 Yeah.
  ehtesham.anwar   1:02:17 We are planning the same thing.
- Corrina Bustos   1:02:18 So that's why we put all of them for the field. That's why we used to just do Euler operator, but then they started bouncing around. So that's why we do all of the options that they could possibly be. Because yes, if they don't have it in their employee profile, it stops Dispatch from being able to assign them in a certain position.
+ Corrina Bustos   1:02:18 So that's why we put all of them for the field. That's why we used to just do oiler operator, but then they started bouncing around. So that's why we do all of the options that they could possibly be. Because yes, if they don't have it in their employee profile, it stops Dispatch from being able to assign them in a certain position.
  ehtesham.anwar   1:02:27 Mhm. Mhm.
  Brian Petros   1:02:37 Yeah, but there it has to be in primary, yeah.
  ehtesham.anwar   1:02:37 Makes sense. All right, this makes sense. All right, so guys, Lisette, let's pick it from here and then process all of the other functions that you do, or sometimes do on the mobile application, so that we can go into the details of that, and also, like we, I'll... I'll go through all of the rules that we have already identified on web and see how they hold up here. And it will also give us time to revisit all of the rules. and find less steps.

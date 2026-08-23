@@ -11,8 +11,8 @@ topics: [dispatch-scheduling, erp-sprint-review]
 entities: []
 meeting_date: 2026-07-01
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 8
+normalized: 2026-08-24
+normalized_substitutions: 10
 ---
 
 # ERP Sprint Reviews Loading Workflow — 2026-07-01
@@ -33,7 +33,7 @@ July 1, 2026, 6:58PM
  jahanzaib.nadeem   1:08 IT.
  Brian Petros   1:09 Hey, how do you pronounce your name? I know it's Jay-Z, right?
  jahanzaib.nadeem   1:15 Yeah.
- Brian Petros   1:16 Yeah, the rapper, and then what's your rapper name? Mosh, Mo Mohsen.
+ Brian Petros   1:16 Yeah, the rapper, and then what's your rapper name? Mosh, Mo Mohsin.
  mohsin.ali   1:20 Wasin.
  Melissa McNutt   1:22 Support.
  Brian Petros   1:23 Mohsin.
@@ -86,7 +86,7 @@ July 1, 2026, 6:58PM
  Melissa McNutt   9:06 Morning. Mhm.
  ehtesham.anwar   9:19 While we were figuring out the flows for those, we said that salespeople have this requirement and they enter this into the system.
  Melissa McNutt   9:31 Yes.
- ehtesham.anwar   9:31 Do they know which tools and regains go to which trucks and which cranes?
+ ehtesham.anwar   9:31 Do they know which tools and riggings go to which trucks and which cranes?
  Melissa McNutt   9:39 No, so like typically when they're adding it, like every crane comes stacked with tools and rigging on it. It's when they need additional stuff. So we have like a rigging bin, kind of like a container box, a shipping container box that Dylan keeps extra rigging in. So the sales guys go to the job and they add that. So Dylan has to go to that rigging box.
  mohsin.ali   9:45 Yeah.
  ehtesham.anwar   10:02 Yeah.

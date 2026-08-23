@@ -11,8 +11,8 @@ topics: [payroll, field-ops-mobile]
 entities: []
 meeting_date: 2026-05-28
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 1
+normalized: 2026-08-24
+normalized_substitutions: 6
 ---
 
 # Mobile App Payroll — 2026-05-28
@@ -53,7 +53,7 @@ May 28, 2026, 6:59PM
  Corrina Bustos   7:26 Going to be, okay. So it's going to be covered 401k, processing payroll. It's going to be covering trainings. and. What else? Reporting, any reports that we need, it has all of those reportings. All of our employee handbook stuff that covers in onboarding. Any types of communications that need to go out to the employees, sending, sending memos, sending notices, performance reviews, any type of OFIs or like pit plans or any type of performance evaluations. So it kind of kind of encompasses all of that.
  ehtesham.anwar   8:18 So this is the new system that you guys are using.
  Melissa McNutt   8:21 Yeah, so we're currently using it for the onboarding and payroll. We just had a meeting with them today. We were signing up for them to do more. So if you want to see from like the onboarding, do you want to see the process, how it works when an employee gets onboarded online?
- ehtesham.anwar   8:39 Yeah, I want to see like everything that HR is doing so then we can extract out like the right information. So whatever you guys have, if most of your system is manual, you can like onboard us or do your HR system and if there's a new system ADB that you guys are starting to use. If you guys can walk us through that.
+ ehtesham.anwar   8:39 Yeah, I want to see like everything that HR is doing so then we can extract out like the right information. So whatever you guys have, if most of your system is manual, you can like onboard us or do your HR system and if there's a new system ADP that you guys are starting to use. If you guys can walk us through that.
  Corrina Bustos   9:05 Okay, as far as the new system, that is not going to be an implementation for like a month to 12 weeks. So we don't have access to all of that. But as far as the current process, yes, I can get your information. Unfortunately, I can like show you like the high level, but to see it. like granular, I have to actually enroll somebody with their like social security number and everything. But I can show you like from like a high level of all of the information, will that work?
  ehtesham.anwar   9:41 Yeah.
  Corrina Bustos   9:42 Okay. Let me see.
@@ -133,7 +133,7 @@ May 28, 2026, 6:59PM
  Melissa McNutt   23:55 The only thing I'm wondering though, are you going to process payroll within our system Wes where we're handling all the taxes and everything? Are you still keeping ADP as a third party for that?
  Corrina Bustos   24:04 Mhm.
  Wes Staley   24:08 Cortan.
- ehtesham.anwar   24:08 So, we have only... We haven't like gotten into the payroll part, but we need to, like, I need to understand what is the payroll aspect of ADB and why do you guys are looking to use that system? Because Wes, you are absolutely right. That should be the right approach that we have one system, ERP, and that handles everything. But at the end of the day, we also need to focus that these systems, these systems like ATB, they are very highly sophisticated for certain parts of the operations, right? So I need to understand what is within the ATB, what are the things that you guys are using.
+ ehtesham.anwar   24:08 So, we have only... We haven't like gotten into the payroll part, but we need to, like, I need to understand what is the payroll aspect of ADP and why do you guys are looking to use that system? Because Wes, you are absolutely right. That should be the right approach that we have one system, ERP, and that handles everything. But at the end of the day, we also need to focus that these systems, these systems like ATB, they are very highly sophisticated for certain parts of the operations, right? So I need to understand what is within the ATB, what are the things that you guys are using.
  Wes Staley   24:37 ERP. Hey, in the box.
  ehtesham.anwar   24:49 And then we need to, I need to, like, we need to prioritize if we can do everything within, like, the first 12 months or not, 'cause I, other, other...
  Corrina Bustos   24:56 Ponce.
@@ -170,7 +170,7 @@ May 28, 2026, 6:59PM
  Corrina Bustos   29:33 Okay.
  ehtesham.anwar   29:35 Yeah, and from the looks of it, these three processes that are on the screen, HR, payroll, and talent, these are the most important for you guys from ADP, right?
  Corrina Bustos   29:49 Yes.
- ehtesham.anwar   29:51 All right, so what we are going to do is we are going to, if you can like give us access to your ADB system somehow, I'm not sure how you guys are going to do that. And once we have the access, we are going to see what are the capabilities that their APIs provide us. They surely have APIs, I just checked them.
+ ehtesham.anwar   29:51 All right, so what we are going to do is we are going to, if you can like give us access to your ADP system somehow, I'm not sure how you guys are going to do that. And once we have the access, we are going to see what are the capabilities that their APIs provide us. They surely have APIs, I just checked them.
  Corrina Bustos   30:02 Mhm. Okay.
  ehtesham.anwar   30:12 But what is the extent of the APIs? That I'm not sure of. We'll have to look into detail.
  Corrina Bustos   30:21 Okay.
@@ -217,7 +217,7 @@ May 28, 2026, 6:59PM
  Corrina Bustos   37:29 Mm-hmm.
  ehtesham.anwar   37:31 to like the next part of this operation. You do this for every single ticket.
  Corrina Bustos   37:34 Mhm. 80% of them, yes.
- ehtesham.anwar   37:42 OK, so if, for example, you are looking at some kind of a view which tells you all of the all of the rules that you have to look for, all of the... things within the ticket, it gives you a small snapshot that okay, times are matched correctly with some Sarah and times are logged and maybe all of the other things that you're looking into these tickets for, if you can just give us that all of the checks.
+ ehtesham.anwar   37:42 OK, so if, for example, you are looking at some kind of a view which tells you all of the all of the rules that you have to look for, all of the... things within the ticket, it gives you a small snapshot that okay, times are matched correctly with Samsara and times are logged and maybe all of the other things that you're looking into these tickets for, if you can just give us that all of the checks.
  Corrina Bustos   38:11 Mhm.
  ehtesham.anwar   38:15 points in a written document, we can create a view for you on a ticket. And then if everything checks out, what you can do is you can just move on to the next step. Otherwise, if there is some kind of problem, we identify that and then you go into the ticket.
  Corrina Bustos   38:16 Okay. Yeah. Mhm. Yeah, I can do that.
@@ -336,7 +336,7 @@ May 28, 2026, 6:59PM
  Wes Staley   55:33 because that has all the rules we have to go off of. And then, Ehtesham, I need you to message Brian and ask him to introduce you to the payroll, his payroll application, because he has already gone through all those rules and coded them into his application. And I think you and your team will be able to understand them a lot easier broken into the segments.
  Corrina Bustos   55:34 Okay.
  Wes Staley   55:55 That are coded.
- ehtesham.anwar   55:57 Yeah, that's my idea as well. For the next call, what I want to do is I want to focus on the mobile application side of ERP so that we can, because up until this point, the identification of the mobile application was from the document that Brian sent initially, and that was solely on tickets. of one person was processing their ticket and today's call have opened up all of the other functionalities. So for the next call, I want to focus on mobile application. What are the functionalities and features that you are looking into to add into the mobile application? And yes, after we are done with the... Talking about the mobile application, I would like to talk to Brian and also like Tanzi and Mohsen to be included in that conversation so that we can process his payroll system and see how we are going to integrate it within the ERP.
+ ehtesham.anwar   55:57 Yeah, that's my idea as well. For the next call, what I want to do is I want to focus on the mobile application side of ERP so that we can, because up until this point, the identification of the mobile application was from the document that Brian sent initially, and that was solely on tickets. of one person was processing their ticket and today's call have opened up all of the other functionalities. So for the next call, I want to focus on mobile application. What are the functionalities and features that you are looking into to add into the mobile application? And yes, after we are done with the... Talking about the mobile application, I would like to talk to Brian and also like Tanzi and Mohsin to be included in that conversation so that we can process his payroll system and see how we are going to integrate it within the ERP.
  Wes Staley   56:52 Okay, so today, I just want to be super, super honest. I felt like today we were discussing a topic that you did not have enough information on. So when we're going over payroll, and going over Boom Pay, you had the screen share, but you didn't have the information that you could go over like a day before and have questions on. And our payroll is so confusing that I think you need that information. So whatever we're going to do, say on next Tuesday, I think our team needs to provide you with all the information for that call on Monday. So these calls can be much more focused because all these rules coming in, it's I think it's adding a lot of.
  ehtesham.anwar   57:34 Yeah. Yeah. Esq.
  Wes Staley   57:43 IT. These calls could could get a lot more information if you had the you had the information in front of you.

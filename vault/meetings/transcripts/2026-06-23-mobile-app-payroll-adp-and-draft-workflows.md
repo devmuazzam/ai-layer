@@ -11,6 +11,8 @@ topics: [payroll, field-ops-mobile]
 entities: []
 meeting_date: 2026-06-23
 kind: transcript
+normalized: 2026-08-24
+normalized_substitutions: 6
 ---
 
 # Mobile App Payroll ADP And Draft Workflows — 2026-06-23
@@ -164,7 +166,7 @@ June 23, 2026, 6:59PM
  ehtesham.anwar   20:50 Yeah, yeah.
  Brian Petros   20:51 Yeah, I collapsed the view on my phone for a second. I couldn't find the microphone. Okay, yeah. So where do you want to start? I can open up the Visual Studio. and show you the files. I saved them to, or let me share my screen.
  ehtesham.anwar   21:05 It. What is the setup that we will require to run your application since you are using data warehousing as well? Maybe have a snapshot for us for the data warehouse.
- Brian Petros   21:18 Yeah. Yeah, yeah, so let me, let me go. Okay, so this is, I'm using SQL Server Management Studio, right? The SSMS. I have only really in here connected to two databases. This is the... Server and I, you get this is the same one that you guys are connecting to. This is next gen, the live, and then our test domain, but I'm gonna... connect to the other one. So this is the one that's local. So this is the name of my computer. the name of the SQL, the SQL instance, right? And there's two databases on this instance. Let me connect.
+ Brian Petros   21:18 Yeah. Yeah, yeah, so let me, let me go. Okay, so this is, I'm using SQL Server Management Studio, right? The SSMS. I have only really in here connected to two databases. This is the... Server and I, you get this is the same one that you guys are connecting to. This is NexGen, the live, and then our test domain, but I'm gonna... connect to the other one. So this is the one that's local. So this is the name of my computer. the name of the SQL, the SQL instance, right? And there's two databases on this instance. Let me connect.
  ehtesham.anwar   21:56 All right.
  Brian Petros   22:04 So this is what it looks like. So I'll, I, let's see here is. Payroll app files, so.
  jahanzaib.nadeem   22:11 So, Brian, like...
@@ -185,7 +187,7 @@ June 23, 2026, 6:59PM
  Corrina Bustos   24:56 Oh, perfect. Okay, cool.
  ehtesham.anwar   24:58 And one more thing, Corrina, I was thinking about your payroll. We talked about how you create the payroll and then how Brian system is helping you to verify all of those details. And the next part is you guys are going to upload all of the data to.
  Corrina Bustos   25:00 Mm-hmm. Yeah.
- ehtesham.anwar   25:17 ADB and then ADB is going to process the payroll, right?
+ ehtesham.anwar   25:17 ADP and then ADP is going to process the payroll, right?
  Corrina Bustos   25:22 Yes.
  ehtesham.anwar   25:23 A disbursement of. Actual funds is going to go through.
  Corrina Bustos   25:30 Right, taxes, all that stuff gets, yes, gets run through ADP, yeah.
@@ -287,7 +289,7 @@ June 23, 2026, 6:59PM
  Brian Petros   39:15 Mm.
  ehtesham.anwar   39:16 Right, and.
  Brian Petros   39:17 Yeah, you'll have, yeah, go ahead.
- ehtesham.anwar   39:20 And then, once we have your system, once we have some Sarah, because we are working on the background on some Sarah related functionalities, we need to start working on that to complete tasks and then ADB account, so that once we have all of this data, then we can plan better how to like move forward with. everything and what are the functionalities the system needs to have. Some of the functionalities I can get from what we have talked about so far. But at the end of the day, since we have a better system that Brian has created, it's going to be better if we start from there.
+ ehtesham.anwar   39:20 And then, once we have your system, once we have Samsara, because we are working on the background on Samsara related functionalities, we need to start working on that to complete tasks and then ADP account, so that once we have all of this data, then we can plan better how to like move forward with. everything and what are the functionalities the system needs to have. Some of the functionalities I can get from what we have talked about so far. But at the end of the day, since we have a better system that Brian has created, it's going to be better if we start from there.
  Corrina Bustos   39:42 Mhm. OK.
  ehtesham.anwar   39:59 Makes sense.
  Corrina Bustos   40:01 Yeah.

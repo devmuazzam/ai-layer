@@ -11,8 +11,8 @@ topics: [dispatch-scheduling]
 entities: []
 meeting_date: 2026-05-14
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 7
+normalized: 2026-08-24
+normalized_substitutions: 12
 ---
 
 # Loading Scheduling Pre Ticketing — 2026-05-14
@@ -82,7 +82,7 @@ May 14, 2026, 7:00PM
  Brian Petros   9:07 So for the operator and the oiler, when it's just crane plus one truck only, it's the oiler. He does all the paperwork for the operator. So he includes both of their timing. They each drive one piece of equipment, so each one drives one, but they follow each other. So they will arrive at the same time. When they, we do have other cranes that have the operator, the oiler, and then four other trucks, each other driver will do their own ticket.
  ehtesham.anwar   9:33 Mhm. Okay, so per equipment we are sending one ticket.
  Brian Petros   9:41 It will be 1 ticket. per employee. on the same job.
- ehtesham.anwar   9:47 Mhm. OK, so if, for example, for a crane, Euler and operator are going, we will have two tickets, one could, and if...
+ ehtesham.anwar   9:47 Mhm. OK, so if, for example, for a crane, oiler and operator are going, we will have two tickets, one could, and if...
  Brian Petros   9:56 One. Wine with both of them in it.
  ehtesham.anwar   10:00 Okay, and if a truck is going, but there's two crew members that are going in that truck, are we going to send one ticket to them as well, or separate tickets for them?
  Brian Petros   10:12 We can do one ticket and then put them on the same equipment. If they're going to write together, if that person is going to write together, then I can just do one ticket with both of them on that ticket and then one of them can complete it. Like you guys mentioned before, if it like what if one gets there before the other? But in this case, since they're on the same piece of equipment, they will arrive at the same time. So the same ticket can be used.
@@ -104,7 +104,7 @@ May 14, 2026, 7:00PM
  Brian Petros   12:47 OK. I, I, I talk.
  ehtesham.anwar   13:00 You can see my screen.
  Brian Petros   13:04 Yes.
- ehtesham.anwar   13:06 All right, so... Here, we can do 2 things: create some rules based on those rules, we can automatically send tickets, or we can give Lisette manual option to create tickets out of this. Our initial idea for creating this task was, once these people are assigned and they accept the... allocation, then we'll be sending them the ticket on their own. Since now we have decided that if for a piece of equipment there are two people that are assigned, one of them is going to get a ticket and will be responsible for that. So... For each screen set itself, Lisette, if we send Eulers the tickets by default and make them responsible for filling it out, it's going to be fine. if we do this automatically.
+ ehtesham.anwar   13:06 All right, so... Here, we can do 2 things: create some rules based on those rules, we can automatically send tickets, or we can give Lisette manual option to create tickets out of this. Our initial idea for creating this task was, once these people are assigned and they accept the... allocation, then we'll be sending them the ticket on their own. Since now we have decided that if for a piece of equipment there are two people that are assigned, one of them is going to get a ticket and will be responsible for that. So... For each screen set itself, Lisette, if we send oilers the tickets by default and make them responsible for filling it out, it's going to be fine. if we do this automatically.
  Brian Petros   14:06 If we send the tickets, yes.
  ehtesham.anwar   14:10 Alright, and since we just discussed a... another case where a truck is going, but there are two people going with that truck.
  Brian Petros   14:23 And then one of it shows up to the job search.
@@ -146,7 +146,7 @@ May 14, 2026, 7:00PM
  Brian Petros   21:22 Yeah.
  ehtesham.anwar   21:23 And since we are not like attaching oilers, do we need to like give them the extra information? Because this person who was assigned to the truck, they will have the information of what is in the truck at that point, right? So do we want to give all of the information to oiler as well that okay, they have crane information, they have support load information, and then they also have tools and rigging out?
  Brian Petros   21:48 Yes. Yeah. Yes.
- ehtesham.anwar   21:49 Information. OK, and while they are leaving the yard. Do we need to, or do we need to ask Euler that, okay, all of these tools and regains, all of the like assets, they are with them and they have been handed over all of these items, or do we ask each of these people who are assigned? to us particular piece of recruitment.
+ ehtesham.anwar   21:49 Information. OK, and while they are leaving the yard. Do we need to, or do we need to ask oiler that, okay, all of these tools and riggings, all of the like assets, they are with them and they have been handed over all of these items, or do we ask each of these people who are assigned? to us particular piece of recruitment.
  Brian Petros   22:15 Like almost like a pre-trip type thing. The notes will be on their job that it requires this extra. So when they do see the job comments description, they'll see that it requires this extra equipment. So they will be looking for it. I think the fact that we're going to
  ehtesham.anwar   22:35 Mhm.
  Brian Petros   22:40 be able to assign the equipment, the tools and bringing to their job specifically, it will be nice if they can see the drop down of like the attachments of those pieces of equipment.
@@ -271,7 +271,7 @@ May 14, 2026, 7:00PM
  Ryan Adams   47:59 No.
  ehtesham.anwar   48:12 That is not a question that we can answer at any given point for the whole system. What we can do is we create, we figure out what is the next part in our flow overall of operations. We make sure it gets all of the right information from the previous flow. And then it gives all of the right information to the next floor and all of the operations within that node gets completed. That's what we are doing right now, sure. Then tickets comes in. This is where our mobile application is going to come in, separate from our web portal. Then payroll comes back on the web portal. Portal Accounting comes back on the web portal, right? And that's where, like, once we are trying to process payroll, that's when ADP comes in, so that we can enable the HR module, get all of the information, and then...
  Brian Petros   49:04 Yeah.
- ehtesham.anwar   49:08 payroll can do their own things. Once that is completed, right, and then that's where we figure out ADB connection with the system.
+ ehtesham.anwar   49:08 payroll can do their own things. Once that is completed, right, and then that's where we figure out ADP connection with the system.
  Ryan Adams   49:11 Understood. Yeah.
  ehtesham.anwar   49:18 Otherwise, what we'll do is we'll try to figure out all of these connections. We'll try to figure out the whole system in one go, and for a couple of months, we might have like a very beautiful picture to showcase, okay, this is what we are going to do that is very detail-oriented, but we won't have done anything.
  Ryan Adams   49:18 Correct.

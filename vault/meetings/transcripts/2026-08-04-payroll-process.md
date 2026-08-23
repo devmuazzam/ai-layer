@@ -11,8 +11,8 @@ topics: [payroll]
 entities: []
 meeting_date: 2026-08-04
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 12
+normalized: 2026-08-24
+normalized_substitutions: 18
 ---
 
 # Payroll Process — 2026-08-04
@@ -129,15 +129,15 @@ August 4, 2026, 6:55PM
  Corrina Bustos   25:25 Yeah, that would be great.
  ehtesham.anwar   25:28 And then we can use the same sendback functionality for the workers to remind them to complete.
  Corrina Bustos   25:33 Perfect, okay.
- ehtesham.anwar   25:36 All right, we'll do that. We'll add that into this as well. This is going to be the personal profile. and we do all of the operations here on this profile, then we go back. This is going to be just a dashboard where you can see all of the people whose entries are flagged that needs your review. If they are flagged for some particular reason. It's going to show the reason right there, why they are flagged. All of the approved entries, all of the sent back entries that you have sent to the crane super again, and if you have any employee who does not have a DB file on them. I believe this is going to be important because we might not have them onboarded on the system, ADP system, or if they haven't completed that, that is going to be really crucial to have that insight for you. On the other hand, at the top, we have all of the KPIs, total employees, pending review, flat entries, send back entries, approved ones with nodes missing, ATP and average utilization per employee. Do you think and we need to show anything else here in this page?
+ ehtesham.anwar   25:36 All right, we'll do that. We'll add that into this as well. This is going to be the personal profile. and we do all of the operations here on this profile, then we go back. This is going to be just a dashboard where you can see all of the people whose entries are flagged that needs your review. If they are flagged for some particular reason. It's going to show the reason right there, why they are flagged. All of the approved entries, all of the sent back entries that you have sent to the crane super again, and if you have any employee who does not have a DB file on them. I believe this is going to be important because we might not have them onboarded on the system, ADP system, or if they haven't completed that, that is going to be really crucial to have that insight for you. On the other hand, at the top, we have all of the KPIs, total employees, pending review, flat entries, send back entries, approved ones with nodes missing, ADP and average utilization per employee. Do you think and we need to show anything else here in this page?
  Corrina Bustos   27:06 I think. Dean. Arturo. Hey. I don't think so off of this first.
  Brian Petros   27:34 Would there be a filter for type of employees?
  Melissa McNutt   27:35 And and can you? Yeah, I was like, can you filter by, like, route, like employee type?
  ehtesham.anwar   27:42 We can add the filtration mode right now we have added the filtration sorting and the employees we can add the employee type as well in here. Corrina, do you see or anybody else see something that is missing from this weekly payroll dashboard?
  Corrina Bustos   28:19 Where, where would the like? How would you push it through to the import? Would that be on this page or a different page?
- ehtesham.anwar   28:27 This page, you have this at the top two items ready for for sent to ATP.
+ ehtesham.anwar   28:27 This page, you have this at the top two items ready for for sent to ADP.
  Corrina Bustos   28:33 Okay.
- ehtesham.anwar   28:35 So all of the items, whenever they are going to be available to be sent to ATP, you will just click on this. You will select, this will show you all of the entries and you will just send to ATP.
+ ehtesham.anwar   28:35 So all of the items, whenever they are going to be available to be sent to ADP, you will just click on this. You will select, this will show you all of the entries and you will just send to ADP.
  Corrina Bustos   28:48 And then how would you see the ones that are still pending, like if we sent them back to either the worker or the supervisor? Is there an easy way where we can see which ones of those are pending?
  ehtesham.anwar   29:01 Yeah, I was going to show you right here. that we have sent to and there are four pending. At the top, it's also going to show you sent back as a different.
  Corrina Bustos   29:13 Okay.
@@ -167,7 +167,7 @@ August 4, 2026, 6:55PM
  Corrina Bustos   31:30 Okay.
  ehtesham.anwar   31:31 Would Crane Super need that functionality as well?
  Corrina Bustos   31:38 Yes.
- ehtesham.anwar   31:39 OK, we'll add this for both of them, for you and for the Queen Super as well.
+ ehtesham.anwar   31:39 OK, we'll add this for both of them, for you and for the Crane Super as well.
  Corrina Bustos   31:48 And what is the flow right now? Does it, is it? the payroll manager and then the crane super or who is the first to approve that you have set up now.
  ehtesham.anwar   31:58 So right now, since it's going to be a web connected with the whole system, ERB system, you will see all of the entries. If they are not approved, you will see this status. and you will have the option to approve them as well. Same entries, all of these are also going to be visible for the screen super as well, so that they can approve. Let me show you. What they are going to see?
  Brian Petros   32:36 So currently there's a daily process for the payroll for checking the information on the tickets on a daily basis to kind of keep up with it. So I'm hoping this the new system will automatically catch a lot of these things that we're searching for, but there might still be a need to maybe even.
@@ -234,7 +234,7 @@ August 4, 2026, 6:55PM
  Brian Petros   41:50 Yeah, sounds good. Yeah, we have one. I remember that Corrina had done at least one, and but it was a while back when we first started it long ago, like a few months ago. But so we have a head start, and but it needs to be updated for sure. Yeah, for sure. I could spend a few minutes to demo like the...
  ehtesham.anwar   41:59 Mhm. OK. All right.
  Brian Petros   42:09 the Excel thing that we have that generates the ADP file, so you can see how that works if you want. Take a few minutes.
- ehtesham.anwar   42:15 Yeah. One thing that I wanted to ask Brian from you is, because you already mentioned that you guys are trying to create the files from your system for the ADB. Are you guys creating files for the individual members, team members, or are you creating one file? Because I saw a file which had...
+ ehtesham.anwar   42:15 Yeah. One thing that I wanted to ask Brian from you is, because you already mentioned that you guys are trying to create the files from your system for the ADP. Are you guys creating files for the individual members, team members, or are you creating one file? Because I saw a file which had...
  Brian Petros   42:27 No.
  ehtesham.anwar   42:37 like a lot of tabs down there for each person.
  Brian Petros   42:40 Yeah.

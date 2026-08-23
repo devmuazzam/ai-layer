@@ -11,8 +11,8 @@ topics: [payroll]
 entities: []
 meeting_date: 2026-07-09
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 4
+normalized: 2026-08-24
+normalized_substitutions: 16
 ---
 
 # ADP And Data Migration — 2026-07-09
@@ -96,7 +96,7 @@ July 9, 2026, 7:00PM
  Corrina Bustos   9:02 You can either create them or you can upload. Zero.
  ehtesham.anwar   9:05 Yeah. OK, so view on porting dashboard. And where do you guys, if manager checklist, you start creating some kind of forms here, how do you do that in your account?
  Corrina Bustos   9:29 That part, I'm not sure yet. I haven't been trained on that. That's part of the new implementation that's happening within the next few weeks.
- ehtesham.anwar   9:35 All right, and what about onboarding, like all of the files that you guys have set up? How did you do that? Do you have like an idea or ADB people did that for you guys?
+ ehtesham.anwar   9:35 All right, and what about onboarding, like all of the files that you guys have set up? How did you do that? Do you have like an idea or ADP people did that for you guys?
  Corrina Bustos   9:44 Um, no, so that is, let me see, so it is right here, manage onboarding.
  ehtesham.anwar   9:52 Okay.
  Corrina Bustos   9:55 And then here's the standard system.
@@ -110,7 +110,7 @@ July 9, 2026, 7:00PM
  Corrina Bustos   11:15 Mhm. It's for everybody's payroll.
  ehtesham.anwar   11:24 Okay, so that means that every person in the company is going to have a profile on ADP.
  Corrina Bustos   11:30 Correct, yes.
- ehtesham.anwar   11:33 How many profiles do we have on ATP right now? Can I answer?
+ ehtesham.anwar   11:33 How many profiles do we have on ADP right now? Can I answer?
  Corrina Bustos   11:37 Um, because it has it, it's like active or total.
  ehtesham.anwar   11:41 Okay. Total.
  Corrina Bustos   11:43 over 300.
@@ -130,7 +130,7 @@ July 9, 2026, 7:00PM
  Corrina Bustos   13:37 and then the CSV file that gets created off of it gets uploaded with a special name and it gets regenerated and worked into a new sheet that looks exactly like the other ones.
  ehtesham.anwar   13:51 All right, makes sense.
  Corrina Bustos   13:53 Yeah, and then right here where it says source, it would say import instead of manual entry.
- ehtesham.anwar   13:58 All right, all right, makes sense. And what kind of roles do we have within ADB port right now?
+ ehtesham.anwar   13:58 All right, all right, makes sense. And what kind of roles do we have within ADP port right now?
  Corrina Bustos   14:09 Can you clarify?
  ehtesham.anwar   14:11 So do you have roles within ADP employee profiles?
  Corrina Bustos   14:18 Yes, there's different rules. Mhm. There are. Here. So these are the different types of roles that can be given to employees.
@@ -149,7 +149,7 @@ July 9, 2026, 7:00PM
  ehtesham.anwar   15:53 I'm not wondering about the access, I'm wondering about their job functions. How do we handle that in here? The 2 things, one, this is really helpful. Yeah, this is really helpful because we are thinking of creating the employees directly from HR instead of...
  Kyle Harlow   15:56 Okay.
  Corrina Bustos   16:01 Oh, like their job role? Oh, okay.
- ehtesham.anwar   16:12 going on to ADB separately and create profiles here.
+ ehtesham.anwar   16:12 going on to ADP separately and create profiles here.
  Kyle Harlow   16:15 Mhm.
  ehtesham.anwar   16:16 So, we can we can use the your permissions profiles, and then the other thing is going to be their actual job Room.
  Kyle Harlow   16:22 No. In.
@@ -214,7 +214,7 @@ July 9, 2026, 7:00PM
  Corrina Bustos   22:20 They have access to, but it's been me that's been pulling and sharing.
  ehtesham.anwar   22:26 Okay, so so far, like the understanding that I've got of the whole usage of ADP is we get people's onboarding and the second thing is we input the payroll. We input the payroll and from the looks of it, it's going to be automated from your files.
  Corrina Bustos   22:45 Mhm.
- ehtesham.anwar   22:46 that you and running at creating on the back end. and then you extract out the reports. Is there any function, other function that ADB provides us?
+ ehtesham.anwar   22:46 that you and running at creating on the back end. and then you extract out the reports. Is there any function, other function that ADP provides us?
  Corrina Bustos   22:57 Yes, so it also has the learning management system, which we are, it's up here, that has all the like trainings that we can send our employees. The new system that we're getting, that we're working on the implementation of, it's going to have like a more like robust. learning management, and then it's also going to have a recruitment module, which is going to cover all of our hiring, like that whole implementation process, interviews, testing, all of that stuff through recruitment. And it's also going to have the annual, like the annual and 90 day reviews that are in there. We also have a new function that we just, is going to be starting in September is 401k. So that's all going to be generated directly from ADP into the 401k. system because right now I manually do that. So that's all going to be automated through ADP.
  ehtesham.anwar   24:02 Okay. Mhm. Does ADP help in like payrolls when it comes to employees individually?
  Corrina Bustos   24:15 Um... Individually.
@@ -250,7 +250,7 @@ July 9, 2026, 7:00PM
  Corrina Bustos   28:12 That's separate. No, that's a separate directly union website, yeah.
  ehtesham.anwar   28:15 But.
  Brian Petros   28:19 Okay.
- ehtesham.anwar   28:22 There are two things that, Brian, I'm thinking of automating through ERP. One is employee creation and then, so whenever an employee is going to get created, it is all of this basic information that is required in ADB, plus some information if we. decide if there is some information that we require, we are going to create that in ERP and then through ERP we are going to say create this in ADB and then we have orchestration of onboarding process, ADB onboarding process, just a single click on ERP and the third thing that. I'm thinking of, like, uh... automating his payroll. So since Brian's system is going to get integrated with ERP as well, instead of creating the Excel sheets or CSV sheets, what we do is we, once Corrina is done, she has finalized everything, then she just clicks one single button and everything goes to ATP through APIs.
+ ehtesham.anwar   28:22 There are two things that, Brian, I'm thinking of automating through ERP. One is employee creation and then, so whenever an employee is going to get created, it is all of this basic information that is required in ADP, plus some information if we. decide if there is some information that we require, we are going to create that in ERP and then through ERP we are going to say create this in ADP and then we have orchestration of onboarding process, ADP onboarding process, just a single click on ERP and the third thing that. I'm thinking of, like, uh... automating his payroll. So since Brian's system is going to get integrated with ERP as well, instead of creating the Excel sheets or CSV sheets, what we do is we, once Corrina is done, she has finalized everything, then she just clicks one single button and everything goes to ADP through APIs.
  Corrina Bustos   29:26 Mhm.
  ehtesham.anwar   29:28 These are things that I have like we have figured out so far to automate with respect to employee profiles, with respect to onboarding and payroll. Is there any other thing that you can see might be beneficial to automate and house in one system?
  Corrina Bustos   29:30 IT. Um, can you explain your thoughts about the, so if, if... their employee information is entered into the ERP, it's automatically going to push into ADP.
@@ -268,13 +268,13 @@ July 9, 2026, 7:00PM
  Corrina Bustos   31:44 Mm.
  ehtesham.anwar   31:57 manually, but later on we are going to change most of this work into an automated stuff and most of the times you will only have to see ERP and deal with it.
  Corrina Bustos   32:09 Okay. Makes sense.
- ehtesham.anwar   32:13 Yeah, and similarly to this onboarding process, the second flow is all of this Brian system incorporated. Ticket, we have the ticketing system on the mobile, we have jobs, coordinations, everything is within ERP, right? So it should be able to, we should be able to integrate Brian system. Obviously, Brian System is for FCC right now and a lot of manual entries and data that is getting in, but on the other end, we have different data sets, so it's going to be different. Once Brian System generates all of the stuff, you will have to approve that. Once it is approved, it goes to ADB automatically, and then...
+ ehtesham.anwar   32:13 Yeah, and similarly to this onboarding process, the second flow is all of this Brian system incorporated. Ticket, we have the ticketing system on the mobile, we have jobs, coordinations, everything is within ERP, right? So it should be able to, we should be able to integrate Brian system. Obviously, Brian System is for FCC right now and a lot of manual entries and data that is getting in, but on the other end, we have different data sets, so it's going to be different. Once Brian System generates all of the stuff, you will have to approve that. Once it is approved, it goes to ADP automatically, and then...
  Corrina Bustos   32:48 Sing. Esq.
  ehtesham.anwar   32:56 We can create a quick approval process from the ERP as well, or if you want it to stay on ADP, we can do that. And all of these functionalities are going to get automated. You won't have to deal with multiple different systems.
  Corrina Bustos   33:08 Maybe. Perfect, okay. And will that also... If I add in their, like their hire date and their birth date, will that also generate into our Team calendar? Can we have that function? Because that's a, like, birthdays are big for us, and anniversary. So right now I have to manually add everything into it. But can we have it to where once it's added into the ERP, it talks to the Team's Outlook calendar and automatically adds it into those calendars for everybody?
  ehtesham.anwar   33:45 Yes, we can absolutely do that. We haven't like talked about this in greater detail, but this is easily doable.
  Corrina Bustos   33:47 Okay. Yeah. Okay.
- ehtesham.anwar   33:57 All right. All, thank you very much, Corrina, for all of this information. This, like, we are finalizing this stuff. We are waiting for ADB development APIs. As soon as we get there, we can finally see if all of the things that we have talked about are possible, if they are possible, how they are possible, then create the implementation plan.
+ ehtesham.anwar   33:57 All right. All, thank you very much, Corrina, for all of this information. This, like, we are finalizing this stuff. We are waiting for ADP development APIs. As soon as we get there, we can finally see if all of the things that we have talked about are possible, if they are possible, how they are possible, then create the implementation plan.
  Corrina Bustos   34:07 If you. Thank you. Yes.
  ehtesham.anwar   34:19 Out of it.
  Corrina Bustos   34:20 Okay, you're welcome.
@@ -290,7 +290,7 @@ July 9, 2026, 7:00PM
  ehtesham.anwar   36:20 Yeah, absolutely.
  Brian Petros   36:20 To give us more, more richer, yeah, reporting.
  Corrina Bustos   36:21 Yeah.
- ehtesham.anwar   36:23 Yeah, one of the reasons I was asking more custom fields is that... If this does not work of creating an employee from an API perspective and it creates some kind of a hindrance in our operational flows, the other way around would be ADB house all of that data and we enter custom fields from the ERPs. So just like we are trying to save.
+ ehtesham.anwar   36:23 Yeah, one of the reasons I was asking more custom fields is that... If this does not work of creating an employee from an API perspective and it creates some kind of a hindrance in our operational flows, the other way around would be ADP house all of that data and we enter custom fields from the ERPs. So just like we are trying to save.
  Corrina Bustos   36:39 Good.
  ehtesham.anwar   36:50 ADP profile into employee profile within ERP, we can do the opposite as well. Obviously, ERP profile is, ERP is our own system, we can do anything in there, but on the other hand, ADP is going to be limited, right? So if we have to do that, we'll have to do that.
  Corrina Bustos   36:54 People. Okay.

@@ -11,8 +11,8 @@ topics: [product-sync]
 entities: []
 meeting_date: 2026-03-24
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 13
+normalized: 2026-08-24
+normalized_substitutions: 15
 ---
 
 # TCG CC Product Sync Demo — 2026-03-24
@@ -148,7 +148,7 @@ March 24, 2026, 6:57PM
  ehtesham.anwar   35:40 Yeah.
  Wes Staley   35:42 Yeah, there's there's two types of of certifications for the OR there's three types of certifications for the crane. First of all, it's a Class A or B license, and then you have to have a quad quadrennial and an annual certification inspection of the machinery and equipment.
  Brian Petros   35:42 OK.
- Wes Staley   35:57 And then from the people side, every five years they have to get a, they call it a NCCCO is the is the name brand of the most known, but a operator certification that covers five years and the types of cranes. That they are certified on and the types of rigor or or rigor certifications they have also. Those are the two different classifications of certifications.
+ Wes Staley   35:57 And then from the people side, every five years they have to get a, they call it a NCCCO is the is the name brand of the most known, but a operator certification that covers five years and the types of cranes. That they are certified on and the types of rigger or or rigger certifications they have also. Those are the two different classifications of certifications.
  Kyle Harlow   36:27 And I would say that in addition to that, I think it'd be nice to be able to uh and. Amongst the company or whoever is the management manager of that person, they also who they. Who's allowed to do what, right? I I my dispatch has a list of roughly who runs what and what they're capable of, so they put them on the right places to win, right? So I I think that's really important and especially as you continue to to ****, you know, scale out out into other people. When when we hire people knowing what they're what they're able to do, what their capabilities of are of and what dispatch has them go do, because a lot of those guys will just say yes to anything and that that's not ideal, right? So we need to, we need to make sure that we're putting ourselves in a position that we're protecting the company.
  ehtesham.anwar   37:13 Mhm.
  Kyle Harlow   37:18 Um, with who we're sending to what jobs and what they're doing, not only on just like a official Uh license or this piece of paper says I can do this. A a real human saying. I've seen them do it. They do a good job. They know what they're doing. They're they're they're qualified to do this, this work, you know? And that's how all of our, like, qualifications of like, even being employed here is based on our judgment. As a company that that person is qualified to do the work and that's how we we judge if we work them or if we put them back at the hall because they they're not qualified to do the work, right. And obviously different model cranes and different pieces of equipment take different. Understandings and skill sets.

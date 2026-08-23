@@ -11,8 +11,8 @@ topics: [dispatch-scheduling]
 entities: []
 meeting_date: 2026-06-18
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 7
+normalized: 2026-08-24
+normalized_substitutions: 8
 ---
 
 # Dispatch Permits — 2026-06-18
@@ -211,7 +211,7 @@ June 18, 2026, 6:49PM
  Kyle Harlow   59:34 Yeah. Yeah.
  ehtesham.anwar   59:38 Yeah, we have some of the checks in the asset management, Kyle, some in the quotation itself. So for example, if you look at the quotation, we have plan required, permit required, need travel permit, right? So our people from the sales department can also identify if they need a permit. Otherwise, system is going to identify from the...
  Melissa McNutt   59:56 Thanks.
- ehtesham.anwar   1:00:00 Assets configurations, if asset configuration sees, for example, 300 time frames, and I believe we talked about this, all of the planes of up to sixty-five need individual permits for each job, right? So, we are going to system is automatically going to detect.
+ ehtesham.anwar   1:00:00 Assets configurations, if asset configuration sees, for example, 300 time frames, and I believe we talked about this, all of the cranes of up to sixty-five need individual permits for each job, right? So, we are going to system is automatically going to detect.
  Kyle Harlow   1:00:15 No.
  ehtesham.anwar   1:00:19 that this is 265 or above, that means all of the permits that are there in the system are not going to be applied by default and we need a new permit. So we have this within the asset management, we have this within the quotation as configurable, and automatically whenever, for example, a new quotation is created and it needs.
  Kyle Harlow   1:00:35 OK.

@@ -11,8 +11,8 @@ topics: [payroll]
 entities: []
 meeting_date: 2026-08-13
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 32
+normalized: 2026-08-24
+normalized_substitutions: 43
 ---
 
 # Payroll Process — 2026-08-13
@@ -107,7 +107,7 @@ August 13, 2026, 6:51PM
  ehtesham.anwar   13:22 All right. But we need like proper dedicated time for this work process as well. Right now we have opened up the Pandora box of Accounting and we have payroll in the design. So let's not add another work stream. First complete the first one, the payroll one, and then the accounting one so that we close.
  Kyle Harlow   13:40 Yeah.
  ehtesham.anwar   13:47 one loop and then we move to the maintenance. And from the looks of it, it looks like I've been trying to find out what should be the next thing after accounting. And this looks like that payroll, we need payroll for maintenance. That means maintenance should be next so that we incorporate their workflows and then we can create. the payroll from them.
- Brian Petros   14:14 All right, sounds good. Yeah, there's been a few updates to our payroll process on our end to add a few more premium codes for like the military base work and the four men pay. And then also another thing to add where we can change the base rate, because sometimes the base rate is changed to a different than the default.
+ Brian Petros   14:14 All right, sounds good. Yeah, there's been a few updates to our payroll process on our end to add a few more premium codes for like the military base work and the foreman pay. And then also another thing to add where we can change the base rate, because sometimes the base rate is changed to a different than the default.
  ehtesham.anwar   14:31 Mhm. Mm-hmm.
  Brian Petros   14:34 But yeah, but I wanted to save the time for you to show the updates that you've done on your end before we show anything.
  ehtesham.anwar   14:42 All right, did we look at the craft codes previously?
@@ -168,7 +168,7 @@ August 13, 2026, 6:51PM
  Corrina Bustos   23:18 Not in toiler.
  ehtesham.anwar   23:20 not into either. And so for example, a person has operator and record and they have been dropped into operator, then we'll use all of the operators rates.
  Corrina Bustos   23:21 Okay.
- ehtesham.anwar   23:35 and not the rigor rates. If they have been dropped into and allocated as a rigor, then the rigorous rates will be used.
+ ehtesham.anwar   23:35 and not the rigger rates. If they have been dropped into and allocated as a rigger, then the rigger rates will be used.
  Brian Petros   23:47 Is that going to work, Corrina, or is it all?
  Corrina Bustos   23:48 This is for payroll.
  ehtesham.anwar   23:50 Yes, forbidden.
@@ -184,7 +184,7 @@ August 13, 2026, 6:51PM
  Corrina Bustos   24:20 The $70.00.
  Melissa McNutt   24:22 So would we just not in their employee profile set up a secondary? They would only have a primary and then their primary would default.
  ehtesham.anwar   24:22 All right.
- Corrina Bustos   24:27 But then they couldn't be added to a job as a rigor. Right.
+ Corrina Bustos   24:27 But then they couldn't be added to a job as a rigger. Right.
  Brian Petros   24:32 I think the I think the rule would be that this any secondary must be a higher rate than the primary, because I think that's the only time that they are paid out at a different rate is when it's a higher, they're working at a higher capacity, right, Corrina?
  Kyle Harlow   24:42 Yes, yes. Correct. That, that would make good sense, yeah.
  ehtesham.anwar   24:50 Okay, that's easy. We can do that, break that into the ERP. Another question that I have before we decide where to put rates. Let's say we have 10 crane operators. Are they all going to be paid on the, and they are going on as operators? Are they going to be paid on the same rate?
@@ -324,7 +324,7 @@ August 13, 2026, 6:51PM
  ehtesham.anwar   49:22 Okay. Up.
  Brian Petros   49:34 types of these things. So this one is craft codes. There's another one that we'll need, maybe, maybe, I'm pretty sure we'll need, is the long boom pay, the craft code modifiers. Yeah, so which craft code modifier is being applied may or may not be able to be handled by rules.
  ehtesham.anwar   49:38 Mmh.
- Corrina Bustos   49:46 Graph modifier.
+ Corrina Bustos   49:46 Craft modifier.
  Brian Petros   49:55 However, even if they're able to be handled by rules, we'll still need to have a craft code modifier option here to put in the rates, what the rates should be for each.
  ehtesham.anwar   49:55 Uh-huh. Yeah, you can see. Yeah, so in craft quotes we have already picked the own bay.
  Brian Petros   50:15 But the boom pay is different than the craft code modifier, I mean the craft code itself. So the craft code, for example, for the labor union, there's nine groups and then there's the apprentice ones. So, but for example, group one through 9, they'll have different rates.
@@ -366,7 +366,7 @@ August 13, 2026, 6:51PM
  Corrina Bustos   55:11 Yeah. No, I meant like lifetime in like the setting. So like if it's in, if we add the long boom in there every time it's gonna. Someone's under. Yes, yeah.
  ehtesham.anwar   55:29 Use the same data. Yeah, that's exactly what I meant. So some of the rates are on the contracts of each employee. And based on that, even if they go on a separate job, for example, they are operators paid at 17, but they go as Eiler, they will be still paid at 17 if Eiler's job pay is less than 17.
  Corrina Bustos   55:34 Okay.
- ehtesham.anwar   55:56 If more than we are going to pay that, and then the graph modifiers are going to be based on different jobs. So, for example, if they went as an oiler.
+ ehtesham.anwar   55:56 If more than we are going to pay that, and then the craft modifiers are going to be based on different jobs. So, for example, if they went as an oiler.
  Kyle Harlow   56:02 Next level. Very nice.
  ehtesham.anwar   56:07 Even if it pays the less modifier, then we apply that. Whatever that is, we apply it based on the rule that they are filling in on a job. So both of them are different. One is set and has a rule of maximum pay. The other one is based on the job and their function in the job.
  Corrina Bustos   56:13 Yes. Yes. Mhm. Correct, yeah, okay.
@@ -420,7 +420,7 @@ August 13, 2026, 6:51PM
  ehtesham.anwar   1:01:03 Joe. Yeah.
  Micaela Dipane   1:01:18 Nick.
  Kyle Harlow   1:01:21 So...
- ehtesham.anwar   1:01:21 But while we are allocating someone, do we need to allocate operator level people or do we need to allocate pilot level people? So for example, there are 10 people who are operator level people. They can also work as a pilot. That is fine. We can just make sure that on the operator field, if we have configured that on the operator field, only those people are allowed. Let's say. In the second role, we are saying they are going to go as Euler, but it's a 550 ton crane. We need 2 operators. If we don't have it configured in the system as two operators, either we need 2 operators. Otherwise, if we still want the Euler configuration. then the problem will be that we are allocating people, we are giving Lisette people eligible for the job who are all oilers and some of them might not be able to operate the crane. but they are oilers, right? So either we configure the crane as two operators or we configure, we figure out another rule and the best way should be there are two operators that are crane.
+ ehtesham.anwar   1:01:21 But while we are allocating someone, do we need to allocate operator level people or do we need to allocate pilot level people? So for example, there are 10 people who are operator level people. They can also work as a pilot. That is fine. We can just make sure that on the operator field, if we have configured that on the operator field, only those people are allowed. Let's say. In the second role, we are saying they are going to go as oiler, but it's a 550 ton crane. We need 2 operators. If we don't have it configured in the system as two operators, either we need 2 operators. Otherwise, if we still want the oiler configuration. then the problem will be that we are allocating people, we are giving Lisette people eligible for the job who are all oilers and some of them might not be able to operate the crane. but they are oilers, right? So either we configure the crane as two operators or we configure, we figure out another rule and the best way should be there are two operators that are crane.
  Kyle Harlow   1:02:26 Yeah, we're gonna have that. Yeah. Yeah, I think also that you bring up a good point in that system we're currently going through, me and Lisette, is that there are Oilers that are you know, allowed to operate certain machines and they might not operate other machines. So there's going to have to be a, I'm building, I'm going to build out a dashboard for her currently so that she can pick those things from, right? And each machine will have available people who have been approved to work on that machine and what position.
  ehtesham.anwar   1:03:00 Uh-huh.
  Kyle Harlow   1:03:08 will have to do the same thing under their profile so that they cannot be assigned to a machine they're not trained on.
@@ -449,13 +449,13 @@ August 13, 2026, 6:51PM
  ehtesham.anwar   1:06:10 Sign.
  Brian Petros   1:06:18 Lattice pay for oiler, 75 cents per hour. Then we have this second shift.
  ehtesham.anwar   1:06:24 Uh-huh.
- Brian Petros   1:06:25 Premium and then the third shift premium. And these are the two new ones for if they're designated as the four men, it's $3 more per hour, and on a military base, $10 more per hour. So how these are identified in the system, I'm not sure exactly how the ERP is going to be capturing these, but we can talk through how the rules are going to get triggered or whatever. But as far as like the configuration table or whatnot, I think we're going to definitely need to have some sort of configuration table for additional. Premium rates, so to speak. Does that make sense?
+ Brian Petros   1:06:25 Premium and then the third shift premium. And these are the two new ones for if they're designated as the foreman, it's $3 more per hour, and on a military base, $10 more per hour. So how these are identified in the system, I'm not sure exactly how the ERP is going to be capturing these, but we can talk through how the rules are going to get triggered or whatever. But as far as like the configuration table or whatnot, I think we're going to definitely need to have some sort of configuration table for additional. Premium rates, so to speak. Does that make sense?
  ehtesham.anwar   1:07:01 Okay. Yes, it does.
  abdulrehman   1:07:03 So what's the difference? Like then what's the difference between craft code modifier and this premium stuff? Like what's the key difference between these two?
  Brian Petros   1:07:13 The key difference, the key difference is, for sure, for sure, one of the major key differences is that these premiums are being added to the base rate. So that's a huge difference. So like, for example, they're getting paid, their craft code is $70 per hour. So this being applied, let's say, actually, let's say they have
  ehtesham.anwar   1:07:14 That's another.
  abdulrehman   1:07:16 Yeah.
- Brian Petros   1:07:38 This is possible. I don't know how often this happens, Corrina, but it could be possible that, whoops, let me see if I can highlight these. They have their operating a lattice for the job. It is also their second shift and their four men. Okay, so it would be $3. plus $3 plus a dollar. So it would be $7 per hour added to their base rate craft code. So like I said, if it was $70 per hour, then these three being applied, it would change their base rate to $77 per hour. And so that would be applied to the overtime, double time, triple time potentially. Whereas the craft code modifiers, these are added on top of the base rate, whatever the base rate is. So these are added on top. of the base rate, these are added to the base rate. Does that make sense? Um...
+ Brian Petros   1:07:38 This is possible. I don't know how often this happens, Corrina, but it could be possible that, whoops, let me see if I can highlight these. They have their operating a lattice for the job. It is also their second shift and their foreman. Okay, so it would be $3. plus $3 plus a dollar. So it would be $7 per hour added to their base rate craft code. So like I said, if it was $70 per hour, then these three being applied, it would change their base rate to $77 per hour. And so that would be applied to the overtime, double time, triple time potentially. Whereas the craft code modifiers, these are added on top of the base rate, whatever the base rate is. So these are added on top. of the base rate, these are added to the base rate. Does that make sense? Um...
  abdulrehman   1:08:44 Got it.
  Brian Petros   1:08:44 So, so yeah, so regardless if their Corrina, yes, just Corrina, this is correct. If I said that, regardless if their base rate is $70 or $77 per hour. When this modifier gets applied. then their base rate would still be $70 per hour or $77 per hour. This $4 gets added on top. Regardless of what their base rate is, correct?
  ehtesham.anwar   1:09:13 She's not here.
