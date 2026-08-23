@@ -13,7 +13,7 @@ expensive mistake available here.
 | Question | Source |
 | --- | --- |
 | **How do we build it?** | This file, plus the surface context for what you are touching |
-| **What should it do?** | `.ai/vault/` — read `INDEX.md` **first** |
+| **What should it do?** | `.ai/vault/` — read `INDEX.md` **first**, then the module's `INDEX.md` |
 | **What is in flight on this ticket?** | `.ai/aidlc/SCRUM-###/` — intent, spec, units |
 
 **Rules govern how we build, never what to build. A rule can never make a requirement
@@ -29,11 +29,12 @@ one and answer from it — read the conflict stub.
 the section that also blocks its sign-off. A ticket folder has no `gaps.md`. To see what is
 open across every ticket: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`.
 
-`.ai/vault/gaps.md` and `.ai/vault/payroll/gaps.md` are **retired as of 2026-08-20** — do
-not append a product-wide question there. They hold a historical snapshot (24 + 50 entries,
-still citable by anchor) pending a redesign that puts a module's gaps in that module's own
-vault folder, mirroring the backend's structure. Until that redesign lands, a product-wide
-open question belonging to no ticket has nowhere to go but this conversation — say so.
+That redesign landed 2026-08-24: the vault is organized as one folder per product module
+(`vault/STRUCTURE.md` — module set, tag facets, routing protocol, migration map), and **a
+product-wide question belonging to no ticket goes in that module's `vault/<module>/gaps.md`**
+(payroll: `gaps-live.md` until phase 3). `.ai/vault/gaps.md` and `.ai/vault/payroll/gaps.md`
+stay **retired and frozen** — historical snapshot, citable by anchor, never appended. The
+all-modules sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/vault/*/gaps.md`.
 
 ## One memory, every tool
 
@@ -53,7 +54,7 @@ Anything worth keeping goes to exactly one of these, and each has an owner:
 | --- | --- | --- |
 | A named human decided something | `.ai/vault/decisions/` | `tcg-scrum` |
 | An open question raised by a ticket | `.ai/aidlc/SCRUM-###/spec.md` §12 | any agent, append |
-| An open question belonging to no ticket | **retired 2026-08-20** — `.ai/vault/gaps.md` / `payroll/gaps.md` hold historical entries only; do not append. Pending a per-module gaps redesign | — |
+| An open question belonging to no ticket | `.ai/vault/<module>/gaps.md` — the module's live register (payroll: `gaps-live.md`). See `vault/STRUCTURE.md` → *Where a question goes* | any agent, append |
 | How we build — a convention, a rail | `.ai/claude/contexts/` | a human, from an accepted reflection |
 | A defect the loop made | `.ai/aidlc/reflections/INDEX.md` | `tcg-reflector` |
 
@@ -183,6 +184,7 @@ convention was followed.
 
 - `.ai/vault/INDEX.md` — product knowledge, read first
 - `.ai/aidlc/SCRUM-###/spec.md` §12 — open questions raised by a ticket
-- `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` — retired, historical only (see above)
+- `.ai/vault/STRUCTURE.md` — vault organization: modules, tags, where a question goes
+- `.ai/vault/<module>/gaps.md` — live module questions · root/payroll `gaps.md` retired, historical only
 - `.ai/aidlc/agents/` — the AI-DLC phase agents
 - `.ai/vault/sync/confluence-sync.md` — how the vault tracks Confluence
