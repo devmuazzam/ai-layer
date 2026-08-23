@@ -131,3 +131,22 @@ the vault ingested the pack in August and went past it (all 141 SQL definitions,
 config row, live ADP responses). The useful ask is not the pack; it is answers to the ten
 questions in this log.
 
+## 2026-08-24 batch — drug-test ticket exhibit: payroll ≠ billing hours (Brian Petros)
+
+| Claim / observable | Verdict | Register |
+| --- | --- | --- |
+| Payroll hours ≠ customer-billed hours on one ticket | ✅ principle already encoded in Atom **US-18**; exhibit is the canonical payroll-side case — seam now explicit on the rule | PAY-004 |
+| Incident 6am → drug test → paid through 1pm return | 🆕 **first live PAY-056 case** (injury/incident-day pay continuation — a "New ERP requirement" with zero prior examples) | PAY-056 |
+| Comment: "(NO LUNCH TAKEN - 0.5 DBL 1st WTL + 0.5 DBL 2nd WTL)" | ⚠️ **the finding of the batch** — prose, not `(PAY:WTL_n)`; engine would assume WTL_0 and **deduct** two meals the man worked through. Production: 9,297 no-token warnings; deducts 16,106 (−$669k) vs adds 411 (+$27k) | PAY-047 |
+| Hours Worked 15.00 vs Derived Hours 14.50 | 🆕 entered-vs-derived mismatch — concept previously undocumented | PAY-004, PAY-060 |
+| 14.5-h span → 2 expected meals; comment says 2 WTL | ✅ bracket math agrees (11–16 h → 2) | PAY-046 |
+| Cross-midnight 10:30 PM → 1:00 PM; started before scheduled 12:00 AM | ✅ live PAY-019/PAY-021 context; craft L12-G3-A matches extract worked examples | PAY-019 |
+
+**Client questions from this message:** (11) the WTL numbers — 9,297 no-token warnings and a
+16,106-vs-411 deduct/add ratio: does payroll manually correct these tickets today, or have
+worked-through meals been systematically deducted? Either answer matters — one is a hidden
+manual workload the ERP must absorb, the other is an underpayment pattern to quantify.
+(12) incident/drug-test days — confirm the pay-continuation rule (through return-to-yard?
+full day? straight time?) so PAY-056 stops being example-free, and confirm the billing side
+excludes those hours automatically rather than by hand-edit.
+
