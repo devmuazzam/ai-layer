@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm final mapping rules
+- **Client confirmation, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** the five groups and their exact predicates, in writing — `L12%` + `EmpTypeID <> 3` (Field) / `= 3` (Mechanic; 1 = Operator, 2 = Oiler per extract), `ADMIN%` + `PayType H/S`, `SYS%` hidden. Matches [04-payroll-group-and-rule-applicability.md](../payroll-app-current-state/04-payroll-group-and-rule-applicability.md) row-for-row. The blocking item (final ERP mapping) now has a written client baseline.

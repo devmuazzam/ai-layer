@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm exclusion codes
+- **Client statement, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** exclusion pattern = `Employee.CraftCode LIKE 'SYS%'`, "hidden and not displayed". Note the current-state doc describes the group more broadly ("SYS/testing/vendor/**fake/default**") — whether the ERP excludes only `SYS%` or the broader set is exactly the open "confirm exclusion codes" item.

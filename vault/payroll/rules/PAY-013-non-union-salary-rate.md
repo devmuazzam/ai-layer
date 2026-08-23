@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Management/legal confirmation
+- **Client confirmation, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** salary employees "may or may not currently have a Pay Rate in FCC… still undecided exactly how much information will be contained" — corroborates this rule's open scope in the client's own words.

@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm CodingCops UI design
+- **Worklist inclusion rule, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** for the selected payroll week show all **Active** employees **plus Inactive employees who have labor entries that week**; `SYS%` never shown. Extract complement: `api.tvf_Employees_ActiveButNoLabor_FieldOnly`.

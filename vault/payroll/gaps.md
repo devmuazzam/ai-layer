@@ -1347,6 +1347,12 @@ someone has confirmed otherwise.
   - `payroll/legacy-payroll-app-db-extract/rules-plain-language.md:208-218` — the engine as built
     agrees with PR-007: *"If the labor craft and the employee's craft differ, **the labor row's craft
     wins**."* So **both written sources say the opposite of the recording.**
+  - **Client message 2026-06-09** (Brian Petros, payroll-group determination): *"This uses the Craft
+    Code RATE in FCC on each labor entry… NOT the Craft Code on the Employee profile screen."*
+    A third written source on the labor-craft side — and the earliest. Chronology now reads:
+    June 9 (app behaviour, written) → Aug 13 (Kyle/Corrina describe practice as employee-rate,
+    Brian proposes higher-of). Frame for the client as **app says / practice says / which rule
+    ships** — see `rules/PAY-010-l12-union-base-rate.md`.
   - Same recording, 25:13–25:18 — Kyle adds that operators are **not** all on one rate (*"different
     groups… different agreements"*) and asks for an **over-scale** box on the employee profile,
     which `payroll/gaps.md` §*Confluence payroll user stories* also finds in `PAY-CC-02` AC 4–6 as

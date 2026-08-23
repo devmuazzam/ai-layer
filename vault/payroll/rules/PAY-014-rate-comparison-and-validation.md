@@ -26,3 +26,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm tolerance thresholds
 - **Conflict:** Legacy **suppresses pay to $0** on missing/zero source rate (§13); the kept set only **flags** (this rule + PAY-060). Nobody has decided which behaviour ships. Rate-truth history: `Source_Rate_Raw` demoted to audit-only per the FRD part-03 migration note.
+- **As-built semantics confirmed, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot) + extract §13:** `Source_Rate_Raw` is **audit/reference only**; when priced-but-$0 a **duration-weighted fallback** fills gross (`Source_Rate × (ST + 1.5·OT + 2·DT)`, with warning); only when **no** source rate exists is pay suppressed to $0 (≈5,725 rows in "Unknown / Needs Review"). The ERP decision is which of fallback / suppress / flag-only survives.

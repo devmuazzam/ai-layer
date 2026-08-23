@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm rate-effective-date handling
+- **Client confirmation, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** `Base hourly rate = Employee.PayRate` ("very important"), CA DIR overtime rules linked (dir.ca.gov/dlse/faq_overtime). Display approximations ×40 / ×2080/12 / ×2080 confirmed as-built in `v_UI_Employee_TypeRate.VIEW.sql`.

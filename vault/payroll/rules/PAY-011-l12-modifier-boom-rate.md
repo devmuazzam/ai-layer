@@ -25,3 +25,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm modifier source and windows
 - **Conflict:** MLA says boom/modifier-class premiums go **into the base rate** before multipliers; the legacy slice formula partly agrees; “on top” never confirmed — Corrina had left the call (`../source-attribution-and-conflicts.md` → *Into the rate vs on top*).
+- **Client statement, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** modifier rate = `UNION_CRAFT_MODIFIER.PayRateChange`, applied **only when a Craft Modifier Code is selected on the labor entry** — selection-driven, on top of the boom-window eligibility this rule states. Does not settle into-rate vs on-top.
