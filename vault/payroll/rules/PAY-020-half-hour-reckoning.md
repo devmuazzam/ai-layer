@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Union/payroll confirmation of method
+- **Why 23.5:** the entry-duration cap (see PAY-004/PAY-018) equals 24 h minus one half-hour slice — the cap is an artifact of this rule's reckoning granularity.

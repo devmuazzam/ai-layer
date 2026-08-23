@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm mechanic applicability
+- **Two distinct chain concepts (extract):** the shift chain groups entries **< 8 h apart** (`ChainGroup`), but the rest rule chains entries **≤ 30 min apart** (`Rest_ChainId`). The client's back-to-back split convention interacts with *both* — a split gap of, say, 45 min keeps the shift chained but breaks the rest chain. Confirm both thresholds are intended for the ERP.

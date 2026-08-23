@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm non-union calculation
+- **Chain semantics verified (extract):** entries **< 8 h apart chain into one shift** (`ChainGroup`); cumulative OT/DT hours count *from the shift's actual start* and keep counting across midnight; guarantees and daily rules group on the chain's `ShiftAnchorDate`. This is what makes the client's split-entry convention ("back-to-back entries, each < 23.5 h — handled for all of the rules") work: the *shift* accumulates even though *entries* are capped.

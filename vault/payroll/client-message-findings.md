@@ -52,3 +52,19 @@ own natively (timestamped Left Yard → signatures → Arrive Yard). The reconst
 remain necessary for FCC-migrated history and any parallel-run period — not for tickets
 born in the new app.
 
+## 2026-06-09 — 23.5-hour cap + split convention (Brian Petros, follow-up)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| App handles ≤ 23.5 h per labor entry | 🆕 new fact, in no vault document; explains the exhibit's 24.00-h rows | PAY-004, PAY-018 |
+| ">23.5 h reconstruction logically impossible" | ✅ consistent — 23.5 = 24 h minus one half-hour slice; (date, duration) reconstruction can't disambiguate ≥ 24 h. Our derivation, to confirm | PAY-018, PAY-020 |
+| Remedy: back-to-back entries, each < 23.5 h | ✅ convention now recorded | PAY-004 |
+| "Programmed to handle that for all of the rules" | ✅ **verified against the extract**: `ChainGroup` (< 8 h apart → one shift), `ShiftAnchorDate` grouping for guarantees/daily rules, cumulative OT/DT across midnight, `Rest_ChainId` (≤ 30 min) for rest. WTL charts band to 25 h — long *shifts* via chained *entries* were always the design | PAY-023, PAY-045 |
+
+**Client questions from this message:** (6) should the ERP inherit the 23.5-h entry cap and
+split convention (needed for FCC-migrated data) or represent long spans natively for
+ERP-born entries — or both, with the cap applying only to reconstructed/imported rows?
+(7) the extract shows **two** chain thresholds — shift chain < 8 h apart, rest chain ≤ 30 min
+apart. A split gap between them (e.g. 45 min) chains the shift but breaks the rest chain.
+Confirm both thresholds and that interaction are intended.
+

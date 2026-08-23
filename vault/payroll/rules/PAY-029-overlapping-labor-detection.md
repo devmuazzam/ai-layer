@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm blocking severity
+- **Back-to-back must not flag:** the split convention (PAY-004) produces touching windows by design; overlap warnings key on *negative* gaps (`Warn_Overlap … GapMinRaw=-60` in the extract data). Zero-gap adjacency is legitimate — encode that explicitly in the ERP's overlap rule.
