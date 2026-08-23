@@ -248,3 +248,13 @@ of `UNION_CRAFT` (or the new rate sheet) is the artifact that answers the FY2026
 (config `cfg.WTL_Rule`, no ×3 branch). Which is the rule? (The WTL charts and the MLA meal
 clause should decide; on 9 holidays a year the difference is real money.)
 
+## 2026-08-24 batch — phantom-hours re-emphasis (Brian Petros)
+
+Standalone re-send of the added-hours exclusion passage — no new content, but the repetition
+is signal: **PAY-029's invariant (added hours are ledger components, never time windows) is
+now marked client-emphasized** and should carry its own acceptance test. For reference, the
+engine's complete hours-adder inventory with production totals is pinned in the chat record:
+WTL adds (542 uses), long-boom min (4,107 — the most frequent), daily min (509), special-Sat
+min (32), holiday min (8), shift hours-add (3). Reporting-time (PAY-039) has **no** ledger
+component — a matrix-only rule the legacy never implemented.
+
