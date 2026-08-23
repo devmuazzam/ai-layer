@@ -215,3 +215,19 @@ known-issues delta since the June pack — we'll reconcile against our 28-row ca
 propose the union as the joint ERP acceptance baseline, with Corrina's robust-testing pass as
 the sign-off fixture.
 
+### Follow-up — raw extract zip (`PAYROLL_CALC_EXTRACT.zip`, first use of the DB folder)
+
+**Question 16 sharpens dramatically.** The cross-midnight day-type behavior is a **config
+switch with both policies implemented and a 10-case test harness**: `CalendarDay` active
+("default **until Payroll Manager confirms otherwise**"), `AnchorFloor` built and waiting
+("use if Payroll Manager wants…"). Brian's summary described the inactive policy — loosely:
+`AnchorFloor` is a max, so even it pays Saturday premiums post-midnight on a Weekday→Saturday
+shift, which his pure-anchor summary would deny. **The ask is no longer a design debate — it
+is one question to Corrina and one config flip**, and the harness's 10 cases enumerate every
+consequence (case 2: Holiday→Weekday = 240 vs 420 premium minutes between the policies).
+Bonus: `cfg.RestPeriod_Rule` shows the 30-min rest-stitch gap is config, with `TriggerMode`
+deliberately changed from its default — folded into question 7.
+
+**Note for question 14:** all local backups predate the July-1 rollover. A **post-July pull**
+of `UNION_CRAFT` (or the new rate sheet) is the artifact that answers the FY2026-27 rates.
+
