@@ -48,7 +48,7 @@ Every module folder has the same skeleton (payroll/ is the model):
   INDEX.md      ← router: what's here, what's settled, what's open, which decisions apply
   sources/…     ← migrated documents (only where volume warrants a subfolder)
   gaps.md       ← the module's open questions — exists from day one, see next section
-  rules/        ← payroll only, later: the rule register
+  rules/        ← payroll only: the rule register (73 `PAY-###` rules, see payroll/rules/INDEX.md)
 ```
 
 ## Where a question goes — the gap system, un-retired
@@ -97,7 +97,7 @@ Three facets:
    `module/all`).
 2. **`kind/<name>`** — exactly one: `transcript` · `summary` · `discussion` · `frd` ·
    `user-stories` · `sop` · `decision` · `conflict-stub` · `source` · `standard` ·
-   `sync-report` · `meeting-notes` · `reference`.
+   `sync-report` · `meeting-notes` · `gaps` · `rule` · `index` · `reference`.
 3. **Bare subject tags** — from the closed vocabulary below. Add none rather than invent.
 
 `status:` stays a plain frontmatter key (verified/unverified/reference/superseded), not a tag.
