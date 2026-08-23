@@ -1,0 +1,758 @@
+{
+  "_meta": {
+    "bootstrapRun": "2026-08-24-bootstrap",
+    "hashBasis": "vault-body-bootstrap",
+    "hashBasisNote": "Hashes are SHA-256 over current VAULT bodies (frontmatter stripped, files of a split page concatenated in path order) — NOT over freshly converted upstream markdown. Vault bodies include migration notes the page does not have, so these hashes will not equal an upstream-converted hash. First implemented run must fetch-and-compare content once per page, then rewrite contentHash with basis converted-upstream. Until then, a changed vault body (post-promote) is the only thing these hashes detect.",
+    "confluenceVersionNote": "null on bootstrap — the CQL listing does not return version numbers; first implemented run fills them."
+  },
+  "pages": [
+    {
+      "pageId": "37552129",
+      "spaceKey": "TCG",
+      "title": "Agencies",
+      "vaultPaths": [
+        "product/agencies.md"
+      ],
+      "contentHash": "sha256:75611a1b87d50d8813a6ef284e65eacb2f1054cf573cf8b9784bd417ba69a357",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Apr 30, 2026"
+    },
+    {
+      "pageId": "112787466",
+      "spaceKey": "TCG",
+      "title": "Agencies module",
+      "vaultPaths": [
+        "product/agencies-module.md"
+      ],
+      "contentHash": "sha256:3fbd8ae0dbe11b5f2af28305f08e763388d405239ce4a60fb0f94b2902cb90fb",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 22, 2026"
+    },
+    {
+      "pageId": "93257729",
+      "spaceKey": "TCG",
+      "title": "Agency and vendor",
+      "vaultPaths": [
+        "product/agency-and-vendor.md"
+      ],
+      "contentHash": "sha256:182c8ffd986a5906ff1d75f173a19c02646f05ba06c92c30def4a26fab9f5041",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 22, 2026"
+    },
+    {
+      "pageId": "95158273",
+      "spaceKey": "TCG",
+      "title": "Atom Mobile Application ( User stories )",
+      "vaultPaths": [
+        "product/atom-mobile-app-user-stories/00-overview.md",
+        "product/atom-mobile-app-user-stories/01-authentication-and-dashboard.md",
+        "product/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md",
+        "product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md",
+        "product/atom-mobile-app-user-stories/04-completion-and-return.md",
+        "product/atom-mobile-app-user-stories/05-compliance-labor-and-review.md",
+        "product/atom-mobile-app-user-stories/06-safety-and-self-service.md",
+        "product/atom-mobile-app-user-stories/INDEX.md"
+      ],
+      "contentHash": "sha256:9b97de1b3b9ad4c5384c34f28ee2eb44f2239dc720cea718691661770d8292ad",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Aug 11, 2026"
+    },
+    {
+      "pageId": "75497489",
+      "spaceKey": "TCG",
+      "title": "BRS",
+      "vaultPaths": [
+        "product/brs.md"
+      ],
+      "contentHash": "sha256:99d8a5e39be9e5837e3dc2e7afa1f3b981db2433e9b7edea17ec3aae1ba4d105",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 10, 2026"
+    },
+    {
+      "pageId": "79298572",
+      "spaceKey": "TCG",
+      "title": "Billing code and price ist",
+      "vaultPaths": [
+        "product/billing-code-and-price-list.md"
+      ],
+      "contentHash": "sha256:1e8a34cef3167c98ac0b6b82c255202dca0c97d85e5fc7d6484465cf4da71136",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 12, 2026"
+    },
+    {
+      "pageId": "79298563",
+      "spaceKey": "TCG",
+      "title": "Categories and sub categories",
+      "vaultPaths": [
+        "product/categories-and-sub-categories.md"
+      ],
+      "contentHash": "sha256:2cbcdeaf864056b7cdbdec29396697a54a7028329fda1d0653606a9b99b7eead",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 12, 2026"
+    },
+    {
+      "pageId": "110886913",
+      "spaceKey": "TCG",
+      "title": "Customer",
+      "vaultPaths": [
+        "product/customer.md"
+      ],
+      "contentHash": "sha256:0ae7c123964251c18389ee30a81b2be50b01327bc8fb2b968e9928dfa674eda5",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 16, 2026"
+    },
+    {
+      "pageId": "76873729",
+      "spaceKey": "TCG",
+      "title": "Customer and Job sites",
+      "vaultPaths": [
+        "product/customer-and-job-sites.md"
+      ],
+      "contentHash": "sha256:161d33e8ad5c21263080dfcf825b10c10bb15294187c77e303272869d3a797bb",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 12, 2026"
+    },
+    {
+      "pageId": "35684354",
+      "spaceKey": "TCG",
+      "title": "Daily Allocation system",
+      "vaultPaths": [
+        "product/daily-allocation-system.md"
+      ],
+      "contentHash": "sha256:c0246375baecd9e0ca8148704b926543011672898ca3a5208f333dcc306b1bbb",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Apr 30, 2026"
+    },
+    {
+      "pageId": "99549185",
+      "spaceKey": "TCG",
+      "title": "Discussion points with Mohsin",
+      "vaultPaths": [
+        "product/discussion-points-with-mohsin.md"
+      ],
+      "contentHash": "sha256:0fbabf7f5362861a943da61b4b156ed7d72d7d8450f6634f99991f90e05ea1f9",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 26, 2026"
+    },
+    {
+      "pageId": "99221505",
+      "spaceKey": "TCG",
+      "title": "Discussion points with TCG team",
+      "vaultPaths": [
+        "product/discussion-points-with-tcg-team.md"
+      ],
+      "contentHash": "sha256:1aab1e9285eb58c5a2aa0affddf25e271700701f1968ca3d646097ae2c6c7980",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 26, 2026"
+    },
+    {
+      "pageId": "21954562",
+      "spaceKey": "TCG",
+      "title": "Dispatcher Needs",
+      "vaultPaths": [
+        "product/dispatcher-needs.md"
+      ],
+      "contentHash": "sha256:f418d11755881e857a4f03a8907339389eb37a79fc07d232bca74efc84296468",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Apr 07, 2026"
+    },
+    {
+      "pageId": "75563011",
+      "spaceKey": "TCG",
+      "title": "FRD - [New Format - Draft]",
+      "vaultPaths": [
+        "product/frd-new-format-draft/00-document-header.md",
+        "product/frd-new-format-draft/01-overview.md",
+        "product/frd-new-format-draft/02-problem-statement.md",
+        "product/frd-new-format-draft/03-feature-scope.md",
+        "product/frd-new-format-draft/04-role-responsibility-model.md",
+        "product/frd-new-format-draft/05-functional-requirements/00-section-header.md",
+        "product/frd-new-format-draft/05-functional-requirements/INDEX.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-001-bottom-navigation.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-002-home-dashboard.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-003-jobs-list.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-004-ticket-notification.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-005-accept-reject-ticket.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-006-ticket-detail-view.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-007-guided-ticket-workflow.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-008-leave-yard.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-010-arrive-job.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-011-jsa-safety-checklist.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-012-start-work.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-013-lunch-timer-and-alerts.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-014-start-end-lunch.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-015-work-through-lunch-authorization.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-016-initial-customer-signature.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-017-final-customer-signature.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-019-end-work.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-020-leave-job.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-021-arrive-yard.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-022-compliance-checklist.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-023-labor-detail-entry.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-024-boom-pay-craft-modifier-selection.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-025-submit-ticket.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-026-incomplete-ticket-handling.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-027-deficiency-capture.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-028-blocking-issue-emergency-escalation.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-029-notification-center.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-030-downtime-and-delay-capture.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-031-live-ticket-visibility.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-032-view-certifications.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-033-certification-expiry-notification-and-upload.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-034-field-task-list.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-035-labor-history-and-audit.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-036-field-user-profile.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-037-emergency-contacts.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-038-time-rounding.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-039-auto-save.md",
+        "product/frd-new-format-draft/05-functional-requirements/fr-fop-040-audit-trail.md",
+        "product/frd-new-format-draft/06-key-user-flows.md",
+        "product/frd-new-format-draft/07-non-functional-requirements.md",
+        "product/frd-new-format-draft/08-open-questions.md",
+        "product/frd-new-format-draft/INDEX.md"
+      ],
+      "contentHash": "sha256:4d515ae7266e9f71ac97572be9b35122a11300119073948355b8c36bceb63cd2",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 09, 2026"
+    },
+    {
+      "pageId": "75530241",
+      "spaceKey": "TCG",
+      "title": "Field Operations App - FRD",
+      "vaultPaths": [
+        "product/field-ops-frd/00-document-header.md",
+        "product/field-ops-frd/01-executive-overview.md",
+        "product/field-ops-frd/02-problem-statement.md",
+        "product/field-ops-frd/03-objectives.md",
+        "product/field-ops-frd/04-scope.md",
+        "product/field-ops-frd/05-role-definitions.md",
+        "product/field-ops-frd/06-operational-workflow-overview.md",
+        "product/field-ops-frd/07-functional-requirements-summary.md",
+        "product/field-ops-frd/08-functional-requirements/00-section-header.md",
+        "product/field-ops-frd/08-functional-requirements/INDEX.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-001-bottom-navigation.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-002-home-dashboard.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-003-jobs-list.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-004-ticket-details.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-005-ticket-acceptance.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-006-ticket-rejection.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-007-ticket-draft-management.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-008-pre-trip-checklist.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-009-leave-yard.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-010-arrive-job-site.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-012-start-work.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-014-lunch-recording.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-015-work-through-lunch.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-016-end-work.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-017-compliance-checklist.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-018-customer-signatures.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-019-leave-job-site.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-020-arrive-yard.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-021-post-trip-checklist.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-022-submit-ticket.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-023-labor-details.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-024-downtime-management.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-025-deficiency-reporting.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-026-escalation-handling.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-027-notification-center.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-028-certifications.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-029-tasks.md",
+        "product/field-ops-frd/08-functional-requirements/fr-fop-030-inspection-history.md",
+        "product/field-ops-frd/09-workflow-affecting-business-rules.md",
+        "product/field-ops-frd/10-brs-references.md",
+        "product/field-ops-frd/11-open-questions-future-considerations.md",
+        "product/field-ops-frd/INDEX.md"
+      ],
+      "contentHash": "sha256:fd847e47a7ea94c165de5e0cc723f914511b7416563bd4f78940652bc041d3b8",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 16, 2026"
+    },
+    {
+      "pageId": "126156801",
+      "spaceKey": "TCG",
+      "title": "Job / project / DAS",
+      "vaultPaths": [
+        "product/job-project-das.md"
+      ],
+      "contentHash": "sha256:f2f8e52802be8ba519561f65af2d97db71b0fdb3eb13409f0cc2aa3edef7c534",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 16, 2026"
+    },
+    {
+      "pageId": "142049281",
+      "spaceKey": "TCG",
+      "title": "Mobilization & Demobilization",
+      "vaultPaths": [
+        "product/mobilization-and-demobilization.md"
+      ],
+      "contentHash": "sha256:a707b8ae2dc57931352c5ca099eeeee831340530b15763cc18f3ced56e2abe11",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Aug 10, 2026"
+    },
+    {
+      "pageId": "32440323",
+      "spaceKey": "TCG",
+      "title": "Project Module",
+      "vaultPaths": [
+        "product/project-module/00-project-module.md",
+        "product/project-module/01-create-and-track-projects.md",
+        "product/project-module/02-view-manage-job-details.md",
+        "product/project-module/03-create-manage-job-schedule.md",
+        "product/project-module/04-create-and-approve-lift-plans.md",
+        "product/project-module/05-create-and-track-permits.md",
+        "product/project-module/06-client-reviews-and-signs-quotation.md",
+        "product/project-module/07-create-and-manage-jobs-excluded.md",
+        "product/project-module/INDEX.md"
+      ],
+      "contentHash": "sha256:e55b1a4ecc5d73f5253d3c1a907f24fa3639e411d8e469986ead3ee383f4305b",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Apr 30, 2026"
+    },
+    {
+      "pageId": "105807873",
+      "spaceKey": "TCG",
+      "title": "Purchase order",
+      "vaultPaths": [
+        "product/purchase-order.md"
+      ],
+      "contentHash": "sha256:da651f238955dd5493a5df335b50dfc278cbbaf4b0e46b85b465d91872f31f1d",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 03, 2026"
+    },
+    {
+      "pageId": "95485954",
+      "spaceKey": "TCG",
+      "title": "Quotation",
+      "vaultPaths": [
+        "product/quotation.md"
+      ],
+      "contentHash": "sha256:ccbc92d8e7019c9b1f8d562f7c4c47974c82ecae1929a872294bda1c2b944411",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 23, 2026"
+    },
+    {
+      "pageId": "110198785",
+      "spaceKey": "TCG",
+      "title": "Quotation Flow Process",
+      "vaultPaths": [
+        "product/quotation-flow-process.md"
+      ],
+      "contentHash": "sha256:ba4cfb3ea520324452248c273f33c67d4e830bb5378865ac76a106734e00874b",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 09, 2026"
+    },
+    {
+      "pageId": "118292483",
+      "spaceKey": "TCG",
+      "title": "Quotations",
+      "vaultPaths": [
+        "product/quotations.md"
+      ],
+      "contentHash": "sha256:5f5f2e0ece02eaefd06ea186c7f3989fae297730905185c4b6c55dfb3bc1597e",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 14, 2026"
+    },
+    {
+      "pageId": "71794689",
+      "spaceKey": "TCG",
+      "title": "Sprint 4 Additional",
+      "vaultPaths": [
+        "product/sprint-4-additional.md"
+      ],
+      "contentHash": "sha256:ba537908b289dec620243ccf886e36c2ef6d46fbac43cb31b7889d4fd23e744a",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 22, 2026"
+    },
+    {
+      "pageId": "75268097",
+      "spaceKey": "TCG",
+      "title": "Sprint 4 Planning",
+      "vaultPaths": [
+        "meetings/2026-06-09-sprint-4-planning.md"
+      ],
+      "contentHash": "sha256:f6092887de729a47116972f568e4d904db69793b901f7ed1144333919c3be92e",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jun 10, 2026"
+    },
+    {
+      "pageId": "118882305",
+      "spaceKey": "TCG",
+      "title": "Sprint 6th Plan",
+      "vaultPaths": [
+        "meetings/2026-07-14-sprint-6-plan.md"
+      ],
+      "contentHash": "sha256:b3377897886eda5f980c9e3daf8b4baab287a90baea90f3db262e4c3d6e1094e",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 14, 2026"
+    },
+    {
+      "pageId": "137265153",
+      "spaceKey": "TCG",
+      "title": "Sprint 8 planning",
+      "vaultPaths": [
+        "meetings/2026-07-30-sprint-8-planning.md"
+      ],
+      "contentHash": "sha256:684f50b6f5d9c47971378dea561d91fab8570fb843aaf973440f2307394da783",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 30, 2026"
+    },
+    {
+      "pageId": "136740865",
+      "spaceKey": "TCG",
+      "title": "Sprint 8 report",
+      "vaultPaths": [
+        "meetings/2026-07-30-sprint-8-report.md"
+      ],
+      "contentHash": "sha256:6a0c0e8885e714e5996c10ba091e326ae1edf4a9f18b0022a422ab02e666e93e",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-13T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Aug 19, 2026"
+    },
+    {
+      "pageId": "57311233",
+      "spaceKey": "TCG",
+      "title": "Sprint Planning 3rd",
+      "vaultPaths": [
+        "meetings/2026-05-20-sprint-3-planning.md"
+      ],
+      "contentHash": "sha256:3739a46b10908f3dd9bc1e4b7727f30b9a614118cdfc870298fd2ba8af955e0b",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "May 20, 2026"
+    },
+    {
+      "pageId": "86736897",
+      "spaceKey": "TCG",
+      "title": "Sprint planning 5",
+      "vaultPaths": [
+        "meetings/2026-06-17-sprint-5-planning.md"
+      ],
+      "contentHash": "sha256:40353b7aed3ff551a81159180a9cb8eaded737f018ced3ef3afe55263d9a0737",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 14, 2026"
+    },
+    {
+      "pageId": "108298241",
+      "spaceKey": "TCG",
+      "title": "TCG documents",
+      "vaultPaths": [
+        "product/tcg-documents.md"
+      ],
+      "contentHash": "sha256:5ed743c5a08492391213a3314f015e9a0bdd6a74973b56cf894de8da0704c3c0",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 08, 2026"
+    },
+    {
+      "pageId": "55148545",
+      "spaceKey": "TCG",
+      "title": "Tool and rigging",
+      "vaultPaths": [
+        "product/tool-and-rigging.md"
+      ],
+      "contentHash": "sha256:caa9bbc73a490c4437cc2b057d32f0585df66855f70659e58f6e20000eccdba6",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "May 26, 2026"
+    },
+    {
+      "pageId": "40730625",
+      "spaceKey": "TCG",
+      "title": "Vendors",
+      "vaultPaths": [
+        "product/vendors.md"
+      ],
+      "contentHash": "sha256:86de8f1820e608aa9c500e1da0d22b1f757f7f5d5c22962562b677b9702719bb",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Apr 30, 2026"
+    },
+    {
+      "pageId": "122716161",
+      "spaceKey": "TCG",
+      "title": "Yard operations jz",
+      "vaultPaths": [
+        "product/yard-operations-jz.md"
+      ],
+      "contentHash": "sha256:678cb843c00a21056b54b8087a48084bfbeba4e467d597c1504e35374fff9847",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Jul 15, 2026"
+    },
+    {
+      "pageId": "2097153",
+      "spaceKey": "TPD",
+      "title": "Backlog grooming",
+      "vaultPaths": [
+        "domain/backlog-grooming-sop.md"
+      ],
+      "contentHash": "sha256:cf85be88f7da9bd064604920f2e2198d3539a13e088b4de3c07eec511855ee52",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "verified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Feb 04, 2026"
+    },
+    {
+      "pageId": "1540100",
+      "spaceKey": "TPD",
+      "title": "Daily scrum",
+      "vaultPaths": [
+        "domain/daily-scrum-sop.md"
+      ],
+      "contentHash": "sha256:0062bc1c20d7da03642082ba46534c9fef3e3e47d6e67b997a5bb29dad37eeab",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "verified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Feb 04, 2026"
+    },
+    {
+      "pageId": "2228227",
+      "spaceKey": "TPD",
+      "title": "Development Process SOP",
+      "vaultPaths": [
+        "domain/development-process-sop.md"
+      ],
+      "contentHash": "sha256:a26de7b0acd185a7a9db83395d7c34119d4c19c99b26a338ffb6a6108a5fcd8c",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "verified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Feb 04, 2026"
+    },
+    {
+      "pageId": "2293762",
+      "spaceKey": "TPD",
+      "title": "Jira ( SOPs)",
+      "vaultPaths": [
+        "domain/jira-sop.md"
+      ],
+      "contentHash": "sha256:8b72da4d1446476967e64e327351f19d6bb5562f84a3e24079883f55ca0781cb",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "verified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Feb 04, 2026"
+    },
+    {
+      "pageId": "2392065",
+      "spaceKey": "TPD",
+      "title": "Sprint Closing",
+      "vaultPaths": [
+        "domain/sprint-closing-sop.md"
+      ],
+      "contentHash": "sha256:b23e7e73cd2cd1795795002de82aa6f9f5f3ff1d5420426a5efbb34f92b0ded0",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "verified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Feb 04, 2026"
+    },
+    {
+      "pageId": "1933313",
+      "spaceKey": "TPD",
+      "title": "Sprint Planning",
+      "vaultPaths": [
+        "domain/sprint-planning-sop.md"
+      ],
+      "contentHash": "sha256:4e35feed6270cc48b58df2ea52238f87ee06d5bacf25529ff176abdb05856f72",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "verified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Feb 04, 2026"
+    },
+    {
+      "pageId": "29261825",
+      "spaceKey": "~7120204da88543016f4083b9f7669a42b21ef3",
+      "title": "User story & tasks",
+      "vaultPaths": [
+        "product/user-story-and-tasks.md"
+      ],
+      "contentHash": "sha256:2d25c67d84a227cf5855ebe8d9fcee195bb3896a19c2414587ca2a987fd20645",
+      "confluenceVersion": null,
+      "lastSeenAt": "2026-08-24T00:00:00Z",
+      "lastPromotedAt": "2026-08-10T00:00:00Z",
+      "trustAtPromote": "unverified",
+      "heldRuns": 0,
+      "sourceState": "present",
+      "upstreamLastModified": "Apr 22, 2026"
+    }
+  ]
+}
