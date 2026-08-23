@@ -182,3 +182,14 @@ Pay-period close/snapshot:
 ```sql
 app.usp_ProcessPayroll_PayPeriod
 ```
+
+---
+
+> **Production-hosting reality (client statement, 2026-08-24 batch):** the *entire* legacy
+> payroll production stack — SQL Express instance, both databases, the API, the web apps,
+> automated scheduling (Windows Task Scheduler), backups, security and firewall — runs on
+> **Brian's desktop work computer**, all free-tier software. Proper hosting is gated on TCG
+> IT ("someday, maybe, Patrick will provide the ability to run custom apps in a normal way").
+> Two consequences: (1) any **parallel-run** period depends on a single unmanaged desktop —
+> treat as a fragile dependency with an explicit backup/availability ask; (2) the ERP should
+> carry **no on-prem custom-app dependency**, or it inherits the same gate.

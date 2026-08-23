@@ -144,7 +144,7 @@ definitions and every config row.
 
 ## Still open after this extract
 
-- Where the nightly is scheduled on the client machine (Task Scheduler not inspected).
+- ~~Where the nightly is scheduled on the client machine (Task Scheduler not inspected).~~ **Answered by the client (2026-08-24 batch): Windows Task Scheduler on Brian's work desktop** — Express has no Agent, so the refresh/nightly procedures are OS-scheduled there.
 - Where the ADP paydata workbook lives (not on the machine; the SOP describes it).
 - `test.usp_RunAll_PricingEngine_Tests` was not run (its children execute the engine, a write).
 - How rest premium and WTL reach ADP — no column on the observed worksheets.

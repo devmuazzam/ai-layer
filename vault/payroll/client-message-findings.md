@@ -258,3 +258,16 @@ WTL adds (542 uses), long-boom min (4,107 — the most frequent), daily min (509
 min (32), holiday min (8), shift hours-add (3). Reporting-time (PAY-039) has **no** ledger
 component — a matrix-only rule the legacy never implemented.
 
+## 2026-08-24 batch — rest-rule exclusion + infrastructure reality (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Added hours must not affect the 8-hour rest rule | ✅ by construction (windows vs components) — with one precise residual check: does `HrsOTDTPositive` read actual or payable OT/DT? (holiday gap hours report as DT) — folded into question 7 | PAY-045 |
+| SQL Express → no Agent → Windows Task Scheduler | ✅ **answers an open item the extract itself recorded** ("Task Scheduler not inspected"); `cfg.Nightly_RunSettings`: 210-day lookback | extract INDEX |
+| Everything runs on Brian's desktop, free-tier, firewall to backups | 🆕 full blast radius now explicit; "someday, maybe, Patrick" gates proper hosting | architecture doc |
+
+**Client question from this message:** (19) hosting & parallel-run risk — confirm the ERP
+carries **no on-prem custom-app dependency** (fully cloud-hosted sidesteps the Patrick gate
+entirely), and for the parallel-run period: what is the backup cadence and off-machine copy
+policy for the desktop that currently *is* production payroll?
+
