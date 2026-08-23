@@ -157,94 +157,27 @@ text layer. See the manifest.
 
 ---
 
-## product/ — mobile & field operations
+## The modules — read the module INDEX first
 
-| File | Answers | KB |
+One folder per product module, mirroring the backend ([STRUCTURE.md](STRUCTURE.md) has the standard,
+the BE mapping, the tag facets, and the old→new redirect map). **A new module question (no ticket)
+goes in that module's `gaps.md`** — see STRUCTURE.md → *Where a question goes*.
+
+| Module | Read first | Also holds |
 | --- | --- | --- |
-| [field-ops-mobile-INDEX.md](field-ops/field-ops-mobile-INDEX.md) | **Which field-ops document is authoritative?** (none) | 2.3 |
-| [field-ops-frd/INDEX.md](field-ops/field-ops-frd/INDEX.md) | FR-TCG-FOP-**002** v2.0 DRAFT — 12 sections, 30 requirements | 1.5 |
-| ├ [01](field-ops/field-ops-frd/01-executive-overview.md) · [02](field-ops/field-ops-frd/02-problem-statement.md) · [03](field-ops/field-ops-frd/03-objectives.md) · [04](field-ops/field-ops-frd/04-scope.md) | Overview, problem, objectives, scope | 2.8 |
-| ├ [05-role-definitions.md](field-ops/field-ops-frd/05-role-definitions.md) | Which field roles exist and what can each do? | 1.5 |
-| ├ [06](field-ops/field-ops-frd/06-operational-workflow-overview.md) · [07](field-ops/field-ops-frd/07-functional-requirements-summary.md) | Workflow overview and requirements summary | 1.9 |
-| ├ [08-functional-requirements/](field-ops/field-ops-frd/08-functional-requirements/INDEX.md) | **30 FR-FOP requirements** — see [fr-fop-numbering.md](field-ops/fr-fop-numbering.md) | 38.0 |
-| └ [09](field-ops/field-ops-frd/09-workflow-affecting-business-rules.md) · [10](field-ops/field-ops-frd/10-brs-references.md) · [11](field-ops/field-ops-frd/11-open-questions-future-considerations.md) | Business rules, omitted BRS refs, open questions | 1.7 |
-| [frd-new-format-draft/INDEX.md](field-ops/frd-new-format-draft/INDEX.md) | FR-TCG-FOP-**001** v1.1 REVIEWED — 9 sections, 40 requirements | 1.1 |
-| ├ [01](field-ops/frd-new-format-draft/01-overview.md) · [02](field-ops/frd-new-format-draft/02-problem-statement.md) · [03](field-ops/frd-new-format-draft/03-feature-scope.md) · [04](field-ops/frd-new-format-draft/04-role-responsibility-model.md) | Overview, problem, scope, role model | 4.1 |
-| ├ [05-functional-requirements/](field-ops/frd-new-format-draft/05-functional-requirements/INDEX.md) | **40 FR-FOP requirements** — see [fr-fop-numbering.md](field-ops/fr-fop-numbering.md) | 44.4 |
-| └ [06](field-ops/frd-new-format-draft/06-key-user-flows.md) · [07](field-ops/frd-new-format-draft/07-non-functional-requirements.md) · [08](field-ops/frd-new-format-draft/08-open-questions.md) | User flows, non-functional reqs, open questions | 6.7 |
-| [atom-mobile-app-user-stories/INDEX.md](field-ops/atom-mobile-app-user-stories/INDEX.md) | Same app as user stories — **re-migrated 2026-08-13 from Confluence v10: now 22 stories, EPIC 1–17** | 4.0 |
-| ├ [00-overview.md](field-ops/atom-mobile-app-user-stories/00-overview.md) · [01-authentication-and-dashboard.md](field-ops/atom-mobile-app-user-stories/01-authentication-and-dashboard.md) | Workflow summary; sign-in, vendor OTP, dashboard | 4.2 |
-| ├ [02-ticket-assignment-and-pre-trip.md](field-ops/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md) | Accept/reject, ticket details, pre-trip, left yard, travel, arrival, JSA | 7.4 |
-| ├ [03-work-execution-and-lunch.md](field-ops/atom-mobile-app-user-stories/03-work-execution-and-lunch.md) | Boom time, build-up/breakdown — and **lunch thresholds that contradict the payroll charts** | 6.7 |
-| ├ [04-completion-and-return.md](field-ops/atom-mobile-app-user-stories/04-completion-and-return.md) | Final signature, return travel, arrive yard, post-trip | 5.0 |
-| ├ [05-compliance-labor-and-review.md](field-ops/atom-mobile-app-user-stories/05-compliance-labor-and-review.md) | **The payroll handoff** — compliance attestation, labor & unit details, review | 6.4 |
-| └ [06-safety-and-self-service.md](field-ops/atom-mobile-app-user-stories/06-safety-and-self-service.md) | Incident reporting, SOS; profile and certifications | 2.8 |
-| [brs.md](brs.md) | Business requirements behind the field-ops app | 9.2 |
+| `payroll/` | [payroll/INDEX.md](payroll/INDEX.md) | Payroll — separate migration, own caveats — — source files, gaps.md |
+| `field-ops/` | [field-ops/INDEX.md](field-ops/INDEX.md) | The Atom field-worker mobile app · conflict stub — 4 source files, gaps.md |
+| `quotations/` | [quotations/INDEX.md](quotations/INDEX.md) | Quotations, pricing, billing codes, mob/demob · conflict stub — 6 source files, gaps.md |
+| `dispatch/` | [dispatch/INDEX.md](dispatch/INDEX.md) | DAS, scheduling, yard operations · conflict stub — 4 source files, gaps.md |
+| `customers/` | [customers/INDEX.md](customers/INDEX.md) | Customers, customer contacts, job sites · conflict stub — 3 source files, gaps.md |
+| `vendors-agencies/` | [vendors-agencies/INDEX.md](vendors-agencies/INDEX.md) | Vendors, agencies, purchase orders · conflict stub — 6 source files, gaps.md |
+| `projects-jobs/` | [projects-jobs/INDEX.md](projects-jobs/INDEX.md) | Projects, jobs, plans, permits — 2 source files, gaps.md |
+| `assets/` | [assets/INDEX.md](assets/INDEX.md) | Assets, yards-as-records, tools & rigging, categories — 3 source files, gaps.md |
+| `accounting/` | [accounting/INDEX.md](accounting/INDEX.md) | Invoicing and accounting (module not yet built) — — source files, gaps.md |
+| `admin/` | [admin/INDEX.md](admin/INDEX.md) | Auth, users, tenancy, settings, reference data — 1 source files, gaps.md |
 
-## product/ — quotations
-
-| File | Answers | KB |
-| --- | --- | --- |
-| [quotations-INDEX.md](quotations/quotations-INDEX.md) | **Which quotation source is authoritative?** (none) | 2.1 |
-| [quotation-flow-process.md](quotations/quotation-flow-process.md) | Lead → job walk → approval → DocuSign → Project. Steps 1–27 | 1.9 |
-| [quotations.md](quotations/quotations.md) | Mohsin punch list: DocuSign defects, revisions, email templates | 1.8 |
-| [quotation.md](quotations/quotation.md) | JZ punch list: industry codes, pre-quote package, Customer PO | 0.8 |
-
-## product/ — customers & job sites
-
-| File | Answers | KB |
-| --- | --- | --- |
-| [customers-INDEX.md](customers/customers-INDEX.md) | **Which customer source is authoritative?** (none) | 2.5 |
-| [customer.md](customers/customer.md) | Mohsin punch list — mostly UI consistency | 6.1 |
-| [customer-and-job-sites.md](customers/customer-and-job-sites.md) | JZ punch list: job-site contacts/certs, insurance, billing terms | 1.2 |
-| [discussion-points-with-tcg-team.md](meetings/2026-06-26-discussion-points-with-tcg-team.md) | Open questions for the client, several modules | 0.8 |
-| [discussion-points-with-mohsin.md](meetings/2026-06-26-discussion-points-with-mohsin.md) | Two job-site questions (copy of a section above) | 0.2 |
-
-## product/ — vendors & agencies
-
-| File | Answers | KB |
-| --- | --- | --- |
-| [agencies-vendors-INDEX.md](vendors-agencies/agencies-vendors-INDEX.md) | **Which source is authoritative?** (none) | 1.9 |
-| [vendors.md](vendors-agencies/vendors.md) | Vendor directory and search, from Dispatch Manager's view | 3.7 |
-| [agencies.md](vendors-agencies/agencies.md) | Agencies as a directory that auto-populates permit forms | 1.0 |
-| [agencies-module.md](vendors-agencies/agencies-module.md) | Agency UI punch list + cross-app items | 1.4 |
-| [agency-and-vendor.md](vendors-agencies/agency-and-vendor.md) | 8-line punch list: sub-contractor category, travel restrictions | 0.2 |
-
-## product/ — dispatch & daily allocation
-
-| File | Answers | KB |
-| --- | --- | --- |
-| [daily-allocation-INDEX.md](dispatch/daily-allocation-INDEX.md) | **DAS sources — complementary, not rival** | 1.9 |
-| [daily-allocation-system.md](dispatch/daily-allocation-system.md) | The DAS spec: drag & drop allocation, dispatch lifecycle, availability, live asset map | 8.7 |
-| [job-project-das.md](projects-jobs/job-project-das.md) | Cross-module punch list; DAS is 1 of 9 sections | 1.7 |
-| [dispatcher-needs.md](dispatch/dispatcher-needs.md) | What dispatchers said they need (discovery) | 3.9 |
-
-## product/ — projects, jobs, permits & plans
-
-| File | Answers | KB |
-| --- | --- | --- |
-| [project-module/INDEX.md](projects-jobs/project-module/INDEX.md) | Project module — **its own section numbering is unreliable, see index** | 2.2 |
-| ├ [01-create-and-track-projects.md](projects-jobs/project-module/01-create-and-track-projects.md) | How are projects created and tracked? | 1.6 |
-| ├ [02-view-manage-job-details.md](projects-jobs/project-module/02-view-manage-job-details.md) · [03-create-manage-job-schedule.md](projects-jobs/project-module/03-create-manage-job-schedule.md) | Job details and job scheduling | 4.4 |
-| ├ [04-create-and-approve-lift-plans.md](projects-jobs/project-module/04-create-and-approve-lift-plans.md) | How are lift plans created and approved? | 3.5 |
-| ├ [05-create-and-track-permits.md](projects-jobs/project-module/05-create-and-track-permits.md) | How are permits created and tracked? | 2.6 |
-| └ [06-client-reviews-and-signs-quotation.md](projects-jobs/project-module/06-client-reviews-and-signs-quotation.md) · [07-create-and-manage-jobs-excluded.md](projects-jobs/project-module/07-create-and-manage-jobs-excluded.md) | Client signing; jobs (**marked excluded**) | 3.9 |
-
-## product/ — yards, tooling, billing, other
-
-| File | Answers | KB |
-| --- | --- | --- |
-| [user-story-and-tasks.md](assets/user-story-and-tasks.md) | **Only** source for yard management, HubSpot sync, email 2FA. From a personal space — check `provenance_note` | 4.3 |
-| [yard-operations-jz.md](dispatch/yard-operations-jz.md) | Yard operations punch list | 0.6 |
-| [tool-and-rigging.md](assets/tool-and-rigging.md) | Tools & rigging management, incl. the yard dashboard | 3.7 |
-| [mobilization-and-demobilization.md](quotations/mobilization-and-demobilization.md) | Mob/demob process — newest content in the vault | 5.0 |
-| [purchase-order.md](vendors-agencies/purchase-order.md) | Purchase order handling | 4.7 |
-| [billing-code-and-price-list.md](quotations/billing-code-and-price-list.md) | Billing code and price list punch list | 0.5 |
-| [categories-and-sub-categories.md](assets/categories-and-sub-categories.md) | Category/sub-category questions (2 tags — thin) | 0.3 |
-| [tcg-documents.md](admin/tcg-documents.md) | Document and attachment handling | 1.8 |
-| [sprint-4-additional.md](meetings/2026-06-22-sprint-4-additional.md) | Extra Sprint 4 stories — tools/rigging in yard & load-out views | 5.4 |
-
----
+Cross-cutting, tag-routed: `meetings/` (chronological — [transcripts INDEX](meetings/transcripts/INDEX.md), [summaries INDEX](meetings/summaries/INDEX.md); `grep -rl 'module/<x>' vault/meetings/`),
+[decisions/](decisions/) (flat; tagged `module/<x>`), [domain/](domain/) (process SOPs), [brs.md](brs.md) (product-wide BRS).
 
 ## FR-FOP requirements — two numberings
 
@@ -255,8 +188,9 @@ The two field-ops FRDs number from 001 and diverge after 003. Both lists, side b
 
 ## Tag vocabulary
 
-Every file carries `topics:` and `entities:` frontmatter — search those rather than grepping prose.
-The 50 topics and 40 entities are listed in [tags.md](tags.md).
+Every file carries Obsidian-native `tags:` — facets `module/<x>` and `kind/<y>` plus closed
+subject tags, defined in [STRUCTURE.md](STRUCTURE.md). Search tags, not prose:
+`grep -rl 'module/dispatch' vault/`. (`topics:`/`entities:` are retired; old vocabulary in [tags.md](tags.md).)
 
 ## Undefined terms — the glossary has one entry
 
