@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Legal confirmation
+- **Workweek anchor confirmed by client statement:** the CA weekly-OT workweek is the same Sat–Fri week for non-union — matching the engine's hard-coded `usp_Apply_CA_NonUnionAdminHourly_OT` (weekly >40 → OT, 7th-day rules, Sat–Fri week).

@@ -24,3 +24,5 @@ tags: [module/payroll, kind/rule]
 ## Open
 
 - **Blocking (matrix):** Confirmed TCG design
+- **Client re-confirmation (message, 2026-08-24 batch):** *"Payroll is processed weekly for Union and non-Union… and (for both) is always Saturday – Friday."* Now quadruple-sourced: matrix (settled, "Confirmed TCG design") · **live ADP pay schedule** (27/27 observed periods exactly Sat–Fri — [pay-schedule.md](../adp-api-responses/pay-schedule.md)) · the engine (Sat–Fri hard-coded incl. CA weekly OT) · this client statement.
+- **Implementation note carried from the live-data doc:** anchor ERP periods to **ADP's `payPeriodID`**, not an ERP-side week computation — the two must never be able to disagree.

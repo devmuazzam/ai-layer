@@ -102,3 +102,13 @@ whether API Central entitlements/endpoints carry over**, in writing from Patrick
 the ADP integration research gets re-validated at upgrade, and ideally that the upgrade is
 sequenced *around* the ERP integration build, not into the middle of it.
 
+## 2026-08-24 batch — weekly Sat–Fri payroll, both groups (client)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Weekly, Union and non-Union, always Saturday–Friday | ✅ **full agreement, quadruple-sourced** — matrix (the register's only settled rule), live ADP schedule (27/27 periods), engine hard-coding, FCC profile (Pay Cycle: Weekly) | PAY-001, PAY-025 |
+
+**Client questions from this message: none** — first message to verify completely clean.
+One design note carried forward: build ERP periods from ADP's `payPeriodID` rather than
+computing weeks, so the two systems can never disagree.
+
