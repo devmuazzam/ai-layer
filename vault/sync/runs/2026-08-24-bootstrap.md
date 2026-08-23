@@ -4,6 +4,7 @@ run: 2026-08-24-bootstrap
 kind: sync-run-report
 executed_by: manual (Claude Code session, syed haris) — the §10 nightly pipeline is still unbuilt
 status: report
+tags: [module/all, kind/sync-report]
 ---
 
 # Sync run 2026-08-24 — bootstrap

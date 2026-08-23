@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, payroll-group, rates]
+tags: [module/payroll, kind/frd, pricing]
 entities: [payroll-group, union-craft-rate, craft-modifier, employee-pay-rate]
 part_of: payroll/erp-payroll-module-frd/INDEX.md
 ---

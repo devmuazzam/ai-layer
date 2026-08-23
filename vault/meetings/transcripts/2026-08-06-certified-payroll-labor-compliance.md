@@ -7,7 +7,7 @@ updated: 2026-08-06
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll]
+tags: [module/payroll, kind/transcript]
 entities: []
 meeting_date: 2026-08-06
 kind: transcript

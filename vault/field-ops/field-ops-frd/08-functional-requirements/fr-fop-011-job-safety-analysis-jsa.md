@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, safety, escalation, deficiencies, jobs, time-tracking, signatures, documents-attachments]
+tags: [module/field-ops, module/projects-jobs, kind/frd, safety, inspections, time-tracking, signatures]
 entities: [tailboard-jsa, job, deficiency, field-ticket, employee, signature, attachment]
 part_of: field-ops/field-ops-frd/08-functional-requirements/INDEX.md
 ---

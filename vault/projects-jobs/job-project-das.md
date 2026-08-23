@@ -6,7 +6,7 @@ updated: 2026-07-16
 status: unverified
 conflicts_with: [dispatch/daily-allocation-system.md]
 jira: []
-topics: [assets, permits, tools-rigging, projects, jobs, categories, agencies, billing-codes]
+tags: [module/assets, module/projects-jobs, module/quotations, module/vendors-agencies, kind/reference, permits, tools-rigging, pricing]
 entities: [asset, permit, job, project, tool-rigging, employee, category, agency, billing-code, quotation]
 ---
 

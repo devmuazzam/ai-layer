@@ -6,7 +6,7 @@ updated: 2026-06-23
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, union-agreement, l12-mla, grievances, contribution-rates]
+tags: [module/payroll, kind/reference, union-agreement, fringe]
 entities: [grievance-procedure, job-steward, trust-fund-contribution]
 part_of: payroll/mcog-l12-mla-2025-2028/INDEX.md
 ---

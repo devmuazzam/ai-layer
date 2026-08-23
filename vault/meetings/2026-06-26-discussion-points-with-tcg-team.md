@@ -6,7 +6,7 @@ updated: 2026-06-25
 status: unverified
 conflicts_with: [customers/customer-and-job-sites.md, quotations/billing-code-and-price-list.md]
 jira: []
-topics: [customers, yards, pricing, yard-operations, scheduling, billing-codes, purchase-orders, categories]
+tags: [module/assets, module/customers, module/dispatch, module/quotations, module/vendors-agencies, kind/discussion, yards, pricing, scheduling, purchase-orders]
 entities: [customer, yard, asset, billing-code, price-list, purchase-order, schedule, category, quotation, employee]
 ---
 

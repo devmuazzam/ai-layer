@@ -6,7 +6,7 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [quotations, signatures, time-tracking, customers, projects, documents-attachments]
+tags: [module/customers, module/projects-jobs, module/quotations, kind/reference, signatures, time-tracking]
 entities: [quotation, signature, project, customer]
 part_of: projects-jobs/project-module/INDEX.md
 ---

@@ -6,7 +6,7 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, signatures, customers, time-tracking, jobs, permissions-roles]
+tags: [module/admin, module/customers, module/field-ops, module/projects-jobs, kind/frd, signatures, time-tracking, permissions-roles]
 entities: [signature, customer, field-ticket, job]
 part_of: field-ops/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---

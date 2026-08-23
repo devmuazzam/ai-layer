@@ -8,7 +8,7 @@ kind: conflict-stub
 gap: gaps.md#field-operations-mobile-app
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [requirements-spec, lunch-breaks, authentication, ticket-workflow, time-tracking, signatures, compliance, notifications]
+tags: [module/admin, module/field-ops, module/payroll, kind/conflict-stub, requirements, wtl, authentication, ticket-workflow, time-tracking, signatures, compliance, notifications]
 entities: [field-ticket, lunch-record, vendor, signature]
 ---
 

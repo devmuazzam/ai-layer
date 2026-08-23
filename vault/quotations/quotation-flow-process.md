@@ -6,7 +6,7 @@ updated: 2026-07-09
 status: unverified
 conflicts_with: [quotations/quotation.md, quotations/quotations.md, assets/user-story-and-tasks.md]
 jira: []
-topics: [quotations, customers, tools-rigging, projects, signatures, jobs, permits, scheduling]
+tags: [module/assets, module/customers, module/dispatch, module/projects-jobs, module/quotations, kind/reference, tools-rigging, signatures, permits, scheduling]
 entities: [quotation, customer, tool-rigging, project, job, permit, schedule, job-site, asset, signature]
 ---
 

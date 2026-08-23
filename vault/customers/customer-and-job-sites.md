@@ -6,7 +6,7 @@ updated: 2026-06-12
 status: unverified
 conflicts_with: [customers/customer.md, meetings/2026-06-26-discussion-points-with-mohsin.md, meetings/2026-06-26-discussion-points-with-tcg-team.md, assets/user-story-and-tasks.md]
 jira: []
-topics: [customers, job-sites, certifications, pricing, purchase-orders, reporting, navigation-ui, quotations]
+tags: [module/customers, module/quotations, module/vendors-agencies, kind/reference, certifications, pricing, purchase-orders, reporting]
 entities: [customer, job-site, certification, fcc, purchase-order, quotation, task, industry-code]
 ---
 

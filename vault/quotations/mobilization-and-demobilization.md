@@ -6,7 +6,7 @@ updated: 2026-08-10
 status: unverified
 conflicts_with: []
 jira: []
-topics: [mobilization, quotations, assets, customers, jobs, time-tracking, job-sites, yards]
+tags: [module/assets, module/customers, module/projects-jobs, module/quotations, kind/reference, mob-demob, time-tracking, yards]
 entities: [mob-demob, quotation, asset, customer, job, field-ticket, build-up, fcc, job-site, yard]
 ---
 

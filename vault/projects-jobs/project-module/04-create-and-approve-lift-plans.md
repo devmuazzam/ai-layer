@@ -6,7 +6,7 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [assets, customers, safety, projects, lift-plans, documents-attachments, jobs, notifications]
+tags: [module/assets, module/customers, module/projects-jobs, kind/reference, safety, lift-plans, notifications]
 entities: [asset, customer, project, lift-plan, job, quotation, job-site, notification, attachment, category]
 part_of: projects-jobs/project-module/INDEX.md
 ---

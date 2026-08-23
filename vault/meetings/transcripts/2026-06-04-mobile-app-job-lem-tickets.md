@@ -7,7 +7,7 @@ updated: 2026-06-04
 status: reference
 conflicts_with: []
 jira: []
-topics: [field-ops-mobile]
+tags: [module/field-ops, kind/transcript]
 entities: []
 meeting_date: 2026-06-04
 kind: transcript

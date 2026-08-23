@@ -6,7 +6,7 @@ updated: 2026-08-07
 status: unverified
 conflicts_with: []
 jira: []
-topics: [labor-compliance, certified-payroll, davis-bacon, billing, quotations, meeting-minutes]
+tags: [module/accounting, module/payroll, module/quotations, kind/meeting-notes, certified-payroll, pricing]
 entities: [labor-compliance, certified-payroll, davis-bacon, lcp-tracker, non-performance-report, compliance-checklist, quotation]
 meeting_date: 2026-08-07
 ---

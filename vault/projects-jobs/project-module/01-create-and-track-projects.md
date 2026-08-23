@@ -6,7 +6,7 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [projects, quotations, customers, jobs, job-sites, permits, purchase-orders, documents-attachments]
+tags: [module/customers, module/projects-jobs, module/quotations, module/vendors-agencies, kind/reference, permits, purchase-orders]
 entities: [project, quotation, customer, job, job-site, permit, purchase-order, attachment]
 part_of: projects-jobs/project-module/INDEX.md
 ---

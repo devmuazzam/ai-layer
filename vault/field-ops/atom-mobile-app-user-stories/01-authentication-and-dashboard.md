@@ -8,7 +8,7 @@ updated: 2026-08-11
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/frd-new-format-draft/INDEX.md]
 jira: []
-topics: [field-ops-mobile, authentication, dashboard, certifications]
+tags: [module/admin, module/field-ops, kind/user-stories, authentication, reporting, certifications]
 entities: [employee, otp, vendor, certification, notification]
 part_of: field-ops/atom-mobile-app-user-stories/INDEX.md
 ---

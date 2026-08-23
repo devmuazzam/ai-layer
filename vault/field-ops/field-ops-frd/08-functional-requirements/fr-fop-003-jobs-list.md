@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, jobs, ticket-workflow, customers, scheduling, authentication, permissions-roles]
+tags: [module/admin, module/customers, module/dispatch, module/field-ops, module/projects-jobs, kind/frd, ticket-workflow, scheduling, authentication, permissions-roles]
 entities: [field-ticket, job, customer, schedule]
 part_of: field-ops/field-ops-frd/08-functional-requirements/INDEX.md
 ---

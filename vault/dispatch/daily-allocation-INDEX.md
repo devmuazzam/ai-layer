@@ -8,7 +8,7 @@ kind: conflict-stub
 gap: gaps.md#daily-allocation-system-das
 conflicts_with: [dispatch/daily-allocation-system.md, projects-jobs/job-project-das.md]
 jira: []
-topics: [daily-allocation, quotations, jobs, categories, projects, assets, dispatch, inspections]
+tags: [module/assets, module/dispatch, module/field-ops, module/projects-jobs, module/quotations, kind/conflict-stub, daily-allocation, inspections]
 entities: [das, job, quotation, employee, category, project, asset, field-ticket, vendor, agency]
 ---
 

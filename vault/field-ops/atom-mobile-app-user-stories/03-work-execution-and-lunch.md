@@ -8,7 +8,7 @@ updated: 2026-08-11
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/frd-new-format-draft/INDEX.md, payroll/wtl-charts.md]
 jira: []
-topics: [field-ops-mobile, time-tracking, boom-time, lunch-breaks, wtl, labor-payroll]
+tags: [module/field-ops, module/payroll, kind/user-stories, time-tracking, boom, wtl]
 entities: [boom-time, build-up, breakdown, lunch-record, wtl, signature, field-ticket]
 part_of: field-ops/atom-mobile-app-user-stories/INDEX.md
 ---

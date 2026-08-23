@@ -6,7 +6,7 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, lunch-breaks, signatures, inspections, safety, labor-payroll, certifications, customers]
+tags: [module/customers, module/field-ops, module/payroll, kind/frd, wtl, signatures, inspections, safety, certifications]
 entities: [signature, lunch-record, employee, field-ticket, customer, certification, boom-time, tailboard-jsa]
 part_of: field-ops/frd-new-format-draft/INDEX.md
 ---

@@ -6,7 +6,7 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: [vendors-agencies/vendors.md, vendors-agencies/agency-and-vendor.md, vendors-agencies/agencies-module.md]
 jira: []
-topics: [agencies, permits, documents-attachments, vendors, projects]
+tags: [module/projects-jobs, module/vendors-agencies, kind/reference, permits]
 entities: [agency, permit, attachment, project, vendor]
 ---
 

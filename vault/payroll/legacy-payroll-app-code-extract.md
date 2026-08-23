@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, legacy-payroll-app, payroll-rule, adp-integration, craft-code, wtl, guaranteed-hours, rest-period, subsistence]
+tags: [module/payroll, kind/reference, legacy-payroll-app, payroll-rules, adp, craft-code, wtl, guaranteed-hours, rest-period, subsistence]
 entities: [payroll-rule, pay-component, craft-code, adp-file-number, payroll-group, guaranteed-hours, wtl, subsistence, shift-differential]
 part_of: payroll/INDEX.md
 ---

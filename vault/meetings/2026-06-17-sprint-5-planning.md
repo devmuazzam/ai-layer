@@ -6,7 +6,7 @@ updated: 2026-07-14
 status: unverified
 conflicts_with: []
 jira: []
-topics: [daily-allocation, permits, yards, yard-operations, sprint-planning, navigation-ui, projects, lift-plans]
+tags: [module/assets, module/dispatch, module/projects-jobs, kind/meeting-notes, daily-allocation, permits, yards, sprint-planning, lift-plans]
 entities: [permit, das, yard, sprint, project]
 date_conflict: >
   Filename uses the Confluence created date (2026-06-17). The body is internally

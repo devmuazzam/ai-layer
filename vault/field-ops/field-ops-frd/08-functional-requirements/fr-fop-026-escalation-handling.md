@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, escalation, notifications, deficiencies, inspections, compliance, safety, downtime-delays]
+tags: [module/field-ops, kind/frd, notifications, inspections, compliance, safety]
 entities: [deficiency, notification, inspection, downtime, category]
 part_of: field-ops/field-ops-frd/08-functional-requirements/INDEX.md
 ---

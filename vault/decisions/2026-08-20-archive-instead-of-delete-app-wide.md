@@ -7,7 +7,7 @@ status: reference
 conflicts_with: []
 resolves: SCRUM-896/spec.md#q1
 jira: [SCRUM-896]
-topics: [navigation-ui, requirements-spec, lift-plans, customers, vendors, tools-rigging]
+tags: [module/assets, module/customers, module/projects-jobs, module/vendors-agencies, kind/decision, requirements, lift-plans, tools-rigging]
 entities: [lift-plan, customer, vendor, tool-rigging]
 ---
 

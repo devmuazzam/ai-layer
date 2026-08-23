@@ -6,7 +6,7 @@ updated: 2026-08-09
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, adp-export, premiums, davis-bacon, union-rules, labor-compliance]
+tags: [module/payroll, kind/reference, adp, certified-payroll, union-agreement]
 entities: [payroll-rule, pay-component, adp-code, foreman-premium, military-premium, davis-bacon, job-site]
 ---
 

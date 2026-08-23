@@ -7,7 +7,7 @@ updated: 2026-07-30
 status: reference
 conflicts_with: []
 jira: []
-topics: [accounting-invoicing]
+tags: [module/accounting, kind/transcript, invoicing]
 entities: []
 meeting_date: 2026-07-30
 kind: transcript

@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, lunch-breaks, time-tracking, notifications, requirements-spec]
+tags: [module/field-ops, module/payroll, kind/frd, wtl, time-tracking, notifications, requirements]
 entities: [lunch-record, field-ticket, notification]
 part_of: field-ops/field-ops-frd/08-functional-requirements/INDEX.md
 ---

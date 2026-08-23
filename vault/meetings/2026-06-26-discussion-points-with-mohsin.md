@@ -6,7 +6,7 @@ updated: 2026-06-25
 status: unverified
 conflicts_with: [customers/customer-and-job-sites.md]
 jira: []
-topics: [job-sites, certifications, customers]
+tags: [module/customers, kind/discussion, certifications]
 entities: [job-site, customer, certification, fcc]
 ---
 

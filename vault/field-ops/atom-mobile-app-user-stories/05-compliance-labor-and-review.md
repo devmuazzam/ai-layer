@@ -8,7 +8,7 @@ updated: 2026-08-11
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/frd-new-format-draft/INDEX.md]
 jira: []
-topics: [field-ops-mobile, compliance, labor-payroll, subsistence, wtl, boom-premium]
+tags: [module/field-ops, module/payroll, kind/user-stories, compliance, subsistence, wtl, boom]
 entities: [labor-record, wtl, subsistence, craft-modifier, boom-pay, field-ticket, signature]
 part_of: field-ops/atom-mobile-app-user-stories/INDEX.md
 ---

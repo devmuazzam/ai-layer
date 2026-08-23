@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, union-agreement, adp-export, payroll-group]
+tags: [module/payroll, kind/reference, union-agreement, adp]
 entities: [payroll-rule, payroll-group, pay-component, adp-export, guaranteed-hours, wtl, subsistence]
 ---
 

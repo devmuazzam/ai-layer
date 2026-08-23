@@ -6,7 +6,7 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [jobs, projects, quotations, scheduling, permits, lift-plans, document-metadata]
+tags: [module/dispatch, module/projects-jobs, module/quotations, kind/reference, scheduling, permits, lift-plans, requirements]
 entities: [job, project, quotation, schedule, permit, lift-plan]
 parts:
   - 00-project-module.md

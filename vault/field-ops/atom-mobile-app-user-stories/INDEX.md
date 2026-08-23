@@ -8,7 +8,7 @@ updated: 2026-08-11
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/frd-new-format-draft/INDEX.md]
 jira: []
-topics: [field-ops-mobile, safety, authentication, dashboard, ticket-workflow, lunch-breaks, labor-payroll, compliance]
+tags: [module/admin, module/field-ops, module/payroll, kind/reference, safety, authentication, reporting, ticket-workflow, wtl, compliance]
 entities: [field-ticket, employee, lunch-record, wtl, labor-record, subsistence, signature, inspection]
 parts:
   - 00-overview.md

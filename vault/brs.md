@@ -6,7 +6,7 @@ updated: 2026-06-10
 status: unverified
 conflicts_with: []
 jira: []
-topics: [requirements-spec, lunch-breaks, labor-payroll, time-tracking, notifications, escalation, ticket-workflow, signatures]
+tags: [module/field-ops, module/payroll, kind/reference, requirements, wtl, time-tracking, notifications, ticket-workflow, signatures]
 entities: [lunch-record, field-ticket, notification, labor-record, deficiency, signature, employee, union-code, downtime, job]
 ---
 

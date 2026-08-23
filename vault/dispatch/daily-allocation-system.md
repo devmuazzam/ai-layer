@@ -6,7 +6,7 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: [projects-jobs/job-project-das.md]
 jira: []
-topics: [jobs, assets, dispatch, vendors, daily-allocation, navigation-ui, inspections, scheduling]
+tags: [module/assets, module/dispatch, module/field-ops, module/projects-jobs, module/vendors-agencies, kind/reference, daily-allocation, inspections, scheduling]
 entities: [job, employee, asset, field-ticket, vendor, das, schedule, project, quotation, yard]
 ---
 

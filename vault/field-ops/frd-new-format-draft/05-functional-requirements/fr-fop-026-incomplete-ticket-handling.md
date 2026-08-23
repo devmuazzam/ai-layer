@@ -6,7 +6,7 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, ticket-workflow, signatures, labor-payroll, notifications, downtime-delays, offline-reliability]
+tags: [module/field-ops, module/payroll, kind/frd, ticket-workflow, signatures, notifications, offline]
 entities: [field-ticket]
 part_of: field-ops/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---

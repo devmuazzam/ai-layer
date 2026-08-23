@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-api, earning-codes, onboarding, worker-hire, payroll-output]
+tags: [module/payroll, kind/reference, adp, earning-codes]
 entities: [adp-api, adp-code, earning-code, adp-file-number, craft-code, applicant-onboard, worker-hire, payroll-output]
 part_of: payroll/INDEX.md
 ---

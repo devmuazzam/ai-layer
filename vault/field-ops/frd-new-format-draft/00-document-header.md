@@ -6,7 +6,7 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, document-metadata, sprint-planning, requirements-spec]
+tags: [module/field-ops, kind/frd, requirements, sprint-planning]
 entities: [sprint]
 part_of: field-ops/frd-new-format-draft/INDEX.md
 ---

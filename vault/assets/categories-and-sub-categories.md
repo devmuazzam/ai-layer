@@ -6,7 +6,7 @@ updated: 2026-06-12
 status: unverified
 conflicts_with: []
 jira: []
-topics: [categories, scheduling]
+tags: [module/assets, module/dispatch, kind/reference, scheduling]
 entities: [category, schedule, fcc]
 ---
 

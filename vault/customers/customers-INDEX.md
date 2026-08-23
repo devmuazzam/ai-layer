@@ -8,7 +8,7 @@ kind: conflict-stub
 gap: gaps.md#customer
 conflicts_with: [customers/customer.md, customers/customer-and-job-sites.md, meetings/2026-06-26-discussion-points-with-mohsin.md, meetings/2026-06-26-discussion-points-with-tcg-team.md, assets/user-story-and-tasks.md]
 jira: []
-topics: [customers, jobs, yards, navigation-ui, job-sites, reporting, open-questions, certifications]
+tags: [module/assets, module/customers, module/projects-jobs, kind/conflict-stub, yards, reporting, open-questions, certifications]
 entities: [customer, job, fcc, yard, job-site, task, employee, certification, das, category]
 ---
 

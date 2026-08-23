@@ -5,7 +5,7 @@ migrated: 2026-08-21
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, work-through-lunch, rest-period, subsistence, temporary-rate, craft-code, adp, certified-payroll]
+tags: [module/payroll, kind/reference, wtl, rest-period, subsistence, craft-code, adp, certified-payroll]
 entities: [payroll-rule, work-through-lunch, rest-period-premium, subsistence-allowance, base-rate-override, craft-code, adp-export]
 part_of: payroll/INDEX.md
 ---

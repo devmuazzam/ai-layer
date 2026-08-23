@@ -7,7 +7,7 @@ updated: 2026-02-27
 status: reference
 conflicts_with: []
 jira: []
-topics: [dispatch-scheduling]
+tags: [module/dispatch, kind/transcript]
 entities: []
 meeting_date: 2026-02-27
 kind: transcript

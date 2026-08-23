@@ -6,7 +6,7 @@ updated: 2026-04-22
 status: unverified
 conflicts_with: [customers/customer.md, customers/customer-and-job-sites.md, quotations/quotation.md, quotations/quotations.md, quotations/quotation-flow-process.md]
 jira: []
-topics: [customers, quotations, yards, authentication, crm-integration, documents-attachments, permissions-roles]
+tags: [module/admin, module/assets, module/customers, module/quotations, kind/user-stories, yards, authentication, integrations, permissions-roles]
 entities: [customer, quotation, yard, attachment]
 provenance: personal-space
 provenance_note: >

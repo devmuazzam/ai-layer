@@ -7,7 +7,7 @@ updated: 2026-02-09
 status: reference
 conflicts_with: []
 jira: []
-topics: []
+tags: [module/all, kind/invite-thread]
 entities: []
 meeting_date: 2026-02-09
 kind: invite-thread

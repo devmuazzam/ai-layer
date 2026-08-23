@@ -6,7 +6,7 @@ updated: 2026-02-04
 status: verified
 conflicts_with: []
 jira: []
-topics: [scrum-process, sprint-planning, open-questions, inspections, tools-rigging, scheduling, reporting]
+tags: [module/assets, module/dispatch, module/field-ops, kind/sop, sprint-planning, open-questions, inspections, tools-rigging, scheduling, reporting]
 entities: [sprint, task, field-ticket, tool-rigging, schedule]
 supersedes:
   - confluence/TCG/Sprint Closing — TCG-space copy, last updated 2026-04-23, not migrated

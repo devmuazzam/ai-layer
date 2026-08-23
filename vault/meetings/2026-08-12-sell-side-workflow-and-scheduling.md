@@ -6,7 +6,7 @@ updated: 2026-08-12
 status: unverified
 conflicts_with: []
 jira: []
-topics: [sell-side-workflow, scheduling, permits, dispatch, customers, integrations, meeting-minutes]
+tags: [module/customers, module/dispatch, module/projects-jobs, module/quotations, kind/meeting-notes, scheduling, permits, integrations]
 entities: [job-schedule-master, permit, crane, support-truck, customer-intake, ready-to-schedule-checklist, geographic-heat-map, red-path]
 meeting_date: 2026-08-12
 ---

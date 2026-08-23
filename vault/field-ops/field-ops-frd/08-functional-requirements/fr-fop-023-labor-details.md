@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, labor-payroll, time-tracking, yards, jobs, permissions-roles, requirements-spec]
+tags: [module/admin, module/assets, module/field-ops, module/payroll, module/projects-jobs, kind/frd, time-tracking, yards, permissions-roles, requirements]
 entities: [labor-record, job, yard, field-ticket]
 part_of: field-ops/field-ops-frd/08-functional-requirements/INDEX.md
 ---

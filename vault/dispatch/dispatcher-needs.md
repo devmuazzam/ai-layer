@@ -6,7 +6,7 @@ updated: 2026-04-07
 status: unverified
 conflicts_with: []
 jira: []
-topics: [dispatch, jobs, permits, assets, customers, vendors, scheduling, inspections]
+tags: [module/assets, module/customers, module/dispatch, module/field-ops, module/projects-jobs, module/vendors-agencies, kind/reference, permits, scheduling, inspections]
 entities: [job, permit, asset, customer, vendor, field-ticket, schedule, project, agency, tool-rigging]
 ---
 

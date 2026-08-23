@@ -6,7 +6,7 @@ updated: 2026-08-11
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, testing, regression, worked-examples]
+tags: [module/payroll, kind/reference]
 entities: [labor-entry, payroll-group, test-scenario]
 ---
 

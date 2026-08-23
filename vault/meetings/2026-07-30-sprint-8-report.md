@@ -7,7 +7,7 @@ updated: 2026-08-11
 status: unverified
 conflicts_with: []
 jira: []
-topics: [sprint-planning, field-ops-mobile, quotations, customers, yard-operations]
+tags: [module/customers, module/dispatch, module/field-ops, module/quotations, kind/meeting-notes, sprint-planning, yards]
 entities: [sprint, field-ticket, employee, das]
 ---
 

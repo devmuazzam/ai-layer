@@ -6,7 +6,7 @@ updated: 2026-06-23
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, union-agreement, l12-mla, contract-source]
+tags: [module/payroll, kind/reference, union-agreement, provenance]
 entities: [shift-premium, holiday, special-saturday, rest-period, meal-period, subsistence, trust-fund]
 ---
 

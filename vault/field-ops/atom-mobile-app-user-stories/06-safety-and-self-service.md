@@ -8,7 +8,7 @@ updated: 2026-08-11
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/frd-new-format-draft/INDEX.md]
 jira: []
-topics: [field-ops-mobile, safety, certifications, notifications]
+tags: [module/field-ops, kind/user-stories, safety, certifications, notifications]
 entities: [incident, sos, certification, employee, field-ticket]
 part_of: field-ops/atom-mobile-app-user-stories/INDEX.md
 ---

@@ -7,7 +7,7 @@ updated: 2026-03-17
 status: reference
 conflicts_with: []
 jira: []
-topics: [sales-quoting]
+tags: [module/quotations, kind/transcript]
 entities: []
 meeting_date: 2026-03-17
 kind: transcript

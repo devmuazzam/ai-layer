@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, time-reconstruction, overtime]
+tags: [module/payroll, kind/frd, time-tracking, overtime]
 entities: [labor-entry, pricing-slice, overtime, double-time]
 part_of: payroll/erp-payroll-module-frd/INDEX.md
 ---

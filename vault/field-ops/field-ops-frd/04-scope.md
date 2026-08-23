@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, labor-payroll, lunch-breaks, safety, customers, requirements-spec, ticket-workflow]
+tags: [module/customers, module/field-ops, module/payroll, kind/frd, inspections, wtl, safety, requirements, ticket-workflow]
 entities: [inspection, field-ticket, customer, lunch-record, job, yard, asset, certification, deficiency, notification]
 part_of: field-ops/field-ops-frd/INDEX.md
 ---

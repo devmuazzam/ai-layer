@@ -6,7 +6,7 @@ updated: 2026-07-03
 status: unverified
 conflicts_with: []
 jira: []
-topics: [permits, purchase-orders, assets, jobs, vendors, agencies, lift-plans, customers]
+tags: [module/assets, module/customers, module/projects-jobs, module/vendors-agencies, kind/reference, permits, purchase-orders, lift-plans]
 entities: [permit, purchase-order, asset, job, vendor, agency, lift-plan, project, customer, quotation]
 ---
 

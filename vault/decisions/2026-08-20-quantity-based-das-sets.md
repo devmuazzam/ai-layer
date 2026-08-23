@@ -6,7 +6,7 @@ updated: 2026-08-20
 status: reference
 conflicts_with: []
 jira: [SCRUM-907, SCRUM-892]
-topics: [quotations, daily-allocation, jobs]
+tags: [module/dispatch, module/projects-jobs, module/quotations, kind/decision, daily-allocation]
 entities: [QuotationResource, JobResource, DAS]
 ---
 

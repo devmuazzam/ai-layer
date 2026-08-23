@@ -7,7 +7,7 @@ updated: 2026-05-28
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, field-ops-mobile]
+tags: [module/field-ops, module/payroll, kind/transcript]
 entities: []
 meeting_date: 2026-05-28
 kind: transcript

@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, labor-payroll, inspections, deficiencies, jobs]
+tags: [module/field-ops, module/payroll, module/projects-jobs, kind/frd, inspections]
 entities: [field-ticket, job, employee, inspection, deficiency, labor-record]
 part_of: field-ops/field-ops-frd/INDEX.md
 ---

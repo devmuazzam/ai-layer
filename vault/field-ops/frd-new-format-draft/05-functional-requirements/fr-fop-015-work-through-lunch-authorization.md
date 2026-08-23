@@ -6,7 +6,7 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, lunch-breaks, permissions-roles, signatures, labor-payroll, customers]
+tags: [module/admin, module/customers, module/field-ops, module/payroll, kind/frd, wtl, permissions-roles, signatures]
 entities: [lunch-record, signature, field-ticket, customer, employee]
 part_of: field-ops/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---

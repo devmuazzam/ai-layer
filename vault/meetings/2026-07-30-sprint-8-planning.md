@@ -6,7 +6,7 @@ updated: 2026-07-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [ticket-workflow, quotations, sprint-planning, customers, yards, yard-operations, daily-allocation, projects]
+tags: [module/assets, module/customers, module/dispatch, module/field-ops, module/projects-jobs, module/quotations, kind/meeting-notes, ticket-workflow, sprint-planning, yards, daily-allocation]
 entities: [field-ticket, employee, sprint, quotation, project, customer, yard, asset, das]
 date_conflict: >
   Filename uses the Confluence created date (2026-07-30). The body states the sprint ran July 27 - Aug 7, 2026, so this plan page was created 3 days into the sprint it plans. Not resolved - flagged for product.

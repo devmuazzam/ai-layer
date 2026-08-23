@@ -6,7 +6,7 @@ updated: 2026-06-23
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, union-agreement, l12-mla, working-rules, overtime, holidays, rest-period, meal-period]
+tags: [module/payroll, kind/reference, union-agreement, overtime, holidays, rest-period, wtl]
 entities: [shift-premium, holiday, special-saturday, rest-period, meal-period, reporting-pay, guaranteed-hours]
 part_of: payroll/mcog-l12-mla-2025-2028/INDEX.md
 ---

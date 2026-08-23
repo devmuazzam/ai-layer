@@ -6,7 +6,7 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [permits, projects, jobs, documents-attachments, notifications, dashboard, dispatch, assets]
+tags: [module/assets, module/dispatch, module/projects-jobs, kind/reference, permits, notifications, reporting]
 entities: [permit, project, job, asset, attachment, agency, purchase-order, notification, quotation, customer]
 part_of: projects-jobs/project-module/INDEX.md
 ---

@@ -6,7 +6,7 @@ updated: 2026-07-16
 status: unverified
 conflicts_with: [customers/customer-and-job-sites.md, assets/user-story-and-tasks.md]
 jira: []
-topics: [documents-attachments, job-sites, customers, scrum-process, reporting, quotations, permissions-roles, navigation-ui]
+tags: [module/admin, module/customers, module/quotations, kind/reference, sprint-planning, reporting, permissions-roles]
 entities: [attachment, job-site, field-ticket, customer, industry-code, quotation, employee, vendor, agency, tool-rigging]
 ---
 

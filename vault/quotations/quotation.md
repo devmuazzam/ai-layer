@@ -6,7 +6,7 @@ updated: 2026-06-23
 status: unverified
 conflicts_with: [quotations/quotations.md, quotations/quotation-flow-process.md, assets/user-story-and-tasks.md]
 jira: []
-topics: [tools-rigging, customers, quotations, vendors, signatures, assets, navigation-ui, agencies]
+tags: [module/assets, module/customers, module/quotations, module/vendors-agencies, kind/reference, tools-rigging, signatures]
 entities: [tool-rigging, customer, quotation, vendor, asset, job, agency, yard, billing-code, purchase-order]
 ---
 

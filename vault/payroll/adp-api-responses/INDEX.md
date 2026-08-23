@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-api, reference-data]
+tags: [module/payroll, kind/reference, adp, reference-data]
 entities: [adp-api, adp-code, adp-company-code, code-list]
 ---
 

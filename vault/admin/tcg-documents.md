@@ -6,7 +6,7 @@ updated: 2026-07-08
 status: unverified
 conflicts_with: []
 jira: []
-topics: [customers, jobs, labor-payroll, inspections, assets, scheduling, documents-attachments]
+tags: [module/admin, module/assets, module/customers, module/dispatch, module/field-ops, module/payroll, module/projects-jobs, kind/reference, inspections, scheduling]
 entities: [job, customer, union-code, asset, employee, field-ticket, inspection, schedule]
 ---
 

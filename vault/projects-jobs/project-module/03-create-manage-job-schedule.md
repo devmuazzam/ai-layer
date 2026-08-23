@@ -6,7 +6,7 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [scheduling, jobs, daily-allocation, dispatch, assets, customers]
+tags: [module/assets, module/customers, module/dispatch, module/projects-jobs, kind/reference, scheduling, daily-allocation]
 entities: [schedule, job, das, asset, customer]
 part_of: projects-jobs/project-module/INDEX.md
 ---

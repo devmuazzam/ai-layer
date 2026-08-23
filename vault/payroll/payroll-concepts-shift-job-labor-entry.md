@@ -6,7 +6,7 @@ updated: 2026-08-11
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, terminology, labor-entry, data-model]
+tags: [module/payroll, kind/reference, reference-data, architecture]
 entities: [shift, job, labor-entry, anchor-date, cross-midnight]
 ---
 

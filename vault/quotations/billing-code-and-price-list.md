@@ -6,7 +6,7 @@ updated: 2026-06-12
 status: unverified
 conflicts_with: [meetings/2026-06-26-discussion-points-with-tcg-team.md]
 jira: []
-topics: [pricing, billing-codes, yards, categories]
+tags: [module/assets, module/quotations, kind/reference, pricing, yards]
 entities: [billing-code, yard, price-list, category, fcc]
 ---
 

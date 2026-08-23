@@ -6,7 +6,7 @@ updated: 2026-05-20
 status: unverified
 conflicts_with: []
 jira: [SCRUM-1, SCRUM-231, SCRUM-233, SCRUM-234, SCRUM-235, SCRUM-236, SCRUM-237, SCRUM-238, SCRUM-239, SCRUM-240, SCRUM-242, SCRUM-244, SCRUM-245, SCRUM-246, SCRUM-250, SCRUM-262, SCRUM-269, SCRUM-275, SCRUM-279, SCRUM-288, SCRUM-304, SCRUM-397, SCRUM-401, SCRUM-427, SCRUM-428, SCRUM-440]
-topics: [scrum-process, projects, vendors, agencies, permits, sprint-planning, quotations, daily-allocation]
+tags: [module/dispatch, module/projects-jobs, module/quotations, module/vendors-agencies, kind/meeting-notes, sprint-planning, permits, daily-allocation]
 entities: [sprint, project, vendor, agency, permit, quotation, employee, das, task, field-ticket]
 date_conflict: >
   Filename uses the Confluence created date (2026-05-20). The body states Sprint 3 ran 5/5/2026-5/27/2026, so this planning page was created 15 days after the sprint it plans had already started. Not resolved - flagged for product.

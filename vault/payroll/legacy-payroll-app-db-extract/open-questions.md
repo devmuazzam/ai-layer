@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, legacy-payroll-app, payroll-rule]
+tags: [module/payroll, kind/reference, legacy-payroll-app, payroll-rules]
 entities: [payroll-rule]
 part_of: payroll/legacy-payroll-app-db-extract/INDEX.md
 ---

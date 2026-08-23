@@ -7,7 +7,7 @@ updated: 2026-03-19
 status: reference
 conflicts_with: []
 jira: []
-topics: [roles-permissions]
+tags: [module/admin, kind/transcript, permissions-roles]
 entities: []
 meeting_date: 2026-03-19
 kind: transcript

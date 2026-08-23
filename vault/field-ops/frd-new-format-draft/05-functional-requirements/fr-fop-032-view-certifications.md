@@ -6,7 +6,7 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, certifications, notifications, customers, job-sites, jobs, documents-attachments]
+tags: [module/customers, module/field-ops, module/projects-jobs, kind/frd, certifications, notifications]
 entities: [certification, job, customer, job-site]
 part_of: field-ops/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---

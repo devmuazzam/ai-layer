@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, deficiencies, permissions-roles, requirements-spec]
+tags: [module/admin, module/field-ops, kind/frd, inspections, permissions-roles, requirements]
 entities: [inspection, deficiency, employee]
 part_of: field-ops/field-ops-frd/08-functional-requirements/INDEX.md
 ---

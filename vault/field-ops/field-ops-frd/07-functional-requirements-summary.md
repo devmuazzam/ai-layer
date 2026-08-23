@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, inspections, labor-payroll, lunch-breaks, ticket-workflow, deficiencies, jobs, time-tracking]
+tags: [module/field-ops, module/payroll, module/projects-jobs, kind/frd, inspections, wtl, ticket-workflow, time-tracking]
 entities: [field-ticket, labor-record, lunch-record, inspection, job, deficiency, job-site, yard, certification, notification]
 part_of: field-ops/field-ops-frd/INDEX.md
 ---

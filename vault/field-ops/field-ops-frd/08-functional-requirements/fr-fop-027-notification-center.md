@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, notifications, ticket-workflow, lunch-breaks, certifications, escalation, categories, permissions-roles]
+tags: [module/admin, module/assets, module/field-ops, module/payroll, kind/frd, notifications, ticket-workflow, wtl, certifications, permissions-roles]
 entities: [notification, field-ticket, certification, lunch-record, task, category]
 part_of: field-ops/field-ops-frd/08-functional-requirements/INDEX.md
 ---

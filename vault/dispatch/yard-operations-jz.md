@@ -6,7 +6,7 @@ updated: 2026-07-15
 status: unverified
 conflicts_with: []
 jira: []
-topics: [yard-operations, jobs, assets, notifications, yards, scheduling, documents-attachments]
+tags: [module/assets, module/dispatch, module/projects-jobs, kind/reference, yards, notifications, scheduling]
 entities: [job, asset, employee, loadout, yard, notification, schedule]
 ---
 

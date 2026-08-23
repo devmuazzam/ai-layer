@@ -8,7 +8,7 @@ kind: conflict-stub
 gap: gaps.md#quotations
 conflicts_with: [quotations/quotation.md, quotations/quotations.md, quotations/quotation-flow-process.md, assets/user-story-and-tasks.md]
 jira: []
-topics: [quotations, tools-rigging, customers, jobs, signatures, daily-allocation, billing-codes, assets]
+tags: [module/assets, module/customers, module/dispatch, module/projects-jobs, module/quotations, kind/conflict-stub, tools-rigging, signatures, daily-allocation, pricing]
 entities: [quotation, tool-rigging, customer, job, asset, billing-code, das, task, project, purchase-order]
 ---
 

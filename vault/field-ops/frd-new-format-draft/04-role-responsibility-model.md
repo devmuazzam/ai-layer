@@ -6,7 +6,7 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, labor-payroll, inspections, signatures, ticket-workflow, customers, compliance, notifications]
+tags: [module/customers, module/field-ops, module/payroll, kind/frd, inspections, signatures, ticket-workflow, compliance, notifications]
 entities: [field-ticket, labor-record, signature, customer, job, asset, certification, notification]
 part_of: field-ops/frd-new-format-draft/INDEX.md
 ---

@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, requirements-spec, open-questions, document-metadata]
+tags: [module/field-ops, kind/reference, requirements, open-questions]
 entities: []
 parts:
   - 00-document-header.md

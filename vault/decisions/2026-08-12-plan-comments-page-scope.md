@@ -5,7 +5,7 @@ decided: 2026-08-12
 decided_by: syed haris (assignee, SCRUM-757) — answered directly in a working session on 2026-08-12, against the spec's Q1. The gap nominated Aiman Farooq (reporter) as owner "or anyone who can open the ticket's attachments"; the assignee answered instead, from knowledge of the screen rather than from the attachments, which remain unopened.
 status: verified
 resolves: gaps.md#scope-of-the-plan-comments-page-in-scrum-757
-topics: [lift-plans, projects, navigation-ui]
+tags: [module/projects-jobs, kind/decision, lift-plans]
 entities: [lift-plan, project]
 ---
 

@@ -7,7 +7,7 @@ updated: 2026-06-17
 status: reference
 conflicts_with: []
 jira: []
-topics: [erp-sprint-review]
+tags: [module/all, kind/transcript, sprint-planning]
 entities: []
 meeting_date: 2026-06-17
 kind: transcript

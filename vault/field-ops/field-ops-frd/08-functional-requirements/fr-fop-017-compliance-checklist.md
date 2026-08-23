@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, compliance, lunch-breaks, inspections, deficiencies, permissions-roles, signatures, permits]
+tags: [module/admin, module/field-ops, module/payroll, module/projects-jobs, kind/frd, compliance, wtl, inspections, permissions-roles, signatures, permits]
 entities: [lunch-record, field-ticket, employee, deficiency, permit, signature]
 part_of: field-ops/field-ops-frd/08-functional-requirements/INDEX.md
 ---

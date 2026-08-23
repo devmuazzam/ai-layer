@@ -7,7 +7,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [accounting, adp, payroll]
+tags: [module/accounting, module/payroll, kind/transcript, invoicing, adp]
 entities: []
 meeting_date: 2026-08-18
 kind: transcript

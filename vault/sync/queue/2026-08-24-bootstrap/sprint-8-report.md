@@ -9,6 +9,7 @@ target_status: unverified
 target_conflicts_with: []
 staged: 2026-08-24
 promoted: false
+tags: [module/all, kind/reference]
 ---
 
 # Staged change — Sprint 8 report (CLEAN)

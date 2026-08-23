@@ -6,7 +6,7 @@ updated: 2026-06-09
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, notifications, dispatch, jobs, ticket-workflow, safety]
+tags: [module/dispatch, module/field-ops, module/projects-jobs, kind/frd, notifications, ticket-workflow, safety]
 entities: [field-ticket, notification, job]
 part_of: field-ops/frd-new-format-draft/05-functional-requirements/INDEX.md
 ---

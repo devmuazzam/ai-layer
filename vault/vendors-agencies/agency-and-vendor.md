@@ -6,7 +6,7 @@ updated: 2026-06-22
 status: unverified
 conflicts_with: [vendors-agencies/agencies.md, vendors-agencies/vendors.md, vendors-agencies/agencies-module.md]
 jira: []
-topics: [vendors, agencies, categories]
+tags: [module/assets, module/vendors-agencies, kind/reference]
 entities: [vendor, agency, category]
 ---
 

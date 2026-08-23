@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, requirements]
+tags: [module/payroll, kind/frd, requirements]
 entities: [payroll-rule, payroll-group, pay-component]
 part_of: payroll/erp-payroll-module-frd/INDEX.md
 ---

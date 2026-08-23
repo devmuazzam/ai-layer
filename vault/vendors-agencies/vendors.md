@@ -6,7 +6,7 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: [vendors-agencies/agencies.md, vendors-agencies/agency-and-vendor.md, vendors-agencies/agencies-module.md]
 jira: []
-topics: [vendors, assets, categories, dispatch, jobs, agencies, yards, daily-allocation]
+tags: [module/assets, module/dispatch, module/projects-jobs, module/vendors-agencies, kind/reference, yards, daily-allocation]
 entities: [vendor, employee, asset, category, job, agency, yard, das, schedule]
 ---
 

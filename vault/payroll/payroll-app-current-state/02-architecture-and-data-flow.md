@@ -6,7 +6,7 @@ updated: 2026-06-23
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, payroll-app, architecture, data-flow]
+tags: [module/payroll, kind/reference, legacy-payroll-app, architecture]
 entities: [tcg-rawfms, tcg-payrollapp, pricing-engine, pay-component]
 part_of: payroll/payroll-app-current-state/INDEX.md
 ---

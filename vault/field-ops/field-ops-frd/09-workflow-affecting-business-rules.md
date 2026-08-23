@@ -6,7 +6,7 @@ updated: 2026-06-16
 status: unverified
 conflicts_with: [field-ops/frd-new-format-draft/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
-topics: [field-ops-mobile, notifications, requirements-spec, lunch-breaks, signatures, compliance, certifications, deficiencies]
+tags: [module/field-ops, module/payroll, kind/frd, notifications, requirements, wtl, signatures, compliance, certifications, inspections]
 entities: [certification, deficiency, notification, signature, lunch-record, category]
 part_of: field-ops/field-ops-frd/INDEX.md
 ---

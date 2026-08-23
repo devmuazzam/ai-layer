@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, migration, source-manifest, provenance]
+tags: [module/payroll, kind/reference, data-migration, provenance]
 entities: []
 ---
 

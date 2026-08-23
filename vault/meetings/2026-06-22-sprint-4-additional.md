@@ -6,7 +6,7 @@ updated: 2026-06-22
 status: unverified
 conflicts_with: []
 jira: []
-topics: [jobs, tools-rigging, purchase-orders, notifications, quotations, vendors, customers, yards]
+tags: [module/assets, module/customers, module/projects-jobs, module/quotations, module/vendors-agencies, kind/meeting-notes, tools-rigging, purchase-orders, notifications, yards]
 entities: [job, tool-rigging, purchase-order, notification, quotation, field-ticket, vendor, customer, employee, project]
 ---
 

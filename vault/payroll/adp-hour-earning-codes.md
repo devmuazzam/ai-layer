@@ -6,7 +6,7 @@ updated: 2026-06-04
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, adp-export, earning-codes, reference-data]
+tags: [module/payroll, kind/reference, adp, earning-codes, reference-data]
 entities: [adp-code, earning-code, hours-earnings]
 ---
 

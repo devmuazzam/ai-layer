@@ -8,7 +8,7 @@ updated: 2026-08-11
 status: unverified
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/frd-new-format-draft/INDEX.md]
 jira: []
-topics: [field-ops-mobile, ticket-workflow, inspections, signatures, compliance, time-tracking]
+tags: [module/field-ops, kind/user-stories, ticket-workflow, inspections, signatures, compliance, time-tracking]
 entities: [field-ticket, dispatch, inspection, deficiency, signature, geofence, tailboard-jsa]
 part_of: field-ops/atom-mobile-app-user-stories/INDEX.md
 ---

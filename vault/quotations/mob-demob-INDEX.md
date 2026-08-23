@@ -9,7 +9,7 @@ gap: gaps.md#mobilization-and-demobilization
 conflicts_with: [quotations/mobilization-and-demobilization.md]
 detected_by: drift check against Confluence, 2026-08-11 — not the 2026-08-10 migration
 jira: []
-topics: [mobilization, quotations, assets, jobs, time-tracking, job-sites]
+tags: [module/assets, module/customers, module/projects-jobs, module/quotations, kind/conflict-stub, mob-demob, time-tracking]
 entities: [mob-demob, quotation, asset, job, field-ticket, build-up, fcc]
 ---
 

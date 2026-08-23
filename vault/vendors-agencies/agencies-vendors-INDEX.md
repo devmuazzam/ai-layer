@@ -8,7 +8,7 @@ kind: conflict-stub
 gap: gaps.md#agencies-and-vendors
 conflicts_with: [vendors-agencies/agencies.md, vendors-agencies/vendors.md, vendors-agencies/agency-and-vendor.md, vendors-agencies/agencies-module.md]
 jira: []
-topics: [agencies, vendors, permits, documents-attachments, dashboard, dispatch, categories]
+tags: [module/assets, module/dispatch, module/projects-jobs, module/vendors-agencies, kind/conflict-stub, permits, reporting]
 entities: [agency, vendor, permit, attachment, category]
 ---
 

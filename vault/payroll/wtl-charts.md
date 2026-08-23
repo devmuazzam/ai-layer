@@ -6,7 +6,7 @@ updated: 2026-01-23
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, wtl, meal-period, overtime, billing]
+tags: [module/accounting, module/payroll, kind/reference, wtl, overtime, pricing]
 entities: [wtl, meal-period, lunch-break-marker, overtime, double-time]
 ---
 

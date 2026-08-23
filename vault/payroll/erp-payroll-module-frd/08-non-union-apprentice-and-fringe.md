@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, non-union, fringe-benefits]
+tags: [module/payroll, kind/frd, fringe]
 entities: [non-union-hourly, non-union-salary, apprentice-step, fringe-contribution]
 part_of: payroll/erp-payroll-module-frd/INDEX.md
 ---

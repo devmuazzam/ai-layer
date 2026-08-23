@@ -6,7 +6,7 @@ updated: 2026-04-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [jobs, quotations, tools-rigging, scheduling, assets, customers, dispatch, daily-allocation]
+tags: [module/assets, module/customers, module/dispatch, module/projects-jobs, module/quotations, kind/reference, tools-rigging, scheduling, daily-allocation]
 entities: [job, quotation, asset, tool-rigging, schedule, customer, das, project, job-site, attachment]
 part_of: projects-jobs/project-module/INDEX.md
 ---
