@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm required UI depth
+- **Status (client, 2026-08-24 batch):** *"still some known issues with displaying the correct number of hours in some of the rule scenarios"* — the display defects in [08-known-issues-and-next-decisions.md](../payroll-app-current-state/08-known-issues-and-next-decisions.md) (non-union WTL UI language, zero-display formatting, …) remain open upstream. The ERP detail view inherits the *requirements*, not the defects.

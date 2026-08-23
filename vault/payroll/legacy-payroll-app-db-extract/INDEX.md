@@ -161,3 +161,9 @@ definitions and every config row.
 - [../adp-bucket-crosswalk.md](../adp-bucket-crosswalk.md) — the observed WFN worksheet columns
   (LB REG/OT/DBL/TRI with Temporary Rate) are the on-screen form of its "Hours 3/4 Code + Temp
   Rate" rows; no conflict, cross-reference added.
+
+---
+
+> **Client validity statement (2026-08-24 batch):** Brian — *"I haven't made many changes since
+> that backup"* (the 2026-06-23 backup this extract was built from). The extract remains ≈
+> as-built current per the client's own word; residual deltas are UI-display fixes, not logic.

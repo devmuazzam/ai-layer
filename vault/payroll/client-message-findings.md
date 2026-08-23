@@ -200,3 +200,18 @@ day-type — your summary says anchor-date, your engine flips at midnight: which
 Friday-night crew's Saturday hours hang on it.) Plus: (13-update) Corrina's ADP-rep meeting —
 we'd like to join, or at minimum receive the recording.
 
+## 2026-08-24 batch — architecture + status (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| RawFMS = warehouse copy of **40** FCC-NexGen tables; PayrollAPP db = the logic | ✅ **exact** — source-feed.md documents precisely 40 `src.*` tables; architecture doc has the same two-db diagram and the no-write-back rule | — |
+| Refresh flow (Web → API → PayrollAPP procs → check NexGen → update RawFMS → process → return) | ✅ matches `api.usp_UI_RefreshPayroll_FromNexGen` + the documented flow | — |
+| "Haven't made many changes since that backup" | ✅ **validity statement for the extract** — our 06-23-backup-based extract is ≈ as-built current, per the client's own word | extract INDEX |
+| Known issues: hours display in some rule scenarios | ✅ corroborates 08-known-issues; status = still open upstream | PAY-062 |
+| "~30 basic scenarios identified"; Corrina robust testing planned | ✅ almost certainly our 28-row rule-examples catalog — proposed as the joint ERP acceptance baseline | rule-examples-catalog |
+
+**Client question from this message:** (17) share the exact ~30-scenario list and the current
+known-issues delta since the June pack — we'll reconcile against our 28-row catalog and
+propose the union as the joint ERP acceptance baseline, with Corrina's robust-testing pass as
+the sign-off fixture.
+
