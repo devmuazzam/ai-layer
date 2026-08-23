@@ -112,3 +112,22 @@ sequenced *around* the ERP integration build, not into the middle of it.
 One design note carried forward: build ERP periods from ADP's `payPeriodID` rather than
 computing weeks, so the two systems can never disagree.
 
+## 2026-08-24 batch — "custom AI agent" pack + labor tables + buckets (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| "I built a custom AI agent… 00–11 + checklist" | ✅ **already in the vault** — it is the 2026-06-23 knowledge pack, migrated 2026-08-13 as `payroll-app-current-state/` (9 files), with every skipped file declared and reasoned. The 2026-08-18 DB extract **supersedes** it by the pack's own source ranking (extract = rank 1, pack = rank 3) | — |
+| `PayrollAPP_0.5` in `OneDrive_1_8-11-2026 (2)` | ✅ inspected — **byte-identical** to drop (1) except a `.DS_Store`. Zip fully unpacked and accounted for: nothing to update *from* it; the vault is 8 weeks fresher *than* it | — |
+| `LABOR_PAYROLL` (raw) is the source; `LABOR_DETAILS` (FCC-processed) "is not good" | ✅ source confirmed (extract feeds from `src.FMS_LABOR_PAYROLL_Raw`); 🆕 the **rejection rationale** was undocumented — now on PAY-004. ERP must read raw labor, never FCC's processed output | PAY-004 |
+| Five buckets (after the 6→5 correction): ST/OT/DT/H2×/H3× + LB set + rule-added hours | ✅ matches the extract's ADP sheet columns exactly | PAY-059 |
+| "I don't think there is triple time for long boom in the contract — I'll ask Corrina" | ⚠️ **unresolved doubt vs implemented code**: crosswalk ships LBT (boom triple) as CURRENT. Under the MLA into-the-rate clause LB TRI would be *correct* — the answer rides on the into-rate adjudication | PAY-043, PAY-011 |
+
+**Client questions from this message:** (10) did Corrina ever answer the long-boom-triple
+question? The crosswalk implements LBT while your message doubts the contract supports it —
+and the into-the-rate clause decides which is right.
+
+**Meta for the meeting:** the "custom AI agent" offer is appreciated and already absorbed —
+the vault ingested the pack in August and went past it (all 141 SQL definitions, every
+config row, live ADP responses). The useful ask is not the pack; it is answers to the ten
+questions in this log.
+

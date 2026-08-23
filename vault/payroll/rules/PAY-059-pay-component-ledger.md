@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm ERP component taxonomy
+- **The bucket model, confirmed (client, after a live correction dance):** **five buckets** for total-hours split — ST · OT · DT · Holiday 2× · Holiday 3× (client's "triple time = holiday triple time" retraction) — plus the **long-boom parallel set** (LB REG/OT/DBL[/TRI]) and **rule-added hours** (guarantees — "not actual work time"). Matches the extract's ADP sheet columns exactly (Reg · OT · DT · Holiday 2x · Holiday 3x · LB REG/OT/DBL/TRI).
