@@ -32,8 +32,8 @@ open across every ticket: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/
 That redesign landed 2026-08-24: the vault is organized as one folder per product module
 (`vault/STRUCTURE.md` — module set, tag facets, routing protocol, migration map), and **a
 product-wide question belonging to no ticket goes in that module's `vault/<module>/gaps.md`**
-(payroll: `gaps-live.md` until phase 3). `.ai/vault/gaps.md` and `.ai/vault/payroll/gaps.md`
-stay **retired and frozen** — historical snapshot, citable by anchor, never appended. The
+(payroll included — its live register is `payroll/gaps.md` since the 2026-08-24 disposition).
+`.ai/vault/gaps.md` and `.ai/vault/payroll/gaps-2026-08-20-retired.md` stay **retired and frozen** — historical snapshot, citable by anchor, never appended. The
 all-modules sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/vault/*/gaps.md`.
 
 ## One memory, every tool
@@ -54,7 +54,7 @@ Anything worth keeping goes to exactly one of these, and each has an owner:
 | --- | --- | --- |
 | A named human decided something | `.ai/vault/decisions/` | `tcg-scrum` |
 | An open question raised by a ticket | `.ai/aidlc/SCRUM-###/spec.md` §12 | any agent, append |
-| An open question belonging to no ticket | `.ai/vault/<module>/gaps.md` — the module's live register (payroll: `gaps-live.md`). See `vault/STRUCTURE.md` → *Where a question goes* | any agent, append |
+| An open question belonging to no ticket | `.ai/vault/<module>/gaps.md` — the module's live register. See `vault/STRUCTURE.md` → *Where a question goes* | any agent, append |
 | How we build — a convention, a rail | `.ai/claude/contexts/` | a human, from an accepted reflection |
 | A defect the loop made | `.ai/aidlc/reflections/INDEX.md` | `tcg-reflector` |
 

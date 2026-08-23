@@ -69,13 +69,12 @@ existing sweep still works, now across modules:
 grep -rn '^- \*\*Status:\*\* open' vault/*/gaps.md .ai/aidlc/SCRUM-*/spec.md
 ```
 
-`vault/gaps.md` and `vault/payroll/gaps.md` remain **retired and frozen** — historical
-snapshot, anchors citable, nothing appended. Their 74 entries get dispositioned into module
-files in phase 3; until then a module's gaps.md may point into them. `payroll/gaps.md`'s
-successor is `payroll/gaps.md` — wait: payroll already has the retired file at that path, so
-payroll's **live** register starts as `payroll/gaps-live.md` and takes the `gaps.md` name in
-phase 3 when the retired file's entries are dispositioned and it moves to
-`payroll/gaps-2026-08-20-retired.md`.
+**Phase 3 landed 2026-08-24.** The retired registers' open entries were dispositioned into
+module registers, each with a *From (frozen original)* backlink; closed/resolved entries stay
+only in the frozen snapshots (`vault/gaps.md`, `vault/payroll/gaps-2026-08-20-retired.md` —
+bannered, citable by anchor, never appended). Payroll's live register is `payroll/gaps.md`,
+with `Rules: PAY-###` cross-links into `payroll/rules/`. Six root stub-summaries and three
+meta-entries (sprint-7 dates, punch-list scoping, phased rollout) were left retired-only.
 
 **Cross-cutting folders stay flat, tags route into them:**
 `meetings/` (chronological — a meeting spans modules), `decisions/` (written by tcg-scrum;

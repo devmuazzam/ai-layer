@@ -1,5 +1,7 @@
 # Gaps
 
+> **Dispositioned 2026-08-24.** This file is frozen — open entries dispositioned to `vault/<module>/gaps.md`, each entry carrying a *From (frozen original)* backlink. Closed/resolved entries live only here.
+
 **RETIRED 2026-08-20 — do not append here.** This single-register design (one growing file
 covering every product topic) is being replaced by gaps that live inside a per-module vault
 folder mirroring the backend's module structure, so lookup is scoped instead of blind. That

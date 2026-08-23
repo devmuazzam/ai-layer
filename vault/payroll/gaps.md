@@ -1,22 +1,25 @@
-# Payroll and ADP gaps
+---
+title: Payroll — open questions
+status: reference
+kind: gaps
+updated: 2026-08-24
+tags: [module/payroll, kind/gaps, open-questions]
+---
 
-**RETIRED 2026-08-20 — do not append here.** Same retirement as [`../gaps.md`](../gaps.md):
-this register is being replaced by per-module gaps files once payroll's vault content is
-reorganised to mirror the backend's module structure. Not done yet — no agent should append
-here or treat this as the live mechanism until it is. The entries below are kept for their
-content and remain citable by anchor.
+# Payroll — open questions
 
-The payroll half of the open-question register. Product and process gaps are in
-[`../gaps.md`](../gaps.md); the entry format and the rules — never pick a winner, cite all
-candidates, phrase every question so a one-line reply resolves it — are the same.
+Live register per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*. Ticket-raised
+questions do **not** go here — they belong in that ticket's `spec.md` §12.
 
-**Read by section, never whole.** `grep -n '^## ' .ai/vault/payroll/gaps.md` lists every entry;
-read only the ones for the rule, code or integration in front of you.
+Entry format (unchanged from the retired registers, so the global sweep still works):
 
-**From the OneDrive payroll migration (2026-08-13).** Unlike the product entries in `../gaps.md`, these are
-**not** conflicts between competing documents — the payroll sources agree with each other. They
-are questions the source documents themselves mark as unanswered, and in most cases name the
-person or function who has to answer them.
+```markdown
+## <question title>
+- **Status:** open
+- **Asked:** YYYY-MM-DD — by whom / which work raised it
+- **Question:** one paragraph
+- **Sources checked:** what was read before declaring this open
+```
 
 ## Payroll rule applicability by Payroll Group
 
@@ -40,6 +43,8 @@ person or function who has to answer them.
   Admin Hourly rows are repriced by `app.usp_Apply_CA_NonUnionAdminHourly_OT` (daily 8/12, weekly
   40, 7th day) with every union field zeroed; `ADMIN-*` crafts are the only ones exempt from
   minimum pay. No salary-specific rule exists (the CA proc applies only to PayType `H`). Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
+- **Rules:** [PAY-009](rules/PAY-009-payroll-group-classification.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#payroll-rule-applicability-by-payroll-group](gaps-2026-08-20-retired.md#payroll-rule-applicability-by-payroll-group)
 
 ## The 24 decisions required before the payroll rule catalog is final
 
@@ -61,6 +66,7 @@ person or function who has to answer them.
 - Blocked: treating any payroll rule as specified.
 - Owner: TCG management, payroll team, labor counsel, union representatives.
 - Status: open
+- **From (frozen original):** [gaps-2026-08-20-retired.md#the-24-decisions-required-before-the-payroll-rule-catalog-is-final](gaps-2026-08-20-retired.md#the-24-decisions-required-before-the-payroll-rule-catalog-is-final)
 
 ## ADP export mapping — 9 open decisions, 6 blocking
 
@@ -91,6 +97,8 @@ person or function who has to answer them.
   document — see the id warning).
 - Owner: payroll manager, ADP administrator, HR/accounting depending on the decision.
 - Status: **partially resolved** — 2 of 9 decisions closed by live API evidence; 5 still blocking.
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#adp-export-mapping-9-open-decisions-6-blocking](gaps-2026-08-20-retired.md#adp-export-mapping-9-open-decisions-6-blocking)
 
 ## Union agreement — three source PDFs are unreadable scans
 
@@ -108,6 +116,7 @@ person or function who has to answer them.
 - Blocked: nothing today.
 - Owner: whoever next needs a non-payroll article of the agreement.
 - Status: open
+- **From (frozen original):** [gaps-2026-08-20-retired.md#union-agreement-three-source-pdfs-are-unreadable-scans](gaps-2026-08-20-retired.md#union-agreement-three-source-pdfs-are-unreadable-scans)
 
 ## Field-ops lunch capture vs payroll WTL
 
@@ -189,6 +198,8 @@ someone has confirmed otherwise.
   through, no token ⇒ 0 with a warning; taken meal deducts the full priced slice incl. boom,
   worked-through adds 0.5 h × (base+shift) × 2.0 (or × (2.0 − mult) on weekday ST-start blocks).
   Which of these the ERP should keep is still the open question. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) calculations B7.
+- **Rules:** [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#field-ops-lunch-capture-vs-payroll-wtl](gaps-2026-08-20-retired.md#field-ops-lunch-capture-vs-payroll-wtl)
 
 ## ADP codes — TCG owes an updated export
 
@@ -215,6 +226,8 @@ someone has confirmed otherwise.
 - Blocked: nothing on the export any more. Rules documentation still blocks rule design.
 - Owner: TCG team (payroll / ADP administrator) for the rules; the export is self-serve.
 - Status: **export resolved**; rules documentation open.
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#adp-codes-tcg-owes-an-updated-export](gaps-2026-08-20-retired.md#adp-codes-tcg-owes-an-updated-export)
 
 ## `CAO — CA OT` exists, but the crosswalk reuses generic overtime
 
@@ -231,6 +244,8 @@ someone has confirmed otherwise.
 - Blocked: the non-union California overtime mapping.
 - Owner: payroll manager / ADP administrator.
 - Status: open
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#cao-ca-ot-exists-but-the-crosswalk-reuses-generic-overtime](gaps-2026-08-20-retired.md#cao-ca-ot-exists-but-the-crosswalk-reuses-generic-overtime)
 
 ## Ventura — a second ADP company nobody has mentioned
 
@@ -262,6 +277,8 @@ someone has confirmed otherwise.
 - Blocked: nothing now.
 - Owner: TCG payroll.
 - Status: **largely resolved** — residual question open
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#ventura-a-second-adp-company-nobody-has-mentioned](gaps-2026-08-20-retired.md#ventura-a-second-adp-company-nobody-has-mentioned)
 
 ## ADP returns two incompatible error envelopes, and one has no machine-readable code
 
@@ -285,6 +302,8 @@ someone has confirmed otherwise.
 - Blocked: the ERP's ADP error-handling design.
 - Owner: CodingCops.
 - Status: open
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#adp-returns-two-incompatible-error-envelopes-and-one-has-no-machine-readable-code](gaps-2026-08-20-retired.md#adp-returns-two-incompatible-error-envelopes-and-one-has-no-machine-readable-code)
 
 ## Home yard cannot come from ADP — subsistence has no upstream source
 
@@ -300,22 +319,8 @@ someone has confirmed otherwise.
 - Blocked: subsistence rule design; the employee-master migration scope.
 - Owner: CodingCops, with TCG payroll to confirm the FCC field.
 - Status: open
-
-## ADP job titles are not craft codes — and the gap is priced
-
-- Question: none open — this records a **closed** question so nobody reopens it.
-- **ADP cannot represent craft classification.** `job-titles` returns **10** values, of which
-  `OPERATOR` is one. The Local 12 agreement prices **six** operator classifications (Groups 3, 4,
-  6, 7, 8, 9) spanning **$67.87 to $71.16** — a $3.29/hour range collapsed into a single ADP
-  value. `OILDRV` similarly collapses Groups 1 and 2. Nothing in ADP expresses apprentice steps,
-  craft modifiers or boom tiers.
-- Note: `job-titles` also near-duplicates `departments` — nine of ten map one-to-one
-  (`OPERATOR`/`OPRDEP`, `MECHANIC`/`MECDEP`, and so on). **The ERP should treat them as one
-  concept with two ADP encodings**, not as independent attributes, or they will drift.
-- Consequence: craft stays in `FMS_UNION_CRAFT` and must migrate to the ERP. Reinforces that
-  certified payroll is an ERP report.
-- Owner: n/a — resolved by observation.
-- Status: **closed 2026-08-13**.
+- **Rules:** [PAY-048](rules/PAY-048-standard-subsistence.md), [PAY-049](rules/PAY-049-weekend-subsistence.md), [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#home-yard-cannot-come-from-adp-subsistence-has-no-upstream-source](gaps-2026-08-20-retired.md#home-yard-cannot-come-from-adp-subsistence-has-no-upstream-source)
 
 ## Union codes — one value, so the CRUD question mostly dissolves
 
@@ -331,6 +336,8 @@ someone has confirmed otherwise.
 - Blocked: nothing. Scope reduction only.
 - Owner: CodingCops / TCG product.
 - Status: open, but narrowed
+- **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#union-codes-one-value-so-the-crud-question-mostly-dissolves](gaps-2026-08-20-retired.md#union-codes-one-value-so-the-crud-question-mostly-dissolves)
 
 ## ADP's error envelope is now known — but the success envelope is not
 
@@ -354,18 +361,8 @@ someone has confirmed otherwise.
 - Owner: CodingCops — resolvable by inspecting any successful `200` response body from a read
   endpoint first, before ever writing.
 - Status: open
-
-## ADP holds per-worker premium rate multipliers — does TCG use them?
-
-- Question: is `workAssignments/premiumRateMultipliers/premiumRateMultiplierItem/rateMultiplier`
-  populated for any TCG worker?
-- **ANSWERED 2026-08-13: no.** Absent from every record in
-  [payroll/adp-api-responses/workers-list.md](payroll/adp-api-responses/workers-list.md). ADP is
-  not holding per-worker multipliers, so the ERP can own OT/DT/TRI multiplication without
-  contention and without silent double-multiplication.
-- Note: worth re-checking if anyone configures it later. The field exists; it is simply unused.
-- Owner: n/a.
-- Status: **closed**
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#adps-error-envelope-is-now-known-but-the-success-envelope-is-not](gaps-2026-08-20-retired.md#adps-error-envelope-is-now-known-but-the-success-envelope-is-not)
 
 ## Non-union pay rates have no upstream source — ADP will not return them
 
@@ -390,23 +387,8 @@ someone has confirmed otherwise.
   `FMS_EMPLOYEES.PayRate` (NexGen employee master) — `api.v_UI_Employee_TypeRate`,
   `BaseHourlyRateSource = 'Employee.PayRate'`; union rates from `FMS_UNION_CRAFT.PayRate` by the
   labor row's craft. So the upstream today is NexGen, not ADP. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
-
-## Union membership is recorded twice in ADP, and the two disagree
-
-- Question: none open on the design — this records **why the ERP must not sync union membership
-  inbound**.
-- ADP holds "Local 12" in two independent places: `workAssignments/workerTypeCode` and
-  `workAssignments/laborUnion/laborUnionCode`. Across real records **all four combinations occur**,
-  including field workers in the `PPEDEP` department with `OILDRV`/`OPERATOR` job codes and the
-  Mobile Crane workers-comp class who carry **no union marker at all**
-  ([payroll/adp-api-responses/workers-list.md](payroll/adp-api-responses/workers-list.md)).
-- Note: `workerTypeCode` doubles as employment type (`F — Full Time`) and union membership (`L12`)
-  in a single mutually-exclusive enum, which is presumably how the inconsistency arose.
-- Consequence: the existing derivation stands unchanged — Payroll Group comes from `CraftCode`
-  prefix plus `EmpTypeID` plus `PayType`, all FCC-side. Syncing union membership from ADP would be
-  wrong for a meaningful fraction of the workforce.
-- Owner: n/a — resolved by observation. TCG payroll may wish to clean the ADP data separately.
-- Status: **closed as a design decision**
+- **Rules:** [PAY-012](rules/PAY-012-non-union-hourly-rate.md), [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#non-union-pay-rates-have-no-upstream-source-adp-will-not-return-them](gaps-2026-08-20-retired.md#non-union-pay-rates-have-no-upstream-source-adp-will-not-return-them)
 
 ## `payrollCustomArea4` — a per-worker code nobody has documented
 
@@ -420,36 +402,8 @@ someone has confirmed otherwise.
 - Blocked: nothing yet.
 - Owner: TCG payroll.
 - Status: open
-
-## ADP File Number — the crosswalk's format rule is wrong
-
-- Question: none open — this records a **correction** so the wrong rule is not implemented.
-- [payroll/adp-bucket-crosswalk.md](payroll/adp-bucket-crosswalk.md) implementation rule 8 says
-  the ADP File Number *"allows uppercase alphanumeric characters, has a maximum length of 6"*.
-  ADP's own validation says otherwise:
-  `pattern: ^0*(5[1-9]|[6-9][0-9]|[1-9][0-9]{2,5})$`
-- **Digits only** — no letters are accepted. **Minimum value 51** — 1 to 50 are invalid.
-  Leading zeros are allowed and do not count toward the 6-character limit, so the crosswalk is
-  right that it must be stored as text.
-- Consequence: the ERP must validate against this regex *before* submitting. A bad File Number
-  returns `payrollFileNumber:NNNN is invalid` without saying which rule failed, and one bad row
-  is indistinguishable from a closed payroll cycle at a glance.
-- Owner: n/a — resolved by observation 2026-08-13.
-- Status: **closed**
-
-## Worker data must be fetched with `$select`, not whole records
-
-- Question: none open — this records a **design constraint** discovered from the schema.
-- The worker API exposes SSN (`person/governmentIDs`, `\d{9}`), birth date, home address, race,
-  gender, marital status, military status, personal email and phone. The ERP needs exactly two
-  fields: `associateOID` and `payrollFileNumber`.
-- **`$select` is supported** over ~130 paths, so the ERP can request only the join key. Pulling
-  full records would put payroll-grade PII into the ERP with no functional benefit.
-- Note: **the `/meta` response itself contains personal data** — the `$filter` code list for
-  `reportsTo/positionID` enumerates named supervisors. Anyone sharing meta output should treat it
-  as PII, not structure. `positionID` format is company code plus six digits (`4RZ000000`).
-- Owner: CodingCops.
-- Status: **closed as a decision** — `$select` mandatory on every worker read.
+- **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#payrollcustomarea4-a-per-worker-code-nobody-has-documented](gaps-2026-08-20-retired.md#payrollcustomarea4-a-per-worker-code-nobody-has-documented)
 
 ## `eligibility-classes` is 403 — an entitlement question, not a data question
 
@@ -466,6 +420,7 @@ someone has confirmed otherwise.
 - Blocked: any ERP feature depending on benefits or eligibility data.
 - Owner: CodingCops (project creation), TCG (scope decision).
 - Status: open
+- **From (frozen original):** [gaps-2026-08-20-retired.md#eligibility-classes-is-403-an-entitlement-question-not-a-data-question](gaps-2026-08-20-retired.md#eligibility-classes-is-403-an-entitlement-question-not-a-data-question)
 
 ## Labor allocation — department today, cost number if TCG wants job attribution
 
@@ -489,6 +444,8 @@ someone has confirmed otherwise.
 - Blocked: the job-attribution design; the certified-payroll module's data source.
 - Owner: TCG payroll (configuration) and CodingCops (ERP design).
 - Status: open
+- **Rules:** [PAY-004](rules/PAY-004-labor-entry-import.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#labor-allocation-department-today-cost-number-if-tcg-wants-job-attribution](gaps-2026-08-20-retired.md#labor-allocation-department-today-cost-number-if-tcg-wants-job-attribution)
 
 ## ADP code strings collide between the earning and deduction arrays
 
@@ -506,6 +463,8 @@ someone has confirmed otherwise.
 - Blocked: the ADP mapping configuration schema; crosswalk implementation rules 3, 4 and 5.
 - Owner: CodingCops.
 - Status: open
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#adp-code-strings-collide-between-the-earning-and-deduction-arrays](gaps-2026-08-20-retired.md#adp-code-strings-collide-between-the-earning-and-deduction-arrays)
 
 ## Payroll calculation logic — Brian owes a revised version
 
@@ -521,6 +480,7 @@ someone has confirmed otherwise.
 - Blocked: nothing yet; it will block rule implementation that the revision touches.
 - Owner: Brian Petros (TCG); Corrina (TCG) for the Value Engineering workflow.
 - Status: open
+- **From (frozen original):** [gaps-2026-08-20-retired.md#payroll-calculation-logic-brian-owes-a-revised-version](gaps-2026-08-20-retired.md#payroll-calculation-logic-brian-owes-a-revised-version)
 
 ## Lattice Crane identification
 
@@ -543,6 +503,8 @@ someone has confirmed otherwise.
 - Legacy behaviour (2026-08-18): the payroll app has **no lattice concept at all** — no `LATT*`
   comment token, no branch, no code; the only boom concept is the craft-modifier bracket
   (`OP-BP/OI-BP`) adder. Lattice identification is a new build. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
+- **Rules:** [PAY-044](rules/PAY-044-lattice-boom-premium.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#lattice-crane-identification](gaps-2026-08-20-retired.md#lattice-crane-identification)
 
 ## Foreman premium — granularity, multiplier and capture
 
@@ -568,6 +530,8 @@ someone has confirmed otherwise.
 - Status: open
 - Legacy behaviour (2026-08-18): confirmed again against the full database — no object, column
   or config row for a foreman premium in any of the 141 definitions. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
+- **Rules:** [PAY-070](rules/PAY-070-foreman-premium.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#foreman-premium-granularity-multiplier-and-capture](gaps-2026-08-20-retired.md#foreman-premium-granularity-multiplier-and-capture)
 
 ## Military Base premium — job-level scope, Davis-Bacon list, and the phone call
 
@@ -595,6 +559,8 @@ someone has confirmed otherwise.
 - Legacy behaviour (2026-08-18): confirmed against the full database — nothing for military /
   Davis-Bacon / prevailing wage in the calculation; certified payroll exists only as a label flag
   (`UseCertifiedPayroll`). Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
+- **Rules:** [PAY-071](rules/PAY-071-military-base-premium.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#military-base-premium-job-level-scope-davis-bacon-list-and-the-phone-call](gaps-2026-08-20-retired.md#military-base-premium-job-level-scope-davis-bacon-list-and-the-phone-call)
 
 ## Premium stacking and no-pyramiding
 
@@ -614,6 +580,8 @@ someone has confirmed otherwise.
   slice (holiday > Sunday > special-Sat > DT > outside-window OT > OT > Saturday). Rest premium
   pays only the delta up to a ×1.5/×2 floor. That is the current stacking rule; whether it is
   the contract's is the open question. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) calculations B2.
+- **Rules:** [PAY-027](rules/PAY-027-no-pyramiding.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#premium-stacking-and-no-pyramiding](gaps-2026-08-20-retired.md#premium-stacking-and-no-pyramiding)
 
 ## ADP product, API Central entitlement and sandbox
 
@@ -658,6 +626,8 @@ someone has confirmed otherwise.
 - Blocked: write-path testing, until a test company exists.
 - Owner: TCG (ADP account administrator), with ADP.
 - Status: open — product and entitlement resolved; **test company requested from TCG 2026-08-17**
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#adp-product-api-central-entitlement-and-sandbox](gaps-2026-08-20-retired.md#adp-product-api-central-entitlement-and-sandbox)
 
 ## ERP↔ADP round trip — what happens when a practitioner edits the batch
 
@@ -679,6 +649,8 @@ someone has confirmed otherwise.
 - Owner: whoever opens the ADP support ticket — question 7 in
   [adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
 - Status: open
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#erpadp-round-trip-what-happens-when-a-practitioner-edits-the-batch](gaps-2026-08-20-retired.md#erpadp-round-trip-what-happens-when-a-practitioner-edits-the-batch)
 
 ## Excel or API — the ADP submission path is not decided
 
@@ -705,6 +677,8 @@ someone has confirmed otherwise.
   code+amount, **Temporary Rate + LB REG/OT/DBL/TRI** (one row per boom adder), SUB PAY, Sick,
   PTO. The legacy app produces no file — the sheet is keyed/imported outside it. Layout recorded in
   [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#excel-or-api-the-adp-submission-path-is-not-decided](gaps-2026-08-20-retired.md#excel-or-api-the-adp-submission-path-is-not-decided)
 
 ## Employee master — who creates a worker, ERP or ADP
 
@@ -723,6 +697,8 @@ someone has confirmed otherwise.
 - Blocked: employee module ↔ payroll integration design.
 - Owner: TCG (payroll + HR), with CodingCops.
 - Status: open
+- **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md), [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#employee-master-who-creates-a-worker-erp-or-adp](gaps-2026-08-20-retired.md#employee-master-who-creates-a-worker-erp-or-adp)
 
 ## Earning-code setup in ADP — a manual prerequisite nobody owns
 
@@ -740,6 +716,8 @@ someone has confirmed otherwise.
 - Blocked: first successful API submission; the Foreman and Military premium rollout.
 - Owner: TCG payroll practitioner (has `Setup` access). Needs a named person and a checklist.
 - Status: open
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#earning-code-setup-in-adp-a-manual-prerequisite-nobody-owns](gaps-2026-08-20-retired.md#earning-code-setup-in-adp-a-manual-prerequisite-nobody-owns)
 
 ## Certified payroll generation — is there already an ADP Marketplace connector?
 
@@ -765,6 +743,8 @@ someone has confirmed otherwise.
 - Blocked: Labor Compliance scoping; the ADP payload design for Davis-Bacon jobs.
 - Owner: TCG (ADP account administrator + Corrina for compliance).
 - Status: open
+- **Rules:** [PAY-072](rules/PAY-072-certified-payroll-davis-bacon-reporting.md), [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#certified-payroll-generation-is-there-already-an-adp-marketplace-connector](gaps-2026-08-20-retired.md#certified-payroll-generation-is-there-already-an-adp-marketplace-connector)
 
 ## API Central access for the people actually building it
 
@@ -783,40 +763,8 @@ someone has confirmed otherwise.
   no sandbox, no Postman run, no first API call.
 - Owner: Ehtesham Anwar (CodingCops) — has the role to do it directly.
 - Status: open — and the cheapest item on this entire list to close.
-
-## `invalid_client` from ADP does not mean the credentials are wrong — RESOLVED 2026-08-17
-
-- Question (as first written 2026-08-13): does changing an API Central project's entitlements
-  invalidate the credential? **No. Retracted.**
-- **What was observed.** Right after subscribing to the `pay-data-input.modify` event, a Postman
-  token request began returning
-  `{"error": "invalid_client", "error_description": "The given client credentials were not valid"}`.
-  It was recorded here as a credential lapse caused by the project change.
-- **What it actually was (2026-08-17).** The failing Postman was on a **different machine
-  (Windows)** using a key file named `private.txt`; the working calls (curl, and the earlier
-  Postman) were on the Mac using `private.key` — the file that verifiably matches the project
-  certificate (public-key hashes compared 2026-08-17). Same client ID, same secret, same
-  certificate: only the private key file differed. The credential was never invalid; the event
-  subscription had nothing to do with it. Proven by a clean token from the Mac on 2026-08-17 with
-  unchanged credentials.
-- **The lesson that survives, and it is a sharper one:** ADP answers a *wrong or unusable client
-  key* with the **same** `invalid_client` message it uses for a wrong secret — a full HTTP 401 with
-  ADP headers (`Adp-Correlationid`, `X-Ca-Err: 3003201`), not a TLS failure. So `invalid_client`
-  means "the identity I saw does not match this client ID", and the identity is
-  **secret + certificate + private key together**. Check the key file before resetting anything.
-- **The earlier reasoning error, so nobody repeats it:** "a clean JSON error proves the mTLS
-  handshake succeeded, therefore it is not a certificate problem" — the handshake did succeed, but
-  that only proves *a* key/cert pair (or none) was presented, not that it was the *right* one.
-- **Consequences for the build (still valid, re-based on the real cause):**
-  1. The ERP must hold cert + key + secret as one unit in a secret manager, and log which
-     certificate serial it presented — so an `invalid_client` can be diagnosed in one look.
-  2. `invalid_client` is a configuration failure, not a transient one: alert a human, do not retry
-     blindly, never silently drop a batch. (Unchanged.)
-  3. Treating API Central project changes as scheduled deployment events remains sensible
-     hygiene, but it is no longer backed by an observed failure.
-- Owner: CodingCops.
-- Status: **closed** — cause found; the operational rails above are recorded in
-  [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#api-central-access-for-the-people-actually-building-it](gaps-2026-08-20-retired.md#api-central-access-for-the-people-actually-building-it)
 
 ## Where do webhook events live in API Central, and what fires?
 
@@ -883,6 +831,8 @@ someone has confirmed otherwise.
   payroll run was started"*, the closest thing yet to output-side visibility. It is **not** among
   the 12 Payroll-domain events, so probably not available to WFN clients, but the catalogue has ten
   domains. Worth one search.
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires](gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires)
 
 ## Does WFN support `workDate` and the FLSA date fields on pay data?
 
@@ -909,23 +859,7 @@ someone has confirmed otherwise.
   opportunity, and a question worth asking before the ADP export rule is finalised.
 - Owner: CodingCops to ask ADP.
 - Status: open
-
-## Manual and voided cheques cannot be issued through the API
-
-- Question: none — this records a **hard limit**.
-- The `pay-data-input.modify` schema states plainly: *"Manual and voided checks are not supported
-  in this context."*
-- Consequence: off-cycle corrections, manual cheques and voids are a Workforce Now UI task
-  performed by a practitioner. **The ERP cannot issue them, and must not present a UI implying it
-  can.** Any correction workflow in the ERP ends at "tell Payroll", not at an API call.
-- Owner: n/a — resolved by observation.
-- Status: **closed as a constraint**
-- Note: the Postman collection ships only the `GET`. **The `DELETE` exists** —
-  `/core/v1/event-notification-messages/{adp-msg-msgid}` — and is how a consumer acknowledges a
-  message. A poller that never deletes will re-read or stall.
-- **Worker events do exist**, which partly answers the employee-sync question from another angle:
-  the ERP could learn of new hires by subscription rather than by polling the full roster, avoiding
-  the bulk personal-data pull.
+- **From (frozen original):** [gaps-2026-08-20-retired.md#does-wfn-support-workdate-and-the-flsa-date-fields-on-pay-data](gaps-2026-08-20-retired.md#does-wfn-support-workdate-and-the-flsa-date-fields-on-pay-data)
 
 ## Polling or webhooks — a per-project architectural choice, not a preference
 
@@ -946,28 +880,8 @@ someone has confirmed otherwise.
 - Blocked: the ERP's integration deployment shape.
 - Owner: CodingCops, with TCG security sign-off if webhooks are chosen.
 - Status: open — polling is the current default and the lower-risk one
-
-## Event notifications fire on issue date, not effective date
-
-- Question: none open — this records a **hard constraint** on any ERP event consumer.
-- ADP: *"when a change has an effective date, the notification is generated **at the time when the
-  change is issued, and not on the effective date**. Your application should be able to look up the
-  effective date in the notification response payload."*
-- **Payroll is where this bites.** Worker records already show
-  `baseRemuneration.effectiveDate: 2026-07-01` — the MLA wage-increase date — which was entered
-  weeks earlier. A consumer that applies changes on receipt would apply a July rate in May.
-- Second ADP rule from the same screen: *"use event notifications as a **trigger** instead of the
-  true source of real-time data… your application should do `GET /hr/v2/workers/{aoid}` to retrieve
-  the real-time data."* **Never persist values straight from an event payload** — extract the
-  identifier, re-read the resource, then act.
-- Consequence: the existing effective-dating requirement in
-  [payroll/erp-payroll-module-frd/01-purpose-scope-and-design-principles.md](payroll/erp-payroll-module-frd/01-purpose-scope-and-design-principles.md)
-  is now a hard requirement of the **integration**, not only of the payroll rules.
-- Owner: n/a — resolved by observation.
-- Status: **closed as a design constraint**
-- Blocked: finalising `payroll-architecture.html` and the ADP screens in `TCG Platform (4).html`.
-- Owner: anyone with the **P (Project user)** role — all three current members qualify.
-- Status: open
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#polling-or-webhooks-a-per-project-architectural-choice-not-a-preference](gaps-2026-08-20-retired.md#polling-or-webhooks-a-per-project-architectural-choice-not-a-preference)
 
 ## One ADP certificate covers development *and* production
 
@@ -1001,6 +915,8 @@ someone has confirmed otherwise.
   the key present.
 - Owner: CodingCops (Ehtesham holds the **C** role) with TCG security sign-off on key custody.
 - Status: open — issuance done, **custody and rotation undecided**.
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#one-adp-certificate-covers-development-and-production](gaps-2026-08-20-retired.md#one-adp-certificate-covers-development-and-production)
 
 ## Confluence payroll user stories — first payroll pages in Confluence, unmigrated
 
@@ -1047,6 +963,7 @@ someone has confirmed otherwise.
 - Owner: whoever re-migrates (human, per README *Who does what*); Umair Khan for whether the pages
   are finished.
 - Status: open
+- **From (frozen original):** [gaps-2026-08-20-retired.md#confluence-payroll-user-stories-first-payroll-pages-in-confluence-unmigrated](gaps-2026-08-20-retired.md#confluence-payroll-user-stories-first-payroll-pages-in-confluence-unmigrated)
 
 ## Meeting recordings disagree with the vault — 2026-08-19 review
 
@@ -1153,6 +1070,7 @@ someone has confirmed otherwise.
 - Blocked: nothing yet — each pair blocks the unit that touches it.
 - Owner: `tcg-scrum` to put each pair to the named TCG person; the answer goes to `decisions/`.
 - Status: **partly disposed** — 2 superseded by `decisions/2026-06-30-adp-erp-employee-data-ownership.md`, 1 resolved by live ADP observation, 8 still open or awaiting confirmation, each with its own entry below.
+- **From (frozen original):** [gaps-2026-08-20-retired.md#meeting-recordings-disagree-with-the-vault-2026-08-19-review](gaps-2026-08-20-retired.md#meeting-recordings-disagree-with-the-vault-2026-08-19-review)
 
 ## Subsistence — the recording and the engine disagree on both the amount and the trigger
 
@@ -1193,6 +1111,8 @@ someone has confirmed otherwise.
 - Owner: Melissa McNutt (she stated the distance model); Corrina Bustos to confirm what is
   actually paid today.
 - Status: open
+- **Rules:** [PAY-048](rules/PAY-048-standard-subsistence.md), [PAY-049](rules/PAY-049-weekend-subsistence.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#subsistence-the-recording-and-the-engine-disagree-on-both-the-amount-and-the-trigger](gaps-2026-08-20-retired.md#subsistence-the-recording-and-the-engine-disagree-on-both-the-amount-and-the-trigger)
 
 ## Lunch thresholds — the recording is the origin, and it disagrees with the WTL charts
 
@@ -1230,6 +1150,8 @@ someone has confirmed otherwise.
   shipped one side of an unresolved disagreement.
 - Owner: Corrina Bustos (owns the WTL charts and Q4 in FR-TCG-FOP-001); Ryan Adams stated the values.
 - Status: open — needs confirmation
+- **Rules:** [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#lunch-thresholds-the-recording-is-the-origin-and-it-disagrees-with-the-wtl-charts](gaps-2026-08-20-retired.md#lunch-thresholds-the-recording-is-the-origin-and-it-disagrees-with-the-wtl-charts)
 
 ## Time rounding — nearest half hour, or start-down/end-up?
 
@@ -1262,6 +1184,8 @@ someone has confirmed otherwise.
   Corrina states the rule is company-wide, not payroll-only.
 - Owner: Corrina Bustos.
 - Status: open — needs confirmation
+- **Rules:** [PAY-020](rules/PAY-020-half-hour-reckoning.md), [PAY-069](rules/PAY-069-money-rounding-and-rounding-adjustment-components.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#time-rounding-nearest-half-hour-or-start-downend-up](gaps-2026-08-20-retired.md#time-rounding-nearest-half-hour-or-start-downend-up)
 
 ## Lunch alert lead time — one hour or thirty minutes?
 
@@ -1289,6 +1213,8 @@ someone has confirmed otherwise.
 - Blocked: the mobile lunch reminder in `SCRUM-864`, already in QA at 1 hour.
 - Owner: Corrina Bustos.
 - Status: open
+- **Rules:** [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#lunch-alert-lead-time-one-hour-or-thirty-minutes](gaps-2026-08-20-retired.md#lunch-alert-lead-time-one-hour-or-thirty-minutes)
 
 ## What `631` actually is
 
@@ -1319,6 +1245,8 @@ someone has confirmed otherwise.
   from the recording.
 - Owner: Brian Petros (he supplied the layout and holds the ADP file facts).
 - Status: open — low priority; the build-blocking half is already answered
+- **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#what-631-actually-is](gaps-2026-08-20-retired.md#what-631-actually-is)
 
 ## Fill-in field employees vs the ADP-onboarding dispatch block
 
@@ -1355,6 +1283,8 @@ someone has confirmed otherwise.
 - Owner: Brian Petros (raised it, and co-owns the 06-30 decision); Corrina Bustos for the
   until-Sunday practice.
 - Status: open
+- **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md), [PAY-067](rules/PAY-067-adp-export.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#fill-in-field-employees-vs-the-adp-onboarding-dispatch-block](gaps-2026-08-20-retired.md#fill-in-field-employees-vs-the-adp-onboarding-dispatch-block)
 
 ## Lattice — Joe settled it on the recording, nothing records it
 
@@ -1392,6 +1322,8 @@ someone has confirmed otherwise.
   ADP mappings; the crane-configuration / asset field that would carry the flag.
 - Owner: Joe Schacatano (stated it), with Kyle Harlow — the two named on the open gap.
 - Status: open — needs confirmation
+- **Rules:** [PAY-044](rules/PAY-044-lattice-boom-premium.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#lattice-joe-settled-it-on-the-recording-nothing-records-it](gaps-2026-08-20-retired.md#lattice-joe-settled-it-on-the-recording-nothing-records-it)
 
 ## Pay rate follows the employee, not the role worked — Kyle and Corrina, unrecorded
 
@@ -1435,6 +1367,8 @@ someone has confirmed otherwise.
 - Owner: Kyle Harlow (stated it) and Corrina Bustos (worked the example); Brian Petros proposed the
   higher-rate-secondary rule.
 - Status: open — needs confirmation
+- **Rules:** [PAY-010](rules/PAY-010-l12-union-base-rate.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#pay-rate-follows-the-employee-not-the-role-worked-kyle-and-corrina-unrecorded](gaps-2026-08-20-retired.md#pay-rate-follows-the-employee-not-the-role-worked-kyle-and-corrina-unrecorded)
 
 ## Weekly payroll week statuses — two CodingCops sources, no TCG statement
 
@@ -1465,3 +1399,72 @@ someone has confirmed otherwise.
 - Owner: Corrina Bustos (whether *Received* and *Paid* are states payroll needs); Umair Khan for
   whether the Confluence page is finished.
 - Status: open
+- **Rules:** [PAY-002](rules/PAY-002-pay-period-status-workflow.md)
+- **From (frozen original):** [gaps-2026-08-20-retired.md#weekly-payroll-week-statuses-two-codingcops-sources-no-tcg-statement](gaps-2026-08-20-retired.md#weekly-payroll-week-statuses-two-codingcops-sources-no-tcg-statement)
+
+## Labor Compliance module — no vault coverage
+
+- Question: what is the Labor Compliance module, end to end?
+- Candidates: [meetings/2026-08-07-labor-compliance-certified-payroll.md](meetings/2026-08-07-labor-compliance-certified-payroll.md)
+  is the **only source in the vault**. There is no FRD, no user stories, no BRS section.
+- Note: the module name was **agreed in that meeting** — "Labor Compliance" chosen as the primary
+  name because it encompasses Certified Payroll, Davis-Bacon and related requirements. It spans
+  quotation (a compliance indicator captured at quote time), payroll (Certified Payroll reports
+  generated from payroll data), and billing (processing fees, recurring compliance charges,
+  Non-Performance reporting). It also has an external integration, the **LCP Tracker**, linked by
+  project name.
+- The stated failure mode is worth repeating: **if a job is not marked as a Labor Compliance job
+  it will never appear in Certified Payroll reports.** Missed compliance reporting delays customer
+  payment. That argues the flag cannot be a field added later.
+- Blocked: any Labor Compliance work; also the Compliance Checklist action item on CC, which
+  cannot be specified before Corrina supplies the Davis-Bacon identification criteria.
+- Owner: Corrina (TCG) for the Davis-Bacon business rules and identification criteria; TCG for the
+  Labor Compliance setup form and Tracking Register; CC for the checklist evaluation.
+- Status: open
+- **From (frozen original):** [gaps.md#labor-compliance-module-no-vault-coverage](../gaps.md#labor-compliance-module-no-vault-coverage)
+
+## Employee ↔ yard and company cardinality — the ask exists in exactly one place
+
+- Question: may an employee be assigned to **multiple yards and multiple companies** (with a yard
+  only selectable within a company the employee belongs to), or is the single default yard correct?
+- Candidates:
+  - Recording **2026-03-20**, transcript lines 194–197 (**unattributable — no speaker labels**):
+    *"We in fcc. We are assigning each employee to like a default company and a default yard. But
+    wouldn't we be able to assign them to multiple companies or multiple yards? What do you guys
+    think? Like, should this be a drop down with just one?"* → *"I think you should be able to assign
+    them to multiple."* → *"Right? Yeah, Multiple yards. Multiple companies. I mean, **obviously a
+    yard only if they are for that company**, but multiple. Right. Okay."* **The nesting constraint
+    in that last line is dropped by the Fireflies summary** and is part of the requirement.
+  - Same recording, lines 157–164, on the Yards screen — the use cases: *"employee count per yard.
+    Who's assigned to what yard"*, and a certification consequence attributed in-text to **Melissa**:
+    *"if they have a certification that's applicable for California, but if they're also working in
+    Arizona, that certification doesn't apply to that yard."* Line 164 attributes the reporting point
+    to **Joe**. Both are third-person references (*"like Melissa saying"*, *"that's what Joe was
+    saying"*), so they identify who said something earlier, not who is speaking.
+  - `SCRUM-468` *Yard Field in Employee Creation* — **Done**, reporter Umair Khan, created
+    **2026-05-25** (two months *after* the meeting). Description in full: *"Add a 'Yard' field when
+    creating employees. **This will associate employees with a specific yard.**"* Singular. **No AC,
+    no requester.**
+  - `SCRUM-638` *Employee* (2026-07-08 punch list) item 14 lists **Yard** among single-select
+    dropdowns — four months after the meeting, unchallenged.
+  - **Vault: nothing.** `assets/user-story-and-tasks.md` is the only yard-management source and its
+    yard content covers lease documents and a contact list only — employee is not even in its
+    `entities:`. `dispatch/yard-operations-jz.md` (`conflicts_with: []`) has one employee line, :19
+    *"Employee - unasisgned – weird ghost employees"*, which is a bug report, not cardinality.
+- Note: **built: no; ticketed: no; written: nowhere.** `model Employee` carries a single nullable
+  `yardId` with no junction table, and — worth stating plainly — **there is no company field on
+  `Employee` at all**; the only company-shaped column is `tenantCompanyId`, the multi-tenancy
+  discriminator. So "multiple companies" is not merely unbuilt: *single* company assignment was never
+  modelled either, and the meeting's premise (FCC assigns a default company **and** a default yard)
+  describes a capability the new system **reduced** rather than expanded. Unlike the Tasks pair this
+  is not a reversal — it looks like an ask that never reached whoever wrote `SCRUM-468`. It is the
+  cleanest contradiction of the 21 and the most expensive to fix later: a junction table plus a data
+  migration. Check any answer against
+  `decisions/2026-06-30-adp-erp-employee-data-ownership.md`, which assigns the legal employee record
+  to ADP but says nothing about yard assignment.
+- Blocked: `SCRUM-468` (Done, singular) would need reopening; employee-per-yard reporting; the
+  yard-scoped certification validity Melissa raised, which has no ticket at all.
+- Owner: Dylan Masterson (yard) with Brian Petros (cross-cutting/IT, for the company dimension);
+  Melissa McNutt for the certification-validity consequence.
+- Status: open
+- **From (frozen original):** [gaps.md#employee-yard-and-company-cardinality-the-ask-exists-in-exactly-one-place](../gaps.md#employee-yard-and-company-cardinality-the-ask-exists-in-exactly-one-place)
