@@ -20,3 +20,5 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking:** decide the owning module (payroll vs a compliance module) and whether quote-level flags (PAY-CC/quotation side) drive it. Currently **nobody owns this**.
 - **New evidence, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** the FCC employee profile carries a **"Certified Pay" checkbox** (screenshot) — a per-employee certified-pay flag exists upstream today and appears in **no vault document**. Whoever scopes this module should start from what that flag actually drives in FCC.
+- **Third demand signal (accounting wishlist, July 2026):** the accounting team's ERP list names certified payroll, Davis-Bacon **and prevailing wage** under *Payroll Integration* — the third independent constituency asking for this module. Still ownerless; the scoping question sharpens every time.
+

@@ -10,7 +10,12 @@ tags: [module/accounting, kind/reference]
 
 Invoicing and accounting (module not yet built). Backend usecases: `billing, expense-gl-accounts`. Organized per [STRUCTURE.md](../STRUCTURE.md).
 
-_No migrated sources yet — knowledge for this module lives in tagged meetings and decisions below._
+## Files
+
+| File | Answers | KB |
+| --- | --- | --- |
+| [2026-07-accounting-team-erp-wishlist.md](2026-07-accounting-team-erp-wishlist.md) | **What the accounting team wants from the ERP** — the July 2026 client wishlist, cross-linked into payroll/quotations/assets. Start here when the module kicks off (~Oct–Nov 2026) | 8 |
+
 
 ## Open questions
 

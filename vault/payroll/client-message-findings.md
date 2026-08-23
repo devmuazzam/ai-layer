@@ -271,3 +271,10 @@ carries **no on-prem custom-app dependency** (fully cloud-hosted sidesteps the P
 entirely), and for the parallel-run period: what is the backup cadence and off-machine copy
 policy for the desktop that currently *is* production payroll?
 
+## Cross-module note — accounting wishlist (July 2026, captured 2026-08-24)
+
+Not a payroll message; captured to [accounting/2026-07-accounting-team-erp-wishlist.md](../accounting/2026-07-accounting-team-erp-wishlist.md)
+with its module INDEX routing and a scoping gap for the ~Oct–Nov kickoff. Payroll-relevant
+spillover: **certified payroll / Davis-Bacon / prevailing wage named a third time** (PAY-072
+strengthened); per diem, shift differential, multiple rates, OT all already in the register.
+
