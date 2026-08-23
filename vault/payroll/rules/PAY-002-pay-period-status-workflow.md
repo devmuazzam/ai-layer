@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Management approval workflow
+- **Operational window (client big summary):** union payroll must be **completed by the Wednesday** after the Friday week-end; Corrina distributes checks **Thursday**. Consistent with the live ADP schedule's six-day close-to-pay gap. The ERP's processing pipeline has a hard Sat–Fri → Wed deadline.

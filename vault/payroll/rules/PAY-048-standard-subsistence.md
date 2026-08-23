@@ -26,3 +26,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm structured eligibility
 - **Conflict:** Trigger changes shape: legacy is **token-driven** (`SUB_SHORT`/`SUB_LONG`, amounts hard-coded); target is distance/overnight **conditions**. `SUB` collides as earnings + deduction code (C-19, `../source-attribution-and-conflicts.md`).
+- **Client naming + ADP shape (big summary):** "sustenance pay… subsidized pay for spending the night away" — subsistence; goes to ADP as a **dollar amount only, no hours**, matching the crosswalk's `SUB` payable-only row.

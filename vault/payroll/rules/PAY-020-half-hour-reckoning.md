@@ -25,3 +25,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Union/payroll confirmation of method
 - **Why 23.5:** the entry-duration cap (see PAY-004/PAY-018) equals 24 h minus one half-hour slice — the cap is an artifact of this rule's reckoning granularity.
+- **Three-way agreement — ready for a decision note:** client (big summary): *"starting times rounded down/back to 30-minute increments, ending times rounded up/forward — all Union and non-union"* = engine §1 verbatim (`usp_Prepare_Continuous_Labor`: start down, end up, then 30-min slices) = MLA half-hour reckoning. The FRD's approval item (part 11, decision 6) reduces to confirming this in writing.

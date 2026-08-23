@@ -19,3 +19,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking:** explicit in/out decision. If out, record it as a decision so the omission stops looking like an oversight.
+- **Scope refinement (client big summary):** *non-union sick hours are the one sick/PTO item currently entered into ADP*; nothing union-side, no PTO mentioned. The in/out decision for the ERP still stands, now with the as-is precisely stated.

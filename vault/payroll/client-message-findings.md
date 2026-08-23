@@ -180,3 +180,23 @@ our reading that the 06-23 extract snapshot is the authoritative FY25-26 histori
 migration-era recalculation. And the billing side: where should pricing-sheet rates be
 versioned in the ERP (the quotations gap)?
 
+## 2026-08-24 batch — the big summary (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Rounding: start **down**, end **up**, 30-min, everyone | ✅ **three-way agreement** — client = engine (`usp_Prepare_Continuous_Labor`) = MLA. FRD approval item collapses to a confirm-in-writing | PAY-020 |
+| Cross-midnight: "entire job associated with the start date" | ⚠️ **contradicts the engine**, which flips day-type at 00:00 per slice (anchor governs grouping/guarantees only). Fri 10 PM → Sat 4 AM: Saturday premium after midnight, or not? **PAY-019 escalated to conflicted** | PAY-019 |
+| Wed completion deadline, Thu checks | 🆕 operational window; consistent with the live ADP six-day close-to-pay gap | PAY-002 |
+| ST/OT/DT boundaries, 6–5 window, Sat OT / Sun DT, >8/>12 consecutive, holiday ×3, June+Dec specials ×2, 4-h/8-h guarantees, 5-h lunch cadence, shift-diff pay+time adds, subsistence | ✅ all agree with the register and engine — nine rules re-confirmed in one message | PAY-021/023/024/030/031/033/034/040/046 |
+| "Rarely ever work under a different craft code" | ✅ context — softens the practical frequency of the PAY-010 rate conflict, resolves nothing | PAY-010 |
+| 8-h rest: "<8 h between labor = one labor" | ✅ describes the **shift chain**; the rest-*premium* (PAY-045) is a separate mechanism his summary omits. Three grouping thresholds now explicit (any-gap WTL / 30-min rest / 8-h shift) | PAY-023, PAY-045, PAY-046 |
+| "Know which lunches worked through **and at what time**" | ✅ wish already exceeds tokens — exactly what Atom US-11 structured capture provides | PAY-046/047 |
+| ADP import scope (buckets + temp-rate rows + SUB dollars + non-union sick) | ✅ matches the crosswalk row-for-row; PAY-073's as-is now precise | PAY-067, PAY-073 |
+| ADP access: prod granted to Brian, **dev account not created**, rep meeting next week (Corrina) | ✅ consistent with the 2026-08-17 test-company request; join/recording requested | PAY-067, gaps |
+
+**Client questions from this message:** (15) rounding — client and engine agree (start down,
+end up, everyone): turn it into a written decision so PAY-020 settles. (16) cross-midnight
+day-type — your summary says anchor-date, your engine flips at midnight: which ships? (A
+Friday-night crew's Saturday hours hang on it.) Plus: (13-update) Corrina's ADP-rep meeting —
+we'd like to join, or at minimum receive the recording.
+

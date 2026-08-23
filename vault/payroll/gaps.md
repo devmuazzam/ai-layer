@@ -778,6 +778,10 @@ someone has confirmed otherwise.
 - Status: open — and the cheapest item on this entire list to close.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#api-central-access-for-the-people-actually-building-it](gaps-2026-08-20-retired.md#api-central-access-for-the-people-actually-building-it)
+- **2026-08-24, client big-summary message:** Brian has been granted access to the **production**
+  account ("the actual account… I don't think the dev account for ADP has been created yet");
+  Wes is checking with Melissa and Corrina to get CodingCops access. Consistent with the open
+  test-company request of 2026-08-17. Dev/sandbox creation is the blocking half.
 
 ## Where do webhook events live in API Central, and what fires?
 
