@@ -68,3 +68,23 @@ ERP-born entries — or both, with the cap applying only to reconstructed/import
 apart. A split gap between them (e.g. 45 min) chains the shift but breaks the rest chain.
 Confirm both thresholds and that interaction are intended.
 
+## 2026-06-10 — post-demo reflections + WTL double-time realization (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| "WTL is priced automatically at double time" | ✅ agrees — and the vault is **more precise**: add = 0.5 × (base + shift) × 2.0, boom excluded (`BASE_PLUS_SHIFT_EXCLUDE_BOOM`), plus the `WTL_DT_FLOOR` top-up nuance for weekday ST-start blocks | PAY-047 |
+| Screenshot slice grid | ✅ decomposes to the cent: base 66.03 + shift-2 3.00 + boom OP-BP-07 5.25 → $111.42 @1.5; the +$69.03 add **is the extract's own worked example (entry 84393)** | PAY-047, PAY-036, PAY-011, PAY-021 |
+| Deduct −$55.71 vs add +$69.03 | ✅ documented, deliberate asymmetry — deduct loaded incl. boom, add excludes boom. ⚠️ contract question: is boom-exclusion MLA-compliant/intended? | PAY-047 |
+| "Couldn't explain why WTL was higher" (June-9 demo) | ✅ on tape — demo-01 33:20 / 41:51 / 43:19 / 44:00 | — |
+| Takeaway 2: "explain the configuration tables for migration" | ✅ **satisfied since** — the 2026-08-18 extract captured every config row (`cfg.WTL_Rule`, `cfg.Union_Master_Rules`, …); confirm nothing moved after 2026-08-18 | — |
+
+**Client question from this message:** (8) the WTL add excludes the boom adder while the
+deduct includes it — deliberate per config; confirm it is *intended* and MLA-compliant, and
+state the composition rule per component in the adjudicated into-rate-vs-on-top decision.
+
+**Meta, worth saying in the meeting:** Brian's "nearly impossible for a human mind to
+remember all of it" is the problem the rule register now solves — each `PAY-###` file joins
+the rule, the engine behaviour, the config row, and the open question. His takeaway #1
+(explain from user experience) and #2 (config tables) are both standing answers now, not
+presentation work.
+

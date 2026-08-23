@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm structured meal data
+- **Cross-module consistency verified:** the engine's expected-meal brackets (≤5→0, 5.5–10.5→1, 11–16→2, 16.5–21.5→3, 22–27→4; opportunities at 5.0/10.5/16.0/21.5 h) line up with the Atom app's lunch deadlines (before 5 / 10.5 / 16.5 / 22 h, US-11) — field-ops capture and payroll expectation agree on the boundaries.

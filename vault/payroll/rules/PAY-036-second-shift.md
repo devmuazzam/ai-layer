@@ -26,3 +26,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm union-notification data
 - **Conflict:** Into-the-rate vs on-top (see PAY-011) — MLA: shift premium “will become the base rate for the entire shift”.
+- **Live sighting (client screenshot 2026-06-10):** the $3.00 second-shift adder inside a priced slice — (66.03 + **3.00** + 5.25) × 1.5 = $111.42/h.

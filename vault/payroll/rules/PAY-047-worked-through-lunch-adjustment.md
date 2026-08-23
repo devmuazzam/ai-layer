@@ -26,3 +26,5 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm contract interpretation by day type
 - **Conflict:** Contract interpretation **by day type** unconfirmed (matrix open decision); the payroll team’s own lookup: `../wtl-charts.md`.
+- **Client message 2026-06-10 ("WTL priced automatically at double time") — agrees, and the vault is more precise.** Extract §10 + `cfg.WTL_Rule` row `L12_WTL_2025`: *taken* meal → `WTL_MEAL_DEDUCT` removes the whole priced slice (base+shift+boom × multiplier); *worked-through* meal → `WTL_APPLICABLE_ADD` = 0.5 × (base + shift) × 2.0 — **boom excluded, per explicit config `BASE_PLUS_SHIFT_EXCLUDE_BOOM`** — with `WTL_DT_FLOOR` topping weekday ST-start blocks to ×2.0. The client's screenshot reproduces the extract's own worked example to the cent: +$69.03 = 0.5 × (66.03 base + 3.00 shift-2) × 2.0 (entry 84393); slice $111.42 = (66.03 + 3.00 + 5.25 boom `OP-BP-07`) × 1.5.
+- **Contract question raised by the asymmetry:** deduct includes boom, add excludes it — deliberate in config, but is boom-exclusion from the WTL premium MLA-compliant/intended? Sits alongside this rule's open day-type interpretation.
