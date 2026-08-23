@@ -32,3 +32,23 @@ the ⚠️ rows.
 craft (your 2026-06-09 message), practice pays the employee's own rate (Kyle/Corrina,
 2026-08-13), Brian proposed higher-of: which ships? (2) exclusion set — `SYS%` only, or
 also fake/default? (3) what does the FCC "Certified Pay" checkbox drive today?
+
+## 2026-06-09 — FCC time-trust FYI + ticket exhibit (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| "Can't trust the date/time values in FCC" | ✅ agrees — it is the documented premise of the whole time-reconstruction family | PAY-017/018/019/020 |
+| "Payroll App uses creative-magic to reconstruct" | ✅ **already decoded in the DB extract**: punches → 30-min slices; no usable start/end → assume 06:00 + hours, flag `Shift_Assumed`. No need to wait for "I can explain later" — confirm our reading | PAY-018 |
+| Ticket 45888 exhibit: 0.00 vs 0.98 vs 48.00 hours | 🆕 new exhibit, now cited on the rules; sharpens PAY-017 — the legacy engine has **no configured source priority**; that mechanism is a new ERP design needing exactly this case adjudicated | PAY-017, PAY-060 |
+| Workflow timestamps roll 6/6 → 6/7 | ✅ live cross-midnight case | PAY-019 |
+
+**Client questions from this message:** (4) for ticket 45888's three disagreeing sources —
+which should the ERP have priced, and are 24.00-h/person rows flag-and-price or block?
+(5) confirm our decoded reading of the reconstruction (assumed 06:00 + hours) so "explain
+later" is closed in writing.
+
+**ERP-side note:** the workflow column in this exhibit is the data the Atom field app will
+own natively (timestamped Left Yard → signatures → Arrive Yard). The reconstruction rules
+remain necessary for FCC-migrated history and any parallel-run period — not for tickets
+born in the new app.
+

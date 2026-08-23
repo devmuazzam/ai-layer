@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm severity matrix
+- **Exhibit-driven case (2026-06-09 message):** identical placeholder times in four customer-interval fields, and 24.00-hour per-person labor rows — both patterns need explicit severity in the issue matrix (flag? block? price with warning?). See PAY-017's exhibit.

@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm final day-type policy
+- **Exhibit:** ticket `45888`'s workflow timestamps roll from 6/6 into 6/7 (signatures and Left Job at 3:30–3:35 the next day) — a live cross-midnight case attached to the same message as PAY-017's source-disagreement exhibit.
