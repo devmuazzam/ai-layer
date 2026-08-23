@@ -90,7 +90,7 @@ Four facts that recur in every document and are worth holding in memory:
 rule. This folder is the only payroll knowledge the team has written down anywhere.
 
 But Confluence *does* point at it. The field-ops FRD section 10, *BRS References*
-([product/field-ops-frd/10-brs-references.md](../product/field-ops-frd/10-brs-references.md)),
+([field-ops/field-ops-frd/10-brs-references.md](../field-ops/field-ops-frd/10-brs-references.md)),
 defers four topics to documents held on SharePoint — and all four are files in this drop:
 
 | BRS topic | SharePoint file | Here |
@@ -113,7 +113,7 @@ other. Three seams are load-bearing:
 
 | Seam | Field-ops side | Payroll side |
 | --- | --- | --- |
-| **Lunch threshold values** | The Atom mobile app (Confluence v10, 2026-08-11) states **5 / 10.5 / 16.5 / 22** hours ([atom .../03-work-execution-and-lunch.md](../product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md)). `BRS-LUNCH-005` separately marks the values **📄 Needs Supporting Documentation** | [wtl-charts.md](wtl-charts.md) gives **5:01 / 10.5:01 / 16:01 / 21.5:01**. **Lunches 3 and 4 disagree by half an hour** — a double-time penalty either way. Neither should be implemented until reconciled |
+| **Lunch threshold values** | The Atom mobile app (Confluence v10, 2026-08-11) states **5 / 10.5 / 16.5 / 22** hours ([atom .../03-work-execution-and-lunch.md](../field-ops/atom-mobile-app-user-stories/03-work-execution-and-lunch.md)). `BRS-LUNCH-005` separately marks the values **📄 Needs Supporting Documentation** | [wtl-charts.md](wtl-charts.md) gives **5:01 / 10.5:01 / 16:01 / 21.5:01**. **Lunches 3 and 4 disagree by half an hour** — a double-time penalty either way. Neither should be implemented until reconciled |
 | **How many lunches exist** | `BRS-LUNCH-002` lists **three** and is ✓ Confirmed. The Atom page v10 says **four** | Payroll models **four** — `WTL_0`…`WTL_4`. Two sources say four; **the ✓ Confirmed BRS rule is the outlier** |
 | **Previous-day rest** | `BRS-PAY-003` *Previous Day Rest Validation* — status **⚠ Needs Client Validation**, mentions "eight-hour rest periods, double-time implications" | [mcog-l12-mla-2025-2028/01](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) Rest Periods, and the implemented `REST_PERIOD_PREMIUM` / `app.usp_Apply_RestPeriod_Premium` |
 

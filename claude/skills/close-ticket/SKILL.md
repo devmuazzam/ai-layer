@@ -17,7 +17,7 @@ depend on the path the ticket took, and §"How much of this runs" says which.
 ## The one thing this never does
 
 **Shipped behaviour does not become product memory.** Do not write what was built into
-`.ai/vault/product/`. Not as an update, not as a note, not as a "clarification".
+`.ai/vault/<module>/` content folders. Not as an update, not as a note, not as a "clarification".
 
 The vault answers *what should this do?* If code becomes an answer there, the next spec is
 sourced from the last implementation and the loop is validating itself — a decision someone

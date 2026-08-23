@@ -21,12 +21,12 @@
 ### Q1 — Job Tool/Rigging read-only scope
 
 - **Question:** Is Tool/Rigging on Job Details read-only in **all** cases (no add / edit qty / remove on the job), or only for **quote-inherited** tools — with job-specific additions still allowed later?
-- **Why it cannot be answered from what is written:** Jira SCRUM-899 (QA, Aiman Farooq) says the section should be read-only, but a QA ticket is not a named product-owner decision. `product/project-module/02-view-manage-job-details.md` (`status: unverified`) lists Tool/Rigging among tabs that “save independently,” which presupposes editable in-tab state. `product/tool-and-rigging.md` (`status: unverified`) covers quote → job flow-through and yard-dashboard adds, not Job Details editability. `vault/gaps.md` already flagged SCRUM-899’s punch-list intent as unwritten product intent (13-august-QA, unmigrated).
+- **Why it cannot be answered from what is written:** Jira SCRUM-899 (QA, Aiman Farooq) says the section should be read-only, but a QA ticket is not a named product-owner decision. `projects-jobs/project-module/02-view-manage-job-details.md` (`status: unverified`) lists Tool/Rigging among tabs that “save independently,” which presupposes editable in-tab state. `assets/tool-and-rigging.md` (`status: unverified`) covers quote → job flow-through and yard-dashboard adds, not Job Details editability. `vault/gaps.md` already flagged SCRUM-899’s punch-list intent as unwritten product intent (13-august-QA, unmigrated).
 - **Blocked:** Nothing for the Path C UI ship (PR #379 implements the ticket literally). Blocked for treating the behaviour as settled product law, for reconciling `02-view-manage-job-details.md`, and for deleting dead edit-mode UI branches.
 - **Candidates:**
   - `SCRUM-899` — QA ticket; only affirmative “read-only” source
-  - `product/project-module/02-view-manage-job-details.md` — implies editable tab state
-  - `product/tool-and-rigging.md` — silent on Job Details editability; Story 5 allows Dylan to add tools from the yard dashboard
+  - `projects-jobs/project-module/02-view-manage-job-details.md` — implies editable tab state
+  - `assets/tool-and-rigging.md` — silent on Job Details editability; Story 5 allows Dylan to add tools from the yard dashboard
   - `vault/gaps.md` punch-list note (13-august-QA) — names the intent, says ticket is only source
 - **Owner:** product team (named product owner — not QA)
 - **Workaround, if any:** PR #379 ships full Job Details read-only as the ticket asks; Yard/Dylan mutation paths unchanged. Labelled workaround until Q1 is answered.

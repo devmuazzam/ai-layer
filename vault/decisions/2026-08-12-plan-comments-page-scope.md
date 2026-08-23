@@ -35,7 +35,7 @@ this ticket is:
 - **`SCRUM-763`** ("Inhouse comments – design update needed", Task, **Blocked**, same epic
   `SCRUM-232`) is open against the *other* screen. These are now confirmed to be two
   separate concerns, and neither blocks the other.
-- `product/job-project-das.md` carries two adjacent punch-list one-liners — under **Plan**,
+- `projects-jobs/job-project-das.md` carries two adjacent punch-list one-liners — under **Plan**,
   `rich text field - UI issue`; under **Project**, `in house comments – design update
   needed`. The second belongs to `SCRUM-763`'s screen, not this one. Whether the first
   describes this ticket's defect is **still unknown** and was not decided here.

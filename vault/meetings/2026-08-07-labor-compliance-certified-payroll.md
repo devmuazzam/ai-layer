@@ -104,7 +104,7 @@ Two consequences worth stating plainly:
   the granularity a certified report needs.
 - **It starts at the quotation.** The Labor Compliance indicator has to be captured during
   quotation creation, which reaches into the quotations area — already the vault's most
-  contested topic ([product/quotations-INDEX.md](../product/quotations-INDEX.md), four sources
+  contested topic ([quotations/quotations-INDEX.md](../quotations/quotations-INDEX.md), four sources
   that disagree). None of those four mentions compliance.
 
 The stated failure mode is worth flagging on its own: **an unmarked job silently never appears

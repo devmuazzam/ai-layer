@@ -453,7 +453,7 @@ So the two levers, in order: **which model**, then **what you read**.
 | --- | --- | --- |
 | Agent model defaults | 5 of 8 on Opus, executor inherits | 1 of 8 on Opus (`tcg-scrum`); four loop agents on Sonnet; executor documented as "set the session to Sonnet" |
 | `vault/gaps.md` | 88 KB, one register | 24 KB product + [`vault/payroll/gaps.md`](vault/payroll/gaps.md) 64 KB; both open with a read-by-section rule; all 57 entries kept |
-| `vault/INDEX.md` | 24 KB | 19 KB — FR-FOP numbering → [`product/fr-fop-numbering.md`](vault/product/fr-fop-numbering.md), tags → [`tags.md`](vault/tags.md), payroll narrative and sprint-plan rows collapsed to pointers |
+| `vault/INDEX.md` | 24 KB | 19 KB — FR-FOP numbering → [`field-ops/fr-fop-numbering.md`](vault/field-ops/fr-fop-numbering.md), tags → [`tags.md`](vault/tags.md), payroll narrative and sprint-plan rows collapsed to pointers |
 | Agent prompts | examples inline | examples in `aidlc/agents/examples/` — elaborator 25→21 KB, scrum 21→15, executor 14→12, reflector 13→10, decomposer 12→10, analyst 11→10 |
 
 ### 10.5 Measure it

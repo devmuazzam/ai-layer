@@ -19,7 +19,7 @@ date_conflict: >
 **Duration** : 2-week sprint
 
 **Sprint Goal** :  
-The goal of this sprint is to maximize the functional coverage of the [[product/daily-allocation-INDEX|Daily Allocation System]] (DAS) and implement Purchase Orders (PO) at both project and global levels. This includes building a comprehensive linking layer across Permits, Plans, Jobs, Vendors, and Employees. Additionally, the sprint aims to deliver both in-app and email notifications, and roll out a real-time auto-save feature across Quotations, Customers, and Assets. 
+The goal of this sprint is to maximize the functional coverage of the [[dispatch/daily-allocation-INDEX|Daily Allocation System]] (DAS) and implement Purchase Orders (PO) at both project and global levels. This includes building a comprehensive linking layer across Permits, Plans, Jobs, Vendors, and Employees. Additionally, the sprint aims to deliver both in-app and email notifications, and roll out a real-time auto-save feature across Quotations, Customers, and Assets. 
 
 **@DEV team and Their assigned tasks**
 

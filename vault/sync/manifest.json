@@ -11,7 +11,7 @@
       "spaceKey": "TCG",
       "title": "Agencies",
       "vaultPaths": [
-        "product/agencies.md"
+        "vendors-agencies/agencies.md"
       ],
       "contentHash": "sha256:75611a1b87d50d8813a6ef284e65eacb2f1054cf573cf8b9784bd417ba69a357",
       "confluenceVersion": null,
@@ -27,7 +27,7 @@
       "spaceKey": "TCG",
       "title": "Agencies module",
       "vaultPaths": [
-        "product/agencies-module.md"
+        "vendors-agencies/agencies-module.md"
       ],
       "contentHash": "sha256:3fbd8ae0dbe11b5f2af28305f08e763388d405239ce4a60fb0f94b2902cb90fb",
       "confluenceVersion": null,
@@ -43,7 +43,7 @@
       "spaceKey": "TCG",
       "title": "Agency and vendor",
       "vaultPaths": [
-        "product/agency-and-vendor.md"
+        "vendors-agencies/agency-and-vendor.md"
       ],
       "contentHash": "sha256:182c8ffd986a5906ff1d75f173a19c02646f05ba06c92c30def4a26fab9f5041",
       "confluenceVersion": null,
@@ -59,14 +59,14 @@
       "spaceKey": "TCG",
       "title": "Atom Mobile Application ( User stories )",
       "vaultPaths": [
-        "product/atom-mobile-app-user-stories/00-overview.md",
-        "product/atom-mobile-app-user-stories/01-authentication-and-dashboard.md",
-        "product/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md",
-        "product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md",
-        "product/atom-mobile-app-user-stories/04-completion-and-return.md",
-        "product/atom-mobile-app-user-stories/05-compliance-labor-and-review.md",
-        "product/atom-mobile-app-user-stories/06-safety-and-self-service.md",
-        "product/atom-mobile-app-user-stories/INDEX.md"
+        "field-ops/atom-mobile-app-user-stories/00-overview.md",
+        "field-ops/atom-mobile-app-user-stories/01-authentication-and-dashboard.md",
+        "field-ops/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md",
+        "field-ops/atom-mobile-app-user-stories/03-work-execution-and-lunch.md",
+        "field-ops/atom-mobile-app-user-stories/04-completion-and-return.md",
+        "field-ops/atom-mobile-app-user-stories/05-compliance-labor-and-review.md",
+        "field-ops/atom-mobile-app-user-stories/06-safety-and-self-service.md",
+        "field-ops/atom-mobile-app-user-stories/INDEX.md"
       ],
       "contentHash": "sha256:9b97de1b3b9ad4c5384c34f28ee2eb44f2239dc720cea718691661770d8292ad",
       "confluenceVersion": null,
@@ -82,7 +82,7 @@
       "spaceKey": "TCG",
       "title": "BRS",
       "vaultPaths": [
-        "product/brs.md"
+        "brs.md"
       ],
       "contentHash": "sha256:99d8a5e39be9e5837e3dc2e7afa1f3b981db2433e9b7edea17ec3aae1ba4d105",
       "confluenceVersion": null,
@@ -98,7 +98,7 @@
       "spaceKey": "TCG",
       "title": "Billing code and price ist",
       "vaultPaths": [
-        "product/billing-code-and-price-list.md"
+        "quotations/billing-code-and-price-list.md"
       ],
       "contentHash": "sha256:1e8a34cef3167c98ac0b6b82c255202dca0c97d85e5fc7d6484465cf4da71136",
       "confluenceVersion": null,
@@ -114,7 +114,7 @@
       "spaceKey": "TCG",
       "title": "Categories and sub categories",
       "vaultPaths": [
-        "product/categories-and-sub-categories.md"
+        "assets/categories-and-sub-categories.md"
       ],
       "contentHash": "sha256:2cbcdeaf864056b7cdbdec29396697a54a7028329fda1d0653606a9b99b7eead",
       "confluenceVersion": null,
@@ -130,7 +130,7 @@
       "spaceKey": "TCG",
       "title": "Customer",
       "vaultPaths": [
-        "product/customer.md"
+        "customers/customer.md"
       ],
       "contentHash": "sha256:0ae7c123964251c18389ee30a81b2be50b01327bc8fb2b968e9928dfa674eda5",
       "confluenceVersion": null,
@@ -146,7 +146,7 @@
       "spaceKey": "TCG",
       "title": "Customer and Job sites",
       "vaultPaths": [
-        "product/customer-and-job-sites.md"
+        "customers/customer-and-job-sites.md"
       ],
       "contentHash": "sha256:161d33e8ad5c21263080dfcf825b10c10bb15294187c77e303272869d3a797bb",
       "confluenceVersion": null,
@@ -162,7 +162,7 @@
       "spaceKey": "TCG",
       "title": "Daily Allocation system",
       "vaultPaths": [
-        "product/daily-allocation-system.md"
+        "dispatch/daily-allocation-system.md"
       ],
       "contentHash": "sha256:c0246375baecd9e0ca8148704b926543011672898ca3a5208f333dcc306b1bbb",
       "confluenceVersion": null,
@@ -178,7 +178,7 @@
       "spaceKey": "TCG",
       "title": "Discussion points with Mohsin",
       "vaultPaths": [
-        "product/discussion-points-with-mohsin.md"
+        "meetings/2026-06-26-discussion-points-with-mohsin.md"
       ],
       "contentHash": "sha256:0fbabf7f5362861a943da61b4b156ed7d72d7d8450f6634f99991f90e05ea1f9",
       "confluenceVersion": null,
@@ -194,7 +194,7 @@
       "spaceKey": "TCG",
       "title": "Discussion points with TCG team",
       "vaultPaths": [
-        "product/discussion-points-with-tcg-team.md"
+        "meetings/2026-06-26-discussion-points-with-tcg-team.md"
       ],
       "contentHash": "sha256:1aab1e9285eb58c5a2aa0affddf25e271700701f1968ca3d646097ae2c6c7980",
       "confluenceVersion": null,
@@ -210,7 +210,7 @@
       "spaceKey": "TCG",
       "title": "Dispatcher Needs",
       "vaultPaths": [
-        "product/dispatcher-needs.md"
+        "dispatch/dispatcher-needs.md"
       ],
       "contentHash": "sha256:f418d11755881e857a4f03a8907339389eb37a79fc07d232bca74efc84296468",
       "confluenceVersion": null,
@@ -226,57 +226,57 @@
       "spaceKey": "TCG",
       "title": "FRD - [New Format - Draft]",
       "vaultPaths": [
-        "product/frd-new-format-draft/00-document-header.md",
-        "product/frd-new-format-draft/01-overview.md",
-        "product/frd-new-format-draft/02-problem-statement.md",
-        "product/frd-new-format-draft/03-feature-scope.md",
-        "product/frd-new-format-draft/04-role-responsibility-model.md",
-        "product/frd-new-format-draft/05-functional-requirements/00-section-header.md",
-        "product/frd-new-format-draft/05-functional-requirements/INDEX.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-001-bottom-navigation.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-002-home-dashboard.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-003-jobs-list.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-004-ticket-notification.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-005-accept-reject-ticket.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-006-ticket-detail-view.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-007-guided-ticket-workflow.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-008-leave-yard.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-010-arrive-job.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-011-jsa-safety-checklist.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-012-start-work.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-013-lunch-timer-and-alerts.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-014-start-end-lunch.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-015-work-through-lunch-authorization.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-016-initial-customer-signature.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-017-final-customer-signature.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-019-end-work.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-020-leave-job.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-021-arrive-yard.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-022-compliance-checklist.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-023-labor-detail-entry.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-024-boom-pay-craft-modifier-selection.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-025-submit-ticket.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-026-incomplete-ticket-handling.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-027-deficiency-capture.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-028-blocking-issue-emergency-escalation.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-029-notification-center.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-030-downtime-and-delay-capture.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-031-live-ticket-visibility.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-032-view-certifications.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-033-certification-expiry-notification-and-upload.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-034-field-task-list.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-035-labor-history-and-audit.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-036-field-user-profile.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-037-emergency-contacts.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-038-time-rounding.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-039-auto-save.md",
-        "product/frd-new-format-draft/05-functional-requirements/fr-fop-040-audit-trail.md",
-        "product/frd-new-format-draft/06-key-user-flows.md",
-        "product/frd-new-format-draft/07-non-functional-requirements.md",
-        "product/frd-new-format-draft/08-open-questions.md",
-        "product/frd-new-format-draft/INDEX.md"
+        "field-ops/frd-new-format-draft/00-document-header.md",
+        "field-ops/frd-new-format-draft/01-overview.md",
+        "field-ops/frd-new-format-draft/02-problem-statement.md",
+        "field-ops/frd-new-format-draft/03-feature-scope.md",
+        "field-ops/frd-new-format-draft/04-role-responsibility-model.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/00-section-header.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/INDEX.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-001-bottom-navigation.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-002-home-dashboard.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-003-jobs-list.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-004-ticket-notification.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-005-accept-reject-ticket.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-006-ticket-detail-view.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-007-guided-ticket-workflow.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-008-leave-yard.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-010-arrive-job.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-011-jsa-safety-checklist.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-012-start-work.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-013-lunch-timer-and-alerts.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-014-start-end-lunch.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-015-work-through-lunch-authorization.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-016-initial-customer-signature.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-017-final-customer-signature.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-019-end-work.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-020-leave-job.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-021-arrive-yard.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-022-compliance-checklist.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-023-labor-detail-entry.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-024-boom-pay-craft-modifier-selection.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-025-submit-ticket.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-026-incomplete-ticket-handling.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-027-deficiency-capture.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-028-blocking-issue-emergency-escalation.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-029-notification-center.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-030-downtime-and-delay-capture.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-031-live-ticket-visibility.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-032-view-certifications.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-033-certification-expiry-notification-and-upload.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-034-field-task-list.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-035-labor-history-and-audit.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-036-field-user-profile.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-037-emergency-contacts.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-038-time-rounding.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-039-auto-save.md",
+        "field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-040-audit-trail.md",
+        "field-ops/frd-new-format-draft/06-key-user-flows.md",
+        "field-ops/frd-new-format-draft/07-non-functional-requirements.md",
+        "field-ops/frd-new-format-draft/08-open-questions.md",
+        "field-ops/frd-new-format-draft/INDEX.md"
       ],
       "contentHash": "sha256:4d515ae7266e9f71ac97572be9b35122a11300119073948355b8c36bceb63cd2",
       "confluenceVersion": null,
@@ -292,50 +292,50 @@
       "spaceKey": "TCG",
       "title": "Field Operations App - FRD",
       "vaultPaths": [
-        "product/field-ops-frd/00-document-header.md",
-        "product/field-ops-frd/01-executive-overview.md",
-        "product/field-ops-frd/02-problem-statement.md",
-        "product/field-ops-frd/03-objectives.md",
-        "product/field-ops-frd/04-scope.md",
-        "product/field-ops-frd/05-role-definitions.md",
-        "product/field-ops-frd/06-operational-workflow-overview.md",
-        "product/field-ops-frd/07-functional-requirements-summary.md",
-        "product/field-ops-frd/08-functional-requirements/00-section-header.md",
-        "product/field-ops-frd/08-functional-requirements/INDEX.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-001-bottom-navigation.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-002-home-dashboard.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-003-jobs-list.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-004-ticket-details.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-005-ticket-acceptance.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-006-ticket-rejection.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-007-ticket-draft-management.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-008-pre-trip-checklist.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-009-leave-yard.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-010-arrive-job-site.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-012-start-work.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-014-lunch-recording.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-015-work-through-lunch.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-016-end-work.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-017-compliance-checklist.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-018-customer-signatures.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-019-leave-job-site.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-020-arrive-yard.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-021-post-trip-checklist.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-022-submit-ticket.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-023-labor-details.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-024-downtime-management.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-025-deficiency-reporting.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-026-escalation-handling.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-027-notification-center.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-028-certifications.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-029-tasks.md",
-        "product/field-ops-frd/08-functional-requirements/fr-fop-030-inspection-history.md",
-        "product/field-ops-frd/09-workflow-affecting-business-rules.md",
-        "product/field-ops-frd/10-brs-references.md",
-        "product/field-ops-frd/11-open-questions-future-considerations.md",
-        "product/field-ops-frd/INDEX.md"
+        "field-ops/field-ops-frd/00-document-header.md",
+        "field-ops/field-ops-frd/01-executive-overview.md",
+        "field-ops/field-ops-frd/02-problem-statement.md",
+        "field-ops/field-ops-frd/03-objectives.md",
+        "field-ops/field-ops-frd/04-scope.md",
+        "field-ops/field-ops-frd/05-role-definitions.md",
+        "field-ops/field-ops-frd/06-operational-workflow-overview.md",
+        "field-ops/field-ops-frd/07-functional-requirements-summary.md",
+        "field-ops/field-ops-frd/08-functional-requirements/00-section-header.md",
+        "field-ops/field-ops-frd/08-functional-requirements/INDEX.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-001-bottom-navigation.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-002-home-dashboard.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-003-jobs-list.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-004-ticket-details.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-005-ticket-acceptance.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-006-ticket-rejection.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-007-ticket-draft-management.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-008-pre-trip-checklist.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-009-leave-yard.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-010-arrive-job-site.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-012-start-work.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-014-lunch-recording.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-015-work-through-lunch.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-016-end-work.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-017-compliance-checklist.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-018-customer-signatures.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-019-leave-job-site.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-020-arrive-yard.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-021-post-trip-checklist.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-022-submit-ticket.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-023-labor-details.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-024-downtime-management.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-025-deficiency-reporting.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-026-escalation-handling.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-027-notification-center.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-028-certifications.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-029-tasks.md",
+        "field-ops/field-ops-frd/08-functional-requirements/fr-fop-030-inspection-history.md",
+        "field-ops/field-ops-frd/09-workflow-affecting-business-rules.md",
+        "field-ops/field-ops-frd/10-brs-references.md",
+        "field-ops/field-ops-frd/11-open-questions-future-considerations.md",
+        "field-ops/field-ops-frd/INDEX.md"
       ],
       "contentHash": "sha256:fd847e47a7ea94c165de5e0cc723f914511b7416563bd4f78940652bc041d3b8",
       "confluenceVersion": null,
@@ -351,7 +351,7 @@
       "spaceKey": "TCG",
       "title": "Job / project / DAS",
       "vaultPaths": [
-        "product/job-project-das.md"
+        "projects-jobs/job-project-das.md"
       ],
       "contentHash": "sha256:f2f8e52802be8ba519561f65af2d97db71b0fdb3eb13409f0cc2aa3edef7c534",
       "confluenceVersion": null,
@@ -367,7 +367,7 @@
       "spaceKey": "TCG",
       "title": "Mobilization & Demobilization",
       "vaultPaths": [
-        "product/mobilization-and-demobilization.md"
+        "quotations/mobilization-and-demobilization.md"
       ],
       "contentHash": "sha256:a707b8ae2dc57931352c5ca099eeeee831340530b15763cc18f3ced56e2abe11",
       "confluenceVersion": null,
@@ -383,15 +383,15 @@
       "spaceKey": "TCG",
       "title": "Project Module",
       "vaultPaths": [
-        "product/project-module/00-project-module.md",
-        "product/project-module/01-create-and-track-projects.md",
-        "product/project-module/02-view-manage-job-details.md",
-        "product/project-module/03-create-manage-job-schedule.md",
-        "product/project-module/04-create-and-approve-lift-plans.md",
-        "product/project-module/05-create-and-track-permits.md",
-        "product/project-module/06-client-reviews-and-signs-quotation.md",
-        "product/project-module/07-create-and-manage-jobs-excluded.md",
-        "product/project-module/INDEX.md"
+        "projects-jobs/project-module/00-project-module.md",
+        "projects-jobs/project-module/01-create-and-track-projects.md",
+        "projects-jobs/project-module/02-view-manage-job-details.md",
+        "projects-jobs/project-module/03-create-manage-job-schedule.md",
+        "projects-jobs/project-module/04-create-and-approve-lift-plans.md",
+        "projects-jobs/project-module/05-create-and-track-permits.md",
+        "projects-jobs/project-module/06-client-reviews-and-signs-quotation.md",
+        "projects-jobs/project-module/07-create-and-manage-jobs-excluded.md",
+        "projects-jobs/project-module/INDEX.md"
       ],
       "contentHash": "sha256:e55b1a4ecc5d73f5253d3c1a907f24fa3639e411d8e469986ead3ee383f4305b",
       "confluenceVersion": null,
@@ -407,7 +407,7 @@
       "spaceKey": "TCG",
       "title": "Purchase order",
       "vaultPaths": [
-        "product/purchase-order.md"
+        "vendors-agencies/purchase-order.md"
       ],
       "contentHash": "sha256:da651f238955dd5493a5df335b50dfc278cbbaf4b0e46b85b465d91872f31f1d",
       "confluenceVersion": null,
@@ -423,7 +423,7 @@
       "spaceKey": "TCG",
       "title": "Quotation",
       "vaultPaths": [
-        "product/quotation.md"
+        "quotations/quotation.md"
       ],
       "contentHash": "sha256:ccbc92d8e7019c9b1f8d562f7c4c47974c82ecae1929a872294bda1c2b944411",
       "confluenceVersion": null,
@@ -439,7 +439,7 @@
       "spaceKey": "TCG",
       "title": "Quotation Flow Process",
       "vaultPaths": [
-        "product/quotation-flow-process.md"
+        "quotations/quotation-flow-process.md"
       ],
       "contentHash": "sha256:ba4cfb3ea520324452248c273f33c67d4e830bb5378865ac76a106734e00874b",
       "confluenceVersion": null,
@@ -455,7 +455,7 @@
       "spaceKey": "TCG",
       "title": "Quotations",
       "vaultPaths": [
-        "product/quotations.md"
+        "quotations/quotations.md"
       ],
       "contentHash": "sha256:5f5f2e0ece02eaefd06ea186c7f3989fae297730905185c4b6c55dfb3bc1597e",
       "confluenceVersion": null,
@@ -471,7 +471,7 @@
       "spaceKey": "TCG",
       "title": "Sprint 4 Additional",
       "vaultPaths": [
-        "product/sprint-4-additional.md"
+        "meetings/2026-06-22-sprint-4-additional.md"
       ],
       "contentHash": "sha256:ba537908b289dec620243ccf886e36c2ef6d46fbac43cb31b7889d4fd23e744a",
       "confluenceVersion": null,
@@ -583,7 +583,7 @@
       "spaceKey": "TCG",
       "title": "TCG documents",
       "vaultPaths": [
-        "product/tcg-documents.md"
+        "admin/tcg-documents.md"
       ],
       "contentHash": "sha256:5ed743c5a08492391213a3314f015e9a0bdd6a74973b56cf894de8da0704c3c0",
       "confluenceVersion": null,
@@ -599,7 +599,7 @@
       "spaceKey": "TCG",
       "title": "Tool and rigging",
       "vaultPaths": [
-        "product/tool-and-rigging.md"
+        "assets/tool-and-rigging.md"
       ],
       "contentHash": "sha256:caa9bbc73a490c4437cc2b057d32f0585df66855f70659e58f6e20000eccdba6",
       "confluenceVersion": null,
@@ -615,7 +615,7 @@
       "spaceKey": "TCG",
       "title": "Vendors",
       "vaultPaths": [
-        "product/vendors.md"
+        "vendors-agencies/vendors.md"
       ],
       "contentHash": "sha256:86de8f1820e608aa9c500e1da0d22b1f757f7f5d5c22962562b677b9702719bb",
       "confluenceVersion": null,
@@ -631,7 +631,7 @@
       "spaceKey": "TCG",
       "title": "Yard operations jz",
       "vaultPaths": [
-        "product/yard-operations-jz.md"
+        "dispatch/yard-operations-jz.md"
       ],
       "contentHash": "sha256:678cb843c00a21056b54b8087a48084bfbeba4e467d597c1504e35374fff9847",
       "confluenceVersion": null,
@@ -743,7 +743,7 @@
       "spaceKey": "~7120204da88543016f4083b9f7669a42b21ef3",
       "title": "User story & tasks",
       "vaultPaths": [
-        "product/user-story-and-tasks.md"
+        "assets/user-story-and-tasks.md"
       ],
       "contentHash": "sha256:2d25c67d84a227cf5855ebe8d9fcee195bb3896a19c2414587ca2a987fd20645",
       "confluenceVersion": null,

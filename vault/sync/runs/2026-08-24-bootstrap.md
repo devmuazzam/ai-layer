@@ -31,7 +31,7 @@ possible under this method; false negatives are not.
 | Drift — staged CLEAN | 1 | `queue/2026-08-24-bootstrap/sprint-8-report.md` |
 | Drift candidates cleared (no content drift) | 2 | Atom user stories · Mobilization & Demobilization — below |
 | New since migration → CONFLICT (§4.3) | 2 | Craft codes · Payroll management — `.conflict/2026-08-24-bootstrap/` |
-| New since migration → already registered | 1 | Mob & demob (143458306) — `product/mob-demob-INDEX.md` already documents it; page unchanged since that stub (both 2026-08-11) |
+| New since migration → already registered | 1 | Mob & demob (143458306) — `quotations/mob-demob-INDEX.md` already documents it; page unchanged since that stub (both 2026-08-11) |
 | New since migration → no content | 1 | "Documents" (141918209, Aug 10) — **empty body**, title only. Nothing to stage. |
 | New since migration → report-only | 2 | Sprint 10 Report (159907841) · Sprint report 9 (152829955), both Aug 21 — sprint-report family; README exclusion policy applies. 13-august-QA (145195009, Aug 17) likewise QA family. |
 | Stale sources (§5.2) | **0** | every tracked title resolves |

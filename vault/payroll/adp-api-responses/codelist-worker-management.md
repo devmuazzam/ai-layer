@@ -48,7 +48,7 @@ derivation rule already says so — this confirms there is no alternative source
 to derive a Payroll Group from ADP's union code.**
 
 **2. The open product question shrinks.**
-[discussion-points-with-tcg-team.md](../../product/discussion-points-with-tcg-team.md) asks:
+[discussion-points-with-tcg-team.md](../../meetings/2026-06-26-discussion-points-with-tcg-team.md) asks:
 
 > "Need to think if we need to give ability to add Union codes"
 

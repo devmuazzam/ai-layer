@@ -33,9 +33,9 @@ others do.
 
 The clause existed only on a QA ticket (`SCRUM-896`, reported by Aiman Farooq), and a QA
 ticket is not a product decision — which is why the spec stopped and asked rather than
-building against it. `spec.md` §12 Q1 records the evidence on both sides: `product/customer.md`
-item 11 asks for an archived quick filter "**(across the app)**" while `product/vendors.md`
-and `product/tool-and-rigging.md` still specify Delete icons, and no vault file mentions plan
+building against it. `spec.md` §12 Q1 records the evidence on both sides: `customers/customer.md`
+item 11 asks for an archived quick filter "**(across the app)**" while `vendors-agencies/vendors.md`
+and `assets/tool-and-rigging.md` still specify Delete icons, and no vault file mentions plan
 deletion or plan archiving at all. Nothing written could settle it, so a person had to.
 
 The reason to record the *pattern* and not just the verdict: "like other entities already
@@ -55,7 +55,7 @@ these is **still open** and none of them was answered:
 - **Whether an admin hard-delete escape hatch exists**, and who would hold it. Not raised,
   not answered. Do not build one and do not assume its absence.
 - **What "everything" includes at the sub-record level** — notes, contacts, attachments,
-  job-site rows, custom-attribute rows. `product/customer.md` item 20 currently specifies
+  job-site rows, custom-attribute rows. `customers/customer.md` item 20 currently specifies
   edit **and delete** on individual note/contact/job-site/attachment records. Whether those
   are "entities" under this decision, or child rows outside it, was not asked.
 - **Retention, permissions and reversal** — who may archive, who may unarchive, whether
@@ -68,13 +68,13 @@ these is **still open** and none of them was answered:
 
 - **No winner/loser flip applies.** This is not a conflict set between vault documents.
   No vault file specifies plan deletion or plan archiving, and the delete text that does
-  exist (`product/vendors.md` lines 24, 66–67, 86; `product/tool-and-rigging.md` line 22)
+  exist (`vendors-agencies/vendors.md` lines 24, 66–67, 86; `assets/tool-and-rigging.md` line 22)
   is a **line inside an otherwise unaffected file**, not a rival specification of this
   question. Marking those whole files `superseded` would be wrong and would lose the rest
   of their content. No `status:`, `superseded_by:` or `conflicts_with:` field changes on
   any product file.
 - **Residual tension, left open deliberately:** those Delete-icon lines in
-  `product/vendors.md` and `product/tool-and-rigging.md` now contradict this decision at
+  `vendors-agencies/vendors.md` and `assets/tool-and-rigging.md` now contradict this decision at
   the line level. Both files remain `status: unverified`. They are not corrected here —
   editing a vault body is outside this agent's access, and the correction is content work
   for whoever owns those pages.

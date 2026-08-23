@@ -116,7 +116,7 @@ person or function who has to answer them.
   who owns the reconciliation?
 - Candidates: not a choice between documents — a seam between two modules, both specified,
   neither citing the other.
-  - Capture side: `product/brs.md` (BRS-LUNCH-001…005, BRS-PAY-003), plus `FR-FOP-013`
+  - Capture side: `brs.md` (BRS-LUNCH-001…005, BRS-PAY-003), plus `FR-FOP-013`
     Lunch Monitoring / Lunch Timer and Alerts, `FR-FOP-014` Lunch Recording, `FR-FOP-015` Work
     Through Lunch, `FR-FOP-023` Labor Details. **The `FR-FOP-NNN` ids are themselves ambiguous
     across the two field-ops FRDs** — see *Field operations mobile app* above.
@@ -320,7 +320,7 @@ someone has confirmed otherwise.
 ## Union codes — one value, so the CRUD question mostly dissolves
 
 - Question: does the ERP need the ability to add union codes, as asked in
-  [product/discussion-points-with-tcg-team.md](product/discussion-points-with-tcg-team.md)?
+  [meetings/2026-06-26-discussion-points-with-tcg-team.md](meetings/2026-06-26-discussion-points-with-tcg-team.md)?
 - Candidates: ADP holds exactly **one** union code — `L12 — Local 12`.
 - Note: with one value that changes only if TCG signs a second labour agreement, a CRUD screen is
   hard to justify. The narrower live question is whether the ERP masters `L12` or reads it from
@@ -1093,8 +1093,8 @@ someone has confirmed otherwise.
   - **2026-06-09** — Mobile: show one lunch button per allowed lunch (from BRS rules),
     auto-highlighted 30 minutes before the threshold; tap logs a fixed 30-min lunch (Corrina
     confirms lunch is always 30 min) — *vault/ticket:*
-    product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md ("notification 1 hour
-    before"); product/brs.md BRS-LUNCH-003 (⚠ Needs Client Validation) — *jira:* SCRUM-864 ("1
+    field-ops/atom-mobile-app-user-stories/03-work-execution-and-lunch.md ("notification 1 hour
+    before"); brs.md BRS-LUNCH-003 (⚠ Needs Client Validation) — *jira:* SCRUM-864 ("1
     hour before")
   - **2026-06-23** — ADP import layout: company code 631 (Crane Guys), file number = ADP
     employee ID (6 digits, leading zeros), Reg/OT/DT hours, extra lines per boom rate with rate,
@@ -1108,7 +1108,7 @@ someone has confirmed otherwise.
     onboarding inside the ERP" explicitly rejected (superseded 5 days later)
   - **2026-07-09** — Fill-in field employees need basic info in ERP so they can do tickets/labor
     before ADP onboarding completes (Corrina gives them until Sunday) — *vault/ticket:*
-    product/daily-allocation-system.md (Temp employee management: "Fill In" placeholder);
+    dispatch/daily-allocation-system.md (Temp employee management: "Fill In" placeholder);
     decisions/2026-06-30-… step 5 says ERP blocks scheduling until ADP onboarding complete —
     CONTRADICTS Brian's ask here — *jira:* SCRUM-254 (Temporary Employee management in DAS),
     SCRUM-304
@@ -1212,14 +1212,14 @@ someone has confirmed otherwise.
     Khan, created 2026-08-06, updated 2026-08-12). AC: Lunch 1 before 5 h, Lunch 2 before 10.5 h,
     Lunch 3 before 16.5 h, Lunch 4 before 22 h, notification **1 hour before** each. **Matches the
     recording exactly** and is already through build.
-  - `product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md` — 5 / 10.5 / 16.5 / 22,
+  - `field-ops/atom-mobile-app-user-stories/03-work-execution-and-lunch.md` — 5 / 10.5 / 16.5 / 22,
     1 hour before. Matches.
   - `payroll/wtl-charts.md:34-37` — the payroll team's own charts: first **5:01**, second
     **10.5:01**, third **16:01**, fourth **21.5:01**. **Third and fourth are half an hour earlier.**
-  - `product/brs.md` BRS-LUNCH-002 lists **three** lunches and is marked ✓ Confirmed; BRS-LUNCH-005
+  - `brs.md` BRS-LUNCH-002 lists **three** lunches and is marked ✓ Confirmed; BRS-LUNCH-005
     *Lunch Threshold Values* is 📄 Needs Supporting Documentation. Both FRDs list the thresholds as
-    an open question (`product/field-ops-frd/11-open-questions-future-considerations.md` Q1;
-    `product/frd-new-format-draft/08-open-questions.md` Q4, owner Corrina).
+    an open question (`field-ops/field-ops-frd/11-open-questions-future-considerations.md` Q1;
+    `field-ops/frd-new-format-draft/08-open-questions.md` Q4, owner Corrina).
 - Note: this is state (c) — a named TCG person stated the values on a recording, and no minutes or
   decision note record it. **A decision note has not been written**, because "Ryan said it on a call
   while Corrina was explaining something adjacent" is not the same as Corrina adjudicating the
@@ -1248,11 +1248,11 @@ someone has confirmed otherwise.
     *"the entry's start is rounded **down** and end **up** to 30 minutes, then cut into 30-minute
     slices"* (`app.usp_Prepare_Continuous_Labor`). **This is employee-favourable and is not
     nearest-half-hour** — a 9:24 start rounds to 9:00 under the engine and to 9:30 under Corrina.
-  - `product/frd-new-format-draft/05-functional-requirements/fr-fop-038-time-rounding.md`
+  - `field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-038-time-rounding.md`
     (FR-TCG-FOP-**001** — cite the document, `INDEX.md` caveat 3) — requires both exact and rounded
     times to be stored and says *"rounding rules are configurable"*. It **does not state the rule**,
     so it cannot arbitrate.
-  - `product/brs.md` BRS-TIME-004 *Union Rounding Rules* — ⚠ Needs Client Validation.
+  - `brs.md` BRS-TIME-004 *Union Rounding Rules* — ⚠ Needs Client Validation.
 - Note: state (c). Corrina is the right person and she answered a direct question with a worked
   example, but nothing records it as a decision, and the difference is systematic, not marginal —
   under nearest-half-hour an employee loses up to 15 minutes at the start of every shift, which is
@@ -1278,8 +1278,8 @@ someone has confirmed otherwise.
     *"is it always half an hour or can the time change for lunch?"*, Corrina: **"Always half hour."**
   - `SCRUM-864` (**QA**) — *"System sends a notification **1 hour before** each applicable lunch is
     due."* Built to the 05-26 figure.
-  - `product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md` — 1 hour before.
-  - `product/brs.md` BRS-LUNCH-003 — ⚠ Needs Client Validation.
+  - `field-ops/atom-mobile-app-user-stories/03-work-execution-and-lunch.md` — 1 hour before.
+  - `brs.md` BRS-LUNCH-003 — ⚠ Needs Client Validation.
 - Note: the two recordings are two weeks apart and the second one says *"we decided"*, so this looks
   like TCG (or CodingCops) changing the number between meetings rather than a documentation error.
   Corrina's **"Yes"** is to a compound statement (highlight 30 min before **+** one tap logs a fixed
@@ -1337,7 +1337,7 @@ someone has confirmed otherwise.
   - `../decisions/2026-06-30-adp-erp-employee-data-ownership.md` step 5 — *"Until ADP reports
     onboarding **complete**, the ERP treats the employee as pending and **blocks scheduling,
     equipment assignment and job allocation**."* `status: verified`, Brian Petros + Ehtesham Anwar.
-  - `product/daily-allocation-system.md` §*Temporary Employee management in DAS* — temps are
+  - `dispatch/daily-allocation-system.md` §*Temporary Employee management in DAS* — temps are
     assignable *"without creating full HR profiles"*, get a "Temp" tag, a "Fill In" placeholder, a
     secure link, and *"payroll and billing teams can see the temp employee assignment"*. No ADP
     gating anywhere in the story.

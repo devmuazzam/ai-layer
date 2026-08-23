@@ -552,7 +552,7 @@ levers, in order: **which model**, then **what you read**.
 - Agent defaults: four loop agents Opus → Sonnet; executor documented as "set the session".
 - `vault/gaps.md` 88 KB → 24 KB, payroll and ADP entries moved to `vault/payroll/gaps.md`
   (64 KB, and read by section). Product-loop agents no longer carry the payroll register.
-- `vault/INDEX.md` 24 KB → 19 KB: FR-FOP numbering tables → `product/fr-fop-numbering.md`,
+- `vault/INDEX.md` 24 KB → 19 KB: FR-FOP numbering tables → `field-ops/fr-fop-numbering.md`,
   tag vocabulary → `tags.md`, payroll narrative and sprint-plan rows collapsed to pointers.
 - Agent prompts: worked examples moved to `aidlc/agents/examples/` — elaborator 25 → 21 KB,
   scrum 21 → 15 KB, executor 14 → 12 KB, reflector 13 → 10 KB, decomposer 12 → 10 KB,

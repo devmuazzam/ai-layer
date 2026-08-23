@@ -19,7 +19,7 @@ date_conflict: >
 **Duration** : 2-week sprint.
 
 **Sprint Goal** :  
-Deliver the foundational **Atom Mobile App** experience (login, authentication, dashboard, and Pre-Trip Inspection), complete the remaining **Plans & [[product/project-module/05-create-and-track-permits|Permits]]** functionality with **Job** linking, address **Sprint 4 feedback** across core modules, and incorporate key internal improvements and feedback  to strengthen overall system functionality. 
+Deliver the foundational **Atom Mobile App** experience (login, authentication, dashboard, and Pre-Trip Inspection), complete the remaining **Plans & [[projects-jobs/project-module/05-create-and-track-permits|Permits]]** functionality with **Job** linking, address **Sprint 4 feedback** across core modules, and incorporate key internal improvements and feedback  to strengthen overall system functionality. 
 
 ### **Sprint Plan :** 
 
@@ -32,11 +32,11 @@ Deliver the foundational **Atom Mobile App** experience (login, authentication, 
 
     * Implement approved feedback across:
     
-        * [[product/quotations-INDEX|Quotations]]
-        * [[product/customers-INDEX|Customers]]
-        * [[product/agencies-vendors-INDEX|Vendors]]
+        * [[quotations/quotations-INDEX|Quotations]]
+        * [[customers/customers-INDEX|Customers]]
+        * [[vendors-agencies/agencies-vendors-INDEX|Vendors]]
         * Agencies
-        * [[product/tool-and-rigging|Tools & Rigging]]
+        * [[assets/tool-and-rigging|Tools & Rigging]]
         
     
 * **Internal feedback and Enhancements**

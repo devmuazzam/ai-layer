@@ -21,13 +21,13 @@ date_conflict: >
 
 ### Sprint Goal
 
-Develop and enhance the Vendors, Agencies, and Temporary Employees modules, along with the Projects module including Permits, Plans, and Scheduling functionality integrated with the [[product/daily-allocation-INDEX|DAS]]  Interface and Sprint 2 feedback. 
+Develop and enhance the Vendors, Agencies, and Temporary Employees modules, along with the Projects module including Permits, Plans, and Scheduling functionality integrated with the [[dispatch/daily-allocation-INDEX|DAS]]  Interface and Sprint 2 feedback. 
 
 **@DEV team and Their assigned tasks** 
 
 ### Fouzan shakil   **:** 
 
-**Handling Crud and task for [[product/agencies-vendors-INDEX|Vendors]] , Agencies and Temporary Employees**  
+**Handling Crud and task for [[vendors-agencies/agencies-vendors-INDEX|Vendors]] , Agencies and Temporary Employees**  
 
 SCRUM-242 
 
@@ -47,7 +47,7 @@ SCRUM-304
 
 ### **Ali Riaz** 
 
-**Working on Projects module ( Plans , [[product/project-module/05-create-and-track-permits|permits]] , Docusign and feedback from last sprint )** 
+**Working on Projects module ( Plans , [[projects-jobs/project-module/05-create-and-track-permits|permits]] , Docusign and feedback from last sprint )** 
 
 SCRUM-236 
 
@@ -67,7 +67,7 @@ SCRUM-397
 
 ### **Abdul Muazaam** 
 
-**Working on project tickets , feedback mostly from last Demo for [[product/quotations-INDEX|Quotation]] and Daily allocation system interface**   
+**Working on project tickets , feedback mostly from last Demo for [[quotations/quotations-INDEX|Quotation]] and Daily allocation system interface**   
 
 SCRUM-234 
 

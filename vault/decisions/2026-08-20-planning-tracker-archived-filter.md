@@ -40,7 +40,7 @@ tracker filter to that ship — it needs its own ticket.
 §12 Q3 asked a binary question: is the hard exclude permanent, or does the endpoint gain
 `includeArchived` / `onlyArchived`? Nothing written could answer it. `SCRUM-896` itself,
 `decisions/2026-08-20-archive-instead-of-delete-app-wide.md` and
-`product/project-module/04-create-and-approve-lift-plans.md` are all silent on the tracker
+`projects-jobs/project-module/04-create-and-approve-lift-plans.md` are all silent on the tracker
 and archive together, and the only precedent — the identical `archivedAt: null` exclude in
 `apps/api/src/service/permits/permits.repository.ts` `findAllForTracker` — is code, which
 is not a requirement source.
