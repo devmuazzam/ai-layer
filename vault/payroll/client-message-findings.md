@@ -319,3 +319,17 @@ workbooks' Power Query and any hardcoded 631.
 Holiday-triple practice extension also strengthens the client's WTL ×3 claim (question 18) —
 the engine's flat ×2 increasingly reads as the defect.
 
+## ~2026-08 — lattice pay details (Brian Petros + Corrina's 5/18 citation + page-39 scan)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| $1/hr operator, $0.50/hr oiler, Group 6+ (MLA p.39) | ✅ **verbatim, four ways**: Corrina's citation = the client's own scan = the vault's MLA extraction = the register's existing Group-6+ trigger. Also closes the attribution register's "Group 6 never mentioned in recordings" hole | PAY-044 |
+| Only one lattice crane — the Crawler | ✅ matches Joe's 08-04 answer | PAY-044 |
+| Jeff Stricker: luffers are "technically lattice" | ⚠️ **contradicts Joe's 08-04 classification** (luffing jib = boom pay only). Kyle adjudicates | PAY-044, gaps |
+| Boom Type via asset subcategory | 🆕 identification design candidate, asset-driven — consistent with "every dispatch qualifies" | PAY-044 |
+| Lattice absent from the app code; two ADP codes added | ✅ both already established (extract; message 18) | PAY-043/044 |
+
+**Client question:** (21) luffer classification — Jeff says lattice, Joe said boom-pay-only:
+Kyle's ruling, in writing; and confirm Boom-Type-on-subcategory as the identification
+mechanism (or name the per-job alternative).
+

@@ -505,6 +505,11 @@ someone has confirmed otherwise.
   (`OP-BP/OI-BP`) adder. Lattice identification is a new build. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 - **Rules:** [PAY-044](rules/PAY-044-lattice-boom-premium.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#lattice-crane-identification](gaps-2026-08-20-retired.md#lattice-crane-identification)
+- **2026-08-24 (message batch):** Corrina's 5/18 Teams citation (**$1 op / $0.50 oiler, Group 6+,
+  MLA p.39**) matches the vault's contract extraction verbatim — rates settled. **Reopened
+  sub-question: luffers.** Jeff Stricker says add-on luffers are "technically lattice"; Joe's
+  08-04 answer classed luffing jibs as boom-pay-only. **Owner: Kyle.** Identification design
+  candidate on the table: Boom Type on the asset subcategory.
 
 ## Foreman premium — granularity, multiplier and capture
 
