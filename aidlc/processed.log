@@ -24,3 +24,4 @@ note       one line — what the ticket was, free text
 
 date        ticket      path  branch                              by    pr    note
 ----        ------      ----  ------                              --    --    ----
+2026-08-24  SCRUM-877   A     fix/scrum-877-u2-labor-persistence   dev   -     Labor & Unit details persistence, craft modifiers, asset info, and crew hours calculation
