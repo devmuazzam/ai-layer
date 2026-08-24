@@ -16,7 +16,7 @@
 | Intent | `.ai/aidlc/SCRUM-900/intent.md`, captured `2026-08-21` |
 | Elaborated on | `2026-08-21` |
 | Vault state at elaboration | 151 product files; six `domain/` files verified; `gaps.md` historical entries only (retired 2026-08-20) |
-| Open questions raised by this spec | 0 open — Q1–Q3 resolved 2026-08-24 (see §12) |
+| Open questions raised by this spec | 1 open — Q1–Q3 resolved 2026-08-24; Q4 opened at close 2026-08-25, non-blocking (see §12) |
 | Rules consulted | `.ai/claude/contexts/api.md`, `.ai/claude/contexts/web.md`, `CLAUDE.md` → Architecture |
 
 ---
@@ -214,6 +214,23 @@ Per endpoint:
 - **Question:** When the user sets the utilization date picker to a past date on which the tool was assigned to a now-completed job, should In Use show 0 or the historical assignment quantity?
 - **Answer (2026-08-24, Fouzan Shakil):** **B — historical** for past dates; live-release (Q1) for today and future.
 - **Status:** resolved — see `decisions/2026-08-24-tool-in-use-after-completion.md`
+
+---
+
+### Q4 — Should `findUtilizationByDateRange` exclude replaced tool assignments, like `findToolIdsBlockedFromArchive` does?
+
+- **Question:** `findToolIdsBlockedFromArchive`'s assignment query filters
+  `jobTool: { replacedAt: null }` — a `JobToolAssignment` whose tool was later replaced on
+  the job does not block an archive. `findUtilizationByDateRange` (the function REQ-01–03
+  modified) has never applied that filter, before or after this ticket — it counts
+  `jobTool: { toolId: { not: null } }` regardless of `replacedAt`. Should the utilization /
+  In Use count also exclude replaced-tool assignments, so "still assigned" means the same
+  thing in both queries?
+- **Raised by:** SCRUM-900 reflection (`reflection.md`, 2026-08-25), from the `review-pr`
+  analyst's finding that this is a pre-existing inconsistency, not introduced by this
+  ticket's diff. Not blocking — REQ-01–03 shipped without touching it.
+- **Status:** open
+- **Owner:** needs assignment — Fouzan Shakil (SCRUM-900 assignee) is the natural route; a one-line "yes, exclude replaced" / "no, count them" closes it
 
 ---
 
