@@ -48,6 +48,15 @@
 - **Class:** tenancy-gap
 - **Fix:** Resolved allowlist in `prisma.service.ts` keeping `ticketlaborentry`, `ticketlunchbreak`, and `vendorcontact`.
 
+### ED-2 — Asset Numeric DTO vs Web Form Contract Drift
+
+- **Where:** `CreateAssetDto` vs `dimensions-section.tsx` / `basic-unit-info-section.tsx`
+- **Spec said:** `Asset.mainBoomLength` and `Asset.capacity` go numeric (U1)
+- **Built:** DTO added strict `@Matches(MONEY_DECIMAL_PATTERN)` while web `DimensionsSection` retained `FeetInchesField` (emits `"154 ft 6 in"`) and `BasicUnitInfoSection` placeholder was `"100 Ton"`, causing HTTP 400 Bad Request on web asset form save.
+- **Caught by:** PR review / AI-DLC verification.
+- **Class:** contract-drift
+- **Fix:** Added `@Transform(({ value }) => extractLeadingNumeric(value) ?? value)` to DTO, updated web `mainBoomLength` field to numeric input with `"ft"` label, and updated `Capacity` placeholder to `"100"`.
+
 ## 3. Source and vault findings
 
 - **Sources that turned out to be wrong or stale:** Mobile `LaborBody.tsx` initially used mock `RAW_CREW` and hardcoded `SUGGESTED_BOOM`.

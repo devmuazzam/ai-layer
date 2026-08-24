@@ -80,3 +80,4 @@ An undocumented class is indistinguishable from a typo in an existing one.
 | 2026-08-24 | SCRUM-877 | SD-1 | missing-requirement | Stale labor hours when ticket work timestamps update post-labor entry | `.ai/claude/contexts/api.md` | applied |
 | 2026-08-24 | SCRUM-877 | SD-2 | missing-requirement | Dynamic crane main boom length bracket suggestion fallback to No Pay | none | applied |
 | 2026-08-24 | SCRUM-877 | ED-1 | tenancy-gap | Prisma scoping allowlist conflict on rebase | `apps/api/src/orm/prisma.service.ts` | applied |
+| 2026-08-24 | SCRUM-877 | ED-2 | contract-drift | Asset numeric DTO validation broken for Web asset form inputs | `apps/api/.../create-asset.dto.ts` | applied |
