@@ -346,3 +346,13 @@ mechanism (or name the per-job alternative).
 premium or boom-pay-only? Plus confirm the "Boom Configuration" field's home (job vs
 quotation) and values.
 
+## 2026-08-24 batch — workbook updated for new ADP codes (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Payroll Excel updated for the new ADP codes; auto-generates the import file | ✅ **explains the exact drift message 9 detected** (July week + v3.7 Mac template, both saved 2026-08-19 03:0x) — drift notes on the source pages now carry the why | sources ×2, PAY-067 |
+| Files in "PAYROLL for ADP v3.0 - current" | ✅ already inspected (message 9); sample export verified: `4RZ` throughout, Temp-Rate/Hours-4 architecture live, new codes event-driven-absent | EPI4RZ32 source page |
+
+Stale-631 audit (question 13 residual) largely resolves for the active pipeline; remaining:
+v3.7-Mac internals and crosswalk rows.
+
