@@ -33,3 +33,4 @@ date        ticket      path  branch                              by    pr    no
 2026-08-21  SCRUM-888   C     feat/SCRUM-888-root-to-dashboard   areeba  -     redirect root URL / to /dashboard
 2026-08-21  SCRUM-895   C     feat/SCRUM-895                      areeba  -     project permit details breadcrumb/Back → /projects/{id}/permits (not details?tab=)
 2026-08-24  SCRUM-877   A     fix/scrum-877-u2-labor-persistence   dev   395   Labor & Unit details persistence, craft modifiers, asset info, and crew hours calculation
+2026-08-24  SCRUM-900   A     scrum-900                           fouzan  -     tool detail In Use reset after schedule-day completion (Q1:B Q2:C Q3:B)
