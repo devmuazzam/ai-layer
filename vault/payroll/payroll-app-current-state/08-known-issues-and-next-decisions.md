@@ -6,7 +6,7 @@ updated: 2026-06-23
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, payroll-app, open-decisions, known-issues]
+tags: [module/payroll, kind/reference, legacy-payroll-app, open-questions]
 entities: [payroll-group, wtl, final-gross-pay, payable-gross]
 part_of: payroll/payroll-app-current-state/INDEX.md
 ---

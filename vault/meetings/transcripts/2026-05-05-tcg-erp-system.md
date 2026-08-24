@@ -7,12 +7,12 @@ updated: 2026-05-05
 status: reference
 conflicts_with: []
 jira: []
-topics: []
+tags: [module/all, kind/transcript]
 entities: []
 meeting_date: 2026-05-05
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 10
+normalized: 2026-08-24
+normalized_substitutions: 17
 ---
 
 # TCG ERP System — 2026-05-05
@@ -146,7 +146,7 @@ May 5, 2026, 6:54PM
  ehtesham.anwar   33:15 It's going to be on the next year.
  ans.nisar   33:16 Should be on the next page, yeah. There you go, one for each turn crane, and you open up this type.
  ehtesham.anwar   33:27 This is the type.
- ans.nisar   33:28 There you go. So all the mobile plane with this category or subcategory will be applied. This prize will be applied to all of them.
+ ans.nisar   33:28 There you go. So all the mobile crane with this category or subcategory will be applied. This prize will be applied to all of them.
  Brian Petros   33:44 Okay.
  jahanzaib.nadeem   33:44 And secondly, if we want to apply any discounts or price hike, that will be linked with the price list. So for example, if in any specific price list, we have added this billing code, and that price list by default gives 10% discount to a particular customer. So when a quotation is being created for that particular customer, The price will automatically get reduced by 10% due to the discount that is applied on the price list.
  Brian Petros   34:13 Could you show me an example when you would do that for like the 140 ton frame instead of entering the price end, just do the discount and then go to the price list so I can see how that works?
@@ -163,7 +163,7 @@ May 5, 2026, 6:54PM
  ans.nisar   36:33 M. Need to save this as well.
  ehtesham.anwar   36:38 That's good. That's.
  Brian Petros   36:42 So the reason I was asking is when we do a discount for our customer, it would be a discount on every crane at a percentage.
- ehtesham.anwar   36:45 Lisette. Nothing. Yeah, so no, it's not going to be every plane. It's going to be every plane with this billing code.
+ ehtesham.anwar   36:45 Lisette. Nothing. Yeah, so no, it's not going to be every crane. It's going to be every crane with this billing code.
  Brian Petros   36:57 No, I'm not correct, but when we do discounts, well, I guess this is a one-off, but as a customer list, as we do like a discount for a preferred customer or something, we do a discount for all the cranes in one lump sum.
  ehtesham.anwar   37:08 Mhm. Okay.
  ans.nisar   37:13 Yeah, absolutely. So, so think of it, right? Like, for each customer, what do we typically do whenever we need, we have a price list that we create, so that price list will contain all the cranes, everything kind of assets relate to that customer. we then create a price list for that and that price will contain all the assets or the billing codes in it. So once you have that, so you know you have a full package, then you are actually adding a discount on that package.
@@ -192,7 +192,7 @@ May 5, 2026, 6:54PM
  Brian Petros   40:15 Yeah. Yeah, create the price list based on category as well as subcategory, is what you're saying. Yeah, yeah, yeah, alright.
  ehtesham.anwar   40:30 Yeah.
  ans.nisar   40:33 Yeah.
- ehtesham.anwar   40:40 So for the current behavior of how a price lists are. being used. Let's go into the quotation. Let's go select the queen guys.
+ ehtesham.anwar   40:40 So for the current behavior of how a price lists are. being used. Let's go into the quotation. Let's go select the Crane Guys.
  Brian Petros   40:55 So on this sheet right here, when you go up, what is quote min and quote max? What is that for on the quote information?
  ehtesham.anwar   41:04 So this information we ported over from the FCC and we were hoping that you will catch it and explain it to us.
  Brian Petros   41:14 Yeah, I don't know because once we build out the quote, that's the quote, right? Maybe this might be, maybe quote max might be on customers once they get terms and then they would have a quote max that they'd be good for, but I have no idea what it would be for on this. So at least on the quoting side, we could.
@@ -254,7 +254,7 @@ May 5, 2026, 6:54PM
  Brian Petros   48:18 Sorry.
  ehtesham.anwar   48:20 We'll look into that, but that's not happening at the employee site and we'll look into all of the places where we're using date and time. There needs to be done in as well as the calendar select.
  Corrina Bustos   48:28 Perfect. Perfect. Thank you.
- ehtesham.anwar   48:34 Thank you. Okay, so moving forward. To the mean resources. So, Ryan, you see automatically your price list is selected, right? Now, let's select an asset that we had and that was 140. and you see we added the rate 240 and 216, the discount is applied there. If we add any other item, let's say mobile queen, 22 ton, this you can see we don't have a billing code, that's why it's not showing up. So it's not giving you rates. If it had, then the automatically rate would be here, but now you can also filter. Then the third case.
+ ehtesham.anwar   48:34 Thank you. Okay, so moving forward. To the mean resources. So, Ryan, you see automatically your price list is selected, right? Now, let's select an asset that we had and that was 140. and you see we added the rate 240 and 216, the discount is applied there. If we add any other item, let's say mobile crane, 22 ton, this you can see we don't have a billing code, that's why it's not showing up. So it's not giving you rates. If it had, then the automatically rate would be here, but now you can also filter. Then the third case.
  Brian Petros   49:29 Okay.
  ehtesham.anwar   49:32 Let's see. Nick. This is the case where we had associated assets as well. And for the associated assets, we are also checking for the asset itself, for the associated assets, if we have billing codes. If we have billing codes and they are not available within the price list, if they are available within the price list, then the price list rules apply by default. And if they are not available within the price list, then the master price list rules apply. And also, it it you.
  Brian Petros   50:06 Page. Hey, Joe, on this side, I would assume you still want to do mobilization and demobilization. If we click the mobilization, should it have a drop down so we could pick everything that goes into that mobilization and then tie it all into one line item as mobilization?
@@ -312,7 +312,7 @@ May 5, 2026, 6:54PM
  Joe Schacatano   56:27 Yes.
  ehtesham.anwar   56:33 What happens?
  Joe Schacatano   56:35 What do you mean, like selecting this?
- ehtesham.anwar   56:39 Selecting the sub-item check against the plane.
+ ehtesham.anwar   56:39 Selecting the sub-item check against the crane.
  Joe Schacatano   56:42 Okay, so yeah, so if I select all of these, it factors into the into the mobilization. If I uncheck it, you'll notice that now that total is changed because that line item is not factored into that. So when I check it again, it recalculates and it gives me that with that item.
  ehtesham.anwar   56:56 Mhm.
  Joe Schacatano   57:01 factored in there.
@@ -568,7 +568,7 @@ May 5, 2026, 6:54PM
  ans.nisar   1:31:48 Yeah, but, but it sounds like, what if, what if you have, let's say, 50 projects running at the same time, right? They would need some kind of...
  ehtesham.anwar   1:31:49 I'm not respected. The.
  ans.nisar   1:32:02 marker or something on certain project that just want to make sure that they're monitoring those projects. That's the question, right?
- ehtesham.anwar   1:32:12 So they want to actually make sure that we are tracking all of the vendors that we are hiring to supplement our jobs. So for example, they have 30 cranes overall and a new customer comes in, they request a queen, we don't have that. So they want to make sure all of these cases are captured and we have that through vendors and then we have that through vendors assets and vendors employees. So we won't have the extensive information of vendors assets and vendors employees, but basic information.
+ ehtesham.anwar   1:32:12 So they want to actually make sure that we are tracking all of the vendors that we are hiring to supplement our jobs. So for example, they have 30 cranes overall and a new customer comes in, they request a crane, we don't have that. So they want to make sure all of these cases are captured and we have that through vendors and then we have that through vendors assets and vendors employees. So we won't have the extensive information of vendors assets and vendors employees, but basic information.
  ans.nisar   1:32:31 Yeah. Mm.
  ehtesham.anwar   1:32:49 Lisette will be able to enter that basic information and over the time, it's going to create the database for us.
  Brian Petros   1:32:54 Yeah.

@@ -7,12 +7,12 @@ updated: 2026-04-14
 status: reference
 conflicts_with: []
 jira: []
-topics: [dispatch-scheduling]
+tags: [module/dispatch, kind/transcript]
 entities: []
 meeting_date: 2026-04-14
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 4
+normalized: 2026-08-24
+normalized_substitutions: 6
 ---
 
 # Dispatch Warehouse Loading — 2026-04-14
@@ -98,7 +98,7 @@ April 14, 2026, 7:15PM
  Brian Petros   11:19 But it's going to go out one of three ways. It's either going to go 3,300, that means no support load.
  ehtesham.anwar   11:23 Ohh.
  Brian Petros   11:27 It's going to go 7,300, depending on scales, it's support load or not, and then full counterweight is going with the support load.
- ehtesham.anwar   11:28 Okay. Okay, and all of these three things, do we need, do we have anything that is billable? So for example, a queen is going, 45 ton crane is going. In all of these three things, the billing is going to be the same, or does an additional thing gets added to the, gets billed to the client for these?
+ ehtesham.anwar   11:28 Okay. Okay, and all of these three things, do we need, do we have anything that is billable? So for example, a crane is going, 45 ton crane is going. In all of these three things, the billing is going to be the same, or does an additional thing gets added to the, gets billed to the client for these?
  Brian Petros   11:41 Big.
  ehtesham.anwar   11:57 Three different configurations.
  Brian Petros   12:02 If it needs an additional load, yes, we do bill for it.
@@ -192,7 +192,7 @@ April 14, 2026, 7:15PM
  Brian Petros   27:02 So every 0.1, 0.2, 0.3 is its own trailer and every AT is a tractor that you can assign to that.
  ehtesham.anwar   27:10 So we can assign three if these three are going. We are that means that three trackers are going on this job.
  Brian Petros   27:20 So if you send 26502 all the way to.3, that means 4 trailers, because the 2nd 26502 is the operator load. So that's the operator load is a truck and trailer as well. Point one is a trailer of counterweight, 0.2 is a trailer of counterweight, and 0.3 is a trailer of counterweight. and then you just choose what AT and what guys are sending to haul those.
- ehtesham.anwar   27:45 Okay, so that means that just like the operator that we have on the plane, we are going to send our drivers with all four of these tractors.
+ ehtesham.anwar   27:45 Okay, so that means that just like the operator that we have on the crane, we are going to send our drivers with all four of these tractors.
  Brian Petros   27:55 Yeah.
  ehtesham.anwar   27:57 And trailers, right?
  Brian Petros   27:59 Yeah.

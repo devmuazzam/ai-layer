@@ -75,12 +75,12 @@ Always, in this order:
 
 1. **`.ai/vault/INDEX.md`** — what exists, what each file answers, and four caveats that
    change how everything downstream reads.
-2. **The conflict stub**, if the topic has one: `.ai/vault/product/<topic>-INDEX.md`.
+2. **The conflict stub**, if the topic has one: `.ai/vault/<module>/<topic>-INDEX.md`.
    Five exist — `field-ops-mobile`, `quotations`, `customers`, `agencies-vendors`,
    `daily-allocation`.
 3. **The specific file** — and its folder `INDEX.md` first if it is a split document
-   (`product/field-ops-frd/`, `product/frd-new-format-draft/`,
-   `product/atom-mobile-app-user-stories/`, `product/project-module/`).
+   (`field-ops/field-ops-frd/`, `field-ops/frd-new-format-draft/`,
+   `field-ops/atom-mobile-app-user-stories/`, `projects-jobs/project-module/`).
 
 **Why skipping to step 3 produces confident wrong answers.** Grep finds a file that
 answers the question. It reads as a specification. Nothing in the file's body says another
@@ -106,7 +106,7 @@ In order of preference:
    directory may not exist yet; if it does not, say so rather than inventing its contents.
 
 **Every factual claim carries a citation** — either a vault-root-relative path
-(`product/quotation-flow-process.md`, `product/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`)
+(`quotations/quotation-flow-process.md`, `field-ops/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`)
 or a ticket id (`SCRUM-857`). Never a bare filename, never `../`, never "the FRD says".
 A claim you cannot cite is a claim you do not make.
 
@@ -157,7 +157,7 @@ Then follow section 6.
 
 Also treat as weak signals, and say so when you rely on them:
 
-- `product/user-story-and-tasks.md` came from an **individual's personal Confluence
+- `assets/user-story-and-tasks.md` came from an **individual's personal Confluence
   space** — simultaneously the only source for yard management, HubSpot sync and email
   2FA, and the least authoritative file in the vault. Check its `provenance_note`.
 - The feedback punch lists (`job-project-das.md`, `quotations.md`, `quotation.md`,
@@ -170,8 +170,8 @@ Also treat as weak signals, and say so when you rely on them:
 Both field-ops FRDs number their requirements from `001`. **A bare `FR-FOP-013` identifies
 nothing:**
 
-- `FR-FOP-013` in **FR-TCG-FOP-002** (`product/field-ops-frd/`) is *Lunch Monitoring*
-- `FR-FOP-013` in **FR-TCG-FOP-001** (`product/frd-new-format-draft/`) is *Lunch Timer and
+- `FR-FOP-013` in **FR-TCG-FOP-002** (`field-ops/field-ops-frd/`) is *Lunch Monitoring*
+- `FR-FOP-013` in **FR-TCG-FOP-001** (`field-ops/frd-new-format-draft/`) is *Lunch Timer and
   Alerts*
 
 Always write the document plus the id, and prefer the full path. Only `001`, `002`, `003`

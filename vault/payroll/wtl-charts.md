@@ -6,7 +6,7 @@ updated: 2026-01-23
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, wtl, meal-period, overtime, billing]
+tags: [module/accounting, module/payroll, kind/reference, wtl, overtime, pricing]
 entities: [wtl, meal-period, lunch-break-marker, overtime, double-time]
 ---
 
@@ -37,7 +37,7 @@ and `WTL_APPLICABLE_ADD`
 | Fourth lunch break | 21.5:01 hour mark |
 
 > **These four values are the thing the field-ops BRS says it does not have.**
-> `BRS-LUNCH-005` *Lunch Threshold Values* in [../product/brs.md](../product/brs.md) is marked
+> `BRS-LUNCH-005` *Lunch Threshold Values* in [../brs.md](../brs.md) is marked
 > **📄 Needs Supporting Documentation**. This table, plus the 5-consecutive-hour rule in
 > [mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md),
 > is that documentation — arriving from a different source, four months later, unreconciled.

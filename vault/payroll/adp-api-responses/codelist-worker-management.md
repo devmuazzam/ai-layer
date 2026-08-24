@@ -6,7 +6,7 @@ updated: 2026-08-13
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-api, reference-data, union-rules, craft-code]
+tags: [module/payroll, kind/reference, adp, reference-data, union-agreement, craft-code]
 entities: [adp-code, union-code, job-title, location, craft-code, adp-company-code]
 part_of: payroll/adp-api-responses/INDEX.md
 ---
@@ -48,7 +48,7 @@ derivation rule already says so — this confirms there is no alternative source
 to derive a Payroll Group from ADP's union code.**
 
 **2. The open product question shrinks.**
-[discussion-points-with-tcg-team.md](../../product/discussion-points-with-tcg-team.md) asks:
+[discussion-points-with-tcg-team.md](../../meetings/2026-06-26-discussion-points-with-tcg-team.md) asks:
 
 > "Need to think if we need to give ability to add Union codes"
 

@@ -6,7 +6,7 @@ updated: 2026-07-30
 status: unverified
 conflicts_with: []
 jira: []
-topics: [ticket-workflow, quotations, sprint-planning, customers, yards, yard-operations, daily-allocation, projects]
+tags: [module/assets, module/customers, module/dispatch, module/field-ops, module/projects-jobs, module/quotations, kind/meeting-notes, ticket-workflow, sprint-planning, yards, daily-allocation]
 entities: [field-ticket, employee, sprint, quotation, project, customer, yard, asset, das]
 date_conflict: >
   Filename uses the Confluence created date (2026-07-30). The body states the sprint ran July 27 - Aug 7, 2026, so this plan page was created 3 days into the sprint it plans. Not resolved - flagged for product.
@@ -20,11 +20,11 @@ date_conflict: >
 
 **Sprint Goal:**
 
-Deliver the foundational back end for approximately 30% of the Atom Mobile App, while resolving all identified bugs and implementing enhancements across the [[product/quotations-INDEX|Quotation]], Customer, Yard Operations, and other developed modules.
+Deliver the foundational back end for approximately 30% of the Atom Mobile App, while resolving all identified bugs and implementing enhancements across the [[quotations/quotations-INDEX|Quotation]], Customer, Yard Operations, and other developed modules.
 
 Field worker App - Functionalities In scope
 
-* A ticket is created in [[product/daily-allocation-INDEX|DAS]] and assigned to an employee.
+* A ticket is created in [[dispatch/daily-allocation-INDEX|DAS]] and assigned to an employee.
 * The employee logs into the mobile application and views their assigned tickets.
 * The employee completes all required ticket steps within the app and submits the ticket.
 * The complete ticket assignment and completion workflow will be supported through the mobile application.

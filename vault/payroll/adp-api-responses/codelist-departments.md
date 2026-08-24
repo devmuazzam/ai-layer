@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-api, labor-allocation, certified-payroll, reference-data]
+tags: [module/payroll, kind/reference, adp, certified-payroll, reference-data]
 entities: [adp-code, pay-allocation, department, cost-number, job, certified-payroll]
 part_of: payroll/adp-api-responses/INDEX.md
 ---

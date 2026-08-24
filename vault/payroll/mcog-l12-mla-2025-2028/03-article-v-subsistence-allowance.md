@@ -6,7 +6,7 @@ updated: 2026-06-23
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, union-agreement, l12-mla, subsistence]
+tags: [module/payroll, kind/reference, union-agreement, subsistence]
 entities: [subsistence, home-yard, travel-allowance]
 part_of: payroll/mcog-l12-mla-2025-2028/INDEX.md
 ---

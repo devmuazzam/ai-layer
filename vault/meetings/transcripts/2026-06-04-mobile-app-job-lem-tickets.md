@@ -7,12 +7,12 @@ updated: 2026-06-04
 status: reference
 conflicts_with: []
 jira: []
-topics: [field-ops-mobile]
+tags: [module/field-ops, kind/transcript]
 entities: []
 meeting_date: 2026-06-04
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 1
+normalized: 2026-08-24
+normalized_substitutions: 11
 ---
 
 # Mobile App Job LEM Tickets — 2026-06-04
@@ -142,10 +142,10 @@ June 4, 2026, 6:57PM
  ehtesham.anwar   17:37 Mhm.
  Ryan Adams   17:48 You're almost going to have to have each person be accountable for their online clock in and clock outs, or else you'll never be able to pull the metrics, and then you will never be able to hold them accountable because somebody else filled it out for them.
  ehtesham.anwar   17:56 Mhm.
- Melissa McNutt   18:02 So for the operator and Euler, when they enter the time, it is individual times. It's not grouped together or anything. So it says like Bob Smith and then like Ryan Thompson, and it'll have their specific times.
+ Melissa McNutt   18:02 So for the operator and oiler, when they enter the time, it is individual times. It's not grouped together or anything. So it says like Bob Smith and then like Ryan Thompson, and it'll have their specific times.
  ehtesham.anwar   18:14 Can we can we go through a ticket?
  Melissa McNutt   18:17 Yeah. Right, so here.
- ehtesham.anwar   18:19 Maybe both examples, one would be an Euler doing that and the other just a third man.
+ ehtesham.anwar   18:19 Maybe both examples, one would be an oiler doing that and the other just a third man.
  Melissa McNutt   18:26 Just a third, right? Okay. They're right now they're pretty much identical. It's just what we require, like the Oiler or third man right now are just pencil whipping it and just signing it themselves. So it's not set up in any different way. So this is the new flow that we're working on. So when they open this, this has their salesperson right at the top, their job number, the ticket number, their date, their job site information. On this job site, it is a link. So if they click on that, it'll open up to the Google Maps currently. And then the phone number for the customer, if you click on that as well.
  ehtesham.anwar   18:53 Mmh. Mhm. Mhm.
  Melissa McNutt   19:07 And then down here is just the person who ordered the crane. So if the one on-site contact doesn't answer, they can go to the person that ordered it.
@@ -207,7 +207,7 @@ June 4, 2026, 6:57PM
  ehtesham.anwar   27:31 Or have a... a proper flow where the application is walking them through the steps.
  Melissa McNutt   27:41 I think walking through the steps because this is so many steps on our SOP that we made, it's like 92 steps to do 1 ticket. So it's very, it's not, it doesn't flow very well and the guys in the field, they complain about it A lot. And right now the system doesn't take their times and push it over to the labor, which we would like because
  ehtesham.anwar   27:48 Of. You.
- Melissa McNutt   28:00 for the boom pay for payroll, that starts on start work because you have your job at arrive time, so at 7 A.m. So from 7 A.m. to 730, we're doing our safety paperwork, you know, having our tail board meeting, and then once the crew starts setting up the crane, that's when their boom pay starts. So we need that time to reconcile with the payroll
+ Melissa McNutt   28:00 for the boom pay for payroll, that starts on start work because you have your job at arrive time, so at 7 A.m. So from 7 A.m. to 730, we're doing our safety paperwork, you know, having our tailboard meeting, and then once the crew starts setting up the crane, that's when their boom pay starts. So we need that time to reconcile with the payroll
  ehtesham.anwar   28:02 Yeah. Mhm. Okay.
  Melissa McNutt   28:22 to help us automate the boom pay.
  ehtesham.anwar   28:22 You.
@@ -266,7 +266,7 @@ June 4, 2026, 6:57PM
  Melissa McNutt   38:41 So.
  Kyle Harlow   38:49 We can, we can.
  ehtesham.anwar   39:01 or somebody gets assigned to it and then the time is tracked up until it is resolved.
- Melissa McNutt   39:10 Okay. So then moving on, just to keep on track. So another checklist that we do have that sometimes goes in the tail board, we like to do in the tail board, but if they can't, it's the work through lunch authorization. So the employees go to add checklist again, and then they click the checklist that they would like, and then it generates. Wes. And so here's the checklist. Right now we have it to where if the guys, we would like them to have the customer sign it, but if they're driving or the customer left already, they can sign it themselves. The work through lunch authorization is only required if you're going to work through lunch.
+ Melissa McNutt   39:10 Okay. So then moving on, just to keep on track. So another checklist that we do have that sometimes goes in the tailboard, we like to do in the tailboard, but if they can't, it's the work through lunch authorization. So the employees go to add checklist again, and then they click the checklist that they would like, and then it generates. Wes. And so here's the checklist. Right now we have it to where if the guys, we would like them to have the customer sign it, but if they're driving or the customer left already, they can sign it themselves. The work through lunch authorization is only required if you're going to work through lunch.
  ehtesham.anwar   39:47 Mhm.
  Melissa McNutt   39:52 And that way we know, so if it's, you know, completed that they are authorizing it, or if it's a deficiency, the guys can leave a note, no customer. Customer left.
  ehtesham.anwar   40:09 Thank you.
@@ -446,7 +446,7 @@ June 4, 2026, 6:57PM
  Corrina Bustos   58:47 And. Yeah. Okay.
  ehtesham.anwar   58:59 they are going to be on the site.
  Corrina Bustos   59:01 Yeah.
- Melissa McNutt   59:02 And and on the job side, so for this ticket, if you go back to the job in NextGen and you can check the ticket status. So it'll tell you got first signature, left job, it'll tell you where they're at, if it's completed, not completed. So it does flow back in. And then another thing, because sometimes the guys come back from their
+ Melissa McNutt   59:02 And and on the job side, so for this ticket, if you go back to the job in NexGen and you can check the ticket status. So it'll tell you got first signature, left job, it'll tell you where they're at, if it's completed, not completed. So it does flow back in. And then another thing, because sometimes the guys come back from their
  ehtesham.anwar   59:02 Yeah.
  Melissa McNutt   59:21 job and so they're closing out this labor, this little plus sign, you can add. So say they come to the yard and Dylan's like, hey, I need this air cushioning unit loaded up for this different job. They need the ability to add additional labor to tie to a different job or just the yard.
  ehtesham.anwar   59:33 Mhm.
@@ -496,7 +496,7 @@ June 4, 2026, 6:57PM
  Ryan Adams   1:03:38 Hey, Ehtesham, are you linking the ERP? So, that's the interface for ADP. So, like when you clock in, you're logging in there and then it feeds ADP, and if so, if you gave the system when you entered somebody in ADP under the organizational structure, it would show them you could give them temporary access. So,
  ehtesham.anwar   1:03:58 Yep.
  Ryan Adams   1:04:00 that they wouldn't be able to see all the information, but when they logged in, it would give them the opportunity to put a job number in there and it would log them in for that job off of ADP. So it would give you your real data.
- ehtesham.anwar   1:04:10 So you want temp employees to get access to ADB directly?
+ ehtesham.anwar   1:04:10 So you want temp employees to get access to ADP directly?
  Melissa McNutt   1:04:15 Well, we're going to have a, we're going to have an in-between though, because between it going from the ERP from the app to ADP, it has to run through the ERP to break out all the boom pay and the union rules. So it's going to have to go like a payroll preprocessor first.
  Ryan Adams   1:04:16 No.
  Corrina Bustos   1:04:19 Mhm.
@@ -515,7 +515,7 @@ June 4, 2026, 6:57PM
  Ryan Adams   1:05:42 Yes, Sir. So if you. Yeah, so if you link it through the ERP, so the ERP feeds ADP. When HR enters in an employee, they get an employee number out of ADP. They could use that employee number, which would lead to your ERP for sign in. So then they can log directly into
  Melissa McNutt   1:05:55 Yeah.
  Ryan Adams   1:06:05 ADP, but it would be through your ERP, so they can only see the job details for that one as a temporary worker or something when they clicked it in. And that would allow them to have the access that would allow them to be on that job and still time kept for it. And when the job ended, it would still allow for it to already be automatically entered into ADP for HR.
- ehtesham.anwar   1:06:13 Mhm. Mhm. Yeah, so since we are not directly using ADP, we are using our ERP as a source of growth and then feeding all of the third party data or getting fed the third party data and then processing it. So it needs to be our system that processes all of the information that we need on ADP once they attempt to do their job. What we need to do is we get that information on that link. So they don't go into any ADB, they don't get access to ADB, they get access to a link that we send them, we password protect them. Those with the one-time passwords are on phone numbers with simple authorization. and that is pretty quick and pretty standard as well. Since we are sending the link on the phone number, we have that. We can authorize them. And then anything that we need, all of the things that you are thinking of to add on the ADB, we are going to get them on that, get all of those details from. that link.
+ ehtesham.anwar   1:06:13 Mhm. Mhm. Yeah, so since we are not directly using ADP, we are using our ERP as a source of growth and then feeding all of the third party data or getting fed the third party data and then processing it. So it needs to be our system that processes all of the information that we need on ADP once they attempt to do their job. What we need to do is we get that information on that link. So they don't go into any ADP, they don't get access to ADP, they get access to a link that we send them, we password protect them. Those with the one-time passwords are on phone numbers with simple authorization. and that is pretty quick and pretty standard as well. Since we are sending the link on the phone number, we have that. We can authorize them. And then anything that we need, all of the things that you are thinking of to add on the ADP, we are going to get them on that, get all of those details from. that link.
  Ryan Adams   1:07:33 Yep, exactly.
  Melissa McNutt   1:07:35 Perfect, and then from here, this little cloud with the arrow is just to save the ticket. And anything within the ticket, the, let me do this, you can email. So if like the, if the customer wants a copy of the checklist or the ticket, anything like that, you can go up here and you can email it to the customer.
  ehtesham.anwar   1:07:41 Mhm. Directly, or...

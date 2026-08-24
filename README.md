@@ -277,6 +277,7 @@ its four were alternative ways to run a feature end to end.
 | [`lint-triage`](claude/skills/lint-triage/SKILL.md) | A failing gate — which errors are yours |
 | [`find-component`](claude/skills/find-component/SKILL.md) | Adding UI — searches all nine `components/` directories |
 | [`debug-api`](claude/skills/debug-api/SKILL.md) | A failing endpoint |
+| [`close-ticket`](claude/skills/close-ticket/SKILL.md) | A PR merged — the writeback: reflection, gap disposition, decision notes, push the overlay. **The loop's tail; currently its least-run step** |
 
 Two exist because of measured failures rather than general good practice: `pnpm lint` fails
 before you touch anything, and `components/ui` has more importers than any atomic tier — so
@@ -284,18 +285,23 @@ the search the old docs prescribed missed the largest source in the app.
 
 ### Vault — product knowledge
 
-**Retrieval is index-first, always.** Start at [`vault/INDEX.md`](vault/INDEX.md). Where a
-topic has competing sources it routes you to a conflict stub rather than one side of an
+**Retrieval is index-first, always — and two hops since the 2026-08-24 reorg.** Name the
+module, read `vault/<module>/INDEX.md`, follow where it points; for cross-cutting material
+search tags, not prose (`grep -rl 'module/dispatch' vault/meetings/`). Where a topic has
+competing sources the index routes you to a conflict stub rather than one side of an
 unresolved disagreement. Opening a content file directly is how an agent ends up quoting a
 candidate as settled fact.
 
 | File | What it is |
 | --- | --- |
-| [`vault/INDEX.md`](vault/INDEX.md) | **The entry point.** Read before any content file |
+| [`vault/INDEX.md`](vault/INDEX.md) | **The entry point** — a router to the module indexes. Read before any content file |
+| [`vault/STRUCTURE.md`](vault/STRUCTURE.md) | **How the vault is organized** — one folder per product module (mirroring the backend), the Obsidian tag facets (`module/x`, `kind/y`), where a question goes, and the old→new migration map |
+| `vault/<module>/` | Ten module folders (`payroll/`, `dispatch/`, `field-ops/`, `quotations/`, …), each with its own `INDEX.md`, sources, and a **live `gaps.md`** |
+| [`vault/payroll/rules/`](vault/payroll/rules/INDEX.md) | **The payroll rule register** — 73 canonical `PAY-###` rules, each joining matrix + FRD + legacy engine + contract + conflicts. The build's entry point for payroll |
+| [`vault/decisions/`](vault/decisions/) | Dated, named-human decisions — the only thing that makes an answer durable. Written by `tcg-scrum` |
 | [`vault/README.md`](vault/README.md) | Migration conventions, frontmatter, deliberate exclusions |
-| [`vault/gaps.md`](vault/gaps.md) | Open questions — unresolved conflicts and unsourced decisions |
-| [`vault/sync/confluence-sync.md`](vault/sync/confluence-sync.md) | How the vault tracks a source that keeps moving |
-| [`vault/payroll/`](vault/payroll/INDEX.md) | The payroll module — a **separate source** (OneDrive, not Confluence), its own index and gap register |
+| `vault/gaps.md` · `vault/payroll/gaps-2026-08-20-retired.md` | **Retired, frozen** registers — open entries were dispositioned into the module `gaps.md` files (2026-08-24); citable by anchor, never appended |
+| [`vault/sync/confluence-sync.md`](vault/sync/confluence-sync.md) | How the vault tracks a source that keeps moving — **bootstrap run executed 2026-08-24** (`sync/manifest.json`, 40 pages tracked) |
 | [`vault/meetings/`](vault/meetings/) | Sprint plans and curated client minutes, plus three raw-material subfolders: `transcripts/`, `summaries/`, `assets/` — see `vault/README.md` § Folders |
 
 Most of it is `status: unverified`. Statuses and counts live in the index and gap register,
@@ -377,7 +383,14 @@ Honest state, so nobody rediscovers them.
 - **Nested-context loading is not yet confirmed by observation.** The root is. `/context`
   settles it in seconds (§4.2); it has not been run.
 - **Antigravity's loading behaviour is unestablished** — reachable, but unproven (§4.3).
-- **The loop has never run a real ticket end to end.** Written is not working.
+- **The loop is half-running (audited 2026-08-24).** Entry side works: five tickets in
+  `aidlc/processed.log` (paths B/C — fouzan, areeba), specs with §12, five decision notes
+  written back, SCRUM-903 shipped through spec → review → decision → merge. **The tail has
+  never run**: `reflections/INDEX.md` has zero rows — no merged ticket has had its
+  `close-ticket` writeback, so the third-occurrence rule protects nothing yet. Also missed:
+  `scrum-873` and `sync-fcc-data-with-tcg` merged with **no ledger row and no folder**
+  (the latter also breaks branch naming), and the ledger's `pr` column is never backfilled
+  after merge. Path A (full spec → decompose → units) is still unexercised.
 - **`apps/web` does not glob its tests** — `package.json` passes 14 filenames explicitly, so
   a web test not hand-added never runs and nothing says so. Fix before trusting web coverage.
 - [`aidlc/context-restructure-plan.md`](aidlc/context-restructure-plan.md) is **partly
@@ -419,7 +432,7 @@ So the two levers, in order: **which model**, then **what you read**.
    opus") when the agent's own *Model tier* section says so: the ticket touches an open
    conflict, is payroll or ADP, the unit touches `prisma`/tenancy/auth, or the reflector sees a
    third occurrence. Never by changing the default back.
-2. **Read by section, never whole.** `vault/gaps.md`, `vault/payroll/gaps.md`, any spec over
+2. **Read by section, never whole.** The module `gaps.md` registers, the retired snapshots, any spec over
    ~15 KB, any vault file over ~20 KB: `grep -n '^#'` first, then `sed -n` the section you
    need. The only vault file meant to be read whole is `vault/INDEX.md`, and it is a routing
    table — follow its pointer, do not also read the neighbours.
@@ -453,7 +466,7 @@ So the two levers, in order: **which model**, then **what you read**.
 | --- | --- | --- |
 | Agent model defaults | 5 of 8 on Opus, executor inherits | 1 of 8 on Opus (`tcg-scrum`); four loop agents on Sonnet; executor documented as "set the session to Sonnet" |
 | `vault/gaps.md` | 88 KB, one register | 24 KB product + [`vault/payroll/gaps.md`](vault/payroll/gaps.md) 64 KB; both open with a read-by-section rule; all 57 entries kept |
-| `vault/INDEX.md` | 24 KB | 19 KB — FR-FOP numbering → [`product/fr-fop-numbering.md`](vault/product/fr-fop-numbering.md), tags → [`tags.md`](vault/tags.md), payroll narrative and sprint-plan rows collapsed to pointers |
+| `vault/INDEX.md` | 24 KB | 19 KB — FR-FOP numbering → [`field-ops/fr-fop-numbering.md`](vault/field-ops/fr-fop-numbering.md), tags → [`tags.md`](vault/tags.md), payroll narrative and sprint-plan rows collapsed to pointers |
 | Agent prompts | examples inline | examples in `aidlc/agents/examples/` — elaborator 25→21 KB, scrum 21→15, executor 14→12, reflector 13→10, decomposer 12→10, analyst 11→10 |
 
 ### 10.5 Measure it

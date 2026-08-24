@@ -1,5 +1,7 @@
 # Gaps
 
+> **Dispositioned 2026-08-24.** This file is frozen — open entries dispositioned to `vault/<module>/gaps.md`, each entry carrying a *From (frozen original)* backlink. Closed/resolved entries live only here.
+
 **RETIRED 2026-08-20 — do not append here.** This single-register design (one growing file
 covering every product topic) is being replaced by gaps that live inside a per-module vault
 folder mirroring the backend's module structure, so lookup is scoped instead of blind. That
@@ -32,9 +34,9 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/frd-new-format-draft/INDEX.md` — 57 KB (9 parts), updated 2026-06-09. Document ID **FR-TCG-FOP-001**, Version **1.1**, Status **REVIEWED**.
-  - `product/field-ops-frd/INDEX.md` — 48 KB (12 parts), updated 2026-06-16. Document ID **FR-TCG-FOP-002**, Version **2.0**, Status **DRAFT**.
-  - `product/atom-mobile-app-user-stories/INDEX.md` — 16 KB (6 parts), updated 2026-07-22. 20 user stories across 5 epics, no document ID.
+  - `field-ops/frd-new-format-draft/INDEX.md` — 57 KB (9 parts), updated 2026-06-09. Document ID **FR-TCG-FOP-001**, Version **1.1**, Status **REVIEWED**.
+  - `field-ops/field-ops-frd/INDEX.md` — 48 KB (12 parts), updated 2026-06-16. Document ID **FR-TCG-FOP-002**, Version **2.0**, Status **DRAFT**.
+  - `field-ops/atom-mobile-app-user-stories/INDEX.md` — 16 KB (6 parts), updated 2026-07-22. 20 user stories across 5 epics, no document ID.
 - Note: FR-TCG-FOP-001 v1.1 REVIEWED versus FR-TCG-FOP-002 v2.0 DRAFT with different
   document IDs means these are probably two deliverables, not two drafts — and every
   heuristic anyone would reach for (newer wins, bigger wins, reviewed wins) gives a
@@ -49,10 +51,10 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/quotation.md` — 1.0 KB, updated 2026-06-23. Punch list from the JZ feedback folder.
-  - `product/quotation-flow-process.md` — 2.1 KB, updated 2026-07-09. Stage/lifecycle flow.
-  - `product/quotations.md` — 2.0 KB, updated 2026-07-14. Punch list from the Mohsin feedback folder.
-  - `product/user-story-and-tasks.md` — 5.1 KB, updated 2026-04-22. Quotation management user stories, from a personal space.
+  - `quotations/quotation.md` — 1.0 KB, updated 2026-06-23. Punch list from the JZ feedback folder.
+  - `quotations/quotation-flow-process.md` — 2.1 KB, updated 2026-07-09. Stage/lifecycle flow.
+  - `quotations/quotations.md` — 2.0 KB, updated 2026-07-14. Punch list from the Mohsin feedback folder.
+  - `assets/user-story-and-tasks.md` — 5.1 KB, updated 2026-04-22. Quotation management user stories, from a personal space.
 - Note: these appear to be four different scopes (punch list, lifecycle, punch list,
   user stories) rather than four versions of one document, so the answer may be "all
   of them, merged" rather than a single winner.
@@ -64,11 +66,11 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/customer-and-job-sites.md` — 1.5 KB, updated 2026-06-12.
-  - `product/customer.md` — 6.4 KB, updated 2026-07-16.
-  - `product/discussion-points-with-mohsin.md` — 0.5 KB, updated 2026-06-25.
-  - `product/discussion-points-with-tcg-team.md` — 1.1 KB, updated 2026-06-25.
-  - `product/user-story-and-tasks.md` — 5.1 KB, updated 2026-04-22. Customer management user stories, from a personal space.
+  - `customers/customer-and-job-sites.md` — 1.5 KB, updated 2026-06-12.
+  - `customers/customer.md` — 6.4 KB, updated 2026-07-16.
+  - `meetings/2026-06-26-discussion-points-with-mohsin.md` — 0.5 KB, updated 2026-06-25.
+  - `meetings/2026-06-26-discussion-points-with-tcg-team.md` — 1.1 KB, updated 2026-06-25.
+  - `assets/user-story-and-tasks.md` — 5.1 KB, updated 2026-04-22. Customer management user stories, from a personal space.
 - Note: this is not four independent documents. `discussion-points-with-mohsin.md` is
   word-for-word the "Job Site" section of `customer-and-job-sites.md`, including the
   same two typos, and the customer bullets in `discussion-points-with-tcg-team.md` are
@@ -82,10 +84,10 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/agencies.md` — 1.3 KB, updated 2026-04-30. User stories.
-  - `product/vendors.md` — 4.0 KB, updated 2026-04-30. User stories.
-  - `product/agency-and-vendor.md` — 0.4 KB, updated 2026-06-22. Punch list.
-  - `product/agencies-module.md` — 1.6 KB, updated 2026-07-22. Punch list.
+  - `vendors-agencies/agencies.md` — 1.3 KB, updated 2026-04-30. User stories.
+  - `vendors-agencies/vendors.md` — 4.0 KB, updated 2026-04-30. User stories.
+  - `vendors-agencies/agency-and-vendor.md` — 0.4 KB, updated 2026-06-22. Punch list.
+  - `vendors-agencies/agencies-module.md` — 1.6 KB, updated 2026-07-22. Punch list.
 - Note: the two newest files are the two smallest, and both are punch lists rather than
   specifications. Recency ordering would discard the only user-story-level content.
 - Blocked: nothing yet — will block spec work on the Agencies and Vendors modules.
@@ -96,8 +98,8 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/daily-allocation-system.md` — 9.1 KB, updated 2026-04-30. User stories.
-  - `product/job-project-das.md` — 1.9 KB, updated 2026-07-16. Punch list.
+  - `dispatch/daily-allocation-system.md` — 9.1 KB, updated 2026-04-30. User stories.
+  - `projects-jobs/job-project-das.md` — 1.9 KB, updated 2026-07-16. Punch list.
 - Note: the newer file is roughly one fifth the size and covers job/project linkage
   rather than DAS behaviour, so these may be complementary rather than competing.
 - Blocked: nothing yet — will block spec work on the Daily Allocation System.
@@ -108,7 +110,7 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/mobilization-and-demobilization.md` — 5.4 KB, migrated 2026-08-10 from
+  - `quotations/mobilization-and-demobilization.md` — 5.4 KB, migrated 2026-08-10 from
     `confluence/TCG/Mobilization & Demobilization` (page id 142049281, itself edited
     2026-08-10). Prose requirements for the new ERP, plus the only coverage of the field
     ticketing / mobile app relationship to the quotation.
@@ -153,14 +155,14 @@ will be about your ticket.
 - Question: should the cross-module feedback punch lists be split by module and
   attached to the relevant specs?
 - Candidates (all are single files covering many modules):
-  - `product/job-project-das.md` — 1.7 KB, updated 2026-07-16. Filed as DAS, but DAS is
+  - `projects-jobs/job-project-das.md` — 1.7 KB, updated 2026-07-16. Filed as DAS, but DAS is
     **one of nine sections**; it also covers Billing code, Price list, Project, PO, Sub
     category, Permit, Plan and Agency.
-  - `product/quotations.md` — 1.8 KB, updated 2026-07-14. Filed as Quotations; trails
+  - `quotations/quotations.md` — 1.8 KB, updated 2026-07-14. Filed as Quotations; trails
     into Assets, Tools & Rigging and Billing code.
-  - `product/quotation.md` — 0.8 KB, updated 2026-06-23. Filed as Quotations; trails
+  - `quotations/quotation.md` — 0.8 KB, updated 2026-06-23. Filed as Quotations; trails
     into Job and DAS.
-  - `product/agencies-module.md` — 1.4 KB, updated 2026-07-22. Filed as Agencies;
+  - `vendors-agencies/agencies-module.md` — 1.4 KB, updated 2026-07-22. Filed as Agencies;
     carries an "Across the app" block (US date format, breadcrumb spacing, activity-log
     refresh) that is not agency-specific.
 - Note: this is why the DAS "conflict" is weaker than the other four — an 8.7 KB
@@ -183,7 +185,13 @@ will be about your ticket.
   chat across the app* (898), *tools & rigging not editable on a job* (899), *a mobile ticket
   cannot start before load-out* (902), *offline save in yard operations, marked "(client
   feedback)"* (904). None of those five is written in the vault; the ticket is the only
-  source. One item ("quotation marked Signed auto-created Project and Job without Convert to
+  source. For SCRUM-899 the Job Details UI shipped read-only in PR #379; the open scope
+  question (all tools vs quote-inherited only) lives in `aidlc/SCRUM-899/spec.md` §12 Q1 —
+  do not treat the punch-list line as adjudicated product law. One item ("quotation marked Signed auto-created Project and Job without Convert to
+  source. For SCRUM-896 the listing delete was removed and post-save goes to plan detail
+  on branch `scrum-896`; the open questions (plan archive vs hard delete; post-save
+  convention scope) live in `aidlc/SCRUM-896/spec.md` §12 — do not treat the punch-list
+  line as adjudicated product law. One item ("quotation marked Signed auto-created Project and Job without Convert to
   Job / Create Project") is a behaviour question, not a bug report, and has no ticket on the
   page.
 - Owner: product team
@@ -200,17 +208,17 @@ will be about your ticket.
     "Atom App", reported by Umair Khan, created 2026-08-06. The only source anywhere with
     numeric threshold values. Cites no origin for them. Assumes **four** lunches and makes
     WTL customer authorization unconditional (name + signature + photo).
-  - `product/brs.md` (9.2 KB, 2026-06-10) — BRS-LUNCH-005 "Lunch Threshold Values" is
+  - `brs.md` (9.2 KB, 2026-06-10) — BRS-LUNCH-005 "Lunch Threshold Values" is
     marked *Needs Supporting Documentation*; OD-002 / OD-003 / OD-004 all *Need
     Documentation*. BRS-LUNCH-002 lists **three** known lunches (First, Second, Third) and
     is marked **✓ Confirmed**.
-  - `product/field-ops-frd/11-open-questions-future-considerations.md` (FR-TCG-FOP-002
+  - `field-ops/field-ops-frd/11-open-questions-future-considerations.md` (FR-TCG-FOP-002
     v2.0 DRAFT) — open question 1, "Exact lunch thresholds and union variations".
-  - `product/frd-new-format-draft/08-open-questions.md` (FR-TCG-FOP-001 v1.1 REVIEWED) —
+  - `field-ops/frd-new-format-draft/08-open-questions.md` (FR-TCG-FOP-001 v1.1 REVIEWED) —
     open question 4, "What are the final lunch threshold rules for first, second, third,
     and fourth lunch?", owner Corrina, status Open. Open question 1 (owners Wes + Corrina)
     additionally leaves signature ownership for Third Man/Laborer undecided.
-  - `product/frd-new-format-draft/05-functional-requirements/fr-fop-015-work-through-lunch-authorization.md`
+  - `field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-015-work-through-lunch-authorization.md`
     — the only source with a customer-unavailable fallback: "employee records reason and
     acknowledges the attempt". Neither SCRUM-864 nor FR-TCG-FOP-002 has it.
 - Note: this is not a documentation conflict but an unsourced decision already in flight —
@@ -233,14 +241,14 @@ will be about your ticket.
   before 5 hours, Lunch 2 before 10.5, Lunch 3 before 16.5, Lunch 4 before 22, with a
   notification one hour before each — SCRUM-864's set exactly, and four lunches. Nothing that
   made this a gap has changed: the page cites no origin, so the values are still unsourced;
-  `product/brs.md` BRS-LUNCH-002 still lists **three** lunches and is still marked
+  `brs.md` BRS-LUNCH-002 still lists **three** lunches and is still marked
   **✓ Confirmed**; both FRDs still carry the thresholds as open questions; and the page still
   has no customer-unavailable path for WTL, stating only that it "requires customer
   authorization" with name, signature and photo. The likeliest reading is that the ticket's
   values were pasted into the page, which spreads the unsourced decision to one more location
   rather than resolving it. Recency is not authority — a page edited today does not outrank a
   BRS item marked Confirmed. The vault's migrated copy
-  (`product/atom-mobile-app-user-stories/03-ticket-workflow.md:138`) carries no numbers and was
+  (`field-ops/atom-mobile-app-user-stories/03-ticket-workflow.md:138`) carries no numbers and was
   deliberately **not** re-migrated: the page was mid-edit when observed (two sections numbered
   US-11, an epic titled "PIC 10", epics 5-9 absent, US-12 missing).
 - Status: open
@@ -285,7 +293,7 @@ will be about your ticket.
 ## Integrations — HubSpot, Microsoft 365, Dialpad, Mapsly
 
 - Question: what do the existing integrations do, and what should move into the ERP?
-- Candidates: **none of substance.** HubSpot appears once, in `product/user-story-and-tasks.md`,
+- Candidates: **none of substance.** HubSpot appears once, in `assets/user-story-and-tasks.md`,
   which was migrated from an individual's personal Confluence space and carries a
   `provenance_note` warning it may be a private draft rather than agreed specification.
   **Dialpad, Mapsly and Microsoft 365 appear nowhere in the vault.**
@@ -317,15 +325,15 @@ will be about your ticket.
 - Pairs:
   - **2026-03-06** — Customer show page has an internal Comments section for
     accounting/dispatch/anyone interacting with the customer — *vault/ticket:*
-    product/customer-and-job-sites.md ("Notes - do TCG team use this feature?") — *jira:*
+    customers/customer-and-job-sites.md ("Notes - do TCG team use this feature?") — *jira:*
     SCRUM-49 (Remove Comments Section from Customer Show Page — Done), SCRUM-52 (Not
   - **2026-03-06** — Quotation form carries a PO number field ("the PO number is going to be
-    available") — *vault/ticket:* product/quotation.md ("Customer PO"),
-    product/customer-and-job-sites.md (associate customer POs) — *jira:* SCRUM-149 (PO number
+    available") — *vault/ticket:* quotations/quotation.md ("Customer PO"),
+    customers/customer-and-job-sites.md (associate customer POs) — *jira:* SCRUM-149 (PO number
     field — remove it, Done), SCRUM-575 (Pre-Quote Data Form &
   - **2026-03-06** — Approved quote is automatically converted into a Project (draft) once
     transmitted to dispatch — *vault/ticket:*
-    product/project-module/01-create-and-track-projects.md says salesperson clicks "Create
+    projects-jobs/project-module/01-create-and-track-projects.md says salesperson clicks "Create
     Project" on a signed quotation (manual one-click), and a project can also be created without
     a quotation — *jira:* SCRUM-894 (Prevent Automatic Project and Job Creation Before
     Conversion, To Do),
@@ -334,24 +342,24 @@ will be about your ticket.
     CRM, analytics" — transcript (1969-1970) has Ans putting the *project… — *vault/ticket:*
     none
   - **2026-03-12** — Rename "billing codes" to "price list" for simplicity. — *vault/ticket:*
-    product/billing-code-and-price-list.md keeps both entities — *jira:* SCRUM-80 and SCRUM-97
+    quotations/billing-code-and-price-list.md keeps both entities — *jira:* SCRUM-80 and SCRUM-97
     keep both
   - **2026-03-12** — POs must be creatable at quotation level, at job level, and standalone for
     the business; every PO must have a trail to why it exists; job-level POs auto-link; PO
-    cancelled if quote lost. — *vault/ticket:* product/sprint-4-additional.md says "Every PO
+    cancelled if quote lost. — *vault/ticket:* meetings/2026-06-22-sprint-4-additional.md says "Every PO
     must be linked to a job number — required, not optional" — *jira:* SCRUM-518, SCRUM-473
   - **2026-03-20** — Customer statuses: Active, Inactive, Prospect, plus new "On hold". —
-    *vault/ticket:* CONTRADICTS: product/user-story-and-tasks.md:102-107 defines status as
+    *vault/ticket:* CONTRADICTS: assets/user-story-and-tasks.md:102-107 defines status as
     auto-calculated colour indicators (Active / Inactive 6 months / Inactive 1 year) — no
     Prospect or On hold
   - **2026-03-20** — Credit limit is needed on the customer. — *vault/ticket:*
-    product/customer-and-job-sites.md:40 says "Remove credit limit and forecast from show page"
+    customers/customer-and-job-sites.md:40 says "Remove credit limit and forecast from show page"
     — *jira:* SCRUM-20, SCRUM-715 (Credit Limit)
   - **2026-03-20** — Comments wanted at the customer level. — *vault/ticket:*
-    product/customer.md:37-40 (notes) — *jira:* CONTRADICTS: SCRUM-49 "Remove Comments Section
+    customers/customer.md:37-40 (notes) — *jira:* CONTRADICTS: SCRUM-49 "Remove Comments Section
     from Customer Show Page" (Done);
   - **2026-03-20** — Keep Notes and Tasks on customers (task manager per customer; CRM to be
-    built on top). — *vault/ticket:* CONTRADICTS: product/customer-and-job-sites.md:25 "Remove
+    built on top). — *vault/ticket:* CONTRADICTS: customers/customer-and-job-sites.md:25 "Remove
     tasks from customers"; :26 asks whether TCG uses notes (answered: yes) — *jira:* SCRUM-198
     (job-site tabs incl. notes/tasks during creation), SCRUM-52
   - **2026-03-20** — Employees can be assigned to multiple companies and multiple yards, not a
@@ -360,60 +368,60 @@ will be about your ticket.
   - **2026-03-26** — On-site scope of work / "site scope plan" (same paper form as lift plan,
     different heading, handwritten on site, JSA alongside) becomes a digital form in the mobile
     app; operators enter actual measurements; changes mid-lift mus… — *vault/ticket:*
-    product/project-module/04-create-and-approve-lift-plans.md "User Story 4: Create a Site
+    projects-jobs/project-module/04-create-and-approve-lift-plans.md "User Story 4: Create a Site
     Plan" (Project Engineer creates in portal with approval — DIFFERENT actor/flow);
-    product/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md (… —
+    field-ops/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md (… —
     *jira:* SCRUM-236 Create a Site Plan (portal); SCRUM-862 JSA / Tailboard (mobile) — no m
   - **2026-03-31** — New "Project" entity: an approved quotation gets a "Create Project" button
     (replacing "Convert to Job"); project carries the job-location name, all quotation data,
     KPIs (total/active jobs, unassigned jobs), tabs for quotations,… — *vault/ticket:*
-    product/project-module/01-create-and-track-projects.md (Create Project on signed quotation,
+    projects-jobs/project-module/01-create-and-track-projects.md (Create Project on signed quotation,
     tab bar) — *jira:* SCRUM-231; but SCRUM-312 ("replace resend/void actions with Convert to
     Job CTA")
   - **2026-04-09** — Renewal reminders for asset annual permits should fire ~90 days out. —
-    *vault/ticket:* CONTRADICTS: product/project-module/05-create-and-track-permits.md says
+    *vault/ticket:* CONTRADICTS: projects-jobs/project-module/05-create-and-track-permits.md says
     "Permit expiry alerts are triggered 30 days in advance" — *jira:* SCRUM-372 (expiry reminder
     scheduler)
   - **2026-04-21** — Jobs panel has compact chip view and detailed list view (list view also
     shows required crane size); Lisette prefers the "squares" layout. — *vault/ticket:*
-    product/daily-allocation-system.md (compact/list toggle) — *jira:* SCRUM-331; note SCRUM-784
+    dispatch/daily-allocation-system.md (compact/list toggle) — *jira:* SCRUM-331; note SCRUM-784
     "Remove card . grid view toggles" (Done, from 07-16 pu
   - **2026-05-14** — Who fills the ticket: crane + one truck → the oiler fills ONE ticket
     covering himself and the operator (crane, tractor, trailer, both names); every other
     driver/equipment gets its own ticket; two crew riding in one truck may sh… — *vault/ticket:*
-    product/frd-new-format-draft/04-role-responsibility-model.md ("The Oiler owns the main
+    field-ops/frd-new-format-draft/04-role-responsibility-model.md ("The Oiler owns the main
     ticket… Operator's labor is captured within the shared ticket"); fr-fop-009 (oiler checklist
     covers crane, tractor, trailer, support loads) — *jira:* SCRUM-249 (fetched) creates a
     ticket "against all employees that had allocations
   - **2026-06-17** — Dispatch changes the dispatched asset only in the dispatch (DAS) view; the
     job's requested resources stay as the client-approved record; both are retained —
-    *vault/ticket:* CONTRADICTS: product/project-module/02-view-manage-job-details.md says
+    *vault/ticket:* CONTRADICTS: projects-jobs/project-module/02-view-manage-job-details.md says
     "Dispatcher can add new resources, update existing ones, or remove them" on the job
     Resources tab — *jira:* SCRUM-580 (Done)
   - **2026-06-18** — Asset on a permit becomes optional (was default); when a permit carries an
     asset, DAS auto-attaches that asset to the job for that date — *vault/ticket:*
-    product/project-module/05-create-and-track-permits.md (asset in permit form; active permits
-    auto-link to dispatch); CONTRADICTS: product/job-project-das.md ("auto create travel permit
+    projects-jobs/project-module/05-create-and-track-permits.md (asset in permit form; active permits
+    auto-link to dispatch); CONTRADICTS: projects-jobs/job-project-das.md ("auto create travel permit
     request based on assets required – before navigating to next step, add as… — *jira:*
     SCRUM-517 (Done), SCRUM-533 (Done), SCRUM-625 (Done)
   - **2026-06-18** — SOS options: 911, safety officer, crane superintendent, nearest hospital,
     broadcast to office — and add Dispatch — *vault/ticket:*
-    product/atom-mobile-app-user-stories/06-safety-and-self-service.md US-21 (911, Safety, Crane
+    field-ops/atom-mobile-app-user-stories/06-safety-and-self-service.md US-21 (911, Safety, Crane
     Super, hospital — no Dispatch, no broadcast) — *jira:* SCRUM-880 (In Review) — AC list 911 /
     Safety / Crane Superintendent / hospital o
   - **2026-08-11** — Schedule fields: sales coordinator, salesperson, job location, status
     Scheduled/Tentative/Hold/Cancelled/Maintenance, scheduled hours; cranes in maintenance must
     not be selectable; double-booking allowed for short jobs — *vault/ticket:* M-0812;
-    `product/daily-allocation-system.md` says in-maintenance assets are greyed out but still
+    `dispatch/daily-allocation-system.md` says in-maintenance assets are greyed out but still
     draggable with a warning — Ryan wants non-selectable;
-    `product/project-module/03-create-manage-job-schedule.md` (warning on double assignment) —
+    `projects-jobs/project-module/03-create-manage-job-schedule.md` (warning on double assignment) —
     *jira:* SCRUM-502 (Asset Availability & Maintenance Status), SCRUM-234
   - **2026-08-12** — Photo of the customer signer must be optional / consent-based — a customer
     may refuse to be photographed; today it is required in the app; CC agrees to make it
     optional ("not a huge change"); TCG will encourage but not fight fo… — *vault/ticket:*
-    product/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md
+    field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md
     (photo capture is a configurable per-deployment toggle); CONTRADICTS:
-    product/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md line 136… —
+    field-ops/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md line 136… —
     *jira:* SCRUM-861 Arrive Job & Customer First Authorization (QA) — flow, not the optiona
 - **Disposition, 2026-08-19 (`tcg-scrum` pass).** Each pair was retrieved in full — `INDEX.md`, the
   topic conflict stub where one exists, the cited vault files and their `conflicts_with:`,
@@ -442,7 +450,7 @@ will be about your ticket.
     `SCRUM-80`, `SCRUM-97`. So **no pair qualifies as "resolved by a ticket that records who
     asked"**. Where a pair is dispositioned *resolved by the sequence of events* below, that means
     **evidence of what was built — never adjudication.**
-  - A fourth, structural: **the `product/atom-mobile-app-user-stories/` page is de facto
+  - A fourth, structural: **the `field-ops/atom-mobile-app-user-stories/` page is de facto
     authoritative for what gets built** — `SCRUM-880` is US-21 verbatim, `SCRUM-862` is US-10
     verbatim, `SCRUM-861` is US-09 verbatim minus one bullet — even though it is the one field-ops
     document with **no document ID and no review status**, while `FR-TCG-FOP-001 v1.1 REVIEWED` is
@@ -462,7 +470,7 @@ will be about your ticket.
     (`SCRUM-80`, `SCRUM-97`, both To Do, both `description: null`), and `SCRUM-163` (Done) implements
     a **two-tier lookup** — price list first, then billing codes — which is impossible if they are
     one renamed thing. **No ticket ever proposed the rename.** Residual, unrelated to the rename and
-    already written at `product/billing-code-and-price-list.md:34`: whether billing codes and price
+    already written at `quotations/billing-code-and-price-list.md:34`: whether billing codes and price
     lists are yard-specific — `SCRUM-782` and `SCRUM-795` are both **Blocked** on it. No new entry;
     this row should be closed by a human rather than silently dropped.
   - `2026-03-12` POs at quotation / job / standalone level — needs confirmation → §*Purchase orders at three levels — Joe and Ryan on tape, nothing written*
@@ -470,9 +478,9 @@ will be about your ticket.
   - `2026-03-20` credit limit — **over-flagged; the weakest row of the 21.** Credit limit is built
     and continuously maintained (`creditLimit Decimal?` on `model Customer`; `SCRUM-20` Done Apr,
     `SCRUM-715` Done Jul). The vault line that "contradicts" —
-    `product/customer-and-job-sites.md:40` *"Remove credit limit and forecaset from show page"* — is
+    `customers/customer-and-job-sites.md:40` *"Remove credit limit and forecaset from show page"* — is
     **display-scoped**, sits under that file's own *"Feedback on new Design"* heading, and never
-    asked for the field's removal from the model. `product/customer.md:42` (2026-07-16) then treats
+    asked for the field's removal from the model. `customers/customer.md:42` (2026-07-16) then treats
     the field as present. The only honest residual is *"is credit limit shown on the customer show
     page?"*, which is a design question, not a product conflict. See §*Feedback punch lists are not
     scoped to the module they are filed under* — this row is an instance of that pattern.
@@ -519,7 +527,7 @@ will be about your ticket.
   - `SCRUM-898` *Implement In-House Comment as Chat Functionality Across the Application* — **To
     Do**, created 2026-08-17, parent `SCRUM-24` (Across App), **not** the Customers epic. A
     cross-app UI-paradigm ticket, not a customer-comments re-add.
-  - `product/customer.md:35-40` — the lines the combined entry cites are about **notes**, not
+  - `customers/customer.md:35-40` — the lines the combined entry cites are about **notes**, not
     comments. **The word "comment" does not appear in that file.** No vault file covers customer
     comments at all; the citation in the pair row should be read as a near-miss.
 - Note: **the chronology in the pair row is inverted.** TCG asked for customer comments on
@@ -540,7 +548,7 @@ will be about your ticket.
 
 ## "Customer PO" on the quotation — which of three things does it mean?
 
-- Question: does `product/quotation.md:26` *"Customer PO"* mean (a) a PO-number field on the
+- Question: does `quotations/quotation.md:26` *"Customer PO"* mean (a) a PO-number field on the
   quotation form, (b) the Customer PO workflow that `SCRUM-575` shipped between Sent-to-Customer and
   Won, or (c) associating customer POs with the customer record — and is a PO number on the
   quotation wanted at all?
@@ -557,12 +565,12 @@ will be about your ticket.
     Customer PO workflow between Sent to Customer and Won stages."* Its closing comment says it
     shipped under two different names — *"1. new customer packet 2. job and labor compliance
     information request form"*.
-  - `product/quotation.md:26` (JZ punch list, 2026-06-23) — the bare bullet *"Customer PO"*, one of
+  - `quotations/quotation.md:26` (JZ punch list, 2026-06-23) — the bare bullet *"Customer PO"*, one of
     ~20 unelaborated bullets, **post-dating `SCRUM-149`** by two months.
-  - `product/customer-and-job-sites.md:28` — *"Need to associate customer POs with customer -- need
+  - `customers/customer-and-job-sites.md:28` — *"Need to associate customer POs with customer -- need
     to ask TCG team to provide customer PO form / data"*. **Phrased as an open question to TCG**,
     never answered.
-  - `product/purchase-order.md` — `conflicts_with: []`, and entirely about **vendor and permit** POs
+  - `vendors-agencies/purchase-order.md` — `conflicts_with: []`, and entirely about **vendor and permit** POs
     owned by Liz Lopez and Jeff Stricker. Says nothing about a customer PO on a quotation.
 - Note: the built state is unambiguous and is the reason this is answerable in one line —
   `model Quotation` has **no** `poNumber`; `model Project` and `model Job` both do. A vestigial
@@ -570,7 +578,7 @@ will be about your ticket.
   with no form field and no consumer. So the field was removed and the workflow was built elsewhere
   under other names. What is genuinely unresolved is only what the punch-list bullet is asking for,
   and it was written **after** the removal — which is why it cannot be dismissed as stale.
-- Blocked: any spec work citing `product/quotation.md`; whether the vestigial web type should be
+- Blocked: any spec work citing `quotations/quotation.md`; whether the vestigial web type should be
   deleted; the pre-quote package scope.
 - Owner: Ryan Adams / Joe Schacatano (sales & quotation).
 - Status: open
@@ -598,11 +606,11 @@ will be about your ticket.
     on 2026-03-31 that Create Project also creates a Job.** The only TCG reaction (17:28) is under
     the "Brian Petros" label while Ehtesham had just addressed **Lisette** by name — attribution
     inferred.
-  - `product/project-module/01-create-and-track-projects.md` (`status: unverified`) — :20 *"Clicks
+  - `projects-jobs/project-module/01-create-and-track-projects.md` (`status: unverified`) — :20 *"Clicks
     'Create Project' from the Quick Actions panel"*, :29 *"only visible on quotations, when qoutation
     is signed"*, :30 *"instantly creates a project with all key data carried over"*, :35 a project
     can be created without a quotation. **Manual, one click. It does not say a Job is created too.**
-  - `product/quotation-flow-process.md:72` — *"Step 27: Approved quotation is converted into a
+  - `quotations/quotation-flow-process.md:72` — *"Step 27: Approved quotation is converted into a
     Project."* Passive voice; compatible with both readings and therefore settles nothing.
   - `SCRUM-231` *Create and Track Projects* — **Done**, created **2026-05-01**. `SCRUM-312` *"replace
     resend/void actions with Convert to Job CTA"* — **Done**, created **2026-05-06**, a
@@ -624,7 +632,7 @@ will be about your ticket.
   not in the vault, not on any ticket. Also unwritten: the API guards only on `convertedToJob`, so
   the "only when signed" rule from the vault is enforced in the UI alone.
 - Blocked: `SCRUM-894` (To Do) cannot be specified without this; any spec citing
-  `product/project-module/01-create-and-track-projects.md`; the 13-august-QA behaviour question.
+  `projects-jobs/project-module/01-create-and-track-projects.md`; the 13-august-QA behaviour question.
 - Owner: Ryan Adams / Joe Schacatano (sales & quotation), with Lisette Anzaldo for the dispatch-side
   consequence of a Job existing early.
 - Status: open
@@ -684,7 +692,7 @@ will be about your ticket.
   - Same recording, **Ryan Adams at 1:16:59**: *"either quote is pending won or lost and **if it's
     lost it closes out the PO**. If it's won it processes the PO to go to the next level… so that way
     we don't get a backlog in our system."* **Joe Schacatano at 1:17:42: *"I agree with that."***
-  - `product/sprint-4-additional.md:91` (`conflicts_with: []`, updated **2026-06-22** — three months
+  - `meetings/2026-06-22-sprint-4-additional.md:91` (`conflicts_with: []`, updated **2026-06-22** — three months
     *after* the recording) — *"Every PO must be linked to a job number this is required, not
     optional"*. Note :92 already grants quotation-level POs carrying over, and :102 already grants a
     global PO list, **so the only genuine contradiction is the standalone case.**
@@ -695,13 +703,13 @@ will be about your ticket.
   - `SCRUM-473` *Add PO to main side navigation* — **Done**. *"PO creation **allows** linking to a
     specific project, job, and vendor"* — permissive, not mandatory. `SCRUM-478`, the parent
     **Purchase Order epic**, is still **To Do** with `description: null`, untouched since 2026-05-25.
-  - `product/purchase-order.md` (`conflicts_with: []`) — documents only the **permit-driven** path
+  - `vendors-agencies/purchase-order.md` (`conflicts_with: []`) — documents only the **permit-driven** path
     and names **Liz Lopez** and **Jeff Stricker** as the two PO owners. It never mentions the
     quotation level, standalone POs, or the mandatory-job-link rule.
 - Note: on the standalone half the vault line is simply **wrong about the built system** —
   `model PurchaseOrder` has `jobId String?` (**nullable**), `poType PoType? @default(GENERAL)`, and
   **no quotation relation at all**. So the recording and the code agree and
-  `product/sprint-4-additional.md:91` is the outlier — yet that file carries `conflicts_with: []`,
+  `meetings/2026-06-22-sprint-4-additional.md:91` is the outlier — yet that file carries `conflicts_with: []`,
   so an agent reading it has no signal to doubt it. The rest is state (d): **two named TCG people
   specified three creation levels, a mandatory audit trail, and a quote-lost→PO-closed rule on a
   reliably-labelled transcript, and none of it is written anywhere.** The quotation-level PO and the
@@ -723,7 +731,7 @@ will be about your ticket.
     three statuses actually in fcc… But there's active, inactive, and prospect. Right."* / *"We
     should put maybe on hold. So. Yeah, active, inactive, prospect, and then on hold."* Fireflies
     summary line 39 confirms the ask.
-  - `product/user-story-and-tasks.md:100-108` — *"Customer records display status using colour-coded
+  - `assets/user-story-and-tasks.md:100-108` — *"Customer records display status using colour-coded
     indicators: Green = Active, Yellow = Inactive for 6 months, Red = Inactive for 1 year"*, and
     *"Status is automatically calculated based on latest activity date"*. **This is a personal-space
     draft by Umair Khan (CodingCops)** — see its `provenance_note`; the same person is the Jira
@@ -758,11 +766,11 @@ will be about your ticket.
     *"It's like the **CRM will be built on top of this section** then kind of."* The driver closes:
     *"All right, so **we'll keep those**."* A fourth voice notes at line 90 that the mockups *"put the
     tab there, but they didn't actually build anything."*
-  - `product/customer-and-job-sites.md:25` — *"Remove tasks from customers"*, in a file updated
+  - `customers/customer-and-job-sites.md:25` — *"Remove tasks from customers"*, in a file updated
     **2026-06-12**, three months *after* the recording said keep them. :26 — *"Notes - do TCG team
     use this feature ?"* — is a **question**, and the recording answers it: yes. Both lines are
-    duplicated verbatim into `product/discussion-points-with-tcg-team.md` (see
-    `product/customers-INDEX.md` — one document's opinion appearing twice, not two sources agreeing).
+    duplicated verbatim into `meetings/2026-06-26-discussion-points-with-tcg-team.md` (see
+    `customers/customers-INDEX.md` — one document's opinion appearing twice, not two sources agreeing).
   - `SCRUM-198` — **Done**, created 2026-04-27. Its premise is that *"Job Site tabs, Attachments,
     Notes, Certifications, **Tasks** are not available during Customer creation"* and are *"only
     visible and accessible in Edit mode"* — so **a Tasks tab existed on the customer edit screen in
@@ -805,9 +813,9 @@ will be about your ticket.
     no requester.**
   - `SCRUM-638` *Employee* (2026-07-08 punch list) item 14 lists **Yard** among single-select
     dropdowns — four months after the meeting, unchallenged.
-  - **Vault: nothing.** `product/user-story-and-tasks.md` is the only yard-management source and its
+  - **Vault: nothing.** `assets/user-story-and-tasks.md` is the only yard-management source and its
     yard content covers lease documents and a contact list only — employee is not even in its
-    `entities:`. `product/yard-operations-jz.md` (`conflicts_with: []`) has one employee line, :19
+    `entities:`. `dispatch/yard-operations-jz.md` (`conflicts_with: []`) has one employee line, :19
     *"Employee - unasisgned – weird ghost employees"*, which is a bug report, not cardinality.
 - Note: **built: no; ticketed: no; written: nowhere.** `model Employee` carries a single nullable
   `yardId` with no junction table, and — worth stating plainly — **there is no company field on
@@ -846,17 +854,17 @@ will be about your ticket.
     a **site scope of work** that we do that the guys fill out a **paper form on site**. So maybe when
     we get to the job level we can add that."* Melissa also promised sample forms in the chat
     (line 575); **no such artefact is in the vault.**
-  - `product/project-module/04-create-and-approve-lift-plans.md:47-62` — *"User Story 4: Create a
+  - `projects-jobs/project-module/04-create-and-approve-lift-plans.md:47-62` — *"User Story 4: Create a
     Site Plan"*: *"As a **Project Engineer**, I want to create a Site Plan…"*, created from the
     **portal** Plans tab, *"submits the plan for approval"*, *"Plan goes to Pending Approval"*.
     **Different actor, different surface, different timing, and an approval gate Wes explicitly said
     the field form does not need.** (Note the numbering hazard: this "User Story 4" lives in the part
-    file numbered `04-`, which is itself "User Story 3" — see `product/project-module/INDEX.md`.)
-  - `product/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md`
+    file numbered `04-`, which is itself "User Story 3" — see `projects-jobs/project-module/INDEX.md`.)
+  - `field-ops/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md`
     (**FR-TCG-FOP-002 v2.0 DRAFT**) — JSA only. No measurements, no radius, no scope-change logging.
   - **The decisive negative:** a search for *site plan / lift plan / site scope / measurement /
-    radius* across **all three** field-ops document sets — `product/field-ops-frd/`,
-    `product/frd-new-format-draft/`, `product/atom-mobile-app-user-stories/` — returns **zero hits**.
+    radius* across **all three** field-ops document sets — `field-ops/field-ops-frd/`,
+    `field-ops/frd-new-format-draft/`, `field-ops/atom-mobile-app-user-stories/` — returns **zero hits**.
     A vault-wide search for the phrase returns only this gaps entry and a `purchase-order.md` field
     of the same name.
   - `SCRUM-236` *Create a Site Plan* — **Done**; its description is a verbatim copy of the portal
@@ -866,7 +874,7 @@ will be about your ticket.
   looks like coverage.** Anyone grepping "Site Plan" finds `SCRUM-236` and a shipped portal feature
   and concludes the requirement is met. It is a different feature. The mobile form Wes described —
   operator-entered actual measurements, no approval gate, mid-lift change logging, auditable from the
-  cab — exists in **no** written source. `product/frd-new-format-draft/08-open-questions.md:19`
+  cab — exists in **no** written source. `field-ops/frd-new-format-draft/08-open-questions.md:19`
   carries the adjacent unanswered question (*"What exact JSA form should be digitized?"*, owner
   Client, Open), which is the JSA, not this. Two named TCG people asked for it three weeks apart and
   nothing was ever written down.
@@ -891,7 +899,7 @@ will be about your ticket.
     permits**… so that it can right away notify us if it's active or not"* (615), *"one is an
     **annual**. Most cranes that are overweight have a permit called a **purple permit, an annual**"*
     (711), *"at the **asset level**… we're gonna put the expiration date"* (875).
-  - `product/project-module/05-create-and-track-permits.md:41` — *"Permit expiry alerts are triggered
+  - `projects-jobs/project-module/05-create-and-track-permits.md:41` — *"Permit expiry alerts are triggered
     30 days in advance"*. Its surrounding flow is **job/project** permits: *"User opens Permits tab
     inside a project"*, *"Views auto-generated Permit Requests from published jobs"*, *"System blocks
     job publishing if permit is missing"*.
@@ -910,7 +918,7 @@ will be about your ticket.
 - Blocked: `SCRUM-372` is Done but the reminder is unbuilt; `SCRUM-790` (permit deactivation cron,
   QA); any permit notification work.
 - Owner: Lisette Anzaldo (dispatch/DAS/permits), with Liz Lopez, who owns the permit process in
-  `product/purchase-order.md`.
+  `vendors-agencies/purchase-order.md`.
 - Status: open
 
 ## Jobs panel views — Lisette's stated preference was removed without her
@@ -927,11 +935,11 @@ will be about your ticket.
     And at 32:12, asked what she would change: *"No, I think this is it… still having access on the
     job and being able to **see the crane size, the city** and stuff like that, that totally helps
     me."*
-  - `product/daily-allocation-system.md:36` — *"Toggle switches between Compact chip view and
-    detailed List view for jobs"*. `conflicts_with: [product/job-project-das.md]`.
-  - `product/job-project-das.md:69` — *"Remove card . grid view toggles"*. This is a **cross-module
+  - `dispatch/daily-allocation-system.md:36` — *"Toggle switches between Compact chip view and
+    detailed List view for jobs"*. `conflicts_with: [projects-jobs/job-project-das.md]`.
+  - `projects-jobs/job-project-das.md:69` — *"Remove card . grid view toggles"*. This is a **cross-module
     punch list** in which DAS is one of nine sections; see §*Feedback punch lists are not scoped to
-    the module they are filed under* and `product/daily-allocation-INDEX.md`.
+    the module they are filed under* and `dispatch/daily-allocation-INDEX.md`.
   - `SCRUM-331` *Implement the cards and lists view for jobs* — **Done**, **`description: null`**,
     created 2026-05-07, **last updated 2026-07-17**. `SCRUM-784` *"Remove card . grid view toggles"*
     — **Done**, reporter Umair Khan, created **2026-07-17** (the same day), description *"In DAS, we
@@ -943,7 +951,7 @@ will be about your ticket.
   really"* liked was removed three months later on the authority of a CodingCops punch list, and
   **nothing records that she was consulted.** This is exactly the reversal-without-attribution the
   2026-08-19 review was opened to find. Note the punch list is attributed in
-  `product/customers-INDEX.md` and the DAS stub to "Mohsin feedback" — Mohsin Ali is CodingCops, not
+  `customers/customers-INDEX.md` and the DAS stub to "Mohsin feedback" — Mohsin Ali is CodingCops, not
   TCG, so **neither side of this pair carries a TCG decision.** One detail worth preserving whichever
   way it goes: the list view is the one that shows **required crane size** (`ehtesham.anwar` at
   42:17), which is the thing Lisette said helps her.
@@ -972,19 +980,19 @@ will be about your ticket.
     ("One, with both of them in it".) At 10:12: *"I can just do one ticket with both of them on that
     ticket and then one of them can complete it."* **Anyone quoting 9:41 alone gets the opposite
     answer.**
-  - `product/frd-new-format-draft/04-role-responsibility-model.md:17` (**FR-TCG-FOP-001 v1.1
+  - `field-ops/frd-new-format-draft/04-role-responsibility-model.md:17` (**FR-TCG-FOP-001 v1.1
     REVIEWED** — the only reviewed field-ops document) — *"The Oiler owns the main ticket. The
     Operator's labor is captured within the shared ticket but the Operator does not process paperwork
     or collect signatures."* And
-    `product/frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md`
+    `field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md`
     (**FR-TCG-FOP-001**, *not* `fr-fop-009` in the other FRD, which is *Leave Yard* — `INDEX.md`
     caveat 3) — *"Oiler completes checklist items for Operator/Oiler setup including crane, tractor,
     trailer, and support loads."* **Both match the recording.**
-  - `product/field-ops-frd/05-role-definitions.md` (**FR-TCG-FOP-002 v2.0 DRAFT**) hedges: *"Executing
+  - `field-ops/field-ops-frd/05-role-definitions.md` (**FR-TCG-FOP-002 v2.0 DRAFT**) hedges: *"Executing
     assigned tickets"* is listed for **both** roles, and the oiler *"completes the **primary** ticket
     completion workflow"* — "primary" implies a non-primary ticket exists, i.e. the operator has one.
-    `product/atom-mobile-app-user-stories/` is **silent** on the question.
-  - `product/frd-new-format-draft/08-open-questions.md:27` — open question 11, *"Should Operator have
+    `field-ops/atom-mobile-app-user-stories/` is **silent** on the question.
+  - `field-ops/frd-new-format-draft/08-open-questions.md:27` — open question 11, *"Should Operator have
     any active approval or confirmation step in the shared Operator/Oiler ticket flow?"*, owner
     **Wes + Client**, status **Open**. The model itself is admitted to be unsettled.
   - `SCRUM-249` *DAS Per day job ticket creation and assignment* — **Done**, created **2026-05-01**
@@ -1022,7 +1030,7 @@ will be about your ticket.
     from her own view. And that way **we can retain both of the information**."* **Melissa McNutt at
     1:01:00: *"Okay. Yeah, as long as she can change it on her end, then that's fine."*** — she
     **assented to** the rule; she did not originate it.
-  - `product/project-module/02-view-manage-job-details.md:50` (`conflicts_with: []`) — *"Dispatcher
+  - `projects-jobs/project-module/02-view-manage-job-details.md:50` (`conflicts_with: []`) — *"Dispatcher
     can add new resources, update existing ones, or remove them"* on the job Resources tab, and :23
     *"Adds, updates, or removes resources as needed"*. **The vault has no requested-vs-dispatched
     concept anywhere.**
@@ -1040,7 +1048,7 @@ will be about your ticket.
   what a one-line confirmation would ratify. Note this is genuinely close to resolved: unlike most of
   the set, a named TCG person did speak to it on a reliably-labelled recording. It needs the
   confirmation, not a re-decision.
-- Blocked: `product/project-module/02-view-manage-job-details.md:50` is actively misleading for any
+- Blocked: `projects-jobs/project-module/02-view-manage-job-details.md:50` is actively misleading for any
   spec written against it; the job Resources tab; `SCRUM-580` (Done, on unconfirmed intent).
 - Owner: Melissa McNutt (stated it), with Lisette Anzaldo (the dispatcher whose edit right it is).
 - Status: open — needs confirmation
@@ -1062,9 +1070,9 @@ will be about your ticket.
     Ehtesham says *"just wanted to confirm something"* and cites *"our normal conversation"* — an
     off-record prior discussion. **Liz Lopez is addressed by name and is not recorded replying. No
     TCG person assents on tape.**
-  - `product/project-module/05-create-and-track-permits.md` — :22 and :34 list **asset** as a permit
+  - `projects-jobs/project-module/05-create-and-track-permits.md` — :22 and :34 list **asset** as a permit
     form field with no optionality marker; :38 *"Active permits automatically link to job dispatch"*.
-  - **CONTRADICTING** — `product/job-project-das.md:54`: *"auto create travel permit request based on
+  - **CONTRADICTING** — `projects-jobs/job-project-das.md:54`: *"auto create travel permit request based on
     assets required – before navigtaing to next step, **add asset is compulsory**"* (typo verbatim).
     This is the same cross-module punch list flagged in §*Feedback punch lists are not scoped to the
     module they are filed under* — Permit is one of its nine sections.
@@ -1087,7 +1095,7 @@ will be about your ticket.
   a one-line ticket description cannot settle it. Answer that distinction first; the optionality
   question probably dissolves once it is named.
 - Blocked: `SCRUM-788` (Done) vs the shipped optional `assetId`; the travel-permit request flow in
-  DAS; `product/project-module/05-create-and-track-permits.md`, which describes neither behaviour.
+  DAS; `projects-jobs/project-module/05-create-and-track-permits.md`, which describes neither behaviour.
 - Owner: Lisette Anzaldo (dispatch/DAS/permits), with Liz Lopez — she was the person addressed on the
   recording and never recorded answering.
 - Status: open
@@ -1105,18 +1113,18 @@ will be about your ticket.
     we'll we'll also add Dispatch then."*** The "Brian Petros" label here addresses Lisette by name
     and is consistent with the **real** Brian Petros. **Asked by a named TCG person, assented to by a
     second, accepted by CodingCops on the call.**
-  - `product/atom-mobile-app-user-stories/06-safety-and-self-service.md:34-50` — US-21 lists 911,
+  - `field-ops/atom-mobile-app-user-stories/06-safety-and-self-service.md:34-50` — US-21 lists 911,
     Safety contact, Crane Superintendent contact, nearest-hospital display, call and navigate.
     **No Dispatch, no broadcast.** The file was **re-migrated 2026-08-13 (Confluence v10), nearly two
     months after the meeting** — the omission survived a refresh.
-  - `product/frd-new-format-draft/05-functional-requirements/fr-fop-037-emergency-contacts.md`
+  - `field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-037-emergency-contacts.md`
     (**FR-TCG-FOP-001**) — *"Provide emergency contact list including **Dispatch, Maintenance, Yard,
     and Office**"*. **The exact inverse of US-21**: it has Dispatch and Office and omits 911, Safety
     Officer, Crane Superintendent and hospital.
   - **FR-TCG-FOP-002 v2.0 DRAFT has no SOS or emergency-assistance requirement at all** — a search
-    across `product/field-ops-frd/` returns nothing; its `fr-fop-026-escalation-handling.md` is
+    across `field-ops/field-ops-frd/` returns nothing; its `fr-fop-026-escalation-handling.md` is
     deficiency escalation, a different thing.
-  - `product/frd-new-format-draft/08-open-questions.md:24` — open question 8, *"What emergency
+  - `field-ops/frd-new-format-draft/08-open-questions.md:24` — open question 8, *"What emergency
     contacts should be available in the phonebook?"*, owner **Wes**, status **Open**. This pair is
     literally that question.
   - `SCRUM-880` *SOS / Emergency Assistance* — **In Review**, AC a **verbatim copy of US-21**;
@@ -1163,10 +1171,10 @@ will be about your ticket.
     has four rows and none of them is this rule** — it is recorded as a discussion point with **no
     owner and no action item**. The minute's own analysis at :79-82 already says *"Neither source
     covers either rule."*
-  - `product/daily-allocation-system.md:47` — *"unavailable ones are greyed out but still drag-gable
+  - `dispatch/daily-allocation-system.md:47` — *"unavailable ones are greyed out but still drag-gable
     with a system warning"*; :48 — *"Assignment is time-based (shift start/end), so the same asset can
     be assigned to two non-overlapping jobs on the same day"*; :80, :82 — maintenance tag and three
-    chip states. `product/project-module/03-create-manage-job-schedule.md:43` — a warning on
+    chip states. `projects-jobs/project-module/03-create-manage-job-schedule.md:43` — a warning on
     same-time, same-date double assignment.
   - `SCRUM-502` *Asset Availability & Maintenance Status* — **Done**, created **2026-06-03**,
     AC 2: an asset marked maintenance *"stays visible but **cannot be assigned to a job**"*.
@@ -1176,15 +1184,15 @@ will be about your ticket.
   the block on 2026-06-15, two months before the 08-11 recording, and the code agrees:
   `apps/web/src/features/das/left-section/components/asset-card.tsx` passes `disabled: isInactive` to
   the drag hook for `UNDER_MAINTENANCE` assets and short-circuits the click handler. So
-  `product/daily-allocation-system.md:47` is simply **stale** — a 2026-04-30 statement superseded in
+  `dispatch/daily-allocation-system.md:47` is simply **stale** — a 2026-04-30 statement superseded in
   June — and it carries no marker warning a reader, which matters because
-  `product/daily-allocation-INDEX.md` calls that file *"the only DAS specification"*. On
+  `dispatch/daily-allocation-INDEX.md` calls that file *"the only DAS specification"*. On
   double-booking the recording and :48 already **agree**. What is genuinely unwritten: **scheduled
   hours, sales coordinator, and the Tentative / Hold / Maintenance job statuses appear in no vault
   spec and no ticket**, and nothing says whether the :43 warning should still fire once maintenance
   is hard-blocked. Also relevant: §*Sell-side scheduling artefacts — no vault coverage*, which
   already names an owner for this area.
-- Blocked: the job status enum; the schedule form fields; whether `product/daily-allocation-system.md:47`
+- Blocked: the job status enum; the schedule form fields; whether `dispatch/daily-allocation-system.md:47`
   should be corrected (a body edit — not `tcg-scrum`'s to make).
 - Owner: Brian Petros (labelled speaker, and already named as owner of the sell-side workflow source
   files), with Ryan Adams to resolve the attribution; Lisette Anzaldo for the DAS consequence.
@@ -1208,13 +1216,13 @@ will be about your ticket.
     covering several people — at 34:26 the same label says *"mine has W in it"* while discussing
     signature legibility, which is **Wes Staley**. Treat "Melissa McNutt" as the best available
     attribution, not a certainty.
-  - `product/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md`
+  - `field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md`
     (**FR-TCG-FOP-001 v1.1**) — *"Photo capture is now a **configurable deployment toggle**… Photo
     capture can be enabled or disabled per deployment configuration."*
-  - `product/field-ops-frd/08-functional-requirements/fr-fop-018-customer-signatures.md`
+  - `field-ops/field-ops-frd/08-functional-requirements/fr-fop-018-customer-signatures.md`
     (**FR-TCG-FOP-002 v2.0** — same id, different requirement; `INDEX.md` caveat 3) — *"shall support
     **configurable** photo capture during signature workflows"*. **Both FRDs say configurable.**
-  - **CONTRADICTING** — `product/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md:136`:
+  - **CONTRADICTING** — `field-ops/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md:136`:
     *"Applicable customer photo is captured as part of the authorization flow; **if the required
     photo is removed, it must be retaken**."* And `04-completion-and-return.md:32` states the same
     unconditionally for the final signature. **This page was re-migrated 2026-08-13 — the day after
@@ -1239,3 +1247,434 @@ will be about your ticket.
   Kyle Harlow for the field consequence. CodingCops owes the ticket regardless of the answer.
 - Status: open — needs confirmation
 
+## SCRUM-877 Labor and Unit Details — Oiler crew linking
+
+- Question: nine distinct sub-questions, all raised while elaborating `SCRUM-877` ("Labor & Unit
+  Details," US-18). Grouped here as one entry since they share a ticket and a root cause — the
+  ticket's clarifying comment (id `22923`, tcgproject12, 2026-08-20) describes a full Oiler
+  -enters-for-the-crew workflow with formulas, but the mechanism it depends on (grouping tickets
+  into "the same set") has no backend counterpart today, and several of its inputs (tonnage
+  ranges, overtime model, Labor Classification list) are undefined anywhere.
+  1. **Overtime model** — is overtime a field-ops-local, additive figure (work-end-time minus
+     shift-end-time, per the comment) or a payroll-engine daily-accumulation output (Reg/OT/DT
+     buckets, per `payroll/payroll-app-current-state/03-payroll-rule-catalog.md` and `PR-021`)?
+     Neither source cites the other.
+  2. **Set-resolution mechanism** — is `JobTicket → JobResourceAllocation.setResourceId →
+     sibling allocations → sibling tickets` sufficient to answer "who else is in my crew" and to
+     gate Oiler write-authorization, or does the ticket's own hedge ("we may need to link or
+     associate all employee tickets") mean a new junction/link table is required? No existing
+     query in `apps/api/src` groups by `(subJobId, setResourceId)` today; two independent,
+     unshared `resolveSetRoot` implementations exist for other purposes
+     (`apps/api/src/usecase/das-allocations/das-allocations.service.ts:589-606`,
+     `apps/api/src/usecase/das-loadout/das-loadout-defer-allocation.util.ts:82-91`).
+  3. **"Craft Code" on the Oiler card** — seeded craft codes today are `OPERATOR`/`LABORER`/
+     `MECHANIC`/`SUPERVISOR` (no `Oiler` craft code); is Craft Code meant to be a new seed value,
+     or does it mean something other than `Employee.craftCodeId`?
+  4. **Where the hours arithmetic runs** — client-side display convenience (as today's
+     `apps/mobile/features/field-ticket/steps/labor-hours.ts` already computes) or a
+     server-side, payroll-authoritative calculation? This is the same seam as the pre-existing
+     *Field-ops lunch capture vs payroll WTL* entry above, now with a second, independent
+     consumer.
+  5. **Craft Modifier / Boom Pay tonnage ranges and rates** — not stated anywhere. The one
+     existing bracket table (`BOOM_BRACKETS`, `apps/mobile/features/field-ticket/steps/
+     LaborBody.tsx:31-46`) is a boom-**length** table hardcoded to one 550-ton crane design
+     reference, not a tonnage table for the fleet.
+  6. **Where the tonnage-range reference data lives, and whether `Asset.capacity`
+     (`apps/api/prisma/schema.prisma:707`, free-text `String? @db.VarChar(50)`) becomes numeric
+     or gets a parallel structured field** — a real schema-design tradeoff, not inferable.
+  7. **Two Jira attachment images unreadable** — `image-20260820-131819.png` (id `12450`) and
+     `image-20260820-132954.png` (id `12449`), embedded in comment `22923` directly under the
+     "Tickets and Labor/Unit Entry" section. Direct attachment content fetch returned HTTP 403;
+     the comment's inline `blob:` references do not resolve. Likely shows the Oiler multi-card
+     layout or the job-set diagram the comment describes in prose.
+  8. **Labor Classification value list** — US-18 says classifications "can include" Job Site
+     Work / Shop Work / Travel / Site Inspection "where applicable" (illustrative wording); no
+     schema table or seed list for these exists; the source's own migration note says these
+     values appear in no payroll document.
+  9. **Non-Oiler read access** — can an employee ever see their own Labor/Unit data (e.g.
+     read-only in a review screen) once the Oiler has entered it on their behalf, or is it
+     invisible to them entirely since their ticket carries no Labor/Unit step?
+- Candidates: `SCRUM-877` (ticket + comment `22923`), `product/atom-mobile-app-user-stories/
+  05-compliance-labor-and-review.md` US-18, `product/field-ops-frd/08-functional-requirements/
+  fr-fop-023-labor-details.md`, `product/frd-new-format-draft/05-functional-requirements/
+  fr-fop-023-labor-detail-entry.md` and `fr-fop-024-boom-pay-craft-modifier-selection.md`,
+  `payroll/payroll-app-current-state/03-payroll-rule-catalog.md`,
+  `payroll/codingcops-rule-matrix.md` (`PR-011`), `product/frd-new-format-draft/
+  08-open-questions.md` item 10 (already logged as open there — this ticket's comment supplies a
+  candidate answer but no decision record exists), plus current code in
+  `apps/mobile/features/field-ticket/steps/LaborBody.tsx`, `labor-hours.ts`,
+  `apps/mobile/data/compose-ticket-detail.ts`, `apps/api/prisma/schema.prisma`,
+  `apps/api/src/usecase/job-tickets/job-tickets.service.ts`.
+- Note: this ticket's comment independently answers `frd-new-format-draft/08-open-questions.md`
+  item 10 ("system-suggested with user override") but that answer sits in a Jira comment, not a
+  decision record — the vault open-question entry has not been marked resolved and should not be
+  treated as settled until a `decisions/` note exists. This entry is also a second, independent
+  consumer of the pre-existing *Field-ops lunch capture vs payroll WTL* gap above (line 107) —
+  do not resolve that gap as part of closing this one; they are linked, not duplicate.
+- Blocked: `SCRUM-877` REQ-03, REQ-05, REQ-07, REQ-10 in `.ai/aidlc/SCRUM-877/spec.md` (all
+  marked build-blocking); REQ-14 partially, via the pre-existing WTL gap.
+- Owner: product team; sub-question 5/6 rate/schema ownership likely payroll (Brian Petros, per
+  `payroll/INDEX.md`'s general pattern, though not named on this specific ticket); sub-question 7
+  needs whoever can view the ticket in a browser (tcgproject12 or any Jira UI user).
+- Status: open
+
+### Update 2026-08-21 — partially resolved by decision record
+
+A decision record now exists — `.ai/vault/decisions/
+2026-08-21-scrum-877-labor-and-unit-details-oiler-crew-linking.md` (`status: verified`,
+`decided_by: tcgproject12` [comments `22923`, `23025`, `23064`, `23066`] `and Umair Khan,
+reporter of SCRUM-877` [comment `23062`], all fetched live from the SCRUM-877 Jira thread by
+`tcg-scrum`, 2026-08-21) — answering all nine sub-questions above, either fully, partially, or
+as an explicit scope deferral. This update records the disposition of each sub-question against
+the original numbering above; it does not remove or edit the original entry.
+
+- **Sub-question 1 (overtime model) — moot for this ticket, not decided.** Comment `23066`:
+  overtime dropped from `SCRUM-877`'s scope entirely ("we do not need to account for extra hours
+  at this stage... payroll... will be implemented in the future"). The field-ops-vs-payroll
+  overtime-ownership question itself remains open for whichever ticket builds the payroll module.
+- **Sub-question 2 (set-resolution mechanism) — RESOLVED.** Comment `23066` confirms
+  `setResourceId`-based resolution is sufficient ("I believe the current information is
+  sufficient... oiler tickets need to be linked to the corresponding employee tickets" — read
+  precisely in the decision record as describing the join's required *outcome*, not authorizing a
+  new junction table). No new schema entity for "same set" is needed.
+- **Sub-question 3 ("Craft Code" on the Oiler card) — STILL OPEN, narrowed.** Comment `23066`
+  confirms `Employee.craftCodeId` is the field to read ("The Craft field in the Employee module
+  maps to the Oiler value shown in the mock design card"), but does not state whether the missing
+  `OILER` seed row (still absent — `OPERATOR`/`LABORER`/`MECHANIC`/`SUPERVISOR` only,
+  `apps/api/prisma/migrations/20260703100000_employee_craft_and_work_comp_codes/
+  migration.sql:82-87`) should be added as part of this ticket.
+- **Sub-question 4 (where hours arithmetic runs) — RESOLVED.** Comment `23066`: "The
+  billable-hours calculation should be handled on the backend. We should create a reusable
+  function for this logic so it can also be used later in the payroll module." Server-side,
+  authoritative, and explicitly required to be reusable beyond this ticket.
+- **Sub-question 5 (Craft Modifier/Boom Pay ranges) — STILL OPEN, narrowed and re-scoped.**
+  Comment `23025` (tcgproject12): the design mockup's bracket table ("`BOOM_BRACKETS`") is
+  "limited and is incorrect" — do not use it. Comment `23066`: the real source is
+  `FMS_UNION_CRAFT_MODIFIER` (33 codes), axis is **boom length** (not tonnage as this entry
+  originally framed it), range 080–100 ft to 421–440 ft, oiler/operator rates differ, clamp
+  beyond range, symmetrical pattern. Link given:
+  `https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878` — **this link does not
+  resolve for any agent** (public non-member reader, not enabled; confirmed independently on at
+  least three separate attempts across two agent sessions). The literal 33 rows are still not in
+  hand anywhere in the vault or in this ticket. Also narrows sub-question 7's original framing
+  and this entry's own original "Oiler enters for ALL employees" premise: comment `23025` states
+  "oiler will be responsible for filling the labour data for oiler and operator type employees
+  only who work on boom" — non-boom employee types in a set never get this step at all.
+- **Sub-question 6 (reference-table location / `Asset.capacity`) — PARTIALLY RESOLVED.** Comment
+  `23066`: "The Asset Capacity field, which stores the tonnage value, should be numeric and
+  should accept decimal values" — `Asset.capacity` migration to numeric/decimal is now confirmed,
+  scheduled schema work. **However**, per sub-question 5's resolution, the Craft Modifier bracket
+  axis is boom **length**, not tonnage — so this answer, while real and actionable on its own
+  terms, does not supply the field REQ-05 actually needs to match against. No boom-length field
+  exists anywhere in the schema and none has been authorized. This is a new, narrower open item
+  surfaced by the decision, not one it closes.
+- **Sub-question 7 (unreadable attachment images) — STILL OPEN.** Direct fetch still returns
+  HTTP 403 for every agent that has attempted it, including during this decision-writing pass. A
+  description of the images' contents reached one downstream session via a coordinator relaying
+  screenshots pasted into a chat — that description is **not treated as a citable source** in
+  `spec.md` for exactly the reason this register exists: it is not durable or independently
+  re-checkable the way a Jira attachment or a decision-record citation is. The images remain
+  functionally unread by this process.
+- **Sub-question 8 (Labor Classification list) — EXPLICITLY DEFERRED, NOT ANSWERED.** Comment
+  `23066`: "Skip this point." The product owner was asked directly and declined — this is
+  different from "resolved" and is recorded as such; do not treat REQ-11 as settled by this
+  update.
+- **Sub-question 9 (non-Oiler read access) — RESOLVED, yes.** Comment `23062` (Umair Khan): "They
+  should see for read only." Comment `23066` (tcgproject12), consolidated block: "Q9: Yes." The
+  decision record independently re-verified these two comments agree with each other against the
+  live thread — an earlier, uncited relay into a downstream session had wrongly described this as
+  self-contradictory; that description was never adopted and is superseded by this resolution.
+- Also per comment `23066`'s final line ("skip the conflict-related point... payroll... will be
+  addressed as part of the payroll module in the future"): the REQ-03 overtime-model conflict and
+  the REQ-14 payroll-retention conflict (which rests on the *Field-ops lunch capture vs payroll
+  WTL* entry above, line 107) are both **deferred by explicit product-owner instruction, not
+  adjudicated.** This update does **not** mark the *Field-ops lunch capture vs payroll WTL* entry
+  resolved — it remains independently open on its own record, in `payroll/gaps.md`'s domain, and
+  this ticket simply proceeds without resolving it.
+- Overall status: **still open.** Four of nine sub-questions remain unanswered or newly narrowed
+  (3, 5, 6, 7); one is explicitly deferred rather than answered (8). Five are resolved (1 as
+  "moot for this ticket," 2, 4, 9, and 6 partially). Do not mark this entry `resolved` until at
+  minimum sub-questions 3, 5, 6 (boom-length field), and 7 are settled — see
+  `.ai/aidlc/SCRUM-877/spec.md` §12 for the live per-question detail.
+- Status: open (updated 2026-08-21 — partially resolved, see above; not closed)
+
+### Update 2026-08-21, round 2 — chat-relayed content, not a decision record, two new questions raised
+
+A second round of information arrived the same day, **not posted to Jira and not run through
+`tcg-scrum`** — the product owner supplied it directly to the coordinator in chat, after being
+asked whether they wanted to post to Jira first (matching round 1's process) and choosing not to
+this time. This update records what was relayed, what was independently verified against the
+actual schema (and is cited to the schema, not the relay), and — the operative finding — that
+the relayed content itself raised two brand-new open questions rather than closing any existing
+one outright.
+
+- **Sub-question 3 (Craft Code / seed value) — re-framed, still open.** The relay states
+  `EmployeeCraftCode` is a tenant-configurable admin table (settings-tab module), not a
+  hardcoded enum needing a code-level "Oiler" seed value. Independently verified against the
+  schema: `EmployeeCraftCode` (`apps/api/prisma/schema.prisma:2261-2284`) does have exactly the
+  shape a configurable per-tenant lookup would (`code`, `label` — confirmed the literal field
+  name is `label`, not `name` — `description`, tenant-scoped uniqueness constraints), consistent
+  with the relay's characterization. **This resolves the *mechanism* question** (no code needs
+  to special-case "Oiler" as a string) **but not the *data* question** (does a usable
+  Oiler-appropriate row actually exist in any tenant's configured data today, and if not, whose
+  job is it to add one). The relay is not cited as a source for the data question, only the
+  schema-verified mechanism point is retained as fact.
+- **Sub-question 5 (Craft Modifier/Boom Pay rate table) — a candidate table was relayed, in
+  chat, not posted to Jira; not adopted as a source.** The relayed table (reproduced in full in
+  `.ai/aidlc/SCRUM-877/spec.md` REQ-05, including its gaps, deliberately not smoothed over) gives
+  17 boom-length brackets, 080–100 ft through 421–440 ft, with distinct Operator and Oiler
+  codes/rates for most brackets. **The table itself is internally inconsistent with the
+  round-1 decision record's own "symmetrical pattern" claim**: bracket `OP-BP-17` (401–420 ft) is
+  simply missing from what was relayed, and the top two brackets (381–400 ft, 421–440 ft) carry
+  an Operator code/rate with **no Oiler counterpart at all** — every bracket below 380 ft has
+  both. This is not this spec's error in transcription; it is reproduced exactly as given. This
+  update does not resolve whether the missing `OP-BP-17` and the Oiler-side gap are real features
+  of the source data or artifacts of how it was relayed — see the new sub-question below.
+- **NEW sub-question 10 — what rate applies to an Oiler on a boom above 380 ft?** Given the
+  relayed table's apparent asymmetry above 380 ft, and the round-1 decision's own confirmed
+  clamp-beyond-range rule, there is no Oiler bracket to clamp to in that range. Nobody has been
+  asked this directly; no source proposes an answer. This spec explicitly declines to assume a
+  fallback (e.g. reuse the highest available Oiler bracket) — that would be an invented business
+  rule, not a read one.
+- **Sub-question 6 (boom-length field / `Asset.capacity` vs. tonnage) — partially resolved,
+  one new question opened.** The relay stated boom length is recorded under "Assets module ->
+  [some] section -> Main Boom Length." **Independently verified directly against the schema**
+  (not taken on the relay's word): `Asset.mainBoomLength` exists at
+  `apps/api/prisma/schema.prisma:758`, exact definition `mainBoomLength String? @map
+  ("main_boom_length") @db.VarChar(30)` — free-text, same pattern `Asset.capacity` was in before
+  its own confirmed migration. This closes the "where does boom length live" half of
+  sub-question 6. It opens a new one: nobody has been asked whether `mainBoomLength` itself
+  should migrate to numeric the way `capacity` did — see the new sub-question below.
+- **NEW sub-question 11 — should `Asset.mainBoomLength` migrate to numeric?** Proposed only by
+  analogy to the `Asset.capacity` migration (sub-question 6, resolved) — no source has actually
+  been asked about `mainBoomLength` specifically. `REQ-17` in `.ai/aidlc/SCRUM-877/spec.md` is
+  added on this basis and is itself flagged `[OPEN]` pending that direct confirmation.
+- Note on process, worth surfacing plainly rather than only noting quietly: this is now the
+  second time in the same day that information central to unblocking this ticket was given
+  verbally/in-chat rather than posted where it becomes a citable, durable source. Both times,
+  this register and `spec.md` have declined to treat the chat content as settled fact — which is
+  working as intended — but the pattern itself (asked to post to Jira, chose chat instead, twice)
+  is worth naming to whoever owns this ticket's process, independent of whether the content
+  turns out to be accurate.
+- Blocked (updated): `SCRUM-877` REQ-05 (rate values **and** the new above-380ft Oiler question),
+  REQ-17 (new, migration not authorized), in addition to the items already blocked per the prior
+  update.
+- Owner (updated): as before, plus — sub-questions 10 and 11 should be asked in the same pass as
+  the outstanding sub-question 5 (rate table) and sub-question 6 (boom-length migration) asks,
+  since they are the same conversation, not four separate ones.
+- Status: open (updated 2026-08-21, round 2 — narrowed further; two new questions added; still
+  not resolved)
+
+### Update 2026-08-21, round 3 — second decision record, most of the ticket now resolved
+
+A second, separate decision record now exists — `.ai/vault/decisions/
+2026-08-21-scrum-877-labor-and-unit-details-boom-pay-rate-table.md` (`status: verified`,
+`decided_by: tcgproject12, posted directly on the SCRUM-877 Jira ticket, comment 23099,
+2026-08-21T19:06:25.493+0500`, fetched live via Atlassian MCP by `tcg-scrum`) — a **new dated
+file, not an amendment** to the first `SCRUM-877` decision record, since it resolves a disjoint
+question set cited to a different comment. Independently re-verified this update: the schema
+facts the decision cites (`Asset.capacity`, `Asset.mainBoomLength`, `EmployeeCraftCode`) are
+unchanged from prior checks.
+
+This closes most of what round 2 had left open, on the strength of the same content the round-2
+chat relay had supplied — now reaching the ticket through a citable Jira comment instead.
+
+- **Sub-question 5 (rate table) — RESOLVED.** Comment `23099` supplies the full 16-row table
+  (identical values to the round-2 relay) and states directly: "the table is genuinely not
+  symmetric — `OP-BP-17` (401–420 ft) does not exist in the source data, and there is no Oiler
+  bracket at all above 380 ft." This is the same content, now durably sourced.
+- **NEW sub-question 10 (above-380ft Oiler rate) — RESOLVED.** Comment `23099`: "Confirmed rule
+  for an Oiler on a crane with boom length above 380 ft: use the 361–380 ft bracket's Oiler
+  rate — `OI-BP-15`, $3.750/hr." Chooses option (a) from round 2's three unchosen options, and
+  the same comment's "does not exist in the source data" language explicitly rules out option
+  (c) (a transcription artifact) — the asymmetry is confirmed real, not a relay error.
+- **NEW sub-question 11 (`Asset.mainBoomLength` migration) — RESOLVED.** Comment `23099`: "Main
+  Boom Length field: recorded on the Asset module in feet, separate from Asset Capacity
+  (tonnage). Confirmed: should also be converted to a numeric field, same as Asset Capacity."
+  Direct authorization, not an inference from the `Asset.capacity`/REQ-16 precedent as round 2
+  had left it.
+- **Sub-question 6 (boom-length field location + migration) — RESOLVED, both halves.** Location
+  was already known from round 2 (`Asset.mainBoomLength`, verified against the schema); the
+  migration is now authorized per sub-question 11 above.
+- **Sub-question 3 (Craft Code) — re-confirmed with better provenance, not newly resolved; the
+  data-readiness half remains open.** Comment `23099`: "Craft Code source: confirmed. Configured
+  via a Settings-tab admin module (`code` + `label`)... no hardcoded value, no seed data needed."
+  This restates, on a citable Jira comment rather than an uncited chat relay, exactly what round
+  2 had already established about mechanism. **It does not address whether any tenant has
+  actually configured an Oiler-appropriate `EmployeeCraftCode` row today** — that operational
+  question is untouched by this comment and remains open.
+- **Sub-question 7 (attachment images) and sub-question 8 (Labor Classification list) —
+  untouched, remain open/deferred exactly as before.** Comment `23099` does not address either.
+- **Residual, newly noted, not blocking:** exact bracket-boundary edge semantics (is 380.0 ft or
+  440.0 ft inclusive/exclusive of which bracket) is not addressed by comment `23099` or any prior
+  source — flagged for the executor as a small detail, not logged as its own blocking
+  sub-question.
+- **Residual, unchanged:** precision/scale and backfill strategy for both `Asset.capacity`
+  (REQ-16) and `Asset.mainBoomLength` (REQ-17) — both migrations are now authorized in
+  principle; neither comment specifies the details.
+- Overall status: **still open, but narrowly.** Of the nine original sub-questions plus the two
+  round-2 additions (eleven total), only **sub-question 3's data-readiness half** and
+  **sub-question 7 (images)** remain genuinely unanswered; sub-question 8 remains an explicit
+  deferral, not an unanswered question in the same sense. Do not mark this entry fully `resolved`
+  while 3 and 7 stand — but the great majority of what this ticket needed from product is now in
+  hand, with real citations.
+- Status: open (updated 2026-08-21, round 3 — nearly all sub-questions resolved; only
+  data-readiness (3) and the attachment images (7) remain; 8 stays an explicit deferral)
+
+## SCRUM-877 U1 — Asset.capacity/mainBoomLength numeric migration: unit ambiguity and the mainBoomLength edit-form format
+
+- Question: two distinct sub-questions surfaced while building U1 (`Asset.capacity` and
+  `Asset.mainBoomLength` migrating `String?` → `Decimal?`, REQ-16/REQ-17). Both are downstream of
+  precision/scale/backfill being `NOT SPECIFIED` — units.md explicitly delegated that choice to
+  the executor — but these two specific consequences go beyond a precision/scale pick and are
+  real product/UX questions no source addresses:
+  1. **No unit-of-measure column exists for either field, and the existing free text mixes
+     units.** Confirmed directly against `apps/api/src/utility/seed-data.ts`: `Asset.capacity`
+     values include both tons (`'175 Ton'`, `'100 Ton'`) and pounds (`'21,000 lbs'`, `'500 lbs'`,
+     `'80,000 lbs GVW'`). Converting all of these to a bare `Decimal` with the
+     leading-numeric-extraction rule this unit adopted (`175`, `100`, `21000`, `500`, `80000`)
+     produces numbers that are no longer comparable to each other, with nothing in the row
+     recording which unit the original text used. The migration cannot resolve this on its own
+     without inventing a unit-standardization decision (e.g. "treat all Capacity as tons" or "add
+     a `capacityUnit` column") that no source authorizes. Real production `Asset.capacity` rows
+     (not just seed data) will have the same problem if they mix units the same way.
+  2. **The web edit form for `mainBoomLength` uses a composite feet+inches format that has no
+     representation once the column is a plain `Decimal`.**
+     `apps/web/src/features/assets/asset/components/asset-form-sections/dimensions-section.tsx`
+     renders `mainBoomLength` through `FeetInchesField`
+     (`.../feet-inches-field.tsx`), which serializes to `"N ft M in"` (or a partial-edit buffer
+     `"N|M"`), not a plain number — confirmed by direct read of `parseFeetInches`/
+     `toFeetInchesString` in that file. The API DTO now rejects that format outright (the new
+     `@Matches(MONEY_DECIMAL_PATTERN)` validator on `mainBoomLength` in `create-asset.dto.ts`
+     requires a plain decimal string), so this form's write path is broken until it is
+     redesigned. No source (spec.md, units.md, or either decision record) addresses what the
+     input should look like once the field is numeric — plain decimal feet? Decimal feet with a
+     separate read-only inches display? This is a UI/product decision, not a type change, and
+     units.md's instruction to "update every existing typed consumer's TS types/forms to accept
+     a number instead of a string" does not settle it — the actual fix is a form redesign, not a
+     type edit.
+- Candidates: `.ai/aidlc/SCRUM-877/spec.md` REQ-16/REQ-17 (both explicitly leave precision/scale
+  and backfill `NOT SPECIFIED`); `.ai/aidlc/SCRUM-877/units.md` U1 (delegates the choice to the
+  executor, silent on unit-of-measure and on the feet+inches UI specifically);
+  `apps/api/src/utility/seed-data.ts` (the real mixed-unit values); `apps/web/src/features/
+  assets/asset/components/asset-form-sections/feet-inches-field.tsx` (the composite-format UI).
+- Note: U1 as built does NOT fix either of these — it converts existing free text using a
+  leading-numeric-extraction rule (documented in the migration's own comment and in
+  `apps/api/src/utility/extract-leading-numeric.util.ts`), which is defensible as a
+  non-destructive default (nothing is silently dropped that had a leading number; anything with
+  no leading number converts to `NULL` rather than guessing) but does not and cannot resolve unit
+  ambiguity or redesign the boom-length input. The web `mainBoomLength` edit form
+  (`dimensions-section.tsx`/`FeetInchesField`) is left unchanged and will send a payload the API
+  now rejects until someone decides the new input's shape.
+- Blocked: nothing in U1 itself (both migrations are fully built and gated green); this blocks
+  the `mainBoomLength` edit form working end-to-end going forward, and blocks trusting
+  `Asset.capacity` as a truly comparable numeric field across tenants/rows until the unit
+  question is settled.
+- Owner: product team (unit-of-measure convention for Capacity; UX for the boom-length input)
+- Status: open
+
+## SCRUM-877 U2 — no source specifies how the Oiler enters a teammate's raw boom/lunch/WTL data
+
+- Question: REQ-10 (backend persistence via `setResourceId`-based authorization) and REQ-07
+  (Oiler enters Labor & Unit data for boom-working Operator-type teammates in the set) are both
+  `[VERIFIED]` on the *mechanism* — the Oiler's write reaches the teammate's own ticket, and the
+  server never trusts a client-computed hours figure. What no source addresses is the **input
+  surface**: how does the Oiler actually key in a teammate's raw boom start/end timestamps and
+  lunch/WTL counts from the Oiler's own phone? The existing `startWork`/`endWork` timer + lunch/
+  WTL capture flow (`apps/mobile/features/field-ticket/capture.ts`, `timers/lunch-windows.ts`)
+  only exists on each employee's *own* ticket flow — there is no existing UI anywhere in this app
+  for one person to enter timer/lunch/WTL data on another person's behalf. REQ-01's own statement
+  that "Labor Total Hours is a read-only, system-computed field" forecloses the old design
+  mockup's apparent "Total Hours input" (referenced only via the still-uncited chat-relayed image
+  description in spec.md §6, not a source this ticket treats as citable) — so the missing surface
+  is specifically for the *raw* boom/lunch/WTL inputs, not a shortcut hours field.
+- Candidates: `.ai/aidlc/SCRUM-877/spec.md` REQ-01 (`NOT SPECIFIED`), REQ-10's acceptance line
+  (silent on input mechanism, only on persistence/authorization), REQ-13/§6 (Unit/Asset display
+  layout also `NOT SPECIFIED`, same root cause — the two still-unreadable Jira attachment images,
+  Q7); `.ai/aidlc/SCRUM-877/units.md` U2's slice-contents table (says `LaborBody.tsx` "wired to
+  the real endpoint for submit," which this unit does for the caller's own card, but does not
+  specify a teammate-entry widget); `apps/mobile/features/field-ticket/steps/LaborBody.tsx` (the
+  existing `CrewCard`/boom-bracket-picker UI, all still local-only for anyone but the caller).
+- Note: U2 as built does NOT invent this UI. The caller's own card (Oiler or, degraded, any
+  self-viewing employee) submits real Labor & Unit data using this device's own timer/lunch/WTL
+  captures, computed server-side by the shared `computeLaborHours` function and persisted via the
+  new `setResourceId`-scoped authorization path — this is REQ-10's mechanism, fully built and
+  tested (`apps/api/src/usecase/ticket-labor-entries/`). A teammate's card in the crew list shows
+  whatever is already persisted for them, read-only, with an explicit "isn't available yet"
+  message rather than a fabricated input control. If and when product specifies the intended
+  input (e.g. a Total Hours override the Oiler enters directly, contradicting REQ-01's "read-only,
+  system-computed" framing; or a start/end time picker per teammate), this is a small, additive
+  follow-up to `LaborBody.tsx` and does not require any backend change — `recordEntry`'s
+  `targetEmployeeId` + timestamp/count shape already supports it.
+- Blocked: the Oiler's practical ability to submit Labor & Unit data for teammates who don't
+  carry their own phone through the boom shift (the scenario REQ-07/REQ-10 are clearly built for)
+  — the mechanism exists end-to-end, but nothing in the mobile UI can drive it for anyone but the
+  caller's own device today.
+- Owner: product team (what the teammate-entry input should look like, and whether REQ-01's
+  "read-only, system-computed" framing still holds once real teammate entry is designed)
+- Status: open
+
+## SCRUM-877 U2 — resubmitting without boom times: preserve-prior vs. require-every-time is unspecified
+
+- Question: `RecordTicketLaborEntryDto`'s `boomStartedAt`/`boomEndedAt` are both optional (a
+  resubmission might only be updating `lunchesTakenCount`/`wtlCount`). No source
+  (`spec.md`/either decision record) says whether a resubmission that omits them should (a)
+  preserve the previously-persisted boom window and recompute hours from it, or (b) be rejected
+  outright, requiring every submission to repeat the full boom window. Found during review: the
+  original build coerced the omitted case to `null` hours (`?? 0`), which — combined with
+  `TicketLaborEntriesRepository.upsert`'s full-row `update: rest` — silently overwrote a
+  previously-correct, already-persisted Labor Total/Net Billable Hours figure with `0` on any
+  such resubmission. That specific data-corruption bug is fixed (see
+  `apps/api/src/usecase/ticket-labor-entries/ticket-labor-entries.service.ts`,
+  `recordEntry`'s fetch-then-merge before computing hours) — option (a) was implemented as the
+  conservative default, because silently corrupting previously-correct data is not acceptable
+  regardless of which of (a)/(b) product eventually confirms. This entry tracks the open
+  product question, not the bug (which is closed).
+- Candidates: `.ai/aidlc/SCRUM-877/spec.md` REQ-10 (silent on resubmission semantics, only on
+  authorization/persistence mechanism); `RecordTicketLaborEntryDto` (both boom fields
+  `@IsOptional`, enabling the omitted case in the first place).
+- Note: if product confirms (b) instead — every submission must repeat the full boom window, and
+  an omission should be rejected rather than defaulting to the prior value — this is a small
+  service-level change (reject when `existing` exists but the new input omits both boom fields,
+  rather than falling back to `existing`'s values) with a DTO note added explaining why.
+- Blocked: nothing build-blocking — (a) is implemented and tested
+  (`ticket-labor-entries.service.spec.ts`, the "resubmission that omits boom times" describe
+  block).
+- Owner: product team
+- Status: open
+
+## Standing debt — two independent, unshared `resolveSetRoot` implementations (DAS), still not consolidated
+
+- Question: not a product question — an engineering-debt item worth surfacing to whoever owns
+  unit/ticket sequencing. `apps/api/src/usecase/das-allocations/das-allocations.service.ts:589-606`
+  and `apps/api/src/usecase/das-loadout/das-loadout-defer-allocation.util.ts:82-91` are two
+  unshared copies of the same `JobResource.parentId`-walk-to-root logic, both computing
+  `JobResourceAllocation.setResourceId` at allocation-write time (the value is then persisted
+  directly on the row and never re-derived by any correctly-written reader).
+- **Correction to this entry's own prior version**: an earlier version of this note (written
+  during SCRUM-877 U2's initial build) claimed U2 had added a **third**, deliberately-deferred
+  copy of this walk inside `TicketLaborEntriesService`. On review (coordinator-flagged, fixed in
+  the same pass), that third copy was found to be **an outright bug, not a legitimate third
+  instance of the same deferred pattern**: `JobResourceAllocation.setResourceId` is already
+  selected by `findAllocationForTicket` and is the authoritative, already-resolved root — U2's
+  code was discarding that column and re-deriving a possibly-different value by walking from
+  `jobResourceId` (the allocation's own slot, not its root) instead. The walk was never
+  necessary; it has been deleted entirely, along with the now-unused
+  `TicketLaborEntriesRepository.findJobResourceParents`. U2 now reads `setResourceId` directly,
+  matching how any correct reader of this column should. This entry is corrected to reflect
+  that there are still only the original **two** unshared *write-time* implementations, not
+  three — U2 never needed one of its own.
+- Candidates: the two DAS files above.
+- Note: not build-blocking anywhere today — both copies are independently correct for their own
+  write-time callers. The risk is purely maintenance: two copies of graph-walk logic that must
+  both be updated together if `JobResource`'s parent-chain semantics ever change, with nothing
+  enforcing that they stay in sync. Any *future* reader of `setResourceId` should read the
+  persisted column directly (as U2 now does), never re-walk — re-walking is not just redundant
+  but a correctness risk if the tree is ever re-parented after the allocation was written, which
+  is exactly the scenario "resolve once at write time" is designed to snapshot against.
+- Blocked: nothing currently. Recommend a small, dedicated foundation-style unit (schema: none;
+  api: extract one shared `resolveSetRoot` write-time utility, migrate the two call sites onto
+  it) the next time anyone is already touching one of these two files, rather than opening a unit
+  for this alone.
+- Owner: whoever sequences future DAS/field-ticket units
+- Status: open

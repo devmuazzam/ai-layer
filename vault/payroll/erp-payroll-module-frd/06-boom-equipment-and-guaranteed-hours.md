@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, boom-premium, guaranteed-hours]
+tags: [module/payroll, kind/frd, boom, guaranteed-hours]
 entities: [long-boom-premium, lattice-boom, reporting-pay, guaranteed-hours]
 part_of: payroll/erp-payroll-module-frd/INDEX.md
 ---

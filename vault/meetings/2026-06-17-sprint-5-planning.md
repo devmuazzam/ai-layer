@@ -6,7 +6,7 @@ updated: 2026-07-14
 status: unverified
 conflicts_with: []
 jira: []
-topics: [daily-allocation, permits, yards, yard-operations, sprint-planning, navigation-ui, projects, lift-plans]
+tags: [module/assets, module/dispatch, module/projects-jobs, kind/meeting-notes, daily-allocation, permits, yards, sprint-planning, lift-plans]
 entities: [permit, das, yard, sprint, project]
 date_conflict: >
   Filename uses the Confluence created date (2026-06-17). The body is internally
@@ -18,15 +18,15 @@ date_conflict: >
 
 **TCG  ·  Sprint plan** **15 June – 26 June 2025**      **2-Week Sprint**
 
-**Sprint Goal** Complete the **[[product/daily-allocation-INDEX|Daily Allocation System]] (DAS)**, **Yard Operations**, and **Permit & Plan Tracker** — including foundational linking capabilities — while incorporating internal feedback and quality improvements to enhance overall system functionality and user experience.
+**Sprint Goal** Complete the **[[dispatch/daily-allocation-INDEX|Daily Allocation System]] (DAS)**, **Yard Operations**, and **Permit & Plan Tracker** — including foundational linking capabilities — while incorporating internal feedback and quality improvements to enhance overall system functionality and user experience.
 
 **Plan**
 
 | **#** | **Work Item** | **Status** |
 | --- | --- | --- |
 | 1 | Daily Allocation System (DAS) | **TO DO** |
-| 2 | [[product/yard-operations-jz|Yard Operations]] | **TO DO** |
-| 3 | Plan / [[product/project-module/05-create-and-track-permits|Permit]] Tracking System | **TO DO** |
+| 2 | [[dispatch/yard-operations-jz|Yard Operations]] | **TO DO** |
+| 3 | Plan / [[projects-jobs/project-module/05-create-and-track-permits|Permit]] Tracking System | **TO DO** |
 | 4 | Permit & Plan Linking | **TO DO** |
 | 5 | Internal Feedback & QA Improvements | **TO DO** |
 | 6 | UI Consistency & Design Enhancements | **TO DO** |

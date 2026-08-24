@@ -7,12 +7,12 @@ updated: 2026-05-18
 status: reference
 conflicts_with: []
 jira: []
-topics: []
+tags: [module/quotations, kind/transcript]
 entities: []
 meeting_date: 2026-05-18
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 3
+normalized: 2026-08-24
+normalized_substitutions: 4
 ---
 
 # Quotation And Job Lifecycle — 2026-05-18
@@ -342,7 +342,7 @@ May 18, 2026, 5:04PM
  Melissa McNutt   1:17:42 Yeah, so one thing we're missing on here, which is a huge pain point for us currently, is the tracking. So we verify all the guys' job times with Samsara. We don't have a way to do it automatically, and it takes anywhere from two to five hours a day to track the guys. So we need to implement something
  ehtesham.anwar   1:18:16 Okay. Mhm. Mm-hmm.
  Melissa McNutt   1:18:26 And then, yeah, and then once we get to payroll, that's when Brian's dashboard comes in.
- ehtesham.anwar   1:18:31 Yeah, the idea so far that I have in mind is we are going to do all of this tracking within the tickets and we are going to also attach some Sarah data and reconcile both of the data automatically.
+ ehtesham.anwar   1:18:31 Yeah, the idea so far that I have in mind is we are going to do all of this tracking within the tickets and we are going to also attach Samsara data and reconcile both of the data automatically.
  Melissa McNutt   1:18:46 Yeah.
  ehtesham.anwar   1:18:47 So, once once people come into yard, they are going to open up their application, they are going to say logged in, then they start their pre-checklist, do all of that, then they leave the yard. Once they leave the yard, all of these like smaller statuses they need, they are going to be.
  Melissa McNutt   1:19:00 Yeah.

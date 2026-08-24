@@ -7,7 +7,7 @@ updated: 2026-07-15
 status: reference
 conflicts_with: []
 jira: []
-topics: []
+tags: [module/all, kind/no-recording]
 entities: []
 meeting_date: 2026-07-15
 kind: no-recording

@@ -6,7 +6,7 @@ updated: 2026-02-04
 status: verified
 conflicts_with: []
 jira: []
-topics: [scrum-process, sprint-planning, scheduling, open-questions]
+tags: [module/dispatch, kind/sop, sprint-planning, scheduling, open-questions]
 entities: [sprint, build-up, schedule, task]
 supersedes:
   - confluence/TCG/Backlog Grooming — TCG-space copy, last updated 2026-04-23, not migrated

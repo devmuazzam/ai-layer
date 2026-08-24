@@ -7,12 +7,12 @@ updated: 2026-03-12
 status: reference
 conflicts_with: []
 jira: []
-topics: [sales-quoting]
+tags: [module/quotations, kind/transcript]
 entities: []
 meeting_date: 2026-03-12
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 8
+normalized: 2026-08-24
+normalized_substitutions: 12
 ---
 
 # Sales Pricing In FCC — 2026-03-12
@@ -140,7 +140,7 @@ March 12, 2026, 3:26PM
  ehtesham.anwar   30:09 That are available against these categories. Once you select that, you'll be able to add. Subcategories. What are the assets and employees that needs to be sent and allocated when the screen is going in the field? And all of these things will also have another feature. That if it is required or not. If it is not required, it's going to be shown in the estimates, but you will be able to a salesperson will be able to remove this role. Otherwise if it is a required field then they won't be able to remove this. Particular acid. So for example, you added a tractor at some employee. That employee is an operator. Maybe you can add multiple oilers as well and you add a trailer and you say OK, two of these things are required and one of them is not. That's me.
  ans.nisar   31:15 So you're saying like you're so if I just do it again, so unit type will be. Let's say I create a new unit type which is the mobile crane, right? And I would create a unit type for the mobile unit crane.
  ehtesham.anwar   31:22 Yeah.
- ans.nisar   31:32 And let's say for example I have I have two. Mobile planes, let's say.
+ ans.nisar   31:32 And let's say for example I have I have two. Mobile cranes, let's say.
  ehtesham.anwar   31:40 OK.
  ans.nisar   31:41 I will be creating 2 unit types. Yeah, that's a problem, right? So in my opinion.
  ehtesham.anwar   31:47 So.
@@ -155,7 +155,7 @@ March 12, 2026, 3:26PM
  Wes Staley   33:02 Thank you.
  ans.nisar   33:05 Yeah, that's what I'm saying. OK.
  Joe Schacatano   33:17 Ton machine, but their rates are different because they have a price list tied to it.
- ans.nisar   33:20 Yeah, exactly. So it sounds like what we need to do is we need to actually only do a definition here while while a unit type. So you will you have a unit type of let's say a mobile plane or whatever you know you want to call it. So you just define that, nothing else. So when you're actually creating that asset, it should automatically let you select all those subunits and everything which is required for this category.
+ ans.nisar   33:20 Yeah, exactly. So it sounds like what we need to do is we need to actually only do a definition here while while a unit type. So you will you have a unit type of let's say a mobile crane or whatever you know you want to call it. So you just define that, nothing else. So when you're actually creating that asset, it should automatically let you select all those subunits and everything which is required for this category.
  Joe Schacatano   33:54 Right. Yeah. So it yeah, exactly.
  ans.nisar   33:55 But this, yeah, yeah.
  Joe Schacatano   33:58 I know exactly what you're saying, yeah. So it should it should automatically like, let's just say that this this specific one requires 5 components. It should populate. The machine would be one of the five. It should have the subcategories of four automatically distribute when you select it, which that's what our current system does, so.
@@ -284,7 +284,7 @@ March 12, 2026, 3:26PM
  Joe Schacatano   59:58 Well, yeah, the travel permit wouldn't be a unit type. That's just a a requirement to the unit, yeah.
  ans.nisar   1:00:04 OK.
  ehtesham.anwar   1:00:06 Yeah.
- Joe Schacatano   1:00:07 So like the standard lift plan, standard lift plan, travel permit surcharges, you know, even the rigor, you know those those can't be considered units or assets. Those are just requirements to complement the the asset within the job.
+ Joe Schacatano   1:00:07 So like the standard lift plan, standard lift plan, travel permit surcharges, you know, even the rigger, you know those those can't be considered units or assets. Those are just requirements to complement the the asset within the job.
  ans.nisar   1:00:07 A requirement to the UN. Mm-hmm. But we can so Joe, but we can actually when we're actually defining a unit type, can we also mention those requirements there?
  ehtesham.anwar   1:00:27 Yeah.
  Joe Schacatano   1:00:37 Uh, what? What do you mean mention the requirements?
@@ -295,7 +295,7 @@ March 12, 2026, 3:26PM
  ans.nisar   1:01:17 Yeah, exactly.
  Joe Schacatano   1:01:18 Yeah, exactly. And then that's how we have it right now, too.
  ans.nisar   1:01:23 OK, OK.
- ehtesham.anwar   1:01:24 Yeah, that that's the idea behind the unit types. You can add any item here is it does not have to be on the asset itself. You can have these items there within the unit type and for example if somebody added. Standard lift plan to this unit type and 40 done crane was selected. It will auto populate this standard lift plan under this.
+ ehtesham.anwar   1:01:24 Yeah, that that's the idea behind the unit types. You can add any item here is it does not have to be on the asset itself. You can have these items there within the unit type and for example if somebody added. Standard lift plan to this unit type and 40 ton crane was selected. It will auto populate this standard lift plan under this.
  ans.nisar   1:01:48 Yeah.
  ehtesham.anwar   1:02:00 I think Ryan, if we if you can show us the BO creation system and how it affects your system right now and what are the operations that go around it, it would be great for us.
  Ryan Adams   1:02:18 I do not have access to that yet. I'm I'm still coming in. I'm just looking at some time saving things that I've utilized before in the past that really helped, right? So being able to put a third party in the name, pick the name and being able to generate a PO number directly from a quote. Was really useful because not only did it attach to the quote, but when it went out for authorization. So if it goes to Joe, for example, when he pulls it up and says hey, what's this for? It's over $2000, over $1000, over 10,000, whatever the case may be, it pops up the quote he could see. Exactly what it's being utilized for. Also, as we go get a PO number and something cancels or something, what ends up happening is yet PO stays open and it starts affecting the books. It looks like we have money out there. Where if if the if the job goes away, we we go ahead and put lost to the job and it cancels out that quote immediately. So the back end is always really clear on what's open and what's closed. So that's where I've seen it in the past be utilized.

@@ -6,7 +6,7 @@ updated: 2026-06-23
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, payroll-app, glossary, terminology]
+tags: [module/payroll, kind/reference, legacy-payroll-app, reference-data]
 entities: [payroll-group, labor-entry, pay-component, final-gross-pay, wtl, special-saturday]
 part_of: payroll/payroll-app-current-state/INDEX.md
 ---

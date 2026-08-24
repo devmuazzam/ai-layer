@@ -138,12 +138,12 @@ Always, in this order. Skipping a step is how a confident wrong spec gets writte
    They are never a source for *what* to build.
 4. **`.ai/vault/INDEX.md`** — what exists, what each file answers, and four caveats that
    change how everything downstream reads.
-5. **The conflict stub**, if the topic has one: `.ai/vault/product/<topic>-INDEX.md`.
+5. **The conflict stub**, if the topic has one: `.ai/vault/<module>/<topic>-INDEX.md`.
    Five exist — `field-ops-mobile`, `quotations`, `customers`, `agencies-vendors`,
    `daily-allocation`.
 6. **The specific file** — and its folder `INDEX.md` first if it is a split document
-   (`product/field-ops-frd/`, `product/frd-new-format-draft/`,
-   `product/atom-mobile-app-user-stories/`, `product/project-module/`).
+   (`field-ops/field-ops-frd/`, `field-ops/frd-new-format-draft/`,
+   `field-ops/atom-mobile-app-user-stories/`, `projects-jobs/project-module/`).
 7. **The repo, last and only as evidence of what exists today.**
 
 **Why skipping to step 6 produces a confident wrong spec.** Search finds a file that
@@ -179,8 +179,8 @@ In order of preference:
 
 **Every requirement carries its sources, and every source carries a status tag.** The
 format is fixed by `.ai/aidlc/templates/spec.md`: a vault-root-relative path
-(`product/quotation-flow-process.md`,
-`product/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`) or a
+(`quotations/quotation-flow-process.md`,
+`field-ops/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`) or a
 ticket id (`SCRUM-857`), plus `[VERIFIED]` or `[UNVERIFIED]`, plus the kind. Never a bare
 filename, never `../`, never "the FRD says".
 
@@ -194,8 +194,8 @@ note that Jira is where an unsourced decision is most likely to be found already
 Both field-ops FRDs number their requirements from `001`. A bare `FR-FOP-013` identifies
 nothing:
 
-- `FR-FOP-013` in **FR-TCG-FOP-002** (`product/field-ops-frd/`) is *Lunch Monitoring*
-- `FR-FOP-013` in **FR-TCG-FOP-001** (`product/frd-new-format-draft/`) is *Lunch Timer and
+- `FR-FOP-013` in **FR-TCG-FOP-002** (`field-ops/field-ops-frd/`) is *Lunch Monitoring*
+- `FR-FOP-013` in **FR-TCG-FOP-001** (`field-ops/frd-new-format-draft/`) is *Lunch Timer and
   Alerts*
 
 Write the document plus the id, and prefer the full path. Only `001`, `002`, `003` and the
@@ -229,7 +229,7 @@ only as good as the tags you set here.
 
 Two weak-signal sources to name explicitly whenever you lean on them:
 
-- `product/user-story-and-tasks.md` came from an **individual's personal Confluence
+- `assets/user-story-and-tasks.md` came from an **individual's personal Confluence
   space** — simultaneously the only source for yard management, HubSpot sync and email
   2FA, and the least authoritative file in the vault.
 - The feedback punch lists (`job-project-das.md`, `quotations.md`, `quotation.md`,

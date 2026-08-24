@@ -33,7 +33,7 @@ Never `AsyncStorage` for credentials.
 
 The field-ops app is the least settled area in the product record: several documents
 describe it and they disagree, with none verified. **Read
-`.ai/vault/product/field-ops-mobile-INDEX.md` before building any field-ops behaviour**,
+`.ai/vault/field-ops/field-ops-mobile-INDEX.md` before building any field-ops behaviour**,
 and do not resolve the disagreement in code.
 
 Requirement ids are ambiguous here — both field-ops FRDs number from `FR-FOP-001`, so a

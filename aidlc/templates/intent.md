@@ -129,7 +129,7 @@ Follow the Identity Convention: UUID PK, per-tenant prefixed code, child FKs by 
 | Jira attachments | |
 | Related tickets | `SCRUM-###` — *how it relates* |
 | Existing repo docs | *e.g.* `docs/notifications-architecture.md` |
-| Vault area the reader thinks is relevant | *e.g.* `product/quotations-INDEX.md` — **a guess is fine here; the elaborator verifies it** |
+| Vault area the reader thinks is relevant | *e.g.* `quotations/quotations-INDEX.md` — **a guess is fine here; the elaborator verifies it** |
 
 ## 10. Terms used that may not be defined
 

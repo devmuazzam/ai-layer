@@ -7,7 +7,7 @@ updated: 2026-03-06
 status: reference
 conflicts_with: []
 jira: []
-topics: []
+tags: [module/all, kind/summary]
 entities: []
 meeting_date: 2026-03-06
 kind: auto-summary

@@ -6,7 +6,7 @@ updated: 2026-08-13
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-api, employee-master, craft-code, data-quality, privacy]
+tags: [module/payroll, kind/reference, adp, data-migration, craft-code]
 entities: [employee, worker, adp-file-number, craft-code, payroll-group, union-code]
 part_of: payroll/adp-api-responses/INDEX.md
 ---

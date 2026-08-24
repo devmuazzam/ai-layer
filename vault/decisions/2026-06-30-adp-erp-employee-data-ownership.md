@@ -5,7 +5,7 @@ decided: 2026-06-30
 decided_by: Brian Petros (TCG, Data Analyst) proposed the ownership model on 2026-06-27; Ehtesham Anwar (Codingcops, Product Manager) refined where the lifecycle starts on 2026-06-28; Brian agreed on 2026-06-30 ("I agree with everything you said there 100%"). Wes Staley, Melissa McNutt, Corrina Bustos, Ryan Adams and the wider TCG/CC teams were on the thread; nobody dissented on record.
 status: verified
 resolves: []
-topics: [payroll, adp-integration, architecture, employee-data]
+tags: [module/payroll, kind/decision, adp, architecture, data-migration]
 entities: [employee, adp-code, payroll-group, craft, adp-company-code]
 ---
 

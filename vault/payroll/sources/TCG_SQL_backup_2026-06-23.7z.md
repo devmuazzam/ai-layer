@@ -9,7 +9,7 @@ migration_status: binary
 vault_target: "../legacy-payroll-app-db-extract/INDEX.md"
 conflicts_with: []
 jira: []
-topics: [payroll, source-file, provenance]
+tags: [module/payroll, kind/source, provenance]
 entities: []
 part_of: payroll/sources/INDEX.md
 ---

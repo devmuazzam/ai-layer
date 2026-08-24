@@ -41,7 +41,7 @@ the rare case. Say "verified" explicitly, because it is unusual enough to be wor
 when does a lunch get triggered and what happens if someone works through it?"
 
 **Retrieval:** `INDEX.md` → caveat 2 and caveat 3 both apply → conflict stub
-`product/field-ops-mobile-INDEX.md` → both FRD requirement sets.
+`field-ops/field-ops-mobile-INDEX.md` → both FRD requirement sets.
 
 **Answer:**
 
@@ -52,10 +52,10 @@ when does a lunch get triggered and what happens if someone works through it?"
 >
 > | Document | Lunch requirements | Size / updated | Status |
 > | --- | --- | --- | --- |
-> | **FR-TCG-FOP-002** v2.0 `product/field-ops-frd/` | `fr-fop-013` Lunch Monitoring, `fr-fop-014` Lunch Recording, `fr-fop-015` Work Through Lunch | 46.2 KB / 2026-06-16 | **DRAFT**, unverified |
-> | **FR-TCG-FOP-001** v1.1 `product/frd-new-format-draft/` | `fr-fop-013` Lunch Timer and Alerts, `fr-fop-014` Start / End Lunch, `fr-fop-015` Work-Through-Lunch Authorization | 55.6 KB / 2026-06-09 | **REVIEWED**, unverified |
+> | **FR-TCG-FOP-002** v2.0 `field-ops/field-ops-frd/` | `fr-fop-013` Lunch Monitoring, `fr-fop-014` Lunch Recording, `fr-fop-015` Work Through Lunch | 46.2 KB / 2026-06-16 | **DRAFT**, unverified |
+> | **FR-TCG-FOP-001** v1.1 `field-ops/frd-new-format-draft/` | `fr-fop-013` Lunch Timer and Alerts, `fr-fop-014` Start / End Lunch, `fr-fop-015` Work-Through-Lunch Authorization | 55.6 KB / 2026-06-09 | **REVIEWED**, unverified |
 >
-> A third source, `product/atom-mobile-app-user-stories/03-ticket-workflow.md` (US-11),
+> A third source, `field-ops/atom-mobile-app-user-stories/03-ticket-workflow.md` (US-11),
 > covers the same ground as user stories.
 >
 > **I can't tell you which is authoritative and I'm not going to pick.** The newer document
@@ -80,22 +80,22 @@ Merging would be the worst option — it invents a specification neither documen
 fields'. What is FCC? Do I need to integrate with it?"
 
 **Retrieval:** `INDEX.md` → *Undefined terms* section lists `fcc` as the highest-value
-unknown → `product/customers-INDEX.md` confirms all five customer sources lean on it →
+unknown → `customers/customers-INDEX.md` confirms all five customer sources lean on it →
 grep across the vault confirms four files reference it, none defines it.
 
 **Answer:**
 
 > **There is no written answer to this.**
 >
-> FCC appears in four vault files — `product/customer-and-job-sites.md`,
-> `product/customer.md`, `product/discussion-points-with-mohsin.md`,
-> `product/categories-and-sub-categories.md` — always as an existing system of record
+> FCC appears in four vault files — `customers/customer-and-job-sites.md`,
+> `customers/customer.md`, `meetings/2026-06-26-discussion-points-with-mohsin.md`,
+> `assets/categories-and-sub-categories.md` — always as an existing system of record
 > ("verify from FCC if it's customer contact or separate job site contact", "Add all FCC
 > fields to employees"). **Nothing anywhere says what it is**, and there is no integration
 > spec. It is listed in `INDEX.md` as the vault's highest-frequency undefined term.
 >
 > I'm not going to guess what it stands for or whether it needs an integration. Build the
-> customer fields you can specify from `product/customers-INDEX.md`, and leave the
+> customer fields you can specify from `customers/customers-INDEX.md`, and leave the
 > FCC-dependent ones until this is answered.
 >
 > **Question for the product team** — a one-line reply resolves it:
@@ -114,10 +114,10 @@ And the agent appends to `gaps.md`:
 
 - Question: What is FCC — an existing system the platform reads customer and employee data
   from and must integrate with, or a manual reference the team checks by hand?
-- Candidates: none — the term is used in `product/customer-and-job-sites.md` (1.2 KB,
-  2026-06-12), `product/customer.md` (6.1 KB, 2026-07-16),
-  `product/discussion-points-with-mohsin.md` (0.2 KB, 2026-06-25) and
-  `product/categories-and-sub-categories.md` (0.3 KB, 2026-06-12), and defined nowhere.
+- Candidates: none — the term is used in `customers/customer-and-job-sites.md` (1.2 KB,
+  2026-06-12), `customers/customer.md` (6.1 KB, 2026-07-16),
+  `meetings/2026-06-26-discussion-points-with-mohsin.md` (0.2 KB, 2026-06-25) and
+  `assets/categories-and-sub-categories.md` (0.3 KB, 2026-06-12), and defined nowhere.
 - Note: highest-frequency undefined term in the vault. Answerable in one line by anyone on
   the TCG side; cheapest gap in `gaps.md` to close.
 - Blocked: FCC-dependent fields on the Customer and Job Site modules; unclear whether an

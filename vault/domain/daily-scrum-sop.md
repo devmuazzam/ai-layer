@@ -6,7 +6,7 @@ updated: 2026-02-04
 status: verified
 conflicts_with: []
 jira: []
-topics: [scrum-process, sprint-planning, open-questions, inspections, offline-reliability, scheduling]
+tags: [module/dispatch, module/field-ops, kind/sop, sprint-planning, open-questions, inspections, offline, scheduling]
 entities: [sprint, schedule]
 supersedes:
   - confluence/TCG/Daily Scrum — TCG-space copy, last updated 2026-04-23, not migrated

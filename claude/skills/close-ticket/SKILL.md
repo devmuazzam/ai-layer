@@ -17,7 +17,7 @@ depend on the path the ticket took, and §"How much of this runs" says which.
 ## The one thing this never does
 
 **Shipped behaviour does not become product memory.** Do not write what was built into
-`.ai/vault/product/`. Not as an update, not as a note, not as a "clarification".
+`.ai/vault/<module>/` content folders. Not as an update, not as a note, not as a "clarification".
 
 The vault answers *what should this do?* If code becomes an answer there, the next spec is
 sourced from the last implementation and the loop is validating itself — a decision someone
@@ -107,6 +107,16 @@ git -C .ai add -A && git -C .ai commit && git -C .ai push
 The overlay is a separate repo on purpose. The consequence is that **every artifact above
 lives on one laptop until this runs** — the reflection, the decision notes, the gap entries,
 the index rows. None of it is memory yet.
+
+**In a linked worktree, this push is not enough.** `.ai` there is an overlay worktree on a
+per-ticket branch, so the push above lands on that branch — which nobody reads. Finish with:
+
+```bash
+pnpm worktree:done        # from the client worktree
+```
+
+It merges the ticket overlay branch into overlay **main**, pushes, and retires the overlay
+worktree. A fact on a ticket overlay branch is not memory yet; only overlay main is.
 
 Check `git -C .ai stash list` too. A stash from an earlier session is invisible otherwise,
 and this repo has already lost a spec that way.

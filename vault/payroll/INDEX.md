@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, union-agreement, adp-export, payroll-group]
+tags: [module/payroll, kind/reference, union-agreement, adp]
 entities: [payroll-rule, payroll-group, pay-component, adp-export, guaranteed-hours, wtl, subsistence]
 ---
 
@@ -44,13 +44,14 @@ that produced the rest of the vault.
 | If you're asked… | Read |
 | --- | --- |
 | **what the payroll module must do** | [erp-payroll-module-frd/INDEX.md](erp-payroll-module-frd/INDEX.md) — the requirements catalog, 11 parts |
-| **which rule to build, and its status** | [codingcops-rule-matrix.md](codingcops-rule-matrix.md) — 68 rules, each with trigger, required inputs, expected output, baseline status, open decision |
+| **which rule to build, and its status** | [rules/INDEX.md](rules/INDEX.md) — **the canonical register, 73 `PAY-###` rules**, each joining matrix + FRD + legacy + contract + conflicts. The [matrix](codingcops-rule-matrix.md) stays the source spine |
 | what the union contract actually says | [mcog-l12-mla-2025-2028/INDEX.md](mcog-l12-mla-2025-2028/INDEX.md) — contract text, payroll articles |
 | how the current system behaves | [payroll-app-current-state/INDEX.md](payroll-app-current-state/INDEX.md) — legacy app, 9 files |
 | **how the legacy app actually calculates pay** | [legacy-payroll-app-db-extract/INDEX.md](legacy-payroll-app-db-extract/INDEX.md) — **the full database extract, 2026-08-18**: all 141 SQL definitions, every config row, the slice formula, every rule with its code, worked examples, the observed ADP worksheet layout. **Where any older payroll-app document disagrees, this wins** |
 | what the legacy API/UI implements | [legacy-payroll-app-code-extract.md](legacy-payroll-app-code-extract.md) — the C#/Next.js layer (`projects.rar`, Jul 2026): rule shapes, the ADP File # validation bug, no ADP export. Its "SQL not in repo" caveat is now closed by the db-extract |
 | how payroll reaches ADP | [adp-bucket-crosswalk.md](adp-bucket-crosswalk.md), then [adp-hour-earning-codes.md](adp-hour-earning-codes.md) |
 | **what we can read / write in ADP, and the weekly JSON** | [adp-read-write-boundary-2026-08-18.md](adp-read-write-boundary-2026-08-18.md) — payroll output is Marketplace-partner-only; static vs dynamic codes; which validation tables/worker fields are writable (no API for earning codes; no craft field); the `pay-data-input.modify` body; `applicant.onboard` V2 fields; connection prerequisites |
+| **the dev-facing calculation reference** | artifact *Crane Payroll Calculation Reference* (https://claude.ai/code/artifact/37f949e0-2c7a-4921-80c2-772c556f8e62) — groups/modifiers/WTL/premiums/rules/certified, **reconciled 2026-08-24 to the register** (PAY-### ids cited); update it whenever a rule settles |
 | the rendered legacy-app findings | artifacts *TCG Payroll Engine* (https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878) and *TCG Pay Rules, One at a Time* (https://claude.ai/code/artifact/1a754dab-82d4-4736-b23c-d51593c34c6c) — both derived from [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) |
 | **what ADP's API actually permits** | [adp-integration-capabilities.md](adp-integration-capabilities.md) — researched 2026-08-13. **Read before designing any ERP↔ADP sync** |
 | **how ADP events work** | [adp-event-notifications.md](adp-event-notifications.md) — 147 subscribable events, polling vs webhook is exclusive, and notifications fire on **issue** date not effective date |
@@ -65,7 +66,10 @@ that produced the rest of the vault.
 | **a specific filename from the drop** | [sources/](sources/INDEX.md) — **one page per file, named after the file**, so any filename resolves |
 | what a column in the weekly ADP workbook means | [adp-workbook-column-rules.md](adp-workbook-column-rules.md) — the rules the workbook implements, no employee data |
 | **who says a rule, and where sources disagree** | [source-attribution-and-conflicts.md](source-attribution-and-conflicts.md) — every rule tagged by source family, plus a 21-item conflict register |
+| **a NEW payroll question (no ticket)** | [gaps.md](gaps.md) — the **live register**, 49 open entries incl. the recordings-vs-vault pairs, each cross-linked to its `PAY-###` rule |
+| closed/resolved historical questions | [gaps-2026-08-20-retired.md](gaps-2026-08-20-retired.md) — frozen snapshot |
 | **what is still unanswered** about payroll or ADP | [gaps.md](gaps.md) — the payroll half of the open-question register, 41 entries. `grep -n '^## '` first; read only your section |
+| what a payroll SME said verbally, not yet in the rule matrix | [2026-08-20-payroll-rules-meeting-notes.md](2026-08-20-payroll-rules-meeting-notes.md) — WTL, rest period, subsistence, craft-code rate overrides. `status: unverified`, cleaned from a call transcript |
 
 ## The spine of the domain
 
@@ -89,7 +93,7 @@ Four facts that recur in every document and are worth holding in memory:
 rule. This folder is the only payroll knowledge the team has written down anywhere.
 
 But Confluence *does* point at it. The field-ops FRD section 10, *BRS References*
-([product/field-ops-frd/10-brs-references.md](../product/field-ops-frd/10-brs-references.md)),
+([field-ops/field-ops-frd/10-brs-references.md](../field-ops/field-ops-frd/10-brs-references.md)),
 defers four topics to documents held on SharePoint — and all four are files in this drop:
 
 | BRS topic | SharePoint file | Here |
@@ -112,7 +116,7 @@ other. Three seams are load-bearing:
 
 | Seam | Field-ops side | Payroll side |
 | --- | --- | --- |
-| **Lunch threshold values** | The Atom mobile app (Confluence v10, 2026-08-11) states **5 / 10.5 / 16.5 / 22** hours ([atom .../03-work-execution-and-lunch.md](../product/atom-mobile-app-user-stories/03-work-execution-and-lunch.md)). `BRS-LUNCH-005` separately marks the values **📄 Needs Supporting Documentation** | [wtl-charts.md](wtl-charts.md) gives **5:01 / 10.5:01 / 16:01 / 21.5:01**. **Lunches 3 and 4 disagree by half an hour** — a double-time penalty either way. Neither should be implemented until reconciled |
+| **Lunch threshold values** | The Atom mobile app (Confluence v10, 2026-08-11) states **5 / 10.5 / 16.5 / 22** hours ([atom .../03-work-execution-and-lunch.md](../field-ops/atom-mobile-app-user-stories/03-work-execution-and-lunch.md)). `BRS-LUNCH-005` separately marks the values **📄 Needs Supporting Documentation** | [wtl-charts.md](wtl-charts.md) gives **5:01 / 10.5:01 / 16:01 / 21.5:01**. **Lunches 3 and 4 disagree by half an hour** — a double-time penalty either way. Neither should be implemented until reconciled |
 | **How many lunches exist** | `BRS-LUNCH-002` lists **three** and is ✓ Confirmed. The Atom page v10 says **four** | Payroll models **four** — `WTL_0`…`WTL_4`. Two sources say four; **the ✓ Confirmed BRS rule is the outlier** |
 | **Previous-day rest** | `BRS-PAY-003` *Previous Day Rest Validation* — status **⚠ Needs Client Validation**, mentions "eight-hour rest periods, double-time implications" | [mcog-l12-mla-2025-2028/01](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) Rest Periods, and the implemented `REST_PERIOD_PREMIUM` / `app.usp_Apply_RestPeriod_Premium` |
 

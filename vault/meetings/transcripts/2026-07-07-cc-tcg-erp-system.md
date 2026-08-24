@@ -7,12 +7,12 @@ updated: 2026-07-07
 status: reference
 conflicts_with: []
 jira: []
-topics: []
+tags: [module/all, kind/transcript]
 entities: []
 meeting_date: 2026-07-07
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 19
+normalized: 2026-08-24
+normalized_substitutions: 22
 ---
 
 # CC TCG ERP System — 2026-07-07
@@ -119,7 +119,7 @@ July 7, 2026, 7:00PM
  Lisette Anzaldo   25:04 Interesting. OK, but I'll have that view on the on the desktop view.
  ehtesham.anwar   25:09 Yeah.
  Lisette Anzaldo   25:11 Okay.
- ehtesham.anwar   25:18 Moving on to the next part. The resources tab, uh, so Lisette. the same structure of date. You can access the calendar up top. You can change the dates from here. And we have three main categories, assets, employees and vendors that are available in the system. In assets, you have cranes, you have trucks. It's going to show you KPIs. What are the number of available cranes assigned in maintenance and unavailable? Same goes for trucks. If we look into what cranes are, we have available ones assigned in maintenance and we have unavailable. If we look into available ones, they are categorized Bye. Their tonnage. as you want it and you can see their availability if something is not available. Let's say it's assigned, it's going to show the time that it is assigned on and also the person was going, so Euler is going to go with the crane, so this name is going to be for Euler and also the location. the screen is supposed to be at.
+ ehtesham.anwar   25:18 Moving on to the next part. The resources tab, uh, so Lisette. the same structure of date. You can access the calendar up top. You can change the dates from here. And we have three main categories, assets, employees and vendors that are available in the system. In assets, you have cranes, you have trucks. It's going to show you KPIs. What are the number of available cranes assigned in maintenance and unavailable? Same goes for trucks. If we look into what cranes are, we have available ones assigned in maintenance and we have unavailable. If we look into available ones, they are categorized Bye. Their tonnage. as you want it and you can see their availability if something is not available. Let's say it's assigned, it's going to show the time that it is assigned on and also the person was going, so oiler is going to go with the crane, so this name is going to be for oiler and also the location. the screen is supposed to be at.
  Lisette Anzaldo   26:37 OK.
  ehtesham.anwar   26:42 What do you think?
  Lisette Anzaldo   26:43 I really like that. I like that I can see who's there and the city. That totally helps me out when scheduling other jobs.
@@ -166,7 +166,7 @@ July 7, 2026, 7:00PM
  Kyle Harlow   35:18 Thank you. Yeah.
  ehtesham.anwar   35:34 they can change the asset that they are taking. In case you are not available to change in the system, Lisette is not available. But at the end of the day, Corrina is right. Even if... It still happens. We will need a way to know that.
  Wes Staley   35:57 Would that be something like a geofencing of the office? And then if that particular crane that is slated to go to whatever address leaves at a different time, it would flag it. It would flag it for a change of asset or something.
- ehtesham.anwar   36:09 Uh-huh. Oh. What we can do is we can keep it very simple. So for example, at this particular time, this frog or plane is supposed to be at this location. Let's see. No. Through Samsara, we know the GPS, right? We can see if they are in the vicinity. If they are in the vicinity, then that's all good. If they are not in the vicinity, then we can flag it. Is there something Wes you are looking for?
+ ehtesham.anwar   36:09 Uh-huh. Oh. What we can do is we can keep it very simple. So for example, at this particular time, this frog or crane is supposed to be at this location. Let's see. No. Through Samsara, we know the GPS, right? We can see if they are in the vicinity. If they are in the vicinity, then that's all good. If they are not in the vicinity, then we can flag it. Is there something Wes you are looking for?
  Kyle Harlow   36:54 I think that would work.
  Wes Staley   36:57 Yes, I think it would work if it wasn't on the job site, it would flag it and then we would know to check on it. That would, I think that'd be easy. Lisette, what do you think about that? Would that be good for you to know?
  ehtesham.anwar   37:05 All right.

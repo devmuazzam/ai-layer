@@ -6,7 +6,7 @@ updated: 2026-06-23
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, payroll-app, payroll-rules, overtime, wtl, subsistence]
+tags: [module/payroll, kind/reference, legacy-payroll-app, payroll-rules, overtime, wtl, subsistence]
 entities: [overtime, double-time, shift-premium, boom-premium, guaranteed-hours, rest-premium, wtl, subsistence]
 part_of: payroll/payroll-app-current-state/INDEX.md
 ---

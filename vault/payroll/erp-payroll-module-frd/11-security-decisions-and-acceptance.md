@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, security-roles, acceptance-criteria]
+tags: [module/admin, module/payroll, kind/frd, permissions-roles, requirements]
 entities: [payroll-role, acceptance-criteria, implementation-phase]
 part_of: payroll/erp-payroll-module-frd/INDEX.md
 ---

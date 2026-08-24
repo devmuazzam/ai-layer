@@ -6,7 +6,7 @@ updated: 2026-08-13
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-api, events, webhooks, architecture]
+tags: [module/payroll, kind/reference, adp, integrations, architecture]
 entities: [adp-api, event-notification, webhook, employee, worker]
 ---
 

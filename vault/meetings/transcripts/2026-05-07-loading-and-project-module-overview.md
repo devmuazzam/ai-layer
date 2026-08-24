@@ -7,10 +7,12 @@ updated: 2026-05-07
 status: reference
 conflicts_with: []
 jira: []
-topics: [dispatch-scheduling]
+tags: [module/dispatch, kind/transcript]
 entities: []
 meeting_date: 2026-05-07
 kind: transcript
+normalized: 2026-08-24
+normalized_substitutions: 1
 ---
 
 # Loading And Project Module Overview — 2026-05-07
@@ -108,7 +110,7 @@ May 7, 2026, 6:57PM
  Brian Petros   18:38 Because some of the details of the actual job factor into like how you think about this, right? I don't know, I'm just thinking like additional information on the screen to give them not just maybe comments, but like the basic job information, even like the location where it's at. I'm not sure like how that would be an expandable section instead of having like multiple screens up or something at the same time. What all information is helpful to have at your disposal? You know what I mean? Like when making this choice or is it when making these choices? Yeah.
  ehtesham.anwar   19:09 Yeah, so... Let's say we have another button. It's going not pending me controls for Laura. Let's say it says comments and then it also tells the number of comments available. Maybe a red icon if there is a new comment that Dylan has read or Dylan makes the comment that goes to the. that goes to the salesperson. Yeah, yeah.
  Brian Petros   19:58 issue with like the asset not being available or something would be handled before it even gets to this point maybe, but I don't know, I'm just thinking.
- ehtesham.anwar   20:07 Yeah, so it should be by default handled, but in case, Lizette, from the time she creates the overall schedule, and then Dylan is processing that on the particular day or day before that, we are going to show. individual icons on these small cards. That's why these cards are here and it's going to show a warning to Dylan and then he can divert back to Lisette that she needs to reprocess that particular job.
+ ehtesham.anwar   20:07 Yeah, so it should be by default handled, but in case, Lisette, from the time she creates the overall schedule, and then Dylan is processing that on the particular day or day before that, we are going to show. individual icons on these small cards. That's why these cards are here and it's going to show a warning to Dylan and then he can divert back to Lisette that she needs to reprocess that particular job.
  Brian Petros   20:39 Yeah.
  ehtesham.anwar   20:39 And since Dylan and Lisette both are planning ahead of time, then I believe having these checks on both of their dashboards by default and then notifications is going to be very helpful. For Dylan, it's going to be just an identification. For Lisette, it's going to be a proper notification with. whether to do it as that she needs to complete that.
  Brian Petros   21:05 Okay, yeah.

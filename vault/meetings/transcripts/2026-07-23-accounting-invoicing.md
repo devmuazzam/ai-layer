@@ -7,12 +7,12 @@ updated: 2026-07-23
 status: reference
 conflicts_with: []
 jira: []
-topics: [accounting-invoicing]
+tags: [module/accounting, kind/transcript, invoicing]
 entities: []
 meeting_date: 2026-07-23
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 13
+normalized: 2026-08-24
+normalized_substitutions: 16
 ---
 
 # Accounting Invoicing — 2026-07-23
@@ -48,7 +48,7 @@ July 23, 2026, 7:00PM
  ehtesham.anwar   3:32 Yeah.
  Brent Wagstaff   3:33 No, no conference room today, I guess.
  ehtesham.anwar   3:33 And.
- Brian Petros   3:35 Yeah, no conference room. So we're joining, which is good because then people can share their screens, I guess. And then we have, so we have Tia on the phone, on the line, and Caitlin, and also Sammy, of course, who you already met last time, and then Brent, of course, and Michaela.
+ Brian Petros   3:35 Yeah, no conference room. So we're joining, which is good because then people can share their screens, I guess. And then we have, so we have Tia on the phone, on the line, and Caitlin, and also Sammy, of course, who you already met last time, and then Brent, of course, and Micaela.
  ehtesham.anwar   3:54 Hello, everyone.
  Brian Petros   3:54 So all the people, all the people involved to do the invoicing and everything, anything we want to talk about. And then of course I uploaded the shared files. They gave quite a few things, even a few videos for us to go through as a walkthrough. So let me know. Yeah, let us know if you have any questions about those or, and then how you want to approach today's call. I figured the first thing is just to like close the loop on the invoice, on the initial, the basic part of the invoice, right? So we'll start there.
  ehtesham.anwar   4:19 Yeah, yeah, absolutely, yeah, yeah. I'm not sure like who is going to lead that.
@@ -222,7 +222,7 @@ July 23, 2026, 7:00PM
  Micaela Dipane   32:05 Yeah, it's separate pages and then from, so like once you e-mail it to yourself, then you have to go to Adobe and get a copy of your invoice and these additional 3 ticket pages.
  ehtesham.anwar   32:18 Mhm.
  Micaela Dipane   32:19 whatever else they request. So that's kind of like time consuming.
- ehtesham.anwar   32:26 I believe there was another operation, safety and compliance. Melissa, that is part of the next Gen. as well.
+ ehtesham.anwar   32:26 I believe there was another operation, safety and compliance. Melissa, that is part of the NexGen. as well.
  Melissa McNutt   32:36 Yes. This, yeah, the safety and compliance, yeah, it won't have anything to do with the invoicing side.
  ehtesham.anwar   32:39 And, like... Mhm.
  Melissa McNutt   32:44 But we have to send for, yeah, so that's a little different.
@@ -448,7 +448,7 @@ July 23, 2026, 7:00PM
  Joe Schacatano   1:05:48 How so? Like you mean internally or like what do you mean?
  ehtesham.anwar   1:05:50 It's over now. Yeah, so one of the things clearly on top, like... In your billing codes, you are configuring. different billing codes for the same asset in a different way. So, right, but a simplest, the most simple approach would be that one asset is configured with different assets that are going to go into the field, and then we build the bills.
  Joe Schacatano   1:06:08 Gotcha.
- ehtesham.anwar   1:06:23 the rates on a general way and in the price list rate. And we only use that that way, even if you so, for example, uh, LA USA. For them, you will not add just one line item of 9010 crane, just like everybody you are going to add. 90 done and it's going to populate operator load and operator and pilot.
+ ehtesham.anwar   1:06:23 the rates on a general way and in the price list rate. And we only use that that way, even if you so, for example, uh, LA USA. For them, you will not add just one line item of 9010 crane, just like everybody you are going to add. 90 ton and it's going to populate operator load and operator and pilot.
  Joe Schacatano   1:06:51 Mm. Yeah.
  ehtesham.anwar   1:07:07 So that's what I mean by changing. Do you want to keep this invoicing formats and quotation formats as it is? Then we'll need to bake all of these, like to be very honest. not very useful, it's just the complexities that we have created within the system. And then the problem of obscurity starts that you need to manually mention that right now I'm billing.
  Joe Schacatano   1:07:34 Right.

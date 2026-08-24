@@ -162,7 +162,7 @@ link_context() {
 }
 
 # ------------------------------------------------- 1. fetch/update overlay ---
-if [ ! -d "$AI_DIR/.git" ]; then
+if [ ! -e "$AI_DIR/.git" ]; then
   if [ -e "$AI_DIR" ]; then
     warn "$AI_DIR exists but is not a git clone — moved to $AI_DIR.$STAMP"
     mv "$AI_DIR" "$AI_DIR.$STAMP"; BACKED_UP=$((BACKED_UP + 1))

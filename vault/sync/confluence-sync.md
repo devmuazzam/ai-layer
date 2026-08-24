@@ -57,7 +57,7 @@ outrank content a human adjudicated. The sync must never encode "newer wins".
 | --- | --- |
 | **Reads** | Confluence Cloud, space `TCG`, via the Atlassian API (read-only scopes) |
 | **Writes** | `.ai/vault/sync/**` **only** — manifest, run reports, staging queue, `.conflict` |
-| **Never writes** | `vault/product/`, `vault/domain/`, `vault/meetings/`, `vault/decisions/`, `vault/INDEX.md`, `vault/README.md`, `vault/gaps.md`, `vault/payroll/gaps.md` |
+| **Never writes** | the module content folders (`vault/customers/`, `vault/quotations/`, `vault/field-ops/`, … — formerly `vault/product/`), `vault/domain/`, `vault/meetings/`, `vault/decisions/`, `vault/INDEX.md`, `vault/README.md`, `vault/gaps.md`, `vault/payroll/gaps.md` |
 | **Cadence** | **Nightly** (decided 2026-08-11; see §10) |
 | **Owner of the promote step** | `<OPEN — review-and-promote queue owner not named; see §10>` |
 
@@ -100,7 +100,7 @@ Algorithm: SHA-256 over UTF-8, hex-encoded. Recorded as `sha256:<hex>`.
   "pageId": "95158273",
   "spaceKey": "TCG",
   "title": "Atom Mobile Application ( User stories )",
-  "vaultPaths": ["product/atom-mobile-app-user-stories/INDEX.md", "..."],
+  "vaultPaths": ["field-ops/atom-mobile-app-user-stories/INDEX.md", "..."],
   "contentHash": "sha256:…",
   "confluenceVersion": 14,
   "lastSeenAt": "2026-08-11T14:00:00Z",
@@ -112,7 +112,7 @@ Algorithm: SHA-256 over UTF-8, hex-encoded. Recorded as `sha256:<hex>`.
 ```
 
 `vaultPaths` is a list because split documents map one page to many files
-(`product/field-ops-frd/` is twelve). `trustAtPromote` records the `status:` the vault file
+(`field-ops/field-ops-frd/` is twelve). `trustAtPromote` records the `status:` the vault file
 carried when these bytes were promoted — §5.1 depends on it.
 
 **The manifest is not a cache and must not be treated as one.** Deleting it does not force a
@@ -348,7 +348,7 @@ vault/sync/
 if the page exceeds 15 KB, and re-stamps `source:`, `migrated:`, `updated:` and `status:` —
 plus §5.1's demotion fields where they apply. Hand-editing a vault file to "catch it up"
 breaks the guarantee that every byte of a page lives in exactly one part, which is the
-guarantee `product/atom-mobile-app-user-stories/INDEX.md` makes to its readers.
+guarantee `field-ops/atom-mobile-app-user-stories/INDEX.md` makes to its readers.
 
 **Promote is a human step by design, per `README.md`:** an agent may run detect / report /
 file. Whether a page is stable enough to promote is a judgement about someone else's
@@ -578,7 +578,7 @@ Recorded so the omissions are visible rather than discovered.
 - **Comments and inline comments.** Not tracked. Confluence comments sometimes carry the
   decision the page lacks, which is precisely the content `gaps.md` is short of.
 - **Spaces other than `TCG`.** One page was migrated from a personal space
-  (`product/user-story-and-tasks.md`); it will report as untracked or stale-source depending
+  (`assets/user-story-and-tasks.md`); it will report as untracked or stale-source depending
   on that space's visibility. Needs a manifest exception, not a policy change.
 - **Jira sync.** Out of scope entirely. Tickets are read live by the agents; the vault does
   not mirror them.

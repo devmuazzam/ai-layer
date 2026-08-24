@@ -7,10 +7,12 @@ updated: 2026-04-02
 status: reference
 conflicts_with: []
 jira: []
-topics: [dispatch-scheduling]
+tags: [module/dispatch, kind/transcript]
 entities: []
 meeting_date: 2026-04-02
 kind: transcript
+normalized: 2026-08-24
+normalized_substitutions: 3
 ---
 
 # Dispatch Scheduling Figma Demo — 2026-04-02
@@ -99,9 +101,9 @@ April 2, 2026, 6:56PM
  Ryan Adams   19:46 I have a question. Once once a job has all the people in it and dispatch finally does a final confirmation, can we have it send an e-mail or text to everybody on that job with their start time, their their job location, everything like that?
  ehtesham.anwar   20:05 Yeah, so this up until this view, this is allocation of resources within a job and then looking at the all of the allocations within asset management and resource management. Now the next pass is. Is having the job in in the open state and then finalizing it for best batch and and having that functionality flow within incorporated within this view.
  Ryan Adams   20:33 Thank you.
- Brian Petros   20:33 Now I know that I know that the view. Um. Like it's individual depending on how many um people's per job. So like for instance on the first one that you have 75 and it's a a two man crew, so operator and Euler. Like and then we'll and then the tractor comes and the and then the the trailer cause I'm just I'm just trying to Melissa I don't know if you can if you understand like when when there's like bigger cranes like the the 360 and the the the the 360 the 350 the 275 that have a total of like.
+ Brian Petros   20:33 Now I know that I know that the view. Um. Like it's individual depending on how many um people's per job. So like for instance on the first one that you have 75 and it's a a two man crew, so operator and oiler. Like and then we'll and then the tractor comes and the and then the the trailer cause I'm just I'm just trying to Melissa I don't know if you can if you understand like when when there's like bigger cranes like the the 360 and the the the the 360 the 350 the 275 that have a total of like.
  ehtesham.anwar   20:49 Yeah.
- Brian Petros   21:09 Like 6 people with them, then it's gonna, it's gonna and then the with six people then the the one of the oiler's gonna have a tractor and a trailer. So now it's gonna be 3 rolls for one person. So it's gonna be a total of 18 rolls for like. Everyone to come out it's gonna make it a very very big job as far as on the screen. So it's gonna drop it from you see from the 75 to showing like once the the cranes start getting bigger since they do take like a tractor and a trailer now it it if it's one row per. Asset, which is employees and equipment is going to be 3 for one and then when there's big crews, it's going to be 18, let's say. So it's going to make it like a lot. Do we want to have it like that, Melissa, or would we want to have like like the oiler and then the tractor and the trailer there and then it's just lined up so then it only shows. 6 Does that make sense? I think. I think maybe Lisette's saying to lay it out in in a row in a single row instead of having it stacked like that in multiple rows per operator and Euler, right? Is what you're saying? Yeah. It's just the, you know, the the width, the width of the screen versus the length of the screen. This is the layout of it, right? Yeah, she's she's pointing. She's pointing like to the second to the bottom. Oh, I guess I can. Oh, no, you can't see me. Yeah, the second to the bottom one, the 12120 crane. Yeah.
+ Brian Petros   21:09 Like 6 people with them, then it's gonna, it's gonna and then the with six people then the the one of the oiler's gonna have a tractor and a trailer. So now it's gonna be 3 rolls for one person. So it's gonna be a total of 18 rolls for like. Everyone to come out it's gonna make it a very very big job as far as on the screen. So it's gonna drop it from you see from the 75 to showing like once the the cranes start getting bigger since they do take like a tractor and a trailer now it it if it's one row per. Asset, which is employees and equipment is going to be 3 for one and then when there's big crews, it's going to be 18, let's say. So it's going to make it like a lot. Do we want to have it like that, Melissa, or would we want to have like like the oiler and then the tractor and the trailer there and then it's just lined up so then it only shows. 6 Does that make sense? I think. I think maybe Lisette's saying to lay it out in in a row in a single row instead of having it stacked like that in multiple rows per operator and oiler, right? Is what you're saying? Yeah. It's just the, you know, the the width, the width of the screen versus the length of the screen. This is the layout of it, right? Yeah, she's she's pointing. She's pointing like to the second to the bottom. Oh, I guess I can. Oh, no, you can't see me. Yeah, the second to the bottom one, the 12120 crane. Yeah.
  ehtesham.anwar   22:19 Yeah. OK. Yeah.
  Brian Petros   22:35 Yeah, because those will be like see those are easy to to see, but like on let's say on the on the on the 140, let's say on the 140 you have the operating dealer, but we still haven't added the tractor and the trailer, but that's only a two-man crew, so that's not going to be too big. But on the event that it's a 3:50 or 275 or 360 it.
  ehtesham.anwar   22:44 Mhm. OK.
@@ -204,7 +206,7 @@ April 2, 2026, 6:56PM
     40:50 OK.
  ehtesham.anwar   40:50 Within the systems that are available and you guys are using.
  Brian Petros   40:54 All right.
- ehtesham.anwar   40:57 Alright. So this this was the update on on the design site for now and the next pass is going to be to look at the maximum maximum rules thing that Lisette was talking about for bigger Queens and then then. Incorporating the user flow of getting the job ready for dispatch and then dispatching it. That part of the flow right and I believe in the in doing both of these things we will be coming up with the compact view for bigger.
+ ehtesham.anwar   40:57 Alright. So this this was the update on on the design site for now and the next pass is going to be to look at the maximum maximum rules thing that Lisette was talking about for bigger cranes and then then. Incorporating the user flow of getting the job ready for dispatch and then dispatching it. That part of the flow right and I believe in the in doing both of these things we will be coming up with the compact view for bigger.
  Brian Petros   41:25 Nothing.
  ehtesham.anwar   41:35 And that's going to be for Tuesday, and we'll need Lisette on Tuesday as well.
  Brian Petros   41:44 Yes. OK. Can you be here? OK, We'll try to be back in the conference room here. Yeah, we so we're good. We're kind of, we're off too early. It can be a short meeting, right? I'm not sure unless there's anything else that we have to talk about.

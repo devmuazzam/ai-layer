@@ -7,10 +7,12 @@ updated: 2026-07-30
 status: reference
 conflicts_with: []
 jira: []
-topics: [accounting-invoicing]
+tags: [module/accounting, kind/transcript, invoicing]
 entities: []
 meeting_date: 2026-07-30
 kind: transcript
+normalized: 2026-08-24
+normalized_substitutions: 1
 ---
 
 # Invoice Processing — 2026-07-30
@@ -181,7 +183,7 @@ July 30, 2026, 6:50PM
  Kaitlin Kiesel   37:30 You pull up.
  Micaela Dipane   37:38 And then as far as tracking the status of the payment on invoices, that's all done through QuickBooks using The report called, let me see. So this is the export Invoices in FCC. So this is where we can see that all these invoices are pending to be exported and then to be sent to the customer.
  Kaitlin Kiesel   38:29 Sorry, KK, I thought you weren't done talking. Yeah, so these have like, it lists out the customer and then the invoice number, which that the system automatically generates for each job when you create the invoice.
- ehtesham.anwar   38:44 And these are the same numbers on the quick book.
+ ehtesham.anwar   38:44 And these are the same numbers on the QuickBooks.
  Kaitlin Kiesel   38:47 These are, so these are invoices that, so for Edison, for example, I export the invoices after I make my packets and submit them off so that I know once it's in QuickBooks, it's already been submitted. And then once Edison will send me the remittance, I can go into QuickBooks and mark all of these individual invoices paid.
  ehtesham.anwar   39:07 Okay, alright.
  Kaitlin Kiesel   39:09 Yeah.

@@ -6,7 +6,7 @@ updated: 2026-08-13
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-api, pay-period, reference-data]
+tags: [module/payroll, kind/reference, adp, reference-data]
 entities: [pay-period, payroll-cycle, adp-api, adp-company-code]
 part_of: payroll/adp-api-responses/INDEX.md
 ---
