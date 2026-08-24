@@ -47,6 +47,12 @@ during a review answer "which ticket is this" without cross-referencing anything
 `.ai/` changes into that branch as they happen (spec updates, unit files, `processed.log`
 append), not as one batch at the end.
 
+**In a linked worktree (`pnpm worktree:add`), the mirror already exists.** Bootstrap created
+an overlay worktree on the client branch name and symlinked it as `.ai` — do **not**
+`git switch` inside it (each overlay worktree is pinned to its branch). Just commit into
+`.ai/` as above. Remember the branch is invisible to the team until published:
+`pnpm worktree:done` at close merges it into overlay main.
+
 ## 2. Rebase onto main — at three moments, not one
 
 **Starting a unit:**

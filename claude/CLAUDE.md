@@ -62,7 +62,9 @@ Anything worth keeping goes to exactly one of these, and each has an owner:
 
 Two consequences worth stating, because both are load-bearing. The overlay is a separate
 repo — a written fact reaches nobody until it is committed and pushed there, which is why
-`close-ticket` ends with that step. And **skills and subagents are Claude Code features**:
+`close-ticket` ends with that step. In **linked worktrees** (`pnpm worktree:add`) the overlay
+rides a per-ticket branch: a fact there reaches the team only when that branch is merged into
+overlay **main** — `pnpm worktree:done` does exactly that after `close-ticket`. And **skills and subagents are Claude Code features**:
 on other tools the same procedures are still readable at their paths
 (`.ai/claude/skills/<name>/SKILL.md`, `.ai/aidlc/agents/`), they just are not invoked for
 you. The knowledge is portable; the automation is not. Open the file by path.
