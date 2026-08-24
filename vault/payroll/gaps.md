@@ -595,6 +595,8 @@ someone has confirmed otherwise.
   Central Help Center** are both entitled, with live `Launch App` buttons. No purchase, no
   procurement, no lead time. Credentials are obtainable today.
 - Remaining under this heading: only the "Company Code 631" vs "Co Code 4RZ" identifier conflict.
+- **Resolved by the same client statement:** not two identifiers — a **rename in time**
+  (631 → 4RZ, July 2026). The conflict dissolves; see §*What `631` actually is* for the evidence.
 - **2026-08-24, via client team exchange — Patrick:** *"For adp. We are with workforce but
   upgrading to next level soon."* Product confirmation ✅ (matches the 2026-08-13 resolution).
   **New sub-question — the upgrade:** WFN **Next Generation** timing, scope, and whether API
@@ -1261,9 +1263,14 @@ someone has confirmed otherwise.
 - Blocked: nothing — the export must use `4RZ` / `4RY`. This entry exists so nobody re-derives `631`
   from the recording.
 - Owner: Brian Petros (he supplied the layout and holds the ADP file facts).
-- Status: open — low priority; the build-blocking half is already answered
+- Status: **answered** — client statement ~2026-07-28 (message batch, captured 2026-08-24)
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#what-631-actually-is](gaps-2026-08-20-retired.md#what-631-actually-is)
+- **Answer:** `631` was TCG's **previous ADP company code**, renamed to **`4RZ`** during the
+  July ADP updates ("our company code changed from 631 to 4RZ"; still Workforce Now). The
+  sample-export filenames corroborate exactly: `EPI63100.CSV` = EPI + old code 631, `EPI4RZ32.csv`
+  = EPI + new code 4RZ. Dashboard screenshot shows "4RZ - THE CRANE GUYS LLC", payroll week
+  Completed. Anything still referencing 631 (workbooks, Power Query, crosswalk rows) is stale.
 
 ## Fill-in field employees vs the ADP-onboarding dispatch block
 

@@ -293,3 +293,17 @@ actuals (the accounting wishlist) requires it. Sub-parts: who adjudicates "incor
 time"; where does the damaged-rigging replacement price come from; and should "crew time"
 (training) be a first-class billing category instead of an Equipment-field note?
 
+## ~2026-07-28 — ADP progress: company code + earning codes (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Company code changed **631 → 4RZ**, still Workforce Now | ✅ **closes two open gaps at once** — "What `631` actually is" (answered) and the 631-vs-4RZ identifier conflict (a rename, not two entities). Filename corroboration: `EPI63100.CSV` old vs `EPI4RZ32.csv` new | gaps ×2, PAY-067 |
+| Hours & Earnings codes updated/added on the Validation Table | ✅ the message-9 "few more fields" **were created** — and the 2026-08-18 52-code pull post-dates the update, so our reconciliation baseline is current | PAY-067 |
+| Met Corrina + ADP rep several times; next meeting Thu Jul 30 3 PM PST, CC invited | ✅ question 13's meetings happened; remaining ask: recording/notes + exact added-code list | PAY-067 |
+| Focusing on payroll ~2 weeks, pre-ERP automation | status fact — consistent with the Aug 4/6/12/13 payroll-meeting cadence in the vault | — |
+
+**Question 13 partially closed.** Remaining sub-asks folded in: (a) July-30 meeting recording
+or notes; (b) the exact list of added codes (or we run the crosswalk-vs-52 diff and hand them
+the delta to confirm); (c) confirm every downstream artifact was updated for 4RZ — the
+workbooks' Power Query and any hardcoded 631.
+
