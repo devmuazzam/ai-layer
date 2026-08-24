@@ -1247,3 +1247,434 @@ will be about your ticket.
   Kyle Harlow for the field consequence. CodingCops owes the ticket regardless of the answer.
 - Status: open — needs confirmation
 
+## SCRUM-877 Labor and Unit Details — Oiler crew linking
+
+- Question: nine distinct sub-questions, all raised while elaborating `SCRUM-877` ("Labor & Unit
+  Details," US-18). Grouped here as one entry since they share a ticket and a root cause — the
+  ticket's clarifying comment (id `22923`, tcgproject12, 2026-08-20) describes a full Oiler
+  -enters-for-the-crew workflow with formulas, but the mechanism it depends on (grouping tickets
+  into "the same set") has no backend counterpart today, and several of its inputs (tonnage
+  ranges, overtime model, Labor Classification list) are undefined anywhere.
+  1. **Overtime model** — is overtime a field-ops-local, additive figure (work-end-time minus
+     shift-end-time, per the comment) or a payroll-engine daily-accumulation output (Reg/OT/DT
+     buckets, per `payroll/payroll-app-current-state/03-payroll-rule-catalog.md` and `PR-021`)?
+     Neither source cites the other.
+  2. **Set-resolution mechanism** — is `JobTicket → JobResourceAllocation.setResourceId →
+     sibling allocations → sibling tickets` sufficient to answer "who else is in my crew" and to
+     gate Oiler write-authorization, or does the ticket's own hedge ("we may need to link or
+     associate all employee tickets") mean a new junction/link table is required? No existing
+     query in `apps/api/src` groups by `(subJobId, setResourceId)` today; two independent,
+     unshared `resolveSetRoot` implementations exist for other purposes
+     (`apps/api/src/usecase/das-allocations/das-allocations.service.ts:589-606`,
+     `apps/api/src/usecase/das-loadout/das-loadout-defer-allocation.util.ts:82-91`).
+  3. **"Craft Code" on the Oiler card** — seeded craft codes today are `OPERATOR`/`LABORER`/
+     `MECHANIC`/`SUPERVISOR` (no `Oiler` craft code); is Craft Code meant to be a new seed value,
+     or does it mean something other than `Employee.craftCodeId`?
+  4. **Where the hours arithmetic runs** — client-side display convenience (as today's
+     `apps/mobile/features/field-ticket/steps/labor-hours.ts` already computes) or a
+     server-side, payroll-authoritative calculation? This is the same seam as the pre-existing
+     *Field-ops lunch capture vs payroll WTL* entry above, now with a second, independent
+     consumer.
+  5. **Craft Modifier / Boom Pay tonnage ranges and rates** — not stated anywhere. The one
+     existing bracket table (`BOOM_BRACKETS`, `apps/mobile/features/field-ticket/steps/
+     LaborBody.tsx:31-46`) is a boom-**length** table hardcoded to one 550-ton crane design
+     reference, not a tonnage table for the fleet.
+  6. **Where the tonnage-range reference data lives, and whether `Asset.capacity`
+     (`apps/api/prisma/schema.prisma:707`, free-text `String? @db.VarChar(50)`) becomes numeric
+     or gets a parallel structured field** — a real schema-design tradeoff, not inferable.
+  7. **Two Jira attachment images unreadable** — `image-20260820-131819.png` (id `12450`) and
+     `image-20260820-132954.png` (id `12449`), embedded in comment `22923` directly under the
+     "Tickets and Labor/Unit Entry" section. Direct attachment content fetch returned HTTP 403;
+     the comment's inline `blob:` references do not resolve. Likely shows the Oiler multi-card
+     layout or the job-set diagram the comment describes in prose.
+  8. **Labor Classification value list** — US-18 says classifications "can include" Job Site
+     Work / Shop Work / Travel / Site Inspection "where applicable" (illustrative wording); no
+     schema table or seed list for these exists; the source's own migration note says these
+     values appear in no payroll document.
+  9. **Non-Oiler read access** — can an employee ever see their own Labor/Unit data (e.g.
+     read-only in a review screen) once the Oiler has entered it on their behalf, or is it
+     invisible to them entirely since their ticket carries no Labor/Unit step?
+- Candidates: `SCRUM-877` (ticket + comment `22923`), `product/atom-mobile-app-user-stories/
+  05-compliance-labor-and-review.md` US-18, `product/field-ops-frd/08-functional-requirements/
+  fr-fop-023-labor-details.md`, `product/frd-new-format-draft/05-functional-requirements/
+  fr-fop-023-labor-detail-entry.md` and `fr-fop-024-boom-pay-craft-modifier-selection.md`,
+  `payroll/payroll-app-current-state/03-payroll-rule-catalog.md`,
+  `payroll/codingcops-rule-matrix.md` (`PR-011`), `product/frd-new-format-draft/
+  08-open-questions.md` item 10 (already logged as open there — this ticket's comment supplies a
+  candidate answer but no decision record exists), plus current code in
+  `apps/mobile/features/field-ticket/steps/LaborBody.tsx`, `labor-hours.ts`,
+  `apps/mobile/data/compose-ticket-detail.ts`, `apps/api/prisma/schema.prisma`,
+  `apps/api/src/usecase/job-tickets/job-tickets.service.ts`.
+- Note: this ticket's comment independently answers `frd-new-format-draft/08-open-questions.md`
+  item 10 ("system-suggested with user override") but that answer sits in a Jira comment, not a
+  decision record — the vault open-question entry has not been marked resolved and should not be
+  treated as settled until a `decisions/` note exists. This entry is also a second, independent
+  consumer of the pre-existing *Field-ops lunch capture vs payroll WTL* gap above (line 107) —
+  do not resolve that gap as part of closing this one; they are linked, not duplicate.
+- Blocked: `SCRUM-877` REQ-03, REQ-05, REQ-07, REQ-10 in `.ai/aidlc/SCRUM-877/spec.md` (all
+  marked build-blocking); REQ-14 partially, via the pre-existing WTL gap.
+- Owner: product team; sub-question 5/6 rate/schema ownership likely payroll (Brian Petros, per
+  `payroll/INDEX.md`'s general pattern, though not named on this specific ticket); sub-question 7
+  needs whoever can view the ticket in a browser (tcgproject12 or any Jira UI user).
+- Status: open
+
+### Update 2026-08-21 — partially resolved by decision record
+
+A decision record now exists — `.ai/vault/decisions/
+2026-08-21-scrum-877-labor-and-unit-details-oiler-crew-linking.md` (`status: verified`,
+`decided_by: tcgproject12` [comments `22923`, `23025`, `23064`, `23066`] `and Umair Khan,
+reporter of SCRUM-877` [comment `23062`], all fetched live from the SCRUM-877 Jira thread by
+`tcg-scrum`, 2026-08-21) — answering all nine sub-questions above, either fully, partially, or
+as an explicit scope deferral. This update records the disposition of each sub-question against
+the original numbering above; it does not remove or edit the original entry.
+
+- **Sub-question 1 (overtime model) — moot for this ticket, not decided.** Comment `23066`:
+  overtime dropped from `SCRUM-877`'s scope entirely ("we do not need to account for extra hours
+  at this stage... payroll... will be implemented in the future"). The field-ops-vs-payroll
+  overtime-ownership question itself remains open for whichever ticket builds the payroll module.
+- **Sub-question 2 (set-resolution mechanism) — RESOLVED.** Comment `23066` confirms
+  `setResourceId`-based resolution is sufficient ("I believe the current information is
+  sufficient... oiler tickets need to be linked to the corresponding employee tickets" — read
+  precisely in the decision record as describing the join's required *outcome*, not authorizing a
+  new junction table). No new schema entity for "same set" is needed.
+- **Sub-question 3 ("Craft Code" on the Oiler card) — STILL OPEN, narrowed.** Comment `23066`
+  confirms `Employee.craftCodeId` is the field to read ("The Craft field in the Employee module
+  maps to the Oiler value shown in the mock design card"), but does not state whether the missing
+  `OILER` seed row (still absent — `OPERATOR`/`LABORER`/`MECHANIC`/`SUPERVISOR` only,
+  `apps/api/prisma/migrations/20260703100000_employee_craft_and_work_comp_codes/
+  migration.sql:82-87`) should be added as part of this ticket.
+- **Sub-question 4 (where hours arithmetic runs) — RESOLVED.** Comment `23066`: "The
+  billable-hours calculation should be handled on the backend. We should create a reusable
+  function for this logic so it can also be used later in the payroll module." Server-side,
+  authoritative, and explicitly required to be reusable beyond this ticket.
+- **Sub-question 5 (Craft Modifier/Boom Pay ranges) — STILL OPEN, narrowed and re-scoped.**
+  Comment `23025` (tcgproject12): the design mockup's bracket table ("`BOOM_BRACKETS`") is
+  "limited and is incorrect" — do not use it. Comment `23066`: the real source is
+  `FMS_UNION_CRAFT_MODIFIER` (33 codes), axis is **boom length** (not tonnage as this entry
+  originally framed it), range 080–100 ft to 421–440 ft, oiler/operator rates differ, clamp
+  beyond range, symmetrical pattern. Link given:
+  `https://claude.ai/code/artifact/74b7f0dc-34b4-4415-9839-0281ea3d7878` — **this link does not
+  resolve for any agent** (public non-member reader, not enabled; confirmed independently on at
+  least three separate attempts across two agent sessions). The literal 33 rows are still not in
+  hand anywhere in the vault or in this ticket. Also narrows sub-question 7's original framing
+  and this entry's own original "Oiler enters for ALL employees" premise: comment `23025` states
+  "oiler will be responsible for filling the labour data for oiler and operator type employees
+  only who work on boom" — non-boom employee types in a set never get this step at all.
+- **Sub-question 6 (reference-table location / `Asset.capacity`) — PARTIALLY RESOLVED.** Comment
+  `23066`: "The Asset Capacity field, which stores the tonnage value, should be numeric and
+  should accept decimal values" — `Asset.capacity` migration to numeric/decimal is now confirmed,
+  scheduled schema work. **However**, per sub-question 5's resolution, the Craft Modifier bracket
+  axis is boom **length**, not tonnage — so this answer, while real and actionable on its own
+  terms, does not supply the field REQ-05 actually needs to match against. No boom-length field
+  exists anywhere in the schema and none has been authorized. This is a new, narrower open item
+  surfaced by the decision, not one it closes.
+- **Sub-question 7 (unreadable attachment images) — STILL OPEN.** Direct fetch still returns
+  HTTP 403 for every agent that has attempted it, including during this decision-writing pass. A
+  description of the images' contents reached one downstream session via a coordinator relaying
+  screenshots pasted into a chat — that description is **not treated as a citable source** in
+  `spec.md` for exactly the reason this register exists: it is not durable or independently
+  re-checkable the way a Jira attachment or a decision-record citation is. The images remain
+  functionally unread by this process.
+- **Sub-question 8 (Labor Classification list) — EXPLICITLY DEFERRED, NOT ANSWERED.** Comment
+  `23066`: "Skip this point." The product owner was asked directly and declined — this is
+  different from "resolved" and is recorded as such; do not treat REQ-11 as settled by this
+  update.
+- **Sub-question 9 (non-Oiler read access) — RESOLVED, yes.** Comment `23062` (Umair Khan): "They
+  should see for read only." Comment `23066` (tcgproject12), consolidated block: "Q9: Yes." The
+  decision record independently re-verified these two comments agree with each other against the
+  live thread — an earlier, uncited relay into a downstream session had wrongly described this as
+  self-contradictory; that description was never adopted and is superseded by this resolution.
+- Also per comment `23066`'s final line ("skip the conflict-related point... payroll... will be
+  addressed as part of the payroll module in the future"): the REQ-03 overtime-model conflict and
+  the REQ-14 payroll-retention conflict (which rests on the *Field-ops lunch capture vs payroll
+  WTL* entry above, line 107) are both **deferred by explicit product-owner instruction, not
+  adjudicated.** This update does **not** mark the *Field-ops lunch capture vs payroll WTL* entry
+  resolved — it remains independently open on its own record, in `payroll/gaps.md`'s domain, and
+  this ticket simply proceeds without resolving it.
+- Overall status: **still open.** Four of nine sub-questions remain unanswered or newly narrowed
+  (3, 5, 6, 7); one is explicitly deferred rather than answered (8). Five are resolved (1 as
+  "moot for this ticket," 2, 4, 9, and 6 partially). Do not mark this entry `resolved` until at
+  minimum sub-questions 3, 5, 6 (boom-length field), and 7 are settled — see
+  `.ai/aidlc/SCRUM-877/spec.md` §12 for the live per-question detail.
+- Status: open (updated 2026-08-21 — partially resolved, see above; not closed)
+
+### Update 2026-08-21, round 2 — chat-relayed content, not a decision record, two new questions raised
+
+A second round of information arrived the same day, **not posted to Jira and not run through
+`tcg-scrum`** — the product owner supplied it directly to the coordinator in chat, after being
+asked whether they wanted to post to Jira first (matching round 1's process) and choosing not to
+this time. This update records what was relayed, what was independently verified against the
+actual schema (and is cited to the schema, not the relay), and — the operative finding — that
+the relayed content itself raised two brand-new open questions rather than closing any existing
+one outright.
+
+- **Sub-question 3 (Craft Code / seed value) — re-framed, still open.** The relay states
+  `EmployeeCraftCode` is a tenant-configurable admin table (settings-tab module), not a
+  hardcoded enum needing a code-level "Oiler" seed value. Independently verified against the
+  schema: `EmployeeCraftCode` (`apps/api/prisma/schema.prisma:2261-2284`) does have exactly the
+  shape a configurable per-tenant lookup would (`code`, `label` — confirmed the literal field
+  name is `label`, not `name` — `description`, tenant-scoped uniqueness constraints), consistent
+  with the relay's characterization. **This resolves the *mechanism* question** (no code needs
+  to special-case "Oiler" as a string) **but not the *data* question** (does a usable
+  Oiler-appropriate row actually exist in any tenant's configured data today, and if not, whose
+  job is it to add one). The relay is not cited as a source for the data question, only the
+  schema-verified mechanism point is retained as fact.
+- **Sub-question 5 (Craft Modifier/Boom Pay rate table) — a candidate table was relayed, in
+  chat, not posted to Jira; not adopted as a source.** The relayed table (reproduced in full in
+  `.ai/aidlc/SCRUM-877/spec.md` REQ-05, including its gaps, deliberately not smoothed over) gives
+  17 boom-length brackets, 080–100 ft through 421–440 ft, with distinct Operator and Oiler
+  codes/rates for most brackets. **The table itself is internally inconsistent with the
+  round-1 decision record's own "symmetrical pattern" claim**: bracket `OP-BP-17` (401–420 ft) is
+  simply missing from what was relayed, and the top two brackets (381–400 ft, 421–440 ft) carry
+  an Operator code/rate with **no Oiler counterpart at all** — every bracket below 380 ft has
+  both. This is not this spec's error in transcription; it is reproduced exactly as given. This
+  update does not resolve whether the missing `OP-BP-17` and the Oiler-side gap are real features
+  of the source data or artifacts of how it was relayed — see the new sub-question below.
+- **NEW sub-question 10 — what rate applies to an Oiler on a boom above 380 ft?** Given the
+  relayed table's apparent asymmetry above 380 ft, and the round-1 decision's own confirmed
+  clamp-beyond-range rule, there is no Oiler bracket to clamp to in that range. Nobody has been
+  asked this directly; no source proposes an answer. This spec explicitly declines to assume a
+  fallback (e.g. reuse the highest available Oiler bracket) — that would be an invented business
+  rule, not a read one.
+- **Sub-question 6 (boom-length field / `Asset.capacity` vs. tonnage) — partially resolved,
+  one new question opened.** The relay stated boom length is recorded under "Assets module ->
+  [some] section -> Main Boom Length." **Independently verified directly against the schema**
+  (not taken on the relay's word): `Asset.mainBoomLength` exists at
+  `apps/api/prisma/schema.prisma:758`, exact definition `mainBoomLength String? @map
+  ("main_boom_length") @db.VarChar(30)` — free-text, same pattern `Asset.capacity` was in before
+  its own confirmed migration. This closes the "where does boom length live" half of
+  sub-question 6. It opens a new one: nobody has been asked whether `mainBoomLength` itself
+  should migrate to numeric the way `capacity` did — see the new sub-question below.
+- **NEW sub-question 11 — should `Asset.mainBoomLength` migrate to numeric?** Proposed only by
+  analogy to the `Asset.capacity` migration (sub-question 6, resolved) — no source has actually
+  been asked about `mainBoomLength` specifically. `REQ-17` in `.ai/aidlc/SCRUM-877/spec.md` is
+  added on this basis and is itself flagged `[OPEN]` pending that direct confirmation.
+- Note on process, worth surfacing plainly rather than only noting quietly: this is now the
+  second time in the same day that information central to unblocking this ticket was given
+  verbally/in-chat rather than posted where it becomes a citable, durable source. Both times,
+  this register and `spec.md` have declined to treat the chat content as settled fact — which is
+  working as intended — but the pattern itself (asked to post to Jira, chose chat instead, twice)
+  is worth naming to whoever owns this ticket's process, independent of whether the content
+  turns out to be accurate.
+- Blocked (updated): `SCRUM-877` REQ-05 (rate values **and** the new above-380ft Oiler question),
+  REQ-17 (new, migration not authorized), in addition to the items already blocked per the prior
+  update.
+- Owner (updated): as before, plus — sub-questions 10 and 11 should be asked in the same pass as
+  the outstanding sub-question 5 (rate table) and sub-question 6 (boom-length migration) asks,
+  since they are the same conversation, not four separate ones.
+- Status: open (updated 2026-08-21, round 2 — narrowed further; two new questions added; still
+  not resolved)
+
+### Update 2026-08-21, round 3 — second decision record, most of the ticket now resolved
+
+A second, separate decision record now exists — `.ai/vault/decisions/
+2026-08-21-scrum-877-labor-and-unit-details-boom-pay-rate-table.md` (`status: verified`,
+`decided_by: tcgproject12, posted directly on the SCRUM-877 Jira ticket, comment 23099,
+2026-08-21T19:06:25.493+0500`, fetched live via Atlassian MCP by `tcg-scrum`) — a **new dated
+file, not an amendment** to the first `SCRUM-877` decision record, since it resolves a disjoint
+question set cited to a different comment. Independently re-verified this update: the schema
+facts the decision cites (`Asset.capacity`, `Asset.mainBoomLength`, `EmployeeCraftCode`) are
+unchanged from prior checks.
+
+This closes most of what round 2 had left open, on the strength of the same content the round-2
+chat relay had supplied — now reaching the ticket through a citable Jira comment instead.
+
+- **Sub-question 5 (rate table) — RESOLVED.** Comment `23099` supplies the full 16-row table
+  (identical values to the round-2 relay) and states directly: "the table is genuinely not
+  symmetric — `OP-BP-17` (401–420 ft) does not exist in the source data, and there is no Oiler
+  bracket at all above 380 ft." This is the same content, now durably sourced.
+- **NEW sub-question 10 (above-380ft Oiler rate) — RESOLVED.** Comment `23099`: "Confirmed rule
+  for an Oiler on a crane with boom length above 380 ft: use the 361–380 ft bracket's Oiler
+  rate — `OI-BP-15`, $3.750/hr." Chooses option (a) from round 2's three unchosen options, and
+  the same comment's "does not exist in the source data" language explicitly rules out option
+  (c) (a transcription artifact) — the asymmetry is confirmed real, not a relay error.
+- **NEW sub-question 11 (`Asset.mainBoomLength` migration) — RESOLVED.** Comment `23099`: "Main
+  Boom Length field: recorded on the Asset module in feet, separate from Asset Capacity
+  (tonnage). Confirmed: should also be converted to a numeric field, same as Asset Capacity."
+  Direct authorization, not an inference from the `Asset.capacity`/REQ-16 precedent as round 2
+  had left it.
+- **Sub-question 6 (boom-length field location + migration) — RESOLVED, both halves.** Location
+  was already known from round 2 (`Asset.mainBoomLength`, verified against the schema); the
+  migration is now authorized per sub-question 11 above.
+- **Sub-question 3 (Craft Code) — re-confirmed with better provenance, not newly resolved; the
+  data-readiness half remains open.** Comment `23099`: "Craft Code source: confirmed. Configured
+  via a Settings-tab admin module (`code` + `label`)... no hardcoded value, no seed data needed."
+  This restates, on a citable Jira comment rather than an uncited chat relay, exactly what round
+  2 had already established about mechanism. **It does not address whether any tenant has
+  actually configured an Oiler-appropriate `EmployeeCraftCode` row today** — that operational
+  question is untouched by this comment and remains open.
+- **Sub-question 7 (attachment images) and sub-question 8 (Labor Classification list) —
+  untouched, remain open/deferred exactly as before.** Comment `23099` does not address either.
+- **Residual, newly noted, not blocking:** exact bracket-boundary edge semantics (is 380.0 ft or
+  440.0 ft inclusive/exclusive of which bracket) is not addressed by comment `23099` or any prior
+  source — flagged for the executor as a small detail, not logged as its own blocking
+  sub-question.
+- **Residual, unchanged:** precision/scale and backfill strategy for both `Asset.capacity`
+  (REQ-16) and `Asset.mainBoomLength` (REQ-17) — both migrations are now authorized in
+  principle; neither comment specifies the details.
+- Overall status: **still open, but narrowly.** Of the nine original sub-questions plus the two
+  round-2 additions (eleven total), only **sub-question 3's data-readiness half** and
+  **sub-question 7 (images)** remain genuinely unanswered; sub-question 8 remains an explicit
+  deferral, not an unanswered question in the same sense. Do not mark this entry fully `resolved`
+  while 3 and 7 stand — but the great majority of what this ticket needed from product is now in
+  hand, with real citations.
+- Status: open (updated 2026-08-21, round 3 — nearly all sub-questions resolved; only
+  data-readiness (3) and the attachment images (7) remain; 8 stays an explicit deferral)
+
+## SCRUM-877 U1 — Asset.capacity/mainBoomLength numeric migration: unit ambiguity and the mainBoomLength edit-form format
+
+- Question: two distinct sub-questions surfaced while building U1 (`Asset.capacity` and
+  `Asset.mainBoomLength` migrating `String?` → `Decimal?`, REQ-16/REQ-17). Both are downstream of
+  precision/scale/backfill being `NOT SPECIFIED` — units.md explicitly delegated that choice to
+  the executor — but these two specific consequences go beyond a precision/scale pick and are
+  real product/UX questions no source addresses:
+  1. **No unit-of-measure column exists for either field, and the existing free text mixes
+     units.** Confirmed directly against `apps/api/src/utility/seed-data.ts`: `Asset.capacity`
+     values include both tons (`'175 Ton'`, `'100 Ton'`) and pounds (`'21,000 lbs'`, `'500 lbs'`,
+     `'80,000 lbs GVW'`). Converting all of these to a bare `Decimal` with the
+     leading-numeric-extraction rule this unit adopted (`175`, `100`, `21000`, `500`, `80000`)
+     produces numbers that are no longer comparable to each other, with nothing in the row
+     recording which unit the original text used. The migration cannot resolve this on its own
+     without inventing a unit-standardization decision (e.g. "treat all Capacity as tons" or "add
+     a `capacityUnit` column") that no source authorizes. Real production `Asset.capacity` rows
+     (not just seed data) will have the same problem if they mix units the same way.
+  2. **The web edit form for `mainBoomLength` uses a composite feet+inches format that has no
+     representation once the column is a plain `Decimal`.**
+     `apps/web/src/features/assets/asset/components/asset-form-sections/dimensions-section.tsx`
+     renders `mainBoomLength` through `FeetInchesField`
+     (`.../feet-inches-field.tsx`), which serializes to `"N ft M in"` (or a partial-edit buffer
+     `"N|M"`), not a plain number — confirmed by direct read of `parseFeetInches`/
+     `toFeetInchesString` in that file. The API DTO now rejects that format outright (the new
+     `@Matches(MONEY_DECIMAL_PATTERN)` validator on `mainBoomLength` in `create-asset.dto.ts`
+     requires a plain decimal string), so this form's write path is broken until it is
+     redesigned. No source (spec.md, units.md, or either decision record) addresses what the
+     input should look like once the field is numeric — plain decimal feet? Decimal feet with a
+     separate read-only inches display? This is a UI/product decision, not a type change, and
+     units.md's instruction to "update every existing typed consumer's TS types/forms to accept
+     a number instead of a string" does not settle it — the actual fix is a form redesign, not a
+     type edit.
+- Candidates: `.ai/aidlc/SCRUM-877/spec.md` REQ-16/REQ-17 (both explicitly leave precision/scale
+  and backfill `NOT SPECIFIED`); `.ai/aidlc/SCRUM-877/units.md` U1 (delegates the choice to the
+  executor, silent on unit-of-measure and on the feet+inches UI specifically);
+  `apps/api/src/utility/seed-data.ts` (the real mixed-unit values); `apps/web/src/features/
+  assets/asset/components/asset-form-sections/feet-inches-field.tsx` (the composite-format UI).
+- Note: U1 as built does NOT fix either of these — it converts existing free text using a
+  leading-numeric-extraction rule (documented in the migration's own comment and in
+  `apps/api/src/utility/extract-leading-numeric.util.ts`), which is defensible as a
+  non-destructive default (nothing is silently dropped that had a leading number; anything with
+  no leading number converts to `NULL` rather than guessing) but does not and cannot resolve unit
+  ambiguity or redesign the boom-length input. The web `mainBoomLength` edit form
+  (`dimensions-section.tsx`/`FeetInchesField`) is left unchanged and will send a payload the API
+  now rejects until someone decides the new input's shape.
+- Blocked: nothing in U1 itself (both migrations are fully built and gated green); this blocks
+  the `mainBoomLength` edit form working end-to-end going forward, and blocks trusting
+  `Asset.capacity` as a truly comparable numeric field across tenants/rows until the unit
+  question is settled.
+- Owner: product team (unit-of-measure convention for Capacity; UX for the boom-length input)
+- Status: open
+
+## SCRUM-877 U2 — no source specifies how the Oiler enters a teammate's raw boom/lunch/WTL data
+
+- Question: REQ-10 (backend persistence via `setResourceId`-based authorization) and REQ-07
+  (Oiler enters Labor & Unit data for boom-working Operator-type teammates in the set) are both
+  `[VERIFIED]` on the *mechanism* — the Oiler's write reaches the teammate's own ticket, and the
+  server never trusts a client-computed hours figure. What no source addresses is the **input
+  surface**: how does the Oiler actually key in a teammate's raw boom start/end timestamps and
+  lunch/WTL counts from the Oiler's own phone? The existing `startWork`/`endWork` timer + lunch/
+  WTL capture flow (`apps/mobile/features/field-ticket/capture.ts`, `timers/lunch-windows.ts`)
+  only exists on each employee's *own* ticket flow — there is no existing UI anywhere in this app
+  for one person to enter timer/lunch/WTL data on another person's behalf. REQ-01's own statement
+  that "Labor Total Hours is a read-only, system-computed field" forecloses the old design
+  mockup's apparent "Total Hours input" (referenced only via the still-uncited chat-relayed image
+  description in spec.md §6, not a source this ticket treats as citable) — so the missing surface
+  is specifically for the *raw* boom/lunch/WTL inputs, not a shortcut hours field.
+- Candidates: `.ai/aidlc/SCRUM-877/spec.md` REQ-01 (`NOT SPECIFIED`), REQ-10's acceptance line
+  (silent on input mechanism, only on persistence/authorization), REQ-13/§6 (Unit/Asset display
+  layout also `NOT SPECIFIED`, same root cause — the two still-unreadable Jira attachment images,
+  Q7); `.ai/aidlc/SCRUM-877/units.md` U2's slice-contents table (says `LaborBody.tsx` "wired to
+  the real endpoint for submit," which this unit does for the caller's own card, but does not
+  specify a teammate-entry widget); `apps/mobile/features/field-ticket/steps/LaborBody.tsx` (the
+  existing `CrewCard`/boom-bracket-picker UI, all still local-only for anyone but the caller).
+- Note: U2 as built does NOT invent this UI. The caller's own card (Oiler or, degraded, any
+  self-viewing employee) submits real Labor & Unit data using this device's own timer/lunch/WTL
+  captures, computed server-side by the shared `computeLaborHours` function and persisted via the
+  new `setResourceId`-scoped authorization path — this is REQ-10's mechanism, fully built and
+  tested (`apps/api/src/usecase/ticket-labor-entries/`). A teammate's card in the crew list shows
+  whatever is already persisted for them, read-only, with an explicit "isn't available yet"
+  message rather than a fabricated input control. If and when product specifies the intended
+  input (e.g. a Total Hours override the Oiler enters directly, contradicting REQ-01's "read-only,
+  system-computed" framing; or a start/end time picker per teammate), this is a small, additive
+  follow-up to `LaborBody.tsx` and does not require any backend change — `recordEntry`'s
+  `targetEmployeeId` + timestamp/count shape already supports it.
+- Blocked: the Oiler's practical ability to submit Labor & Unit data for teammates who don't
+  carry their own phone through the boom shift (the scenario REQ-07/REQ-10 are clearly built for)
+  — the mechanism exists end-to-end, but nothing in the mobile UI can drive it for anyone but the
+  caller's own device today.
+- Owner: product team (what the teammate-entry input should look like, and whether REQ-01's
+  "read-only, system-computed" framing still holds once real teammate entry is designed)
+- Status: open
+
+## SCRUM-877 U2 — resubmitting without boom times: preserve-prior vs. require-every-time is unspecified
+
+- Question: `RecordTicketLaborEntryDto`'s `boomStartedAt`/`boomEndedAt` are both optional (a
+  resubmission might only be updating `lunchesTakenCount`/`wtlCount`). No source
+  (`spec.md`/either decision record) says whether a resubmission that omits them should (a)
+  preserve the previously-persisted boom window and recompute hours from it, or (b) be rejected
+  outright, requiring every submission to repeat the full boom window. Found during review: the
+  original build coerced the omitted case to `null` hours (`?? 0`), which — combined with
+  `TicketLaborEntriesRepository.upsert`'s full-row `update: rest` — silently overwrote a
+  previously-correct, already-persisted Labor Total/Net Billable Hours figure with `0` on any
+  such resubmission. That specific data-corruption bug is fixed (see
+  `apps/api/src/usecase/ticket-labor-entries/ticket-labor-entries.service.ts`,
+  `recordEntry`'s fetch-then-merge before computing hours) — option (a) was implemented as the
+  conservative default, because silently corrupting previously-correct data is not acceptable
+  regardless of which of (a)/(b) product eventually confirms. This entry tracks the open
+  product question, not the bug (which is closed).
+- Candidates: `.ai/aidlc/SCRUM-877/spec.md` REQ-10 (silent on resubmission semantics, only on
+  authorization/persistence mechanism); `RecordTicketLaborEntryDto` (both boom fields
+  `@IsOptional`, enabling the omitted case in the first place).
+- Note: if product confirms (b) instead — every submission must repeat the full boom window, and
+  an omission should be rejected rather than defaulting to the prior value — this is a small
+  service-level change (reject when `existing` exists but the new input omits both boom fields,
+  rather than falling back to `existing`'s values) with a DTO note added explaining why.
+- Blocked: nothing build-blocking — (a) is implemented and tested
+  (`ticket-labor-entries.service.spec.ts`, the "resubmission that omits boom times" describe
+  block).
+- Owner: product team
+- Status: open
+
+## Standing debt — two independent, unshared `resolveSetRoot` implementations (DAS), still not consolidated
+
+- Question: not a product question — an engineering-debt item worth surfacing to whoever owns
+  unit/ticket sequencing. `apps/api/src/usecase/das-allocations/das-allocations.service.ts:589-606`
+  and `apps/api/src/usecase/das-loadout/das-loadout-defer-allocation.util.ts:82-91` are two
+  unshared copies of the same `JobResource.parentId`-walk-to-root logic, both computing
+  `JobResourceAllocation.setResourceId` at allocation-write time (the value is then persisted
+  directly on the row and never re-derived by any correctly-written reader).
+- **Correction to this entry's own prior version**: an earlier version of this note (written
+  during SCRUM-877 U2's initial build) claimed U2 had added a **third**, deliberately-deferred
+  copy of this walk inside `TicketLaborEntriesService`. On review (coordinator-flagged, fixed in
+  the same pass), that third copy was found to be **an outright bug, not a legitimate third
+  instance of the same deferred pattern**: `JobResourceAllocation.setResourceId` is already
+  selected by `findAllocationForTicket` and is the authoritative, already-resolved root — U2's
+  code was discarding that column and re-deriving a possibly-different value by walking from
+  `jobResourceId` (the allocation's own slot, not its root) instead. The walk was never
+  necessary; it has been deleted entirely, along with the now-unused
+  `TicketLaborEntriesRepository.findJobResourceParents`. U2 now reads `setResourceId` directly,
+  matching how any correct reader of this column should. This entry is corrected to reflect
+  that there are still only the original **two** unshared *write-time* implementations, not
+  three — U2 never needed one of its own.
+- Candidates: the two DAS files above.
+- Note: not build-blocking anywhere today — both copies are independently correct for their own
+  write-time callers. The risk is purely maintenance: two copies of graph-walk logic that must
+  both be updated together if `JobResource`'s parent-chain semantics ever change, with nothing
+  enforcing that they stay in sync. Any *future* reader of `setResourceId` should read the
+  persisted column directly (as U2 now does), never re-walk — re-walking is not just redundant
+  but a correctness risk if the tree is ever re-parented after the allocation was written, which
+  is exactly the scenario "resolve once at write time" is designed to snapshot against.
+- Blocked: nothing currently. Recommend a small, dedicated foundation-style unit (schema: none;
+  api: extract one shared `resolveSetRoot` write-time utility, migrate the two call sites onto
+  it) the next time anyone is already touching one of these two files, rather than opening a unit
+  for this alone.
+- Owner: whoever sequences future DAS/field-ticket units
+- Status: open

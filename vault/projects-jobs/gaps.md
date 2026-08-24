@@ -175,3 +175,19 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** message 20 (Kyle, Corrina); PAY-044; the assets subcategory alternative
   from message 19 (superseded for the actual-configuration role).
 
+## Job Schedule tab — what to show when the date range yields zero days
+
+- **Status:** open
+- **Asked:** 2026-08-24 — PR #391 (`fix/job-schedule-weekend-empty-hint`); tcg-scrum during review
+- **Question:** When Start Date and End Date are set but Include Saturdays / Include Sundays are
+  off such that `generateDateRange` produces zero rows (e.g. a Saturday-only range with both
+  toggles off), what should the Schedule tab empty state say? Is a toggle-specific hint the
+  right product behaviour, or should a designed empty state from Figma apply? What is the
+  canonical copy?
+- **Sources checked:** vault INDEX; `projects-jobs/INDEX.md`; `projects-jobs/gaps.md`;
+  `projects-jobs/project-module/03-create-manage-job-schedule.md` (toggle + generation rules,
+  status unverified); vault-wide `saturday|weekend` grep; `decisions/`; `processed.log`.
+  SCRUM-234 Figma node `2964-119958` may show a designed empty state — not yet checked against
+  this edge case.
+- **Owner:** Lisette Anzaldo / Ryan Adams
+
