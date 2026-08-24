@@ -392,3 +392,17 @@ byte-identical across drops. Value: dates the v3.7 → v3.8 transition and the S
 the workbook lineage in the vault is now v3.7-Mac (live-updated 8-19) · v3.8 master + SOP
 (stable) · NEW_PAYROLL v1.1 (the successor input workbook).
 
+## Backlog — Certified Payroll Playbook (photographed, ~post-08-04 meeting)
+
+| Claim / content | Verdict | Register |
+| --- | --- | --- |
+| Full intake-to-gate certified-payroll process | 🆕 **first coverage ever** — PAY-072 goes from "no vault coverage" to process-documented; captured as [certified-payroll-playbook.md](certified-payroll-playbook.md) | PAY-072, gaps |
+| "Mark Labor compliance in FCC" | ✅ connects to the FCC "Certified Pay" checkbox (message 1) — the flag's purpose identified | PAY-072 |
+| WH-347, DIR Project ID, wage determinations, agency list | 🆕 concrete deliverable + triggers named | PAY-072 |
+| "Labor Compliance" function; NO-GO scheduling gate | 🆕 business owner candidate exists; the ERP question narrows to the automation split (intake → quotations/jobs; reporting → PAY-072) | PAY-072 |
+| "Ready to Schedule Value Engine" | 🆕 undefined pipeline term — glossary candidate | — |
+
+**Question 72-family (updated):** with the business process now documented, the ask becomes —
+who owns Labor Compliance (name), and which playbook steps does the ERP automate vs keep
+manual? Plus: define "Ready to Schedule Value Engine."
+

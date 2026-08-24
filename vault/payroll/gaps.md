@@ -1465,6 +1465,11 @@ someone has confirmed otherwise.
   Labor Compliance setup form and Tracking Register; CC for the checklist evaluation.
 - Status: open
 - **From (frozen original):** [gaps.md#labor-compliance-module-no-vault-coverage](../gaps.md#labor-compliance-module-no-vault-coverage)
+- **2026-08-24: no longer zero coverage.** The [Certified Payroll Playbook](certified-payroll-playbook.md)
+  documents the intake-to-gate business process (Sales Coordinator → Labor Compliance → NO-GO
+  until reviewed), names WH-347/DIR/wage determinations, and ties to the FCC Certified Pay flag.
+  Remaining open: ERP scope split (intake workflow vs report generation), the module's owner,
+  and what "Ready to Schedule Value Engine" is.
 
 ## Employee ↔ yard and company cardinality — the ask exists in exactly one place
 
