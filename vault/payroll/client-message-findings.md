@@ -376,3 +376,11 @@ through the documents** — most details are already verified three+ ways (clien
 engine = contract). Adjudicate the question list instead; each item is pre-reduced to
 "confirm A or B, here is what each costs."
 
+## 2026-08-24 batch — "most recent payroll processing" pointer (Brian Petros)
+
+Pointer to the already-inventoried `PAYROLL for ADP v3.0 - current` folder (July 25–31 week
+workbook + `EPI4RZ32.csv`). No new content; confirms intent — a **reference copy of a real
+processed week**. Marked as the natural **golden-week acceptance fixture**: replay July 25–31
+through the ERP engine, expect the same export (joins the 28-row scenario catalog as the
+second leg of the acceptance baseline, question 17).
+

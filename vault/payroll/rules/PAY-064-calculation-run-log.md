@@ -23,3 +23,5 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm retention period
+- **Golden-week fixture available:** the client preserved a complete real processed week (July 25–31 workbook + `EPI4RZ32.csv` export, `sources/`). ERP acceptance: replay that week, diff the generated export against the preserved one — the strongest single end-to-end test the record offers.
+
