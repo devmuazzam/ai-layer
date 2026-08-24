@@ -191,3 +191,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   this edge case.
 - **Owner:** Lisette Anzaldo / Ryan Adams
 
+## Project detail Accounting tab — see accounting/gaps.md
+
+- Cross-module pointer (no status of its own — the sweep counts it once, in `accounting/gaps.md`).
+  The project detail Accounting tab's AC lives in this module
+  (`project-module/05-create-and-track-permits.md:64`, unverified) and its tab-bar entry in
+  `project-module/01-create-and-track-projects.md:33`, but the answer is owned by the accounting
+  module — it is gated on that module's scope and ~Oct–Nov 2026 kickoff. Raised by `SCRUM-897`.
+  Full entry: [accounting/gaps.md](../accounting/gaps.md#project-detail-accounting-tab--what-it-shows-and-what-it-shows-before-the-module-exists).
+
