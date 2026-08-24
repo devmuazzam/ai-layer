@@ -29,9 +29,10 @@ date        ticket      path  branch                              by    pr    no
 2026-08-20  SCRUM-896   C     scrum-896                           fouzan  -     after plan update go to detail; remove listing delete (no plan archive API yet)
 2026-08-20  SCRUM-903   B     fix/SCRUM-903-job-completed-status   fouzan  384   after DAS/yard offload complete, set Job.status=COMPLETED (not Closed)
 2026-08-20  SCRUM-899   C     scrum-899                           fouzan  379   Jobs Tool/Rigging view-only on job details; scope open in §12
-2026-08-21  SCRUM-889   C     feat/SCRUM-889                      areeba  -     logged-in /login → /dashboard (soft-probe session on auth pages)
 2026-08-21  SCRUM-888   C     feat/SCRUM-888-root-to-dashboard   areeba  -     redirect root URL / to /dashboard
 2026-08-24  SCRUM-906   C     feat/SCRUM-906                      areeba  -     move attachment tile bulk-select checkboxes to top-right
+2026-08-24  SCRUM-893   C     feat/SCRUM-893                      areeba  -     Quote Info Company/Yard gap, Cancel border, create → listing All
+2026-08-21  SCRUM-889   C     feat/SCRUM-889                      areeba  -     logged-in /login → /dashboard (soft-probe session on auth pages)
 2026-08-24  SCRUM-897   C     feat/SCRUM-897                      areeba  -     Coming Soon on project Accounting tab
 
 2026-08-21  SCRUM-895   C     feat/SCRUM-895                      areeba  -     project permit details breadcrumb/Back → /projects/{id}/permits (not details?tab=)
