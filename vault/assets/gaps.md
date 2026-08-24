@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-08-25
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -72,3 +72,32 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   to route it to (he is the SCRUM-900 assignee and wrote the follow-up sentence), but nothing on
   record says he owns the convergence, and the rule question is a product call rather than his to
   make by default.
+
+## Per-Day Utilization on the Tools & Rigging listing — day-vs-range, and the default date
+
+- **Status:** open
+- **Asked:** 2026-08-25 — SCRUM-908 close-ticket (platform PR #399). Path C (no spec.md
+  folder), so this question has no ticket §12 to live in; it belongs here per
+  [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Question:** does "Per-Day Utilization" mean one selected day at a time (the date-range
+  picker removed, defaulting to today), or should the range picker have stayed with a
+  per-day breakdown across it? And is today the intended default date, or should it default
+  to the last selected day?
+- **Sources checked:** `SCRUM-908` Jira — summary only, verbatim: *"change the listing from
+  'Today's Utilization' to 'Per-Day Utilization' to display daily utilization"*; description
+  `null`, zero comments, zero linked issues. [tool-and-rigging.md](tool-and-rigging.md)
+  (`status: unverified`) Story 5 *Dylan's Yard Dashboard* — the only vault language on
+  utilization, and it covers the yard dashboard's live counters, not this listing page or a
+  date control. [user-story-and-tasks.md](user-story-and-tasks.md) — no utilization.
+  `../decisions/` — [2026-08-24-tool-in-use-after-completion.md](../decisions/2026-08-24-tool-in-use-after-completion.md)
+  settles the In Use *rule* (Q1:B, Q3:B), which this listing already inherits because both
+  the listing and detail endpoints resolve to the same
+  `ToolsRepository.findUtilizationByDateRange` — that part is not in question. It says
+  nothing about the date *control's* shape or default.
+- **Note:** the shipped default (today) is behaviour-preserving — the prior range control
+  also defaulted to today→today — so this is a confirm-after-merge, not something blocking
+  what shipped. Reviewed in the PR review for `scrum-908` → main (2026-08-25); `tcg-scrum`
+  confirmed unsourced at that time and could not find a decision either.
+- **Blocked:** any future claim that single-day-defaulting-to-today is settled product
+  behaviour for tool utilization date controls.
+- **Owner:** needs assignment — route to Fouzan Shakil (SCRUM-908 assignee) to confirm.
