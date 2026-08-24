@@ -162,3 +162,16 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Status: open
 - **From (frozen original):** [gaps.md#asset-on-a-permit-optional-except-where-a-punch-list-says-compulsory](../gaps.md#asset-on-a-permit-optional-except-where-a-punch-list-says-compulsory)
 
+## Job-level "Boom Configuration" field — schema ask from payroll (Kyle)
+
+- **Status:** open
+- **Asked:** 2026-08-24 — client-message batch; Kyle via Brian
+- **Question:** Kyle proposes a job-level **Boom Configuration** field, set by sales/dispatch at
+  job creation: lattice-boom configuration is chosen per job, stays fixed for the job's duration
+  (jobs ≥ 1 week), and drives the lattice premium
+  ([payroll PAY-044](../payroll/rules/PAY-044-lattice-boom-premium.md)) for the **entire job**.
+  Where does this field live (job? quotation? both), what are its values, and does the asset
+  additionally carry a lattice-*capable* flag?
+- **Sources checked:** message 20 (Kyle, Corrina); PAY-044; the assets subcategory alternative
+  from message 19 (superseded for the actual-configuration role).
+

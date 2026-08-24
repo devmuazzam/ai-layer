@@ -510,6 +510,11 @@ someone has confirmed otherwise.
   sub-question: luffers.** Jeff Stricker says add-on luffers are "technically lattice"; Joe's
   08-04 answer classed luffing jibs as boom-pay-only. **Owner: Kyle.** Identification design
   candidate on the table: Boom Type on the asset subcategory.
+- **2026-08-24, Kyle's answers (message 20):** Group 6+ confirmed as a *qualification* constraint;
+  boom configuration is per-job and stable → identification = **job-level "Boom Configuration"
+  field** (supersedes the subcategory idea); lattice jobs ≥ 1 week. **Corrina: the premium covers
+  the entire job, not boom time.** The identification question is effectively answered in design;
+  **the luffer sub-question remains open** — Kyle's relay did not address it.
 
 ## Foreman premium — granularity, multiplier and capture
 

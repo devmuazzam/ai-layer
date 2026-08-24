@@ -333,3 +333,16 @@ the engine's flat ×2 increasingly reads as the defect.
 Kyle's ruling, in writing; and confirm Boom-Type-on-subcategory as the identification
 mechanism (or name the per-job alternative).
 
+## 2026-08-24 batch — Kyle's lattice answers (via Brian)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Only Group 6+ work lattice (qualification) | ✅ confirms the encoded Group-6+ trigger *and* explains it — dispatch self-enforces | PAY-044 |
+| Lattice jobs ≥ 1 week, month+; config per-job, stable | 🆕 operational facts → **job-level "Boom Configuration" field** (supersedes asset-subcategory idea); schema ask filed in projects-jobs/gaps.md | PAY-044, projects-jobs |
+| **Lattice pay covers the entire job** (Corrina, contract) | 🆕 decisive scope clarification — contrasts with long-boom's window scope; they stack; implementation collapses to job-flag + group ≥ 6 → all hours | PAY-044, PAY-043 |
+| Luffer ruling | ⚠️ **not addressed** — Kyle engaged but the Jeff-vs-Joe question wasn't relayed. Question 21 narrows to exactly this | PAY-044 |
+
+**Question 21 (narrowed):** Kyle is already on the topic — one more ask: luffers, lattice
+premium or boom-pay-only? Plus confirm the "Boom Configuration" field's home (job vs
+quotation) and values.
+
