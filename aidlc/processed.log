@@ -24,9 +24,12 @@ note       one line — what the ticket was, free text
 
 date        ticket      path  branch                              by    pr    note
 ----        ------      ----  ------                              --    --    ----
+2026-08-24  -           C     fix/job-schedule-weekend-empty-hint  fouzan  -     Job Schedule tab hints when date range is weekend-only and toggles exclude all days
 2026-08-19  SCRUM-907   C     fix/SCRUM-907-quantity-das-sets     fouzan  -     explode qty N into N DAS sets on convert; duplicates SCRUM-892
 2026-08-20  SCRUM-896   C     scrum-896                           fouzan  -     after plan update go to detail; remove listing delete (no plan archive API yet)
 2026-08-20  SCRUM-903   B     fix/SCRUM-903-job-completed-status   fouzan  384   after DAS/yard offload complete, set Job.status=COMPLETED (not Closed)
 2026-08-20  SCRUM-899   C     scrum-899                           fouzan  379   Jobs Tool/Rigging view-only on job details; scope open in §12
+2026-08-21  SCRUM-889   C     feat/SCRUM-889                      areeba  -     logged-in /login → /dashboard (soft-probe session on auth pages)
 2026-08-21  SCRUM-888   C     feat/SCRUM-888-root-to-dashboard   areeba  -     redirect root URL / to /dashboard
 2026-08-24  SCRUM-906   C     feat/SCRUM-906                      areeba  -     move attachment tile bulk-select checkboxes to top-right
+2026-08-24  SCRUM-877   A     fix/scrum-877-u2-labor-persistence   dev   395   Labor & Unit details persistence, craft modifiers, asset info, and crew hours calculation

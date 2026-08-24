@@ -182,6 +182,8 @@ push` skips the gates, never the branch guard.
 module boundaries, duplication, or hardcoded colours. Passing lint is not evidence a
 convention was followed.
 
+**No AI committer identity**: Commits must strictly be authored and committed under the human developer's name and email. Never include `Co-Authored-By`, `Committer: Claude`, or AI attribution trailers on commits or PRs.
+
 ## Elsewhere
 
 - `.ai/vault/INDEX.md` — product knowledge, read first
