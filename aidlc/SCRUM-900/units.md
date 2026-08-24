@@ -9,7 +9,7 @@
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | Tool detail In Use no longer counts completed schedule-day assignments for today/future dates | REQ-01, REQ-02, REQ-03 | api | — | S | not started |
+| U1 | Tool detail In Use no longer counts completed schedule-day assignments for today/future dates | REQ-01, REQ-02, REQ-03 | api | — | S | built — c0e8d227 |
 
 - Requirements not covered by any unit: none — all 3 requirements covered fully by U1.
 - Units blocked on an open question: none — all questions resolved.

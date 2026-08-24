@@ -233,6 +233,6 @@ Per endpoint:
 - [x] Every `[CONFLICT]` requirement has a decision note in `.ai/vault/decisions/` *(none in this spec)*
 - [x] Answers written back into `spec.md` with their new sources and flags
 - [x] Every §12 question updated to `Status: resolved — see decisions/2026-08-24-tool-in-use-after-completion.md`
-- [ ] Decomposed into vertical units — `units.md`
+- [x] Decomposed into vertical units — `units.md` (U1 built on `scrum-900`)
 
 Answered by: Fouzan Shakil  Date: 2026-08-24
