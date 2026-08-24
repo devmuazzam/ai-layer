@@ -460,3 +460,20 @@ decision notes and the FY26-27 extraction) for the client to wave through.
 
 **Register after the sweep: 3 settled · 67 open · 3 conflicted.**
 
+## Parked — 2026-08-24 (build proceeds on defaults)
+
+Per the build lead: the five remaining questions are **not asked now** — the build is
+underway and they resolve naturally in future meetings. Each has a safe working default the
+build uses until the answer lands:
+
+| # | Parked question | Build default (evidence-backed) |
+| --- | --- | --- |
+| 9 | WFN Next-Gen timing | Build against **classic WFN** (the resolved product); re-validate the ADP layer at upgrade — caveats already on the docs |
+| 16 | Cross-midnight policy | Build **`CalendarDay`** (the active config, the engine's own default) **and keep the policy switch + 10-case harness** — flipping later is config, not code |
+| 19 | Desktop backup cadence | Treat the desktop as fragile during parallel-run; ERP itself carries no on-prem dependency |
+| 20a/b | Late-leave adjudicator · rigging price source | Build the cause→disposition taxonomy with these two as **manual-review dispositions** until named |
+| 21 | Luffer classification | Build the **contract reading**: luffing boom counts toward **Long Boom pay** (mast+jib combined length), not the lattice premium |
+
+None blocks a `PAY-###` rule build. When an answer arrives in a meeting, it lands as a
+decision note and flips the default — the rule files already say where.
+
