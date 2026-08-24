@@ -356,3 +356,23 @@ quotation) and values.
 Stale-631 audit (question 13 residual) largely resolves for the active pipeline; remaining:
 v3.7-Mac internals and crosswalk rows.
 
+## 2026-08-24 batch — "review these four documents; too many details?" (Brian Petros)
+
+The four root-level documents (Rule Matrix, ERP Payroll Module PDF, ADP Bucket Crosswalk,
+MCOG payroll-specific summary) are the **already-migrated core** of the payroll vault —
+byte-identical in the shared folder to the migrated copies (message-9 comparison). Status of
+each: matrix → the spine of the 73-rule register; PDF → the 11-part FRD (its PR-### ids
+reconciled against the matrix's independent numbering); crosswalk → reconciled against the
+live 8-18 ADP pull (9 open decisions tracked); MCOG summary → cross-checked against the
+full MLA extraction (lattice paragraph verified verbatim against the client's page scan).
+
+**Answer to his questions, recorded:** the details are not too many — they are the
+requirements; his own June message said no human mind can hold them. The fix was
+organization, not reduction: one page per rule, every source joined. His "80%" estimate is
+about right — the register identified the missing ~20% as five uncatalogued rules
+(money rounding, foreman, military-base, certified-payroll scope, sick/PTO scope), 13
+conflicted items, and 21 concrete questions. **Meeting design implication: do not page
+through the documents** — most details are already verified three+ ways (client statements =
+engine = contract). Adjudicate the question list instead; each item is pre-reduced to
+"confirm A or B, here is what each costs."
+
