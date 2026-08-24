@@ -7,7 +7,7 @@ updated: 2026-07-02
 status: reference
 conflicts_with: []
 jira: []
-topics: [dispatch-scheduling, field-ops-mobile]
+tags: [module/dispatch, module/field-ops, kind/transcript]
 entities: []
 meeting_date: 2026-07-02
 kind: transcript

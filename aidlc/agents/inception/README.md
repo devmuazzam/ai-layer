@@ -39,6 +39,9 @@ reviewable *before* anything is decomposed against it.
 A `units.md` whose slices each answer *"if this ships alone, what can someone now do?"* —
 with any `[OPEN]` requirement still marked open, not quietly resolved on the way through.
 
-Open questions from either agent are appended to [`../../../vault/gaps.md`](../../../vault/gaps.md).
+Open questions from either agent are appended to §12 of the ticket's `spec.md` — a ticket
+has no `gaps.md`, and a question a ticket raised stays in the file the next person opens.
+[`../../../vault/gaps.md`](../../../vault/gaps.md) is read-only to both agents, for citing an
+entry that already exists.
 Neither agent resolves a gap; recording a decision belongs to `tcg-scrum`, which has the
 write path and the escalation context for it.

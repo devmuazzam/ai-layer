@@ -7,12 +7,12 @@ updated: 2026-05-19
 status: reference
 conflicts_with: []
 jira: []
-topics: [field-ops-mobile, crane-configuration]
+tags: [module/assets, module/field-ops, kind/transcript]
 entities: []
 meeting_date: 2026-05-19
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 5
+normalized: 2026-08-24
+normalized_substitutions: 6
 ---
 
 # Crane Configurations Job Tickets — 2026-05-19
@@ -186,7 +186,7 @@ May 19, 2026, 7:00PM
  Brian Petros   31:15 Yes, bin numbers, trailer numbers, plate numbers, everything, yeah.
  ehtesham.anwar   31:22 Again, whatever the government registered number or plate number is, is going to stay with the 1901.1 and 0.2 stays with 0.2, right?
  Brian Petros   31:35 Correct.
- ehtesham.anwar   31:38 So that means that these loads, their trailers are not changing. You need to attach employee to the plane, to the operator load, and then all of the tractors.
+ ehtesham.anwar   31:38 So that means that these loads, their trailers are not changing. You need to attach employee to the crane, to the operator load, and then all of the tractors.
  Brian Petros   31:50 That is correct.
  ehtesham.anwar   31:52 And with each character, there is only one person that goes. Or do you need, always need two?
  Brian Petros   31:58 For the tractor, it's only one person.

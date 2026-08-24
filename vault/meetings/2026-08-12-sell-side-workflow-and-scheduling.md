@@ -6,7 +6,7 @@ updated: 2026-08-12
 status: unverified
 conflicts_with: []
 jira: []
-topics: [sell-side-workflow, scheduling, permits, dispatch, customers, integrations, meeting-minutes]
+tags: [module/customers, module/dispatch, module/projects-jobs, module/quotations, kind/meeting-notes, scheduling, permits, integrations]
 entities: [job-schedule-master, permit, crane, support-truck, customer-intake, ready-to-schedule-checklist, geographic-heat-map, red-path]
 meeting_date: 2026-08-12
 ---
@@ -74,13 +74,13 @@ Mostly **new ground**, and it reaches into the vault's most contested area.
   vault coverage. The field-ops FRD's BRS References table lists permits only as a *Pending*
   compliance topic.
 - **Customer intake** touches the customers area, where the vault already has **five sources,
-  three of them copies** ([product/customers-INDEX.md](../product/customers-INDEX.md)). New
+  three of them copies** ([customers/customers-INDEX.md](../customers/customers-INDEX.md)). New
   intake fields should not be specified without reading that stub first.
 - **Crane maintenance state blocking selection, and deliberate double-booking**, are scheduling
   rules that belong with the Daily Allocation System
-  ([product/daily-allocation-INDEX.md](../product/daily-allocation-INDEX.md)) — which is itself
+  ([dispatch/daily-allocation-INDEX.md](../dispatch/daily-allocation-INDEX.md)) — which is itself
   an unresolved 2-source conflict. Neither source covers either rule.
-- **HubSpot** appears in the vault only once, in `product/user-story-and-tasks.md`, which was
+- **HubSpot** appears in the vault only once, in `assets/user-story-and-tasks.md`, which was
   migrated from an individual's *personal* Confluence space and carries a `provenance_note`
   warning that it may be one person's draft rather than agreed specification. **Dialpad, Mapsly
   and Microsoft 365 appear nowhere.** Patrick's demo is currently the only route to what these

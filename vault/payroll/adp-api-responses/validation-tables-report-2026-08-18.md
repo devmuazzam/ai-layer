@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-code, code-list, validation-tables, reference-data]
+tags: [module/payroll, kind/reference, adp, reference-data]
 entities: [adp-code, department, cost-number, job-title, location, worker-category, deduction-code, hire-reason, adp-company-code]
 part_of: payroll/adp-api-responses/INDEX.md
 ---

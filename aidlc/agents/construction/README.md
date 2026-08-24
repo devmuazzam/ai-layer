@@ -49,4 +49,6 @@ module is a reason to ask, not a licence to proceed.
 
 Merged code for one unit, plus the analyst's verdict — findings ranked, each tagged with
 how it was established. Anything the executor had to stop on goes to
-[`../../../vault/gaps.md`](../../../vault/gaps.md) with the question that would unblock it.
+§12 of the ticket's `spec.md` with the question that would unblock it — not to
+[`../../../vault/gaps.md`](../../../vault/gaps.md), which is retired (see the top of that
+file) regardless of whose question it is.

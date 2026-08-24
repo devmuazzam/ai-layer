@@ -6,7 +6,7 @@ updated: 2026-08-13
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-api, earning-codes, deduction-codes, reference-data]
+tags: [module/payroll, kind/reference, adp, earning-codes, reference-data]
 entities: [adp-code, earning-code, deduction-code, memo-code, adp-company-code, pay-allocation]
 part_of: payroll/adp-api-responses/INDEX.md
 ---

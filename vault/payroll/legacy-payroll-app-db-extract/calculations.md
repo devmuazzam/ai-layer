@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, legacy-payroll-app, pricing-engine, payroll-rule, boom, shift-differential, guaranteed-hours, rest-period, wtl, subsistence, ca-nonunion-ot, ledger]
+tags: [module/payroll, kind/reference, legacy-payroll-app, pricing, payroll-rules, boom, shift-differential, guaranteed-hours, rest-period, wtl, subsistence, overtime]
 entities: [pricing-engine, pay-component, craft-modifier, guaranteed-hours, rest-period, wtl, subsistence, payroll-group]
 part_of: payroll/legacy-payroll-app-db-extract/INDEX.md
 ---

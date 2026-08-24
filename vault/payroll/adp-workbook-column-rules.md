@@ -6,7 +6,7 @@ updated: 2026-08-19
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-export, workbook, boom, craft-modifier, subsistence, plain-language]
+tags: [module/payroll, kind/reference, adp, boom, craft-modifier, subsistence]
 entities: [craft-code, craft-modifier, pay-component, adp-code]
 ---
 

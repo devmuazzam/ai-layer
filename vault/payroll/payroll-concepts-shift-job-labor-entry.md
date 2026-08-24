@@ -6,7 +6,7 @@ updated: 2026-08-11
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, terminology, labor-entry, data-model]
+tags: [module/payroll, kind/reference, reference-data, architecture]
 entities: [shift, job, labor-entry, anchor-date, cross-midnight]
 ---
 
@@ -57,7 +57,7 @@ calendar is still "owned" by Day 1 for payroll purposes.
 specified separately, in documents migrated from Confluence a month before these:
 `FR-FOP-023` Labor Details, `FR-FOP-012` Start Work, `FR-FOP-016` End Work, and the lunch trio
 `FR-FOP-013`/`014`/`015`. See
-[../product/field-ops-mobile-INDEX.md](../product/field-ops-mobile-INDEX.md) first — three
+[../field-ops/field-ops-mobile-INDEX.md](../field-ops/field-ops-mobile-INDEX.md) first — three
 competing documents describe that app and none is authoritative.
 
 Nothing in those documents states the anchor-date rule below. Whether the mobile app assigns a

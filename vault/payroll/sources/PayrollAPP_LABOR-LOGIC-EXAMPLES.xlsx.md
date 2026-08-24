@@ -9,7 +9,7 @@ migration_status: partial
 vault_target: "../rule-examples-catalog.md"
 conflicts_with: []
 jira: []
-topics: [payroll, source-file, provenance]
+tags: [module/payroll, kind/source, provenance]
 entities: []
 part_of: payroll/sources/INDEX.md
 ---

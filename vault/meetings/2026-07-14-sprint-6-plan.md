@@ -6,7 +6,7 @@ updated: 2026-07-14
 status: unverified
 conflicts_with: []
 jira: []
-topics: [permits, sprint-planning, authentication, inspections, tools-rigging, jobs, dashboard, quotations]
+tags: [module/admin, module/assets, module/field-ops, module/projects-jobs, module/quotations, kind/meeting-notes, permits, sprint-planning, authentication, inspections, tools-rigging, reporting]
 entities: [sprint, permit, tool-rigging, job, quotation, customer, vendor, agency, inspection, project]
 date_conflict: >
   Filename uses the Confluence created date (2026-07-14). The body states the sprint ran June 29 - July 10, 2026, so this plan page was created 4 days after the sprint it plans had already ended. Not resolved - flagged for product.
@@ -19,7 +19,7 @@ date_conflict: >
 **Duration** : 2-week sprint.
 
 **Sprint Goal** :  
-Deliver the foundational **Atom Mobile App** experience (login, authentication, dashboard, and Pre-Trip Inspection), complete the remaining **Plans & [[product/project-module/05-create-and-track-permits|Permits]]** functionality with **Job** linking, address **Sprint 4 feedback** across core modules, and incorporate key internal improvements and feedback  to strengthen overall system functionality. 
+Deliver the foundational **Atom Mobile App** experience (login, authentication, dashboard, and Pre-Trip Inspection), complete the remaining **Plans & [[projects-jobs/project-module/05-create-and-track-permits|Permits]]** functionality with **Job** linking, address **Sprint 4 feedback** across core modules, and incorporate key internal improvements and feedback  to strengthen overall system functionality. 
 
 ### **Sprint Plan :** 
 
@@ -32,11 +32,11 @@ Deliver the foundational **Atom Mobile App** experience (login, authentication, 
 
     * Implement approved feedback across:
     
-        * [[product/quotations-INDEX|Quotations]]
-        * [[product/customers-INDEX|Customers]]
-        * [[product/agencies-vendors-INDEX|Vendors]]
+        * [[quotations/quotations-INDEX|Quotations]]
+        * [[customers/customers-INDEX|Customers]]
+        * [[vendors-agencies/agencies-vendors-INDEX|Vendors]]
         * Agencies
-        * [[product/tool-and-rigging|Tools & Rigging]]
+        * [[assets/tool-and-rigging|Tools & Rigging]]
         
     
 * **Internal feedback and Enhancements**

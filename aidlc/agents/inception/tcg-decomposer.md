@@ -31,6 +31,8 @@ falsifiable check (§3 coverage, §4 sequencing) that a Sonnet run can be held t
 one `[OPEN]` row, or units that touch `apps/api/prisma`. The weaker-model failure here is a
 plan that reads well and slices by layer — the coverage table in §3 is how you catch it.
 
+No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool fallback.
+
 ## Tool access
 
 | Scope | Access |
@@ -39,7 +41,8 @@ plan that reads well and slices by layer — the coverage table in §3 is how yo
 | Whole repo, `.ai/claude/contexts/`, `.ai/vault/` | **read-only** |
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/units.md` | **write** — the one artifact you produce |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **write** — append entries only. Payroll and ADP questions go to the payroll one |
+| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read** — retired 2026-08-20, historical entries only. Cite an existing entry by anchor; never append a ticket's question here |
 | Everything else | **no write access** |
 
 You do not edit the spec. If the spec is wrong, say so and stop — do not fix it while
@@ -84,7 +87,7 @@ If a unit needs something the spec marked `[OPEN]`, you have two moves and no th
 1. **Cut the unit down** to the part that does not depend on the unknown, and record what
    you removed under *Deliberately not in this unit* with the question that blocks it.
 2. **Leave it out entirely** and list it in the ledger under *Units blocked on an open
-   question*, with the `gaps.md` anchor.
+   question*, naming the `spec.md` §12 question id.
 
 You do not pick a plausible answer so the unit can proceed. An open question resolved
 inside a decomposition is invisible — it arrives as a field in a slice contents table and
@@ -92,7 +95,7 @@ gets built as though someone decided it.
 
 **Requirements the spec did not make are not yours to add.** If slicing reveals that
 something obvious is missing — an index, an error state, a permission check — that is a
-finding for `gaps.md` and a note to the elaborator, not a unit. The spec is the contract; a
+finding for `spec.md` §12 and a note to the elaborator, not a unit. The spec is the contract; a
 decomposer that adds to it has made the review that approved it meaningless.
 
 ## 2b. `[UNVERIFIED]` does not block a unit. It constrains how you sequence it.
@@ -117,7 +120,7 @@ Two moves, and you may take both:
 1. **Sequence to delay commitment.** If the unverified part can ride in a later unit, put it
    there — the source may be settled by then, and the earlier units prove the rest of the plan.
 2. **Name it in the ledger** under the unit, with what would settle the source: the vault
-   path to re-confirm, or the question for `gaps.md`.
+   path to re-confirm, or the question for `spec.md` §12.
 
 What you may **not** do is quietly upgrade an unverified requirement by finding code that
 agrees with it. The codebase is not a source; matching behaviour is how a stale requirement
@@ -183,12 +186,12 @@ Units written: .ai/aidlc/SCRUM-###/units.md
 
 <N> units — <N> vertical, <N> foundation.
 Requirements: <N> in spec, <N> covered, <N> uncovered (<why>).
-Blocked on open questions: <unit ids + gaps.md anchors, or "none">
+Blocked on open questions: <unit ids + spec.md §12 question ids, or "none">
 
 First to ship: U<n> — <what it proves>
 Parallel: <pairs, or "strictly sequential">
 
-Logged to .ai/vault/gaps.md: <anchors, or "none">
+Open questions written to spec.md §12: <Q ids, or "none">
 
 I have not implemented anything. Hand U<n> to an executor when you are ready.
 ```

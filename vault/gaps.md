@@ -1,13 +1,29 @@
 # Gaps
 
+> **Dispositioned 2026-08-24.** This file is frozen — open entries dispositioned to `vault/<module>/gaps.md`, each entry carrying a *From (frozen original)* backlink. Closed/resolved entries live only here.
+
+**RETIRED 2026-08-20 — do not append here.** This single-register design (one growing file
+covering every product topic) is being replaced by gaps that live inside a per-module vault
+folder mirroring the backend's module structure, so lookup is scoped instead of blind. That
+restructure hasn't happened yet — the plan is to do it as each module's vault content is
+cleaned up and moved into its own folder, at which point that module's gaps move with it.
+Until then, no agent should append a new entry here or treat this file as the live gaps
+mechanism. The 24 entries below are kept for their content — still citable by anchor, e.g.
+from a conflict stub — but are a historical snapshot, not an active register.
+
 Open questions raised by the Confluence migration of 2026-08-10 and by everything since.
 Each product entry is a conflict the migration deliberately did not resolve. Agents must not
 pick a winner from these sets — surface the conflict and cite all candidates.
 
+**Not for ticket questions.** A question raised while working a ticket goes to that ticket's
+§12 of `.ai/aidlc/SCRUM-###/spec.md` — never here. This file holds only what belongs to no
+ticket: the migrated Confluence backlog, and product-wide questions raised outside the loop.
+`grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md` sweeps the ticket registers.
+
 **Two registers, one format.** Product and process gaps live here. **Payroll and ADP gaps
 live in [`payroll/gaps.md`](payroll/gaps.md)** — same entry shape, same rules, split out
-because that register is three times this size and belongs to a separate source set. Append a
-payroll or ADP question there, not here.
+because that register is three times this size and belongs to a separate source set. Both
+are retired under the same note above.
 
 **Read by section, never whole.** `grep -n '^## ' .ai/vault/gaps.md` lists every entry in one
 screen; then read only the entries for the area you are working on. Reading this file top to
@@ -18,9 +34,9 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/frd-new-format-draft/INDEX.md` — 57 KB (9 parts), updated 2026-06-09. Document ID **FR-TCG-FOP-001**, Version **1.1**, Status **REVIEWED**.
-  - `product/field-ops-frd/INDEX.md` — 48 KB (12 parts), updated 2026-06-16. Document ID **FR-TCG-FOP-002**, Version **2.0**, Status **DRAFT**.
-  - `product/atom-mobile-app-user-stories/INDEX.md` — 16 KB (6 parts), updated 2026-07-22. 20 user stories across 5 epics, no document ID.
+  - `field-ops/frd-new-format-draft/INDEX.md` — 57 KB (9 parts), updated 2026-06-09. Document ID **FR-TCG-FOP-001**, Version **1.1**, Status **REVIEWED**.
+  - `field-ops/field-ops-frd/INDEX.md` — 48 KB (12 parts), updated 2026-06-16. Document ID **FR-TCG-FOP-002**, Version **2.0**, Status **DRAFT**.
+  - `field-ops/atom-mobile-app-user-stories/INDEX.md` — 16 KB (6 parts), updated 2026-07-22. 20 user stories across 5 epics, no document ID.
 - Note: FR-TCG-FOP-001 v1.1 REVIEWED versus FR-TCG-FOP-002 v2.0 DRAFT with different
   document IDs means these are probably two deliverables, not two drafts — and every
   heuristic anyone would reach for (newer wins, bigger wins, reviewed wins) gives a
@@ -35,10 +51,10 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/quotation.md` — 1.0 KB, updated 2026-06-23. Punch list from the JZ feedback folder.
-  - `product/quotation-flow-process.md` — 2.1 KB, updated 2026-07-09. Stage/lifecycle flow.
-  - `product/quotations.md` — 2.0 KB, updated 2026-07-14. Punch list from the Mohsin feedback folder.
-  - `product/user-story-and-tasks.md` — 5.1 KB, updated 2026-04-22. Quotation management user stories, from a personal space.
+  - `quotations/quotation.md` — 1.0 KB, updated 2026-06-23. Punch list from the JZ feedback folder.
+  - `quotations/quotation-flow-process.md` — 2.1 KB, updated 2026-07-09. Stage/lifecycle flow.
+  - `quotations/quotations.md` — 2.0 KB, updated 2026-07-14. Punch list from the Mohsin feedback folder.
+  - `assets/user-story-and-tasks.md` — 5.1 KB, updated 2026-04-22. Quotation management user stories, from a personal space.
 - Note: these appear to be four different scopes (punch list, lifecycle, punch list,
   user stories) rather than four versions of one document, so the answer may be "all
   of them, merged" rather than a single winner.
@@ -50,11 +66,11 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/customer-and-job-sites.md` — 1.5 KB, updated 2026-06-12.
-  - `product/customer.md` — 6.4 KB, updated 2026-07-16.
-  - `product/discussion-points-with-mohsin.md` — 0.5 KB, updated 2026-06-25.
-  - `product/discussion-points-with-tcg-team.md` — 1.1 KB, updated 2026-06-25.
-  - `product/user-story-and-tasks.md` — 5.1 KB, updated 2026-04-22. Customer management user stories, from a personal space.
+  - `customers/customer-and-job-sites.md` — 1.5 KB, updated 2026-06-12.
+  - `customers/customer.md` — 6.4 KB, updated 2026-07-16.
+  - `meetings/2026-06-26-discussion-points-with-mohsin.md` — 0.5 KB, updated 2026-06-25.
+  - `meetings/2026-06-26-discussion-points-with-tcg-team.md` — 1.1 KB, updated 2026-06-25.
+  - `assets/user-story-and-tasks.md` — 5.1 KB, updated 2026-04-22. Customer management user stories, from a personal space.
 - Note: this is not four independent documents. `discussion-points-with-mohsin.md` is
   word-for-word the "Job Site" section of `customer-and-job-sites.md`, including the
   same two typos, and the customer bullets in `discussion-points-with-tcg-team.md` are
@@ -68,10 +84,10 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/agencies.md` — 1.3 KB, updated 2026-04-30. User stories.
-  - `product/vendors.md` — 4.0 KB, updated 2026-04-30. User stories.
-  - `product/agency-and-vendor.md` — 0.4 KB, updated 2026-06-22. Punch list.
-  - `product/agencies-module.md` — 1.6 KB, updated 2026-07-22. Punch list.
+  - `vendors-agencies/agencies.md` — 1.3 KB, updated 2026-04-30. User stories.
+  - `vendors-agencies/vendors.md` — 4.0 KB, updated 2026-04-30. User stories.
+  - `vendors-agencies/agency-and-vendor.md` — 0.4 KB, updated 2026-06-22. Punch list.
+  - `vendors-agencies/agencies-module.md` — 1.6 KB, updated 2026-07-22. Punch list.
 - Note: the two newest files are the two smallest, and both are punch lists rather than
   specifications. Recency ordering would discard the only user-story-level content.
 - Blocked: nothing yet — will block spec work on the Agencies and Vendors modules.
@@ -82,8 +98,8 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/daily-allocation-system.md` — 9.1 KB, updated 2026-04-30. User stories.
-  - `product/job-project-das.md` — 1.9 KB, updated 2026-07-16. Punch list.
+  - `dispatch/daily-allocation-system.md` — 9.1 KB, updated 2026-04-30. User stories.
+  - `projects-jobs/job-project-das.md` — 1.9 KB, updated 2026-07-16. Punch list.
 - Note: the newer file is roughly one fifth the size and covers job/project linkage
   rather than DAS behaviour, so these may be complementary rather than competing.
 - Blocked: nothing yet — will block spec work on the Daily Allocation System.
@@ -94,7 +110,7 @@ will be about your ticket.
 
 - Question: which of these is authoritative?
 - Candidates:
-  - `product/mobilization-and-demobilization.md` — 5.4 KB, migrated 2026-08-10 from
+  - `quotations/mobilization-and-demobilization.md` — 5.4 KB, migrated 2026-08-10 from
     `confluence/TCG/Mobilization & Demobilization` (page id 142049281, itself edited
     2026-08-10). Prose requirements for the new ERP, plus the only coverage of the field
     ticketing / mobile app relationship to the quotation.
@@ -139,14 +155,14 @@ will be about your ticket.
 - Question: should the cross-module feedback punch lists be split by module and
   attached to the relevant specs?
 - Candidates (all are single files covering many modules):
-  - `product/job-project-das.md` — 1.7 KB, updated 2026-07-16. Filed as DAS, but DAS is
+  - `projects-jobs/job-project-das.md` — 1.7 KB, updated 2026-07-16. Filed as DAS, but DAS is
     **one of nine sections**; it also covers Billing code, Price list, Project, PO, Sub
     category, Permit, Plan and Agency.
-  - `product/quotations.md` — 1.8 KB, updated 2026-07-14. Filed as Quotations; trails
+  - `quotations/quotations.md` — 1.8 KB, updated 2026-07-14. Filed as Quotations; trails
     into Assets, Tools & Rigging and Billing code.
-  - `product/quotation.md` — 0.8 KB, updated 2026-06-23. Filed as Quotations; trails
+  - `quotations/quotation.md` — 0.8 KB, updated 2026-06-23. Filed as Quotations; trails
     into Job and DAS.
-  - `product/agencies-module.md` — 1.4 KB, updated 2026-07-22. Filed as Agencies;
+  - `vendors-agencies/agencies-module.md` — 1.4 KB, updated 2026-07-22. Filed as Agencies;
     carries an "Across the app" block (US date format, breadcrumb spacing, activity-log
     refresh) that is not agency-specific.
 - Note: this is why the DAS "conflict" is weaker than the other four — an 8.7 KB
@@ -169,7 +185,13 @@ will be about your ticket.
   chat across the app* (898), *tools & rigging not editable on a job* (899), *a mobile ticket
   cannot start before load-out* (902), *offline save in yard operations, marked "(client
   feedback)"* (904). None of those five is written in the vault; the ticket is the only
-  source. One item ("quotation marked Signed auto-created Project and Job without Convert to
+  source. For SCRUM-899 the Job Details UI shipped read-only in PR #379; the open scope
+  question (all tools vs quote-inherited only) lives in `aidlc/SCRUM-899/spec.md` §12 Q1 —
+  do not treat the punch-list line as adjudicated product law. One item ("quotation marked Signed auto-created Project and Job without Convert to
+  source. For SCRUM-896 the listing delete was removed and post-save goes to plan detail
+  on branch `scrum-896`; the open questions (plan archive vs hard delete; post-save
+  convention scope) live in `aidlc/SCRUM-896/spec.md` §12 — do not treat the punch-list
+  line as adjudicated product law. One item ("quotation marked Signed auto-created Project and Job without Convert to
   Job / Create Project") is a behaviour question, not a bug report, and has no ticket on the
   page.
 - Owner: product team
@@ -186,17 +208,17 @@ will be about your ticket.
     "Atom App", reported by Umair Khan, created 2026-08-06. The only source anywhere with
     numeric threshold values. Cites no origin for them. Assumes **four** lunches and makes
     WTL customer authorization unconditional (name + signature + photo).
-  - `product/brs.md` (9.2 KB, 2026-06-10) — BRS-LUNCH-005 "Lunch Threshold Values" is
+  - `brs.md` (9.2 KB, 2026-06-10) — BRS-LUNCH-005 "Lunch Threshold Values" is
     marked *Needs Supporting Documentation*; OD-002 / OD-003 / OD-004 all *Need
     Documentation*. BRS-LUNCH-002 lists **three** known lunches (First, Second, Third) and
     is marked **✓ Confirmed**.
-  - `product/field-ops-frd/11-open-questions-future-considerations.md` (FR-TCG-FOP-002
+  - `field-ops/field-ops-frd/11-open-questions-future-considerations.md` (FR-TCG-FOP-002
     v2.0 DRAFT) — open question 1, "Exact lunch thresholds and union variations".
-  - `product/frd-new-format-draft/08-open-questions.md` (FR-TCG-FOP-001 v1.1 REVIEWED) —
+  - `field-ops/frd-new-format-draft/08-open-questions.md` (FR-TCG-FOP-001 v1.1 REVIEWED) —
     open question 4, "What are the final lunch threshold rules for first, second, third,
     and fourth lunch?", owner Corrina, status Open. Open question 1 (owners Wes + Corrina)
     additionally leaves signature ownership for Third Man/Laborer undecided.
-  - `product/frd-new-format-draft/05-functional-requirements/fr-fop-015-work-through-lunch-authorization.md`
+  - `field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-015-work-through-lunch-authorization.md`
     — the only source with a customer-unavailable fallback: "employee records reason and
     acknowledges the attempt". Neither SCRUM-864 nor FR-TCG-FOP-002 has it.
 - Note: this is not a documentation conflict but an unsourced decision already in flight —
@@ -219,124 +241,17 @@ will be about your ticket.
   before 5 hours, Lunch 2 before 10.5, Lunch 3 before 16.5, Lunch 4 before 22, with a
   notification one hour before each — SCRUM-864's set exactly, and four lunches. Nothing that
   made this a gap has changed: the page cites no origin, so the values are still unsourced;
-  `product/brs.md` BRS-LUNCH-002 still lists **three** lunches and is still marked
+  `brs.md` BRS-LUNCH-002 still lists **three** lunches and is still marked
   **✓ Confirmed**; both FRDs still carry the thresholds as open questions; and the page still
   has no customer-unavailable path for WTL, stating only that it "requires customer
   authorization" with name, signature and photo. The likeliest reading is that the ticket's
   values were pasted into the page, which spreads the unsourced decision to one more location
   rather than resolving it. Recency is not authority — a page edited today does not outrank a
   BRS item marked Confirmed. The vault's migrated copy
-  (`product/atom-mobile-app-user-stories/03-ticket-workflow.md:138`) carries no numbers and was
+  (`field-ops/atom-mobile-app-user-stories/03-ticket-workflow.md:138`) carries no numbers and was
   deliberately **not** re-migrated: the page was mid-edit when observed (two sections numbered
   US-11, an epic titled "PIC 10", epics 5-9 absent, US-12 missing).
 - Status: open
-
-## Scope of the Plan Comments page in SCRUM-757
-
-- Question: Which screen is "the Plan Comments page" — the comment surface on the plan
-  detail view, the project In-House Comments tab, or a third screen?
-- Candidates: none in the vault. `product/project-module/04-create-and-approve-lift-plans.md`
-  (3.5 KB, updated 2026-04-30) specifies a Plans tab and an approve / request-changes-with-comments
-  workflow but describes no comments page. `product/job-project-das.md` (1.7 KB, 2026-07-16)
-  records `Plan — rich text field - UI issue` and `Project — in house comments – design update
-  needed` without detail. A vault-wide grep for `comment` returns 40 hits, all field-ops
-  ticket-workflow or quotation content. `SCRUM-757` names the page and identifies nothing.
-- Note: the repo has two plausible surfaces —
-  `apps/web/src/features/plans/components/plan-view-sidebar.tsx` (an Add Comment action, with
-  comments rendered in a Recent Activity card) and
-  `apps/web/src/features/projects/components/project-detail-comments-tab.tsx` (In-House
-  Comments, against which `SCRUM-763` is open and Blocked). Neither is named "Plan Comments",
-  and the code cannot say which the reporter was looking at. `SCRUM-757` links a Loom
-  recording and a Google Drive file that would settle this immediately; they were not opened
-  during elaboration on 2026-08-11.
-- Blocked: `SCRUM-757` REQ-01, and through it every other requirement in
-  `.ai/aidlc/SCRUM-757/spec.md` — none can be scoped, reproduced or accepted against an
-  unidentified screen.
-- Owner: product team — in practice Aiman Farooq (reporter of `SCRUM-757`), or anyone who can
-  open the ticket's attachments.
-- Answer: the **plan detail view** at `/projects/{id}/plans/{id}` — the first of the two
-  candidates. Not the project In-House Comments tab, so `SCRUM-763` is a separate concern
-  against a different screen. Confirmed against the route
-  `apps/web/src/app/(protected)/projects/[id]/plans/[planId]/page.tsx`, which renders
-  `PlanViewPageContent` and `AddCommentModal`. Answered by the assignee rather than the
-  reporter, and from knowledge of the screen rather than from the attachments — which are
-  still unopened and are still the fastest way to settle Q3.
-- Status: resolved — see `decisions/2026-08-12-plan-comments-page-scope.md`
-
-## Plan comment performance target
-
-- Question: What is the acceptance threshold for the Plan Comments page being "responsive" —
-  a page-load budget, an input-latency budget, or both — and at what comment count and
-  comment length must it hold?
-- Candidates: none. The only Performance requirement anywhere in the vault is
-  `product/frd-new-format-draft/07-non-functional-requirements.md` ("Ticket screens, checklist
-  rendering, and signature capture must load within acceptable response times under field
-  network conditions") — scoped to the field-ops **mobile** app, stating no number, and inside
-  the unresolved field-ops conflict set. `product/customer.md` ("Tooltips are very slow") and
-  `product/quotation.md` ("Auto api call on page refresh") are different modules and set no
-  target. No `.ai/claude/rules/*.md` file and no `CLAUDE.md` section sets a web performance
-  budget.
-- Note: `README.md` → *What this vault does not contain* does not list non-functional
-  requirements among the deliberate exclusions, so this is an absence, not policy. Without a
-  number, "fixed" is whoever last looked at it deciding it feels fine, which is how the ticket
-  reopens. A profiling pass that measures current behaviour is not blocked by this question and
-  would give the answerer real numbers to set a threshold against.
-- Blocked: `SCRUM-757` REQ-03, and the sign-off of REQ-02.
-- Owner: product team
-- Status: open
-
-## Source of the 400 and 401 responses on the plan page
-
-- Question: Which specific requests return 400 on the page in `SCRUM-757`, which requests did
-  the reporter see repeated (with counts, and against which build), and are the observed 401s
-  the designed access-token-expiry → refresh → retry cycle or calls that should not be issued?
-- Candidates: none. `SCRUM-757` states both symptoms and names no endpoint, no payload and no
-  count. No vault file discusses API error responses on any web page. The evidence exists only
-  in the ticket's two attachments (Loom, Google Drive), not opened during elaboration.
-- Note: `CLAUDE.md` → Auth System documents a 15-minute access token, and
-  `apps/web/src/lib/base-api.ts:92` implements a silent-refresh interceptor that turns a 401
-  into `POST /auth/refresh` plus one rate-limited retry. That establishes the system produces
-  401s **by design**; it does not establish that the ticket's 401s are those. The direction of
-  risk matters here — if they are the designed cycle, "fixing" them means weakening the auth
-  flow to clean up a console. Separately, the global TanStack Query defaults already set
-  `refetchOnWindowFocus: false` with a non-zero `staleTime`
-  (`apps/web/src/providers/query-provider.tsx`), and some plan-adjacent hooks take a
-  deliberate `refetchInterval`, so which observed repeats are duplicates and which are designed
-  is part of the same unknown.
-- Blocked: `SCRUM-757` REQ-05 and REQ-06, and the acceptance criterion of REQ-04.
-- Owner: product team — the 400/repeat identification sits with Aiman Farooq (reporter); the
-  expected-vs-defect call on the 401s sits with whoever owns the auth flow.
-- Status: open
-
-## Plan comment volume, length and pagination
-
-- Question: How many comments must a plan's comment page hold while staying responsive, is
-  there a maximum length for a single comment, and should the list paginate, virtualize or
-  load in full?
-- Candidates: none. `product/project-module/04-create-and-approve-lift-plans.md` (3.5 KB,
-  2026-04-30) is the closest thing to a plan specification and is silent on all three.
-  `SCRUM-757`, `SCRUM-763` and `SCRUM-211` state no limit or list behaviour.
-- Note: pagination, virtualization and a length cap are three different features with three
-  different data models behind them, so choosing one in code decides the product question
-  without asking it — including a max-length validator added "for safety", which would be
-  enforced on users who were never told about it. Relevant current state: there is no
-  `PlanComment` model; plan comments are appended as **project activity-log entries**
-  (`apps/api/src/presentation/plans/plans.controller.ts:137-146`), so a plan's comment list may
-  grow with the whole project's activity. Whether that is the intended home for plan comments
-  is itself unstated.
-- Blocked: `SCRUM-757` REQ-07, the shape of any fix for REQ-02, and the schema/migration
-  question in §3 of `.ai/aidlc/SCRUM-757/spec.md`.
-- Owner: product team
-- Status: open
-
----
-
-# Gaps from the meeting minutes of 2026-08-05 / 07 / 12
-
-Raised by three sets of client meeting minutes supplied on 2026-08-13. These differ from every
-other entry here: they are not conflicts between documents but **named, owed deliverables** and
-**modules with no vault coverage at all**. The ADP and payroll items from the same minutes are in
-[`payroll/gaps.md`](payroll/gaps.md).
 
 ## Labor Compliance module — no vault coverage
 
@@ -378,7 +293,7 @@ other entry here: they are not conflicts between documents but **named, owed del
 ## Integrations — HubSpot, Microsoft 365, Dialpad, Mapsly
 
 - Question: what do the existing integrations do, and what should move into the ERP?
-- Candidates: **none of substance.** HubSpot appears once, in `product/user-story-and-tasks.md`,
+- Candidates: **none of substance.** HubSpot appears once, in `assets/user-story-and-tasks.md`,
   which was migrated from an individual's personal Confluence space and carries a
   `provenance_note` warning it may be a private draft rather than agreed specification.
   **Dialpad, Mapsly and Microsoft 365 appear nowhere in the vault.**
@@ -410,15 +325,15 @@ other entry here: they are not conflicts between documents but **named, owed del
 - Pairs:
   - **2026-03-06** — Customer show page has an internal Comments section for
     accounting/dispatch/anyone interacting with the customer — *vault/ticket:*
-    product/customer-and-job-sites.md ("Notes - do TCG team use this feature?") — *jira:*
+    customers/customer-and-job-sites.md ("Notes - do TCG team use this feature?") — *jira:*
     SCRUM-49 (Remove Comments Section from Customer Show Page — Done), SCRUM-52 (Not
   - **2026-03-06** — Quotation form carries a PO number field ("the PO number is going to be
-    available") — *vault/ticket:* product/quotation.md ("Customer PO"),
-    product/customer-and-job-sites.md (associate customer POs) — *jira:* SCRUM-149 (PO number
+    available") — *vault/ticket:* quotations/quotation.md ("Customer PO"),
+    customers/customer-and-job-sites.md (associate customer POs) — *jira:* SCRUM-149 (PO number
     field — remove it, Done), SCRUM-575 (Pre-Quote Data Form &
   - **2026-03-06** — Approved quote is automatically converted into a Project (draft) once
     transmitted to dispatch — *vault/ticket:*
-    product/project-module/01-create-and-track-projects.md says salesperson clicks "Create
+    projects-jobs/project-module/01-create-and-track-projects.md says salesperson clicks "Create
     Project" on a signed quotation (manual one-click), and a project can also be created without
     a quotation — *jira:* SCRUM-894 (Prevent Automatic Project and Job Creation Before
     Conversion, To Do),
@@ -427,24 +342,24 @@ other entry here: they are not conflicts between documents but **named, owed del
     CRM, analytics" — transcript (1969-1970) has Ans putting the *project… — *vault/ticket:*
     none
   - **2026-03-12** — Rename "billing codes" to "price list" for simplicity. — *vault/ticket:*
-    product/billing-code-and-price-list.md keeps both entities — *jira:* SCRUM-80 and SCRUM-97
+    quotations/billing-code-and-price-list.md keeps both entities — *jira:* SCRUM-80 and SCRUM-97
     keep both
   - **2026-03-12** — POs must be creatable at quotation level, at job level, and standalone for
     the business; every PO must have a trail to why it exists; job-level POs auto-link; PO
-    cancelled if quote lost. — *vault/ticket:* product/sprint-4-additional.md says "Every PO
+    cancelled if quote lost. — *vault/ticket:* meetings/2026-06-22-sprint-4-additional.md says "Every PO
     must be linked to a job number — required, not optional" — *jira:* SCRUM-518, SCRUM-473
   - **2026-03-20** — Customer statuses: Active, Inactive, Prospect, plus new "On hold". —
-    *vault/ticket:* CONTRADICTS: product/user-story-and-tasks.md:102-107 defines status as
+    *vault/ticket:* CONTRADICTS: assets/user-story-and-tasks.md:102-107 defines status as
     auto-calculated colour indicators (Active / Inactive 6 months / Inactive 1 year) — no
     Prospect or On hold
   - **2026-03-20** — Credit limit is needed on the customer. — *vault/ticket:*
-    product/customer-and-job-sites.md:40 says "Remove credit limit and forecast from show page"
+    customers/customer-and-job-sites.md:40 says "Remove credit limit and forecast from show page"
     — *jira:* SCRUM-20, SCRUM-715 (Credit Limit)
   - **2026-03-20** — Comments wanted at the customer level. — *vault/ticket:*
-    product/customer.md:37-40 (notes) — *jira:* CONTRADICTS: SCRUM-49 "Remove Comments Section
+    customers/customer.md:37-40 (notes) — *jira:* CONTRADICTS: SCRUM-49 "Remove Comments Section
     from Customer Show Page" (Done);
   - **2026-03-20** — Keep Notes and Tasks on customers (task manager per customer; CRM to be
-    built on top). — *vault/ticket:* CONTRADICTS: product/customer-and-job-sites.md:25 "Remove
+    built on top). — *vault/ticket:* CONTRADICTS: customers/customer-and-job-sites.md:25 "Remove
     tasks from customers"; :26 asks whether TCG uses notes (answered: yes) — *jira:* SCRUM-198
     (job-site tabs incl. notes/tasks during creation), SCRUM-52
   - **2026-03-20** — Employees can be assigned to multiple companies and multiple yards, not a
@@ -453,60 +368,60 @@ other entry here: they are not conflicts between documents but **named, owed del
   - **2026-03-26** — On-site scope of work / "site scope plan" (same paper form as lift plan,
     different heading, handwritten on site, JSA alongside) becomes a digital form in the mobile
     app; operators enter actual measurements; changes mid-lift mus… — *vault/ticket:*
-    product/project-module/04-create-and-approve-lift-plans.md "User Story 4: Create a Site
+    projects-jobs/project-module/04-create-and-approve-lift-plans.md "User Story 4: Create a Site
     Plan" (Project Engineer creates in portal with approval — DIFFERENT actor/flow);
-    product/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md (… —
+    field-ops/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md (… —
     *jira:* SCRUM-236 Create a Site Plan (portal); SCRUM-862 JSA / Tailboard (mobile) — no m
   - **2026-03-31** — New "Project" entity: an approved quotation gets a "Create Project" button
     (replacing "Convert to Job"); project carries the job-location name, all quotation data,
     KPIs (total/active jobs, unassigned jobs), tabs for quotations,… — *vault/ticket:*
-    product/project-module/01-create-and-track-projects.md (Create Project on signed quotation,
+    projects-jobs/project-module/01-create-and-track-projects.md (Create Project on signed quotation,
     tab bar) — *jira:* SCRUM-231; but SCRUM-312 ("replace resend/void actions with Convert to
     Job CTA")
   - **2026-04-09** — Renewal reminders for asset annual permits should fire ~90 days out. —
-    *vault/ticket:* CONTRADICTS: product/project-module/05-create-and-track-permits.md says
+    *vault/ticket:* CONTRADICTS: projects-jobs/project-module/05-create-and-track-permits.md says
     "Permit expiry alerts are triggered 30 days in advance" — *jira:* SCRUM-372 (expiry reminder
     scheduler)
   - **2026-04-21** — Jobs panel has compact chip view and detailed list view (list view also
     shows required crane size); Lisette prefers the "squares" layout. — *vault/ticket:*
-    product/daily-allocation-system.md (compact/list toggle) — *jira:* SCRUM-331; note SCRUM-784
+    dispatch/daily-allocation-system.md (compact/list toggle) — *jira:* SCRUM-331; note SCRUM-784
     "Remove card . grid view toggles" (Done, from 07-16 pu
   - **2026-05-14** — Who fills the ticket: crane + one truck → the oiler fills ONE ticket
     covering himself and the operator (crane, tractor, trailer, both names); every other
     driver/equipment gets its own ticket; two crew riding in one truck may sh… — *vault/ticket:*
-    product/frd-new-format-draft/04-role-responsibility-model.md ("The Oiler owns the main
+    field-ops/frd-new-format-draft/04-role-responsibility-model.md ("The Oiler owns the main
     ticket… Operator's labor is captured within the shared ticket"); fr-fop-009 (oiler checklist
     covers crane, tractor, trailer, support loads) — *jira:* SCRUM-249 (fetched) creates a
     ticket "against all employees that had allocations
   - **2026-06-17** — Dispatch changes the dispatched asset only in the dispatch (DAS) view; the
     job's requested resources stay as the client-approved record; both are retained —
-    *vault/ticket:* CONTRADICTS: product/project-module/02-view-manage-job-details.md says
+    *vault/ticket:* CONTRADICTS: projects-jobs/project-module/02-view-manage-job-details.md says
     "Dispatcher can add new resources, update existing ones, or remove them" on the job
     Resources tab — *jira:* SCRUM-580 (Done)
   - **2026-06-18** — Asset on a permit becomes optional (was default); when a permit carries an
     asset, DAS auto-attaches that asset to the job for that date — *vault/ticket:*
-    product/project-module/05-create-and-track-permits.md (asset in permit form; active permits
-    auto-link to dispatch); CONTRADICTS: product/job-project-das.md ("auto create travel permit
+    projects-jobs/project-module/05-create-and-track-permits.md (asset in permit form; active permits
+    auto-link to dispatch); CONTRADICTS: projects-jobs/job-project-das.md ("auto create travel permit
     request based on assets required – before navigating to next step, add as… — *jira:*
     SCRUM-517 (Done), SCRUM-533 (Done), SCRUM-625 (Done)
   - **2026-06-18** — SOS options: 911, safety officer, crane superintendent, nearest hospital,
     broadcast to office — and add Dispatch — *vault/ticket:*
-    product/atom-mobile-app-user-stories/06-safety-and-self-service.md US-21 (911, Safety, Crane
+    field-ops/atom-mobile-app-user-stories/06-safety-and-self-service.md US-21 (911, Safety, Crane
     Super, hospital — no Dispatch, no broadcast) — *jira:* SCRUM-880 (In Review) — AC list 911 /
     Safety / Crane Superintendent / hospital o
   - **2026-08-11** — Schedule fields: sales coordinator, salesperson, job location, status
     Scheduled/Tentative/Hold/Cancelled/Maintenance, scheduled hours; cranes in maintenance must
     not be selectable; double-booking allowed for short jobs — *vault/ticket:* M-0812;
-    `product/daily-allocation-system.md` says in-maintenance assets are greyed out but still
+    `dispatch/daily-allocation-system.md` says in-maintenance assets are greyed out but still
     draggable with a warning — Ryan wants non-selectable;
-    `product/project-module/03-create-manage-job-schedule.md` (warning on double assignment) —
+    `projects-jobs/project-module/03-create-manage-job-schedule.md` (warning on double assignment) —
     *jira:* SCRUM-502 (Asset Availability & Maintenance Status), SCRUM-234
   - **2026-08-12** — Photo of the customer signer must be optional / consent-based — a customer
     may refuse to be photographed; today it is required in the app; CC agrees to make it
     optional ("not a huge change"); TCG will encourage but not fight fo… — *vault/ticket:*
-    product/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md
+    field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md
     (photo capture is a configurable per-deployment toggle); CONTRADICTS:
-    product/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md line 136… —
+    field-ops/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md line 136… —
     *jira:* SCRUM-861 Arrive Job & Customer First Authorization (QA) — flow, not the optiona
 - **Disposition, 2026-08-19 (`tcg-scrum` pass).** Each pair was retrieved in full — `INDEX.md`, the
   topic conflict stub where one exists, the cited vault files and their `conflicts_with:`,
@@ -535,7 +450,7 @@ other entry here: they are not conflicts between documents but **named, owed del
     `SCRUM-80`, `SCRUM-97`. So **no pair qualifies as "resolved by a ticket that records who
     asked"**. Where a pair is dispositioned *resolved by the sequence of events* below, that means
     **evidence of what was built — never adjudication.**
-  - A fourth, structural: **the `product/atom-mobile-app-user-stories/` page is de facto
+  - A fourth, structural: **the `field-ops/atom-mobile-app-user-stories/` page is de facto
     authoritative for what gets built** — `SCRUM-880` is US-21 verbatim, `SCRUM-862` is US-10
     verbatim, `SCRUM-861` is US-09 verbatim minus one bullet — even though it is the one field-ops
     document with **no document ID and no review status**, while `FR-TCG-FOP-001 v1.1 REVIEWED` is
@@ -555,7 +470,7 @@ other entry here: they are not conflicts between documents but **named, owed del
     (`SCRUM-80`, `SCRUM-97`, both To Do, both `description: null`), and `SCRUM-163` (Done) implements
     a **two-tier lookup** — price list first, then billing codes — which is impossible if they are
     one renamed thing. **No ticket ever proposed the rename.** Residual, unrelated to the rename and
-    already written at `product/billing-code-and-price-list.md:34`: whether billing codes and price
+    already written at `quotations/billing-code-and-price-list.md:34`: whether billing codes and price
     lists are yard-specific — `SCRUM-782` and `SCRUM-795` are both **Blocked** on it. No new entry;
     this row should be closed by a human rather than silently dropped.
   - `2026-03-12` POs at quotation / job / standalone level — needs confirmation → §*Purchase orders at three levels — Joe and Ryan on tape, nothing written*
@@ -563,9 +478,9 @@ other entry here: they are not conflicts between documents but **named, owed del
   - `2026-03-20` credit limit — **over-flagged; the weakest row of the 21.** Credit limit is built
     and continuously maintained (`creditLimit Decimal?` on `model Customer`; `SCRUM-20` Done Apr,
     `SCRUM-715` Done Jul). The vault line that "contradicts" —
-    `product/customer-and-job-sites.md:40` *"Remove credit limit and forecaset from show page"* — is
+    `customers/customer-and-job-sites.md:40` *"Remove credit limit and forecaset from show page"* — is
     **display-scoped**, sits under that file's own *"Feedback on new Design"* heading, and never
-    asked for the field's removal from the model. `product/customer.md:42` (2026-07-16) then treats
+    asked for the field's removal from the model. `customers/customer.md:42` (2026-07-16) then treats
     the field as present. The only honest residual is *"is credit limit shown on the customer show
     page?"*, which is a design question, not a product conflict. See §*Feedback punch lists are not
     scoped to the module they are filed under* — this row is an instance of that pattern.
@@ -612,7 +527,7 @@ other entry here: they are not conflicts between documents but **named, owed del
   - `SCRUM-898` *Implement In-House Comment as Chat Functionality Across the Application* — **To
     Do**, created 2026-08-17, parent `SCRUM-24` (Across App), **not** the Customers epic. A
     cross-app UI-paradigm ticket, not a customer-comments re-add.
-  - `product/customer.md:35-40` — the lines the combined entry cites are about **notes**, not
+  - `customers/customer.md:35-40` — the lines the combined entry cites are about **notes**, not
     comments. **The word "comment" does not appear in that file.** No vault file covers customer
     comments at all; the citation in the pair row should be read as a near-miss.
 - Note: **the chronology in the pair row is inverted.** TCG asked for customer comments on
@@ -633,7 +548,7 @@ other entry here: they are not conflicts between documents but **named, owed del
 
 ## "Customer PO" on the quotation — which of three things does it mean?
 
-- Question: does `product/quotation.md:26` *"Customer PO"* mean (a) a PO-number field on the
+- Question: does `quotations/quotation.md:26` *"Customer PO"* mean (a) a PO-number field on the
   quotation form, (b) the Customer PO workflow that `SCRUM-575` shipped between Sent-to-Customer and
   Won, or (c) associating customer POs with the customer record — and is a PO number on the
   quotation wanted at all?
@@ -650,12 +565,12 @@ other entry here: they are not conflicts between documents but **named, owed del
     Customer PO workflow between Sent to Customer and Won stages."* Its closing comment says it
     shipped under two different names — *"1. new customer packet 2. job and labor compliance
     information request form"*.
-  - `product/quotation.md:26` (JZ punch list, 2026-06-23) — the bare bullet *"Customer PO"*, one of
+  - `quotations/quotation.md:26` (JZ punch list, 2026-06-23) — the bare bullet *"Customer PO"*, one of
     ~20 unelaborated bullets, **post-dating `SCRUM-149`** by two months.
-  - `product/customer-and-job-sites.md:28` — *"Need to associate customer POs with customer -- need
+  - `customers/customer-and-job-sites.md:28` — *"Need to associate customer POs with customer -- need
     to ask TCG team to provide customer PO form / data"*. **Phrased as an open question to TCG**,
     never answered.
-  - `product/purchase-order.md` — `conflicts_with: []`, and entirely about **vendor and permit** POs
+  - `vendors-agencies/purchase-order.md` — `conflicts_with: []`, and entirely about **vendor and permit** POs
     owned by Liz Lopez and Jeff Stricker. Says nothing about a customer PO on a quotation.
 - Note: the built state is unambiguous and is the reason this is answerable in one line —
   `model Quotation` has **no** `poNumber`; `model Project` and `model Job` both do. A vestigial
@@ -663,7 +578,7 @@ other entry here: they are not conflicts between documents but **named, owed del
   with no form field and no consumer. So the field was removed and the workflow was built elsewhere
   under other names. What is genuinely unresolved is only what the punch-list bullet is asking for,
   and it was written **after** the removal — which is why it cannot be dismissed as stale.
-- Blocked: any spec work citing `product/quotation.md`; whether the vestigial web type should be
+- Blocked: any spec work citing `quotations/quotation.md`; whether the vestigial web type should be
   deleted; the pre-quote package scope.
 - Owner: Ryan Adams / Joe Schacatano (sales & quotation).
 - Status: open
@@ -691,11 +606,11 @@ other entry here: they are not conflicts between documents but **named, owed del
     on 2026-03-31 that Create Project also creates a Job.** The only TCG reaction (17:28) is under
     the "Brian Petros" label while Ehtesham had just addressed **Lisette** by name — attribution
     inferred.
-  - `product/project-module/01-create-and-track-projects.md` (`status: unverified`) — :20 *"Clicks
+  - `projects-jobs/project-module/01-create-and-track-projects.md` (`status: unverified`) — :20 *"Clicks
     'Create Project' from the Quick Actions panel"*, :29 *"only visible on quotations, when qoutation
     is signed"*, :30 *"instantly creates a project with all key data carried over"*, :35 a project
     can be created without a quotation. **Manual, one click. It does not say a Job is created too.**
-  - `product/quotation-flow-process.md:72` — *"Step 27: Approved quotation is converted into a
+  - `quotations/quotation-flow-process.md:72` — *"Step 27: Approved quotation is converted into a
     Project."* Passive voice; compatible with both readings and therefore settles nothing.
   - `SCRUM-231` *Create and Track Projects* — **Done**, created **2026-05-01**. `SCRUM-312` *"replace
     resend/void actions with Convert to Job CTA"* — **Done**, created **2026-05-06**, a
@@ -717,7 +632,7 @@ other entry here: they are not conflicts between documents but **named, owed del
   not in the vault, not on any ticket. Also unwritten: the API guards only on `convertedToJob`, so
   the "only when signed" rule from the vault is enforced in the UI alone.
 - Blocked: `SCRUM-894` (To Do) cannot be specified without this; any spec citing
-  `product/project-module/01-create-and-track-projects.md`; the 13-august-QA behaviour question.
+  `projects-jobs/project-module/01-create-and-track-projects.md`; the 13-august-QA behaviour question.
 - Owner: Ryan Adams / Joe Schacatano (sales & quotation), with Lisette Anzaldo for the dispatch-side
   consequence of a Job existing early.
 - Status: open
@@ -777,7 +692,7 @@ other entry here: they are not conflicts between documents but **named, owed del
   - Same recording, **Ryan Adams at 1:16:59**: *"either quote is pending won or lost and **if it's
     lost it closes out the PO**. If it's won it processes the PO to go to the next level… so that way
     we don't get a backlog in our system."* **Joe Schacatano at 1:17:42: *"I agree with that."***
-  - `product/sprint-4-additional.md:91` (`conflicts_with: []`, updated **2026-06-22** — three months
+  - `meetings/2026-06-22-sprint-4-additional.md:91` (`conflicts_with: []`, updated **2026-06-22** — three months
     *after* the recording) — *"Every PO must be linked to a job number this is required, not
     optional"*. Note :92 already grants quotation-level POs carrying over, and :102 already grants a
     global PO list, **so the only genuine contradiction is the standalone case.**
@@ -788,13 +703,13 @@ other entry here: they are not conflicts between documents but **named, owed del
   - `SCRUM-473` *Add PO to main side navigation* — **Done**. *"PO creation **allows** linking to a
     specific project, job, and vendor"* — permissive, not mandatory. `SCRUM-478`, the parent
     **Purchase Order epic**, is still **To Do** with `description: null`, untouched since 2026-05-25.
-  - `product/purchase-order.md` (`conflicts_with: []`) — documents only the **permit-driven** path
+  - `vendors-agencies/purchase-order.md` (`conflicts_with: []`) — documents only the **permit-driven** path
     and names **Liz Lopez** and **Jeff Stricker** as the two PO owners. It never mentions the
     quotation level, standalone POs, or the mandatory-job-link rule.
 - Note: on the standalone half the vault line is simply **wrong about the built system** —
   `model PurchaseOrder` has `jobId String?` (**nullable**), `poType PoType? @default(GENERAL)`, and
   **no quotation relation at all**. So the recording and the code agree and
-  `product/sprint-4-additional.md:91` is the outlier — yet that file carries `conflicts_with: []`,
+  `meetings/2026-06-22-sprint-4-additional.md:91` is the outlier — yet that file carries `conflicts_with: []`,
   so an agent reading it has no signal to doubt it. The rest is state (d): **two named TCG people
   specified three creation levels, a mandatory audit trail, and a quote-lost→PO-closed rule on a
   reliably-labelled transcript, and none of it is written anywhere.** The quotation-level PO and the
@@ -816,7 +731,7 @@ other entry here: they are not conflicts between documents but **named, owed del
     three statuses actually in fcc… But there's active, inactive, and prospect. Right."* / *"We
     should put maybe on hold. So. Yeah, active, inactive, prospect, and then on hold."* Fireflies
     summary line 39 confirms the ask.
-  - `product/user-story-and-tasks.md:100-108` — *"Customer records display status using colour-coded
+  - `assets/user-story-and-tasks.md:100-108` — *"Customer records display status using colour-coded
     indicators: Green = Active, Yellow = Inactive for 6 months, Red = Inactive for 1 year"*, and
     *"Status is automatically calculated based on latest activity date"*. **This is a personal-space
     draft by Umair Khan (CodingCops)** — see its `provenance_note`; the same person is the Jira
@@ -851,11 +766,11 @@ other entry here: they are not conflicts between documents but **named, owed del
     *"It's like the **CRM will be built on top of this section** then kind of."* The driver closes:
     *"All right, so **we'll keep those**."* A fourth voice notes at line 90 that the mockups *"put the
     tab there, but they didn't actually build anything."*
-  - `product/customer-and-job-sites.md:25` — *"Remove tasks from customers"*, in a file updated
+  - `customers/customer-and-job-sites.md:25` — *"Remove tasks from customers"*, in a file updated
     **2026-06-12**, three months *after* the recording said keep them. :26 — *"Notes - do TCG team
     use this feature ?"* — is a **question**, and the recording answers it: yes. Both lines are
-    duplicated verbatim into `product/discussion-points-with-tcg-team.md` (see
-    `product/customers-INDEX.md` — one document's opinion appearing twice, not two sources agreeing).
+    duplicated verbatim into `meetings/2026-06-26-discussion-points-with-tcg-team.md` (see
+    `customers/customers-INDEX.md` — one document's opinion appearing twice, not two sources agreeing).
   - `SCRUM-198` — **Done**, created 2026-04-27. Its premise is that *"Job Site tabs, Attachments,
     Notes, Certifications, **Tasks** are not available during Customer creation"* and are *"only
     visible and accessible in Edit mode"* — so **a Tasks tab existed on the customer edit screen in
@@ -898,9 +813,9 @@ other entry here: they are not conflicts between documents but **named, owed del
     no requester.**
   - `SCRUM-638` *Employee* (2026-07-08 punch list) item 14 lists **Yard** among single-select
     dropdowns — four months after the meeting, unchallenged.
-  - **Vault: nothing.** `product/user-story-and-tasks.md` is the only yard-management source and its
+  - **Vault: nothing.** `assets/user-story-and-tasks.md` is the only yard-management source and its
     yard content covers lease documents and a contact list only — employee is not even in its
-    `entities:`. `product/yard-operations-jz.md` (`conflicts_with: []`) has one employee line, :19
+    `entities:`. `dispatch/yard-operations-jz.md` (`conflicts_with: []`) has one employee line, :19
     *"Employee - unasisgned – weird ghost employees"*, which is a bug report, not cardinality.
 - Note: **built: no; ticketed: no; written: nowhere.** `model Employee` carries a single nullable
   `yardId` with no junction table, and — worth stating plainly — **there is no company field on
@@ -939,17 +854,17 @@ other entry here: they are not conflicts between documents but **named, owed del
     a **site scope of work** that we do that the guys fill out a **paper form on site**. So maybe when
     we get to the job level we can add that."* Melissa also promised sample forms in the chat
     (line 575); **no such artefact is in the vault.**
-  - `product/project-module/04-create-and-approve-lift-plans.md:47-62` — *"User Story 4: Create a
+  - `projects-jobs/project-module/04-create-and-approve-lift-plans.md:47-62` — *"User Story 4: Create a
     Site Plan"*: *"As a **Project Engineer**, I want to create a Site Plan…"*, created from the
     **portal** Plans tab, *"submits the plan for approval"*, *"Plan goes to Pending Approval"*.
     **Different actor, different surface, different timing, and an approval gate Wes explicitly said
     the field form does not need.** (Note the numbering hazard: this "User Story 4" lives in the part
-    file numbered `04-`, which is itself "User Story 3" — see `product/project-module/INDEX.md`.)
-  - `product/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md`
+    file numbered `04-`, which is itself "User Story 3" — see `projects-jobs/project-module/INDEX.md`.)
+  - `field-ops/field-ops-frd/08-functional-requirements/fr-fop-011-job-safety-analysis-jsa.md`
     (**FR-TCG-FOP-002 v2.0 DRAFT**) — JSA only. No measurements, no radius, no scope-change logging.
   - **The decisive negative:** a search for *site plan / lift plan / site scope / measurement /
-    radius* across **all three** field-ops document sets — `product/field-ops-frd/`,
-    `product/frd-new-format-draft/`, `product/atom-mobile-app-user-stories/` — returns **zero hits**.
+    radius* across **all three** field-ops document sets — `field-ops/field-ops-frd/`,
+    `field-ops/frd-new-format-draft/`, `field-ops/atom-mobile-app-user-stories/` — returns **zero hits**.
     A vault-wide search for the phrase returns only this gaps entry and a `purchase-order.md` field
     of the same name.
   - `SCRUM-236` *Create a Site Plan* — **Done**; its description is a verbatim copy of the portal
@@ -959,7 +874,7 @@ other entry here: they are not conflicts between documents but **named, owed del
   looks like coverage.** Anyone grepping "Site Plan" finds `SCRUM-236` and a shipped portal feature
   and concludes the requirement is met. It is a different feature. The mobile form Wes described —
   operator-entered actual measurements, no approval gate, mid-lift change logging, auditable from the
-  cab — exists in **no** written source. `product/frd-new-format-draft/08-open-questions.md:19`
+  cab — exists in **no** written source. `field-ops/frd-new-format-draft/08-open-questions.md:19`
   carries the adjacent unanswered question (*"What exact JSA form should be digitized?"*, owner
   Client, Open), which is the JSA, not this. Two named TCG people asked for it three weeks apart and
   nothing was ever written down.
@@ -984,7 +899,7 @@ other entry here: they are not conflicts between documents but **named, owed del
     permits**… so that it can right away notify us if it's active or not"* (615), *"one is an
     **annual**. Most cranes that are overweight have a permit called a **purple permit, an annual**"*
     (711), *"at the **asset level**… we're gonna put the expiration date"* (875).
-  - `product/project-module/05-create-and-track-permits.md:41` — *"Permit expiry alerts are triggered
+  - `projects-jobs/project-module/05-create-and-track-permits.md:41` — *"Permit expiry alerts are triggered
     30 days in advance"*. Its surrounding flow is **job/project** permits: *"User opens Permits tab
     inside a project"*, *"Views auto-generated Permit Requests from published jobs"*, *"System blocks
     job publishing if permit is missing"*.
@@ -1003,7 +918,7 @@ other entry here: they are not conflicts between documents but **named, owed del
 - Blocked: `SCRUM-372` is Done but the reminder is unbuilt; `SCRUM-790` (permit deactivation cron,
   QA); any permit notification work.
 - Owner: Lisette Anzaldo (dispatch/DAS/permits), with Liz Lopez, who owns the permit process in
-  `product/purchase-order.md`.
+  `vendors-agencies/purchase-order.md`.
 - Status: open
 
 ## Jobs panel views — Lisette's stated preference was removed without her
@@ -1020,11 +935,11 @@ other entry here: they are not conflicts between documents but **named, owed del
     And at 32:12, asked what she would change: *"No, I think this is it… still having access on the
     job and being able to **see the crane size, the city** and stuff like that, that totally helps
     me."*
-  - `product/daily-allocation-system.md:36` — *"Toggle switches between Compact chip view and
-    detailed List view for jobs"*. `conflicts_with: [product/job-project-das.md]`.
-  - `product/job-project-das.md:69` — *"Remove card . grid view toggles"*. This is a **cross-module
+  - `dispatch/daily-allocation-system.md:36` — *"Toggle switches between Compact chip view and
+    detailed List view for jobs"*. `conflicts_with: [projects-jobs/job-project-das.md]`.
+  - `projects-jobs/job-project-das.md:69` — *"Remove card . grid view toggles"*. This is a **cross-module
     punch list** in which DAS is one of nine sections; see §*Feedback punch lists are not scoped to
-    the module they are filed under* and `product/daily-allocation-INDEX.md`.
+    the module they are filed under* and `dispatch/daily-allocation-INDEX.md`.
   - `SCRUM-331` *Implement the cards and lists view for jobs* — **Done**, **`description: null`**,
     created 2026-05-07, **last updated 2026-07-17**. `SCRUM-784` *"Remove card . grid view toggles"*
     — **Done**, reporter Umair Khan, created **2026-07-17** (the same day), description *"In DAS, we
@@ -1036,7 +951,7 @@ other entry here: they are not conflicts between documents but **named, owed del
   really"* liked was removed three months later on the authority of a CodingCops punch list, and
   **nothing records that she was consulted.** This is exactly the reversal-without-attribution the
   2026-08-19 review was opened to find. Note the punch list is attributed in
-  `product/customers-INDEX.md` and the DAS stub to "Mohsin feedback" — Mohsin Ali is CodingCops, not
+  `customers/customers-INDEX.md` and the DAS stub to "Mohsin feedback" — Mohsin Ali is CodingCops, not
   TCG, so **neither side of this pair carries a TCG decision.** One detail worth preserving whichever
   way it goes: the list view is the one that shows **required crane size** (`ehtesham.anwar` at
   42:17), which is the thing Lisette said helps her.
@@ -1065,19 +980,19 @@ other entry here: they are not conflicts between documents but **named, owed del
     ("One, with both of them in it".) At 10:12: *"I can just do one ticket with both of them on that
     ticket and then one of them can complete it."* **Anyone quoting 9:41 alone gets the opposite
     answer.**
-  - `product/frd-new-format-draft/04-role-responsibility-model.md:17` (**FR-TCG-FOP-001 v1.1
+  - `field-ops/frd-new-format-draft/04-role-responsibility-model.md:17` (**FR-TCG-FOP-001 v1.1
     REVIEWED** — the only reviewed field-ops document) — *"The Oiler owns the main ticket. The
     Operator's labor is captured within the shared ticket but the Operator does not process paperwork
     or collect signatures."* And
-    `product/frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md`
+    `field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md`
     (**FR-TCG-FOP-001**, *not* `fr-fop-009` in the other FRD, which is *Leave Yard* — `INDEX.md`
     caveat 3) — *"Oiler completes checklist items for Operator/Oiler setup including crane, tractor,
     trailer, and support loads."* **Both match the recording.**
-  - `product/field-ops-frd/05-role-definitions.md` (**FR-TCG-FOP-002 v2.0 DRAFT**) hedges: *"Executing
+  - `field-ops/field-ops-frd/05-role-definitions.md` (**FR-TCG-FOP-002 v2.0 DRAFT**) hedges: *"Executing
     assigned tickets"* is listed for **both** roles, and the oiler *"completes the **primary** ticket
     completion workflow"* — "primary" implies a non-primary ticket exists, i.e. the operator has one.
-    `product/atom-mobile-app-user-stories/` is **silent** on the question.
-  - `product/frd-new-format-draft/08-open-questions.md:27` — open question 11, *"Should Operator have
+    `field-ops/atom-mobile-app-user-stories/` is **silent** on the question.
+  - `field-ops/frd-new-format-draft/08-open-questions.md:27` — open question 11, *"Should Operator have
     any active approval or confirmation step in the shared Operator/Oiler ticket flow?"*, owner
     **Wes + Client**, status **Open**. The model itself is admitted to be unsettled.
   - `SCRUM-249` *DAS Per day job ticket creation and assignment* — **Done**, created **2026-05-01**
@@ -1115,7 +1030,7 @@ other entry here: they are not conflicts between documents but **named, owed del
     from her own view. And that way **we can retain both of the information**."* **Melissa McNutt at
     1:01:00: *"Okay. Yeah, as long as she can change it on her end, then that's fine."*** — she
     **assented to** the rule; she did not originate it.
-  - `product/project-module/02-view-manage-job-details.md:50` (`conflicts_with: []`) — *"Dispatcher
+  - `projects-jobs/project-module/02-view-manage-job-details.md:50` (`conflicts_with: []`) — *"Dispatcher
     can add new resources, update existing ones, or remove them"* on the job Resources tab, and :23
     *"Adds, updates, or removes resources as needed"*. **The vault has no requested-vs-dispatched
     concept anywhere.**
@@ -1133,7 +1048,7 @@ other entry here: they are not conflicts between documents but **named, owed del
   what a one-line confirmation would ratify. Note this is genuinely close to resolved: unlike most of
   the set, a named TCG person did speak to it on a reliably-labelled recording. It needs the
   confirmation, not a re-decision.
-- Blocked: `product/project-module/02-view-manage-job-details.md:50` is actively misleading for any
+- Blocked: `projects-jobs/project-module/02-view-manage-job-details.md:50` is actively misleading for any
   spec written against it; the job Resources tab; `SCRUM-580` (Done, on unconfirmed intent).
 - Owner: Melissa McNutt (stated it), with Lisette Anzaldo (the dispatcher whose edit right it is).
 - Status: open — needs confirmation
@@ -1155,9 +1070,9 @@ other entry here: they are not conflicts between documents but **named, owed del
     Ehtesham says *"just wanted to confirm something"* and cites *"our normal conversation"* — an
     off-record prior discussion. **Liz Lopez is addressed by name and is not recorded replying. No
     TCG person assents on tape.**
-  - `product/project-module/05-create-and-track-permits.md` — :22 and :34 list **asset** as a permit
+  - `projects-jobs/project-module/05-create-and-track-permits.md` — :22 and :34 list **asset** as a permit
     form field with no optionality marker; :38 *"Active permits automatically link to job dispatch"*.
-  - **CONTRADICTING** — `product/job-project-das.md:54`: *"auto create travel permit request based on
+  - **CONTRADICTING** — `projects-jobs/job-project-das.md:54`: *"auto create travel permit request based on
     assets required – before navigtaing to next step, **add asset is compulsory**"* (typo verbatim).
     This is the same cross-module punch list flagged in §*Feedback punch lists are not scoped to the
     module they are filed under* — Permit is one of its nine sections.
@@ -1180,7 +1095,7 @@ other entry here: they are not conflicts between documents but **named, owed del
   a one-line ticket description cannot settle it. Answer that distinction first; the optionality
   question probably dissolves once it is named.
 - Blocked: `SCRUM-788` (Done) vs the shipped optional `assetId`; the travel-permit request flow in
-  DAS; `product/project-module/05-create-and-track-permits.md`, which describes neither behaviour.
+  DAS; `projects-jobs/project-module/05-create-and-track-permits.md`, which describes neither behaviour.
 - Owner: Lisette Anzaldo (dispatch/DAS/permits), with Liz Lopez — she was the person addressed on the
   recording and never recorded answering.
 - Status: open
@@ -1198,18 +1113,18 @@ other entry here: they are not conflicts between documents but **named, owed del
     we'll we'll also add Dispatch then."*** The "Brian Petros" label here addresses Lisette by name
     and is consistent with the **real** Brian Petros. **Asked by a named TCG person, assented to by a
     second, accepted by CodingCops on the call.**
-  - `product/atom-mobile-app-user-stories/06-safety-and-self-service.md:34-50` — US-21 lists 911,
+  - `field-ops/atom-mobile-app-user-stories/06-safety-and-self-service.md:34-50` — US-21 lists 911,
     Safety contact, Crane Superintendent contact, nearest-hospital display, call and navigate.
     **No Dispatch, no broadcast.** The file was **re-migrated 2026-08-13 (Confluence v10), nearly two
     months after the meeting** — the omission survived a refresh.
-  - `product/frd-new-format-draft/05-functional-requirements/fr-fop-037-emergency-contacts.md`
+  - `field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-037-emergency-contacts.md`
     (**FR-TCG-FOP-001**) — *"Provide emergency contact list including **Dispatch, Maintenance, Yard,
     and Office**"*. **The exact inverse of US-21**: it has Dispatch and Office and omits 911, Safety
     Officer, Crane Superintendent and hospital.
   - **FR-TCG-FOP-002 v2.0 DRAFT has no SOS or emergency-assistance requirement at all** — a search
-    across `product/field-ops-frd/` returns nothing; its `fr-fop-026-escalation-handling.md` is
+    across `field-ops/field-ops-frd/` returns nothing; its `fr-fop-026-escalation-handling.md` is
     deficiency escalation, a different thing.
-  - `product/frd-new-format-draft/08-open-questions.md:24` — open question 8, *"What emergency
+  - `field-ops/frd-new-format-draft/08-open-questions.md:24` — open question 8, *"What emergency
     contacts should be available in the phonebook?"*, owner **Wes**, status **Open**. This pair is
     literally that question.
   - `SCRUM-880` *SOS / Emergency Assistance* — **In Review**, AC a **verbatim copy of US-21**;
@@ -1256,10 +1171,10 @@ other entry here: they are not conflicts between documents but **named, owed del
     has four rows and none of them is this rule** — it is recorded as a discussion point with **no
     owner and no action item**. The minute's own analysis at :79-82 already says *"Neither source
     covers either rule."*
-  - `product/daily-allocation-system.md:47` — *"unavailable ones are greyed out but still drag-gable
+  - `dispatch/daily-allocation-system.md:47` — *"unavailable ones are greyed out but still drag-gable
     with a system warning"*; :48 — *"Assignment is time-based (shift start/end), so the same asset can
     be assigned to two non-overlapping jobs on the same day"*; :80, :82 — maintenance tag and three
-    chip states. `product/project-module/03-create-manage-job-schedule.md:43` — a warning on
+    chip states. `projects-jobs/project-module/03-create-manage-job-schedule.md:43` — a warning on
     same-time, same-date double assignment.
   - `SCRUM-502` *Asset Availability & Maintenance Status* — **Done**, created **2026-06-03**,
     AC 2: an asset marked maintenance *"stays visible but **cannot be assigned to a job**"*.
@@ -1269,15 +1184,15 @@ other entry here: they are not conflicts between documents but **named, owed del
   the block on 2026-06-15, two months before the 08-11 recording, and the code agrees:
   `apps/web/src/features/das/left-section/components/asset-card.tsx` passes `disabled: isInactive` to
   the drag hook for `UNDER_MAINTENANCE` assets and short-circuits the click handler. So
-  `product/daily-allocation-system.md:47` is simply **stale** — a 2026-04-30 statement superseded in
+  `dispatch/daily-allocation-system.md:47` is simply **stale** — a 2026-04-30 statement superseded in
   June — and it carries no marker warning a reader, which matters because
-  `product/daily-allocation-INDEX.md` calls that file *"the only DAS specification"*. On
+  `dispatch/daily-allocation-INDEX.md` calls that file *"the only DAS specification"*. On
   double-booking the recording and :48 already **agree**. What is genuinely unwritten: **scheduled
   hours, sales coordinator, and the Tentative / Hold / Maintenance job statuses appear in no vault
   spec and no ticket**, and nothing says whether the :43 warning should still fire once maintenance
   is hard-blocked. Also relevant: §*Sell-side scheduling artefacts — no vault coverage*, which
   already names an owner for this area.
-- Blocked: the job status enum; the schedule form fields; whether `product/daily-allocation-system.md:47`
+- Blocked: the job status enum; the schedule form fields; whether `dispatch/daily-allocation-system.md:47`
   should be corrected (a body edit — not `tcg-scrum`'s to make).
 - Owner: Brian Petros (labelled speaker, and already named as owner of the sell-side workflow source
   files), with Ryan Adams to resolve the attribution; Lisette Anzaldo for the DAS consequence.
@@ -1301,13 +1216,13 @@ other entry here: they are not conflicts between documents but **named, owed del
     covering several people — at 34:26 the same label says *"mine has W in it"* while discussing
     signature legibility, which is **Wes Staley**. Treat "Melissa McNutt" as the best available
     attribution, not a certainty.
-  - `product/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md`
+  - `field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-018-signature-quality-fraud-prevention.md`
     (**FR-TCG-FOP-001 v1.1**) — *"Photo capture is now a **configurable deployment toggle**… Photo
     capture can be enabled or disabled per deployment configuration."*
-  - `product/field-ops-frd/08-functional-requirements/fr-fop-018-customer-signatures.md`
+  - `field-ops/field-ops-frd/08-functional-requirements/fr-fop-018-customer-signatures.md`
     (**FR-TCG-FOP-002 v2.0** — same id, different requirement; `INDEX.md` caveat 3) — *"shall support
     **configurable** photo capture during signature workflows"*. **Both FRDs say configurable.**
-  - **CONTRADICTING** — `product/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md:136`:
+  - **CONTRADICTING** — `field-ops/atom-mobile-app-user-stories/02-ticket-assignment-and-pre-trip.md:136`:
     *"Applicable customer photo is captured as part of the authorization flow; **if the required
     photo is removed, it must be retaken**."* And `04-completion-and-return.md:32` states the same
     unconditionally for the final signature. **This page was re-migrated 2026-08-13 — the day after

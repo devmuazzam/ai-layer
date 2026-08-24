@@ -66,6 +66,30 @@ whole-workspace `pnpm lint` still fails on pre-existing errors in `apps/web` —
 failure is yours (`lint-triage`). `apps/api`'s `lint` no longer mutates the tree; `lint:fix`
 does, and is uncached on purpose.
 
+## Docker production build
+
+Three non-obvious hazards in `apps/api/Dockerfile`'s prod stage (fixed 2026-08-20,
+`9f812c7e`):
+
+- **`catalog:` specifiers only exist in devDependencies** (`grep 'catalog:'
+  apps/api/package.json`). `npm install --omit=dev` still parses the field and rejects
+  `catalog:` with `EUNSUPPORTEDPROTOCOL` — the prod-stage rewrite must delete
+  `devDependencies` outright, not just rely on `--omit=dev`.
+- **`prisma` (the CLI) is a devDependency** in `apps/api/package.json`, but the ECS migrate
+  task needs it at runtime. It must be promoted into `dependencies` before the prod-stage
+  `npm install`, and copied from that npm-installed tree — not from pnpm's
+  `.pnpm/prisma@*/node_modules/prisma`, which is missing `.bin` and CLI deps and fails with
+  `prisma: not found`.
+- **`dotenv` is undeclared** — no entry in `apps/api/package.json`, present only via
+  transitive hoisting in local pnpm trees. `prisma.config.ts` must not hard-`import
+  'dotenv/config'`; load it defensively (try/catch) since the prod image and CI won't have
+  it and inject `DATABASE_URL` directly.
+
+`apps/api/prisma/scripts/migrate-deploy.sh` calls the installed binary directly
+(`./node_modules/.bin/prisma`, falling back to `node
+./node_modules/prisma/build/index.js`) rather than `npx prisma` — `npx` consults
+`package.json` and skips a devDependency under `NODE_ENV=production`.
+
 ## Tenancy
 
 Multi-tenant. Scoping is applied by a Prisma client extension and **is not

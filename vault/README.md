@@ -11,7 +11,7 @@ than performed silently.
 
 1. **`INDEX.md`** — what exists, what it answers, and the four caveats that change how
    everything downstream should be read.
-2. **The conflict stub**, if the area has one (`product/<topic>-INDEX.md`). One ~2 KB
+2. **The conflict stub**, if the area has one (`<module>/<topic>-INDEX.md`). One ~2 KB
    file replaces reading several contradictory documents. Five exist: field-ops-mobile,
    quotations, customers, agencies-vendors, daily-allocation.
 3. **The specific file** — and its folder `INDEX.md` first if it is a split document.
@@ -24,7 +24,7 @@ is stated once instead of being rediscovered file by file.
 
 | Folder | Holds |
 | --- | --- |
-| `product/` | Behaviour and module specs, user stories, FRDs, feedback punch lists |
+| `<module>/` (customers/, quotations/, dispatch/, field-ops/, …) | Behaviour and module specs, user stories, FRDs, feedback punch lists — one folder per product module, see [STRUCTURE.md](STRUCTURE.md) |
 | `payroll/` | The payroll module — separate source (OneDrive, not Confluence), its own [`INDEX.md`](payroll/INDEX.md) and gap register |
 | `meetings/` | Sprint planning pages, curated client-meeting minutes, and three raw-material subfolders — see below |
 | `domain/` | The team's Scrum SOP set — shared process vocabulary |
@@ -74,8 +74,8 @@ topics:          3–8 subject-area tags, controlled vocabulary
 entities:        domain nouns the file actually specifies
 ```
 
-**All path fields are vault-root-relative** (`product/customer.md`,
-`product/field-ops-frd/INDEX.md`) — never bare filenames, never `../`. Bare filenames
+**All path fields are vault-root-relative** (`customers/customer.md`,
+`field-ops/field-ops-frd/INDEX.md`) — never bare filenames, never `../`. Bare filenames
 break the moment a file is split into a folder, which has already happened twice.
 
 `topics:` is subject area and carries one anchor tag: every file under a field-ops
@@ -88,7 +88,7 @@ not there.
 most **8 `topics:`** and **10 `entities:`**, ranked by how often the term occurs. Long
 files legitimately touch more than that, so the tail is dropped. The first pass capped
 both at 6 and silently discarded 252 entity tags across 50 files and 398 topic tags across
-74 — including `fcc` on `product/mobilization-and-demobilization.md`, the most informative
+74 — including `fcc` on `quotations/mobilization-and-demobilization.md`, the most informative
 FCC source in the vault. That was invisible until an agent cross-checked the index against
 the files. **Grep the body before concluding a file does not cover something.** Both come from a frozen vocabulary listed at the bottom of `INDEX.md`; adding
 a term is fine when a real domain area is missing, but coin a near-synonym
@@ -141,7 +141,7 @@ Marking them is better than letting generated navigation pass as source material
 
 ## Filenames
 
-- `product/` and `domain/`: kebab-case topic, no date — `product/purchase-order.md`
+- module folders and `domain/`: kebab-case topic, no date — `vendors-agencies/purchase-order.md`
 - `meetings/`: `YYYY-MM-DD-topic.md` using the page's **created** date, not its
   last-updated date. A meeting note records when the meeting happened; last-edited dates
   drift for unrelated reasons.
@@ -152,9 +152,9 @@ Marking them is better than letting generated navigation pass as source material
 one 1 KB requirement is the failure mode this removes.
 
 ```
-product/field-ops-frd/
+field-ops/field-ops-frd/
 ├── INDEX.md                          parts: [...]   — section list, one line each
-├── 01-executive-overview.md          part_of: product/field-ops-frd/INDEX.md
+├── 01-executive-overview.md          part_of: field-ops/field-ops-frd/INDEX.md
 ├── 08-functional-requirements/       a section that was itself over 15 KB
 │   ├── INDEX.md                      parts: [...] + part_of: the parent INDEX
 │   └── fr-fop-001-bottom-navigation.md
@@ -167,7 +167,7 @@ product/field-ops-frd/
   in the FRDs, whose single `#` is only a title; `#` in the user-story documents.
 - **Numbered sections keep their numbers**, zero-padded, so `10-` sorts after `09-`.
   Where a document's own numbering is not a clean sequence, parts fall back to
-  positional numbering and the folder INDEX says so (see `product/project-module/`).
+  positional numbering and the folder INDEX says so (see `projects-jobs/project-module/`).
 - **Every byte of the original lives in exactly one part.** This was verified by
   sha256 of the concatenated parts against the original body, at every nesting level —
   which catches reordering and substitution, not just loss. If you re-split something,
@@ -211,8 +211,9 @@ Recency in particular is actively wrong in this vault. Worked examples, all real
   stub that would have beaten a 3.7 KB specification.
 
 Every unresolved set has an entry in [`gaps.md`](./gaps.md) — or, for payroll and ADP, in
-[`payroll/gaps.md`](./payroll/gaps.md) — with candidates, sizes, and
-dates, and the five biggest have a stub at `product/<topic>-INDEX.md`. When you hit one,
+[`payroll/gaps.md`](./payroll/gaps.md), or, when a ticket raised the question, in §12 of
+that ticket's `.ai/aidlc/SCRUM-###/spec.md` — with candidates, sizes, and
+dates, and the five biggest have a stub at `<module>/<topic>-INDEX.md`. When you hit one,
 read the stub and point the reader at the gap entry.
 
 ### `FR-FOP-NNN` ids are ambiguous across documents
@@ -250,11 +251,11 @@ concluding the migration failed.
 | Attendee tables inside SOP pages | Named individuals. Stripped from otherwise-migrated pages; each removal is marked inline with a `[table not migrated: ...]` note. |
 | Four client-feedback pages | Sprint 2 client feedback, the 5 May session notes, the Sprint 4 review feedback log, and a later feedback round. **Excluded pending a separate decision, not permanently.** The Sprint 4 review log is the only decision-bearing content found in the whole source, so revisiting this is worthwhile. |
 | Sprint 3, 4, 5, 6, 7 reports | Dropped as unrecoverable. Their "completed work" was a saved Jira search URL rather than a ticket list, leaving a prose goal and a link that resolves only for someone with Jira access. Sprint 7's report additionally states the wrong sprint dates (copied from Sprint 6), which makes it worse than absent — an agent would cite it confidently. See the Sprint 7 entry in `gaps.md`. |
-| The FRD "BRS References" table | Linked to payroll charts, ADP paydata, and a labor union master agreement on SharePoint. Personnel and contractual content. The omission is marked inline in `product/field-ops-frd/10-brs-references.md`. |
+| The FRD "BRS References" table | Linked to payroll charts, ADP paydata, and a labor union master agreement on SharePoint. Personnel and contractual content. The omission is marked inline in `field-ops/field-ops-frd/10-brs-references.md`. |
 | Empty containers, sub-200-character stubs, unedited Atlassian templates, personal-space Overview pages | No recoverable content. |
 
 One page was migrated **from an individual's personal Confluence space**:
-`product/user-story-and-tasks.md`. It is the only source anywhere for the Yard
+`assets/user-story-and-tasks.md`. It is the only source anywhere for the Yard
 Management, HubSpot sync, and email 2FA stories. Its frontmatter carries a
 `provenance_note` — personal-space content is more likely to be one person's private
 draft than agreed specification, and should be treated that way until product confirms it.
@@ -282,7 +283,8 @@ When product resolves a conflict set:
 3. Set the losing files to `status: superseded` and add `superseded_by:` naming the
    winner. Do not delete them — a superseded file with a pointer is more useful than a
    missing one, because it stops the same question being reopened.
-4. Clear `conflicts_with` on the winner, and update the corresponding `gaps.md` entry to
+4. Clear `conflicts_with` on the winner, and update the corresponding entry — the ticket's
+   `spec.md` §12 question if a ticket raised it, this vault's `gaps.md` otherwise — to
    `Status: resolved` with a link to the decision note.
 
 ## How the vault stays in step with Confluence
@@ -339,7 +341,7 @@ is a judgement about someone else's unfinished work, and it is not an agent's ca
   skipped; the Sprint 8 report noted against the *Sprint 7 date range* gap; lunch thresholds
   appearing on the Atom user-stories page appended as evidence to the *Lunch thresholds* gap
   (which stays **open**); a second mobilization page filed as a new conflict stub
-  (`product/mob-demob-INDEX.md`). **Nothing was re-migrated** — the Atom page was mid-edit.
+  (`quotations/mob-demob-INDEX.md`). **Nothing was re-migrated** — the Atom page was mid-edit.
 - **2026-08-19** — nine pages modified since 2026-08-11 (`type = page AND lastmodified >=
   "2026-08-11"`). Triage: three personal-space / untitled live docs skipped; the three pages
   triaged on 2026-08-11 (Atom user stories 95158273, Sprint 8 report 136740865, Mob & demob

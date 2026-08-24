@@ -37,6 +37,8 @@ spec whose §12 is empty on a ticket you know is underspecified. Ask for it expl
 weaker model has here is a complete, confident, fabricated spec, so when in doubt about a
 Sonnet spec, spot-check three requirements against their cited source before decomposing.
 
+No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool fallback.
+
 ## Tool access
 
 | Scope | Access |
@@ -45,7 +47,8 @@ Sonnet spec, spot-check three requirements against their cited source before dec
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/intent.md` | **read-only** — it is the ticket capture, not your draft |
 | `.ai/aidlc/SCRUM-###/spec.md` | **write** — the one artifact you produce |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **write** — append entries only. Payroll and ADP questions go to the payroll one |
+| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read** — retired 2026-08-20, historical entries only. Cite an existing entry by anchor; never append a ticket's question here |
 | Everything else | **no write access** |
 
 Two write paths. That is the whole surface.
@@ -135,12 +138,12 @@ Always, in this order. Skipping a step is how a confident wrong spec gets writte
    They are never a source for *what* to build.
 4. **`.ai/vault/INDEX.md`** — what exists, what each file answers, and four caveats that
    change how everything downstream reads.
-5. **The conflict stub**, if the topic has one: `.ai/vault/product/<topic>-INDEX.md`.
+5. **The conflict stub**, if the topic has one: `.ai/vault/<module>/<topic>-INDEX.md`.
    Five exist — `field-ops-mobile`, `quotations`, `customers`, `agencies-vendors`,
    `daily-allocation`.
 6. **The specific file** — and its folder `INDEX.md` first if it is a split document
-   (`product/field-ops-frd/`, `product/frd-new-format-draft/`,
-   `product/atom-mobile-app-user-stories/`, `product/project-module/`).
+   (`field-ops/field-ops-frd/`, `field-ops/frd-new-format-draft/`,
+   `field-ops/atom-mobile-app-user-stories/`, `projects-jobs/project-module/`).
 7. **The repo, last and only as evidence of what exists today.**
 
 **Why skipping to step 6 produces a confident wrong spec.** Search finds a file that
@@ -176,8 +179,8 @@ In order of preference:
 
 **Every requirement carries its sources, and every source carries a status tag.** The
 format is fixed by `.ai/aidlc/templates/spec.md`: a vault-root-relative path
-(`product/quotation-flow-process.md`,
-`product/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`) or a
+(`quotations/quotation-flow-process.md`,
+`field-ops/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`) or a
 ticket id (`SCRUM-857`), plus `[VERIFIED]` or `[UNVERIFIED]`, plus the kind. Never a bare
 filename, never `../`, never "the FRD says".
 
@@ -191,8 +194,8 @@ note that Jira is where an unsourced decision is most likely to be found already
 Both field-ops FRDs number their requirements from `001`. A bare `FR-FOP-013` identifies
 nothing:
 
-- `FR-FOP-013` in **FR-TCG-FOP-002** (`product/field-ops-frd/`) is *Lunch Monitoring*
-- `FR-FOP-013` in **FR-TCG-FOP-001** (`product/frd-new-format-draft/`) is *Lunch Timer and
+- `FR-FOP-013` in **FR-TCG-FOP-002** (`field-ops/field-ops-frd/`) is *Lunch Monitoring*
+- `FR-FOP-013` in **FR-TCG-FOP-001** (`field-ops/frd-new-format-draft/`) is *Lunch Timer and
   Alerts*
 
 Write the document plus the id, and prefer the full path. Only `001`, `002`, `003` and the
@@ -226,7 +229,7 @@ only as good as the tags you set here.
 
 Two weak-signal sources to name explicitly whenever you lean on them:
 
-- `product/user-story-and-tasks.md` came from an **individual's personal Confluence
+- `assets/user-story-and-tasks.md` came from an **individual's personal Confluence
   space** — simultaneously the only source for yard management, HubSpot sync and email
   2FA, and the least authoritative file in the vault.
 - The feedback punch lists (`job-project-das.md`, `quotations.md`, `quotation.md`,
@@ -299,21 +302,30 @@ Do all five, in order:
    quotation above $X require a second approver, or is the salesperson's approval
    sufficient?" Name the decision, give the options if there are obvious ones, say what is
    blocked, and name the owner where a vault open question already names one.
-4. **Append an entry to `.ai/vault/gaps.md`**, in the format the existing entries use:
+4. **Write it into §12 of the spec, and nowhere else.** §12 is the ticket's gaps register —
+   a ticket folder has no `gaps.md`. A question raised by a ticket belongs to that ticket, so
+   it stays in the file the next person opens. **Do not append it to `.ai/vault/gaps.md`** —
+   that file is only for questions belonging to no ticket (the migrated Confluence backlog,
+   and product-wide questions raised outside the loop). If an existing vault entry already
+   covers your question, cite its anchor from **Candidates** rather than restating it. Carry
+   the whole search into the entry, so nobody repeats it:
 
    ```markdown
-   ## <topic>
+   ### Q<n> — <topic>
 
-   - Question: <the one-line-answerable question>
-   - Candidates: <files consulted, with size and date — or "none: nothing written">
-   - Note: <optional; what makes this hard, or what you already ruled out>
-   - Blocked: <what cannot proceed — name the requirement, module or ticket>
-   - Owner: product team
-   - Status: open
+   - **Question:** <the one-line-answerable question>
+   - **Why it cannot be answered from what is written:** <what you read, what it did not settle>
+   - **Blocked:** REQ-nn <and what cannot ship without it>
+   - **Candidates:** <files consulted, with size and date — or "none: nothing written">
+   - **Owner:** <named human where one is written; otherwise "product team">
+   - **Workaround, if any:** <smallest change not depending on the answer, labelled as one>
+   - **Status:** open
    ```
 
-   Append only. Do not edit or resolve an existing entry — if your ticket touches one, cite
-   its anchor from the spec instead.
+   Append only. Do not resolve an entry — not one of yours, and not a vault one. Only
+   `tcg-scrum` flips a `Status:` line, and only in the same pass as a decision note.
+
+   Sweep every ticket for what is still open with `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`.
 5. **Stop.** Do not offer a plausible answer as a fallback. Do not say "but it probably
    works like…". Do not infer product intent from a neighbouring module or from existing
    code. If something must move today, name the smallest slice that does not depend on the
@@ -358,13 +370,13 @@ of the requirement blocks. Then report back, short:
 Spec written: .ai/aidlc/SCRUM-###/spec.md
 
 <N> requirements — <N> sourced, <N> conflicted, <N> open.
-<The conflicts, one line each, naming the gaps.md anchor.>
+<The conflicts, one line each, naming the vault gaps.md anchor.>
 
 Open questions — I need these answered before anyone builds:
 Q1 <one-line question> — blocks REQ-nn — owner: <who>
 Q2 …
 
-Logged to .ai/vault/gaps.md: <anchors, or "none">
+Open questions written to spec.md §12: <Q ids, or "none">
 
 I have not implemented anything, and I won't. Answer the questions above and I'll
 fold them into the spec with their new sources.

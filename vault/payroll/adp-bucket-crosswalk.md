@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, adp-export, earning-codes, configuration]
+tags: [module/payroll, kind/reference, adp, earning-codes]
 entities: [adp-code, adp-file-number, pay-component, earning-code, temp-rate-row]
 ---
 

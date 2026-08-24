@@ -6,7 +6,7 @@ updated: 2026-08-11
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, testing, regression, worked-examples]
+tags: [module/payroll, kind/reference]
 entities: [labor-entry, payroll-group, test-scenario]
 ---
 
@@ -78,3 +78,11 @@ rule and is not a clean isolation of the rule under test).
 | Rate Review / Data Quality | Zero source rate / suppressed pay | 4743 | 2026-06-05 | 86432 | OM59450 |   | 45868 |   | L12 Labor Union Field | Strong Candidate | Strong suppressed-pay example: Source_Rate_Raw is 0.000 on a 5.00-hour L12 row with craft/modifier rates available. Pay_Actual_Gross and Final_Gross_Pay are both 0.00, demonstrating zero-rate suppression/review behavior. |
 | Rate Review / Data Quality | Labor start date differs from WorkDate | 7943 | 2026-06-09 | 86656 | OM55521 |   | 45942 |   | L12 Labor Union Field | Strong Candidate - Complex | Clear date-quality example: WorkDate is 2026-06-09 but TimeStart_Labor is 2026-06-10 20:00:00. Complex because the row also includes boom and WTL components. |
 | Rate Review / Data Quality | Source amount / implied rate mismatch | 614 | 2021-01-29 | 2067 | OM33067 |   | 2805 |   | L12 Labor Union Field | Candidate | Clear source amount / implied rate mismatch: Source_Amount_Raw 456.080 divided by 10.00 raw hours implies 45.608, while Source_Rate_Raw is 57.010. Older row but useful for ERP source-data validation discussion. |
+
+---
+
+> **This catalog ≈ the client's test baseline (2026-08-24 batch):** Brian — *"there are probably
+> hundreds of scenarios, but have about 30 or so basic scenarios identified"*, with Corrina
+> lined up for "robust testing". His ~30 are almost certainly this catalog's 28 rows (same
+> lineage). Proposal on the table: reconcile his list against these rows and adopt the union as
+> the **joint ERP acceptance baseline**, with Corrina's testing as the sign-off fixture.

@@ -9,7 +9,7 @@ migration_status: not-migrated
 vault_target: ""
 conflicts_with: []
 jira: []
-topics: [payroll, source-file, provenance]
+tags: [module/payroll, kind/source, provenance]
 entities: []
 part_of: payroll/sources/INDEX.md
 ---

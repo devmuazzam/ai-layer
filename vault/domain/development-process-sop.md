@@ -6,7 +6,7 @@ updated: 2026-02-04
 status: verified
 conflicts_with: []
 jira: []
-topics: [engineering-process, scrum-process, inspections, tools-rigging, projects, purchase-orders, reporting, authentication]
+tags: [module/admin, module/assets, module/field-ops, module/projects-jobs, module/vendors-agencies, kind/sop, sprint-planning, inspections, tools-rigging, purchase-orders, reporting, authentication]
 entities: [sprint, project, tool-rigging, purchase-order, field-ticket, task]
 supersedes:
   - confluence/TCG/Scrum Standard Operating Procedures (SOPs) — TCG-space copy, last updated 2026-04-23, not migrated

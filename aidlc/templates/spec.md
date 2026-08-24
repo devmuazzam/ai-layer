@@ -16,7 +16,7 @@ block.** A field you cannot fill keeps its heading and takes one of:
 | --- | --- |
 | `NOT SPECIFIED` | No source says anything about this. |
 | `N/A — <reason>` | Does not apply to this feature. |
-| `OPEN — <question>` | Blocked on a human. Must also appear in §12 and in `.ai/vault/gaps.md`. |
+| `OPEN — <question>` | Blocked on a human. Must also appear in §12. |
 
 A spec that is 40% `NOT SPECIFIED` is an honest spec of a thin ticket. A spec where those
 sections were deleted is a spec that lies by omission — the executor cannot tell "nobody
@@ -33,8 +33,8 @@ Two statuses. There is no third.
 
 Alongside the tag, state the **kind** of source. Kind is provenance, not status:
 
-- `vault` — a `.ai/vault/` path, always **vault-root-relative** (`product/customer.md`,
-  `product/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`).
+- `vault` — a `.ai/vault/` path, always **vault-root-relative** (`customers/customer.md`,
+  `field-ops/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`).
   Never a bare filename, never `../`.
 - `jira` — `SCRUM-###`. A ticket is `[UNVERIFIED]` by default: it records what someone
   decided to build, not what product agreed. `gaps.md` → *Lunch thresholds* is the worked
@@ -59,7 +59,7 @@ A requirement inherits the worst of its sources. Put the flag in the heading:
 | --- | --- |
 | `[VERIFIED]` | Every source is `[VERIFIED]`. Rare. Expect this only for process requirements sourced from `domain/`. |
 | `[UNVERIFIED]` | Any source is `[UNVERIFIED]`. **This is the normal case.** |
-| `[CONFLICT]` | A source's `conflicts_with` is non-empty, or the topic has a stub (`product/<topic>-INDEX.md`). Name every candidate in the block. Do not pick a winner. |
+| `[CONFLICT]` | A source's `conflicts_with` is non-empty, or the topic has a stub (`<module>/<topic>-INDEX.md`). Name every candidate in the block. Do not pick a winner. |
 | `[OPEN]` | No source supports it. The block states the question and nothing else — no fields, no endpoints, no schema. |
 
 Never rewrite a `[CONFLICT]` requirement as a clean single statement by merging the
@@ -76,7 +76,7 @@ reads as competence.
 | Intent | `.ai/aidlc/SCRUM-###/intent.md`, captured `YYYY-MM-DD` |
 | Elaborated on | `YYYY-MM-DD` |
 | Vault state at elaboration | *N files; six `domain/` files verified; N entries open in `gaps.md`* |
-| Gaps opened by this spec | `gaps.md#<anchor>`, … or `none` |
+| Open questions raised by this spec | *N, all in §12* — or `none` |
 | Rules consulted | *list the `.ai/claude/contexts/*.md` files that bind this feature* |
 
 ## 1. Requirements ledger
@@ -86,7 +86,7 @@ unsourced and conflicted requirements impossible to miss.
 
 | Req | Title | Surface | Flag | Sources | Blocks build? |
 | --- | --- | --- | --- | --- | --- |
-| REQ-01 | | schema / api / web / mobile / shared | `[UNVERIFIED]` | `product/…` | no |
+| REQ-01 | | schema / api / web / mobile / shared | `[UNVERIFIED]` | `<module>/…` | no |
 | REQ-02 | | | `[OPEN]` | none | **yes** |
 
 Counts: `N` total — `N` verified, `N` unverified, `N` conflicted, `N` open.
@@ -100,11 +100,11 @@ Repeat this block per requirement. Keep the field order.
 - **Statement:** *one sentence, in the behavior's own terms. What the system does, not how.*
 - **Surface:** schema / api / web / mobile / shared *(more than one is fine)*
 - **Sources:**
-  - `product/<path>.md` — `[UNVERIFIED]` — kind: vault — *what it actually says, in one
+  - `<module>/<path>.md` — `[UNVERIFIED]` — kind: vault — *what it actually says, in one
     line. Quote if the wording matters.*
   - `SCRUM-###` — `[UNVERIFIED]` — kind: jira — *what the ticket states.*
-- **Conflict:** none — *or* — `gaps.md#<anchor>`; candidates: `product/a.md` (N KB,
-  `YYYY-MM-DD`), `product/b.md` (N KB, `YYYY-MM-DD`). *State plainly that none is verified
+- **Conflict:** none — *or* — `gaps.md#<anchor>`; candidates: `<module>/a.md` (N KB,
+  `YYYY-MM-DD`), `<module>/b.md` (N KB, `YYYY-MM-DD`). *State plainly that none is verified
   and that this spec does not choose between them.*
 - **Open question:** none — *or* — *the one-line-answerable question*, logged at
   `gaps.md#<anchor>`
@@ -226,7 +226,7 @@ consumers. Detail in `.ai/claude/contexts/web.md`.
 
 | Field | Rule | Source | Flag |
 | --- | --- | --- | --- |
-| | | `SCRUM-###` / `product/…` | `[UNVERIFIED]` |
+| | | `SCRUM-###` / `<module>/…` | `[UNVERIFIED]` |
 | | `NOT SPECIFIED` — *no source states a limit* | — | — |
 
 Invented validation is still invention. A max length nobody wrote down is `NOT SPECIFIED`.
@@ -253,6 +253,16 @@ Invented validation is still invention. A max length nobody wrote down is `NOT S
 
 **The elaborator stops here.** Nothing below is built until these are answered.
 
+**This section is the ticket's gaps register — there is no separate `gaps.md` in a ticket
+folder.** Every question this ticket raised lives here, with the search that produced it, and
+stays here when it is answered: mark it resolved and point at the decision note, so the
+question and its answer are read together. `.ai/vault/gaps.md` holds only what belongs to no
+ticket. To sweep every ticket for what is still open:
+
+```bash
+grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
+```
+
 Each question must be answerable in one line by the person named. If it takes a meeting to
 answer, it is two questions.
 
@@ -262,10 +272,12 @@ answer, it is two questions.
 - **Why it cannot be answered from what is written:** *what you read, and what it did not
   settle*
 - **Blocked:** REQ-nn *(and what cannot ship without it)*
+- **Candidates:** *every vault file consulted, with size and date — or "none: nothing
+  written". This is the search record: it stops the next person repeating it*
 - **Owner:** product team / *named person, where a vault open-question names one*
-- **Logged:** `.ai/vault/gaps.md#<anchor>` — `Status: open`
 - **Workaround, if any:** *the smallest change that does not depend on the answer,
   explicitly labelled as a workaround*
+- **Status:** open *— or* `resolved — see decisions/YYYY-MM-DD-topic.md`
 
 ### Q2 — …
 
@@ -275,14 +287,14 @@ Anything the intent asked for that no source supports, listed once, plainly. Thi
 exists so nobody mistakes the spec's silence for the feature's simplicity.
 
 - *thing* — no source; see Q*n*
-- *thing* — sources conflict; see REQ-nn and `gaps.md#<anchor>`
+- *thing* — sources conflict; see REQ-nn and `vault/gaps.md#<anchor>`
 
 ## 14. Sign-off before build
 
 - [ ] Every `[OPEN]` requirement is answered, or explicitly deferred by a named person
 - [ ] Every `[CONFLICT]` requirement has a decision note in `.ai/vault/decisions/`
 - [ ] Answers written back into `spec.md` with their new sources and flags
-- [ ] `gaps.md` entries updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
+- [ ] Every §12 question updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
 - [ ] Decomposed into vertical units — `units.md`
 
 Answered by: ______________  Date: ______________

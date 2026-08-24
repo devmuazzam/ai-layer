@@ -7,10 +7,12 @@ updated: 2026-06-11
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll]
+tags: [module/payroll, kind/transcript]
 entities: []
 meeting_date: 2026-06-11
 kind: transcript
+normalized: 2026-08-24
+normalized_substitutions: 1
 ---
 
 # Payroll App Demo 02 — 2026-06-11
@@ -464,7 +466,7 @@ June 11, 2026, 6:59PM
  Corrina Bustos   58:02 Because we did it the other way where it was all combined and they were very confused.
  ehtesham.anwar   58:07 Makes sense. This makes sense and I I don't see the rates that we are giving them. So regular rate is not added to this worksheet. That means that regular rate is coming from FCC or you guys are inputting.
  Corrina Bustos   58:22 Regular rate is coming from their employee profile.
- ehtesham.anwar   58:25 Okay, and you are creating that manually within the ADB.
+ ehtesham.anwar   58:25 Okay, and you are creating that manually within the ADP.
  Corrina Bustos   58:26 So like I can. Correct, yes.
  ehtesham.anwar   58:32 OK, makes sense.
  Corrina Bustos   58:32 But like on this, in that I can send another screenshot, but like on this screenshot where you can, where it says show employee details and rates, if you click the plus sign, every time you click a new employee, it shows their hire date, their status, it shows their, their, like what their like base rate is, and that's where it's pulling from.

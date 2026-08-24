@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, payroll-approval, adp-export]
+tags: [module/payroll, kind/frd, adp]
 entities: [payroll-snapshot, adp-export, manual-adjustment, calculation-run]
 part_of: payroll/erp-payroll-module-frd/INDEX.md
 ---

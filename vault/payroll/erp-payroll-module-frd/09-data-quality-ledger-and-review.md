@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, pay-component-ledger, payroll-review]
+tags: [module/payroll, kind/frd]
 entities: [pay-component, payroll-exception, worklist]
 part_of: payroll/erp-payroll-module-frd/INDEX.md
 ---

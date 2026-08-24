@@ -5,7 +5,7 @@ migrated: 2026-08-19
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, provenance, source-file]
+tags: [module/payroll, kind/source, provenance]
 entities: []
 part_of: payroll/INDEX.md
 ---

@@ -6,12 +6,15 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-api, earning-codes, onboarding, worker-hire, payroll-output]
+tags: [module/payroll, kind/reference, adp, earning-codes]
 entities: [adp-api, adp-code, earning-code, adp-file-number, craft-code, applicant-onboard, worker-hire, payroll-output]
 part_of: payroll/INDEX.md
 ---
 
 # ADP Workforce Now — read / write boundary for the ERP (2026-08-18)
+
+> **Validity caveat (2026-08-24):** everything here is keyed to **classic WFN**. TCG reports a planned upgrade to WFN **Next Generation** ("soon", undated — Patrick). Re-validate this document when the upgrade lands.
+
 
 Answers to the TPM's questions, from ADP's own documents and samples plus the API Central
 project TCG holds (*TCG ERP Integration*). Confluence has no ADP content beyond

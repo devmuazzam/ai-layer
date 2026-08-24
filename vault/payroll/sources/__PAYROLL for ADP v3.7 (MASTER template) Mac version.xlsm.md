@@ -9,7 +9,7 @@ migration_status: data
 vault_target: ""
 conflicts_with: []
 jira: []
-topics: [payroll, source-file, provenance]
+tags: [module/payroll, kind/source, provenance]
 entities: []
 part_of: payroll/sources/INDEX.md
 ---
@@ -38,3 +38,14 @@ Previous master, Mac build.
 *This page exists so that any filename in the 2026-08-11 OneDrive drop resolves to something in
 the vault. It records what the file is and where its content went — it is not a copy of the file.
 Full drop-level provenance: [../source-manifest.md](../source-manifest.md).*
+
+---
+
+> **Drift note (2026-08-24):** a newer copy exists in `3.7.1_MODULE-HR-LABOR-PAYROLL.zip`
+> (Downloads, zipped 2026-08-19): 2,619,102 B (drop, 2026-08-11) → 2,562,970 B (zip, 2026-08-19 03:02). Live-file churn; the vault summary
+> describes the migrated 2026-08-11 state. Everything else in that zip is byte-identical to
+> the migrated drop — including both `__NEW_PAYROLL_v1.1` workbooks.
+> **Drift explained (client message, 2026-08-24 batch):** the 2026-08-19 version is the
+> **ADP-code accommodation update** — "we recently updated our payroll Excel file to
+> accommodate the new payroll codes in ADP. This Excel file also automatically generates the
+> file to import payroll data into ADP." The 8-19 copy is the current-process workbook.

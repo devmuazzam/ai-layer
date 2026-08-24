@@ -7,12 +7,12 @@ updated: 2026-04-09
 status: reference
 conflicts_with: []
 jira: []
-topics: [dispatch-scheduling]
+tags: [module/dispatch, kind/transcript]
 entities: []
 meeting_date: 2026-04-09
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 5
+normalized: 2026-08-24
+normalized_substitutions: 11
 ---
 
 # Dispatch Scheduling Figma Demo — 2026-04-09
@@ -43,7 +43,7 @@ April 9, 2026, 6:53PM
  Brian Petros   8:03 Foundation of the view. What is it? What is it going to start with as the basis? And and it gets tricky when you're like when you're looking at jobs, but then you want it to be based on assets and then fill in the jobs into that. It's hard to figure that out, yeah.
  ehtesham.anwar   8:08 Yes. Yeah, yeah. So we we are trying to think of of a way where we can because that's that's going to be much closer to what Lisette is is knows right now when it comes to the sheet and and management of the whole flow and and the main.
  Brian Petros   8:22 Yeah. In.
- ehtesham.anwar   8:36 The problem Lizette is feeling with the view that we have created is also this that the main driver here the main node here is is job on on on the on the level of systems that is right that job is the is the main road but.
+ ehtesham.anwar   8:36 The problem Lisette is feeling with the view that we have created is also this that the main driver here the main node here is is job on on on the on the level of systems that is right that job is the is the main road but.
  Brian Petros   8:50 Yeah. Yeah.
  ehtesham.anwar   8:54 Based on Lizard's preference, we are trying to make and we are trying to come up with another view as well.
  Brian Petros   8:59 Yeah. Yeah, you know what? Yeah, the view. It's going to be different views. It's got to be because the the and I think that was the whole reason for Lisette like absolutely needing that sheet like that to function like on for that perspective. It's almost like it is a different view. So somehow like I think the system.
@@ -61,7 +61,7 @@ April 9, 2026, 6:53PM
  Brian Petros   12:43 Sure.
  ehtesham.anwar   12:48 And in this view, if my screen is by the way small, so don't judge, I'll have to zoom. Yeah, so in here you have all of the your employees and then.
  Brian Petros   12:55 That's a much bigger view. Look at that.
- ehtesham.anwar   13:03 Bless it. They are color-coded so we can decide the colors later on as well. Right now what we have done is we have blue for Euler apprentices get yellowish, operators have pink.
+ ehtesham.anwar   13:03 Bless it. They are color-coded so we can decide the colors later on as well. Right now what we have done is we have blue for oiler apprentices get yellowish, operators have pink.
  Brian Petros   13:11 Yes.
  ehtesham.anwar   13:20 And this is the color scheme that we have just decided. But what we can do is we can make these configurable within the roles and departments module where each role can have a different color and that color can be used on different places, not just on the dispatch side on all. Of the other views where their names come up, we can color code them and automatically the whole system has one color and by definition instead of processing who that person is, color defines that.
  Brian Petros   13:53 Night. Oh, previous night. OK.
@@ -255,7 +255,7 @@ April 9, 2026, 6:53PM
  Ryan Adams   51:06 Yeah.
  ehtesham.anwar   51:08 What we can do initially is we we can create this within the asset management that whenever you put in a portal you also give it a length where we got it from and system on on.
  Ryan Adams   51:08 Can.
- ehtesham.anwar   51:23 Expiry tells Lizette and the relevant people that we need to renew this and they click on that and they can fill out the portal. Otherwise, for all of the agencies who are still on the application forms, what we can do is we can give system an empty form, we can give system one. Uh approve permit and tell it to create an application for the next time it is about to expire and then Lizette and somebody else can just pick that application with all of the asset details with all of the other details and submit it to the agency.
+ ehtesham.anwar   51:23 Expiry tells Lisette and the relevant people that we need to renew this and they click on that and they can fill out the portal. Otherwise, for all of the agencies who are still on the application forms, what we can do is we can give system an empty form, we can give system one. Uh approve permit and tell it to create an application for the next time it is about to expire and then Lisette and somebody else can just pick that application with all of the asset details with all of the other details and submit it to the agency.
  Ryan Adams   52:01 Can we can we add another page just for permits? And the reason I'm asking is if if we go to the sites and we start entering the websites to pull these permits and and then when we click on it, it takes us to the Internet. Can your AI learn this over time? If if we're using your portal to only get permits from different cities, or is that data capability?
  ehtesham.anwar   52:25 That is a capability, but we also have to think about the fact that we can do anything in the world through AI and through development, right? But we also need to make sure what is the where our efforts are going. Is it going to increase by default our efficiency for a very small thing and very huge effort is being pulled into the doing that thing and creating that system or otherwise we can we can. Prioritize all of the efforts going into functionalities which are much more important. We're going to be needed much more times during the day, during the week of operations, right? So that I believe this question should should fall into that category. Do we need to do this?
  Ryan Adams   53:17 Absolutely. Yeah. And and if there was another business model that just did permits, it might make more sense, right. So yeah, I guess that'd be a question for the exec team to to talk about because if it can learn permits, you could basically start a whole company, then it would automatically process your permits for you and you can.
@@ -299,7 +299,7 @@ April 9, 2026, 6:53PM
  Brian Petros   1:06:02 Yeah.
  ehtesham.anwar   1:06:02 And I believe we are at that point in in design that there are few things that we need to add a few few different operations that we need to figure out within this view and we are.
  Brian Petros   1:06:16 That was not the bad part.
- ehtesham.anwar   1:06:18 About to finalize this in this view, there's a lot of like Lizette. There's a lot of UI changes that are going to come in to this view based on different kind of questions that Lizette have.
+ ehtesham.anwar   1:06:18 About to finalize this in this view, there's a lot of like Lisette. There's a lot of UI changes that are going to come in to this view based on different kind of questions that Lisette have.
  Brian Petros   1:06:21 Mhm.
  ehtesham.anwar   1:06:34 Asked to us one of the things that if there are a lot of jobs, uh, what happens to the quick views and how can we switch between quick views, detailed views? So I have a couple of ideas that I'll be processing and I believe. Regarding the functionality itself, the data functionality, we have a lot of information and in the discovery part we need to move forward to the load out phase and thank you. Thank you Ryan to give it a word. I was really trying to figure out what that phase. Is so we need to figure out load out phase what happens there so that if there is some information that needs to go from quotation to uh up until the point of load out or maybe there's some information that. Dispatch needs to handle. We can identify it while we are finalizing dispatch view. Make sense?
  Brian Petros   1:07:33 Yes, that's perfect. It's going along with what you're saying right there. When you get into the accounting version, accounting portion of the of the storage and for like long term crane rentals, we need to be able to have a project.

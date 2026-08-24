@@ -7,12 +7,12 @@ updated: 2026-06-30
 status: reference
 conflicts_with: []
 jira: []
-topics: [sales-quoting]
+tags: [module/quotations, kind/transcript]
 entities: []
 meeting_date: 2026-06-30
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 2
+normalized: 2026-08-24
+normalized_substitutions: 5
 ---
 
 # Mobile Sales Quotes — 2026-06-30
@@ -158,7 +158,7 @@ June 30, 2026, 6:58PM
  ehtesham.anwar   36:15 Mm-hmm.
  Ryan Adams   36:21 So this is really going to be key on us filling out the correct information, overhead power lines, whatever the case may be, and spotter plans, anything like that. So the more red flags we have up top, and I'm just using conditional formatting, so I'm not doing anything special like coding cops could do, but it gives us an idea of what all do we need and the more red flags that raise, the more critical it is for Dispatch to view it and to get involved in the one-offs. So that stops the one-offs and gives us back like the 90% of jobs that are that are straightforward. Fleet.
  ehtesham.anwar   37:02 By Ryan, by all our breaking signal personnel certified qualified, does that mean that we, you're asking in this question that we need all of the certified people on this job? Or is it just the internal question that all of our people are certified or not?
- Ryan Adams   37:21 So there's a couple things behind this. Some of it's upsell. Some of it is we want to make sure that the rigor is certified because they have to be. And if they're trying to give us a rigor that's not, then we also are able to do an upsell value there because it's very dangerous if you don't know how to rig.
+ Ryan Adams   37:21 So there's a couple things behind this. Some of it's upsell. Some of it is we want to make sure that the rigger is certified because they have to be. And if they're trying to give us a rigger that's not, then we also are able to do an upsell value there because it's very dangerous if you don't know how to rig.
  ehtesham.anwar   37:23 T. Mhm.
  Ryan Adams   37:40 There's many questions that we're asking to confirm that we're doing the job correctly. And it also allows us to sell a little bit more. But a lot of this is sometimes we have to stay under 75% capacity for a crane. So I've left all these in there. And when it comes to critical, that's why I've kind of added in here everything I could think of or have learned. and started making this as an intake form. Now, once we hit too many critical points, what ends up happening is this automatically fills in here and then it would get passed with so many critical to an actual job lock. For the job lock, it automatically fills out. And then
  ehtesham.anwar   38:19 Mhm.
@@ -220,7 +220,7 @@ June 30, 2026, 6:58PM
  Brian Petros   52:41 You have to let me know if you need more information.
  ehtesham.anwar   52:41 Mhm, I mean. And one thing I think whoever is talking to the ADP people, since this is a paid feature of APIs, can we ask them that since we are in development stage of our platform, we need the sandbox environment right now. And once we are thinking of going production grade, then we can enable that. I believe most of these services which are paid on the API level, what they do is they also have sandbox so that we can take our time to develop our solutions. And then after that, when we are working in the production environment, then they start telling us. Property.
  Brian Petros   53:26 Okay, good. Yeah, but my I'm still kind of curious on how much information you need or would want in the sandbox environment. That's all. Is it or you just you'll just throw in some information to play around with or you need like a copy of a lot of it in there.
- ehtesham.anwar   53:34 Oh. Not a lot of it. The same system that we are using, we have paid for of the ADB, a platform, the exact platform, just that in the sandbox, if they have that.
+ ehtesham.anwar   53:34 Oh. Not a lot of it. The same system that we are using, we have paid for of the ADP, a platform, the exact platform, just that in the sandbox, if they have that.
  Brian Petros   53:53 Okay.
  ehtesham.anwar   53:55 All right. I think then this is it for today. Thank you guys. Thank you very much for coming in and giving us your time. Ryan, I'm looking forward to your sheet. I believe it's going to help me create the Dispatch allocations and also the calculator for salespersons to figure out if we can do a particular job or not.
  Brian Petros   54:00 Yeah.

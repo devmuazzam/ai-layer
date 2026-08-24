@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, adp-export, payroll-approval, meeting-minutes, shift-differential]
+tags: [module/payroll, kind/meeting-notes, adp, shift-differential]
 entities: [adp-code, payroll-rule, payroll-dashboard, flagged-exception, work-ticket, lattice-crane, shift-premium]
 meeting_date: 2026-08-05
 ---

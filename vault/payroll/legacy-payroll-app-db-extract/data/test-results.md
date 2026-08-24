@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, legacy-payroll-app, reference-data]
+tags: [module/payroll, kind/reference, legacy-payroll-app, reference-data]
 entities: [pay-component, craft-modifier]
 part_of: payroll/legacy-payroll-app-db-extract/INDEX.md
 ---

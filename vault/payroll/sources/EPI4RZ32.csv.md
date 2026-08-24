@@ -9,7 +9,7 @@ migration_status: data
 vault_target: ""
 conflicts_with: []
 jira: []
-topics: [payroll, source-file, provenance]
+tags: [module/payroll, kind/source, provenance]
 entities: []
 part_of: payroll/sources/INDEX.md
 ---
@@ -38,3 +38,10 @@ The **output** of the July 25–31 workbook — the ADP paydata import, company 
 *This page exists so that any filename in the 2026-08-11 OneDrive drop resolves to something in
 the vault. It records what the file is and where its content went — it is not a copy of the file.
 Full drop-level provenance: [../source-manifest.md](../source-manifest.md).*
+
+> **Verified against content (2026-08-24):** 177 rows, **Co Code `4RZ` throughout** (the
+> active export generator targets the new company code — stale-631 audit largely resolved for
+> the live pipeline). Row architecture = the crosswalk's **Temp Rate + Hours 4 Code/Amount**
+> design, live: e.g. `Temp Rate 0.75, Hours 4 Code LBH, 4 hours` — the boom adder as its own
+> temp-rate row. The July-added codes (LBT/LPT/LOT/S2T…) are absent from this week's sample —
+> expected, they are event-driven.
