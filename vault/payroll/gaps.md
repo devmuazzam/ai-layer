@@ -716,7 +716,10 @@ someone has confirmed otherwise.
 - Candidates: [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
 - **2026-08-24, from the client-message batch:** Brian (June-era) — the new import workbook
   needs "a few more fields in ADP"; a **meeting with the ADP rep** was planned to confirm.
-  Owner emerging: **Brian + the ADP rep**. Reconcile against the **52 live codes** captured
+  Owner emerging: **Brian + the ADP rep**. **Largely closed 2026-08-24:** the additions are enumerated (S2/S3 diff, LBT, lattice
+  op/oiler) and confirmed present in the 8-18 pull. Residual: the *removed* code's identity,
+  the *changed* holiday code's identity, and the backend-calc opacity (ADP-support ask).
+  Reconcile against the **52 live codes** captured
   2026-08-18 (`adp-api-responses/pay-data-input-meta.md`) to enumerate what is still missing —
   and ask what the rep meeting concluded.
 - Note: **ADP supplies no unified or standard code set.** It reserves only `R` (Regular) and `O`

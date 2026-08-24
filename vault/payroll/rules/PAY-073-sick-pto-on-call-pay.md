@@ -20,3 +20,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking:** explicit in/out decision. If out, record it as a decision so the omission stops looking like an oversight.
 - **Scope refinement (client big summary):** *non-union sick hours are the one sick/PTO item currently entered into ADP*; nothing union-side, no PTO mentioned. The in/out decision for the ERP still stands, now with the as-is precisely stated.
+- **ADP-side code inventory (8-18 pull):** `SIC` (Sick) and `PTP` (PTO Payout) exist, plus CA-compliance codes `1XQ` (CA SPSL 22), `1XX`, `VT1` — and the pull notes these CA codes "appear in no TCG document." The in/out decision should name which of these the ERP feeds.

@@ -307,3 +307,15 @@ or notes; (b) the exact list of added codes (or we run the crosswalk-vs-52 diff 
 the delta to confirm); (c) confirm every downstream artifact was updated for 4RZ — the
 workbooks' Power Query and any hardcoded 631.
 
+## ~2026-07-29 — validation-table walkthrough + code changes (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Added: shift-diff 2/3, **long-boom holiday triple**, lattice oiler/operator | ✅ **vault had already detected it**: these exact families were June-absent and are present in the 8-18 pull. The LBT addition flips question 10 — practice committed to LB triple *after* Brian doubted the contract; get the confirmation that motivated it | PAY-067, PAY-043 |
+| Removed one unused code; changed a holiday code "to add to total hours" | 🆕 identities unknown — residual of the earning-code gap | PAY-067 |
+| Code calculations hidden in ADP's backend (rep statement) | 🆕 **design constraint**: ERP computes everything; ADP codes are labeled buckets; verification = ADP-support ask | PAY-067 |
+| Download exists but incomplete | ✅ noted — our live API pull post-dates the changes and is the better artifact; fresh download only as a re-baseline before the export build | PAY-067 |
+
+Holiday-triple practice extension also strengthens the client's WTL ×3 claim (question 18) —
+the engine's flat ×2 increasingly reads as the defect.
+
