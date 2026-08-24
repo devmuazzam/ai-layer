@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Legal/HR confirmation
 - **First live exhibit (client message, 2026-08-24 batch):** employee Jonathen (1092), L12-G3-A + 141-160Ft-Oiler, cross-midnight 10:30 PM → 1:00 PM — *"Had incident happen at 6am, left to go drug test at 10:30am and was takin back to yard at 1pm"*. Hours paid through the return (14.50 derived / 15.00 entered) though off-site for the drug test — the incident-day pay-continuation case this rule must govern. Also payable-but-not-billable: see PAY-004.
+- **Invoice side of the incident-day case:** drug-test departures are on the ops/AR **deduct-from-invoice** list (company-caused) — completing the exhibit: payroll pays through return, billing deducts. See the invoicing taxonomy in accounting/.

@@ -14,6 +14,7 @@ Invoicing and accounting (module not yet built). Backend usecases: `billing, exp
 
 | File | Answers | KB |
 | --- | --- | --- |
+| [2026-07-invoicing-adjustment-taxonomy.md](2026-07-invoicing-adjustment-taxonomy.md) | **Which ticket events deduct from the invoice, which don't, which bill extra** — Tia & Micaela's taxonomy with live exhibits | 4 |
 | [2026-07-accounting-team-erp-wishlist.md](2026-07-accounting-team-erp-wishlist.md) | **What the accounting team wants from the ERP** — the July 2026 client wishlist, cross-linked into payroll/quotations/assets. Start here when the module kicks off (~Oct–Nov 2026) | 8 |
 
 

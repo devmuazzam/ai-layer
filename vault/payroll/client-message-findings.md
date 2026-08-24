@@ -278,3 +278,18 @@ with its module INDEX routing and a scoping gap for the ~Oct–Nov kickoff. Payr
 spillover: **certified payroll / Davis-Bacon / prevailing wage named a third time** (PAY-072
 strengthened); per diem, shift differential, multiple rates, OT all already in the register.
 
+## Cross-module — invoicing-adjustment taxonomy (Tia & Micaela, ~2026-07-28)
+
+Captured to [accounting/2026-07-invoicing-adjustment-taxonomy.md](../accounting/2026-07-invoicing-adjustment-taxonomy.md)
+with live ticket exhibits (flat tire 46126, hydraulic leak OM60120, damaged slings, THUMS
+training OM58898). Completes the **payable ≠ billable seam from both sides** (message 8's
+drug-test case is on the deduct list). Payroll spillover recorded: e-ticket already collects
+lunch **times** (checklist, not data — strengthening the PAY-047 structural-capture case) and
+subsistence enters as deficiency-click + long/short comment (the token origin, PAY-048).
+
+**Client question:** (20) is the taxonomy complete enough to encode — cause-coded downtime →
+automatic invoice disposition (deduct / document-only / fee / crew-time)? Auto-invoicing from
+actuals (the accounting wishlist) requires it. Sub-parts: who adjudicates "incorrect leave
+time"; where does the damaged-rigging replacement price come from; and should "crew time"
+(training) be a first-class billing category instead of an Equipment-field note?
+
