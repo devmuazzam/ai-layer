@@ -6,7 +6,7 @@ decided_by: Fouzan Shakil (assignee, SCRUM-903) — authorised settling Q3/Q4 in
 status: verified
 resolves: aidlc/SCRUM-903/spec.md#q3, aidlc/SCRUM-903/spec.md#q4
 jira: [SCRUM-903]
-topics: [projects, jobs, daily-allocation, yard-operations]
+tags: [module/dispatch, module/projects-jobs, kind/decision, daily-allocation, yards]
 entities: [Job, SubJob, SubJobLoadout]
 ---
 

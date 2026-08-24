@@ -6,7 +6,7 @@ decided_by: Umair Khan — Jira comment on SCRUM-903 (2026-08-20T20:47 +0500), a
 status: verified
 resolves: aidlc/SCRUM-903/spec.md#q1, aidlc/SCRUM-903/spec.md#q2
 jira: [SCRUM-903]
-topics: [projects, jobs, daily-allocation, yard-operations]
+tags: [module/dispatch, module/projects-jobs, kind/decision, daily-allocation, yards]
 entities: [Job, SubJob, SubJobLoadout]
 ---
 

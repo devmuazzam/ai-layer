@@ -6,7 +6,7 @@ updated: 2026-02-04
 status: verified
 conflicts_with: []
 jira: []
-topics: [scrum-process, sprint-planning, projects, scheduling, open-questions, inspections, reporting]
+tags: [module/dispatch, module/field-ops, module/projects-jobs, kind/sop, sprint-planning, scheduling, open-questions, inspections, reporting]
 entities: [sprint, task, project, schedule, field-ticket]
 supersedes:
   - confluence/TCG/Sprint Planning — TCG-space copy, last updated 2026-04-23, not migrated

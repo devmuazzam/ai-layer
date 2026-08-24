@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, payroll-rules, requirements, implementation-tracker]
+tags: [module/payroll, kind/reference, payroll-rules, requirements]
 entities: [payroll-rule, payroll-group, pay-component, adp-export, guaranteed-hours, wtl, subsistence, fringe-contribution]
 ---
 

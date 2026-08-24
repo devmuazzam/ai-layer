@@ -7,12 +7,12 @@ updated: 2026-06-09
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll]
+tags: [module/payroll, kind/transcript]
 entities: []
 meeting_date: 2026-06-09
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 3
+normalized: 2026-08-24
+normalized_substitutions: 4
 ---
 
 # Payroll App Demo 01 — 2026-06-09
@@ -71,7 +71,7 @@ June 9, 2026, 6:57PM
  Brian Petros   11:37 Okay. Think. Okay, wow. So we have some homework to do.
  ehtesham.anwar   11:47 Paul. Yeah.
  Brian Petros   11:52 Yeah, this is pretty detailed, so it'll take time to go through it, but it looks really thorough.
- ehtesham.anwar   11:52 Yeah. Yeah. Yeah, I tried that and we are going to update our overall development workflow with this. Another thing that I'm updating is it's going to be business requirement document as well. Here we are going to have all of the requirements that we need to all of the business related calculations, decisions that backend is. is taking. VRSs differently and all of the information that Brian you have sent, I'm going to go into that information. Then Karina sent some emails as well. I'm going to go through that information and I'm going to fill it out and I'll send a message on general and then you guys can review it.
+ ehtesham.anwar   11:52 Yeah. Yeah. Yeah, I tried that and we are going to update our overall development workflow with this. Another thing that I'm updating is it's going to be business requirement document as well. Here we are going to have all of the requirements that we need to all of the business related calculations, decisions that backend is. is taking. VRSs differently and all of the information that Brian you have sent, I'm going to go into that information. Then Corrina sent some emails as well. I'm going to go through that information and I'm going to fill it out and I'll send a message on general and then you guys can review it.
  Brian Petros   12:43 OK, is there is is there like a summary?
  ehtesham.anwar   12:43 There are, and they are. Yeah, go ahead.
  Brian Petros   12:48 On this, I have to go through it to see. I'm sure I'll get familiar with it once I go through it, but like a summary of like the major functions that the mobile app. Is, will, you know, will be built into it.

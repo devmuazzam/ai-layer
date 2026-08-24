@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, adp-export, legacy-process, standard-operating-procedure]
+tags: [module/payroll, kind/reference, adp, legacy-payroll-app]
 entities: [adp-export, payroll-week, excel-workbook, power-query]
 ---
 

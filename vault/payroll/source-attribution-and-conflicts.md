@@ -6,7 +6,7 @@ updated: 2026-08-19
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, provenance, conflict-register, source-attribution]
+tags: [module/payroll, kind/reference, provenance]
 entities: [craft-code, craft-modifier, lattice, subsistence, wtl, rest-period, shift-premium]
 ---
 

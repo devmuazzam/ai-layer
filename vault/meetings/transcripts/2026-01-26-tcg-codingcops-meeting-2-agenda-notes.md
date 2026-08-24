@@ -7,7 +7,7 @@ updated: 2026-01-26
 status: reference
 conflicts_with: []
 jira: []
-topics: []
+tags: [module/all, kind/agenda-notes]
 entities: []
 meeting_date: 2026-01-26
 kind: agenda-notes

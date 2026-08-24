@@ -7,10 +7,12 @@ updated: 2026-05-12
 status: reference
 conflicts_with: []
 jira: []
-topics: [dispatch-scheduling]
+tags: [module/dispatch, kind/transcript]
 entities: []
 meeting_date: 2026-05-12
 kind: transcript
+normalized: 2026-08-24
+normalized_substitutions: 3
 ---
 
 # Loading Figma Demo — 2026-05-12
@@ -20,7 +22,7 @@ kind: transcript
 CC  TCG ERP System-20260512_190021UTC-Meeting Recording
 May 12, 2026, 7:00PM
 1h 13m 30s
- Brian Petros   0:14 Hi, Karina. Coding cop says they're going to be about 10 minutes late.
+ Brian Petros   0:14 Hi, Corrina. Coding cop says they're going to be about 10 minutes late.
  Ryan Adams   0:19 No.
  Corrina Bustos   0:21 Okay, cool.
  Brian Petros   0:21 CodingCops. OK, yeah, so the CodingCops says about 10 minutes. So we're hanging tight for a little bit.
@@ -175,7 +177,7 @@ May 12, 2026, 7:00PM
  ehtesham.anwar   34:11 There's some configuration problem, you can just pull it up before it goes and people take the assets.
  umer.islam   34:23 Mm. As yeah, I have, I think. After offloading, we have some additional functionality here as well, so when any user offloads this. A job, so he can also take picture after offload, and there are small functionality I think it would be help of our current conversation, so let's assume some.
  Brian Petros   34:46 See.
- umer.islam   35:01 Assets and some toll and digging are not coming back, so he will when user hit on offload. So here are a reason why any particular truck and the spot load are not coming back. So I think it's something related from our current conversation. What do you say?
+ umer.islam   35:01 Assets and some tool and rigging are not coming back, so he will when user hit on offload. So here are a reason why any particular truck and the spot load are not coming back. So I think it's something related from our current conversation. What do you say?
  Ryan Adams   35:33 So, I, I think, um... Well, kind of with the with the job analyzing, is there so when we go out to go do a job, hopefully geolocate will allow us to see the whole path and it will allow us to see is how long we were on the job site and it will allow us to see the path back. which we may want to incorporate into the customer's transparency or not. That's more of a Melissa question. But when it geolocates, when it comes back, it ends that job. Somehow when it ends that job, maybe that's when it prompts to warehouse for that offload reload. I don't know if that makes sense, but That's how it kind of flows through my head, where you tied in together as a catch-all right there.
  ehtesham.anwar   36:27 Yeah, Ryan, sorry to cut you off right there. We just discussed this while you were having problems with your machine. And I discussed all of the data sources and how it's going to get combined. So the idea is that we have a job that's a parent that is running from Dispatch.
  Ryan Adams   36:27 Um...
@@ -201,7 +203,7 @@ May 12, 2026, 7:00PM
  Wes Staley   41:18 As long as long as we're given a full vision.
  ehtesham.anwar   41:22 All right, we'll check with the Samsara APIs and if they give us this access on the API level that we can create a snapshot of our route itself, then we'll plan accordingly and integrate that while creating and getting all of this data on each. Joe.
  Ryan Adams   41:46 And then when it captures that and the team logs out, would it incorporate into ADP as well and fill out those time cards automatically?
- ehtesham.anwar   41:47 Alright. M. Yeah, so me and Brian were talking about road mapping stuff, and we identified that we haven't like talked about ADB, and that's going to get, and that's the main software that HR is using right now.
+ ehtesham.anwar   41:47 Alright. M. Yeah, so me and Brian were talking about road mapping stuff, and we identified that we haven't like talked about ADP, and that's going to get, and that's the main software that HR is using right now.
  Corrina Bustos   42:14 Yeah.
  ehtesham.anwar   42:15 So I think I will need to talk to the HR and see what they are doing with that and what is the integration that they will need from us.
  Ryan Adams   42:27 Okay, and then even for like salary employees, if it incorporates with our key cards, if that's an option, even though it's a salary employee, it will log into ADP as a time start when your key code's used, going in out the doors as well.

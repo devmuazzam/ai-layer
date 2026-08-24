@@ -16,7 +16,7 @@ is a from-scratch rebuild of.
   accounting, and safety/certification management.
 - Atom: FCC's companion mobile app (work orders, labour entry, on-site
   signatures, safety checklists). This platform's Expo app corresponds
-  to it — see product/atom-mobile-app-user-stories/.
+  to it — see field-ops/atom-mobile-app-user-stories/.
 
 When "FCC" appears in a ticket or doc, it refers to this legacy system.
 

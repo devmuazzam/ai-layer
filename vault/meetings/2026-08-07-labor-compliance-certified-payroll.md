@@ -6,7 +6,7 @@ updated: 2026-08-07
 status: unverified
 conflicts_with: []
 jira: []
-topics: [labor-compliance, certified-payroll, davis-bacon, billing, quotations, meeting-minutes]
+tags: [module/accounting, module/payroll, module/quotations, kind/meeting-notes, certified-payroll, pricing]
 entities: [labor-compliance, certified-payroll, davis-bacon, lcp-tracker, non-performance-report, compliance-checklist, quotation]
 meeting_date: 2026-08-07
 ---
@@ -104,7 +104,7 @@ Two consequences worth stating plainly:
   the granularity a certified report needs.
 - **It starts at the quotation.** The Labor Compliance indicator has to be captured during
   quotation creation, which reaches into the quotations area — already the vault's most
-  contested topic ([product/quotations-INDEX.md](../product/quotations-INDEX.md), four sources
+  contested topic ([quotations/quotations-INDEX.md](../quotations/quotations-INDEX.md), four sources
   that disagree). None of those four mentions compliance.
 
 The stated failure mode is worth flagging on its own: **an unmarked job silently never appears

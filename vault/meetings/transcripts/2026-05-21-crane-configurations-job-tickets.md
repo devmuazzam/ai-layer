@@ -7,10 +7,12 @@ updated: 2026-05-21
 status: reference
 conflicts_with: []
 jira: []
-topics: [field-ops-mobile, crane-configuration]
+tags: [module/assets, module/field-ops, kind/transcript]
 entities: []
 meeting_date: 2026-05-21
 kind: transcript
+normalized: 2026-08-24
+normalized_substitutions: 1
 ---
 
 # Crane Configurations Job Tickets — 2026-05-21
@@ -291,7 +293,7 @@ May 21, 2026, 6:57PM
  ehtesham.anwar   40:47 And Eiler is signing these, right?
  Brian Petros   40:52 Right. Well, this is, no, this is the signature. Is it, this is the signature from the customer, right, Melissa? I think it is. Let's see. Oh no, that's Corey. No, that's right. Yeah, where is the customer signature? Customer signature is here, okay? So, on the main, this is the customer first signature and the customer, well, I guess there was nobody to sign, so they marked it so they can get through the app, right? But yeah, you're right, this is this job safety assessment.
  ehtesham.anwar   41:27 M.
- Brian Petros   41:32 Is, you're right, signed by... the Euler in this case.
+ Brian Petros   41:32 Is, you're right, signed by... the oiler in this case.
  ehtesham.anwar   41:37 Mhm.
  Brian Petros   41:40 and the pre-trip is signed as well by the employee. These are showing the timestamps. These are showing the timestamps. Yeah. But yeah, this is, you mentioned that the new system is going to be doing this time stamping, right? Like they're not going to be entering times directly. You mentioned that it's going to sort of do this automatically for them as they're filling it out. Okay, the issue is, though, is that
  ehtesham.anwar   42:08 And. Yes.

@@ -7,12 +7,12 @@ updated: 2026-06-17
 status: reference
 conflicts_with: []
 jira: []
-topics: [erp-sprint-review]
+tags: [module/all, kind/transcript, sprint-planning]
 entities: []
 meeting_date: 2026-06-17
 kind: transcript
-normalized: 2026-08-19
-normalized_substitutions: 1
+normalized: 2026-08-24
+normalized_substitutions: 3
 ---
 
 # ERP Sprint Review — 2026-06-17
@@ -56,7 +56,7 @@ June 17, 2026, 7:00PM
  jahanzaib.nadeem   1:55 Hey, Melissa.
  ehtesham.anwar   1:56 A case. So, for the sake of time...
  Melissa McNutt   1:59 Hello.
- ehtesham.anwar   2:01 and efficiency. Today, it's going to be Jazeb and Mohsen. They are going to present all of the updates on the development site on the portal. And I think all of the updates are on your links as well. So you can also see these things. Just say over to you, man.
+ ehtesham.anwar   2:01 and efficiency. Today, it's going to be Jazeb and Mohsin. They are going to present all of the updates on the development site on the portal. And I think all of the updates are on your links as well. So you can also see these things. Just say over to you, man.
  jahanzaib.nadeem   2:20 Yeah. Thanks, Ehtesham. So let me do the screen sharing. OK, so. I would start with the customers module, although like we had already completed the customers module in the previous sprints, but at that time our major focus was to complete the functionality. And like we completed it from like basic creation of the customers and then linking it with some other modules. But after that, we thought like it doesn't gives the impression of a good ERP system. So that is why we started building a better design. And in this sprint, once like the functionality was completed, so we revamped the interface to improve the UI and the user experience part as well. So if you will now see like this is the main index page of the customers module and there are some like quick filters through which we can identify like the top accounts if there are any customer that needs the attention. So currently we may discuss the logic like who should we consider as a top accounts.
  Brian Petros   3:18 Brent.
  jahanzaib.nadeem   3:33 Like should it be revenue based or should it be like the number of jobs based? So we can discuss that pipeline and whatever threshold we decide, we can just like identify those customers and present them here. And similarly, if like the Invoices of any particular customer is due and that are not. paid within 30 days of the invoice or within like 60 days of the invoice. In that case, like those customers can be marked as a need attention. Like this marking will be done automatically via the IBERP portal, but that can be viewed in here. And simply if you want to see like who are the recently added customers. If there is any. if there are any customers that are in the draft mode. And then definitely if we want to see all the customers, then this first tab will enlist all those. And similarly, we have added few categorization or summarization of some basic attributes. Just for example, how many customers are there in total? What is the? revenue that is in the pipeline. And just this is the assembly of need attention and top accounts as well. And we have also like reflected the show page of this customer as well. So now the below tab is like almost similar with some design improvements, but on the above we have. added this section that will describe the basic and attributes of the customer in a more clear manner. For example, we have the name here, it's unique ID, email address, and then we have some attributes associated with their jobs and revenue.
@@ -402,7 +402,7 @@ June 17, 2026, 7:00PM
  mohsin.ali   1:04:05 But...
  jahanzaib.nadeem   1:04:23 display is not getting displayed, but if you will view on a bigger monitor size, so these will be, I think, opened by default.
  Melissa McNutt   1:04:33 I think.
- jahanzaib.nadeem   1:04:37 So now what I can do is like, if I want to assign the assets to this particular job, I can just like click on it and it will show the expanded version and it will show all the required data or the set of resources that we need to attach. So just for example, in this job, we need to attach an oiler. So, from the right-hand side, I can assign the Euler. I just need to like drag and drop this one. And from the left hand side, I can select all the assets that are available.
+ jahanzaib.nadeem   1:04:37 So now what I can do is like, if I want to assign the assets to this particular job, I can just like click on it and it will show the expanded version and it will show all the required data or the set of resources that we need to attach. So just for example, in this job, we need to attach an oiler. So, from the right-hand side, I can assign the oiler. I just need to like drag and drop this one. And from the left hand side, I can select all the assets that are available.
  Melissa McNutt   1:05:15 And.
  jahanzaib.nadeem   1:05:15 And below, like what we discussed earlier, the vendors or we can change it to the subcontractors as well. We can attach their. like assets as well. But if we want to apply our own assets and go drag and drop to their particular fields, currently we have the restriction applied where if we want a 310 crane, so we cannot like enter the 6510 crane, but based on the discussion, we will be like removing a district.
  Melissa McNutt   1:05:43 Yeah.

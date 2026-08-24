@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, requirements, payroll-rules]
+tags: [module/payroll, kind/reference, requirements, payroll-rules]
 entities: [payroll-rule, payroll-group, pay-component, adp-export]
 ---
 

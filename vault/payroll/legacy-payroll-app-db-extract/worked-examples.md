@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, legacy-payroll-app, worked-example, test-case]
+tags: [module/payroll, kind/reference, legacy-payroll-app]
 entities: [labor-entry, pay-component]
 part_of: payroll/legacy-payroll-app-db-extract/INDEX.md
 ---

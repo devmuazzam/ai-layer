@@ -9,7 +9,7 @@ migration_status: migrated
 vault_target: "../mcog-l12-mla-2025-2028/INDEX.md"
 conflicts_with: []
 jira: []
-topics: [payroll, source-file, provenance]
+tags: [module/payroll, kind/source, provenance]
 entities: []
 part_of: payroll/sources/INDEX.md
 ---

@@ -6,7 +6,7 @@ updated: 2026-08-13
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-export, integration, api, architecture]
+tags: [module/payroll, kind/reference, adp, integrations, architecture]
 entities: [adp-code, pay-data-input, api-central, associate-oid, payroll-file-number, webhook]
 ---
 

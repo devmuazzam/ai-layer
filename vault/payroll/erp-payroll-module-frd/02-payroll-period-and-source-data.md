@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, pay-period, source-data]
+tags: [module/payroll, kind/frd, provenance]
 entities: [pay-period, employee-master, labor-entry, job-ticket, adp-file-number]
 part_of: payroll/erp-payroll-module-frd/INDEX.md
 ---

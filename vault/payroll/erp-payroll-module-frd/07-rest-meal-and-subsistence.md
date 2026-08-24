@@ -6,7 +6,7 @@ updated: 2026-08-05
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, erp-payroll, rest-period, meal-period, subsistence]
+tags: [module/payroll, kind/frd, rest-period, wtl, subsistence]
 entities: [rest-premium, wtl, subsistence, mileage, tolls]
 part_of: payroll/erp-payroll-module-frd/INDEX.md
 ---

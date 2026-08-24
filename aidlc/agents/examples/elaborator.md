@@ -9,16 +9,16 @@ Read these only when a case in front of you is ambiguous. The rules live in
 Acceptance criteria on the ticket: *"Add insurance expiry column to vendor list."*
 
 **Retrieval:** `INDEX.md` → vendors/agencies is one of the five conflict areas →
-`product/agencies-vendors-INDEX.md` → four candidates, none verified, two are punch lists.
-`product/vendors.md` (updated 2026-04-30) is the only user-story-level source and describes
-the vendor directory and search. It does not mention insurance. `product/customer-and-job-sites.md`
+`vendors-agencies/agencies-vendors-INDEX.md` → four candidates, none verified, two are punch lists.
+`vendors-agencies/vendors.md` (updated 2026-04-30) is the only user-story-level source and describes
+the vendor directory and search. It does not mention insurance. `customers/customer-and-job-sites.md`
 mentions insurance, for **job sites**, not vendors. The repo has a `Vendor` model; no
 insurance fields on it.
 
 **What the spec gets:**
 
 - REQ-01 `[UNVERIFIED]` — the vendor list table gains a column. Sourced from
-  `product/vendors.md` for the list's existing shape and from `SCRUM-9xx` for the ask.
+  `vendors-agencies/vendors.md` for the list's existing shape and from `SCRUM-9xx` for the ask.
   Web rules bind it: `WorkspaceTable`, `standardizeDesktopColumns`, and the mandatory
   `searchPlaceholder` update if the field becomes searchable.
 - REQ-02 `[OPEN]` — **where the expiry date comes from.** There is no insurance field on
@@ -44,7 +44,7 @@ means here.
 
 **Intent:** SCRUM-8xx — lunch break flow in the mobile app.
 
-**Retrieval:** `INDEX.md` caveats 2 and 3 → `product/field-ops-mobile-INDEX.md` → both FRDs
+**Retrieval:** `INDEX.md` caveats 2 and 3 → `field-ops/field-ops-mobile-INDEX.md` → both FRDs
 plus the user stories → and `gaps.md` → *Lunch thresholds and work-through-lunch
 authorization*, which already records that a ticket carries numeric thresholds no
 specification supports.
@@ -56,7 +56,7 @@ specification supports.
   DRAFT, and that every ordering heuristic gives a different winner. Requirement ids
   written as `FR-TCG-FOP-002 FR-FOP-013`, never bare.
 - REQ-nn `[OPEN]` for the threshold values themselves — `SCRUM-864` states 5 / 10.5 / 16.5
-  / 22 hours and cites no origin; `product/brs.md` BRS-LUNCH-005 marks those values *Needs
+  / 22 hours and cites no origin; `brs.md` BRS-LUNCH-005 marks those values *Needs
   Supporting Documentation*; both FRDs list them as open questions. **Three lunches versus
   four is an open disagreement, not a detail.**
 - A note that both FRDs require thresholds to be configurable without a code change, so

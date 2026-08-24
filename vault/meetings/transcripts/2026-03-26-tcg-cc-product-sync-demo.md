@@ -7,7 +7,7 @@ updated: 2026-03-26
 status: reference
 conflicts_with: []
 jira: []
-topics: [product-sync]
+tags: [module/all, kind/transcript]
 entities: []
 meeting_date: 2026-03-26
 kind: transcript

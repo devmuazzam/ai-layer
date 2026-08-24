@@ -33,8 +33,8 @@ Two statuses. There is no third.
 
 Alongside the tag, state the **kind** of source. Kind is provenance, not status:
 
-- `vault` — a `.ai/vault/` path, always **vault-root-relative** (`product/customer.md`,
-  `product/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`).
+- `vault` — a `.ai/vault/` path, always **vault-root-relative** (`customers/customer.md`,
+  `field-ops/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`).
   Never a bare filename, never `../`.
 - `jira` — `SCRUM-###`. A ticket is `[UNVERIFIED]` by default: it records what someone
   decided to build, not what product agreed. `gaps.md` → *Lunch thresholds* is the worked
@@ -59,7 +59,7 @@ A requirement inherits the worst of its sources. Put the flag in the heading:
 | --- | --- |
 | `[VERIFIED]` | Every source is `[VERIFIED]`. Rare. Expect this only for process requirements sourced from `domain/`. |
 | `[UNVERIFIED]` | Any source is `[UNVERIFIED]`. **This is the normal case.** |
-| `[CONFLICT]` | A source's `conflicts_with` is non-empty, or the topic has a stub (`product/<topic>-INDEX.md`). Name every candidate in the block. Do not pick a winner. |
+| `[CONFLICT]` | A source's `conflicts_with` is non-empty, or the topic has a stub (`<module>/<topic>-INDEX.md`). Name every candidate in the block. Do not pick a winner. |
 | `[OPEN]` | No source supports it. The block states the question and nothing else — no fields, no endpoints, no schema. |
 
 Never rewrite a `[CONFLICT]` requirement as a clean single statement by merging the
@@ -86,7 +86,7 @@ unsourced and conflicted requirements impossible to miss.
 
 | Req | Title | Surface | Flag | Sources | Blocks build? |
 | --- | --- | --- | --- | --- | --- |
-| REQ-01 | | schema / api / web / mobile / shared | `[UNVERIFIED]` | `product/…` | no |
+| REQ-01 | | schema / api / web / mobile / shared | `[UNVERIFIED]` | `<module>/…` | no |
 | REQ-02 | | | `[OPEN]` | none | **yes** |
 
 Counts: `N` total — `N` verified, `N` unverified, `N` conflicted, `N` open.
@@ -100,11 +100,11 @@ Repeat this block per requirement. Keep the field order.
 - **Statement:** *one sentence, in the behavior's own terms. What the system does, not how.*
 - **Surface:** schema / api / web / mobile / shared *(more than one is fine)*
 - **Sources:**
-  - `product/<path>.md` — `[UNVERIFIED]` — kind: vault — *what it actually says, in one
+  - `<module>/<path>.md` — `[UNVERIFIED]` — kind: vault — *what it actually says, in one
     line. Quote if the wording matters.*
   - `SCRUM-###` — `[UNVERIFIED]` — kind: jira — *what the ticket states.*
-- **Conflict:** none — *or* — `gaps.md#<anchor>`; candidates: `product/a.md` (N KB,
-  `YYYY-MM-DD`), `product/b.md` (N KB, `YYYY-MM-DD`). *State plainly that none is verified
+- **Conflict:** none — *or* — `gaps.md#<anchor>`; candidates: `<module>/a.md` (N KB,
+  `YYYY-MM-DD`), `<module>/b.md` (N KB, `YYYY-MM-DD`). *State plainly that none is verified
   and that this spec does not choose between them.*
 - **Open question:** none — *or* — *the one-line-answerable question*, logged at
   `gaps.md#<anchor>`
@@ -226,7 +226,7 @@ consumers. Detail in `.ai/claude/contexts/web.md`.
 
 | Field | Rule | Source | Flag |
 | --- | --- | --- | --- |
-| | | `SCRUM-###` / `product/…` | `[UNVERIFIED]` |
+| | | `SCRUM-###` / `<module>/…` | `[UNVERIFIED]` |
 | | `NOT SPECIFIED` — *no source states a limit* | — | — |
 
 Invented validation is still invention. A max length nobody wrote down is `NOT SPECIFIED`.

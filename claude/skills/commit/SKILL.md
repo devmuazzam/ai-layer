@@ -47,6 +47,12 @@ during a review answer "which ticket is this" without cross-referencing anything
 `.ai/` changes into that branch as they happen (spec updates, unit files, `processed.log`
 append), not as one batch at the end.
 
+**In a linked worktree (`pnpm worktree:add`), the mirror already exists.** Bootstrap created
+an overlay worktree on the client branch name and symlinked it as `.ai` — do **not**
+`git switch` inside it (each overlay worktree is pinned to its branch). Just commit into
+`.ai/` as above. Remember the branch is invisible to the team until published:
+`pnpm worktree:done` at close merges it into overlay main.
+
 ## 2. Rebase onto main — at three moments, not one
 
 **Starting a unit:**
@@ -165,8 +171,7 @@ asked for explicitly and repeatedly.
 Match the existing history: `git log` in either repo shows the house style, and it is
 deliberately fuller than a one-line summary.
 
-## 4. Rules
-
+- **Strict developer identity**: Author and Committer MUST strictly be the human developer. NEVER designate Claude or any AI tool as author or committer, and NEVER include `Co-Authored-By`, `Committer: Claude`, or AI attribution trailers in commit messages or git metadata.
 - **Only commit when explicitly asked.** Finishing a unit is not permission to commit it.
 - **Never commit to `main` directly.** Branch first, even for a one-line fix.
 - Run `git status` and `git diff --staged` before writing the message — describe what is

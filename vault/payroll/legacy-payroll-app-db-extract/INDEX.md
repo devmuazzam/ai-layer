@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, legacy-payroll-app, pricing-engine, payroll-rule, boom, craft-modifier, shift-differential, guaranteed-hours, rest-period, wtl, subsistence, ca-nonunion-ot, adp-export]
+tags: [module/payroll, kind/reference, legacy-payroll-app, pricing, payroll-rules, boom, craft-modifier, shift-differential, guaranteed-hours, rest-period, wtl, subsistence, overtime, adp]
 entities: [pricing-engine, pay-component, craft-modifier, guaranteed-hours, rest-period, wtl, subsistence, payroll-group, adp-file-number, nightly-run]
 part_of: payroll/INDEX.md
 ---
@@ -144,7 +144,7 @@ definitions and every config row.
 
 ## Still open after this extract
 
-- Where the nightly is scheduled on the client machine (Task Scheduler not inspected).
+- ~~Where the nightly is scheduled on the client machine (Task Scheduler not inspected).~~ **Answered by the client (2026-08-24 batch): Windows Task Scheduler on Brian's work desktop** — Express has no Agent, so the refresh/nightly procedures are OS-scheduled there.
 - Where the ADP paydata workbook lives (not on the machine; the SOP describes it).
 - `test.usp_RunAll_PricingEngine_Tests` was not run (its children execute the engine, a write).
 - How rest premium and WTL reach ADP — no column on the observed worksheets.
@@ -161,3 +161,9 @@ definitions and every config row.
 - [../adp-bucket-crosswalk.md](../adp-bucket-crosswalk.md) — the observed WFN worksheet columns
   (LB REG/OT/DBL/TRI with Temporary Rate) are the on-screen form of its "Hours 3/4 Code + Temp
   Rate" rows; no conflict, cross-reference added.
+
+---
+
+> **Client validity statement (2026-08-24 batch):** Brian — *"I haven't made many changes since
+> that backup"* (the 2026-06-23 backup this extract was built from). The extract remains ≈
+> as-built current per the client's own word; residual deltas are UI-display fixes, not logic.

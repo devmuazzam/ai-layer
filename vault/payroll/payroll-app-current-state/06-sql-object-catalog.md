@@ -6,7 +6,7 @@ updated: 2026-06-23
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, payroll-app, sql-objects, database]
+tags: [module/payroll, kind/reference, legacy-payroll-app, architecture]
 entities: [pricing-engine, pay-component, payroll-exception, guarantee]
 part_of: payroll/payroll-app-current-state/INDEX.md
 ---

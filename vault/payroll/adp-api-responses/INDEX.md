@@ -6,11 +6,14 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, adp-integration, adp-api, reference-data]
+tags: [module/payroll, kind/reference, adp, reference-data]
 entities: [adp-api, adp-code, adp-company-code, code-list]
 ---
 
 # Live ADP API responses
+
+> **Validity caveat (2026-08-24):** everything here is keyed to **classic WFN**. TCG reports a planned upgrade to WFN **Next Generation** ("soon", undated — Patrick). Re-validate this document when the upgrade lands.
+
 
 **What this folder is:** actual responses from TCG's production ADP Workforce Now tenant,
 captured through the `TCG ERP Integration` API Central project from **2026-08-13** onward.

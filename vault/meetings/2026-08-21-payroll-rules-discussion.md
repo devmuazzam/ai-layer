@@ -6,7 +6,7 @@ updated: 2026-08-21
 status: unverified
 conflicts_with: []
 jira: []
-topics: [payroll, rest-period-premium, work-through-lunch, base-rate-override, craft-code, subsistence, adp-export, meeting-minutes]
+tags: [module/payroll, kind/meeting-notes, rest-period, wtl, craft-code, subsistence, adp]
 entities: [rest-period-premium, work-through-lunch, base-rate-override, craft-code, boom-hours, short-subsistence, long-subsistence, holdover-job, adp-pay-code]
 meeting_date: 2026-08-21
 ---

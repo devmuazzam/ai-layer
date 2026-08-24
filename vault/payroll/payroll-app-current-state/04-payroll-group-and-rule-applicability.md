@@ -6,7 +6,7 @@ updated: 2026-08-18
 status: reference
 conflicts_with: []
 jira: []
-topics: [payroll, payroll-app, payroll-group, rule-eligibility]
+tags: [module/payroll, kind/reference, legacy-payroll-app]
 entities: [payroll-group, rule-eligibility, union-craft-rate]
 part_of: payroll/payroll-app-current-state/INDEX.md
 ---
