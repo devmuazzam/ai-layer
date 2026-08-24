@@ -135,3 +135,28 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Owner: Melissa McNutt (policy/customer).
 - Status: open
 - **From (frozen original):** [gaps.md](../gaps.md#customer-status-values-neither-side-was-built)
+
+## Job-site map — required on the form, and what shows when it is unavailable
+
+- **Status:** open
+- **Asked:** 2026-08-25 — SCRUM-936 PR review (branch `scrum-936`); tcg-scrum escalation
+- **Question:** On the customer job-site form: (a) is the map **required** — must a job site carry
+  a pin before it can be saved, or is it a convenience over manual address entry? (b) when no map
+  can be shown, is *"Map view not available."* with manual address entry unchanged the intended
+  behaviour, and is that the canonical copy? (c) which other address forms should show a map at
+  all — vendor, yard, employee, quotation job site — now that the picker is a shared component?
+- **Sources checked:** `customers/customers-INDEX.md` (the five-source conflict stub — **no
+  candidate mentions a map**); `customers/customer.md` (Mohsin punch list, the largest customer
+  source — **the word "map" does not appear in it**); `customers/customer-and-job-sites.md`, whose
+  job-site asks are contacts, certificates and *"Add directions in job sites"* — that last one
+  corresponds to the legacy FCC `Directions` **text** column, not a map;
+  `assets/user-story-and-tasks.md`; `decisions/`. Jira `SCRUM-699`, `SCRUM-755`, `SCRUM-200` — all
+  `description: null`.
+- **Note:** the OpenStreetMap fallback on `SCRUM-936` traces to an **environment** problem rather
+  than a product ask — `SCRUM-699` comment, Aiman Farooq 2026-08-24: *"unable to test it due to
+  the Map APIs issue"*. Graceful degradation is reasonable engineering; what is unsourced is that
+  a second map provider and this copy are what TCG wants users to see.
+- **Blocked:** `SCRUM-936` sign-off; `SCRUM-699` QA; per-form wire-up of the shared picker.
+- **Owner:** Melissa McNutt (policy/customer) for the form and the copy. Provider choice, fallback
+  policy and coordinate ownership are the admin half —
+  [admin/gaps.md](../admin/gaps.md#map-provider-no-key-fallback-and-which-table-owns-address-coordinates).
