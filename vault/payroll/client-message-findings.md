@@ -384,3 +384,11 @@ processed week**. Marked as the natural **golden-week acceptance fixture**: repl
 through the ERP engine, expect the same export (joins the 28-row scenario catalog as the
 second leg of the acceptance baseline, question 17).
 
+## Backlog — v3.8 template + SOP announcement (Brian Petros)
+
+Announcement of artifacts the vault already holds: the v3.8 master template (sources page)
+and **SOP v3.8** ([adp-sop-v3.8.md](adp-sop-v3.8.md) — the documented current process). Both
+byte-identical across drops. Value: dates the v3.7 → v3.8 transition and the SOP's creation;
+the workbook lineage in the vault is now v3.7-Mac (live-updated 8-19) · v3.8 master + SOP
+(stable) · NEW_PAYROLL v1.1 (the successor input workbook).
+
