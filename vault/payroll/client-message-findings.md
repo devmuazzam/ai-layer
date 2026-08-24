@@ -406,3 +406,17 @@ the workbook lineage in the vault is now v3.7-Mac (live-updated 8-19) · v3.8 ma
 who owns Labor Compliance (name), and which playbook steps does the ERP automate vs keep
 manual? Plus: define "Ready to Schedule Value Engine."
 
+## Backlog — Foreman & Military premium specification (Brian Petros)
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Full two-premium spec (rates, eligibility, Jeff Kelley, tokens, Excel convention, ADP codes) | ✅ **this is the origin message of `foreman-and-military-premiums.md`** — already captured faithfully on 2026-08-09 | PAY-070/071 |
+| ADP code families FR*/ML* | ✅ live in the 8-18 pull; closes its "ML* in no TCG document" flag; **TRI buckets prove the premiums multiply** (into-rate) | PAY-011 |
+| "Payroll App finds the token" | ⚠️ **contradicts the extract** (whitelist ignores unknown tokens; "not calculated anywhere") — either post-backup change or intent-as-current. Verify | PAY-070/071 |
+| Foreman = company rule (union employees only); Military = union rule, job-scoped all-hours-all-employees | ✅/🆕 rule-character distinction recorded; military mirrors lattice's job-level shape | PAY-070/071 |
+
+**Question (22):** verify the app's actual FOREMAN/MILITARY token handling against the live
+database (one re-extract or one query); and confirm the ERP capture design — military as a
+job-level flag beside Boom Configuration, foreman as a dispatch crew-role assignment — both
+replacing comment tokens.
+
