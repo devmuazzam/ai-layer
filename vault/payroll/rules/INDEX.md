@@ -17,7 +17,7 @@ legacy engine behaviour, SQL, contract article, conflicts, test cases.
 The FRD and the matrix both use `PR-###` **with different meanings** — cite those only with
 the document. Confluence adds `PAY-CC-##` and `US/PAY-WP-##`. The register maps them all.
 
-Status: **1 settled · 59 open · 13 conflicted.** The client-question list:
+Status: **3 settled · 67 open · 3 conflicted.** The client-question list:
 `grep -l 'status: conflicted' vault/payroll/rules/` — or by section below.
 
 
@@ -39,8 +39,8 @@ Status: **1 settled · 59 open · 13 conflicted.** The client-question list:
 | Id | Rule | Status |
 | --- | --- | --- |
 | [PAY-009](PAY-009-payroll-group-classification.md) | Payroll group classification | · open |
-| [PAY-010](PAY-010-l12-union-base-rate.md) | L12 union base rate | ⚠️ conflicted |
-| [PAY-011](PAY-011-l12-modifier-boom-rate.md) | L12 modifier/boom rate | ⚠️ conflicted |
+| [PAY-010](PAY-010-l12-union-base-rate.md) | L12 union base rate | ✅ settled |
+| [PAY-011](PAY-011-l12-modifier-boom-rate.md) | L12 modifier/boom rate | · open |
 | [PAY-012](PAY-012-non-union-hourly-rate.md) | Non-union hourly rate | · open |
 | [PAY-013](PAY-013-non-union-salary-rate.md) | Non-union salary rate | · open |
 | [PAY-014](PAY-014-rate-comparison-and-validation.md) | Rate comparison and validation | ⚠️ conflicted |
@@ -54,7 +54,7 @@ Status: **1 settled · 59 open · 13 conflicted.** The client-question list:
 | [PAY-017](PAY-017-time-source-selection.md) | Time-source selection | · open |
 | [PAY-018](PAY-018-assumed-shift.md) | Assumed shift | · open |
 | [PAY-019](PAY-019-cross-midnight-processing.md) | Cross-midnight processing | ⚠️ conflicted |
-| [PAY-020](PAY-020-half-hour-reckoning.md) | Half-hour reckoning | · open |
+| [PAY-020](PAY-020-half-hour-reckoning.md) | Half-hour reckoning | ✅ settled |
 | [PAY-021](PAY-021-l12-standard-work-window.md) | L12 standard work window | · open |
 | [PAY-022](PAY-022-daily-straight-time.md) | Daily straight time | · open |
 | [PAY-023](PAY-023-daily-overtime.md) | Daily overtime | · open |
@@ -75,9 +75,9 @@ Status: **1 settled · 59 open · 13 conflicted.** The client-question list:
 | [PAY-033](PAY-033-holiday-pay.md) | Holiday pay | · open |
 | [PAY-034](PAY-034-june-december-special-saturday.md) | June/December Special Saturday | · open |
 | [PAY-035](PAY-035-first-shift.md) | First shift | · open |
-| [PAY-036](PAY-036-second-shift.md) | Second shift | ⚠️ conflicted |
-| [PAY-037](PAY-037-third-shift.md) | Third shift | ⚠️ conflicted |
-| [PAY-038](PAY-038-hazardous-material-premium.md) | Hazardous-material premium | ⚠️ conflicted |
+| [PAY-036](PAY-036-second-shift.md) | Second shift | · open |
+| [PAY-037](PAY-037-third-shift.md) | Third shift | · open |
+| [PAY-038](PAY-038-hazardous-material-premium.md) | Hazardous-material premium | · open |
 
 ## E-guarantees-special-pay
 
@@ -87,8 +87,8 @@ Status: **1 settled · 59 open · 13 conflicted.** The client-question list:
 | [PAY-040](PAY-040-work-provided-minimum.md) | Work-provided minimum | · open |
 | [PAY-041](PAY-041-crane-remains-on-job.md) | Crane remains on job | · open |
 | [PAY-042](PAY-042-first-day-travel-assembly-exception.md) | First-day travel/assembly exception | · open |
-| [PAY-043](PAY-043-long-boom-premium.md) | Long-boom premium | ⚠️ conflicted |
-| [PAY-044](PAY-044-lattice-boom-premium.md) | Lattice-boom premium | ⚠️ conflicted |
+| [PAY-043](PAY-043-long-boom-premium.md) | Long-boom premium | · open |
+| [PAY-044](PAY-044-lattice-boom-premium.md) | Lattice-boom premium | · open |
 
 ## F-contributions-other
 
@@ -96,9 +96,9 @@ Status: **1 settled · 59 open · 13 conflicted.** The client-question list:
 | --- | --- | --- |
 | [PAY-045](PAY-045-rest-period-premium.md) | Rest-period premium | · open |
 | [PAY-046](PAY-046-meal-opportunity.md) | Meal opportunity | · open |
-| [PAY-047](PAY-047-worked-through-lunch-adjustment.md) | Worked-through-lunch adjustment | ⚠️ conflicted |
-| [PAY-048](PAY-048-standard-subsistence.md) | Standard subsistence | ⚠️ conflicted |
-| [PAY-049](PAY-049-weekend-subsistence.md) | Weekend subsistence | ⚠️ conflicted |
+| [PAY-047](PAY-047-worked-through-lunch-adjustment.md) | Worked-through-lunch adjustment | · open |
+| [PAY-048](PAY-048-standard-subsistence.md) | Standard subsistence | · open |
+| [PAY-049](PAY-049-weekend-subsistence.md) | Weekend subsistence | · open |
 | [PAY-050](PAY-050-union-fringe-contributions.md) | Union fringe contributions | · open |
 | [PAY-051](PAY-051-step-i-pension-exclusion.md) | Step I pension exclusion | · open |
 | [PAY-052](PAY-052-mileage-reimbursement.md) | Mileage reimbursement | · open |

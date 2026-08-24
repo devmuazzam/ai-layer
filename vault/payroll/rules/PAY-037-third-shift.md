@@ -2,7 +2,7 @@
 id: PAY-037
 title: PAY-037 — Third shift
 section: D-weekend-holiday-shift
-status: conflicted
+status: open
 updated: 2026-08-24
 tags: [module/payroll, kind/rule, open-questions]
 ---
@@ -27,3 +27,4 @@ tags: [module/payroll, kind/rule, open-questions]
 - **Blocking (matrix):** Confirm union-notification data
 - **Conflict:** Into-the-rate vs on-top (see PAY-011).
 - **Placement doctrine confirmed (see PAY-036):** +1.5 h at (base + shift) × last-slice multiplier, appended after actual work — matches the client's added-hours message exactly.
+- **Into-rate reading adjudicated by contract verbatim — see PAY-011.**

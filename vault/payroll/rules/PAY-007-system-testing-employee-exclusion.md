@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm exclusion codes
 - **Client statement, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** exclusion pattern = `Employee.CraftCode LIKE 'SYS%'`, "hidden and not displayed". Note the current-state doc describes the group more broadly ("SYS/testing/vendor/**fake/default**") — whether the ERP excludes only `SYS%` or the broader set is exactly the open "confirm exclusion codes" item.
+- **As-built answer complete:** exclusion = `CraftCode LIKE 'SYS%'` (engine predicate, calculations.md:2198) **plus** `cfg.PayrollUI_ExcludedEmpID` (two explicit test/system EmpIDs). The current-state doc's "fake/default" phrasing = those two rows. ERP inherits predicate + an explicit exclusion list.

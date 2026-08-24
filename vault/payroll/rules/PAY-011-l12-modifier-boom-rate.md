@@ -2,7 +2,7 @@
 id: PAY-011
 title: PAY-011 — L12 modifier/boom rate
 section: B-group-and-rate
-status: conflicted
+status: open
 updated: 2026-08-24
 tags: [module/payroll, kind/rule, open-questions]
 ---
@@ -29,3 +29,4 @@ tags: [module/payroll, kind/rule, open-questions]
 - **Live sighting (client screenshot 2026-06-10):** modifier `OP-BP-07` (201–220 ft Operator) = **$5.250** riding inside the slice rate and multiplied — into-rate in the as-built engine — while the WTL add excludes it (`BASE_PLUS_SHIFT_EXCLUDE_BOOM`). Per-component composition rules differ; the into-rate-vs-on-top adjudication must state them per component.
 - **Composition data point (lattice):** the MLA phrases lattice as "$1.00/$0.50 **over and above the hourly wage rate**" — an into-the-wage add-on by construction, and Corrina's 08-04 statement says lattice **stacks** with boom pay. Another per-component entry for the into-rate adjudication table.
 - **Two more into-rate exhibits:** the Foreman (`FRR/FRO/FRD/FRT`) and Military (`MLR/MLO/MLD/MLT`) ADP families each carry REG/OT/DT/**TRI** buckets — flat adders would need one code; four buckets mean the +$3/+$10 ride the base rate through every multiplier. The composition table keeps filling in on the into-rate side.
+- **Composition adjudicated by contract text (conflict → resolved reading):** shift — *"will become the base rate for the entire shift"* (Art III, verbatim); boom — becomes base when computing overtime (attribution register's MLA quote); lattice — "over and above the hourly wage rate"; foreman/military — four-bucket ADP families. **Into-the-rate across the board**, with two deliberate carve-outs: the WTL penalty pays 2× (base+shift) *excluding boom* (MLA "straight hourly rate"), and guarantee adds pay base+shift. Decision note pending; treated as the working reading.

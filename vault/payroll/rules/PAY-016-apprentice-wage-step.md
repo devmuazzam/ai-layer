@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm authoritative apprentice hours
+- **FY26-27 apprentice steps recovered** (workbook `CraftRates`): APP1–APP6 = 41.50 / 44.95 / 48.41 / 51.87 / 55.33 / 62.24.

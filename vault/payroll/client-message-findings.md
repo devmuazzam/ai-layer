@@ -420,3 +420,43 @@ database (one re-extract or one query); and confirm the ERP capture design — m
 job-level flag beside Boom Configuration, foreman as a dispatch crew-role assignment — both
 replacing comment tokens.
 
+---
+
+# SELF-CLOSURE SWEEP — 2026-08-24
+
+Per instruction: close the questions from the record itself (recordings, folders, SQL,
+contract, workbooks) before asking the client. Result: **22 → 5.**
+
+| # | Question | Outcome |
+| --- | --- | --- |
+| 1 | Rate resolution | **CLOSED — decided 2026-08-20 on-call** (craft-locked overrides, super/payroll-assigned). Decision note written; PAY-010 **settled** |
+| 2 | SYS exclusion set | **CLOSED as-built** — `SYS%` predicate + 2-row `cfg.PayrollUI_ExcludedEmpID` |
+| 3 | Certified Pay flag | **CLOSED** — playbook identified its purpose (labor-compliance population) |
+| 4 | Ticket 45888 | **CLOSED as design** — beyond-cap rows reject at import for splitting |
+| 5 | Reconstruction reading | **CLOSED** — verified against the extract's own documentation |
+| 6 | 23.5-h cap inherit/native | **CLOSED as design** — native for ERP-born, cap+split for imported rows |
+| 7 | Chain thresholds + trigger lineage | **CLOSED** — lineage code-verified (actual-only, phantom-proof); thresholds deliberate per config |
+| 8 | WTL boom exclusion MLA-compliant | **CLOSED** — MLA: "double time **the straight hourly rate**"; config is contract-consistent |
+| 9 | WFN Next-Gen timing/scope | **REMAINS — Patrick** |
+| 10 | LB triple contract basis | **CLOSED** — into-the-rate clause makes holiday ×3 apply to base+boom; LBT operationalized |
+| 11 | −$669k: manual fix or underpayment | **CLOSED** — 08-20: the app is **shadow-mode**; manual entry ships. No underpayment |
+| 12 | Incident/drug-test pay rule | **CLOSED** — MLA verbatim: drug-test time *is work time* (DOT clause); injury = full day straight-time, physician determines |
+| 13 | ADP-rep outcomes + code identities | **CLOSED** — meetings happened; removed = `SD` (+`LOB` stub); changed = `HOL` → "Holiday Triple"; additions enumerated & live |
+| 14 | FY2026-27 rates | **CLOSED** — extracted from TCG's own `CraftRates` sheet: G1–G9 **+$1.00** (wage share of the $5.00), apprentices +0.60–0.90 |
+| 15 | Rounding decision note | **CLOSED** — note written (client = engine = MLA); PAY-020 **settled** |
+| 16 | Cross-midnight policy flip | **REMAINS — Corrina** (the config's own note awaits the Payroll Manager; one ask, one flip, harness ready) |
+| 17 | Scenario-list reconcile | **CLOSED** — his `Examples_Catalog` sheet *is* the vault's 28-row catalog; baseline agreed by construction |
+| 18 | Holiday WTL ×2 vs ×3 | **CLOSED — engine was right**: flat 2× penalty (MLA + charts + engine + 08-20 SME); message 13 conflated Type 1's stays-at-triple |
+| 19 | Desktop backup / hosting | **REMAINS (ops half)** — ERP-side no-on-prem stance recorded; backup cadence is TCG's to answer |
+| 20 | Encode invoicing taxonomy | **CLOSED as design**; two client sub-parts remain (who adjudicates "incorrect leave time"; rigging replacement price source) |
+| 21 | Luffer classification | **NARROWED to formality** — MLA Groups 5/7 put luffing boom under **Long Boom pay**; Kyle confirms against text |
+| 22 | Token implementation | **CLOSED** — zero FOREMAN/MILITARY in the extract SQL; spec was target-state |
+
+**The 5 that genuinely need the client:** (9) Next-Gen upgrade date/scope — Patrick ·
+(16) cross-midnight config confirmation — Corrina · (19) desktop backup cadence for the
+parallel-run · (20a/b) late-leave adjudicator + rigging replacement price source ·
+(21) luffer confirmation — Kyle, contract text attached. Plus three courtesy FYIs (the two
+decision notes and the FY26-27 extraction) for the client to wave through.
+
+**Register after the sweep: 3 settled · 67 open · 3 conflicted.**
+

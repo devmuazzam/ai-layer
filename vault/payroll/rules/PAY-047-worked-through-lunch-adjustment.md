@@ -2,7 +2,7 @@
 id: PAY-047
 title: PAY-047 — Worked-through-lunch adjustment
 section: F-contributions-other
-status: conflicted
+status: open
 updated: 2026-08-24
 tags: [module/payroll, kind/rule, open-questions]
 ---
@@ -33,3 +33,5 @@ tags: [module/payroll, kind/rule, open-questions]
 - **⚠️ New contradiction — holiday WTL penalty multiplier:** client: *"if the lunch/break is during a triple time period, then it is triple time instead of double"*. Engine as built: `WTL_APPLICABLE_ADD` is a **flat ×2.0** (formula and `cfg.WTL_Rule` both; no ×3 branch exists). On the 9 holidays a worked meal's penalty pays ×2 while surrounding slices pay ×3. Client-stated intent vs as-built — joins the day-type interpretation bundle; the WTL charts + MLA meal clause should adjudicate.
 - **The e-ticket already asks for lunch times** (items 9–12: "enter time here… Lunch 12 pm to 12:30 pm", plus 2nd/3rd/4th) — the "what time" wish is on paper today, but answers land in a checklist and comments, never as structured data the engine can read. The token failure (9,297 warnings) coexists with a form that collects the right information in the wrong place.
 - **Practice data point for the ×3 question:** TCG's July ADP changes extended holiday-**triple** treatment to premium families (LBT added; a holiday code changed). The client's claim that the WTL penalty goes ×3 in triple-time periods now has operational-practice support — the engine's flat ×2.0 increasingly reads as the defect, not the rule. Still needs the written adjudication (question 18).
+- **CONFLICT RESOLVED — the engine was right (four sources):** MLA Meal Periods §1: worked meals *"paid at **double (2) time the straight hourly rate**, in addition to the minimum pay requirements"* — a flat 2× penalty. The 08-20 SME call gives the precise model: the **first** missed lunch's worked half-hour is *absorbed* (bumped to ≥DT, stays at TT if already TT — Jonathan Aldridge example); each **additional** missed lunch *adds* a new half-hour at DT on top (Travis Garrett, 13.5h worked → 14.0h paid). The WTL charts state the same ("1st DBL WTL already included; additional penalties added"). Brian's message-13 "×3 for Type 2" conflated Type 1's stays-at-triple with the penalty add. Engine = charts = contract = SME. Remaining open here: only the ADP representation (gap D-004 — line-item on the primary row, Corrina's proposal).
+- **Shadow-mode revelation (08-20):** the app's numbers are **recommendations; the manual entry still ships** — so the 16,106 deducts / −$669k are shadow calculations, not payments. No underpayment implied; the token failure is a data-quality tax on the recommendation engine, and the ERP replaces the manual path with the (now four-source-verified) rule.

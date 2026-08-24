@@ -2,7 +2,7 @@
 id: PAY-043
 title: PAY-043 — Long-boom premium
 section: E-guarantees-special-pay
-status: conflicted
+status: open
 updated: 2026-08-24
 tags: [module/payroll, kind/rule, open-questions]
 ---
@@ -30,3 +30,4 @@ tags: [module/payroll, kind/rule, open-questions]
 - **Nuance vs the client's blanket "as if actually worked":** the long-boom gap pays the **boom adder only** (not base + adder) at the boom slices' multiplier — the base hours were already paid; the guarantee tops up boom alone. His doctrine simplifies here; the engine's version is the precise one.
 - **LB triple operationalized (July):** TCG **added the "long boom holiday (triple time)" code** (`LBT`) to ADP — after Brian's message doubting the contract supports it. Practice has now committed; the open ask flips from "does it exist?" to "**show the contract basis / Corrina's confirmation that motivated adding it**" — which also feeds the into-the-rate adjudication (PAY-011).
 - **Time-scope contrast now explicit:** long-boom premium = **boom-window slices**; lattice premium (PAY-044) = **the entire job** (Corrina, message 20). Different scopes, and they stack — the ERP must not share one eligibility window between them.
+- **Contract basis for LB TRI located:** the MLA's into-the-rate clause (boom adder becomes base when computing overtime — quoted verbatim in the attribution register) makes holiday ×3 apply to base+boom, so `LBT` is contract-derivable; the July code addition operationalized it. Question closed; the composition decision note will cite this.

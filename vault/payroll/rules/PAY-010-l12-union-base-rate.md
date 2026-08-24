@@ -2,7 +2,7 @@
 id: PAY-010
 title: PAY-010 — L12 union base rate
 section: B-group-and-rate
-status: conflicted
+status: settled
 updated: 2026-08-24
 tags: [module/payroll, kind/rule, open-questions]
 ---
@@ -28,3 +28,4 @@ tags: [module/payroll, kind/rule, open-questions]
 - **Client message 2026-06-09** (Brian Petros): *"This uses the Craft Code RATE in FCC on each labor entry… NOT the Craft Code on the Employee profile screen"* — states the labor-entry-craft side **explicitly and emphatically**, agreeing with this rule and the engine. The 2026-08-13 recording (Kyle/Corrina: employee's own rate wins; Brian proposes higher-of) is **later** — so for the client this is likely a *change request against the app's documented behaviour*, not a contradiction of fact. Confirm which the ERP implements; Brian's own higher-of proposal (floor at the employee rate) is the candidate synthesis.
 - **Three-way rate tie-out (2026-08-24 verification):** MLA 7/1/2025 column (Group 1 **$66.03**, Group 3 **$67.87**) = FCC `UNION_CRAFT` rows (extract snapshot 06-23) = the extract's worked examples = the client's own screenshots. **FY2026-27 rates are not derivable from the vault:** the MLA shows the increase total (*$5.00) but the per-group allocation column is blank — the annual allocation decides wage-vs-fringe split. Get the new rate sheet.
 - **Frequency context (client big summary):** *"Employees are assigned one craft code at a time, and rarely ever work under a different craft code"* — the rate-resolution conflict is real but its trigger is rare; adjudication still required, panic not.
+- **✅ SETTLED — [decisions/2026-08-20-craft-locked-rate-override.md](../../decisions/2026-08-20-craft-locked-rate-override.md):** rates always from craft tables; day-level deviations only via a **secondary craft code assigned by the super/payroll** (decided on the 2026-08-20 call, Corrina + Brian). The 08-13 recording described practice under free-text; the decision preserves both mechanics and practice.

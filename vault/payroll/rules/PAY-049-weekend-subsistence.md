@@ -2,7 +2,7 @@
 id: PAY-049
 title: PAY-049 — Weekend subsistence
 section: F-contributions-other
-status: conflicted
+status: open
 updated: 2026-08-24
 tags: [module/payroll, kind/rule, open-questions]
 ---
@@ -25,3 +25,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm election workflow
 - **Conflict:** **C-05 — weekday long-subsistence $85 or $200?** Silent across all 56 recorded calls (`../source-attribution-and-conflicts.md`). Weekend-vs-portal employer election unconfirmed.
+- **C-05 ANSWERED:** **long subsistence = $200/day, over 77.5 mi, every day of the holdover job, worked or not** (08-20 SME, corroborated 08-21). The legacy engine's $85-Mon-Fri hard-coding is therefore the defect. "Holdover job" is the criterion — a multi-day stay-out assignment vs daily commuting.

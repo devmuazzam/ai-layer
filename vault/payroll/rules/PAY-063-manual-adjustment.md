@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm approval levels
+- **Today's mechanism confirmed (08-20):** the weekly workbook's "base rate override" column → separate ADP row per distinct rate; the decision (craft-locked, super/payroll-controlled) replaces it in the ERP — see decisions/2026-08-20-craft-locked-rate-override.md.

@@ -1142,9 +1142,12 @@ someone has confirmed otherwise.
   and the ADP **SUB PAY** mapping in `payroll/adp-bucket-crosswalk.md`.
 - Owner: Melissa McNutt (she stated the distance model); Corrina Bustos to confirm what is
   actually paid today.
-- Status: open
+- Status: **answered** — 08-20 SME statement, corroborated 08-21
 - **Rules:** [PAY-048](rules/PAY-048-standard-subsistence.md), [PAY-049](rules/PAY-049-weekend-subsistence.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#subsistence-the-recording-and-the-engine-disagree-on-both-the-amount-and-the-trigger](gaps-2026-08-20-retired.md#subsistence-the-recording-and-the-engine-disagree-on-both-the-amount-and-the-trigger)
+- **Answer:** short = **$85/day, 45–77.5 mi, worked days only**; long = **$200/day,
+  > 77.5 mi, every calendar day of the holdover, worked or not**. The engine's $85-Mon-Fri
+  hard-coding is the defect; C-05 in the conflict register is answered the $200 way.
 
 ## Lunch thresholds — the recording is the origin, and it disagrees with the WTL charts
 
@@ -1409,9 +1412,13 @@ someone has confirmed otherwise.
   craft-code UI demoed at 21:50 in the same call.
 - Owner: Kyle Harlow (stated it) and Corrina Bustos (worked the example); Brian Petros proposed the
   higher-rate-secondary rule.
-- Status: open — needs confirmation
+- Status: **resolved** — decisions/2026-08-20-craft-locked-rate-override.md
 - **Rules:** [PAY-010](rules/PAY-010-l12-union-base-rate.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#pay-rate-follows-the-employee-not-the-role-worked-kyle-and-corrina-unrecorded](gaps-2026-08-20-retired.md#pay-rate-follows-the-employee-not-the-role-worked-kyle-and-corrina-unrecorded)
+- **Resolution (2026-08-24 sweep):** decided on the 2026-08-20 call — day-level deviations
+  **locked to craft-code amounts**, assigned only by the crane superintendent or payroll,
+  via a secondary craft code for that day. Reconciles the recording (practice) with the
+  engine (mechanics). Decision note written.
 
 ## Weekly payroll week statuses — two CodingCops sources, no TCG statement
 

@@ -24,4 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm retention period
 - **Golden-week fixture available:** the client preserved a complete real processed week (July 25–31 workbook + `EPI4RZ32.csv` export, `sources/`). ERP acceptance: replay that week, diff the generated export against the preserved one — the strongest single end-to-end test the record offers.
-
+- **Acceptance baseline reconciled:** the client's "~30 scenarios" = the `Examples_Catalog` sheet in `PayrollAPP_LABOR-LOGIC-EXAMPLES.xlsx` = the vault's 28-row catalog (same variations, same employees — Travis Garrett is the 08-20 WTL worked example). Baseline agreed by construction: 28 scenarios + the July 25–31 golden week.

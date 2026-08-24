@@ -2,7 +2,7 @@
 id: PAY-038
 title: PAY-038 — Hazardous-material premium
 section: D-weekend-holiday-shift
-status: conflicted
+status: open
 updated: 2026-08-24
 tags: [module/payroll, kind/rule, open-questions]
 ---
@@ -25,3 +25,4 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Confirm source and approvals
 - **Conflict:** Into-the-rate vs on-top (see PAY-011) — MLA: hazmat “shall become the basic hourly rate”. Legacy never calculated it.
+- **Into-rate reading adjudicated by contract verbatim — see PAY-011.**
