@@ -65,6 +65,7 @@ prevent, one level up.
 | `gate-illusion` | Lint and build passed while a documented convention was violated |
 | `doc-conflict` | Two loaded instruction files stated contradictory things |
 | `stale-reference` | A path, count, or fact in the AI layer that no longer resolves |
+| `refactor-untested` | A refactor or extraction changed the behaviour of existing, already-shipped code, but the unit's test plan required coverage only for the new call site, leaving the existing consumer unverified — added `2026-08-25` by the SCRUM-900 reflection |
 
 **Adding a class is allowed and sometimes correct** — this list was written from the defects
 this codebase had already documented, not from a complete theory of what can go wrong. If
@@ -81,3 +82,7 @@ An undocumented class is indistinguishable from a typo in an existing one.
 | 2026-08-24 | SCRUM-877 | SD-2 | missing-requirement | Dynamic crane main boom length bracket suggestion fallback to No Pay | none | applied |
 | 2026-08-24 | SCRUM-877 | ED-1 | tenancy-gap | Prisma scoping allowlist conflict on rebase | `apps/api/src/orm/prisma.service.ts` | applied |
 | 2026-08-24 | SCRUM-877 | ED-2 | contract-drift | Asset numeric DTO validation broken for Web asset form inputs | `apps/api/.../create-asset.dto.ts` | applied |
+| 2026-08-25 | SCRUM-900 | SD-1 | refactor-untested | `units.md` asked for `isScheduleDayClosed` extraction but not for regression coverage of `findToolIdsBlockedFromArchive`, its pre-existing (still untested) consumer | `.ai/aidlc/agents/inception/tcg-decomposer.md` | proposed |
+| 2026-08-25 | SCRUM-900 | ED-1 | gate-illusion | `dasStage` widened to `string` instead of Prisma's `SubJobStage` enum; test fixture uses `'IN_PROGRESS'`, not a real enum member | `.ai/claude/contexts/prisma.md` §Conventions | proposed |
+| 2026-08-25 | SCRUM-900 | ED-2 | gate-illusion | `units.md`'s promised integration test for the utilization endpoint was not built; unit still reported complete | `.ai/aidlc/agents/construction/tcg-executor.md` §Output shape | proposed |
+| 2026-08-25 | SCRUM-900 | ED-3 | stale-reference | `units.md` records `built — c0e8d227`, a SHA that does not exist on the platform repo after rebase/squash (actual tip `37c4a554`) | `.ai/aidlc/templates/units.md` — Status column fill rule | proposed |
