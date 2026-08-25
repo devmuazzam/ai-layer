@@ -52,8 +52,8 @@ Every one of these is created and repaired by `setup.sh`. Nothing here is a copy
 
 ```
 .claude              -> .ai/claude                       (the whole directory)
-CLAUDE.md            -> .claude/CLAUDE.md                -> .ai/claude/CLAUDE.md
 AGENTS.md            -> .claude/AGENTS.md -> CLAUDE.md   -> .ai/claude/CLAUDE.md
+(no root CLAUDE.md — Claude Code auto-loads .claude/CLAUDE.md; a root copy loaded it twice)
 
 apps/api/CLAUDE.md         ┐
 apps/api/AGENTS.md         ┘ -> ../../.ai/claude/contexts/api.md

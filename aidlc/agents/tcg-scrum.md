@@ -36,7 +36,7 @@ one answer — so the spend is small; every other loop agent defaults to Sonnet,
 | Whole repo and `.ai/vault/` | **read-only** |
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** (append questions, mark them resolved). A question that came from a ticket lives here — a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **retired 2026-08-20** — **write to close an existing entry** (mark it resolved when a decision settles it) but **do not append a new one**. A new question belonging to no ticket has nowhere to go until the per-module gaps redesign lands; say so instead |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired 2026-08-20, frozen** — 110–136 KB each, **never read whole**: `grep -n` the anchor. **Write to close an existing entry** (mark it resolved when a decision settles it) but **do not append**. A new question belonging to no ticket goes to `.ai/vault/<module>/gaps.md` (live; `payroll/gaps.md` is 120 KB — grep it) |
 | `.ai/vault/decisions/` | **write** (create dated decision notes) |
 | **Frontmatter of vault files named in a decision you just wrote** | **write — these five fields only**: `status:`, `verified_because:`, `superseded_by:`, `conflicts_with:`, `provenance_note:` |
 | Everything else, including every vault file **body** | **no write access** |
