@@ -1596,6 +1596,14 @@ confirmed by matching `PAY-012`; Q3's on-top rule and Q18's union-scope reading 
 decision note exists in `.ai/vault/decisions/` for any of it. See §14. Q1 does not block the build but blocks calling the non-union rate model correct. Q13
 is deferred to `SCRUM-920`. Q2, Q3 and Q6 belong to TCG.
 
+**Superseded `2026-08-25` — the count above is stale.** *"Still open: Q13 only"* was true when it
+was written and stopped being true the same day. Post-build review of
+`feat/SCRUM-925-u1-craft-codes-rates` added **Q20–Q21** (`tcg-analyst`) and **Q22–Q26**
+(`tcg-scrum`), all `open`. Trust the sweep, not this paragraph:
+`grep -n '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-926/spec.md`. **Q20(b)–(c) is the one to read
+first** — it is the only entry that contradicts a `[VERIFIED]` decision and code already in
+production, and unlike the rest of Q20 it does not wait on a scope answer.
+
 **This section is the ticket's gaps register — there is no separate `gaps.md` in a ticket
 folder.** `.ai/vault/payroll/gaps.md` is cited by anchor below and **has not been appended to**.
 
@@ -2398,6 +2406,319 @@ of code it touches. The summary counts at the top of this section predate them.
   and it survives because a required column on a populated table leaves no alternative. Recorded as
   an explicit exception in REQ-23 rather than left to contradict it.
 - **Status:** resolved `2026-08-25` — REQ-09, REQ-23.
+
+### Q20 — U2 was built as a persisted bracket table, not the specified scale plus pure function. Rebuild to spec, or re-scope the ticket?
+
+- **Raised `2026-08-25` by `tcg-analyst`**, found reviewing U2 against `feat/SCRUM-925-u1-craft-codes-rates`. Not sourced from a ticket comment, a commit message or a decision note — none exists.
+- **Question:** REQ-11/REQ-12/REQ-13/REQ-14/REQ-16 specify one `CraftModifierScale` row per union
+  code (`initialFt`, `finalFt`, `gapFt`, `operatorStepRate`, `oilerStepRate`, `codePrefixOperator`,
+  `codePrefixOiler`, `labelSuffix`), read by a **pure function** computed at request time, with
+  **no tier rows ever persisted** and code/label **derived, never stored**. What was actually built
+  on the branch (commits `ce597540`, `50a5abb6`, `05a0366e` — none carrying the `SCRUM-934` key) is
+  a different model, `CraftModifier` (table `craft_modifiers`, `apps/api/prisma/schema.prisma`
+  lines 2354–2380): **one row is one persisted bracket** — `minFt`, `maxFt`, `operatorAdder`,
+  `oilerAdder`, `code`, `label` are all stored columns — with **no `unionCodeId` at all**, scoped
+  only by tenant, not by union code. `POST /api/v1/craft-modifiers/generate`
+  (`apps/api/src/usecase/craft-modifiers/craft-modifiers.service.ts` lines 109–176) writes N such
+  rows in a loop rather than computing tiers on read. There is no `CraftModifierScale`, no pure
+  tier function, and no preview endpoint anywhere in the branch's history
+  (`git log -p origin/main..HEAD | grep -c CraftModifierScale` → `0`). Does the team want U2
+  rebuilt to match REQ-11/12/13/14/16 as written, or does `SCRUM-934` get formally re-scoped to the
+  bracket-row design that is already built, wired into Settings navigation, and tested on its own
+  (different) terms — which means rewriting REQ-11/12/13/14/15/16 and re-deriving U4's dependency
+  on them?
+- **Why it cannot be answered from what is written:** `intent.md` §2 names the **current**
+  production problem as "the boom premium looked up from 33 hand-keyed bracket rows" and "a
+  bracket table nobody has versioned since 2020," and states the epic's purpose as replacing it
+  with "a boom modifier scale that reproduces the union brackets **without storing them**." The
+  built feature reintroduces exactly that pattern — admin-editable rather than hand-keyed, but
+  still one persisted row per bracket, with code and label computed once and stored rather than
+  derived at read time. No commit message, code comment, `spec.md` line or
+  `.ai/vault/decisions/` note references `SCRUM-934`, REQ-11, REQ-12, REQ-13 or REQ-16, or explains
+  the substitution. The commit messages (`ce597540`, `50a5abb6`) read as deliberate, reasoned
+  engineering decisions in their own right — they are just not decisions this spec, or any written
+  source, authorized.
+- **Blocked:** U2's sign-off in full (REQ-11, REQ-12, REQ-13, REQ-14's "no step rate → no
+  modifier" gate, REQ-16), and by extension U4's already-built dependency on the same table —
+  `apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts` reads
+  `CraftModifiersRepository.findForBoomLength` and hardcodes
+  `BOOM_ROLES = new Set(['OPERATOR', 'OILER'])`, the exact "list of role names" REQ-04 and REQ-14
+  both say not to write.
+- **Candidates:** `.ai/aidlc/SCRUM-926/intent.md` lines 30–33, 41–42, 66–69; `units.md` §"U2 —
+  SCRUM-934"; `apps/api/prisma/schema.prisma` lines 2344–2380 (`CraftModifier`, as built);
+  `apps/api/prisma/migrations/20260825060000_craft_modifiers_and_rate_windows/migration.sql`;
+  `apps/api/src/usecase/craft-modifiers/craft-modifiers.service.ts` (`generate()`).
+- **Owner:** Syed Haris (`SCRUM-934`'s reporter) — needs to say which of the two systems is the
+  real requirement before either is built against again.
+- **Workaround, if any:** none found. The two designs are not reconcilable by an executor's
+  judgement call — REQ-11 and the built schema disagree on whether a union code identifies a scale
+  at all, which is a data-model fork, not a detail.
+- **Amended `2026-08-25` by `tcg-scrum`**, from a PR-review sweep of behaviours built with no
+  source. Three findings change what this question is asking, and one of them is not a
+  rebuild-or-re-scope question at all.
+  - **(a) The bracket *data* is sourced; the *storage* and two of the *semantics* are not.** The
+    16-row bracket shape — including both irregularities the built table reproduces, *a range may
+    be missing* and *a role's adder may be empty in a bracket* — comes from
+    `.ai/vault/decisions/2026-08-21-scrum-877-labor-and-unit-details-boom-pay-rate-table.md` §1
+    (`status: verified`; decided by `tcgproject12` on `SCRUM-877` comment `23099`, 2026-08-21),
+    and shipped on `main` as `packages/shared/src/constants/craft-modifiers.ts` (commit
+    `e904b780`), read today by `apps/api/src/usecase/ticket-labor-entries/` and
+    `apps/mobile/features/field-ticket/steps/LaborBody.tsx`. What no source states is moving that
+    table out of a shared constant into a per-tenant, admin-editable `craft_modifiers` table, nor
+    `POST /craft-modifiers/generate`, nor `GET /craft-modifiers/next`, nor overlap rejection, nor
+    labels auto-derived-but-overridable.
+  - **(b) Two of the built rules *reverse* that verified decision, silently.** §2 of the same note
+    records the product owner's answer verbatim — an Oiler above 380 ft: **"use the 361–380 ft
+    bracket's Oiler rate — `OI-BP-15`, $3.750/hr"** — and `SCRUM-934`'s closing comment `23677`
+    (2026-08-25) states **"a 410 ft boom is paid at the `381-400` rate"**. The shipped
+    `@tcg/shared` helpers implement exactly that: `matchBracket` falls a missing range back to the
+    preceding bracket, `rateForBracket` falls an empty oiler cell back to `OI-BP-15`. The branch's
+    `resolveBoomAdder` (`apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts`
+    lines 145–165) returns **`null` — no adder — in both cases**. Same tenant, same boom length,
+    two answers: a 410 ft operator is $12.00/h on the ticket-labor path and $0 on the resolver
+    path; an oiler at 400 ft is $3.75/h on one and $0 on the other. That is not a storage
+    preference. It contradicts the only `[VERIFIED]` decision either epic has, and it disagrees
+    with code already in production.
+  - **(c) An empty `craft_modifiers` table now prices silently instead of Blocking.** Nothing
+    seeds the table, and `CraftModifiersRepository.findForBoomLength` returns `null` when it is
+    empty, which `resolveBoomAdder` turns into `boomAdder: null` on a **`RESOLVED`** result.
+    REQ-18 says a boom length supplied with no active scale returns **Blocked**, and its
+    acceptance note says that on a freshly migrated database this is *"the normal path, not an
+    edge case … intended and must not be 'fixed'"*. As built, the first payroll run against an
+    unconfigured tenant underpays every boom hour instead of stopping.
+- **Also relevant, not previously cited here:** `SCRUM-926` comment `23678` (2026-08-25T06:06)
+  reports this branch as having shipped *"boom adder from the shipped `@tcg/shared` table"* and
+  *"Settings → Craft Code Modifiers (**read-only**)"*. The commits that replaced that with the
+  persisted, editable table and the generator (`ce597540`, `50a5abb6`, `05a0366e`) land **after**
+  that comment and were written back to neither Jira, `spec.md`, nor `.ai/vault/decisions/`. The
+  Jira record of this branch and the branch itself no longer describe the same system.
+- **Note on scope:** (b) and (c) do **not** wait on Q20's rebuild-or-re-scope answer. Whichever
+  storage wins, the missing-range and empty-cell outcomes are already settled by a verified
+  decision, and the unconfigured-table case is already settled by REQ-18.
+- **Added candidates:** `.ai/vault/decisions/2026-08-21-scrum-877-labor-and-unit-details-boom-pay-rate-table.md`
+  §§1–2 (`status: verified`); `packages/shared/src/constants/craft-modifiers.ts` (`matchBracket`,
+  `rateForBracket`); `SCRUM-934` comment `23677`; `SCRUM-926` comment `23678`;
+  `apps/api/src/service/craft-modifiers/craft-modifiers.repository.ts` (`findForBoomLength`).
+- **Status:** open.
+
+### Q21 — U1's craft-level validity window (REQ-06) was built, then dropped two migrations later. Confirm the drop, or restore the fields?
+
+- **Raised `2026-08-25` by `tcg-analyst`**, found reviewing U1 against `feat/SCRUM-925-u1-craft-codes-rates`. Not sourced from a ticket comment, a commit message tied to a decision, or a `.ai/vault/decisions/` note — none exists.
+- **Question:** REQ-06 states a craft code "carries a start date and an optional end date, and a
+  rate lookup for a work date outside that window does not resolve," and `units.md`'s own U1
+  slice-contents table lists `CraftCode.startDate`/`endDate` as fields this unit builds, each
+  tagged `// REQ-06`. U1's own migration
+  (`apps/api/prisma/migrations/20260825020000_add_craft_codes_rates_and_union_kind`) does add them.
+  A later migration on the same branch,
+  `apps/api/prisma/migrations/20260825060000_craft_modifiers_and_rate_windows` (commit `ce597540`,
+  message: *"SCRUM-926 follow-up — two corrections from testing the first cut... Craft codes no
+  longer carry a validity window. When a craft applies is answered by its rates... Two dates that
+  had to be kept in step with each other were one pair too many"*), then drops both columns
+  (`ALTER TABLE craft_codes DROP COLUMN "start_date"`; same for `"end_date"`), collapsing
+  craft-level validity entirely into `CraftCodeRate.effectiveFrom`/`effectiveTo`. Does the team
+  want REQ-06 rewritten to say validity lives on the rate row only, never on the craft, or do the
+  fields need to come back?
+- **Why it cannot be answered from what is written:** the commit message gives an engineering
+  rationale but cites no requirement, ticket comment, or decision note, and neither `spec.md` nor
+  `units.md` was touched by this branch at all
+  (`git diff origin/main...feat/SCRUM-925-u1-craft-codes-rates --stat -- .ai/` → empty; no commit
+  on the branch touches `.ai/`). REQ-06 is still `[UNVERIFIED]`, not `[N/A]`, not superseded, and
+  its own executor notes (line 387) say the craft's window and the rate row's window "are two
+  separate checks" — which the removal collapses into one. The consequence is concrete, not
+  cosmetic: a **non-union** craft never has a `CraftCodeRate` row at all (REQ-10), so after this
+  change a non-union craft has **no temporal validity check whatsoever** beyond the binary
+  `status` (`ACTIVE`/`INACTIVE`) flag — there is no way left to express "this craft was valid from
+  date X to date Y" for one. `CreateCraftCodeDto` no longer accepts `startDate`, and the global
+  `ValidationPipe` runs with `forbidNonWhitelisted: true` (`apps/api/src/main.ts`), so U1's own
+  written demo line — `POST /api/v1/craft-codes` with `{ ..., startDate }` → 201 (`units.md`, U1
+  "Reviewable as → Demo") — would now return 400, not 201. A test was added asserting the fields'
+  *absence* (`apps/api/src/usecase/craft-codes/craft-codes.service.spec.ts` — "craft codes carry
+  no dates of their own"), so the removal is deliberate and self-consistent, just never written
+  back to the spec that still requires the opposite.
+- **Blocked:** REQ-06's sign-off for U1, and by extension every later unit that would read a
+  craft-level window — U4's resolver currently has no craft-level window check to call at all,
+  only the rate row's.
+- **Candidates:** `apps/api/prisma/schema.prisma` (`CraftCode`, no `startDate`/`endDate`);
+  `apps/api/prisma/migrations/20260825020000_add_craft_codes_rates_and_union_kind/migration.sql`
+  (adds them); `apps/api/prisma/migrations/20260825060000_craft_modifiers_and_rate_windows/migration.sql`
+  lines 14-16 (drops them); commit `ce597540`;
+  `apps/api/src/presentation/craft-codes/dto/craft-code.dto.ts` (no window fields; still imports
+  `IsISO8601` unused, line 2 — lint warning, not error); `apps/api/src/usecase/craft-codes/craft-codes.service.spec.ts`
+  lines 56-72 (asserts the fields' absence).
+- **Owner:** Syed Haris (`SCRUM-925`'s reporter) — needs to say whether rate-row-only validity is
+  the accepted model before REQ-06 and `units.md`'s U1 section are rewritten to match, or the
+  fields are restored.
+- **Workaround, if any:** none found — same shape as Q20: the two designs (craft-level window vs.
+  rate-row-only window) are a real fork in what REQ-06 means, not a detail an executor's judgement
+  call can settle on its own, and it was not raised as a question by whoever made the change.
+- **Status:** open.
+
+### Q22 — A web surface was built against four ticket sources and §5 that all say backend-only. Accept it into the epic, or take it out?
+
+- **Raised `2026-08-25` by `tcg-scrum`**, from a PR-review sweep of `feat/SCRUM-925-u1-craft-codes-rates`. No ticket comment, commit message or decision note records a scope change to web.
+- **Question:** `SCRUM-925` and `SCRUM-927` both list *"web/mobile UI"* under **Not in scope**;
+  `SCRUM-934` says *"Backend only. No web/mobile in this ticket"*; `SCRUM-935` says *"Backend
+  only"*; §5 and §6 say `N/A — backend only`, and §13 says that is *"by ticket, not by omission"*.
+  The branch adds ~2,100 lines under `apps/web` (51 files): `Settings → Craft Codes`
+  (list/create/edit/archive, union code + role type, an effective-dated rates panel, and
+  *"carries no rates"* copy on a non-union craft), `Settings → Craft Code Modifiers` (an
+  **editable** bracket table plus a generator), an employee-detail **Manage Craft Code** card, a
+  **required "Payroll craft"** field on the employee create/edit form sitting beside the legacy
+  **Craft** field, and sidebar/breadcrumb entries. Is the web surface accepted into this epic —
+  and if so, which parts of it?
+- **Why it cannot be answered from what is written:** the only written support for **any** of it
+  is `.ai/vault/decisions/2026-08-21-scrum-877-labor-and-unit-details-boom-pay-rate-table.md` §4
+  (`status: verified`), quoting `SCRUM-877` comment `23099`: *"Craft Code source: confirmed.
+  Configured via a **Settings-tab admin module** (`code` + `label`)."* That sources a Settings tab
+  that lists craft codes with a code and a label — and nothing further: not the `unionCodeId` /
+  `roleType` fields, not the rates panel, not the non-union copy, not a Modifiers tab (and
+  `SCRUM-934` comment `23677` says that tab is **read-only**, where the branch makes it editable
+  and generative), not the employee-detail card, not a second required craft field on the employee
+  form, not navigation. `sync/.conflict/2026-08-24-bootstrap/craft-codes.md` (`PAY-CC-01`/`-02`,
+  unverified, staged, never migrated, `tier: CONFLICT`) is written as *"As a Payroll
+  Administrator I want to configure…"* user stories, which implies someone configures these
+  somewhere but names no screen, field or form. **The employee-form field is the one with a real
+  consequence.** `SCRUM-927` and REQ-07 do require a PRIMARY craft at employee create/update —
+  that is an **API** rule. Putting a *second, separately required* craft field next to the legacy
+  Craft field on the employee form is a UX decision nobody wrote, and `SCRUM-926` comment `23678`
+  flags that two-field transition state itself as *"something to know before merge"*.
+- **Blocked:** §5's and §6's sign-off, and whether ~2,100 lines of `apps/web` ship in this epic or
+  move to a ticket of their own.
+- **Candidates:** `SCRUM-925`, `SCRUM-927`, `SCRUM-934`, `SCRUM-935` (all four descriptions, as of
+  2026-08-25T11:15); `spec.md` §5, §6, §13; `.ai/vault/decisions/2026-08-21-scrum-877-labor-and-unit-details-boom-pay-rate-table.md` §4;
+  `.ai/vault/sync/.conflict/2026-08-24-bootstrap/craft-codes.md`; `SCRUM-926` comment `23678`;
+  `apps/web/src/features/craft-codes/` (13 files), `apps/web/src/features/employees/components/create/sections/employment-details-fields.tsx`.
+- **Owner:** Syed Haris — the constraint recorded in §5 is his; only he can lift it.
+- **Workaround, if any:** none needed to unblock a developer — the code exists and builds. The
+  question is scope, not implementation.
+- **Status:** open.
+
+### Q23 — `PATCH /employee/:code` on an employee with no PRIMARY craft succeeds. REQ-07's acceptance says it must be rejected. Which reading holds?
+
+- **Raised `2026-08-25` by `tcg-scrum`**, from a PR-review sweep. Commit `1c9b9455`'s message —
+  *"update reassigns when one is sent and leaves it alone otherwise"* — is the only record of the
+  choice; no requirement, ticket comment or decision note states it.
+- **Question:** REQ-07's acceptance line reads *"creating an employee without a primary craft is
+  rejected, **and so is updating one that has none**"*, and `SCRUM-927` says *"Exactly one PRIMARY
+  per employee, **required on employee create/update** once this ships"*. As built, create
+  enforces it and update does not: a `PATCH` that sends no craft on an employee that has none
+  returns 200. Does update stay permissive, or is the rejection restored?
+- **Why it cannot be answered from what is written:** **REQ-07 contradicts itself**, and the
+  ticket carries the same collision. Its executor notes say Q14's scope change removed the
+  backfill, so on day one *every* existing employee has no PRIMARY, and that such an employee
+  *"continues to load, **save** and appear in lists"* — *save* is exactly the permissive reading.
+  Two paragraphs earlier the acceptance line says the opposite. `SCRUM-927`'s *"required on
+  create/update"* does not distinguish an update that touches the craft from any update at all,
+  and nothing anywhere says which is meant. The consequence is not cosmetic: the strict reading
+  makes every existing employee uneditable until an admin assigns a craft by hand, which is the
+  population REQ-07's own report endpoint exists to work down.
+- **Blocked:** REQ-07's sign-off for U3, and whether the missing-primary report endpoint is a
+  work-down tool or a hard gate.
+- **Candidates:** `spec.md` REQ-07 (acceptance line vs. executor note (b)); `SCRUM-927`
+  (*"required on employee create/update"*); commit `1c9b9455`;
+  `apps/api/src/usecase/employee/employee.service.ts` (line ~520).
+- **Owner:** Syed Haris (`SCRUM-927`'s reporter).
+- **Workaround, if any:** the permissive build is the reversible direction — tightening later
+  rejects updates that used to pass; loosening later breaks nothing. Say so explicitly if that is
+  the choice, rather than leaving it to the commit message.
+- **Status:** open.
+
+### Q24 — The resolver rejects an off-list `secondaryCraftCodeId`. `SCRUM-935` now requires that; REQ-08 and `units.md` forbid it. Which governs?
+
+- **Raised `2026-08-25` by `tcg-scrum`**, from a PR-review sweep. This is a **spec-vs-Jira**
+  disagreement, not an unsourced behaviour — both sides are written, and they say opposite things.
+- **Question:** REQ-08's executor notes say *"do not implement the 'must be one of the employee's
+  SECONDARY rows' check inside `resolveEmployeeCraft` as though it were this epic's: `SCRUM-935`
+  specifies the resolver's behaviour and does not include it… Whether the resolver should reject
+  an off-list `secondaryCraftId` is `NOT SPECIFIED`"*, and `units.md` lists it under U4's
+  *"Deliberately not in this unit"*. `SCRUM-935`'s description **as it now stands** (updated
+  2026-08-25T11:15) says the opposite: `resolveEmployeeCraft(employeeId, secondaryCraftId?)` →
+  *"the given secondary (**must be one of the employee's SECONDARY assignments**)"*, with a
+  required test for *"secondary override (valid **and not-in-allowed-list**)"*. The branch
+  implements the ticket — `BLOCKED / SECONDARY_NOT_ASSIGNED`,
+  `craft-rate-resolver.service.ts` lines 199–210. Does the ticket govern, so REQ-08's note and
+  `units.md` are corrected — or does the check come out?
+- **Why it cannot be answered from what is written:** §0's *Precedence* settles ticket-over-plan,
+  but this spec was written against an **earlier** reading of `SCRUM-935` and the ticket text
+  changed afterwards; the spec was never re-read against it. So the newer source is the one the
+  spec explicitly claims to be quoting, which makes this a question of which text is current
+  rather than which source outranks which. It is also the interface another ticket (the
+  labor-entry ticket, intent §5) is being written against, which is REQ-08's stated reason for
+  keeping the check out — that reason is unaffected by the ticket text and nobody has weighed the
+  two.
+- **Blocked:** REQ-08's sign-off, U4's acceptance, and the labor-entry ticket's assumption about
+  where that validation lives.
+- **Candidates:** `spec.md` REQ-08 (*Notes for the executor*, final paragraph); `units.md` U4
+  *"Deliberately not in this unit"*; `SCRUM-935` description (2026-08-25T11:15);
+  `apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts` lines 199–210.
+- **Owner:** Syed Haris (`SCRUM-935`'s reporter).
+- **Workaround, if any:** none — the two documents disagree on an interface, and an executor
+  cannot pick between them without deciding for the labor-entry ticket too.
+- **Status:** open.
+
+### Q25 — Two rules on the craft-rate surface that no requirement states: rejecting a rate on a non-union craft, and a `source` provenance column
+
+- **Raised `2026-08-25` by `tcg-scrum`**, from a PR-review sweep. Both are small, both are
+  one-line answers, and neither is contradicted by anything — they are simply unwritten.
+- **Question:** (a) `POST /craft-codes/:id/rates` on a **non-union** craft is rejected with 400
+  (`craft-codes.service.ts` → `assertUnionCraft`). `SCRUM-925` says non-union crafts *"carry no
+  rate rows"* and REQ-10 says validation *"must not **require** one"* — neither says an attempt to
+  add one must be **refused**. Keep the rejection, or accept the row and leave it unread?
+  (b) `CraftCodeRate.source` — a nullable `varchar(255)` provenance string (e.g. *"MLA 2025-2028
+  7/1/2025 column"*) — exists in `schema.prisma` but in no requirement; §3's `CraftCodeRate` field
+  list does not have it. Keep the column, or drop it?
+- **Why it cannot be answered from what is written:** on (a), "carries none" and "refuses one" are
+  different claims and only the first is written; the built rejection is a defensible reading of
+  it, not a restatement of it. On (b), the nearest written thing is `payroll/rules/PAY-008-effective-dated-configuration.md`,
+  whose **Requires** line asks for *"effective from/to; rule version; **approver**"* — an approver
+  is a person, not a free-text provenance string, and §13 already records that approval for a
+  craft or rate change is deliberately unspecified. A provenance string is genuinely useful for
+  the FY-rollover audit trail `PAY-008` describes, which is why it is worth confirming rather than
+  quietly dropping.
+- **Blocked:** nothing is blocked — both ship either way. This entry exists so the next reader
+  knows neither came from a requirement.
+- **Candidates:** `SCRUM-925` (*"Non-union crafts … carry no rate rows"*); `spec.md` REQ-10, §3
+  (`CraftCodeRate`), §9, §13; `.ai/vault/payroll/rules/PAY-008-effective-dated-configuration.md`;
+  `apps/api/src/usecase/craft-codes/craft-codes.service.ts` (`assertUnionCraft`);
+  `apps/api/prisma/schema.prisma` (`CraftCodeRate.source`).
+- **Owner:** Syed Haris.
+- **Workaround, if any:** not needed. Both are cheap to reverse in either direction.
+- **Status:** open.
+
+### Q26 — Craft-code and craft-modifier reads are ungated. Is read-for-any-authenticated-user right for pay data?
+
+- **Raised `2026-08-25` by `tcg-scrum`**, from a PR-review sweep. Q9 answered who may **act** on
+  craft data; nobody was asked who may **read** it.
+- **Question:** §8 and §4 put craft-code, rate and modifier CRUD behind
+  `@Roles(Role.ADMIN, Role.SUPER_ADMIN)` and say nothing about reads. As built,
+  `GET /craft-codes`, `GET /craft-codes/:id` and `GET /craft-modifiers` carry no `@Roles`, so any
+  authenticated user of the tenant can read the craft catalogue with its role types and union
+  kinds, and the whole boom bracket table with its dollar adders. Should those three stay open to
+  any authenticated user?
+- **Why it cannot be answered from what is written:** **one of the three is sourced and two are
+  not.** `SCRUM-925` says the module uses *"admin gate, same as union / work-comp codes"*, and
+  those existing reference-code modules do leave the plain pick-list `@Get()` ungated while gating
+  `@Get('admin')` and every write (`apps/api/src/presentation/employee-craft-codes/employee-craft-codes.controller.ts`
+  lines 52, 72–73, 80–81) — so the ungated **list** route follows the named pattern exactly. The
+  other two have no precedent: the existing reference-code modules have no detail-read route at
+  all, and `GET /craft-codes/:id` returns `unionCodeId`, `roleType` and status rather than a
+  pick-list shape; `GET /craft-modifiers` returns **pay rates**. Note the boundary this produces:
+  craft *rates* are gated (`@Get(':id/rates')` carries `@Roles`), so as built the rule is "dollar
+  amounts are admin-only, except boom adders". §8's *Roles denied* is settled only for the
+  employee themselves (`decisions/2026-08-20-craft-locked-rate-override.md` §3, `[VERIFIED]`:
+  *"never the employee"*) — which is a statement about who may *set* a rate, and the vault does
+  not extend it to reads.
+- **Blocked:** §8's sign-off. Nothing in the build waits on it.
+- **Candidates:** `spec.md` §4 (*Guards / roles*), §8, REQ-28 and its NOTE, Q9;
+  `SCRUM-925` (*"admin gate, same as union / work-comp codes"*);
+  `apps/api/src/presentation/employee-craft-codes/employee-craft-codes.controller.ts` (the named
+  pattern); `apps/api/src/presentation/craft-codes/craft-codes.controller.ts` lines 42, 57;
+  `apps/api/src/presentation/craft-modifiers/craft-modifiers.controller.ts` line 33.
+- **Owner:** Syed Haris.
+- **Workaround, if any:** adding `@Roles` to the two unprecedented reads is the conservative
+  direction and breaks no caller in this branch — the web Settings pages are admin pages. Do not
+  do it silently; it changes who can use the routes.
+- **Status:** open.
 
 ## 13. What this spec deliberately does not specify
 
