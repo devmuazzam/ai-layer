@@ -86,3 +86,5 @@ An undocumented class is indistinguishable from a typo in an existing one.
 | 2026-08-25 | SCRUM-900 | ED-1 | gate-illusion | `dasStage` widened to `string` instead of Prisma's `SubJobStage` enum; test fixture uses `'IN_PROGRESS'`, not a real enum member | `.ai/claude/contexts/prisma.md` §Conventions | proposed |
 | 2026-08-25 | SCRUM-900 | ED-2 | gate-illusion | `units.md`'s promised integration test for the utilization endpoint was not built; unit still reported complete | `.ai/aidlc/agents/construction/tcg-executor.md` §Output shape | proposed |
 | 2026-08-25 | SCRUM-900 | ED-3 | stale-reference | `units.md` records `built — c0e8d227`, a SHA that does not exist on the platform repo after rebase/squash (actual tip `37c4a554`) | `.ai/aidlc/templates/units.md` — Status column fill rule | proposed |
+| 2026-08-25 | SCRUM-817 | SD-1 | contract-drift | RecipientSpec employee payload shape mapping in NotificationService call | `.ai/claude/contexts/api.md` | applied |
+| 2026-08-25 | SCRUM-817 | ED-1 | test-mock-drift | NotificationService missing from DasAllocationsService unit test setup | none | applied |
