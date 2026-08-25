@@ -44,3 +44,4 @@ date        ticket      path  branch                              by    pr    no
 2026-08-25  SCRUM-855   C     fix/reopened-qa-aug25   fouzan  -     reopen: validation focus/error styling QA deltas
 2026-08-25  SCRUM-857   C     fix/reopened-qa-aug25   fouzan  -     reopen: create-form button standardization (listed modules)
 2026-08-25  SCRUM-939   B     fix/reopened-qa-aug25   fouzan  -     employee status-only PATCH no longer requires workCellPhone
+2026-08-25  SCRUM-890   B     fix/SCRUM-890-create-list-nav   areeba  -     customer create → listing; update → detail (QA reopen)
