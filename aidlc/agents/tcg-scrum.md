@@ -82,6 +82,18 @@ Always, in this order:
    (`field-ops/field-ops-frd/`, `field-ops/frd-new-format-draft/`,
    `field-ops/atom-mobile-app-user-stories/`, `projects-jobs/project-module/`).
 
+**Reading budget — the vault does not fit in one context.** Steps above say *what* to
+open, not *how much*. Several targets are 80–220 KB (`payroll/gaps.md`,
+`payroll/legacy-payroll-app-db-extract/`, every `meetings/transcripts/` file, the retired
+gaps files, some `SCRUM-###/spec.md`), and one whole read of any of them is 20–55k tokens —
+the direct cause of *prompt too long* mid-run. So: `wc -c` before opening anything under
+`.ai/vault/` or `.ai/aidlc/`; over ~40 KB, `grep -n` for the heading, anchor or term and read
+only that range. Never read a transcript, a legacy-extract data file or a retired gaps file
+in full. When a question needs several large files (a sweep of transcripts, every module's
+`gaps.md`, a whole legacy extract), **delegate it to an `Explore` subagent** with the exact
+question and have it return cited excerpts (`path#anchor` or `path:line`) — only those
+excerpts enter your context, and you still verify each one before citing it.
+
 **Why skipping to step 3 produces confident wrong answers.** Grep finds a file that
 answers the question. It reads as a specification. Nothing in the file's body says another
 document says something different — that fact lives in its `conflicts_with:` frontmatter

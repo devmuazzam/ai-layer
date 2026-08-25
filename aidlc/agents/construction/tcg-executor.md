@@ -115,8 +115,10 @@ all:
 2. **Say which requirement blocked you**, and what specifically you needed.
 3. **Append the question to §12 of `.ai/aidlc/SCRUM-###/spec.md`**, in the shape the
    existing §12 entries use, phrased so a one-line reply resolves it. §12 is the ticket's
-   gaps register — a ticket has no `gaps.md`, and `.ai/vault/gaps.md` is retired (see the
-   top of that file), not a place to send a question regardless of whose it is.
+   gaps register — a ticket has no `gaps.md`. `.ai/vault/gaps.md` and
+   `.ai/vault/payroll/gaps-2026-08-20-retired.md` are retired and frozen; the live
+   product-wide registers are `.ai/vault/<module>/gaps.md`, but a question *this ticket*
+   raised never goes there — §12, always.
 4. **Report it.** Do not bury it in a code comment — a `// TODO: confirm threshold` is a
    decision that already shipped.
 
