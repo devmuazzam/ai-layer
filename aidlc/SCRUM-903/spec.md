@@ -14,11 +14,11 @@
 | PR | [#384](https://github.com/TheCraneGuys/craneguys-platform/pull/384) (platform); overlay [#20](https://github.com/devCodingcops/tcg-ai-layer/pull/20) |
 | Source punch list | Confluence `13-august-QA` — after DAS/Yard completion, Project → Jobs stayed open |
 | Clarification | Umair Khan (description): status = **Completed**, not Closed |
-| Product answers | Umair Khan (Q1/Q2, Jira 2026-08-20); Fouzan Shakil assignee (Q3/Q4, working session 2026-08-20) |
+| Product answers | Umair Khan (Q1/Q2, Jira 2026-08-20); Fouzan Shakil assignee (Q3/Q4, working session 2026-08-20; **Q5, Jira comment #23785, 2026-08-25**) |
 | Shipped behaviour (branch) | On full/force/defer offload complete → sub-job `dasStage` COMPLETED; parent `Job.status` ACTIVE → COMPLETED when every non-cancelled sub-job is done |
-| Reopen follow-up (2026-08-25) | View-only when `Job.status === COMPLETED` — web tabs (Schedule, Additional Info, Attachments, Main) + API mutation guards; branch `fix/reopened-qa-aug25` |
-| Not shipped | Ticket-submit stage wiring; vendor/no-yard completion path; historical Job.status backfill |
-| Open questions raised by this ticket | 0 — Q1–Q4 resolved 2026-08-20 |
+| Reopen follow-up (2026-08-25) | View-only when `Job.status === COMPLETED` — hard UI + API lock on all editable job tabs; branch `fix/reopened-qa-aug25` |
+| Not shipped | Ticket-submit stage wiring; vendor/no-yard completion path; historical Job.status backfill; CANCELLED/INVOICED locks; unlock path |
+| Open questions raised by this ticket | 0 — Q1–Q5 resolved |
 
 ## 12. Open questions — the stop-and-ask list
 
@@ -68,10 +68,35 @@
 - **Answer (2026-08-20, Fouzan Shakil, assignee):** **Forward-only.** No historical backfill in this PR. Stale Open badges remain until a follow-up opts into a rewrite.
 - **Status:** resolved — see `.ai/vault/decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md`
 
+### Q5 — Does a Completed job become read-only, and across which tabs?
+
+- **Question:** Once a parent Job reaches COMPLETED, is the lock **total** (no schedule,
+  additional-info, attachment, permit or plan changes ever again), or does an after-the-fact
+  correction path stay open? And is it a hard reject or a confirm-then-proceed warning?
+- **Why it cannot be answered from what is written:** The only provenance before this answer
+  was a QA comment (Aiman Farooq, SCRUM-903 comment #23542, 2026-08-24). A QA comment is not
+  a product decision on its own. The only written job-detail page,
+  `vault/projects-jobs/project-module/02-view-manage-job-details.md` (unverified), described
+  unconditional editability with no status gating.
+- **Blocked:** Was blocking shipping the completed-job lock on `fix/reopened-qa-aug25` as
+  product-approved behaviour.
+- **Candidates:**
+  - `SCRUM-903` QA comment #23542 — the origin, not a decision
+  - `vault/projects-jobs/project-module/02-view-manage-job-details.md` — unconditional editability
+  - `vault/dispatch/daily-allocation-system.md` — nearest lock rule is warning-based on
+    allocation/ticket acceptance, not `Job.status`
+- **Owner:** Umair Khan (completion semantics); Lisette Anzaldo (dispatcher-facing consequence)
+- **Answer (2026-08-25, Fouzan Shakil, assignee — Jira comment #23785):** Completed jobs are
+  **hard view-only across all tabs**. No unlock path for now. **`CANCELLED` / `INVOICED`
+  unchanged** — out of scope for now.
+- **Status:** resolved — see `.ai/vault/decisions/2026-08-25-completed-job-view-only.md`
+
 ## 13. What this deliberately does not specify
 
 - Vendor / no-yard completion trigger — deferred; see Q3 decision
 - Historical backfill mechanics — deferred; see Q4 decision
 - `TICKET_SUBMITTED` stage transition on field-ticket submit — not required for parent Completed per Q1
 - Whether `ON_HOLD` / `INVOICED` jobs can move to `COMPLETED` — branch leaves non-ACTIVE statuses alone
+- Whether `CANCELLED` / `INVOICED` jobs become view-only — deferred; see Q5 decision
+- Unlock / reopen path after Completed — deferred; see Q5 decision
 - Manual Project → Jobs status editing — no UI/API added

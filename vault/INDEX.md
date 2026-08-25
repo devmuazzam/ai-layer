@@ -26,6 +26,7 @@ answers which question, and it is the only vault file meant to be read whole.
 | quantity N on a quote becoming N DAS/Yard sets | [decisions/2026-08-20-quantity-based-das-sets.md](decisions/2026-08-20-quantity-based-das-sets.md) — named decision, SCRUM-907 |
 | when a Project Job becomes Completed after DAS/Yard | [decisions/2026-08-20-job-completed-on-last-day-offload.md](decisions/2026-08-20-job-completed-on-last-day-offload.md) — named decision, SCRUM-903 |
 | SCRUM-903 vendor/backfill scope (none in that ticket) | [decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md](decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md) — named decision |
+| Completed Project Jobs editable? | [decisions/2026-08-25-completed-job-view-only.md](decisions/2026-08-25-completed-job-view-only.md) — hard view-only, SCRUM-903 Q5 |
 | anything about mobilization / demobilization | [quotations/mob-demob-INDEX.md](quotations/mob-demob-INDEX.md) first — 2 sources, only 1 migrated |
 | **anything about payroll, wages, overtime, union rules or ADP** | [payroll/INDEX.md](payroll/INDEX.md) first — a separate source, a separate migration, and its own four caveats |
 | a specific field-ops requirement | [field-ops/fr-fop-numbering.md](field-ops/fr-fop-numbering.md) to pick the right document, then the leaf file |
