@@ -154,6 +154,14 @@ Gaps:         opened <n>, closed <n>, partially closed <n — name them>
 Ledger:       processed.log row filled in with PR #<n> | NOT FOUND — <why>
 Overlay:      pushed <sha> | NOT PUSHED — <why>
 Rule changes: <n proposed, n applied by me, n left as proposed>
+Stale queue:  <n proposed rows in reflections/INDEX.md older than this ticket's close, classes — or none>
 ```
 
 Anything partially closed, or an unpushed overlay, goes **first**.
+
+Before printing the hand-back, grep `.ai/aidlc/reflections/INDEX.md` for `Status: proposed`
+rows older than the immediately preceding ticket's close, and list their count and classes
+in the hand-back even when this ticket did not cause them. A proposal queue that only
+close-ticket ever reads is a queue nobody reads — `gate-illusion` hit its 3rd occurrence
+(SCRUM-900, then SCRUM-926) with the first two proposals still sitting unapplied the whole
+time (`.ai/aidlc/SCRUM-926/reflection.md` ED-4).

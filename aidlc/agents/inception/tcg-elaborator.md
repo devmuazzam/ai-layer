@@ -371,6 +371,14 @@ The same applies to detail: an unsourced field length, status enum, error messag
 or default value is an invention with a small footprint, not an exception. `NOT SPECIFIED`
 is a complete answer.
 
+**Before sign-off, re-read each REQ's acceptance line against its own executor notes and
+against the live ticket it cites.** A spec that quotes a ticket verbatim must be re-diffed
+against that ticket's current text before the spec is marked ready for decomposition —
+quoting a snapshot is not quoting the source. SCRUM-926 shipped with one REQ whose
+acceptance line contradicted its own executor note, and another that quoted a ticket's text
+that had since changed; neither was caught because nothing re-read the ticket or the note a
+second time (`.ai/aidlc/SCRUM-926/reflection.md` SD-1, SD-2).
+
 ---
 
 ## Output shape

@@ -99,3 +99,11 @@ Follow the surrounding module; do not introduce a new pattern either way.
 
 Mobile-first Tailwind breakpoints. Touch targets ≥ 44px. Routes are URL-driven: `/create`,
 `/<id>`, `/<id>/edit`.
+
+## Scope guard
+
+If `.ai/aidlc/SCRUM-###/spec.md` §5 and §6 both read `N/A — backend only` for the ticket a
+branch is named for, and the diff touches `apps/web/` or `apps/mobile/`, the push must fail
+with an explicit override required (`SCOPE_OVERRIDE=1`), not just a warning. SCRUM-926
+shipped ~2,100 lines of web UI against a spec that said backend-only in four separate places
+and nothing caught it before merge (`.ai/aidlc/SCRUM-926/reflection.md` ED-5).

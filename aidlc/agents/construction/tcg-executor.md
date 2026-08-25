@@ -189,6 +189,15 @@ This matters more here than anywhere, because this repo will actively mislead yo
   canonical is unresolved.
 - A convention documented in one file is contradicted by another in at least two cases.
 
+**Before writing new pricing, rate, or premium logic of any kind**, `grep -rn`
+`.ai/vault/decisions/` for the entity and rule name, and grep the repo for any existing
+implementation of the same rule (a sibling `packages/shared` constant, a repository method
+with a similar name) before deciding how a fallback or edge case behaves. Matching behaviour
+already shipped elsewhere for the same rule is a source; failing to check for one is not a
+judgement call — a boom-adder fallback shipped in SCRUM-926/U4 that silently contradicted a
+`[VERIFIED]` decision already implemented correctly one layer over is exactly this failure
+(`.ai/aidlc/SCRUM-926/reflection.md` ED-1).
+
 **Passing `pnpm lint` is not evidence a convention was followed.** There is no rule for
 module boundaries, duplication, or hardcoded colour. The gate is much weaker than it looks.
 
