@@ -45,4 +45,10 @@ date        ticket      path  branch                              by    pr    no
 2026-08-25  SCRUM-857   C     fix/reopened-qa-aug25   fouzan  -     reopen: create-form button standardization (listed modules)
 2026-08-25  SCRUM-939   B     fix/reopened-qa-aug25   fouzan  -     employee status-only PATCH no longer requires workCellPhone
 2026-08-25  SCRUM-817   A     task/SCRUM-817                      dev   -     Ticket & Shift Reschedule Email Templates & Notifications
+2026-08-25  SCRUM-926   A     feat/SCRUM-925-u1-craft-codes-rates  dev   412   epic: craft codes, rates, assignments, boom modifiers, resolver — row backfilled 2026-08-26, close-ticket, no ledger line existed at merge
+2026-08-25  SCRUM-925   A     feat/SCRUM-925-u1-craft-codes-rates  dev   412   U1 — craft codes with effective-dated union rates — row backfilled 2026-08-26
+2026-08-25  SCRUM-934   A     feat/SCRUM-925-u1-craft-codes-rates  dev   412   U2 — craft modifier scale; shipped as a persisted bracket table instead of the specified pure function (Q20, open) — row backfilled 2026-08-26
+2026-08-25  SCRUM-927   A     feat/SCRUM-925-u1-craft-codes-rates  dev   412   U3 — craft assignments, going forward — row backfilled 2026-08-26
+2026-08-25  SCRUM-935   A     feat/SCRUM-925-u1-craft-codes-rates  dev   412   U4 — CraftRateResolverService — row backfilled 2026-08-26
+2026-08-25  -           -     (direct to main, commit 61d0fd7d)   dev   412   payroll core module (periods/runs/weeks/premiums, ~18k lines) — no ticket, no spec, no unit; never ran the loop. Plausibly implements Jira SCRUM-920/921/922/923 (all To Do) but cites none. Flagged, not backfilled — needs its own ticket, not a retrofit.
 

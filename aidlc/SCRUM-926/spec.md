@@ -1662,7 +1662,10 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
   recalculation must use rules effective on the work date"*) and is precisely `PAY-012`'s own open
   blocking item, *"Confirm rate-effective-date handling"*. Scoped out of this epic deliberately;
   it lands on `PAY-068` retroactive correction. Recorded in REQ-10's notes and §13.
-- **Status:** resolved `2026-08-25` — REQ-02, REQ-10, REQ-17, REQ-19, REQ-23.
+- **Status:** resolved `2026-08-25` — see `decisions/2026-08-25-non-union-base-rate-per-person.md`
+  (`status: verified`) — REQ-02, REQ-10, REQ-17, REQ-19, REQ-23. The withdrawn 2026-08-24 "one rate
+  per craft" working decision is recorded there as withdrawn; rate-effective-dating for non-union
+  stays open and travels to `PAY-068` / `SCRUM-920`.
 
 ### Q2 — Boom modifier source: selected on the labor entry, or derived from the unit?
 
@@ -1733,8 +1736,10 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
   written analogue is the REG/OT/DT/TRI shape recorded for the Foreman (`FRT`) and Military (`MLT`)
   premiums in `payroll/foreman-and-military-premiums.md`, which raise the same
   multiplied-or-not question.
-- **Status:** resolved `2026-08-25` as a working decision — REQ-20 keeps `[CONFLICT]`; confirmation
-  and composition both belong to `SCRUM-920`.
+- **Status:** resolved `2026-08-25` as a working decision — see
+  `decisions/2026-08-25-boom-adder-on-top-unmultiplied.md` (`status: reference`, **not**
+  `verified`; `conflicts_with:` MLA Article IV). REQ-20 keeps `[CONFLICT]`; TCG payroll / labor
+  counsel confirmation and the composition both belong to `SCRUM-920`.
 
 ### Q4 — Who supplies the craft-code → role-type mapping, and what are the role-type values?
 
@@ -2349,8 +2354,12 @@ of code it touches. The summary counts at the top of this section predate them.
   plainly that it is **scoped to union crafts** and **not overridden**. Until that lands, the only
   record of the reading is this spec, and the decision file still reads *"rates always come from
   craft tables"* with no qualifier. Added to §14.
-- **Status:** resolved `2026-08-25` as a **working reading** — REQ-10, REQ-19. Pending `tcg-scrum`
-  recording the scope clarification, and ideally Corrina Bustos confirming it.
+- **Status:** resolved `2026-08-25` as a **working reading** — see
+  `decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md` (`status: reference`) —
+  REQ-10, REQ-19. `tcg-scrum` has recorded the scope clarification: the note is written, and
+  `decisions/2026-08-20-craft-locked-rate-override.md` now carries a `provenance_note:` pointing at
+  it (its body is unchanged and it stays `verified`). Still pending Corrina Bustos — and ideally
+  Brian Petros — confirming the union scoping.
 
 ### Q19 — How does `EmployeeUnionCode.kind` get a value on rows that already exist?
 
