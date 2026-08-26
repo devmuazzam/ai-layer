@@ -66,3 +66,11 @@ and is not in it, that is a finding, not a detail.
 **Any schema change requires a committed migration** under `apps/api/prisma/migrations/`.
 Run `pnpm db:migrate` with a descriptive name and commit the generated SQL alongside the
 feature. A model edit without a migration is an incomplete change, not a pending one.
+
+A migration that drops, renames, or otherwise reverses a field already recorded in an open
+ticket's `spec.md` REQ or `units.md` slice-contents table must update that REQ/unit in the
+same commit. Reverting a documented field without updating the document that documents it
+is an incomplete change, not a pending one — the same standard this file already holds a
+model edit without a migration to. (SCRUM-926 dropped a required craft-level date window two
+migrations after `units.md` U1 described it, and neither document was touched —
+`.ai/aidlc/SCRUM-926/reflection.md` ED-2, ED-3.)

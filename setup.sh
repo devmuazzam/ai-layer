@@ -181,12 +181,15 @@ fi
 # is backed up by safe_link, not deleted — first run on each machine migrates it.
 safe_link "$AI_DIR/claude" ".claude"
 
-# AGENTS.md is a symlink to CLAUDE.md inside the overlay, so both root entry points
-# resolve to one file and cannot drift. The flow-era docs (DESIGN.md,
+# Only AGENTS.md is linked at the root (for Cursor/Antigravity). Claude Code already
+# auto-loads .claude/CLAUDE.md, so a root CLAUDE.md symlink made it load the same 11 KB
+# twice — it is pruned below. AGENTS.md is a symlink to CLAUDE.md inside the overlay, so
+# every entry point still resolves to one file and cannot drift. The flow-era docs (DESIGN.md,
 # AUTOMATED-FEATURES.md, QUICK-REFERENCE.md, DESIGN-FOLDER-UPDATE.md) were removed; they
 # stay in the exclude list below so machines that still have their symlinks get them
 # pruned rather than left dangling.
-ROOT_DOCS="AGENTS.md CLAUDE.md"
+ROOT_DOCS="AGENTS.md"
+if [ -L CLAUDE.md ]; then rm CLAUDE.md; PRUNED=$((PRUNED + 1)); fi   # duplicate of .claude/CLAUDE.md
 for f in $ROOT_DOCS; do
   if [ -f "$AI_DIR/claude/$f" ]; then
     safe_link ".claude/$f" "$f"          # via .claude, so tracked docs that

@@ -48,7 +48,7 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | `.ai/aidlc/SCRUM-###/intent.md` | **read-only** — it is the ticket capture, not your draft |
 | `.ai/aidlc/SCRUM-###/spec.md` | **write** — the one artifact you produce |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read** — retired 2026-08-20, historical entries only. Cite an existing entry by anchor; never append a ticket's question here |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — `payroll/gaps.md` is 120 KB, grep it too |
 | Everything else | **no write access** |
 
 Two write paths. That is the whole surface.
@@ -145,6 +145,18 @@ Always, in this order. Skipping a step is how a confident wrong spec gets writte
    (`field-ops/field-ops-frd/`, `field-ops/frd-new-format-draft/`,
    `field-ops/atom-mobile-app-user-stories/`, `projects-jobs/project-module/`).
 7. **The repo, last and only as evidence of what exists today.**
+
+**Reading budget — the vault does not fit in one context.** Steps above say *what* to
+open, not *how much*. Several targets are 80–220 KB (`payroll/gaps.md`,
+`payroll/legacy-payroll-app-db-extract/`, every `meetings/transcripts/` file, the retired
+gaps files, some `SCRUM-###/spec.md`), and one whole read of any of them is 20–55k tokens —
+the direct cause of *prompt too long* mid-run. So: `wc -c` before opening anything under
+`.ai/vault/` or `.ai/aidlc/`; over ~40 KB, `grep -n` for the heading, anchor or term and read
+only that range. Never read a transcript, a legacy-extract data file or a retired gaps file
+in full. When a question needs several large files (a sweep of transcripts, every module's
+`gaps.md`, a whole legacy extract), **delegate it to an `Explore` subagent** with the exact
+question and have it return cited excerpts (`path#anchor` or `path:line`) — only those
+excerpts enter your context, and you still verify each one before citing it.
 
 **Why skipping to step 6 produces a confident wrong spec.** Search finds a file that
 answers the question. It reads as a specification. Nothing in its body says another
@@ -358,6 +370,14 @@ from a person and becomes correct. The second one gets built.
 The same applies to detail: an unsourced field length, status enum, error message, timeout,
 or default value is an invention with a small footprint, not an exception. `NOT SPECIFIED`
 is a complete answer.
+
+**Before sign-off, re-read each REQ's acceptance line against its own executor notes and
+against the live ticket it cites.** A spec that quotes a ticket verbatim must be re-diffed
+against that ticket's current text before the spec is marked ready for decomposition —
+quoting a snapshot is not quoting the source. SCRUM-926 shipped with one REQ whose
+acceptance line contradicted its own executor note, and another that quoted a ticket's text
+that had since changed; neither was caught because nothing re-read the ticket or the note a
+second time (`.ai/aidlc/SCRUM-926/reflection.md` SD-1, SD-2).
 
 ---
 

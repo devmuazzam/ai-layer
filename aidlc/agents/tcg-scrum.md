@@ -36,7 +36,7 @@ one answer — so the spend is small; every other loop agent defaults to Sonnet,
 | Whole repo and `.ai/vault/` | **read-only** |
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** (append questions, mark them resolved). A question that came from a ticket lives here — a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **retired 2026-08-20** — **write to close an existing entry** (mark it resolved when a decision settles it) but **do not append a new one**. A new question belonging to no ticket has nowhere to go until the per-module gaps redesign lands; say so instead |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired 2026-08-20, frozen** — 110–136 KB each, **never read whole**: `grep -n` the anchor. **Write to close an existing entry** (mark it resolved when a decision settles it) but **do not append**. A new question belonging to no ticket goes to `.ai/vault/<module>/gaps.md` (live; `payroll/gaps.md` is 120 KB — grep it) |
 | `.ai/vault/decisions/` | **write** (create dated decision notes) |
 | **Frontmatter of vault files named in a decision you just wrote** | **write — these five fields only**: `status:`, `verified_because:`, `superseded_by:`, `conflicts_with:`, `provenance_note:` |
 | Everything else, including every vault file **body** | **no write access** |
@@ -81,6 +81,18 @@ Always, in this order:
 3. **The specific file** — and its folder `INDEX.md` first if it is a split document
    (`field-ops/field-ops-frd/`, `field-ops/frd-new-format-draft/`,
    `field-ops/atom-mobile-app-user-stories/`, `projects-jobs/project-module/`).
+
+**Reading budget — the vault does not fit in one context.** Steps above say *what* to
+open, not *how much*. Several targets are 80–220 KB (`payroll/gaps.md`,
+`payroll/legacy-payroll-app-db-extract/`, every `meetings/transcripts/` file, the retired
+gaps files, some `SCRUM-###/spec.md`), and one whole read of any of them is 20–55k tokens —
+the direct cause of *prompt too long* mid-run. So: `wc -c` before opening anything under
+`.ai/vault/` or `.ai/aidlc/`; over ~40 KB, `grep -n` for the heading, anchor or term and read
+only that range. Never read a transcript, a legacy-extract data file or a retired gaps file
+in full. When a question needs several large files (a sweep of transcripts, every module's
+`gaps.md`, a whole legacy extract), **delegate it to an `Explore` subagent** with the exact
+question and have it return cited excerpts (`path#anchor` or `path:line`) — only those
+excerpts enter your context, and you still verify each one before citing it.
 
 **Why skipping to step 3 produces confident wrong answers.** Grep finds a file that
 answers the question. It reads as a specification. Nothing in the file's body says another

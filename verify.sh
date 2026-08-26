@@ -36,14 +36,18 @@ if [ -d "$AI_DIR/.git" ]; then ok "$AI_DIR/ is a git clone"; else
   bad "$AI_DIR/ is not a git clone — run the install from the README"; fi
 resolves "$AI_DIR/claude/CLAUDE.md" "TCG platform"
 
-head_ "Root entry points  (Claude reads CLAUDE.md, Cursor reads AGENTS.md)"
-resolves "CLAUDE.md" "TCG platform"
+head_ "Root entry points  (Claude reads .claude/CLAUDE.md, Cursor reads AGENTS.md)"
+resolves ".claude/CLAUDE.md" "TCG platform"
 resolves "AGENTS.md" "TCG platform"
-if [ "$(readlink AGENTS.md 2>/dev/null)" = "$(readlink CLAUDE.md 2>/dev/null)" ] \
-   || [ "$(cat AGENTS.md 2>/dev/null)" = "$(cat CLAUDE.md 2>/dev/null)" ]; then
-  ok "AGENTS.md and CLAUDE.md are the same content (cannot drift)"
+if [ -e CLAUDE.md ]; then
+  bad "root CLAUDE.md exists — Claude Code would load it AND .claude/CLAUDE.md (double context); rerun setup.sh"
 else
-  bad "AGENTS.md and CLAUDE.md differ — they should resolve to one file"
+  ok "no root CLAUDE.md (Claude Code loads .claude/CLAUDE.md once)"
+fi
+if [ "$(cat AGENTS.md 2>/dev/null)" = "$(cat .claude/CLAUDE.md 2>/dev/null)" ]; then
+  ok "AGENTS.md and .claude/CLAUDE.md are the same content (cannot drift)"
+else
+  bad "AGENTS.md and .claude/CLAUDE.md differ — they should resolve to one file"
 fi
 
 head_ "Surface contexts  (the nearest file to your edit wins)"
@@ -157,7 +161,7 @@ done
 
 head_ "What your agent will read"
 cat <<'EOF'
-  Claude Code   root CLAUDE.md, plus the nearest apps/*/CLAUDE.md as you work.
+  Claude Code   .claude/CLAUDE.md, plus the nearest apps/*/CLAUDE.md as you work.
                 Skills and .claude/agents/ both auto-invoke. VERIFIED.
   Cursor        root AGENTS.md, plus the nearest apps/*/AGENTS.md. VERIFIED.
                 Skills in .cursor/skills/<name>/SKILL.md are auto-invoked by
