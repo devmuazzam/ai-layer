@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-08-27
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -1523,3 +1523,31 @@ someone has confirmed otherwise.
   Melissa McNutt for the certification-validity consequence.
 - Status: open
 - **From (frozen original):** [gaps.md#employee-yard-and-company-cardinality-the-ask-exists-in-exactly-one-place](../gaps.md#employee-yard-and-company-cardinality-the-ask-exists-in-exactly-one-place)
+
+## Employee ↔ ADP position — one person, possibly several File Numbers
+
+- **Status:** open
+- **Asked:** 2026-08-27 — Brian Petros's written message to Ehtesham & Abdul ("Regarding the IDs
+  in ADP"), following the 2026-08-25 accounting call (transcript 51:19–54:47, where two IDs per
+  person in ADP was first noticed). Logged in
+  [client-message-findings.md](client-message-findings.md#2026-08-27--adp-identifiers-associate-id-vs-position-id-vs-file-number-brian-petros-relayed-ai-research-sender-inferred-from-the-2026-08-25-transcript-at-5447).
+- **Question:** ADP keys the *person* by `associateOID` / `workerID` and the *paid position* by
+  `positionID = Company Code + File Number`; one associate can hold several positions, each with
+  its own File #. The paydata import posts by `Co Code + File #`. The ERP's `model Employee` has
+  one nullable `adpFileNumber` and no Associate ID, Position ID or Company Code. Does the ERP need
+  an `EmployeePosition` (work-assignment) table with payroll transactions resolving to a position —
+  as the message proposes — or is one File # per employee an acceptable day-one constraint?
+- **Candidates:** the message's proposed model (`Employee{ADPAssociateOID, ADPAssociateID}` +
+  `EmployeePosition{ADPPositionID, ADPCompanyCode, ADPPayrollFileNumber, IsPrimary, effective
+  dates, ADPJobCode, ADPPayGroup}`); [adp-read-write-boundary-2026-08-18.md](adp-read-write-boundary-2026-08-18.md)
+  (worker.hire carries `payrollGroupCode` + `payrollFileNumber` per work assignment);
+  §*Ventura — a second ADP company nobody has mentioned* (the realistic multi-position case,
+  `4RZ` vs `4RY`); `decisions/2026-06-30-adp-erp-employee-data-ownership.md`.
+- **Note:** the message is a *recommendation* forwarded by the client, not a signed decision —
+  no `decisions/` note is written for it. Whether anyone at TCG holds two paid positions today
+  is unknown and decides the cost (schema allowance vs data migration).
+- **Blocked:** PAY-003 field mapping; PAY-067 export row identity; employee-module ↔ ADP sync
+  design (gap §*Employee master — who creates a worker*).
+- **Owner:** Brian Petros (to confirm the requirement is signed) with Corrina Bustos (whether
+  multi-position employees exist in TCG's ADP); CodingCops for the schema.
+- **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md), [PAY-067](rules/PAY-067-adp-export.md)

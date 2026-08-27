@@ -3,7 +3,7 @@ id: PAY-003
 title: PAY-003 — Employee master import
 section: A-foundation-source-data
 status: open
-updated: 2026-08-24
+updated: 2026-08-27
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -23,3 +23,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm final ERP field mapping
+- **ADP identifiers (client message 2026-08-27):** store Associate ID/OID on the employee; File # + Company Code + Position ID belong to a *position*, of which an employee may have several. `model Employee` has only `adpFileNumber`. See gaps → *Employee ↔ ADP position*.
