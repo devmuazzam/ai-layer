@@ -78,3 +78,61 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Brian Petros (data and integrations — the only recorded voice on address
   coordinates), with Patrick for the Mapsly half.
 
+
+## What a newly created tenant must contain — provisioned defaults, or an empty portal
+
+- **Status:** open
+- **Asked:** 2026-08-27 — PR #421 review (branch `refactor/explicit-tenant-seeding`, no ticket); tcg-scrum escalation
+- **Question:** When a tenant is created — by the admin "create tenant" action or by self-signup —
+  which reference data must exist on day one? Four sets are in question and each can be answered
+  in a line: (a) **system departments and their department roles**, (b) **billing code types**,
+  (c) **industries**, (d) the **payroll premium catalog** (see payroll/gaps.md → *Payroll premium
+  catalog*). Options for each: **provisioned automatically at tenant creation** (today's
+  behaviour, `seedTenantDefaults`), **created by the tenant's own admins through the existing
+  settings CRUD** (an empty portal on first sign-in), or **run by an operator as a per-tenant
+  onboarding step**. If empty is the answer, does anything gate first use — a new tenant with no
+  departments has no roles to assign a user to.
+- **Sources checked:** **Vault — nothing.** `INDEX.md`; `admin/INDEX.md` (the module holds one
+  content file, `tcg-documents.md`, on attachments); `admin/gaps.md`; `decisions/` (13 notes, none
+  on tenant provisioning, departments, roles or reference-data seeding);
+  [STRUCTURE.md](../STRUCTURE.md):42 routes the `seed` facet to `admin/` but **no content exists
+  behind it**; vault-wide grep outside `meetings/` for `new tenant|tenant creation|create a
+  tenant|new company|empty portal|default department|system department|default role|seed` — no
+  product statement, only incidental mentions of today's seeded craft codes in
+  `decisions/2026-08-21-scrum-877-*` (which explicitly says seed data "is not necessarily what a
+  tenant's admins have since configured"). **`meetings/` — nothing** (full sweep of 57
+  transcripts, 7 summaries and the curated minutes): `new tenant`, `provision`, `seeding`, `empty
+  portal`, `default department`, `master data`, `reference data` return zero hits; every `seeder`
+  hit is the FCC migration seeder. The nearest statements are Ehtesham describing departments as
+  something *you create* (`meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:68,
+  :72; `meetings/transcripts/2026-05-05-tcg-erp-system.md`:92) and CodingCops reporting that they
+  "added all of the basic cards" for billing code types and industry codes **for TCG**
+  (`meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md`:148) — a description of
+  what was loaded into TCG's own tenant, not a rule about new ones.
+- **Weak signals and one conflict, not an answer:**
+  - **Jira says seed, twice, and both are `Done`.** `SCRUM-467` *Seed Departments & Roles*:
+    *"System should include predefined, hardcoded departments and their roles… Sales Department →
+    Managers automatically created/assigned, Dispatch Department, Yard Department."* `SCRUM-593`
+    *Departments (seeding and templates)*: *"Seed default departments; seed manager default
+    permissions as per our best understanding."* **PR #421 removes exactly that behaviour**, so
+    the PR's premise and two closed tickets disagree. Neither ticket is superseded by anything
+    written.
+  - **`SCRUM-871` (In Review, assignee Fouzan Shakil) is the likely origin of the PR's premise
+    and does not support its scope.** Its title — *"When you create a new tenant the system
+    automatically provisions several default Data from other tenant in Billing code type"* — reads
+    as unwanted provisioning, but its only comment (Aiman Farooq, QA, 2026-08-21) reframes it as a
+    **leak**: *"One Billing Code is appearing in the new tenant even though it should not. Please
+    investigate the tenant data isolation for Billing Codes."* That is `SCRUM-537`'s isolation
+    problem (a row belonging to another tenant being visible), not a statement that a new tenant
+    must have no departments, roles, industries or premiums. It names **billing codes only**.
+  - **`SCRUM-925` (2026-08-24 planning) is a precedent in the opposite direction, for one table
+    only:** *"No data migration, no seed. `CraftCode` starts empty; admins create every craft and
+    its rates through the API."* Written for craft codes, not generalised.
+- **Blocked:** PR #421 (`refactor/explicit-tenant-seeding`) cannot be signed off as
+  product-correct — it changes `apps/api/src/usecase/admin/admin-tenants.service.ts` and
+  `apps/api/src/usecase/tenant-companies/tenant-companies.service.ts` against no written
+  requirement, and against `SCRUM-467`/`SCRUM-593`. `SCRUM-871` cannot be closed until it is known
+  whether the ask was "stop seeding" or "stop leaking". Also open by consequence: no script yet
+  exists for the `SEED_TENANT_CODE` path the PR leaves as the only way to populate a tenant.
+- **Owner:** Fouzan Shakil (assignee of `SCRUM-871` and the named decider on the 2026-08-20/25
+  decision notes), with Ehtesham Anwar for what onboarding a second tenant is meant to look like.

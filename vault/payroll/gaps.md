@@ -1568,3 +1568,64 @@ someone has confirmed otherwise.
 - **Blocked:** employee-detail design; job-assignment validation; any certified-payroll linkage.
 - **Owner:** TCG (Melissa McNutt for compliance, Brian Petros for the list); CodingCops to bring
   the FCC certification field inventory.
+
+## Payroll premium catalog — configured per tenant, or constants in the engine
+
+- **Status:** open
+- **Asked:** 2026-08-27 — PR #421 review (branch `refactor/explicit-tenant-seeding`, no ticket); tcg-scrum escalation
+- **Question:** Two halves, each answerable in a line. **(a) Must a premium row exist per tenant
+  before payroll can run** — i.e. is the six-code catalog (`FOREMAN`, `MILITARY`, `LATTICE_OP`,
+  `LATTICE_OI`, `SHIFT_2`, `SHIFT_3`) *configuration a tenant must hold*, seeded at tenant
+  creation, or admin-entered like `CraftCode`? **(b) When the table is empty, is a hardcoded
+  amount an acceptable fallback, or must the run fail/flag?** Today
+  `apps/api/src/usecase/payroll/payroll.service.ts:424` reads the table and silently falls back to
+  `?? 3 / ?? 10 / ?? 1 / ?? 0.5 / ?? 1 / ?? 1.5`, and PR #421 removes the auto-seed that used to
+  guarantee the rows existed — so after that PR every tenant prices premiums from code constants
+  until someone runs a script that does not yet exist.
+- **Direction is sourced; the two halves above are not.** The FRD is explicit that rates of this
+  kind are configuration: [erp-payroll-module-frd/01-purpose-scope-and-design-principles.md](erp-payroll-module-frd/01-purpose-scope-and-design-principles.md)
+  §2.1 *"Payroll rules must not be embedded exclusively in application code"*, requiring
+  effective-dated configuration tables for — among others — **shift premiums**, craft modifiers
+  and craft rates, and *"a payroll rule change should normally be accomplished by updating an
+  effective-dated configuration record rather than changing program code"* (Draft 0.1,
+  `status: unverified`). Brian Petros says the same in his own words on 2026-08-13:
+  *"as far as like the configuration table or whatnot, I think we're going to definitely need to
+  have some sort of configuration table for additional premium rates"*
+  (`meetings/transcripts/2026-08-13-payroll-process.md`:452, with :440–:446 asking for start/end
+  effective dates on those rates; a transcript is `status: reference`, not minutes). `PAY-008`
+  carries the matching **blocking** item *"Confirm configuration ownership"*. **Neither source
+  says whether the catalog is per-tenant, nor what an empty table means.** Precedent, for a
+  different table: `SCRUM-925` — *"No data migration, no seed. `CraftCode` starts empty; admins
+  create every craft and its rates through the API."*
+- **⚠️ Two of the six hardcoded fallbacks contradict the vault, and the PR makes them the live
+  values.** `SHIFT_2 ?? 1` and `SHIFT_3 ?? 1.5` are wrong against four independent sources:
+  [rules/PAY-036-second-shift.md](rules/PAY-036-second-shift.md) — *"seven hours worked/eight
+  paid; add **$3**/hour to base"* — and [rules/PAY-037-third-shift.md](rules/PAY-037-third-shift.md)
+  — *"6.5 hours worked/eight paid; add **$4**/hour"* — each corroborated by the MLA
+  ([mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md)),
+  the legacy engine (`legacy-payroll-app-db-extract/` rules §8) and a client screenshot showing the
+  $3.00 adder inside a priced slice ((66.03 + 3.00 + 5.25) × 1.5). The 2026-08-05 minutes carry the
+  same +$3.00/+$4.00. The other four constants do match the record: Foreman $3 and Military $10
+  ([foreman-and-military-premiums.md](foreman-and-military-premiums.md)), lattice operator $1 and
+  oiler $0.50, Group 6+ (Corrina 2026-05-18, MLA p.39 — settled four ways, see §*Lattice Crane
+  identification*). This makes the fallback question urgent independently of the tenancy
+  question: a silent `??` default is currently shipping two known-wrong rates.
+- **Sources checked:** `payroll/INDEX.md`; `payroll/gaps.md` (this register — §*Foreman premium*,
+  §*Military Base premium*, §*Premium stacking and no-pyramiding*, §*Lattice Crane
+  identification*, §*The 24 decisions*); `rules/PAY-008`, `PAY-036`, `PAY-037`, `PAY-044`,
+  `PAY-070`, `PAY-071`; `erp-payroll-module-frd/01`; `payroll-app-current-state/04` (*"avoid
+  hard-coded branching; add/extend configuration tables"*); `adp-bucket-crosswalk.md`:114
+  (*"configuration over code — persist the crosswalk in an effective-dated configuration table"*);
+  `decisions/` (none on premiums); full `meetings/` sweep. **Jira: no ticket exists for the
+  premium catalog** — a search of every summary and description for `premium`, `foreman`,
+  `military` and `shift differential` returns nothing but one empty issue (`SCRUM-929`, summary
+  `--`). The six rows and their amounts have never been specified by a ticket.
+- **Blocked:** PR #421 (`refactor/explicit-tenant-seeding`) — after it, premium amounts come from
+  code constants in every tenant, two of them contradicting the vault. Also blocked: the settings
+  surface for premiums that `PAY-008` and FRD §2.1 imply but no ticket covers, and the
+  effective-dating those rates need (union rates change every fiscal year — `PAY-008`).
+- **Owner:** Brian Petros (the only recorded voice on premium rates and the one who asked for the
+  configuration table), with Corrina Bustos for the shift amounts; Fouzan Shakil for whether
+  premiums are per-tenant configuration or product constants.
+- **Rules:** [PAY-008](rules/PAY-008-effective-dated-configuration.md), [PAY-036](rules/PAY-036-second-shift.md), [PAY-037](rules/PAY-037-third-shift.md), [PAY-044](rules/PAY-044-lattice-boom-premium.md), [PAY-070](rules/PAY-070-foreman-premium.md), [PAY-071](rules/PAY-071-military-base-premium.md)
+- **Cross-link:** admin/gaps.md → *What a newly created tenant must contain*
