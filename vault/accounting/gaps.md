@@ -99,7 +99,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   FCC/ERP versus QuickBooks". Are FCC's GL codes and QuickBooks's chart of accounts the same list,
   a mapped pair, or independent? Which one does the ERP's `expense-gl-accounts` carry, and which
   is the system of record when invoicing and payroll post to QuickBooks?
-- **Candidates:** `expense-gl-accounts` usecase (built; source of its list unknown); the 2026-08-25
+- **Candidates:** the annotated migration brief, [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md) — FCC `FMS_GL_ACCOUNTS` (296, loaded, "Need Clarification from TCG Team") plus `FMS_GL_ACCOUNTS_COMPANY` (592 per-company rows, **no TCG GL–company join**) and departments' expense-account field, all unmapped. `expense-gl-accounts` usecase (built; source of its list unknown); the 2026-08-25
   accounting transcript's ADP/QuickBooks custom-field discussion
   (`../meetings/transcripts/2026-08-25-accounting-process.md`, ~51:19 onward); nothing in the
   vault names a GL code.

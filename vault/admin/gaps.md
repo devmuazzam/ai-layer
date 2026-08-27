@@ -40,7 +40,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (`../meetings/transcripts/2026-08-26-erp-sprint-review.md`, ~18–20 min) adds the shape:
   Microsoft, HubSpot and Dialpad are synced with each other, **FCC is not**, and salespeople may
   update contacts in HubSpot — so the customer/contact migration from FCC may be the stale copy.
-  Customer-side pointer: customers/gaps.md.
+  Customer-side pointer: customers/gaps.md. The brief names the contact: **Patrick McKiernan**, and adds "show legacy FCC ID on UI" — the annotated migration brief, [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md) A1.
 
 
 ## Map provider, no-key fallback, and which table owns address coordinates

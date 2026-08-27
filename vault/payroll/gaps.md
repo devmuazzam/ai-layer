@@ -1561,7 +1561,7 @@ someone has confirmed otherwise.
   with an expiry), a qualification to operate a *unit class* (NCCCO by crane type), or a
   requirement a *job* imposes on whoever is assigned (site-specific badges)? Each implies a
   different table and a different validation point (assignment vs dispatch vs payroll).
-- **Candidates:** the 2026-03 recording referenced in this register under *Employee yard and
+- **Candidates:** the annotated migration brief, [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md) — FCC `FMS_CERTIFICATES` (14 catalog rows, "Need discussion with TCG Team"; has don't-prompt-expiry + time period, `validityPeriodMonths` unfilled) and `FMS_EMP_CERTIFICATES` (446 rows, **certificate number not stored** by the seeder). The 2026-03 recording referenced in this register under *Employee yard and
   company cardinality* (Melissa: a certification may not apply at another yard — a *yard*-scoped
   validity, a fourth candidate scope); customers/gaps.md notes Certifications were once a
   customer-creation tab. Asset-side counterpart: assets → *Unit / asset certifications*.

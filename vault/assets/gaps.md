@@ -110,7 +110,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   appears nowhere in the vault. Does TCG operate, maintain or dispatch equipment it does not own
   (customer cranes on customer sites?), and if so is that an asset record with an owner attribute,
   a separate entity, or out of scope? Nothing in `asset-management` models ownership.
-- **Candidates:** none — vault-wide grep for `customer-owned` returns nothing; `model Asset` has
+- **Candidates:** the annotated migration brief, [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md): FCC `FMS_CUSTOMER_UNITS` holds **12 rows**, extracted but with no TCG module ("Need to scope this functionality"); the FCC table is thinner than the TCG Asset form (meter/engine/trans make-model extras). Otherwise none — vault-wide grep for `customer-owned` returns nothing; `model Asset` has
   no owner/ownership field.
 - **Blocked:** asset-master migration from FCC (whether such rows exist there is itself unknown).
 - **Owner:** TCG owners, via Brian Petros; CodingCops to check the FCC extract for any ownership
@@ -126,7 +126,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   are distinct entities (a loan is financial, maintenance is a schedule, a permit may be job-bound —
   see projects-jobs → *Asset on a permit*)? No vault document enumerates an asset-certification
   type list.
-- **Candidates:** [projects-jobs/gaps.md](../projects-jobs/gaps.md#permit-expiry-reminders--neither-90-nor-30-shipped)
+- **Candidates:** the annotated migration brief, [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md) — FCC `FMS_UNIT_CHECK_LIST` (15 asset checklist types) and `FMS_UNIT_DOWN_REASON` extracted with no TCG home. [projects-jobs/gaps.md](../projects-jobs/gaps.md#permit-expiry-reminders--neither-90-nor-30-shipped)
   (the only expiry-reminder discussion, permits only); `user-story-and-tasks.md` (unverified,
   personal-space provenance). Employee-side counterpart: payroll → *Employee certifications*.
 - **Blocked:** asset detail design; any expiry-reminder feature beyond permits.
