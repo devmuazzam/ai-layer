@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-08-25
+updated: 2026-08-27
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -101,3 +101,34 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** any future claim that single-day-defaulting-to-today is settled product
   behaviour for tool utilization date controls.
 - **Owner:** needs assignment — route to Fouzan Shakil (SCRUM-908 assignee) to confirm.
+
+## Customer-owned assets — what they are, and whether the ERP tracks them
+
+- **Status:** open
+- **Asked:** 2026-08-27 — Brian Petros, written message to the TCG team, 2026-08-27 ("A couple things that came up in my discussion with CodingCops today, that we'll discuss in future meetings"), following the 2026-08-26 ERP sprint review — logged in [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros)
+- **Question:** Brian lists "ask owners about *customer-owned assets*" as a follow-up. The term
+  appears nowhere in the vault. Does TCG operate, maintain or dispatch equipment it does not own
+  (customer cranes on customer sites?), and if so is that an asset record with an owner attribute,
+  a separate entity, or out of scope? Nothing in `asset-management` models ownership.
+- **Candidates:** none — vault-wide grep for `customer-owned` returns nothing; `model Asset` has
+  no owner/ownership field.
+- **Blocked:** asset-master migration from FCC (whether such rows exist there is itself unknown).
+- **Owner:** TCG owners, via Brian Petros; CodingCops to check the FCC extract for any ownership
+  flag before the meeting.
+
+## Unit / asset certifications — registrations, insurance, loan, maintenance, permits
+
+- **Status:** open
+- **Asked:** 2026-08-27 — Brian Petros, written message to the TCG team, 2026-08-27 ("A couple things that came up in my discussion with CodingCops today, that we'll discuss in future meetings"), following the 2026-08-26 ERP sprint review — logged in [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros)
+- **Question:** Brian wants "more details regarding requirements for Units/Assets certifications
+  (and types: like registrations, insurance, loan, maintenance, and all different types of
+  permits)". Which of these are one attribute family with an expiry date and reminder, and which
+  are distinct entities (a loan is financial, maintenance is a schedule, a permit may be job-bound —
+  see projects-jobs → *Asset on a permit*)? No vault document enumerates an asset-certification
+  type list.
+- **Candidates:** [projects-jobs/gaps.md](../projects-jobs/gaps.md#permit-expiry-reminders--neither-90-nor-30-shipped)
+  (the only expiry-reminder discussion, permits only); `user-story-and-tasks.md` (unverified,
+  personal-space provenance). Employee-side counterpart: payroll → *Employee certifications*.
+- **Blocked:** asset detail design; any expiry-reminder feature beyond permits.
+- **Owner:** TCG (Dylan Masterson for yard/units, Brian Petros for the list), CodingCops to
+  bring the FCC field inventory.

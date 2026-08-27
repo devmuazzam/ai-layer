@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-08-27
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -161,6 +161,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   recording and never recorded answering.
 - Status: open
 - **From (frozen original):** [gaps.md#asset-on-a-permit-optional-except-where-a-punch-list-says-compulsory](../gaps.md#asset-on-a-permit-optional-except-where-a-punch-list-says-compulsory)
+- **Update 2026-08-27:** Brian Petros, written message to the TCG team, 2026-08-27 ("A couple things that came up in my discussion with CodingCops today, that we'll discuss in future meetings"), following the 2026-08-26 ERP sprint review — logged in [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros) — Brian: "permits can be specific to the Asset, but can also have
+  permits specific to Job". First written client statement that the permit has **two scopes**,
+  which reframes this entry: the question is not only whether the asset is optional but whether
+  a job-scoped permit has an asset at all. Asset-side permit types are being collected under
+  assets → *Unit / asset certifications*.
+
 
 ## Job-level "Boom Configuration" field — schema ask from payroll (Kyle)
 

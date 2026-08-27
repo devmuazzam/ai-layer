@@ -2,7 +2,7 @@
 title: Accounting — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-08-27
 tags: [module/accounting, kind/gaps, open-questions]
 ---
 
@@ -91,3 +91,18 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   as with `decisions/2026-08-20-archive-instead-of-delete-app-wide.md` and
   `decisions/2026-08-20-post-save-navigation-convention.md`.
 
+## GL codes — FCC/ERP chart vs QuickBooks, and who owns the mapping
+
+- **Status:** open
+- **Asked:** 2026-08-27 — Brian Petros, written message to the TCG team, 2026-08-27 ("A couple things that came up in my discussion with CodingCops today, that we'll discuss in future meetings"), following the 2026-08-26 ERP sprint review — logged in [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros)
+- **Question:** Brian: "need to provide CodingCops with better understanding of GL codes in
+  FCC/ERP versus QuickBooks". Are FCC's GL codes and QuickBooks's chart of accounts the same list,
+  a mapped pair, or independent? Which one does the ERP's `expense-gl-accounts` carry, and which
+  is the system of record when invoicing and payroll post to QuickBooks?
+- **Candidates:** `expense-gl-accounts` usecase (built; source of its list unknown); the 2026-08-25
+  accounting transcript's ADP/QuickBooks custom-field discussion
+  (`../meetings/transcripts/2026-08-25-accounting-process.md`, ~51:19 onward); nothing in the
+  vault names a GL code.
+- **Blocked:** invoicing → QuickBooks posting; payroll GL export; the accounting wishlist tiering
+  above.
+- **Owner:** TCG accounting (Brent / Micaela Dipane) via Brian Petros.

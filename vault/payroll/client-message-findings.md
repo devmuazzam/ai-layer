@@ -484,6 +484,24 @@ this decides whether `EmployeePosition` is a day-one migration or a schema allow
 the message's requirement block to be treated as **signed** — if so a decision note is owed and
 PAY-003's field mapping can close against it.
 
+## Cross-module — 2026-08-27 follow-ups after the FCC migration first pass (Brian Petros)
+
+Message to the TCG team after the 2026-08-26 sprint review. FYI half: CodingCops has imported
+"a lot of information from FCC" into the ERP (first pass — contact emails/phones redacted, SSNs
+skipped, per the transcript); Brian will say when it is viewable. Six follow-ups for future
+meetings, none payroll-owned; each is now an entry (or an update) in its owning module:
+
+| Item | Owning register |
+| --- | --- |
+| Patrick to explain customer data synced with HubSpot & Microsoft | admin → *Integrations* (updated) |
+| Ask owners about "customer-owned assets" | assets → *Customer-owned assets* (new) |
+| Employee certification requirements and types (per job / per unit / other) | payroll → *Employee certifications* (new) |
+| Unit/asset certifications: registrations, insurance, loan, maintenance, permits | assets → *Unit / asset certifications* (new) |
+| Permits can be asset-specific **or** job-specific | projects-jobs → *Asset on a permit* (updated) |
+| GL codes in FCC/ERP vs QuickBooks | accounting → *GL codes* (new) |
+
+No claim in it contradicts a written rule; the material new fact is the two-scope permit.
+
 ## Parked — 2026-08-24 (build proceeds on defaults)
 
 Per the build lead: the five remaining questions are **not asked now** — the build is

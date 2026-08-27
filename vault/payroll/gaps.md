@@ -1551,3 +1551,20 @@ someone has confirmed otherwise.
 - **Owner:** Brian Petros (to confirm the requirement is signed) with Corrina Bustos (whether
   multi-position employees exist in TCG's ADP); CodingCops for the schema.
 - **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md), [PAY-067](rules/PAY-067-adp-export.md)
+
+## Employee certifications — types and scope (per job, per unit, other)
+
+- **Status:** open
+- **Asked:** 2026-08-27 — Brian Petros, written message to the TCG team, 2026-08-27 ("A couple things that came up in my discussion with CodingCops today, that we'll discuss in future meetings"), following the 2026-08-26 ERP sprint review — logged in [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros)
+- **Question:** Brian wants "more details regarding requirements for Employee certifications (and
+  types: per Job, per Unit, other types?)". Is a certification a property of the person (a licence
+  with an expiry), a qualification to operate a *unit class* (NCCCO by crane type), or a
+  requirement a *job* imposes on whoever is assigned (site-specific badges)? Each implies a
+  different table and a different validation point (assignment vs dispatch vs payroll).
+- **Candidates:** the 2026-03 recording referenced in this register under *Employee yard and
+  company cardinality* (Melissa: a certification may not apply at another yard — a *yard*-scoped
+  validity, a fourth candidate scope); customers/gaps.md notes Certifications were once a
+  customer-creation tab. Asset-side counterpart: assets → *Unit / asset certifications*.
+- **Blocked:** employee-detail design; job-assignment validation; any certified-payroll linkage.
+- **Owner:** TCG (Melissa McNutt for compliance, Brian Petros for the list); CodingCops to bring
+  the FCC certification field inventory.

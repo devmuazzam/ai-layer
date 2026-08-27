@@ -2,7 +2,7 @@
 title: Customers — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-08-27
 tags: [module/customers, kind/gaps, open-questions]
 ---
 
@@ -160,3 +160,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Melissa McNutt (policy/customer) for the form and the copy. Provider choice, fallback
   policy and coordinate ownership are the admin half —
   [admin/gaps.md](../admin/gaps.md#map-provider-no-key-fallback-and-which-table-owns-address-coordinates).
+
+## Pointers — 2026-08-27 client follow-ups touching customers
+
+- **Status:** open
+- **Asked:** 2026-08-27 — Brian Petros, written message to the TCG team, 2026-08-27 ("A couple things that came up in my discussion with CodingCops today, that we'll discuss in future meetings"), following the 2026-08-26 ERP sprint review — logged in [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros)
+- **Question:** two of Brian's items land on other modules but affect customer data: (a) which
+  system holds the current contact record — HubSpot/Microsoft/Dialpad are synced, FCC is not →
+  [admin/gaps.md](../admin/gaps.md#integrations--hubspot-microsoft-365-dialpad-mapsly); (b)
+  "customer-owned assets" → [assets/gaps.md](../assets/gaps.md#customer-owned-assets--what-they-are-and-whether-the-erp-tracks-them).
+  Also for the record: the FCC first-pass migration **redacted customer contact emails and phone
+  numbers** and skipped SSNs (2026-08-26 sprint review); un-redaction is planned for production.
+- **Owner:** see the two owning entries.

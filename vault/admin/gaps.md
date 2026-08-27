@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-08-27
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -35,6 +35,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Owner: Patrick (demo), then whoever writes it down.
 - Status: open
 - **From (frozen original):** [gaps.md#integrations-hubspot-microsoft-365-dialpad-mapsly](../gaps.md#integrations-hubspot-microsoft-365-dialpad-mapsly)
+- **Update 2026-08-27:** Brian Petros, written message to the TCG team, 2026-08-27 ("A couple things that came up in my discussion with CodingCops today, that we'll discuss in future meetings"), following the 2026-08-26 ERP sprint review — logged in [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros) — still open; Brian re-lists "have Patrick explain more details
+  regarding Customer data synced with HubSpot & Microsoft". The 2026-08-26 sprint review
+  (`../meetings/transcripts/2026-08-26-erp-sprint-review.md`, ~18–20 min) adds the shape:
+  Microsoft, HubSpot and Dialpad are synced with each other, **FCC is not**, and salespeople may
+  update contacts in HubSpot — so the customer/contact migration from FCC may be the stale copy.
+  Customer-side pointer: customers/gaps.md.
+
 
 ## Map provider, no-key fallback, and which table owns address coordinates
 
