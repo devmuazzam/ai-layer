@@ -52,3 +52,5 @@ date        ticket      path  branch                              by    pr    no
 2026-08-25  SCRUM-935   A     feat/SCRUM-925-u1-craft-codes-rates  dev   412   U4 — CraftRateResolverService — row backfilled 2026-08-26
 2026-08-25  -           -     (direct to main, commit 61d0fd7d)   dev   412   payroll core module (periods/runs/weeks/premiums, ~18k lines) — no ticket, no spec, no unit; never ran the loop. Plausibly implements Jira SCRUM-920/921/922/923 (all To Do) but cites none. Flagged, not backfilled — needs its own ticket, not a retrofit.
 
+
+2026-08-25  SCRUM-873   C     fix/SCRUM-873                      areeba  -     resources surcharge chip from billing codes; lost banner wrap; edit status read-only
