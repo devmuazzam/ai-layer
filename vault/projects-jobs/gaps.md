@@ -183,7 +183,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Job Schedule tab — what to show when the date range yields zero days
 
-- **Status:** open
+- **Status:** resolved — see [decisions/2026-08-28-job-schedule-weekend-empty-state.md](../decisions/2026-08-28-job-schedule-weekend-empty-state.md)
 - **Asked:** 2026-08-24 — PR #391 (`fix/job-schedule-weekend-empty-hint`); tcg-scrum during review
 - **Question:** When Start Date and End Date are set but Include Saturdays / Include Sundays are
   off such that `generateDateRange` produces zero rows (e.g. a Saturday-only range with both
@@ -196,6 +196,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   SCRUM-234 Figma node `2964-119958` may show a designed empty state — not yet checked against
   this edge case.
 - **Owner:** Lisette Anzaldo / Ryan Adams
+- **Update 2026-08-28:** re-checked during PR #391 review — still unanswered. `decisions/`,
+  `vault/` and Jira (SCRUM-234, last touched 2026-06-01, Done) contain nothing on this empty
+  state. One constraint on the answer is now **verified**, though: whatever the copy is, the
+  non-edit variant cannot instruct the user to enter edit mode on a `COMPLETED` job — edit is a
+  hard block with no unlock path per
+  [decisions/2026-08-25-completed-job-view-only.md](../decisions/2026-08-25-completed-job-view-only.md).
+  The branch's `resolveWeekendExclusionEmptyMessage` keys only on `isEditing`, which does not
+  distinguish "not editing now" from "editing permanently blocked".
+- **Resolved 2026-08-28:** Fouzan Shakil (assignee / reviewer) approved the recommended answer during
+  PR #391 review — toggle-specific title *"No schedule days in this range"* with a three-mode
+  description keyed on `isEditMode` / `isEditing`, the read-only variant carrying no CTA.
+  Recorded in [decisions/2026-08-28-job-schedule-weekend-empty-state.md](../decisions/2026-08-28-job-schedule-weekend-empty-state.md).
+  **Assignee-level, not client-confirmed** — canonical copy from design or from Lisette Anzaldo /
+  Ryan Adams would supersede it.
 
 ## Project detail Accounting tab — see accounting/gaps.md
 
