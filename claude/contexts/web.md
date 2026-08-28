@@ -95,6 +95,65 @@ Whether a top-of-form error summary should render is **contradicted between the 
 documents** and unresolved. `FormErrorSummary` exists in `organisms/` with zero consumers.
 Follow the surrounding module; do not introduce a new pattern either way.
 
+## Test IDs — `apps/web` is under E2E test
+
+`qa-automation/` is a Playwright suite driving the real app, API and Postgres. It addresses
+the UI through `data-testid`, which makes **a test ID a contract, not a debugging aid**.
+Rename or delete one and a test breaks — silently: the suite is not yet an Nx project, so no
+gate in `.husky/` or `affected.yml` runs it, and nothing will tell you. (Registering it is an
+accepted PR #386 follow-up; the grep below is the interim signal, and stays useful after.)
+
+**A new screen or form ships with test IDs on its controls**, whether or not a spec covers
+it yet. Retrofitting them later means touching production files a second time, which is how
+this convention arrived — as a 45-attribute diff bolted onto eleven existing files.
+
+### Naming — `<module>-<flow>-<element>[-<modifier>]`
+
+Kebab-case throughout, lowercase, no abbreviations the reader has to decode.
+
+| Segment | What it is | Examples |
+| --- | --- | --- |
+| module | the vault module the screen belongs to | `auth`, `customers` |
+| flow | the screen or interaction, not the file | `login`, `forgot`, `reset`, `invite`, `sso`, `change-password`, `user-menu` |
+| element | the thing being addressed | `email`, `password`, `submit`, `error`, `success`, `otp` |
+| modifier | a second element of the same kind | `-toggle`, `-error`, `-back-to-login` |
+
+So: `auth-login-submit`, `auth-change-password-otp-error`, `auth-reset-password-toggle`.
+
+**What earns one:** every interactive control, and every region a test must assert the
+existence of — inputs, submit buttons, links that navigate away, the error banner, the
+success banner, invalid/empty states. Not layout wrappers, not decoration.
+
+### A shared component never hardcodes a test ID
+
+It takes the ID from its call site, or two instances on one form collide. `data-testid`
+reaches the inner input by spreading; a *second* addressable element needs its own named
+prop:
+
+```tsx
+export function PasswordInput({ toggleTestId, ...inputProps }: { toggleTestId?: string } & Props) {
+  return (
+    <div className="relative">
+      <Input {...inputProps} />                       {/* data-testid arrives here */}
+      <button type="button" data-testid={toggleTestId} … />
+    </div>
+  );
+}
+```
+
+`PasswordInput` (`features/auth/components/molecules/`) and `PasswordField`
+(`features/settings/views/password-tab-fields.tsx`) are the worked examples — `toggleTestId`,
+`errorTestId`.
+
+### Before you rename or remove one
+
+```bash
+grep -rn '<the-id>' qa-automation/e2e
+```
+
+Updating the spec in the same commit is part of the change, not a follow-up. A screen you
+are rewriting keeps its IDs unless the element itself is gone.
+
 ## Misc
 
 Mobile-first Tailwind breakpoints. Touch targets ≥ 44px. Routes are URL-driven: `/create`,

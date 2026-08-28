@@ -221,8 +221,23 @@ feature unit makes the diff unreviewable.
 | --- | --- | --- |
 | `apps/api` | `contexts/api.md` | `presentation → usecase → service → orm`, never upward. Module registration is the one sanctioned exception. Barrel exports |
 | `apps/api/prisma` | `contexts/prisma.md` | **A schema change requires a committed migration in the same unit.** UUID PK + per-tenant code. Derive the code prefix, do not assume it. **Confirm whether your model is inside the tenant-scoping allowlist** — scoping is not unconditional |
-| `apps/web` | `contexts/web.md` | Feature-first. Reuse before creating. Theme variables, no hardcoded colour. Focused-submit validation |
+| `apps/web` | `contexts/web.md` | Feature-first. Reuse before creating. Theme variables, no hardcoded colour. Focused-submit validation. **Every new control and state region carries a `data-testid`** |
 | `apps/mobile` | `contexts/mobile.md` | `StyleSheet.create` and `theme/tokens.ts` — not Tailwind. `SecureStore` for tokens. 48px targets |
+
+### Web UI ships addressable
+
+`qa-automation/` drives the real app through `data-testid`, so a screen without IDs is a
+screen the E2E suite cannot reach — and one nothing will flag, because that suite is not an
+Nx project and no gate runs it. Building the UI and then retrofitting IDs means touching the
+same production files twice.
+
+So while you are in the file: every interactive control, every error and success banner,
+every invalid/empty state gets `<module>-<flow>-<element>`, kebab-case. A shared component
+takes its ID from the call site — never hardcoded, or two instances on one form collide.
+Scheme, the prop pattern and the worked examples are in `contexts/web.md` → *Test IDs*.
+
+If the unit changes a screen that already has IDs, `grep -rn '<the-id>' qa-automation/e2e`
+before renaming, and update the spec in the same unit. That is in scope, not a follow-up.
 
 ## 6. Finish means the gates ran
 

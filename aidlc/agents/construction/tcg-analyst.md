@@ -125,6 +125,7 @@ unenforced, and each has cost this codebase already.
 | **Enum exhaustiveness** | If a status enum gained a member, every `switch` and mapping over it needs a case. A missing one renders blank rather than throwing |
 | **Migration** | Schema moved without a committed migration is an incomplete change, not a pending one |
 | **Unconfirmed × permanent** | Does this diff make an `[UNVERIFIED]` requirement expensive to reverse — a one-way migration, a backfill, an enum or response shape others will depend on? Unverified alone is routine and never a finding on its own; the pair is. Check the unit's *Risk* block declared it, and raise it if the pair appeared during the build |
+| **Test IDs** | Web UI in the diff: does every new control and state region carry a `data-testid`, and did any *existing* ID get renamed or dropped? `qa-automation/` binds to them, and nothing runs it — `grep -rn '<the-id>' qa-automation/e2e` is the only signal there is |
 | **Contract** | Did a DTO or response shape change? The frontends do not import API types, so nothing catches it at build time. Delegate to `tcg-contract-tracer` rather than eyeballing it |
 
 For a schema-touching unit, delegate the depth to `tcg-prisma-guardian` and report its

@@ -99,6 +99,9 @@ memory. Then the standing hazards, each silent and each unenforced:
 - **Migration** — schema moved without a committed migration is incomplete, not pending.
 - **Timestamptz** — new timestamp columns; ~285 existing columns use it.
 - **Enum exhaustiveness** — a new enum member needs every `switch` updated.
+- **Test IDs** — web UI in the diff: new controls and state regions carry a
+  `data-testid`, and no *existing* one was renamed or dropped without its spec.
+  `qa-automation/` binds to them and no gate runs it, so the grep is the only signal.
 - **Reuse** — a new component that already exists somewhere in the nine `components/`
   directories. Search `ui/`, `base/`, `atoms/`, `molecules/`, `patterns/` — not just the
   atomic tiers.
@@ -127,6 +130,7 @@ field, a new allowlist row and a new required prop all ripple.
 | A new enum member | Every `switch`, mapping table, badge and label map, on both front-ends | `git grep -rn '<EnumName>' apps packages` |
 | A unit, format or id representation — feet-inches, currency, `generateId()` | Every producer **and** consumer of that value on all four projects. Longest reach, weakest compile-time signal | `git grep -rn '<field>' apps packages` |
 | A shared component in one of the nine `components/` dirs | Every render site. The diff shows one; the grep shows the rest | `git grep -rln '<ComponentName>' apps/web/src` |
+| A `data-testid`, or the element carrying one | Every spec addressing it. Renaming an ID is a silent break — the suite is not an Nx project, so no hook and no CI job runs it | `grep -rn '<the-id>' qa-automation/e2e` |
 | A query filter, guard, role or visibility rule | Every route and list built on that method. A filter loosened for one screen is loosened for all of them | `git grep -rn '<serviceMethod>' apps/api/src` |
 | An extracted, renamed or "cleaned up" helper | Its **pre-existing** callers — the ones that gained no test in this diff | `git grep -rn '<fn>' apps packages` |
 | Env, seed, docker or build config | Whatever reads it at **build** time. Mobile inlines `EXPO_PUBLIC_*` at build, so a dev-correct read can ship broken | name the build that would have caught it |
