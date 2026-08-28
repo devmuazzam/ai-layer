@@ -211,3 +211,4 @@ convention was followed.
 - `.ai/aidlc/agents/` — the AI-DLC phase agents
 - `.ai/vault/sync/confluence-sync.md` — how the vault tracks Confluence
 - `.ai/claude/contexts/web.md` → *Test IDs* — the `data-testid` contract `qa-automation/` depends on
+- `.ai/claude/skills/demo-walkthrough/WALKTHROUGH.md` — fresh tenant → calculated payroll, every URL and pre-req. **Describes shipped code, never a source for a spec**; kept current by `close-ticket` step 5
