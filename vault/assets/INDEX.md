@@ -23,6 +23,7 @@ Assets, yards-as-records, tools & rigging, categories. Backend usecases: `asset-
 ## Decisions that bind this module
 
 - [2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md) — Archive replaces delete, app-wide — decision
+- [2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) — Create **and** edit both land on the entity's detail page, app-wide; supersedes the create half of 2026-08-20
 
 ## Open questions
 
