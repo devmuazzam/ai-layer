@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-08-27
+updated: 2026-08-31
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -1629,3 +1629,10 @@ someone has confirmed otherwise.
   premiums are per-tenant configuration or product constants.
 - **Rules:** [PAY-008](rules/PAY-008-effective-dated-configuration.md), [PAY-036](rules/PAY-036-second-shift.md), [PAY-037](rules/PAY-037-third-shift.md), [PAY-044](rules/PAY-044-lattice-boom-premium.md), [PAY-070](rules/PAY-070-foreman-premium.md), [PAY-071](rules/PAY-071-military-base-premium.md)
 - **Cross-link:** admin/gaps.md → *What a newly created tenant must contain*
+
+## Pointers — departments archive (owned by admin)
+
+- **Status:** open
+- **Asked:** 2026-08-31 — PR #422 review (branch `feat/SCRUM-648`, Path B, no ticket folder); tcg-scrum escalation
+- **Question:** [STRUCTURE.md](../STRUCTURE.md):40 routes the `departments` usecase to this module, and one of the three open sub-questions turns on **employees** — whether a department may be archived while employees are still assigned to it, now that PR #422 removed the hard delete that used to block on `countEmployeesByDepartmentId`. The full entry, including whether `DELETE /departments/:code` should have gone and what an archived department may still be selected in, lives at [admin/gaps.md](../admin/gaps.md#departments--does-archive-replace-delete-outright-and-what-may-an-archived-department-still-be-used-for). Admin owns the answer: it already holds the sibling departments question (*What a newly created tenant must contain*) and owns department roles and permissions.
+- **Owner:** see the owning entry.
