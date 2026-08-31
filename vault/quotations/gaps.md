@@ -90,3 +90,47 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   — a dead path; billing actually comes from pricing sheets. Vault: [billing-code-and-price-list.md](billing-code-and-price-list.md)
   (status draft/in-progress/active discussed 2026-03-12, no effective-dating design anywhere).
 
+## Billing-code create form prefill — six query params, no producer, no source
+
+- **Status:** open
+- **Asked:** 2026-08-31 — PR review of branch `fix/auto-select-issue` (PR #432, commit
+  `0d000632`). **Not a ticket question:** the branch carries no `SCRUM-###`, no
+  `.ai/aidlc/SCRUM-###/` folder and no `processed.log` row, so there is no `spec.md` §12 to
+  hold it. The assets-side half of the same review — asset and sub-category create prefill,
+  plus the dirty-state and invalid-ID questions that apply to this form too — is at
+  [assets/gaps.md](../assets/gaps.md#create-form-prefill-from-url-query-params--the-whole-contract-is-unwritten).
+- **Question:** should the billing-code create form read `name`/`defaultName`,
+  `subCategoryId`, `categoryId`, `employeeTypeId`, `customTypeId` from the URL and set
+  `BillingCodeTypeCategory` from whichever is present — i.e. **is there an intended "create a
+  billing code from here" entry point**, and if so which surfaces should produce those links
+  (a sub-category page, an employee type, a custom type, or the quotation line with no billing
+  code)? As shipped this is a **consumer with no producer**: nothing in `apps/web` builds such
+  a URL — `features/billing-codes/view/billing-codes-list.tsx` pushes bare
+  `/accounting/billing-codes/create` — so the branch adds 73 lines of unreachable behaviour.
+- **Sources checked:** [INDEX.md](INDEX.md); [billing-code-and-price-list.md](billing-code-and-price-list.md)
+  (`status: unverified`, punch list) — has *"Add billing code type CRUD"* and *"For custom – we
+  should be able to re-use same sub categories multiple times"*, **neither of which is a
+  prefilled create form**; this register's other three entries; and the nearest text match in
+  the vault, [projects-jobs/job-project-das.md](../projects-jobs/job-project-das.md):23
+  *"Pre populated custom billing code in prioce list creation"* — **a different surface**
+  (price-list creation, not the billing-code form) and a punch list, which
+  [gaps.md](../gaps.md#feedback-punch-lists-are-not-scoped-to-the-module-they-are-filed-under)
+  warns is a cross-module bug list rather than a specification. **Jira was not checked: no Jira
+  MCP was available in this session.**
+- **Note:** there *is* one recorded conversation about an entry point into billing-code
+  creation, and it points the other way. In `meetings/transcripts/2026-05-05-tcg-erp-system.md`
+  Melissa McNutt asks for a quick-add (:460, *"could it auto-populate as a billing code where
+  we don't have to go back and create a billing code?"*), mohsin.ali proposes an inline **add
+  new billing code** button (:486), and ehtesham.anwar closes the thread against it (:487) —
+  *"the problem with that is we don't know if the person has the right access … let's add this
+  to the approval system instead of creating new functionality"*, with ans.nisar (:469)
+  preferring to flag the missing code rather than create one inline. That is a **meeting
+  record, not a commitment** (agent §6), it concerns the quotation line-item surface rather
+  than sub-category or employee-type pages, and it says nothing about URL params. So it is
+  adjacent context for whoever answers, not a source — but it means "add a create-from-here
+  path" should not be assumed wanted just because the code now supports one.
+- **Blocked:** whether the shipped prefill code is kept, reverted as dead code, or completed
+  with the producer links it implies.
+- **Owner:** needs assignment — Ryan Adams / Joe Schacatano (sales & quotation) for whether the
+  entry point is wanted; ehtesham.anwar owns the 2026-05-05 access-control objection above.
+
