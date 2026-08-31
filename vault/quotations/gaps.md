@@ -259,6 +259,36 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   question, but should not be lost: *"ALL SUBCONTRACTORS WILL BE BILLED AT A MINIMUM OF 10% MARK
   UP."*
 
+## Billable hour minimums and maximums are contractual but have nowhere to live
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources`, reading the rate
+  card added the same day. Registered because the commit that added the rate card (`86a0836`)
+  filed the long-boom and surcharge questions from it but not this one.
+- **Question:** the customer contract sets a **minimum billable hours** figure per resource
+  kind, and in one case a maximum: 22-ton crane 3 h in normal hours and 4 h after hours; any
+  work before 06:00, after 17:00, Saturday or Sunday 4 h; 30-ton and above, trucks, support
+  equipment, riggers and signalpersons 4 h; **Operator Load 5 h minimum and 8 h maximum**;
+  support vehicle and pilot car 4 h; a crane that works under 8 h and stays on site overnight
+  bills Crew Time at 8 h. None of it exists in the model. Three sub-questions. (a) Should a
+  billing code carry its own min/max hours, or is the minimum a property of the **crane size
+  band and the time of day**, which no single code knows? (b) On a quote line, does a figure
+  below the minimum get **defaulted up** silently, **warned** about, or **rejected** the way a
+  fractional rate now is? (c) Is the minimum a quoting-time rule, an invoicing-time rule, or
+  both — the surcharge question above shows the contract already distinguishes the two, and
+  several of these minimums (show-up, cancellation) can only be known after the fact.
+- **Sources checked:** [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §2, the
+  full minimums table, and §3 for the per-charge `4 h min` notes. `apps/api/prisma/
+  schema.prisma:1246-1266` — `model BillingCode` carries `unitMeas`, `defaultRate`, `unitCost`,
+  `applySurcharge`, `taxable`, `percentApplied` and **no hours field of any kind**. `minHours`,
+  `maxHours`, `minimumHours` return zero hits across `apps/api/src` and `apps/web/src`
+  (grepped 2026-09-01). The rate-card commit's own two gap entries above do not cover it.
+- **Note:** the Operator Load line is the one with a written cross-module consequence — the
+  rule is *printed on the quote line itself* (*"5 hour minimum with 8 hour max per day"*), and
+  `../dispatch/gaps.md` is separately unsure whether an operator load is an Asset, a crane
+  configuration, or a billable line. It is at least a billable line: `OPL` is seeded in
+  `apps/api/src/utility/seed-data.ts:86`.
+
 ## Is the $50,000 approval threshold inclusive or exclusive?
 
 - **Status:** open

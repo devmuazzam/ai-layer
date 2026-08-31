@@ -165,11 +165,25 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   The workbook's shape says Asset; the phrase *"it will depend on the crane's
   configuration"* says the second. This decides whether the operator load appears in the
   asset list, whether it can be independently unavailable, and whether utilisation counts
-  it. Nothing is built either way — `counterweight`, `CWT` and `operator load` return zero
-  hits across API, web and schema.
+  it. **No Asset-side model exists either way** — nothing in `schema.prisma` represents a
+  load as a unit under a parent crane.
+- **Corrected 2026-09-01 — the original entry's evidence was wrong.** It claimed
+  `counterweight`, `CWT` and `operator load` *"return zero hits across API, web and
+  schema."* They do not. All three of the workbook's load kinds are already seeded as
+  **billing code types** in `apps/api/src/utility/seed-data.ts`: `CWT` Counter Weight Truck
+  (line 76), `OPL` Operator Load (line 86), `SUPP` Support Load (line 99). That points at a
+  third answer the entry did not offer — a load is already modelled as **a billable line**,
+  which is what a quotation resource hangs off — and it is the only one of the three with
+  anything built behind it. `apps/api/src/service/ticket-labor-entries/` also reasons about
+  Operator Load explicitly, as *"Operator Load trucks that also allocate as ASSET but have
+  no `mainBoomLength`"* (`ticket-labor-entries.repository.ts:327`), so the ticket side
+  already treats an OL as allocating like an asset while being priced as its own code.
+  Do not answer this question from the "nothing is built" premise.
 - **Sources checked:** `ASSETS_DISPATCH_(Lisette-approved).xlsx`, `Dispatch PDF Blank
   Master.pdf` annotations, `crane-configurations.md`, `schema.prisma`
-  (`Asset`, `SubCategoryAssociatedResource`, `SubJobLoadoutItem`, `UnitTypeResource`).
+  (`Asset`, `SubCategoryAssociatedResource`, `SubJobLoadoutItem`, `UnitTypeResource`);
+  and on the 2026-09-01 correction, `apps/api/src/utility/seed-data.ts:70-100`,
+  `apps/api/src/service/ticket-labor-entries/ticket-labor-entries.repository.ts:327`.
 
 ## Crane configuration — which loads are mandatory, and per what?
 
@@ -182,7 +196,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the sub-category, or to the lift being quoted? And who picks the configuration — sales at
   quotation time, or dispatch at allocation time? Without this the system cannot know how
   many tickets a crane generates.
-- **Sources checked:** `crane-configurations.md`, `ASSETS_DISPATCH_(Lisette-approved).xlsx`.
+- **Bearing on quotations, noted 2026-09-01.** Until the "who picks it" half is answered,
+  **nothing is required of the quotations module** and none should be inferred: a quote
+  today prices `OPL` / `CWT` / `SUPP` as ordinary resource lines a salesperson adds by
+  hand, with no expansion from the parent crane. Related and separately unanswered: the
+  rate card gives Operator Load a **5 h minimum and 8 h maximum**, which `BillingCode` has
+  no field for — see `../quotations/gaps.md`.
+- **Sources checked:** `crane-configurations.md`, `ASSETS_DISPATCH_(Lisette-approved).xlsx`;
+  and on the 2026-09-01 note, `apps/api/src/utility/seed-data.ts:70-100`,
+  `apps/api/prisma/schema.prisma:1246-1266` (`BillingCode`).
 
 ## GPS-verified time on a job — what is being verified?
 
