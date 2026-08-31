@@ -1663,3 +1663,37 @@ someone has confirmed otherwise.
 - **Sources checked:** `payroll/fcc-employee-types-and-crafts.md`, SCRUM-914 description,
   `schema.prisma` (`DepartmentRole`, `EmployeeType`), `packages/shared/src/enums/index.ts`,
   `apps/web/src/features/das/right-section/components/employee-card.helpers.ts`.
+
+## Premium catalog CRUD — the engine reads six literal codes, not the catalog
+
+- **Status:** open
+- **Asked:** 2026-08-31 — building CRUD for payroll premium types (no ticket; the premium
+  catalog has never been specified by one, per §*Payroll premium catalog* above)
+- **Question:** Two consequences of the engine binding to codes rather than to the table, each
+  newly reachable now that the catalog has a create/archive surface. **(a) Should archiving a
+  premium stop it pricing payroll?** `PayrollRepository.listPremiums()` applies no `status`
+  filter, and `PayrollService.premiumRates()` consumes that same unfiltered list — so a row
+  archived through the UI keeps its amount in the next calculate, and if it were filtered out it
+  would fall to the hardcoded `??` default rather than to zero. Neither "archived still pays",
+  "archived pays the code default" nor "archived pays nothing" is written anywhere.
+  **(b) What is a premium created under a new code supposed to do?** `premiumRates()` reads
+  exactly `FOREMAN`, `MILITARY`, `LATTICE_OP`, `LATTICE_OI`, `SHIFT_2`, `SHIFT_3`; a seventh row
+  is stored, listed and editable but priced by nothing. Either the create surface needs a
+  constraint saying so, or the engine needs to consume the catalog generically — which is a rule
+  question (what does a premium *do*: base-rate adder, on-top adder, per-day flat?), not a
+  refactor.
+- **Sources checked:** `payroll/INDEX.md`; this register — §*Payroll premium catalog —
+  configured per tenant, or constants in the engine* (same root cause, different half: it asks
+  what an **empty** table means, this asks what a **non-matching** row means); `rules/PAY-008`,
+  `PAY-036`, `PAY-037`, `PAY-044`, `PAY-070`, `PAY-071`; `erp-payroll-module-frd/01` §2.1;
+  `decisions/` (none on premiums). **Ticket sweep:** `SCRUM-926`'s `spec.md` and `units.md`
+  mention no premium CRUD, no `PayrollPremiumType` and no premium settings screen — the list and
+  amount-edit that shipped were never specified either.
+- **Note:** the CRUD built on 2026-08-31 deliberately left `premiumRates()` untouched, so no
+  calculated pay changes. Delete is a soft archive (`status: INACTIVE`), matching every other
+  tenant reference list (craft codes, union codes, work-comp codes, billing code types).
+- **Blocked:** whether the premiums settings screen can be described as "turning a premium off";
+  generic premium evaluation; the effective-dating `PAY-008` wants on these rates.
+- **Owner:** Brian Petros (what a premium is allowed to be), with Fouzan Shakil for whether the
+  engine should consume the catalog generically.
+- **Rules:** [PAY-008](rules/PAY-008-effective-dated-configuration.md), [PAY-036](rules/PAY-036-second-shift.md), [PAY-037](rules/PAY-037-third-shift.md), [PAY-044](rules/PAY-044-lattice-boom-premium.md), [PAY-070](rules/PAY-070-foreman-premium.md), [PAY-071](rules/PAY-071-military-base-premium.md)
