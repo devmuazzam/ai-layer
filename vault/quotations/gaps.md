@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-08-31
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -90,3 +90,117 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   — a dead path; billing actually comes from pricing sheets. Vault: [billing-code-and-price-list.md](billing-code-and-price-list.md)
   (status draft/in-progress/active discussed 2026-03-12, no effective-dating design anywhere).
 
+## Billing-code create form prefill — six query params, no producer, no source
+
+- **Status:** open
+- **Asked:** 2026-08-31 — PR review of branch `fix/auto-select-issue` (PR #432, commit
+  `0d000632`). **Not a ticket question:** the branch carries no `SCRUM-###`, no
+  `.ai/aidlc/SCRUM-###/` folder and no `processed.log` row, so there is no `spec.md` §12 to
+  hold it. The assets-side half of the same review — asset and sub-category create prefill,
+  plus the dirty-state and invalid-ID questions that apply to this form too — is at
+  [assets/gaps.md](../assets/gaps.md#create-form-prefill-from-url-query-params--the-whole-contract-is-unwritten).
+- **Question:** should the billing-code create form read `name`/`defaultName`,
+  `subCategoryId`, `categoryId`, `employeeTypeId`, `customTypeId` from the URL and set
+  `BillingCodeTypeCategory` from whichever is present — i.e. **is there an intended "create a
+  billing code from here" entry point**, and if so which surfaces should produce those links
+  (a sub-category page, an employee type, a custom type, or the quotation line with no billing
+  code)? As shipped this is a **consumer with no producer**: nothing in `apps/web` builds such
+  a URL — `features/billing-codes/view/billing-codes-list.tsx` pushes bare
+  `/accounting/billing-codes/create` — so the branch adds 73 lines of unreachable behaviour.
+- **Sources checked:** [INDEX.md](INDEX.md); [billing-code-and-price-list.md](billing-code-and-price-list.md)
+  (`status: unverified`, punch list) — has *"Add billing code type CRUD"* and *"For custom – we
+  should be able to re-use same sub categories multiple times"*, **neither of which is a
+  prefilled create form**; this register's other three entries; and the nearest text match in
+  the vault, [projects-jobs/job-project-das.md](../projects-jobs/job-project-das.md):23
+  *"Pre populated custom billing code in prioce list creation"* — **a different surface**
+  (price-list creation, not the billing-code form) and a punch list, which
+  [gaps.md](../gaps.md#feedback-punch-lists-are-not-scoped-to-the-module-they-are-filed-under)
+  warns is a cross-module bug list rather than a specification. **Jira was not checked: no Jira
+  MCP was available in this session.**
+- **Note:** there *is* one recorded conversation about an entry point into billing-code
+  creation, and it points the other way. In `meetings/transcripts/2026-05-05-tcg-erp-system.md`
+  Melissa McNutt asks for a quick-add (:460, *"could it auto-populate as a billing code where
+  we don't have to go back and create a billing code?"*), mohsin.ali proposes an inline **add
+  new billing code** button (:486), and ehtesham.anwar closes the thread against it (:487) —
+  *"the problem with that is we don't know if the person has the right access … let's add this
+  to the approval system instead of creating new functionality"*, with ans.nisar (:469)
+  preferring to flag the missing code rather than create one inline. That is a **meeting
+  record, not a commitment** (agent §6), it concerns the quotation line-item surface rather
+  than sub-category or employee-type pages, and it says nothing about URL params. So it is
+  adjacent context for whoever answers, not a source — but it means "add a create-from-here
+  path" should not be assumed wanted just because the code now supports one.
+- **Blocked:** whether the shipped prefill code is kept, reverted as dead code, or completed
+  with the producer links it implies.
+- **Owner:** needs assignment — Ryan Adams / Joe Schacatano (sales & quotation) for whether the
+  entry point is wanted; ehtesham.anwar owns the 2026-05-05 access-control objection above.
+
+
+## Sub-category association cycles — rejected at self-reference only, not at multi-hop
+
+- **Status:** open
+- **Asked:** 2026-08-31 — quotation resource nesting fix (duplicate/wrong-nesting defect on the
+  Resources tab)
+- **Question:** `SubCategoryAssociatedResource` lets a sub-category associate other sub-categories,
+  employee types or custom types, and the quotation Resources tab expands those associations
+  recursively into child rows. `sub-categories.service.ts` rejects a sub-category associated to
+  **itself**, but nothing rejects a loop through a second one (`A -> B -> A`), and the schema has no
+  cycle constraint. Such a catalog recursed to `MAX_QUOTATION_RESOURCE_DEPTH` and materialised five
+  levels of alternating, apparently unrelated rows under one line item. Should the API reject
+  multi-hop association cycles **at configuration time**, so every consumer is safe, or is guarding
+  per consumer the intent? Related: association lookup matches on **item name** against
+  sub-category names, so an employee type or custom type sharing a name with a sub-category
+  inherits that sub-category's associations — is name matching intended, or should it key on the
+  resolved FK id?
+- **Sources checked:** `apps/api/prisma/schema.prisma` → `model SubCategoryAssociatedResource`
+  (three unique constraints, no cycle constraint);
+  `apps/api/src/usecase/asset-management/sub-categories/sub-categories.service.ts` (the
+  self-association check, *"A sub-category cannot be associated to itself"*);
+  [decisions/2026-08-31-quotation-associated-child-merge-semantics.md](../decisions/2026-08-31-quotation-associated-child-merge-semantics.md)
+  (records the client-side cycle guard shipped as the interim fix);
+  [billing-code-and-price-list.md](billing-code-and-price-list.md) and this register's other
+  entries — none covers association topology. **Jira was not checked: no Jira lookup in this
+  session.**
+- **Blocked:** nothing is blocked. The Resources tab now guards the ancestor path, so a looping
+  catalog no longer produces garbage rows. This asks whether the rule belongs in the API instead.
+- **Owner:** needs assignment — whoever owns asset-management catalog rules.
+
+
+## Quotation duplicate — what a copy carries, and what a fresh copy resets
+
+- **Status:** open
+- **Asked:** 2026-08-31 — PR review of branch `fix/quotation-das-resources` (commit `d89acfd8`,
+  which changed the resource clone to depth-first). **Not a ticket question:** the branch carries
+  no `SCRUM-###`, no `.ai/aidlc/SCRUM-###/` folder and no ticket id on its `processed.log` row, so
+  there is no `spec.md` §12 to hold it.
+- **Question:** the Duplicate action on a quotation is a **deep copy with no written contract**.
+  As implemented (`quotations.service.ts` → `cloneInternal`) it mints a new `QUOT-#####`, resets
+  `status` to `DRAFT` and `validUntil` to `null`, carries every other commercial and customer
+  scalar including `subtotal`/`tax`/`total`, copies the resource tree and the tool rows — and
+  copies **nothing else**. Quotation attachments (stored as `Attachment` records keyed by feature
+  `QUOTATION` + quote number, not as a quotation relation) are silently dropped, as is anything
+  else held outside the quotation row, its resources and its tools. Is that the intended product
+  behaviour? Specifically: (a) should a duplicate carry attachments, lift information and
+  pre-quote/customer-package documents, or deliberately start clean; (b) should the copied
+  per-line `discountValidUntil` be reset the way the header `validUntil` is, given a duplicate
+  restarts its validity window; (c) should the stored `subtotal`/`tax`/`total` be carried or
+  recomputed on the copy?
+- **Sources checked:** [INDEX.md](INDEX.md); [quotations-INDEX.md](quotations-INDEX.md) and all
+  four of its candidates ([quotation.md](quotation.md), [quotations.md](quotations.md),
+  [quotation-flow-process.md](quotation-flow-process.md),
+  [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md)) — **none mentions
+  Duplicate at all**; this register's other entries;
+  [../decisions/2026-08-31-quotation-qty-not-das-sets.md](../decisions/2026-08-31-quotation-qty-not-das-sets.md)
+  (covers convert-to-job, not duplicate). Jira **was** checked: no ticket in `SCRUM` names a
+  quotation duplicate/copy/clone — the "duplicate" hits are unrelated defects (`SCRUM-613` toast,
+  `SCRUM-678` DocuSign email, `SCRUM-665` rigging summary). The only account of the feature
+  existing at all is a meeting record — `meetings/transcripts/2026-06-23-mobile-app-payroll-adp-and-draft-workflows.md`
+  (ehtesham.anwar, describing the mobile parity list: *"we can send this quotation to the customer,
+  edit, duplicate … just like we're sending from the web portal"*) — which is a **record, not a
+  commitment** (agent §6) and says nothing about what a copy contains.
+- **Note:** the depth-first change itself needs no product answer. Copying a tree parent-before-child
+  is a correctness fix — the previous order-dependent copy orphaned grandchildren, which is data
+  loss under any reading. What is unwritten is the **scope** of the copy, above.
+- **Blocked:** nothing is blocked. The Duplicate action works and the tree now survives it. This
+  asks whether the dropped attachments and the carried-over stored totals are intended.
+- **Owner:** needs assignment — Ryan Adams / Joe Schacatano (sales & quotation) for what a re-quote
+  should carry.

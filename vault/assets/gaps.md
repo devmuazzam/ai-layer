@@ -147,3 +147,50 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** `assets/fcc-units-and-schedule-types.md`,
   `dispatch/crane-configurations.md`, `schema.prisma` (`Category`, `SubCategory`,
   `Permit`, `Plan`).
+
+## Create-form prefill from URL query params — the whole contract is unwritten
+
+- **Status:** open
+- **Asked:** 2026-08-31 — PR review of branch `fix/auto-select-issue` (PR #432, commit
+  `0d000632`). **Not a ticket question:** the branch carries no `SCRUM-###`, has no
+  `.ai/aidlc/SCRUM-###/` folder and no `processed.log` row, so there is no `spec.md` §12 to
+  hold it. Filed here per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*; the
+  billing-code half is in [quotations/gaps.md](../quotations/gaps.md#billing-code-create-form-prefill--six-query-params-no-producer-no-source).
+- **Question:** four things, each answerable in a line.
+  1. When a user clicks **Create** from a category or sub-category detail/list page, should
+     the new asset's category / sub-category arrive **pre-selected** from that context?
+  2. Should the sub-categories list's **Create** button carry the list's **active category
+     filter** into the new sub-category form?
+  3. Does a prefilled value count as **a user edit** — should prefill mark the form dirty and
+     trip the unsaved-changes guard, so Cancel prompts on a form the user never typed in?
+  4. If a query param names an ID that does not exist, is archived, or is outside the
+     tenant's visibility, should the form **silently ignore it** or **tell the user**?
+- **Sources checked:** [INDEX.md](INDEX.md); [categories-and-sub-categories.md](categories-and-sub-categories.md)
+  (`status: unverified`, 0.6 KB) — its two category bullets are *"Edit should re-direct to show
+  page"* and *"Remove Preview feature"*, i.e. navigation and listing items, **nothing about a
+  create form or what it opens with**; [user-story-and-tasks.md](user-story-and-tasks.md)
+  (`provenance: personal-space`) — yard/HubSpot/2FA/customer/quotation stories only, no asset
+  or category create story at all; [tool-and-rigging.md](tool-and-rigging.md) — yard dashboard
+  and utilization only. `../decisions/` — 18 notes, and **only one touches create flows**:
+  [2026-08-20-post-save-navigation-convention.md](../decisions/2026-08-20-post-save-navigation-convention.md)
+  (`status: reference`), which settles *where a save lands* and says nothing about what a form
+  opens with. Grep across the whole `.ai/` overlay for `prefill` / `pre-populat` / `query param`
+  / `categoryId` / `subCategoryId` / `auto-select` / `pre-select` returns **no hit on create-form
+  prefill**; every populate-shaped hit is quotation *rate* auto-population from billing codes
+  (2026-03-17, 2026-05-05 transcripts), a server-side pricing lookup, not a URL contract.
+  `.ai/aidlc/processed.log` — no row for this branch. **Jira was not checked: no Jira MCP was
+  available in this session**, so a ticket may exist that this review cannot see.
+- **Note:** the adjacency worth naming, because it cuts the other way. The post-save
+  navigation note's *What this does NOT settle* explicitly lists **"creates that do not start
+  from a listing — a create nested inside another record's page … whether these also land on
+  the listing, or return to where they were opened from, is undecided."** This branch builds
+  exactly that flow (create reached from a category/sub-category detail page) — so the one
+  decision in this neighbourhood names this territory as open rather than covering it. Q3 and
+  Q4 are **app-wide form conventions**, not assets-specific: they will recur on the next module
+  that carries context in a URL, and are cheapest to settle once, the way post-save navigation
+  was. `apps/web/AGENTS.md` → *Forms* sets failed-submit behaviour and is silent on both.
+- **Blocked:** PR #432's five behaviours are shipping unsourced; any future create form that
+  carries context in the URL; any claim that prefill-does-not-dirty (or does) is settled.
+- **Owner:** needs assignment. Q1/Q2 are product — route to TCG via Brian Petros. Q3/Q4 are
+  internal conventions the team can settle itself if the client has no view; Fouzan Shakil is
+  the precedent-holder, having decided the post-save convention the same way.

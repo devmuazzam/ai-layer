@@ -55,3 +55,4 @@ date        ticket      path  branch                              by    pr    no
 
 
 2026-08-25  SCRUM-873   C     fix/SCRUM-873                      areeba  -     resources surcharge chip from billing codes; lost banner wrap; edit status read-only
+2026-08-31  -           C     fix/quotation-das-resources            fouzan  -     stop qty exploding into DAS sets; child qty independent of parent
