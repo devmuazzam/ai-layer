@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-08-27
+updated: 2026-08-31
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -1629,3 +1629,37 @@ someone has confirmed otherwise.
   premiums are per-tenant configuration or product constants.
 - **Rules:** [PAY-008](rules/PAY-008-effective-dated-configuration.md), [PAY-036](rules/PAY-036-second-shift.md), [PAY-037](rules/PAY-037-third-shift.md), [PAY-044](rules/PAY-044-lattice-boom-premium.md), [PAY-070](rules/PAY-070-foreman-premium.md), [PAY-071](rules/PAY-071-military-base-premium.md)
 - **Cross-link:** admin/gaps.md → *What a newly created tenant must contain*
+
+## Employee types — FCC holds several per employee; we store one
+
+- **Status:** open
+- **Asked:** 2026-08-31 — reading `OneDrive_1_8-31-2026` into the vault
+- **Question:** `FMS_EMPLOYEE_TYPE_DETAILS` is a join table — 781 rows over ~354
+  employees, `EmpID` × `EmpTypeID` with a `PrimaryType` flag (EmpID 5073 is Operator
+  primary, plus Driver and Rigger). The seeder extracts all of it including
+  `primaryType` (`linked-seed-files.ts:302`), then `seed-all.ts:666-675` collapses it to
+  one type per employee because `Employee.employeeTypeId` is a single nullable FK. So the
+  secondary roles are pulled on every sync and dropped. Should TCG hold many types per
+  employee with one primary, matching FCC and the UAT request for an Operator/Rigger
+  multi-select? And if so, does `EmployeeType` become the single source of truth for a
+  field role, with `CraftRoleType` deriving from it?
+- **Sources checked:** `payroll/fcc-employee-types-and-crafts.md`, `schema.prisma`
+  (`Employee`, `EmployeeType`), `fcc-seeder/src/linked-seed-files.ts`,
+  `fcc-seeder/src/seed-all.ts`, `packages/shared/src/enums/index.ts`.
+
+## Field role vs portal role — one list in FCC, three representations in TCG
+
+- **Status:** open
+- **Asked:** 2026-08-31 — departments-and-roles discussion, plus the FCC employees report
+- **Question:** FCC's `FMS_EMPLOYEE_TYPES` is one flat list mixing field roles (Operator,
+  Oiler, Mechanic, Yard Man, Rigger, Driver, Shop) with portal roles (Management, Sales
+  Admin, Accounting Admin, Dispatch Admin, Safety Admin). TCG has split them — but into
+  *three* places, not two: `DepartmentRole` (permissions), `EmployeeType` (a name only),
+  and `CraftRoleType` (payroll, and the only one carrying `THIRD_MAN`). SCRUM-914 would
+  add a fourth as sub-categories under an Employee category. Which is the source of
+  truth, and what do the others derive from? The DAS card colour resolver currently
+  substring-matches the employee type name, so any answer that leaves that in place keeps
+  mislabelling every role that is not Oiler or Apprentice as Operator.
+- **Sources checked:** `payroll/fcc-employee-types-and-crafts.md`, SCRUM-914 description,
+  `schema.prisma` (`DepartmentRole`, `EmployeeType`), `packages/shared/src/enums/index.ts`,
+  `apps/web/src/features/das/right-section/components/employee-card.helpers.ts`.

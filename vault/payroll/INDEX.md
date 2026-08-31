@@ -2,7 +2,7 @@
 title: Payroll module - vault index
 source: onedrive/OneDrive_1_8-11-2026/
 migrated: 2026-08-13
-updated: 2026-08-18
+updated: 2026-08-31
 status: unverified
 conflicts_with: []
 jira: []
@@ -70,6 +70,7 @@ that produced the rest of the vault.
 | closed/resolved historical questions | [gaps-2026-08-20-retired.md](gaps-2026-08-20-retired.md) — frozen snapshot |
 | **what is still unanswered** about payroll or ADP | [gaps.md](gaps.md) — the payroll half of the open-question register, 41 entries. `grep -n '^## '` first; read only your section |
 | what a payroll SME said verbally, not yet in the rule matrix | [2026-08-20-payroll-rules-meeting-notes.md](2026-08-20-payroll-rules-meeting-notes.md) — WTL, rest period, subsistence, craft-code rate overrides. `status: unverified`, cleaned from a call transcript |
+| **what FCC holds for an employee** | [fcc-employee-types-and-crafts.md](fcc-employee-types-and-crafts.md) — the 16-type list mixing field and portal roles, the **multi-type join we extract then discard on seed**, and the craft-code update sheets |
 
 ## The spine of the domain
 

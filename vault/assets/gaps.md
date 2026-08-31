@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-08-27
+updated: 2026-08-31
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -132,3 +132,18 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** asset detail design; any expiry-reminder feature beyond permits.
 - **Owner:** TCG (Dylan Masterson for yard/units, Brian Petros for the list), CodingCops to
   bring the FCC field inventory.
+
+## Schedule types include non-equipment — does a TCG Category?
+
+- **Status:** open
+- **Asked:** 2026-08-31 — reading `OneDrive_1_8-31-2026` into the vault
+- **Question:** FCC's `FMS_SCHEDULE_TYPES` (25 rows) is the analogue of a TCG Category,
+  and roughly half its members are not machines: Lift Plan, FAA Permit, Street Permit,
+  Travel Permit, Mobilization, Rigger and Signalman, Outside Trucking Services, Storage,
+  Yard, Radio, Material Basket. So in FCC a "unit" is anything schedulable and billable.
+  TCG models permits and plans as their own entities instead. Which is right going
+  forward — and does the answer change if operator loads and counterweight loads become
+  Assets (see `dispatch/gaps.md`), since those are units that are not machines either?
+- **Sources checked:** `assets/fcc-units-and-schedule-types.md`,
+  `dispatch/crane-configurations.md`, `schema.prisma` (`Category`, `SubCategory`,
+  `Permit`, `Plan`).
