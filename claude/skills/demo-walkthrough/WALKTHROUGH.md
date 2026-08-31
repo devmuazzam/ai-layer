@@ -610,9 +610,10 @@ Operator and Oiler rows should be **offered as children of the crane**, with the
 - The pricing chips / sidebar show a subtotal equal to the sum of line `finalAmount`s.
 
 **Edge cases:**
-- **Quantity N.** Setting quantity 2 on the crane is specified to produce **2 DAS/Yard sets**
-  downstream (decision `2026-08-20-quantity-based-das-sets`). Verify that on the DAS board in step
-  11 — it is the most commonly-broken bit of the conversion.
+- **Quantity N.** Setting quantity 2 on the crane is a **billing** change only —
+  convert still yields **one** DAS/Yard set with `qty=2` (decision
+  `2026-08-31-quotation-qty-not-das-sets`, superseding the old explode rule).
+  Child rows keep their own quantity and do not inherit the parent's.
 - Add a resource **with no billing code** and confirm it still shows (the `f7e102f9` fix above).
 - **Reorder** rows and re-check the subtotal.
 - Add a **child of a child** — depth is capped at `MAX_QUOTATION_RESOURCE_DEPTH`.

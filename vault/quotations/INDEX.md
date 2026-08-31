@@ -25,7 +25,7 @@ Quotations, pricing, billing codes, mob/demob. Backend usecases: `quotations, qu
 
 ## Decisions that bind this module
 
-- [2026-08-20-quantity-based-das-sets.md](../decisions/2026-08-20-quantity-based-das-sets.md) — Quantity N on a quotation line becomes N DAS/Yard sets
+- [2026-08-31-quotation-qty-not-das-sets.md](../decisions/2026-08-31-quotation-qty-not-das-sets.md) — Quotation qty is billing only; one DAS/Yard set per root; child qty independent
 
 ## Open questions
 

@@ -26,7 +26,7 @@ Projects, jobs, plans, permits. Backend usecases: `projects, jobs, sub-jobs, pla
 - [2026-08-25-completed-job-view-only.md](../decisions/2026-08-25-completed-job-view-only.md) — Completed Project Jobs are hard view-only — decision
 - [2026-08-20-planning-tracker-archived-filter.md](../decisions/2026-08-20-planning-tracker-archived-filter.md) — Planning Tracker must have a filter that shows archived plans — decision
 - [2026-08-20-post-save-navigation-convention.md](../decisions/2026-08-20-post-save-navigation-convention.md) — Post-save navigation — edit goes to detail, create goes to listing — decision
-- [2026-08-20-quantity-based-das-sets.md](../decisions/2026-08-20-quantity-based-das-sets.md) — Quantity N on a quotation line becomes N DAS/Yard sets
+- [2026-08-31-quotation-qty-not-das-sets.md](../decisions/2026-08-31-quotation-qty-not-das-sets.md) — Quotation qty is billing only; one DAS/Yard set per root; child qty independent
 - [2026-08-28-job-schedule-weekend-empty-state.md](../decisions/2026-08-28-job-schedule-weekend-empty-state.md) — Job Schedule weekend-empty empty state — decision
 
 ## Open questions
