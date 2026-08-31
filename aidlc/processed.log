@@ -55,3 +55,5 @@ date        ticket      path  branch                              by    pr    no
 
 
 2026-08-25  SCRUM-873   C     fix/SCRUM-873                      areeba  -     resources surcharge chip from billing codes; lost banner wrap; edit status read-only
+
+2026-08-31  -           C     feat/save-on-enter                  areeba  -     Enter-to-save on web create/edit forms; Enter advances wizards on non-final steps
