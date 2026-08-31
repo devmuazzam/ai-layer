@@ -1148,6 +1148,26 @@ someone has confirmed otherwise.
 - **Answer:** short = **$85/day, 45–77.5 mi, worked days only**; long = **$200/day,
   > 77.5 mi, every calendar day of the holdover, worked or not**. The engine's $85-Mon-Fri
   hard-coding is the defect; C-05 in the conflict register is answered the $200 way.
+- **Corroborated 2026-09-01, contractually.** Quote OM-35140 p.3, supplied by Melissa McNutt
+  2026-08-31, states the same rule in a **customer-facing contract** rather than a recording:
+  *"Subsistence will be charged at $85.00 per man when equipment is to be operated by crew who
+  would travel **from yard to job, forty-five miles or more** from yard location… When equipment /
+  employees… are working in a subsistence area **over 77.5 miles** from home base location they
+  shall receive **$200.00 per man per day** subsistence **for the week and weekend**."* This
+  independently confirms all three parts of the recorded answer — the two amounts, the 45 / 77.5
+  mile thresholds, and *for the week and weekend* matching "every calendar day of the holdover".
+  It also settles sub-question **(c)**: the distance is measured **yard to job**, and the employee's
+  home is not an input — the phrase *"home base location"* refers to the equipment's home yard, as
+  the same sentence's *"yard location in which equipment in question is identified as home base"*
+  makes explicit.
+  **Sub-question (b) now leans the other way, though.** The e-ticket's Time Stamps checklist item 8
+  reads *"If Subsistence is applicable please click deficiency and note long or short sub in the
+  comments"* — capture in the field is a **manual flag plus a comment token**, with no mileage
+  input, exactly as the legacy engine does it. So the *entitlement* is distance-based per the
+  contract, while the *capture* is a token. Whether the ERP should compute distance and pre-fill
+  that flag is still unasked. Sources:
+  [quotations/quote-terms-and-rate-card.md](../quotations/quote-terms-and-rate-card.md) §3,
+  [field-ops/e-ticket-worked-example.md](../field-ops/e-ticket-worked-example.md) §5.
 
 ## Lunch thresholds — the recording is the origin, and it disagrees with the WTL charts
 
@@ -1697,3 +1717,87 @@ someone has confirmed otherwise.
 - **Owner:** Brian Petros (what a premium is allowed to be), with Fouzan Shakil for whether the
   engine should consume the catalog generically.
 - **Rules:** [PAY-008](rules/PAY-008-effective-dated-configuration.md), [PAY-036](rules/PAY-036-second-shift.md), [PAY-037](rules/PAY-037-third-shift.md), [PAY-044](rules/PAY-044-lattice-boom-premium.md), [PAY-070](rules/PAY-070-foreman-premium.md), [PAY-071](rules/PAY-071-military-base-premium.md)
+
+## L12 holiday list — the engine is missing "Day After Independence Day"
+
+- Question: does I.U.O.E. Local 12 recognise **ten** paid holidays or **nine**? Quote OM-35140's
+  terms name ten; the legacy engine's holiday dimension carries nine per year and has **no row for
+  Day After Independence Day in any year**. If ten is right, every 5 July since the engine was
+  built has been paid and billed at straight/overtime instead of triple-time.
+- Candidates:
+  - [quotations/quote-terms-and-rate-card.md](../quotations/quote-terms-and-rate-card.md) §5, from
+    [assets/2026-08-31_quote-OM-35140.pdf](../quotations/assets/2026-08-31_quote-OM-35140.pdf) p.2 —
+    *"New Year's Day - Presidents' Day - Memorial Day - Independence Day-Day After Independence Day
+    - Labor Day - Veterans Day - Thanksgiving Day - Day After Thanksgiving - Christmas Day"*. **Ten.**
+    A customer-facing contractual document, supplied by Melissa McNutt 2026-08-31.
+  - `legacy-payroll-app-db-extract/config-values.md:165-194` (`dim.LU12_Holiday`) — **nine** per
+    year, at `3.00` multiplier, consistently across 2025, 2026, 2027 and 2028: New Year's,
+    Presidents', Memorial, Independence, Labor, Veterans', Thanksgiving, Day after Thanksgiving,
+    Christmas. The table models observed-date shifting (`Observed (Sunday Rule)`,
+    `Observed (Sat Rule)`), so it is maintained — the omission is not staleness of the whole table.
+    `grep -ri "day after independence"` over the entire vault returns nothing.
+- Note: the two lists agree on nine names and differ by exactly one. Do **not** assume the quote is
+  right because it is newer — it is a sales document and the engine is what actually paid people.
+  Either the quote over-promises the customer a triple-time day, or the engine has under-paid a
+  holiday for years. Both are worth knowing before the ERP inherits either list.
+- Blocked: the payroll holiday calendar, the triple-time rule, and whatever quoting uses to price
+  holiday work.
+- Owner: Corrina Bustos (payroll) to confirm what is actually paid on 5 July; Melissa McNutt owns
+  the quote terms.
+- Status: open — needs confirmation
+- **Asked:** 2026-09-01 — processing the quote and e-ticket Melissa supplied 2026-08-31.
+
+## Union general membership meeting days — the quote contradicts itself, twice
+
+- Question: are the two I.U.O.E. Local 12 general membership meeting days **triple-time or
+  double-time**, and are they in the ERP's holiday calendar at all?
+- Candidates:
+  - Quote OM-35140 p.2, **Triple-time Charges** — *"Work performed on any of the holidays listed
+    below… **Including general membership meeting days (Union Holidays) per I.U.O.E.**"*
+  - Quote OM-35140 p.2, the very next paragraph — *"If any work is performed on the (1st) Saturday
+    following the (1st) Friday in the months of June and December then **Double-time** rates shall
+    apply and crew shall be guaranteed no less than (8) hours"*. **The same document, two
+    paragraphs apart, prices the same days at 3× and 2×.**
+  - `legacy-payroll-app-db-extract/config-values.md` `dim.LU12_Holiday` — these days are **absent**;
+    the table holds only the nine named calendar holidays. So the engine treats them as ordinary
+    Saturdays (overtime), matching neither reading.
+  - `mcog-l12-mla-2025-2028/04-articles-vi-to-xv-funds-and-contributions.md:37` mentions
+    *"Semi-Annual Membership Meeting or a special called General Membership Meeting"* — but only in
+    the context of amending fund contributions. **The MLA extract we hold says nothing about pay
+    rates on those days.**
+- Note: three sources, three answers (3× / 2× / not a holiday). The 8-hour guarantee appears in the
+  double-time paragraph only. The date rule itself — first Saturday following the first Friday in
+  June and December — is unambiguous and worth capturing regardless of which multiplier wins.
+- Blocked: holiday calendar seeding, the triple-time rule, holiday guarantee hours.
+- Owner: Corrina Bustos; Melissa McNutt for the quote wording, which needs fixing either way.
+- Status: open — needs confirmation
+- **Asked:** 2026-09-01 — processing the quote Melissa supplied 2026-08-31.
+
+## Missed meal period — three documents, three different charges
+
+- Question: when a crew works through a required meal period, what exactly is billed — **crew time
+  only, or crew time plus equipment**? And at what rate?
+- Candidates:
+  - Quote OM-35140 p.3 **Meal Periods** — *"customer will be charged one-half (1/2) hour of Crew
+    time Double-time **at the rate $270/hour per crew member** for every missed meal period."*
+    Crew only, named rate. Note $270 is not twice the $150 Crew & Standby rate quoted on the same
+    page, so it is an independent figure, not a derived one.
+  - **LEM ticket Terms and Conditions of Contract (CA) §15**, supplied by Melissa 2026-08-31 —
+    *"If meal periods are worked then customer will be charged one-half (1/2) hour of Crew time
+    Double-time."* Crew only, **no rate, no equipment**.
+  - **E-ticket 45954, Work Through Lunch Authorization** (the one the customer actually signs on
+    the job) — *"customer will be charged one-half (1/2) hour of Crew time Double-time **& one-half
+    (1/2) hour for all cranes and equipment**."* **Adds an equipment charge the other two omit.**
+    See [field-ops/e-ticket-worked-example.md](../field-ops/e-ticket-worked-example.md) §6.
+- Note: the document the **customer signs in the field** is the most expensive of the three, and it
+  is the only one that charges equipment. That is the version with a signature against it, which
+  makes it the strongest contractually and the one billing should probably follow — but the quote
+  is what the customer agreed to at order time, and it says something narrower. This is a billing
+  question with a payroll shadow: the WTL adjustment on the pay side
+  ([PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)) is separate and is **not** what is
+  in dispute here.
+- Blocked: WTL billing on quotations/invoices; the printed text of the WTL authorization the ERP
+  will render for signature.
+- Owner: Melissa McNutt (owns the quote and LEM T&Cs); Corrina Bustos to confirm what is invoiced.
+- Status: open — needs confirmation
+- **Asked:** 2026-09-01 — processing the quote and e-ticket Melissa supplied 2026-08-31.

@@ -204,3 +204,57 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   asks whether the dropped attachments and the carried-over stored totals are intended.
 - **Owner:** needs assignment — Ryan Adams / Joe Schacatano (sales & quotation) for what a re-quote
   should carry.
+
+## Long-boom billing has no model — the pay-side boom table is not it
+
+- **Status:** open
+- **Asked:** 2026-09-01 — processing quote OM-35140, supplied by Melissa McNutt 2026-08-31.
+- **Question:** the quote's terms promise an hourly uplift for long boom, in **three** brackets with
+  a **separate rate per premium tier** — 200′–240′ at $13.00 ST / $19.50 OT / $26.00 DT / $30.00 TT;
+  241′–280′ at $15.00 / $21.50 / $29.00 / $38.00; 281′–340′ at $17.00 / $27.00 / $35.00 / $45.00.
+  Nothing in the ERP prices this. Is it a billing code, a per-resource modifier, or a rule on the
+  quotation line — and where do the four tier rates live, given a billing code carries one rate?
+- **Sources checked:**
+  [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §4 for the table.
+  `packages/shared/src/constants/craft-modifiers.ts` `CRAFT_MODIFIER_BRACKETS` — **17** brackets in
+  20-foot steps from `080-100` to `421-440`, one operator rate and one oiler rate each, $0.75–$13.50
+  per hour, no OT/DT/TT variants. That is **employee pay** under decision 23099 and is a different
+  table in every dimension: bracket count, bracket boundaries, rate axis and magnitude.
+  `apps/web/src/features/payroll/components/payroll-employee.helpers.ts` `longBoomHours()` and the
+  `Long Boom Pay` premium in `apps/api/src/utility/seed-data.ts` are both payroll-side.
+  `grep -riE "long ?boom"` across `apps/`, `packages/` and the vault returns **no billing-side
+  implementation or requirement**. [billing-code-and-price-list.md](billing-code-and-price-list.md)
+  does not mention boom.
+- **Note:** the two tables must not be merged. A quoting change that reuses
+  `CRAFT_MODIFIER_BRACKETS` would bill the customer $4.50/h where the contract says $13.00/h, and
+  would silently couple a customer price to a union-negotiated pay rate. Also unresolved: the
+  billing brackets start at 200′ and stop at 340′, while cranes in the fleet carry boom past 400′
+  (the pay table runs to `421-440`) — what is billed above 340′ is unstated.
+
+## The surcharge is blanket in the contract but per-resource in the model, and it has no name
+
+- **Status:** open
+- **Asked:** 2026-09-01 — processing quote OM-35140, supplied by Melissa McNutt 2026-08-31.
+- **Question:** three sub-questions on the 12% surcharge. (a) The T&C is unconditional — *"ALL
+  CHARGES ARE SUBJECT TO A 12% FUEL & INSURANCE SURCHARGE"* — but `Surcharge` is stored per price
+  listing and applied per **quotation resource** via `surchargeEnabled` / `surchargePercentage`,
+  then summed. Per-resource summing equals a subtotal-wide 12% **only if every resource is enabled
+  at the same rate**; should the ERP enforce that, or is per-line opt-out intended? (b) The printed
+  quote shows one customer-visible line labelled **"Fuel & Insurance Surcharge"**, and the
+  `Surcharge` model has `enabled` and `percentage` but **no label field** — where does the printed
+  name come from? (c) The T&C says the surcharge *"WILL BE APPLIED ON FINAL INVOICES"*, so the quote
+  figure is an estimate over estimated hours — does invoicing recompute it against actual time, and
+  against which subtotal?
+- **Sources checked:** [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §1 — the worked
+  arithmetic from the real quote: subtotal $4,605.00 (including the $165 travel permit, so permits
+  **are** surchargeable) × 12% = $552.60, total $5,157.60.
+  `apps/api/prisma/schema.prisma` `model Surcharge` (`enabled`, `percentage`, `priceListingId`,
+  unique per price listing). `apps/api/src/service/quotations/quotations.repository.ts:365-367,
+  453-455` — the three per-resource fields. `apps/web/src/features/quotations/workspace/detail/
+  detail-format.ts:127-139` — `acc.surcharge + surcharge + child.surcharge`, the sum.
+  [billing-code-and-price-list.md](billing-code-and-price-list.md):31-32 is the only prior vault
+  mention and is UI feedback only — *"Re-design surcharge placement"*, *"Apply surcharge heading
+  should be"* (the sentence is truncated in the source).
+- **Note:** a fourth item from the same page is unmodelled anywhere and is not part of this
+  question, but should not be lost: *"ALL SUBCONTRACTORS WILL BE BILLED AT A MINIMUM OF 10% MARK
+  UP."*

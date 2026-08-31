@@ -194,3 +194,65 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** needs assignment. Q1/Q2 are product — route to TCG via Brian Petros. Q3/Q4 are
   internal conventions the team can settle itself if the client has no view; Fouzan Shakil is
   the precedent-holder, having decided the post-save convention the same way.
+
+## The permanent per-crane tool kit — what is on each crane before anything is loaded
+
+- **Status:** open
+- **Asked:** 2026-08-31 — processing Dylan's loading list ([loading-list.md](loading-list.md)),
+  supplied via Melissa McNutt. Dylan stated the boundary himself and it is not a ticket question:
+  no ticket asks for the permanent kit.
+- **Question:** Dylan's list is explicitly only the **additional** items a job can request —
+  *"there are other items that are permanently assigned to each crane that remain on each crane…
+  and those items are not on this list."* So every crane carries a standing kit we have never
+  seen. What is on it, does it vary per crane or per crane class, and does the ERP need to model
+  it at all — as tool records assigned to a unit, as an attribute of the unit, or not at all
+  because it never moves? This decides whether the loading screen shows a crane's full tool
+  inventory or only the picked additions, and whether the yard dashboard's Total/In-use/Available
+  counters are counting the whole yard or just the pickable pool.
+- **Sources checked:** [loading-list.md](loading-list.md) — 26 additional items, Dylan's exclusion
+  quoted verbatim. [tool-and-rigging.md](tool-and-rigging.md) (`status: unverified`) — Story 1
+  mentions *"System warns if requested tool already exists on assigned crane"*, which **implies a
+  per-crane kit exists and is queryable**, but never says what populates it or where it is
+  recorded; Story 4 lists the loading screen as showing *"Assets, Tools & rigging, Employees"*
+  without saying which population. [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md)
+  — the 156-column FCC unit table has no per-unit tool list. FCC `FMS_TOOLS` is **empty in the
+  test catalog** (0 rows, per `apps/api/fcc-seeder/docs/seed-files-index.md`), so the legacy system
+  holds no answer either. [dispatch/crane-configurations.md](../dispatch/crane-configurations.md)
+  — describes counterweight loads per crane, not tools.
+
+## Loading list — quantity, sets, and sizes are underspecified for a schema
+
+- **Status:** open
+- **Asked:** 2026-08-31 — processing [loading-list.md](loading-list.md).
+- **Question:** three modelling questions the list raises and does not answer. (a) **`Boscaro Bar`
+  carries quantity `N/A`** where all 25 other rows carry an integer — is it uncountable, bulk,
+  consumable, not owned, or simply unknown? A required-integer quantity column cannot store this
+  row. (b) **Set-granularity items** — `Container Hooks (Set of 4)`, `Jensen Lifter Sets`,
+  `Skookum Sets` — is the set the tracked unit for loading and return, or are the pieces tracked
+  individually and merely grouped for display? (c) **Size lives in the item name**, not a field:
+  `4x4` / `8x4` / `10x6` / `8x6 Steel Plates`, `Small` / `Large Husky Bar`, `Small` / `Large` /
+  `8x8 Material Bin`. Are these separate tool records, or one record with a size attribute? The
+  answer sets whether availability is per size or pooled.
+- **Sources checked:** [loading-list.md](loading-list.md) — the list itself, all 26 rows.
+  [tool-and-rigging.md](tool-and-rigging.md) Story 1 — *"User can add unlimited custom
+  attributes"* makes both the separate-record and the size-attribute reading legitimate, and
+  says nothing about quantity type or set granularity; Story 5 — *"Each tool displays live status
+  counters Total, In use and available"* assumes a countable quantity without defining it.
+  No `decisions/` note touches tool quantity.
+
+## Loading order — is the sequence a per-yard constant or per-job
+
+- **Status:** open
+- **Asked:** 2026-08-31 — processing [loading-list.md](loading-list.md).
+- **Question:** the artifact is titled **"LOADING LIST (IN ORDER)"** and numbers its rows 1–26 in
+  a sequence that is neither alphabetical nor by size nor by type. Is that order a fixed property
+  of the catalog (store it as a sort key on the tool record), or does it vary by crane, trailer,
+  or job (derive it per loadout)? And is it advisory or binding — does the loading screen let the
+  crew mark items complete out of order? Story 4 says *"Crew can tap Start Loading and mark items
+  completed individually"*, which reads as unordered.
+- **Sources checked:** [loading-list.md](loading-list.md) — the `Order` column and the title.
+  [tool-and-rigging.md](tool-and-rigging.md) Story 4 *Loading Process* — specifies what each line
+  item displays (reference photo, camera icon, Needs Spotter badge) but **never mentions ordering
+  or sequence**; Story 5 likewise. No meeting transcript in `meetings/` states a load order rule —
+  checked the six loading-related transcripts (2026-04-14, 2026-05-07, 2026-05-12, 2026-05-14,
+  2026-07-01, 2026-04-30).

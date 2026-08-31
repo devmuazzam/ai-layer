@@ -282,3 +282,52 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Status: open — needs confirmation
 - **From (frozen original):** [gaps.md#signer-photo-codingcops-committed-on-the-call-and-no-ticket-exists](../gaps.md#signer-photo-codingcops-committed-on-the-call-and-no-ticket-exists)
 
+
+## Post-trip inspection — Melissa says it does not happen, two signed documents say it does
+
+- **Status:** open
+- **Asked:** 2026-09-01 — processing the e-ticket and quote Melissa McNutt supplied 2026-08-31.
+- **Question:** does a post-trip inspection exist? Melissa's covering message says plainly
+  *"here is a sample of the pre-trip, **we currently don't do post trips**. I'll check with Kyle
+  and see if we can use the same template."* But the ticket the crew signed that day, and the
+  contract the customer signed, both assert one. If the ERP builds pre-trip only, it ships a
+  workflow whose own attestation text is false; if it builds post-trip, it ships a step nobody
+  performs. And billing depends on it: charges *"begin and end with Pre & Post trip inspections"*.
+- **Sources checked:**
+  [e-ticket-worked-example.md](e-ticket-worked-example.md) §5 item 13 — the employee attestation
+  on ticket 45954, signed by Jonathen A at 14:27 on 2026-06-10: *"By signing this check list I am
+  also signing that I performed and completed my Pre Trip Inspection, Rigging Inspection and
+  **Post Trip Inspection**."* Also
+  [quotations/quote-terms-and-rate-card.md](../quotations/quote-terms-and-rate-card.md) §7, from
+  quote OM-35140 p.2: *"All charges begin and end with **Pre & Post trip inspections** at
+  equipment(s) dispatched location(s)."* Against those:
+  [fr-fop-009-pre-trip-checklist.md](frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md)
+  and [fr-fop-007](frd-new-format-draft/05-functional-requirements/fr-fop-007-guided-ticket-workflow.md)
+  specify **pre-trip only**; `grep -ri "post.?trip"` across `field-ops/` returns no functional
+  requirement for one. So the FRD matches Melissa's practice and contradicts both signed documents.
+- **Note:** Melissa named the owner herself — *"I'll check with Kyle"* — so this has a live path to
+  an answer. A third possibility neither document rules out: the post-trip is performed but recorded
+  as the *arrival-at-yard* leg of the same checklist rather than a separate one, which would make
+  the attestation true and the FRD incomplete rather than wrong.
+- **Owner:** Melissa McNutt → Kyle.
+
+## Lunch slots differ between the crane ticket and the tractor ticket
+
+- **Status:** open
+- **Asked:** 2026-09-01 — processing the e-ticket Melissa McNutt supplied 2026-08-31.
+- **Question:** on ticket 45954 the crane's Time Stamps checklist offers **four** lunch slots
+  (Lunch Time, 2nd, 3rd, 4th) and the tractor's offers **one**. Is the number of lunch slots a
+  property of the unit type — a tractor driver cannot plausibly reach a fourth lunch, a crane crew
+  on a 22-hour day can — or have two checklist templates simply drifted apart? This decides whether
+  the ERP renders lunch capture from a per-template configuration or from one shared rule applied to
+  every unit on the ticket.
+- **Sources checked:** [e-ticket-worked-example.md](e-ticket-worked-example.md) §5 — crane `10003`
+  items 9–12 are Lunch / 2nd / 3rd / 4th; tractor `AT15` item 9 is Lunch alone, and its list
+  continues straight to the two attestations at 10 and 11, so items 10–12 are **absent**, not blank.
+  `payroll/wtl-charts.md` and `SCRUM-864` both define **four** thresholds without qualifying them by
+  unit. `brs.md` BRS-LUNCH-002 lists **three** and is marked ✓ Confirmed. None of the three mentions
+  unit type at all.
+- **Note:** related to but separate from the *Lunch thresholds* entry in
+  [payroll/gaps.md](../payroll/gaps.md) — that one is about **when** each lunch is due, this one is
+  about **how many slots exist and for which unit**. The e-ticket does not carry threshold hours, so
+  it does not touch the first question.

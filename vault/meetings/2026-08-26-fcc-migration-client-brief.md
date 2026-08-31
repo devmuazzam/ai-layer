@@ -3,7 +3,7 @@ title: FCC → TCG migration client brief, as annotated by TCG (26 August 2026)
 source: user-supplied/meeting-document — CodingCops brief (apps/api/fcc-seeder/docs/FCC-to-TCG-Client-Brief.docx) with client annotations from the 2026-08-26 ERP sprint review
 original_file: "FCC-to-TCG-Client-Brief.pdf" (= "FCC-to-TCG-ERP migration.pdf", text-identical)
 migrated: 2026-08-27
-updated: 2026-08-26
+updated: 2026-08-31
 status: unverified
 conflicts_with: []
 jira: []
@@ -24,7 +24,10 @@ content is CodingCops-authored and lives in the platform repo (`apps/api/fcc-see
 > **Forward-looking.** Client annotations are asks or questions, not decisions — none has been
 > adjudicated. The `meetings/` retrospective caveat does not apply.
 
-PDF: [assets/2026-08-26_fcc-to-tcg-client-brief.pdf](assets/2026-08-26_fcc-to-tcg-client-brief.pdf).
+PDF: [assets/2026-08-31_fcc-to-tcg-client-brief.pdf](assets/2026-08-31_fcc-to-tcg-client-brief.pdf)
+— **latest copy, saved 2026-08-31**, same annotations plus the `FMS_UNIT_MILEAGE` odometer mock-up
+rendered inline. Supersedes [assets/2026-08-26_fcc-to-tcg-client-brief.pdf](assets/2026-08-26_fcc-to-tcg-client-brief.pdf),
+kept for the 2026-08-26 record.
 Discussion: [transcripts/2026-08-26-erp-sprint-review.md](transcripts/2026-08-26-erp-sprint-review.md).
 Brian's follow-up message of 2026-08-27 restates six of these — see
 [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros).
@@ -111,3 +114,39 @@ gap: `SCRUM-925/926` model them natively. Field-level gaps per module are in the
 | — | Show FCC legacy ID on the customer UI (A1) |
 
 **Every item above is outstanding** unless someone has confirmed otherwise.
+
+## Brief accuracy against live FCC — checked 2026-08-31
+
+Read directly from `NexGenFMS-Test` (read-only). Every row count the brief prints matches live:
+`FMS_PURCHASE_DETAILS` 3,400 · `FMS_CHECK_LIST_SIGNATURES` 112,500 · `FMS_QUOTE_MASTER` 24,232 ·
+`FMS_QUOTE_DETAILS` 131,139 · `FMS_LABOR_UNION_DETAILS` 654,423 · `FMS_PROJECTS` and `FMS_TOOLS`
+empty. Three things the brief now gets wrong or omits — **none adjudicated, none actioned**:
+
+1. **§3 is stale on payroll crafts.** It lists `FMS_UNION_CRAFT` (51) and `FMS_CRAFT_MODIFIER` (34)
+   under *"Extracted from FCC but not inserted"*. Commit `b8f1ce3f` inserts both on FCC sync as
+   `CraftCode` + `CraftCodeRate` + `CraftModifier` (SCRUM-925). They belong in §2.
+2. **`FMS_UNION_CRAFT_MODIFIER` (34 rows) is not in the brief at all.** It holds the live boom-pay
+   adders per union × modifier — `PayRateChange` / `OT` / `DB`, effective-dated (`L12 / OP-BP-01 =
+   0.75 / 1.125 / 1.50`). The seeder reads ranges from FCC's `FMS_CRAFT_MODIFIER` but takes the
+   adders from the hardcoded `CRAFT_MODIFIER_BRACKETS` in `packages/shared/src/constants/craft-modifiers.ts`
+   (decision 23099). TCG lists this table in their data-warehouse set, so expect the question.
+3. **The non-union gap behind D1 is undocumented.** `FMS_NON_UNION_CRAFT` exists but is **empty**,
+   and `FMS_CRAFTS.UnionYN` is `true` on all 71 rows — so FCC has no usable non-union flag. The real
+   split is whether a craft has an `FMS_UNION_CRAFT` rate row: **51 do, 20 do not**. `resolvePayrollCrafts()`
+   skips any craft without one, so `ADMIN-A` — primary craft for **44 non-union employees** and 18,326
+   of 18,380 non-union labor lines — becomes no payroll craft and no assignment. Non-union pay lives on
+   `FMS_EMPLOYEES.PayRate` / `PayRateOT` / `PayRateDB` with `PayType` H/S, not in any rate table.
+   This is the mechanism behind D1's three *"Not Imported correctly."* annotations.
+
+**TCG's data-warehouse table list (40 tables, supplied 2026-08-31).** The brief accounts for 29 of
+them; **11 appear nowhere in it**: `FMS_JOB_UNIT_CHECK_LIST` (**3,792,678 rows — the largest table in
+the catalog**; §3 names only `FMS_CHECK_LIST_SIGNATURES` at 112,500), `FMS_UNION_CRAFT_MODIFIER` (34),
+and nine small job/ticket lookups — `FMS_ACTIVITIES` 99, `FMS_TICKET_STATUS` 53, `FMS_ETS_TICKET_SUB_SECTION`
+52, `FMS_UNITTYPE_JOBTYPES` 43, `FMS_CHECKED_TAKEN` 29, `FMS_TICKET_SECTIONS_SUBLIST` 26, `FMS_JOB_TYPES`
+12, `FMS_JOB_STATUS` 7, `FMS_ETHNICITY` 7. Two more are covered only implicitly by the Jobs row's
+*"details, resources, checklists, comments"* and never named: `FMS_JOB_CHECKLIST` 52,007 and
+`FMS_JOB_EMPLOYEES` 48,237.
+
+**Two defects in the document itself**, both client-facing: the §1 SSN cell has a stray local path
+pasted into it (*"TCG ssn stays empty/home/codingcops/Desktop/Projects/craneguys-platform/apps/api/fcc-seeder/docs/FCC-to-TCG-Client-Brief.docx"*),
+and the header ships a live credential in plain text (`fccdata@tcg.com` / the `FCC_ADMIN_PASSWORD`).

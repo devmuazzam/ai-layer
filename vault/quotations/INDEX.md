@@ -22,6 +22,7 @@ Quotations, pricing, billing codes, mob/demob. Backend usecases: `quotations, qu
 | [quotation.md](quotation.md) | JZ punch list: industry codes, pre-quote package, Customer PO | 0.8 |
 | [mobilization-and-demobilization.md](mobilization-and-demobilization.md) | Mob/demob process — newest content in the vault | 5.0 |
 | [billing-code-and-price-list.md](billing-code-and-price-list.md) | Billing code and price list punch list | 0.5 |
+| [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) | **The customer-facing rate card and T&Cs** — surcharge arithmetic, minimums, long-boom billing, special equipment, holiday schedule | 7.4 |
 
 ## Decisions that bind this module
 
