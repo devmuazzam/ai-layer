@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-08-31
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -134,3 +134,32 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** needs assignment — Ryan Adams / Joe Schacatano (sales & quotation) for whether the
   entry point is wanted; ehtesham.anwar owns the 2026-05-05 access-control objection above.
 
+
+## Sub-category association cycles — rejected at self-reference only, not at multi-hop
+
+- **Status:** open
+- **Asked:** 2026-08-31 — quotation resource nesting fix (duplicate/wrong-nesting defect on the
+  Resources tab)
+- **Question:** `SubCategoryAssociatedResource` lets a sub-category associate other sub-categories,
+  employee types or custom types, and the quotation Resources tab expands those associations
+  recursively into child rows. `sub-categories.service.ts` rejects a sub-category associated to
+  **itself**, but nothing rejects a loop through a second one (`A -> B -> A`), and the schema has no
+  cycle constraint. Such a catalog recursed to `MAX_QUOTATION_RESOURCE_DEPTH` and materialised five
+  levels of alternating, apparently unrelated rows under one line item. Should the API reject
+  multi-hop association cycles **at configuration time**, so every consumer is safe, or is guarding
+  per consumer the intent? Related: association lookup matches on **item name** against
+  sub-category names, so an employee type or custom type sharing a name with a sub-category
+  inherits that sub-category's associations — is name matching intended, or should it key on the
+  resolved FK id?
+- **Sources checked:** `apps/api/prisma/schema.prisma` → `model SubCategoryAssociatedResource`
+  (three unique constraints, no cycle constraint);
+  `apps/api/src/usecase/asset-management/sub-categories/sub-categories.service.ts` (the
+  self-association check, *"A sub-category cannot be associated to itself"*);
+  [decisions/2026-08-31-quotation-associated-child-merge-semantics.md](../decisions/2026-08-31-quotation-associated-child-merge-semantics.md)
+  (records the client-side cycle guard shipped as the interim fix);
+  [billing-code-and-price-list.md](billing-code-and-price-list.md) and this register's other
+  entries — none covers association topology. **Jira was not checked: no Jira lookup in this
+  session.**
+- **Blocked:** nothing is blocked. The Resources tab now guards the ancestor path, so a looping
+  catalog no longer produces garbage rows. This asks whether the rule belongs in the API instead.
+- **Owner:** needs assignment — whoever owns asset-management catalog rules.
