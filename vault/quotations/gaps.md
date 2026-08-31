@@ -163,3 +163,44 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** nothing is blocked. The Resources tab now guards the ancestor path, so a looping
   catalog no longer produces garbage rows. This asks whether the rule belongs in the API instead.
 - **Owner:** needs assignment — whoever owns asset-management catalog rules.
+
+
+## Quotation duplicate — what a copy carries, and what a fresh copy resets
+
+- **Status:** open
+- **Asked:** 2026-08-31 — PR review of branch `fix/quotation-das-resources` (commit `d89acfd8`,
+  which changed the resource clone to depth-first). **Not a ticket question:** the branch carries
+  no `SCRUM-###`, no `.ai/aidlc/SCRUM-###/` folder and no ticket id on its `processed.log` row, so
+  there is no `spec.md` §12 to hold it.
+- **Question:** the Duplicate action on a quotation is a **deep copy with no written contract**.
+  As implemented (`quotations.service.ts` → `cloneInternal`) it mints a new `QUOT-#####`, resets
+  `status` to `DRAFT` and `validUntil` to `null`, carries every other commercial and customer
+  scalar including `subtotal`/`tax`/`total`, copies the resource tree and the tool rows — and
+  copies **nothing else**. Quotation attachments (stored as `Attachment` records keyed by feature
+  `QUOTATION` + quote number, not as a quotation relation) are silently dropped, as is anything
+  else held outside the quotation row, its resources and its tools. Is that the intended product
+  behaviour? Specifically: (a) should a duplicate carry attachments, lift information and
+  pre-quote/customer-package documents, or deliberately start clean; (b) should the copied
+  per-line `discountValidUntil` be reset the way the header `validUntil` is, given a duplicate
+  restarts its validity window; (c) should the stored `subtotal`/`tax`/`total` be carried or
+  recomputed on the copy?
+- **Sources checked:** [INDEX.md](INDEX.md); [quotations-INDEX.md](quotations-INDEX.md) and all
+  four of its candidates ([quotation.md](quotation.md), [quotations.md](quotations.md),
+  [quotation-flow-process.md](quotation-flow-process.md),
+  [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md)) — **none mentions
+  Duplicate at all**; this register's other entries;
+  [../decisions/2026-08-31-quotation-qty-not-das-sets.md](../decisions/2026-08-31-quotation-qty-not-das-sets.md)
+  (covers convert-to-job, not duplicate). Jira **was** checked: no ticket in `SCRUM` names a
+  quotation duplicate/copy/clone — the "duplicate" hits are unrelated defects (`SCRUM-613` toast,
+  `SCRUM-678` DocuSign email, `SCRUM-665` rigging summary). The only account of the feature
+  existing at all is a meeting record — `meetings/transcripts/2026-06-23-mobile-app-payroll-adp-and-draft-workflows.md`
+  (ehtesham.anwar, describing the mobile parity list: *"we can send this quotation to the customer,
+  edit, duplicate … just like we're sending from the web portal"*) — which is a **record, not a
+  commitment** (agent §6) and says nothing about what a copy contains.
+- **Note:** the depth-first change itself needs no product answer. Copying a tree parent-before-child
+  is a correctness fix — the previous order-dependent copy orphaned grandchildren, which is data
+  loss under any reading. What is unwritten is the **scope** of the copy, above.
+- **Blocked:** nothing is blocked. The Duplicate action works and the tree now survives it. This
+  asks whether the dropped attachments and the carried-over stored totals are intended.
+- **Owner:** needs assignment — Ryan Adams / Joe Schacatano (sales & quotation) for what a re-quote
+  should carry.
