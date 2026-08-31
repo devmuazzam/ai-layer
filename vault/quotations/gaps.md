@@ -348,6 +348,170 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   comment lists expired among the statuses that *"remain editable"*, which the DTO
   contradicts. Nothing in the vault states whether past-dated quotations are editable.
 
+## Does uploading a plan or document notify the customer, and do those files ride the DocuSign envelope?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket;
+  `processed.log` Path C row covers qty/DAS only); tcg-scrum escalation
+- **Question:** two parts, each answerable in a line. (a) When a user uploads a plan or drawing
+  to a quotation, should the customer be emailed it **on upload** (previous behaviour — the route
+  was `attachments/upload-and-email`, with a `quotation.attachments_emailed` notification), or
+  should upload **only store**, with the files reaching the customer when the quote is sent
+  (the branch's new behaviour)? (b) Should `PLAN_OR_DOC` attachments be included in the **DocuSign
+  envelope** at send time? The branch relies on them doing so via `buildAdditionalDocuments`, but
+  the Mohsin punch list says the opposite — see the conflict below. If (b) is "no", (a)'s answer
+  leaves the DocuSign path with no delivery route for uploaded documents at all.
+- **Conflict, unresolved:** [quotations.md](quotations.md) — *"Quote attachment should not be sent
+  to docusign"*. `status: unverified`, punch list, 2026-07-14. The branch's premise is that both
+  send paths already carry uploaded documents, which is what that line appears to prohibit. The
+  line is one clause with no elaboration and may mean the quote's own PDF rather than user
+  uploads; it cannot be read either way with confidence.
+- **Sources checked:** [quotation-flow-process.md](quotation-flow-process.md) Step 11 (*"Upload
+  Attachments"*) and Step 21 (*"Send quotations to the customer via Email or DocuSign"*) — the
+  flow separates the two steps but states no rule about notification on upload;
+  [quotations.md](quotations.md) (the conflicting line above, plus *"Docusign email - duplicate"*
+  / *"Remove second email"*, which show the client objecting to redundant customer mail but say
+  nothing about upload); [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md)
+  §Quotation management US1 — *"User can select recipient from customer record or manually enter
+  email"* on the **send** flow, which is the closest written support for not mailing silently on
+  upload, but is personal-space provenance and is about sending, not uploading;
+  [quotations-INDEX.md](quotations-INDEX.md); `decisions/` (21 notes, none on attachments or
+  delivery); `.ai/aidlc/` (no ticket covers this).
+- **Blocked:** whether branch `fix/quotation-das-resources` commit `00d8e83a` ships as-is. Nothing
+  else is blocked — both behaviours are complete and self-consistent.
+- **Owner:** product team
+
+## After embedded signing returns, should the app pull DocuSign status immediately or wait for the webhook?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket);
+  tcg-scrum escalation
+- **Question:** when the customer finishes embedded signing and the browser returns,
+  `syncFromSigningReturn` now pulls envelope status from DocuSign so the quotation shows **WON**
+  without waiting for the webhook or a page reload. Is a proactive pull on return the intended
+  behaviour, or should the webhook remain the single writer of signature state with the UI
+  showing "pending" until it arrives? The trade-off is stated, not decided: the pull removes a
+  visible lag the client has complained about in the adjacent case, and it adds a second writer
+  to a status field that [#q-13](#q-13--syncfromsigningreturn-can-resurrect-a-locally-voided-envelope)
+  and [#q-14](#q-14--webhook-and-sync-can-downgrade-a-completed-signature) already show is not
+  guarded against out-of-order or regressive transitions.
+- **Sources checked:** [../projects-jobs/project-module/06-client-reviews-and-signs-quotation.md](../projects-jobs/project-module/06-client-reviews-and-signs-quotation.md)
+  — *"Quotation status updates to **Signed**"*, and *"All actions are recorded with timestamp"*,
+  but no statement about when the app learns of it;
+  [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md) US2 — *"Quote status
+  changes to **Approved**"*, same silence on timing (and both name a status the code calls `WON`);
+  [quotations.md](quotations.md) — *"When mark as lost - it didnt refreshed without refresh"*, the
+  nearest written expectation, showing the client treats a status that needs a manual refresh as a
+  defect, but for the **lost** path, not signing. Q-13 and Q-14 in this file question the same
+  method for different reasons and neither settles this. `decisions/` — nothing on signature
+  timing.
+- **Owner:** product team
+
+## Is a salesperson required on quotation create?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket);
+  tcg-scrum escalation
+- **Question:** the branch makes **Salesperson** a required field on the quotation create form.
+  Is that the intended rule, and if so does it match the customer-record rule (see below) — is the
+  quotation's salesperson defaulted from the logged-in user when they hold a sales role, and what
+  happens when a non-sales user (dispatch, admin) creates a quotation and has nobody to default to?
+- **Sources checked:** **Nothing states this for quotations.** The nearest is
+  [../customers/customer.md](../customers/customer.md):68-72 — *"Sales person should be pre
+  populated in case when sales dept person is logged in"*, *"Sales – all roles"*, *"Sales person
+  should be required"* — but that is the **customer** punch list and those three lines sit inside
+  a run of customer-record items (Pipeline value, Revenue column, Top accounts), so on its face it
+  is about the customer record, not the quotation. It cannot simply be transferred: the punch
+  lists are known to wander across modules
+  ([../gaps.md#feedback-punch-lists-are-not-scoped-to-the-module-they-are-filed-under](../gaps.md#feedback-punch-lists-are-not-scoped-to-the-module-they-are-filed-under)),
+  which makes the scope of these lines genuinely uncertain rather than clearly one or the other.
+  Also checked: [quotation-flow-process.md](quotation-flow-process.md) Step 7 (*"Enter general
+  quotation details (description, tentative schedule, customer contact, notes, etc.)"* — the
+  "etc." is the whole answer it gives on required fields); [quotations.md](quotations.md);
+  [quotation.md](quotation.md); [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md);
+  `decisions/`; `.ai/aidlc/`.
+- **Owner:** product team
+
+## Can a Report To contact be created inline from the quotation form?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket);
+  tcg-scrum escalation
+- **Question:** the branch adds a modal that creates a new customer contact ("Report To") without
+  leaving the quotation create form. Is creating a customer-owned record from inside the quotation
+  form intended, and if so what does it write — a full contact on the customer, or something
+  quotation-local? Related and unanswered: does the new contact need the same required fields and
+  validation as the customer module's own contact create, and should the quotation form be able to
+  create the **Quote To** contact the same way, since the punch list names both fields together?
+- **Sources checked:** [quotations.md](quotations.md) — *"Show all contacts in reported to and
+  quote to fields"*, which is about **listing existing** contacts in those two fields and says
+  nothing about creating one; [quotation-flow-process.md](quotation-flow-process.md) Step 6
+  (*"Select or create the Customer and Job Site"* — establishes that inline create is acceptable
+  for **customer and job site**, and conspicuously does not name contacts) and Step 7 (*"customer
+  contact"* listed as a detail to enter); [../customers/customer.md](../customers/customer.md);
+  [../customers/customers-INDEX.md](../customers/customers-INDEX.md);
+  [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md); `decisions/`; `.ai/aidlc/`.
+- **Owner:** product team
+
+## Should a per-resource surcharge column be shown on quotation resource rows?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket);
+  tcg-scrum escalation
+- **Question:** the branch adds a **Surcharge** column before **Amount** on every quotation
+  resource row. Should surcharge be visible and attributable per resource at all, and if so is
+  before-Amount the intended position? This is not only a layout question: the surcharge is
+  contractually blanket (*"ALL CHARGES ARE SUBJECT TO A 12% FUEL & INSURANCE SURCHARGE"*) and only
+  per-resource in the model, and whether that per-line modelling is intended is itself open — see
+  [The surcharge is blanket in the contract but per-resource in the model](#the-surcharge-is-blanket-in-the-contract-but-per-resource-in-the-model-and-it-has-no-name).
+  Surfacing a per-row surcharge in the UI makes the contested model the one users work in and
+  reason about, so answering the layout question in isolation would prejudge the modelling one.
+- **Sources checked:** [billing-code-and-price-list.md](billing-code-and-price-list.md):31-32 —
+  *"Re-design surcharge placement"* and *"Apply surcharge heading should be"* (the second sentence
+  is truncated in the source). This is the only vault statement about surcharge placement anywhere,
+  it is UI feedback with no target layout, and it sits under a **Price list** heading, so it is
+  most likely about the price-list screen rather than quotation resource rows.
+  [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §1 gives the customer-facing
+  arithmetic and shows **one** surcharge line on the printed quote, not per-resource — which is
+  evidence about the printed document, not the editing UI. Also checked: [quotations.md](quotations.md);
+  [quotation.md](quotation.md); `decisions/`; `.ai/aidlc/` (the nearest is `processed.log`
+  `SCRUM-873`, *"resources surcharge chip from billing codes"*, a Path C fix with no spec folder
+  and no acceptance criteria).
+- **Owner:** product team
+
+## May the send-signature modal close before the quotation data has refetched?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket);
+  tcg-scrum escalation
+- **Question:** the branch closes the send-signature modal immediately on success rather than
+  holding it open until the refetch settles. The user therefore returns to the quotation a moment
+  before it shows the new signature state. Is closing immediately acceptable, or must the user
+  never see a stale state after a successful action? Judgement note: this is close to the
+  product/implementation line and may not need a product answer at all — it is filed because the
+  one written expectation nearby is a client complaint about exactly this failure mode, so
+  "acceptable" needs to be someone's decision rather than an assumption.
+- **Sources checked:** [quotations.md](quotations.md) — *"When mark as lost - it didnt refreshed
+  without refresh"*, the only written expectation in this area and a complaint about a **manual
+  page refresh** being needed, which is a stronger failure than a brief refetch lag; it does not
+  say whether a short stale window is acceptable. [#q-22](#q-22--inbox-approval-resolve-leaves-quotation-detail-caches-stale)
+  in this file is the same class of defect (stale quotation caches after an action) and is open.
+  Also checked: [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md) US1 —
+  *"User receives confirmation after successful send"*, which requires confirmation but not that
+  the underlying data has refreshed first. `decisions/`; `.ai/aidlc/`.
+- **Owner:** product team
+
+## Company identity on customer-facing email — see admin
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources`; tcg-scrum escalation
+- **Question:** cross-module pointer. The branch defaults TCG's postal address, billing email and
+  phone in `apps/api` config so quotation delivery emails never render a blank footer. Whether a
+  tenant's own identity may be a code default is an **admin/tenancy** question and is recorded
+  there: [../admin/gaps.md#whose-company-identity-do-customer-facing-emails-carry-when-a-deployment-sets-no-env](../admin/gaps.md#whose-company-identity-do-customer-facing-emails-carry-when-a-deployment-sets-no-env).
+  It surfaces on quotation delivery mail because that is the only customer-facing email path today.
+- **Owner:** product team
+
 
 ## Quotation module defect audit (2026-09-01)
 

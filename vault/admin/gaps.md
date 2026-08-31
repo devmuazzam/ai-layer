@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-08-27
+updated: 2026-09-01
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -136,3 +136,37 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   exists for the `SEED_TENANT_CODE` path the PR leaves as the only way to populate a tenant.
 - **Owner:** Fouzan Shakil (assignee of `SCRUM-871` and the named decider on the 2026-08-20/25
   decision notes), with Ehtesham Anwar for what onboarding a second tenant is meant to look like.
+
+## Whose company identity do customer-facing emails carry when a deployment sets no env?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket);
+  tcg-scrum escalation. Raised on quotation delivery email; routed here because tenancy and
+  settings are this module's, per [../STRUCTURE.md](../STRUCTURE.md). Pointer in
+  [../quotations/gaps.md](../quotations/gaps.md).
+- **Question:** `COMPANY_ADDRESS_LINE`, `COMPANY_EMAIL`, `COMPANY_PHONE` and `COMPANY_WEBSITE`
+  defaulted to empty strings, so any deployment that had not set all four sent customers a
+  quotation email with the tenant name and a blank footer — while the PDF attached to that same
+  email carried TCG's full address block. The branch fixes the blank footer by defaulting the four
+  keys to TCG's own details (4820 Harbor Industrial Way, Los Angeles; `billing@thecraneguys.com`;
+  (310) 555-0148), matching what the quotation document prints. Two questions, each answerable in
+  a line. (a) Is a **hardcoded TCG identity** the right fallback, given that a second tenant which
+  forgets the env would then mail *its* customers TCG's address and billing email — a worse
+  failure than a blank footer, because it is wrong rather than merely empty? (b) Should company
+  identity be **per-tenant data** on the tenant company record and administered in settings,
+  rather than per-deployment environment variables at all? The env-var design already assumes one
+  tenant per deployment, which nothing in the vault establishes.
+- **Sources checked:** **Vault — nothing.** Vault-wide grep for `company address`,
+  `COMPANY_ADDRESS`, `email footer`, `branding`, `Harbor Industrial`, `thecraneguys.com` outside
+  `meetings/` returns one hit, [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md):168
+  — *"Branding/logo"* as a required element of the **printed** quotation, not email, and from
+  personal-space provenance. `admin/INDEX.md` (the module's one content file is
+  `tcg-documents.md`, on attachments); `decisions/` (21 notes, none on company identity, branding
+  or tenant profile data); `.ai/aidlc/` (no ticket). The phone number's `555` exchange is a
+  reserved-for-fiction range, so at least one of the three defaults is placeholder rather than
+  TCG's real detail — which the answer to (a) should confirm either way.
+- **Related:** *What a newly created tenant must contain* (above) — same class of question, and
+  the same unstated assumption about whether the platform is single- or multi-tenant in practice.
+- **Blocked:** nothing is blocked — the branch's behaviour is strictly better than the blank
+  footer it replaces. This needs an answer before a second tenant is onboarded, not before merge.
+- **Owner:** product team, with Ehtesham Anwar for the second-tenant question.
