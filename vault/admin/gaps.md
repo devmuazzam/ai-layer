@@ -137,6 +137,124 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Fouzan Shakil (assignee of `SCRUM-871` and the named decider on the 2026-08-20/25
   decision notes), with Ehtesham Anwar for what onboarding a second tenant is meant to look like.
 
+## Which countries, states and cities may an address name?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. Routed here because
+  [../STRUCTURE.md](../STRUCTURE.md):42 assigns reference data *(addresses, cities, states,
+  countries, industries)* to this module. Form-interaction half in
+  [../customers/gaps.md](../customers/gaps.md).
+- **Question:** The branch replaces the DB-seeded `Country`/`State`/`City` tables with the
+  `@countrystatecity/countries` npm package behind the same endpoints, and narrows what the
+  pickers offer. Three parts, each answerable in a line. (a) Is **United States the only
+  selectable country**, or is the full list kept with the US merely pre-selected? (b) Does the
+  state list stop at the **50 states + DC**, or must **Puerto Rico, Guam, the US Virgin Islands,
+  American Samoa, the Northern Marianas** and the **military postal regions (AE/AA/AP)** be
+  selectable — TCG bills federal and military work, and an APO address cannot be entered without
+  them. (c) Whose **city name vocabulary** is canonical: the package's (`New York City`,
+  `Washington D.C.`) or the names already stored (`New York`, `Washington`)?
+- **Sources checked:** **Vault — nothing on any of the three.** `INDEX.md`; `admin/INDEX.md`
+  (the module's one content file is `tcg-documents.md`, on attachments); `admin/gaps.md`;
+  `../customers/customers-INDEX.md` and all five candidates; `../decisions/` (24 notes, none on
+  addresses, geography or reference-data vocabulary); vault-wide grep for `countr`, `iso 3166`,
+  `puerto rico`, `territor`, `guam`, `military postal` — **no vault file states a country list, a
+  state value set, or a city naming rule.** `../STRUCTURE.md`:42 routes the facet here but no
+  content sits behind it. `.ai/aidlc/` — no ticket mentions any of these terms.
+- **Jira sources the default, not the restriction.** `SCRUM-39` *Country Field Should Be Dropdown
+  and Pre-Selected as USA* (Done, 2026-04-16) and `SCRUM-60` (Done, same day, Yards) both ask for
+  *"a dropdown with **predefined options**"* with *"**USA pre-selected by default**"*. A default
+  inside a list is not a list of one, so (a)'s narrowing is **not** covered by them. `SCRUM-103`
+  (Done) fixes the field order *Country → State → City → Zip* and keeps Country on every form.
+  Both reporters are **Aiman Farooq, CodingCops QA** — the same internal-QA voice whose scope
+  judgement `../customers/gaps.md` → *Customer-level comments* records as having overwritten a
+  client ask, so these are not adjudicated product decisions and no decision note was written
+  from them.
+- **Two written counter-signals to the narrowing:**
+  - **`SCRUM-36`** *Missing Dependent Location Fields…* (Done, 2026-04-15) presupposes country is
+    changeable: its repro step is *"**Change country/region** or attempt data entry"*, and its
+    expected result is that *"Phone Number, Fax, and Zipcode fields should enforce
+    **country/region-based validation and formatting rules dynamically**"*. Dynamic per-country
+    formatting has no purpose in a one-country picker.
+  - **The FCC migration loads 252 countries and 73 states.**
+    [../meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md):68
+    lists *States / countries — 73 / 252* as a **loaded** module. 73 is 22 more than 50 + DC.
+    Nothing supersedes that row, and this branch stops loading it (see next entry).
+  - **Every Jira ticket names the field "State / Province"**, not "State" — `SCRUM-36`,
+    `SCRUM-29`, `SCRUM-28`, `SCRUM-17`, and `SCRUM-962` (To Do, created 2026-09-01 by Umair Khan)
+    calls it *"Province"* outright. "Province" is not a US subdivision, so the shipped label and a
+    50-states-plus-DC list disagree about what the field is for.
+- **Weak signal for US-centricity, not a decision:** the legacy FCC extract
+  (`../payroll/legacy-payroll-app-db-extract/data/source-feed.md`:170, :175) shows every sampled
+  customer row carrying `Country=USA` and `StateCode=CA`. That is migration data describing a
+  California crane business, not a statement about what the picker must offer.
+- **`SCRUM-962` is the branch's likely origin and does not authorise any of this.** *"Verify and
+  fix the City and Province dropdowns, as they were not displaying correctly. The dropdown data
+  should be populated correctly through the relevant API."* — a display defect, To Do,
+  unassigned, created the same day as the branch. It asks for the dropdowns to work, not for the
+  country list to shrink or the city vocabulary to change.
+- **Blocked:** sign-off of `feat/us-geo-package-lookup` as product-correct; `SCRUM-962` closure.
+  (c) additionally puts a **shipped, twice-ticketed behaviour at risk** — `SCRUM-789` (Done) and
+  `SCRUM-819` (Done) filter the **Permits Agency dropdown by the selected City**, so a change of
+  city vocabulary can silently empty that dropdown for agencies attached to the old names. That
+  consequence needs checking whichever way (c) is answered.
+- **Owner:** Brian Petros (data and migration — the recorded voice on FCC address data), with
+  Melissa McNutt for what the forms must offer operationally.
+
+## Do the Country/State/City tables stay, and does the FCC load still ship 73 states / 252 countries?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup` (no ticket);
+  tcg-scrum escalation.
+- **Question:** The branch leaves the Prisma `Country`, `State` and `City` models in place but
+  removes every writer — verified at `apps/api/src/utility/seed-data.ts`:927–929 (*"Countries,
+  states and cities are no longer seeded"*) and `apps/api/fcc-seeder/src/seed-all.ts`:134–135
+  (*"States and countries are not imported"*). No drop migration ships. Two parts, each
+  answerable in a line. (a) Do the three tables get **dropped**, **kept as a historical record**,
+  or **kept because something still needs to write them**? (b) The FCC migration brief advertises
+  *States / countries — 73 / 252* as loaded; is **retiring that load** intended, and does TCG need
+  telling, given they are reviewing the brief row by row?
+- **Sources checked:** **Vault — nothing.** `../decisions/` (24 notes; the nearest,
+  [../decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md),
+  governs **entity records**, not schema tables, and settles neither); `admin/INDEX.md`;
+  `../STRUCTURE.md`:42; `.ai/aidlc/` (no ticket). Jira: no ticket proposes removing, keeping or
+  dropping these tables.
+- **The vault treats an orphaned column as a defect, not a pattern.**
+  [../customers/gaps.md](../customers/gaps.md) → *Customer-level comments* records
+  `comments String[] @default([])` as surviving on `model Customer` *"orphaned with no UI"* — cited
+  as part of an open problem needing resolution. So *"left in place with no writers"* has a
+  precedent here, and that precedent is a complaint.
+- **Related, same class:** *What a newly created tenant must contain* (above) already asks which
+  reference data a tenant gets on day one and explicitly lists **industries**; countries, states
+  and cities are the same facet in `../STRUCTURE.md`:42 and should be answered with it, not
+  separately.
+- **Blocked:** nothing ships broken — the endpoints keep serving. This needs an answer before the
+  tables are dropped, and before the next FCC migration review with TCG.
+- **Owner:** Brian Petros for the migration half; Fouzan Shakil for the schema half.
+
+## Is an ODbL share-alike geo dataset acceptable, and who signs that off?
+
+- **Status:** open — **not a product question.** Recorded here because no register owns it.
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup`; tcg-scrum escalation.
+- **Question:** The branch adds `@countrystatecity/countries`, chosen over the GPL-licensed
+  `country-state-city` and over a React UI kit, on the stated grounds that its **ODbL** licence is
+  the more permissive of the two. ODbL is a **share-alike database licence carrying an attribution
+  obligation**, so two things need a named human, and neither is the product team's: (a) is ODbL
+  acceptable for a commercial closed-source ERP, and who at TCG or CodingCops accepts that risk?
+  (b) is the **attribution requirement discharged** anywhere a user or auditor can see it — the
+  branch adds none.
+- **Sources checked:** **no third-party-licence or dependency policy exists anywhere.** `domain/`
+  (the six SOP files — the vault's only `verified` content — cover SDLC, sprint planning, standup,
+  grooming, sprint close and Jira ticket standards, and none mentions dependencies or licensing);
+  `../decisions/` (24 notes; the two grep hits for *licence* use the word idiomatically); no
+  `LICENSE` file at repo root; `.ai/aidlc/GUIDE.md` and the ticket folders carry no dependency
+  gate. So the choice is not *contradicted* by anything — there is simply no policy to check it
+  against, and no reviewer who is designated to.
+- **Blocked:** nothing technically. Flagged because a licence obligation adopted with no owner and
+  no attribution is the kind of thing found later by someone else.
+- **Owner:** **not the product team** — whoever owns legal and IP risk at CodingCops (escalate via
+  Ehtesham Anwar), with a standing dependency-licence rule as the durable fix.
+
 ## Whose company identity do customer-facing emails carry when a deployment sets no env?
 
 - **Status:** open

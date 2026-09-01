@@ -508,6 +508,47 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `SCRUM-873`, *"resources surcharge chip from billing codes"*, a Path C fix with no spec folder
   and no acceptance criteria).
 - **Owner:** product team
+- **Update 2026-09-01** — a second branch, `fix/subcategory-asset-dropdown-surcharge` (no ticket),
+  now **removes** the Surcharge column from the create/edit Resources tab while leaving it on the
+  read-only detail tab. The stated reason is that the column was read-only inside a form — the
+  percentage resolves from the billing code or price-list item and could never be typed into. The
+  underlying values (`surchargeEnabled`, `surchargePercentage`, `surchargeAmount`) stay in form
+  state, the payload, the Amount tooltip and the footer totals, and the sidebar surcharge section,
+  the pricing chips and the print path are untouched. **The question above is still open**, and the
+  removal answers half of it (not on create/edit, yes on detail) without a decision — so it is
+  recorded here rather than closed.
+  **Jira was checked this time**, and two issues bear on it, neither settling it:
+  `SCRUM-873` (QA, updated 2026-09-01) Create Flow item 4 — *"In the Resources tab, the surcharge
+  is displayed as Inactive even though the surcharge is active. Please fix the status display"* —
+  is a client ask to **fix**, not remove, a surcharge indicator on the create-flow Resources tab.
+  It most likely names the chip rather than the column (the branch leaves the chips alone), but the
+  two cannot be told apart from the ticket text, and it establishes that surcharge visibility on
+  the create flow is something the client tracks. `SCRUM-567` (Done) — *"Unit, Rate, and Amount
+  should remain synchronized based on Billing Code. Unit should be displayed as a disabled field.
+  Surcharge must automatically recalculate when quantity, rate, or amount changes"* — a shipped
+  requirement describing live surcharge recalculation while a line is being edited, alongside a
+  field that is **displayed but disabled**; whether "recalculate" implies "visible while editing"
+  is exactly what is unstated. `SCRUM-401` (Done) — *"system-generated and not manually entered by
+  the salesperson so nobody ever forgets it"* — supports the read-only premise but says nothing
+  about per-row display. Whoever answers the heading question should answer these together.
+- **Update 2026-09-01 (PR review, branch `fix/subcategory-asset-dropdown-surcharge`)** —
+  **Merge blocker (product):** comprehensive PR review recommends **do not ship** until product
+  explicitly confirms removing the Surcharge column from create/edit. Primary tension: `SCRUM-873`
+  Create Flow item 4 asks to **fix** surcharge status display on the create-flow Resources tab,
+  not remove a surcharge indicator; the ticket text cannot distinguish the pricing chip from the
+  dedicated column (the branch leaves chips and sidebar surcharge sections untouched). A client QA
+  ticket and an unsourced UI removal on the same tab is a high-risk combination without sign-off.
+  **Split UX now shipped without a decision:** create/edit users see surcharge only inside the
+  Amount cell tooltip and footer totals; the read-only detail tab still shows a dedicated Surcharge
+  column (`detail-resources-tab.tsx`). Whether that asymmetry is intended is unstated.
+  **Engineering gaps:** no `qa-automation/e2e/` spec references the column or grid layout;
+  `packages/shared` unchanged (web-only). Branch has no `.ai/aidlc/` folder and no ticket on the
+  branch itself — ad-hoc work routed here per [STRUCTURE.md](../STRUCTURE.md).
+- **Update 2026-09-01 (post-merge, PR #451 → main)** — merged to `main` without closing this
+  question. Create/edit no longer show a dedicated Surcharge column; detail tab still does.
+  Product must still confirm whether that split and the removal itself match client intent
+  (see `SCRUM-873` tension above). Reverting the column is a one-file web change if product
+  decides against the removal.
 
 ## May the send-signature modal close before the quotation data has refetched?
 
