@@ -306,6 +306,35 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   **Deploy:** run the duplicate-name pre-flight on staging/production before applying the
   migration in each environment.
 
+- **Update 2026-09-02 (staging deploy failed — constraint WITHDRAWN)** — the predicted
+  deploy blocker landed. `20260901120000_sub_category_tenant_name_unique` failed against
+  `tcg_staging` at 2026-09-01 17:51:48 UTC; its failed `_prisma_migrations` row then blocked
+  every later migration with **P3009**, holding back `20260901120100_add_asset_name` and
+  `20260901160000_add_craft_modifier_id_to_ticket_labor_entries`. The pre-flight this entry
+  prescribed was never run against staging. Duplicates found: `"Operator Load"` x3 and two
+  more pairs in tenant `2644892a`, `"90 Ton Hydraulic Truck Crane"` x3 in `64355383`,
+  `"Crawler Crane"`/`"Operator Load"`/`"Truck"` in `ec5404f8`.
+  **A merge was not available:** `template.sub_category_id` is `@unique` (one-to-one), so
+  collapsing each group would destroy one template per duplicate — destructive, on a
+  requirement product has still not ratified.
+  **Resolution:** the constraint is withdrawn, not deferred —
+  `20260902000000_drop_sub_category_tenant_name_unique` drops the index, `@@unique` is off
+  the `SubCategory` model, and duplicate names are accepted again as they were before PR #451.
+  `throwIfDuplicateName` and its spec are kept but **inert**, so re-adding the rule is a
+  schema change alone. Questions (a) and (b) above are still **open and now blocking** —
+  answering yes requires a dedup migration *and* a product ruling on which duplicate
+  survives and which template is destroyed.
+  **Prevention (main repo):** `prisma/scripts/preflight-unique-constraints.mjs` now runs
+  before every `migrate deploy` — it reads the pending set from `_prisma_migrations`, scans
+  those migrations for `CREATE UNIQUE INDEX` / `ADD CONSTRAINT … UNIQUE`, and refuses the
+  deploy while the data still violates them, leaving the database untouched. Partial and
+  expression indexes are reported as unchecked rather than silently passed. Also fixed:
+  `recover_failed_migrations` in `migrate-deploy.sh` had been gating on `prisma migrate
+  status` wording that Prisma 7 no longer emits, so both deploy attempts were byte-identical
+  and no recovery was ever attempted.
+  **Still true:** no CI job applies migrations against a production-like database, so
+  "works locally" remains no evidence for a data-dependent migration.
+
 ## Duplicate sub-category name — inline field error or toast only?
 
 - **Status:** open
