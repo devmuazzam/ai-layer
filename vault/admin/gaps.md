@@ -83,6 +83,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 - **Status:** open
 - **Asked:** 2026-08-27 — PR #421 review (branch `refactor/explicit-tenant-seeding`, no ticket); tcg-scrum escalation
+- **Observed 2026-09-01 — the premise that provisioning happens today does not hold.** A tenant
+  created through Super Admin (`CODING-COPS`) came up with **zero departments and zero department
+  roles**, while `PLATFORM` and `TCG-DEFAULT` each carry 15 system departments (`DEPT-ACCOUNTS`,
+  `DEPT-FLEET`, `DEPT-YARD`, …, all `is_system: true`) and 18 roles. Those exist because
+  `seed-data.ts` created them, not because tenant creation did — `AdminTenantsService.create()`
+  writes the `TenantCompany` row and nothing else. So option (a) above is not "today's behaviour"
+  for admin-created tenants; the empty portal is. The consequence this entry predicts is real and
+  observed: with no departments there are no roles, so the first user cannot be given one without
+  hand-creating both.
 - **Question:** When a tenant is created — by the admin "create tenant" action or by self-signup —
   which reference data must exist on day one? Four sets are in question and each can be answered
   in a line: (a) **system departments and their department roles**, (b) **billing code types**,
@@ -288,3 +297,36 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** nothing is blocked — the branch's behaviour is strictly better than the blank
   footer it replaces. This needs an answer before a second tenant is onboarded, not before merge.
 - **Owner:** product team, with Ehtesham Anwar for the second-tenant question.
+
+## A SUPER_ADMIN inside a tenant cannot create tenant-scoped records at all
+
+- **Status:** open
+- **Asked:** 2026-09-01 — creating a department in a fresh tenant while signed in as a
+  `SUPER_ADMIN` whose `tenantCompanyId` is that tenant. Not a ticket question; found in use.
+- **Question:** should a `SUPER_ADMIN` be able to belong to a tenant at all, and if so, what
+  tenant do its writes land in? Today the combination is created without objection by the admin
+  user form and then **fails on every tenant-scoped create with a 500**, not a permissions
+  message: `Argument 'tenantCompany' is missing`.
+- **Why it happens:** the tenant-scoping Prisma extension short-circuits on role —
+  `apps/api/src/orm/prisma.service.ts:230`, *"Super admins operate across all tenants — skip
+  tenant scoping"* — and returns the query untouched. Services that rely on the extension to
+  inject `tenantCompanyId` therefore get nothing injected. `DepartmentsService.create()` is one:
+  it passes the form data straight to the repository and never sets the tenant itself, so Prisma
+  rejects the create. Services that set `tenantCompanyId` explicitly — `craft-codes`,
+  `craft-modifiers`, `sub-categories` — are unaffected, so the behaviour is **inconsistent across
+  modules** and only shows up on the ones that delegate.
+- **The read side is worse than a 500, because it is silent.** The same skip means such a user
+  sees every tenant's rows in every list and picker. Observed: 33 departments offered in a tenant
+  that owns none. Choosing one would write another tenant's `departmentId` onto a local record,
+  with no guard on either the read or the write.
+- **Sources checked:** `prisma.service.ts:226-239` — the two skip conditions are `!context` and
+  `userRole === SUPER_ADMIN`; **neither checks whether the user belongs to `PLATFORM`**.
+  `admin-users.service.ts:91` — `role: (data.role ?? 'USER')`, so the API accepts `SUPER_ADMIN`
+  for a user being created inside a specific tenant and nothing rejects it.
+  `admin-tenants.service.ts` `create()` — creates the tenant row only, no user, so the
+  tenant+SUPER_ADMIN pairing is made by hand rather than by the product.
+  `decisions/` — nothing on super-admin tenancy. `meetings/` — nothing.
+- **Note:** whichever way it is answered, the two halves are separable. *Should the combination
+  exist* is a product question. *Should a create 500 when it does* is a defect either way —
+  `DepartmentsService` should set `tenantCompanyId` explicitly like its neighbours rather than
+  depending on an extension that is documented as conditional.

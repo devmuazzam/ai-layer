@@ -375,3 +375,27 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (a)–(c) remain open. **Engineering fix on main:** `normalizeAssetPayloadForSubmit` now trims
   `name` and stores `null` when cleared (matching date/money normalization), so main create/edit
   no longer persist empty strings. Mobile `name` surfacing and test coverage still open.
+
+## Feet-inches fields save a bare separator when inches are empty
+
+- **Status:** open
+- **Asked:** 2026-09-02 — reading back an asset created through the form while building
+  regression fixtures.
+- **Question:** the asset form's feet-inches control serialises `jib_length` as **`"58|"`** — the
+  value, a pipe, and nothing after it — where the sibling fields on the same form save cleanly
+  (`vehicle_width: "10 ft 6 in"`, `vehicle_height: "13 ft 2 in"`, `vehicle_length: "54 ft 6 in"`).
+  So a feet-only entry keeps the separator. Is the stored format meant to be `feet|inches`, with
+  the display layer parsing it, or `"N ft M in"` as the other three suggest? Whichever it is, one
+  of the two behaviours is wrong, and they are produced by the same control.
+- **Why it matters more than cosmetics:** `jib_length` is free text (`VarChar`), so nothing
+  rejects it, and the value round-trips into the field on edit. Anything that later parses jib
+  length — a lift-plan calculation, an export, a report — meets a value that is neither a number
+  nor the format its neighbours use. `main_boom_length` is unaffected: it is `Decimal` and stored
+  `"164.00"`, which is why the boom-pay resolver is not at risk.
+- **Sources checked:** the asset row created 2026-09-01 in `CODING-COPS`
+  (`unit_code = 10001`) — `jib_length: "58|"` against three correctly formatted dimension fields
+  on the same submission. `apps/web/src/features/assets/asset/components/asset-form-sections/`
+  `feet-inches-field.tsx` is the shared control. No `decisions/` note and nothing in `meetings/`
+  states a storage format for asset dimensions.
+- **Note:** worth checking whether the same control is used on any field that *is* parsed
+  downstream before deciding the fix — the format may be load-bearing somewhere.
