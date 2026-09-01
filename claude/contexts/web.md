@@ -95,6 +95,49 @@ Whether a top-of-form error summary should render is **contradicted between the 
 documents** and unresolved. `FormErrorSummary` exists in `organisms/` with zero consumers.
 Follow the surrounding module; do not introduce a new pattern either way.
 
+## Dropdowns — a server entity list is never preloaded
+
+**If the options come from an entity table, the picker searches the API. It does not fetch a
+list and filter it in the browser.** The old shape —
+`<NativeSelect options={hookData.map(...)} />` over a cached React Query list — is what this
+rule exists to stop, and it is easy to reintroduce by accident because **`NativeSelect` is
+not a native `<select>`**: given `options` and no `htmlSelect`, it renders `SearchableSelect`,
+and `Select` from `@/components/atoms` is an alias for it.
+
+Build a `features/<entity>/components/<entity>-select.tsx` on the shape of
+`features/vendors/components/vendor-select.tsx`: an `AsyncCombobox` whose `fetchPage` calls
+the feature's API service directly, keeping a `Map` of fetched rows so `onChange` can hand
+the whole record upstream. It bypasses React Query on purpose — the debounce (250 ms) and
+the stale-response guard live in `useAsyncComboboxData`. Page size is `PICKER_PAGE_SIZE`
+from `lib/searchable-list-query.ts`; do not hardcode one.
+
+Variants that already exist, so you do not need a new component:
+
+- **Settings picklists** — `ReferenceCodeSelect` takes any of the nine reference-code
+  services. Pass `valueField="code"` where the record stores the business code.
+- **Free-text with history** — `CreatableCombobox` takes an optional `fetchPage`.
+- **Cascading resource trees** — `MultiOptionDropdownMenu` takes an optional `fetchSearch`.
+- **Rows that must stay visible but unpickable** — `AsyncComboboxOption.disabled`, rather
+  than filtering them out of the page.
+
+Any list hook that survives spreads `SEARCHABLE_LIST_QUERY` (`staleTime: 0, gcTime: 0`).
+A hook feeding a picker must not set its own `staleTime`.
+
+**The exemption is countries, states and cities.** They are effectively immutable, every
+address field needs them, and they keep their 24 h cache — so `components/molecules/address-fields.tsx`
+stays on the preloaded pattern deliberately. Permits use a server-searched `CitySelect`
+against the same data; that inconsistency is known and intended, not a migration someone
+forgot.
+
+On the API side a picker route is **dual-mode**: with no `search`/`page`/`limit` it returns
+the bare array it always did, and with any of them a `{ data, total, page, limit, hasMore }`
+page. `utility/picker-list.helpers.ts` implements it. Every such route carries
+`@SkipThrottle()` — type-ahead bursts otherwise exhaust the global throttler budget.
+
+`scripts/check-dropdown-preloads.sh` runs on pre-push and fails on a list read of 100+ rows
+in `apps/web`. If yours is genuinely not a dropdown (a card section, a validation set), say
+so in a comment at the call site and add the path to `ALLOWED` in that script.
+
 ## Test IDs — `apps/web` is under E2E test
 
 `qa-automation/` is a Playwright suite driving the real app, API and Postgres. It addresses
