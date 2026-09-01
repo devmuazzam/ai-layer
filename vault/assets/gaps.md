@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-08-31
+updated: 2026-09-01
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -256,3 +256,122 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   or sequence**; Story 5 likewise. No meeting transcript in `meetings/` states a load order rule —
   checked the six loading-related transcripts (2026-04-14, 2026-05-07, 2026-05-12, 2026-05-14,
   2026-07-01, 2026-04-30).
+
+## Sub-category names — unique per tenant, and does an archived one keep its name reserved?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — branch `fix/subcategory-asset-dropdown-surcharge` (no ticket);
+  tcg-scrum escalation
+- **Question:** two parts. (a) Must a sub-category name be unique **within a tenant**? The branch
+  adds `@@unique([tenantCompanyId, name])` to `SubCategory` and translates the collision into a
+  409, on the stated grounds that `Category` has carried the same constraint since the baseline.
+  That is a shipped code precedent, not a written requirement, and nothing says the two catalog
+  levels must behave alike — uniqueness **within the parent category** is the other plausible rule
+  and would allow a "Hydraulic" under both Cranes and Trucks. (b) If names are unique, the index is
+  deliberately **not partial**, so an **archived** sub-category keeps its name reserved. Under
+  [2026-08-20-archive-instead-of-delete-app-wide](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  archiving is the only way to retire a record, so no name is ever released — is a permanent
+  reservation intended, or should archiving free the name for reuse?
+- **Sources checked:** [categories-and-sub-categories.md](categories-and-sub-categories.md) — the
+  only vault file on this topic, 0.3 KB, and its entire sub-category section is *"Need to add
+  target hours per month - FCC"*. Nothing anywhere in the vault states a naming rule for either
+  level. [../quotations/gaps.md](../quotations/gaps.md) →
+  *Sub-category association cycles* — names sub-category **name matching** as a live defect
+  (association lookup keys on item name, so an employee type sharing a name inherits a
+  sub-category's associations); tenant-unique names would narrow that collision, but that entry
+  asks for FK-keyed lookup rather than uniqueness and is itself open. Also checked
+  [INDEX.md](INDEX.md), [../STRUCTURE.md](../STRUCTURE.md), `decisions/`, and `.ai/aidlc/`
+  (no spec folder; `processed.log` has no sub-category entry). **Jira checked:** `SCRUM-959`
+  (To Do, Umair Khan, created 2026-09-01) — *"In Subcategories > Details > Associated Field, while
+  adding resources, the subcategory should be unique"* — is the nearest hit and a **different
+  requirement**: no duplicate rows inside one sub-category's associated-resource list, not
+  tenant-wide name uniqueness. It must not be cited as the source for this change. No other SCRUM
+  issue asks for sub-category name uniqueness.
+- **Blocked:** nothing — the constraint is on `main` (PR #451). Product questions (a) and (b)
+  remain open; run the duplicate-name pre-flight before applying the migration in each environment.
+- **Owner:** product team — whoever owns asset-management catalog rules.
+- **Update 2026-09-01 (PR review, branch `fix/subcategory-asset-dropdown-surcharge`)** —
+  **Deploy blocker:** migration `20260901120000_sub_category_tenant_name_unique` adds
+  `UNIQUE (tenant_company_id, name)` with no dedup or backfill step. If any tenant already has
+  two sub-categories sharing a name, `migrate deploy` aborts and leaves schema behind code. Run
+  this pre-flight on every target environment before merge:
+  `SELECT tenant_company_id, name, COUNT(*) FROM sub_categories GROUP BY 1, 2 HAVING COUNT(*) > 1`.
+  One local DB returned zero rows at branch time; staging/production are not evidenced.
+  **Engineering gap:** no `sub-categories.service.spec.ts`; the new P2002 → 409 path on create
+  and update is untested. See also
+  [Duplicate sub-category name — inline field error or toast only?](#duplicate-sub-category-name--inline-field-error-or-toast-only).
+- **Update 2026-09-01 (post-merge, PR #451 → main)** — merged to `main`. Product questions
+  (a) and (b) remain open. **Engineering follow-ups on main:** `schema.dbml` regenerated to
+  match schema; `sub-categories.service.spec.ts` added for P2002 → 409 on create/update.
+  **Deploy:** run the duplicate-name pre-flight on staging/production before applying the
+  migration in each environment.
+
+## Duplicate sub-category name — inline field error or toast only?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/subcategory-asset-dropdown-surcharge` (no
+  ticket)
+- **Question:** when a user submits a sub-category name that collides with an existing one within
+  the tenant, the API returns 409 with *"A sub-category with this name already exists. Please use
+  a different name."* The web create path (`use-create-sub-category-actions.ts`) and update path
+  (`sub-category-detail-state.ts`) surface this via `toastMutationError` only — there is no
+  inline validation on the name field. Is a toast sufficient, or should the name input show a
+  field-level error (matching how other form validations behave)?
+- **Sources checked:** branch implementation in
+  `apps/api/src/usecase/asset-management/sub-categories/sub-categories.service.ts` (409 message),
+  web mutation `onError` handlers; no vault or Jira statement on duplicate-name UX for
+  sub-categories. Category duplicate handling was not checked for a precedent.
+- **Blocked:** nothing — behaviour has shipped on `main` (PR #451).
+- **Owner:** product team / web UX — whoever owns form validation patterns for asset catalog.
+
+## Asset name — optional or required, shareable or not, and is it "Unit Name" or "Asset Name"?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — branch `fix/subcategory-asset-dropdown-surcharge` (no branch ticket; it
+  implements `SCRUM-956`, which has no `.ai/aidlc/` spec folder, so there is no §12 to hold this);
+  tcg-scrum escalation
+- **Question:** `SCRUM-956` settles that the field exists — *"There should be a Unit Name field
+  when creating an asset"* — and settles nothing else. Three things it does not say, all of which
+  the branch decided on its own: (a) is the name **optional**? It ships nullable, with an optional
+  form field and no backfill, so every existing unit stays unnamed and the new list column renders
+  blank for them; (b) may two units **share** a name? It ships deliberately non-unique; (c) the
+  ticket and the fleet's own paperwork say **Unit Name**, the UI ships **Asset Name** — which term
+  does TCG use?
+- **Sources checked:** **Jira `SCRUM-956`** (Task, To Do, unassigned, reporter Umair Khan, created
+  2026-09-01) — the full description is the single sentence quoted above; no acceptance criteria,
+  no comments. It is one of twelve tickets the same reporter filed in four minutes that afternoon,
+  i.e. a review-session punch list rather than a specified requirement.
+  [../dispatch/crane-configurations.md](../dispatch/crane-configurations.md) §1 — the
+  Lisette-approved asset workbook, the only vault artifact carrying real unit names, and direct
+  evidence on (b) and (c): its **Unit code / Unit name** table gives `26502.1`, `26502.2` and
+  `26502.3` — three distinct unit codes all named *"265 Ton Support Load"* — so names are already
+  non-unique in the fleet TCG runs today, and the column is headed **Unit name**. `status:
+  unverified`. [../dispatch/daily-allocation-system.md](../dispatch/daily-allocation-system.md):105
+  — *"Hovering over an icon shows asset name, assigned job, and status"*, the only other vault
+  mention, and it calls the same thing **asset name**; the two together are where the term
+  ambiguity comes from. [../vendors-agencies/vendors.md](../vendors-agencies/vendors.md):44,72 —
+  the vendor-asset capture list and table columns, which carry Unit Code and **no name field at
+  all**. Also checked [INDEX.md](INDEX.md), [user-story-and-tasks.md](user-story-and-tasks.md),
+  [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md), `decisions/`, `.ai/aidlc/`.
+  **The unit-code half of the change needed no answer** — `@@unique([tenantCompanyId, unitCode])`
+  and its 409 predate the branch and are untouched by it.
+- **Blocked:** nothing. This asks whether the three unstated halves are right before the column
+  reaches every asset list and picker.
+- **Owner:** product team — the `SCRUM-956` reporter (Umair Khan) can settle (c); (a) and (b) need
+  whoever owns the asset catalog.
+- **Update 2026-09-01 (PR review, branch `fix/subcategory-asset-dropdown-surcharge`)** —
+  **Cleared-name storage:** the sub-category quick-create dialog correctly sends
+  `name: formData.name.trim() || undefined`. Main asset create/edit uses
+  `normalizeAssetPayloadForSubmit`, which normalizes dates and money but not `name` — clearing
+  the field can persist an empty string (`""`) instead of `null` or omitting the field. Should a
+  cleared name be stored as `NULL`?
+  **Surface coverage:** web ships list column, detail row, both forms, search/sort, and
+  `AssetSelect` description (`name ?? description`). Mobile dispatch path does not surface
+  `name` in this branch — intentional deferral or an oversight?
+  **Engineering gap:** no API or web tests assert create/search/sort on `name`; new
+  `data-testid`s `assets-form-name` and `assets-create-dialog-name` are not yet referenced in
+  `qa-automation/e2e/`.
+- **Update 2026-09-01 (post-merge, PR #451 → main)** — merged to `main`. Product questions
+  (a)–(c) remain open. **Engineering fix on main:** `normalizeAssetPayloadForSubmit` now trims
+  `name` and stores `null` when cleared (matching date/money normalization), so main create/edit
+  no longer persist empty strings. Mobile `name` surfacing and test coverage still open.
