@@ -335,6 +335,42 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   **Still true:** no CI job applies migrations against a production-like database, so
   "works locally" remains no evidence for a data-dependent migration.
 
+- **Update 2026-09-02 (constraint RE-INSTATED with dedup — part (a) answered)** — Syed Haris
+  ruled the staging duplicates are test data and that sub-category names are unique going
+  forward. Recorded as
+  [decisions/2026-09-02-sub-category-names-tenant-unique](../decisions/2026-09-02-sub-category-names-tenant-unique.md),
+  `status: reference` — he is not the client-side product owner, so TCG can still overrule it.
+  **Part (a) is answered; part (b) is not.** The index is still non-partial, so an archived
+  sub-category reserves its name permanently. That is shipped behaviour, never ratified.
+  **How:** `20260902010000_sub_category_tenant_name_unique_with_dedup` renames collisions
+  (oldest keeps the name, later rows take the lowest free `" (n)"`) and then creates the
+  index, in one transaction. Nothing is merged and nothing deleted — a merge was rejected
+  because `template.sub_category_id` is `@unique`, so it would destroy a template per
+  duplicate. Verified against a scratch Postgres: cross-tenant same-names untouched,
+  archived rows renamed, a pre-existing `" (2)"` correctly skipped to `" (3)"`.
+  **Pre-flight interaction:** a dedup-then-constrain migration would trip the guard added the
+  same day, since the guard runs before the rename. Migrations that make their own
+  constraints satisfiable now declare `preflight-skip` in a comment; the guard reports them as
+  SKIPPED in the deploy log rather than passing them silently, and the opt-out is scoped to
+  the declaring migration only — an unmarked violation in the same run still blocks.
+
+- **NEW (2026-09-02): `Plan.craneCategory` stores a sub-category NAME, not an FK**
+- **Status:** open
+- **Asked:** 2026-09-02 — found while assessing whether renaming duplicates was safe
+- **Question:** `Plan.craneCategory` is `VARCHAR(100)` holding the sub-category name, and two
+  web call sites resolve it with `.find((sub) => sub.name === craneCategory)`
+  (`plan-form-lift-fields.tsx:134`, `plan-form-additional-info-validation.ts:36`). `.find()`
+  returns the first match, so while duplicates existed a plan bound to whichever row the list
+  endpoint returned first — order-dependent, and that order changed in PR #459 when listing
+  moved to capacity sorting. Uniqueness makes the lookup deterministic but leaves it fragile:
+  **any future rename silently orphans every plan storing the old name**, with no FK and no
+  error. Should `craneCategory` become a `subCategoryId` FK, and what should happen to plans
+  whose stored name no longer resolves? `[INFERRED]` from code — not reproduced against a
+  database.
+- **Blocked:** nothing today; the dedup migration renames rows on staging, where the data is
+  test data. It would block any rename of a real tenant's catalog.
+- **Owner:** engineering, with product input on the orphaned-plan behaviour.
+
 ## Duplicate sub-category name — inline field error or toast only?
 
 - **Status:** open
