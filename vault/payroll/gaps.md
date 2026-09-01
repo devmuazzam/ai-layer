@@ -1801,3 +1801,47 @@ someone has confirmed otherwise.
 - Owner: Melissa McNutt (owns the quote and LEM T&Cs); Corrina Bustos to confirm what is invoiced.
 - Status: open — needs confirmation
 - **Asked:** 2026-09-01 — processing the quote and e-ticket Melissa supplied 2026-08-31.
+
+## Boom pay rates cannot hold a second union — and the failure is silent
+
+- **Status:** open
+- **Asked:** 2026-09-01 — reviewing the craft-modifier configuration screen while setting up a
+  fresh tenant. Not a ticket question: no ticket asks for a second union, and the defect only
+  appears when one is added.
+- **Question:** `CraftModifier` (the boom pay rate brackets) is scoped to the **tenant**, not to
+  a union code. If TCG ever bargains with a second local whose long-boom schedule differs from
+  L12's $0.75-per-20-ft, there is nowhere to put the second set of numbers. Should the model
+  carry a nullable `unionCodeId` — null meaning "any union", so existing rows keep working —
+  or is one boom schedule per tenant a deliberate simplification we are content to keep?
+- **Why it matters more than it looks:** the two failure modes are both quiet.
+  **At configuration**, the overlap guard blocks the second set with a message about data entry
+  rather than modelling: *"That range overlaps existing brackets: OP-BP-06 (181-200 ft). Remove
+  them first…"* — `findOverlapping`
+  (`apps/api/src/service/craft-modifiers/craft-modifiers.repository.ts:55-71`) filters on
+  `tenantCompanyId` + `status: ACTIVE` with **no union term**, so the guard that is correct for
+  one union is exactly what prevents a second. The only way past it is deactivating the first
+  union's brackets, which breaks that union.
+  **At calculation**, nothing errors at all.
+  `CraftRateResolverService.resolveBoomAdder` (`apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts:210-230`)
+  takes `unionKind` (`UNION` / `NON_UNION`) but **never the union's identity**, and fetches
+  `craftModifiers.findAll(scope)` where scope is the tenant. A second local's operator resolves
+  cleanly against the first local's bracket and is paid a confident, wrong number. `ResolvedRate`
+  carries `unionKind` but not which union's table the adder came from, so the ledger line cannot
+  show it either. Silent wrong pay under a collective bargaining agreement.
+- **Sources checked:** `apps/api/prisma/schema.prisma` `model CraftModifier` — columns are
+  `code, label, minFt, maxFt, operatorAdder, oilerAdder, status` plus audit; the only constraint
+  is `@@unique([tenantCompanyId, code])`, no `unionCodeId` anywhere. The two code sites above.
+  **FCC already models this correctly** — `FMS_UNION_CRAFT_MODIFIER` carries a `UnionCode`
+  column (every row `L12`), so `fcc-seeder`'s `resolveCraftModifierBrackets` is dropping
+  information the source already holds. `mcog-l12-mla-2025-2028/02-article-iv-classifications-and-wage-rates.md`
+  → *Additional rate for high booms* is one agreement's schedule and says nothing about others.
+  No `decisions/` note covers per-union boom rates.
+- **Not urgent, deliberately:** `FMS_UNION_MASTER` has exactly one row and TCG bargains with one
+  local, so this is theoretical today. Logged because the trigger — someone adding a second union
+  code — is invisible: nothing in the schema or the UI warns that doing so makes boom pay wrong.
+- **Owner:** product, with payroll. A schema question, not a payroll-rules question.
+- **Related:** the same screen gives no hint that boom rates apply to **union crafts only** —
+  `resolveBoomAdder` returns no adder when `unionKind !== 'UNION'`, which is correct and matches
+  the legacy rule (*"the labor row's craft is a union craft (`L12…`)"*), but a tenant with both
+  `L12` and `NON-UNION` codes would reasonably expect the brackets to cover everyone. That one is
+  copy, not schema.
