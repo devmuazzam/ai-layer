@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-09-01
+updated: 2026-09-02
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -523,3 +523,36 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** sign-off of `feat/move-dropdowns-BE`; any decision on the cap value.
 - **Owner:** Mohsin Ali for whether a truncated browse state is acceptable; Melissa McNutt for
   how operators actually pick a sub-category (browse vs. type).
+
+## Saving a sub-category template re-mints every field id, orphaning asset attribute values
+
+- **Status:** open
+- **Asked:** 2026-09-02 — tracing the sub-category save path while making the detail page's
+  Attribute Sections tab editable in place.
+- **Question:** an asset stores its template answers in `asset.attribute_values`, a JSON blob
+  **keyed by `CustomField.id`**. Saving a sub-category's attribute sections replaces the whole
+  template — `upsertTemplateForSubCategory` does `sections: { deleteMany: {}, create: … }`, and
+  `CustomSection.id` / `CustomField.id` are `@default(uuid())` — so every field gets a **new
+  UUID** on every save, including a save that changed only a section's name. The old keys in
+  `attribute_values` then match no field. Is losing the answers the intended behaviour when a
+  template is edited, or should a field keep its identity across edits (and existing answers
+  follow it)?
+- **Why it matters:** the read path is `attrs[String(field.id)] ?? attrs[field.name]`. After a
+  re-mint the id lookup misses, and the name fallback misses too, because the blob was written
+  under the *old id*, never under the name. So every asset in the sub-category silently shows
+  blank Additional Info, and the next asset save persists the blank over the orphaned data. It
+  takes no schema change to trigger — renaming one section is enough.
+- **Sources checked:** `apps/api/src/service/asset-management/sub-categories/`
+  `sub-categories.repository.ts` (`upsertTemplateForSubCategory`, `mapTemplateSections`,
+  `mapTemplateField` — no id is carried through), `apps/api/prisma/schema.prisma`
+  (`CustomSection`, `CustomField`), `apps/web/src/features/assets/sub-category/utils/`
+  `template-sections-helpers.ts` (`serializeTemplateSectionsForSubmit` drops `id` and forwards
+  `legacyKey` only when present, which the sub-category deserializer never sets),
+  `apps/web/src/features/assets/asset/components/asset-form-additional-field.tsx`
+  (`getDynamicFieldKey` = `String(field.id)`). `assets.service.ts`'s
+  `buildAttributeLabelByKey` maps `legacyKey` → name but is used **only for activity-log
+  labelling**, not to remap stored values. No `decisions/` note covers template versioning.
+- **Note:** pre-existing — the `/edit` page has always saved this way. It is recorded now
+  because the detail page's in-place editing makes a template save one click away from any
+  viewer, so the failure gets easier to reach. The same `deleteMany`+`create` shape is in
+  `categories.repository.ts`, but category templates do not key asset answers.
