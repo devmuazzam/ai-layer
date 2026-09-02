@@ -1078,6 +1078,57 @@ editability). Each entry below is a concrete code defect still open until fixed.
   `quotation-expiry.service.ts:45-47`; `prisma.service.ts:81-94`;
   `quotations.controller.ts:88-94`. Audit: #q-30.
 
+## Who picks the approvers — the requester, or the role?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation.
+- **Question:** The branch converts the approval-request approver checklist
+  (`apps/web/src/features/quotation-approvals/components/approver-list.tsx`) to a
+  **server-searched, page-at-a-time roster** with a debounced search box, replacing a call that
+  loaded every eligible approver. Reviewing it surfaced a prior question the paging change only
+  makes sharper: **is a requester supposed to choose a subset of approvers at all?** The two
+  written sources describe a role-derived pool that is notified in full, not a hand-picked list:
+  - **`SCRUM-573`** *Notify All Sales Managers for Approval* (Done, 2026-06-25, Umair Khan) —
+    *"the system shall notify **all users assigned the Sales Manager role**, allowing **any**
+    authorized manager to review and approve… ensure approval requests are **visible to all
+    eligible approvers**."*
+  - **`SCRUM-397`** *Quotation Approval System: Two Trigger Rules* (Done, 2026-05-08, Umair Khan)
+    AC 3 — *"Approval notification email goes to **multiple managers so there is no
+    single-person bottleneck if someone is sick**."*
+  If the pool is the role and everyone in it is notified, a picker that lets a requester select
+  three of eleven managers **reintroduces exactly the bottleneck `SCRUM-397` was written to
+  prevent** — and searching and paging that picker is a second-order question that only exists
+  because the picker does. Two parts: (a) does the requester choose approvers, or does the role
+  define them? (b) if the requester does choose, **what did that decision supersede in
+  `SCRUM-573`/`SCRUM-397`, and where is it written?**
+- **Sources checked:** **Vault — nothing names an approver or an approver-selection step.**
+  `INDEX.md`; [quotations-INDEX.md](quotations-INDEX.md) and all four candidates;
+  [quotation-flow-process.md](quotation-flow-process.md) steps 18–20 — *"Check whether internal
+  approval is required… **Manager** reviews the quotation… Approve / Reject / Request changes"* —
+  a single unnamed manager, **no selection step at any point in the 27 steps**;
+  [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md) (the only
+  acceptance-criteria-level quotation source — covers send, customer approval, print and delivery
+  format, **not internal approval**); `../decisions/` (24 notes, none on approvers). Grep across
+  `quotations/` content files for `approver` / `eligible approver` — **no matches outside this
+  register.** Jira: `SCRUM-574`, `SCRUM-658`, `SCRUM-822` touch approval permissions, emails and
+  button colour; none introduces approver selection.
+- **Note:** this is adjacent to but distinct from **Q-20** above (*Approver pool includes
+  inactive / invite-only users*). Q-20 asks who may be **in** the pool; this asks whether a human
+  **narrows** it. Answering Q-20 alone leaves the picker's existence unexplained, and if (a) comes
+  back "the role defines them" then Q-20's fix changes shape entirely.
+- **Blocked:** sign-off of `feat/move-dropdowns-BE`'s approver changes as product-correct.
+  Nothing ships broken — the paged roster works.
+- **Owner:** Brian Petros or Mohsin Ali — whoever owns the quotation approval chain; the two
+  Done tickets are Umair Khan's write-up of it.
+
+## Pointer — cascading resource picker completeness
+
+The quotation Resources tab is the largest consumer of the cascading resource picker, whose
+capped browse state is open in
+[../assets/gaps.md](../assets/gaps.md) → *The cascading resource picker may now show an
+incomplete tree — is that acceptable?* (2026-09-02). Answered there, not here.
+
 ### Checked and found sound (not open defects)
 
 Recorded so they are not re-filed. Full evidence in the audit doc.

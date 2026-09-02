@@ -480,3 +480,46 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   states a storage format for asset dimensions.
 - **Note:** worth checking whether the same control is used on any field that *is* parsed
   downstream before deciding the fix — the format may be load-bearing somewhere.
+
+## The cascading resource picker may now show an incomplete tree — is that acceptable?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. Routed here because the
+  cascade is Category → Sub-Category and this module owns categories; the largest consumer is
+  quotation Resources, which carries a pointer.
+- **Question:** The branch adds `GET /resource-catalog/tree` and `GET /resource-catalog/search`
+  as the data source for the cascading `MultiOptionDropdownMenu` (employee types, sub-categories,
+  custom types). `tree` is a **one-shot read capped per kind**, so with no search term the menu is
+  **deliberately incomplete** — a user browsing the cascade without typing may not see every
+  sub-category that exists. Three parts, each answerable in a line. (a) Is a **truncated
+  browse state acceptable** on a picker users currently treat as the full catalog? (b) If it is,
+  **what is the cap and how are the shown rows chosen** — the branch picks a number and an order
+  with nothing to check them against. (c) Must the menu **say** it is showing a subset, or is
+  silent truncation fine?
+- **Sources checked:** **Vault — nothing on resource-catalog picker behaviour.** `INDEX.md`;
+  this module's `INDEX.md`; [categories-and-sub-categories.md](categories-and-sub-categories.md)
+  (0.3 KB, five bullets — move under Settings, custom codes, schedule-type question,
+  active/inactive filter, remove Preview; **nothing on selection or loading**);
+  [tool-and-rigging.md](tool-and-rigging.md); [loading-list.md](loading-list.md);
+  `../quotations/quotations-INDEX.md` and all four candidates; `../decisions/` (24 notes, none on
+  pickers or catalogs). Vault-wide grep for `resource catalog` / `resource-catalog` returns **one
+  hit in the whole repo** — `.ai/claude/contexts/web.md`:136, the build convention, added on this
+  branch. Code verified: `apps/api/src/presentation/resource-catalog/resource-catalog.controller.ts`
+  :28–50, `dto/query-resource-catalog.dto.ts` (`limit` `@Max(500)`, search spans employee-type
+  name, sub-category name, parent category name, custom-type title and code).
+- **Jira establishes the control, never its data volume.** `SCRUM-491` (Done, 2026-06-02, Abdul
+  Muazzam) created the multi-menu — *"so that we can link employee and other types as well with
+  the sub-category, and in quotation resources now we are listing all these 3 types of items as
+  child items"* — which fixes **what the tree contains**, not how much of it loads. `SCRUM-811`
+  (Done) and `SCRUM-638` item 18 propagate the same nested control to other forms. `SCRUM-873`
+  (QA) item 2 asks only that it open to the right. **No ticket asks for the cascade to be
+  searched, capped or paged**, and none states a maximum.
+- **Note:** the counter-signal is in the same family of tickets. `SCRUM-638` item 19 —
+  *"There are 76 assets in total, but the dropdown is not displaying all of them"* — was filed
+  **as a defect**, and the remedy asked for in item 20 was progressive loading so the user still
+  reaches every row. A capped `tree` reintroduces the same visible symptom by design. That does
+  not make the branch wrong, but it is the one written data point and it points the other way.
+- **Blocked:** sign-off of `feat/move-dropdowns-BE`; any decision on the cap value.
+- **Owner:** Mohsin Ali for whether a truncated browse state is acceptable; Melissa McNutt for
+  how operators actually pick a sub-category (browse vs. type).
