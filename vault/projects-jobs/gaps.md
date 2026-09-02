@@ -286,4 +286,67 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `decisions/`; vault-wide grep for `isActive`, `working day`, `Selected Working Days`,
   `schedule interval` and `sub-job`. Nothing states the intended default, and nothing defines the
   relationship between a scheduled day and a DAS sub-job.
+- **Candidates (added 2026-09-02, `tcg-scrum`):** the sweep above was vault-only — Jira and
+  `meetings/transcripts/` both carry sources, and one of them **does** define the day↔DAS
+  relationship, so the last sentence of *Sources checked* is too strong. What is still open is
+  only the **default**, not the meaning of the flag.
+  - `SCRUM-697` *job schedule footer kpis fix* — **Done** 2026-07-31, reporter Umair Khan
+    (CodingCops), filed under the `SCRUM-456` *Yards Operation* epic. Its description **defines
+    the KPIs the tab now shows**: *"selected working days(**that are checked and visible in
+    DAS**)"* and *"Selected second shifts(**that are checked and visible in DAS**)"*, alongside a
+    separate *"job duration days (total no of days)"*. So **checked ≡ on the DAS board is written
+    down**, and the footer deliberately contrasts *duration* with *selected* — the design assumes
+    selected **can** be fewer than the range. It says nothing about the default. This is the
+    source for the *Selected Working Days* KPI itself.
+  - `SCRUM-696` *"remove the check box from job=> Schedule tab"* — **Done** 2026-07-30, same
+    reporter, same batch (created 2 seconds apart), same epic. **The title is misleading and must
+    not be read as retiring the per-day checkbox**: the description scopes it to one named
+    control, *"remove the check box '**Also enable a second shift on applied days**'"* — the bulk
+    second-shift control, not the per-day selector. Recorded here because a title-only search
+    finds it and concludes the opposite.
+  - `meetings/transcripts/2026-04-07-dispatch-scheduling-figma-demo.md:118`, `ehtesham.anwar`
+    (CodingCops) at 23:26 — the checkbox's **earliest description**, and the only one that speaks
+    to direction: *"since there is a check mark available **you can uncheck a date**… There's a
+    quick selection up top to **exclude** all of the weekends and if you don't want to use that
+    and **exclude particular dates** on larger jobs. You can just **deselect** from here."* Every
+    verb is subtractive. Ryan Adams and Melissa McNutt are present; neither responds to this turn
+    (Ryan pivots to 24-hour shifts at 24:04), so **no TCG assent attaches to it**. Caveat 5
+    applies — a record of a design walkthrough, not a commitment.
+  - `meetings/transcripts/2026-06-17-erp-sprint-review.md:399`, `jahanzaib.nadeem` (CodingCops) at
+    1:01:21 — the same behaviour demoed **on a converted job**: *"these dates are like fetched from
+    the quotation… it's just like a **final confirmation**"*, then *"we do not need to dispatch the
+    machines or employees on every single day. So in that case, we need to **select the particular
+    days**… **only the check ones will be dispatched** [dis]played in the Daily allocation system
+    dashboard, and the one that is not checked, that will be excluded."* Agrees with `SCRUM-697`
+    that the checkbox **is** the dispatch selector; *"select the particular days"* is
+    directionally ambiguous where 04-07 was not. No TCG turn responds.
+  - **Nothing anywhere says convert-to-job creates a schedule at all.** The only written schedule
+    spec — `projects-jobs/project-module/03-create-manage-job-schedule.md` and its ticket
+    `SCRUM-234` (**Done**, created 2026-05-01, reporter Umair Khan) — describes a wholly **manual**
+    path: *"Clicks **Create Schedule**"*, *"Selects start date and end date"*, *"System generates
+    schedule rows"*. Its AC never mentions a per-day checkbox, and neither does the vault
+    elsewhere. **So `createJobFromQuotationInTx` auto-creating the schedule is itself unsourced**,
+    which is the prior question to what the rows default to.
+  - **Adjacent, and deliberately not applied here:** `dispatch/gaps.md`
+    §*Requested vs dispatched resources* is the same requested-versus-dispatched axis, decided
+    **for resources only** and still open — Melissa McNutt assented on the **same 2026-06-17
+    recording** that quotation-derived resources are the client-approved *request* and dispatch is
+    a separate act. Whether that principle extends from resources to **dates** is an inference
+    nobody has made in writing; it is not a source for this question, only a reason to ask both
+    together.
+  - **Downstream consequence worth naming when asking:** an active day is a `SubJob`, and
+    `dispatch/daily-allocation-system.md:90,93,95` puts an incomplete pre-checklist on the card
+    plus *"a notification to the assigned salesperson 72 hours before any job with an incomplete
+    pre-checklist"* — shipped, `apps/api/src/usecase/notifications/notification-catalog.ts:316`.
+    It is keyed on **job**, not day, so activating every weekday does not multiply the email; but
+    it does mean converted jobs start nagging on a schedule nobody confirmed.
+- **Ask (each answerable in one line):**
+  1. When a signed quotation becomes a job, should every weekday in its date range arrive on the
+     Schedule tab **already checked** (dispatcher unchecks the days they do not need), or
+     **unchecked** (dispatcher checks the days they do)?
+  2. `SCRUM-697` makes "checked" mean "visible in DAS". Is that still right — should checking a
+     day be the single act that puts it on the dispatch board, or should a converted job's days
+     be visible as *planned* without being dispatchable until someone confirms them?
+  3. Should converting a quotation create the schedule at all, or should the dispatcher click
+     **Create Schedule** as `SCRUM-234` describes?
 - **Owner:** Lisette Anzaldo / Ryan Adams
