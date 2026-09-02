@@ -42,7 +42,7 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/units.md` | **write** — the one artifact you produce |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read** — retired 2026-08-20, historical entries only. Cite an existing entry by anchor; never append a ticket's question here |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — `payroll/gaps.md` is 120 KB, grep it too |
 | Everything else | **no write access** |
 
 You do not edit the spec. If the spec is wrong, say so and stop — do not fix it while
@@ -163,6 +163,7 @@ your plan:
 | `apps/api/prisma` | `contexts/prisma.md` | **A schema change requires a committed migration.** That is part of the unit, not a follow-up |
 | `apps/web` | `contexts/web.md` | Feature-first. Reuse before creating — the shared library has overlapping sources, so "new component" needs justification |
 | `apps/mobile` | `contexts/mobile.md` | Different styling stack entirely; a "web and mobile" unit is usually two units |
+| `packages/shared` | `CLAUDE.md` → Stack | Consumed by web and mobile as built `dist/`. A unit changing an export has both front-ends inside its radius whether or not it means to — see §7 |
 
 A rule can make a unit unnecessary. It can never make one shippable.
 
@@ -173,6 +174,39 @@ it is actually two units that share a migration. Most are.
 
 A unit nobody can review in one sitting will be reviewed in name only, which converts the
 analyst step into a formality and puts the defect into `main`.
+
+## 7. A unit carries its own ripple
+
+`spec.md` §11a lists the already-shipped behaviour this ticket reaches, and each requirement
+carries a `Ripple:` field. Slicing is where that becomes someone's work — or quietly stops
+being anyone's.
+
+Three rules, and they are the ones that have been broken:
+
+- **The regression test for an existing consumer belongs to the unit that touches it.** A
+  unit that extracts, renames, retypes or re-filters something with pre-existing callers is
+  not complete when the new call site is tested. The old one has no coverage and never did —
+  that is precisely why it breaks silently. Put the regression row in *Slice contents →
+  Tests*, naming the existing consumer. This is the SCRUM-900 defect: `units.md` asked for an
+  extraction and asked for coverage only of the new caller (`reflections/INDEX.md`
+  `SCRUM-900 SD-1`).
+- **A ripple that crosses surfaces either lives in one unit or the gap is stated.** If a unit
+  changes a `packages/shared` export or a response shape that web or mobile already consume,
+  either the consumer updates land in the same unit, or *Sequencing* names the window in
+  which the two disagree and what is broken during it. "Mobile follows later" without that
+  sentence is a shipped break with a plan attached to nothing.
+- **An existing consumer is never *Deliberately not in this unit*.** That section is for
+  behaviour deferred to a later slice. Code this unit breaks is not deferred work; if it
+  genuinely belongs elsewhere, the unit that fixes it is a dependency of this one and the
+  ledger must say so.
+
+Fill the **Ripple** block in each unit's *Risk* section from the spec's, narrowed to what
+this slice actually touches — existing consumer, how it is reached, what test proves it
+still works, and the source that says what should happen to it. `none — new surface only` is
+a valid entry when it is true and you ran the grep that shows it.
+
+A unit whose ripple rows have no test and no source is not ready to hand to an executor. Say
+that in the ledger rather than sizing it `M` and moving on.
 
 ---
 
@@ -186,6 +220,7 @@ Units written: .ai/aidlc/SCRUM-###/units.md
 
 <N> units — <N> vertical, <N> foundation.
 Requirements: <N> in spec, <N> covered, <N> uncovered (<why>).
+Ripple: <N> units touch already-shipped behaviour — <N> carry a regression row, <N> do not (<which>).
 Blocked on open questions: <unit ids + spec.md §12 question ids, or "none">
 
 First to ship: U<n> — <what it proves>

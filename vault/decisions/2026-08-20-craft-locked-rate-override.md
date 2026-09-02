@@ -5,6 +5,7 @@ decided: 2026-08-20
 decided_by: Corrina Bustos (TCG payroll), confirmed by Brian Petros ("that makes it easier") on the 2026-08-20 call; Abdulrehman (CodingCops) proposed the secondary-craft mechanism. Recorded in payroll/2026-08-20-payroll-rules-meeting-notes.md; corroborated by the 2026-08-21 minutes.
 status: verified
 resolves: payroll/gaps.md#pay-rate-follows-the-employee-not-the-role-worked--kyle-and-corrina-unrecorded
+provenance_note: Scope read as UNION crafts only — see decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md (SCRUM-926 §12 Q18). This decision is NOT overridden; non-union employees are priced per person from Employee.hourlyRate (decisions/2026-08-25-non-union-base-rate-per-person.md, payroll/rules/PAY-012-non-union-hourly-rate.md), which the 2026-08-25 reading holds was never this decision's subject. That reading is `status: reference` — inferred from subject matter, NOT confirmed by Corrina Bustos or Brian Petros. Body unchanged.
 tags: [module/payroll, kind/decision, craft-code, payroll-rules]
 ---
 

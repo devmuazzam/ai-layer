@@ -23,9 +23,11 @@ answers which question, and it is the only vault file meant to be read whole.
 | anything about the mobile / field-worker app | [field-ops/field-ops-mobile-INDEX.md](field-ops/field-ops-mobile-INDEX.md) first — 3 competing documents |
 | anything about vendors or agencies | [vendors-agencies/agencies-vendors-INDEX.md](vendors-agencies/agencies-vendors-INDEX.md) first — 4 sources, 2 entities |
 | anything about dispatch / DAS | [dispatch/daily-allocation-INDEX.md](dispatch/daily-allocation-INDEX.md) first |
-| quantity N on a quote becoming N DAS/Yard sets | [decisions/2026-08-20-quantity-based-das-sets.md](decisions/2026-08-20-quantity-based-das-sets.md) — named decision, SCRUM-907 |
+| quantity on a quote vs DAS/Yard sets | [decisions/2026-08-31-quotation-qty-not-das-sets.md](decisions/2026-08-31-quotation-qty-not-das-sets.md) — qty is billing only, one set per root; supersedes 2026-08-20 |
+| where a Save button leaves the user | [decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md](decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) — create **and** edit both land on the entity's detail page, app-wide; supersedes the create half of 2026-08-20 |
 | when a Project Job becomes Completed after DAS/Yard | [decisions/2026-08-20-job-completed-on-last-day-offload.md](decisions/2026-08-20-job-completed-on-last-day-offload.md) — named decision, SCRUM-903 |
 | SCRUM-903 vendor/backfill scope (none in that ticket) | [decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md](decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md) — named decision |
+| Completed Project Jobs editable? | [decisions/2026-08-25-completed-job-view-only.md](decisions/2026-08-25-completed-job-view-only.md) — hard view-only, SCRUM-903 Q5 |
 | anything about mobilization / demobilization | [quotations/mob-demob-INDEX.md](quotations/mob-demob-INDEX.md) first — 2 sources, only 1 migrated |
 | **anything about payroll, wages, overtime, union rules or ADP** | [payroll/INDEX.md](payroll/INDEX.md) first — a separate source, a separate migration, and its own four caveats |
 | a specific field-ops requirement | [field-ops/fr-fop-numbering.md](field-ops/fr-fop-numbering.md) to pick the right document, then the leaf file |
@@ -84,8 +86,9 @@ goal and the four in-scope field-worker statements; nothing else lists its 83 it
 | [meetings/2026-08-05-payroll-module-design-review.md](meetings/2026-08-05-payroll-module-design-review.md) | What was agreed about the Payroll Management module, and what does TCG owe us? | 6.5 |
 | [meetings/2026-08-07-labor-compliance-certified-payroll.md](meetings/2026-08-07-labor-compliance-certified-payroll.md) | **What is Labor Compliance / Certified Payroll?** The only source for a module with no other coverage | 7.5 |
 | [meetings/2026-08-12-sell-side-workflow-and-scheduling.md](meetings/2026-08-12-sell-side-workflow-and-scheduling.md) | What is the sell-side workflow — scheduling, permits, customer intake? | 6.0 |
+| [meetings/2026-08-26-fcc-migration-client-brief.md](meetings/2026-08-26-fcc-migration-client-brief.md) | **What did TCG say about the FCC test migration?** CodingCops' brief with the client's annotations; 13 asks + 2 seeder defects, all open (added 2026-08-27) | 8.7 |
 
-**Every action item in these three is outstanding** unless someone has confirmed otherwise. They
+**Every action item in these four is outstanding** unless someone has confirmed otherwise. They
 are itemised in [gaps.md](gaps.md) (modules, integrations) and [payroll/gaps.md](payroll/gaps.md) (ADP).
 
 ### Raw transcripts and auto-summaries (added 2026-08-19, kept separate from the above)
@@ -116,9 +119,10 @@ for how a resolved gap lands here.
 | --- | --- |
 | [decisions/2026-06-30-adp-erp-employee-data-ownership.md](decisions/2026-06-30-adp-erp-employee-data-ownership.md) | Who owns which employee field — ADP vs ERP vs QuickBooks — and that the ERP *initiates* onboarding while ADP performs it. Brian Petros + Ehtesham Anwar, agreed 2026-06-30 |
 | [decisions/2026-08-12-plan-comments-page-scope.md](decisions/2026-08-12-plan-comments-page-scope.md) | Which screen "the Plan Comments page" means in `SCRUM-757` |
-| [decisions/2026-08-20-quantity-based-das-sets.md](decisions/2026-08-20-quantity-based-das-sets.md) | Quantity N on a quotation line becomes N DAS/Yard sets. Fouzan Shakil, `SCRUM-907` / `SCRUM-892` |
+| [decisions/2026-08-31-quotation-qty-not-das-sets.md](decisions/2026-08-31-quotation-qty-not-das-sets.md) | Quotation qty is a billing scalar — not DAS/Yard set count; child qty independent. Fouzan Shakil, supersedes `2026-08-20-quantity-based-das-sets` (`SCRUM-907` / `SCRUM-892`) |
 | [decisions/2026-08-20-archive-instead-of-delete-app-wide.md](decisions/2026-08-20-archive-instead-of-delete-app-wide.md) | Archive replaces delete **app-wide**, on the existing `archivedAt` pattern — `Plan` included. Fouzan Shakil, resolves `SCRUM-896` §12 Q1. Delete endpoints and an admin hard-delete escape hatch are **not** settled |
-| [decisions/2026-08-20-post-save-navigation-convention.md](decisions/2026-08-20-post-save-navigation-convention.md) | After **edit** → the entity's detail page; after **create** → the listing page. App-wide. Fouzan Shakil, resolves `SCRUM-896` §12 Q2 |
+| [decisions/2026-08-20-post-save-navigation-convention.md](decisions/2026-08-20-post-save-navigation-convention.md) | After **edit** → the entity's detail page; after **create** → the listing page. App-wide. Fouzan Shakil, resolves `SCRUM-896` §12 Q2. **The create half is superseded** by `2026-09-01-post-save-navigation-create-goes-to-detail`; the edit half stands |
+| [decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md](decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) | After **create** → the **new entity's detail page**, app-wide — reversing the create half of `2026-08-20-post-save-navigation-convention`. Edit → detail unchanged; nested, draft, cancel/error, "save and add another", mobile and retro-fit sequencing all still open. Fouzan Shakil |
 | [decisions/2026-08-20-planning-tracker-archived-filter.md](decisions/2026-08-20-planning-tracker-archived-filter.md) | The Planning Tracker must have a **filter that shows archived plans** — the tracker's `archivedAt: null` exclude is a default, not permanent. **Implementation deferred to a follow-up ticket.** Fouzan Shakil, resolves `SCRUM-896` §12 Q3. Filter shape, restore-from-tracker and the **Permits** tracker are **not** settled |
 
 ---

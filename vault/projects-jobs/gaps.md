@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-08-31
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -161,6 +161,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   recording and never recorded answering.
 - Status: open
 - **From (frozen original):** [gaps.md#asset-on-a-permit-optional-except-where-a-punch-list-says-compulsory](../gaps.md#asset-on-a-permit-optional-except-where-a-punch-list-says-compulsory)
+- **Update 2026-08-27:** Brian Petros, written message to the TCG team, 2026-08-27 ("A couple things that came up in my discussion with CodingCops today, that we'll discuss in future meetings"), following the 2026-08-26 ERP sprint review — logged in [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros) — Brian: "permits can be specific to the Asset, but can also have
+  permits specific to Job". First written client statement that the permit has **two scopes**,
+  which reframes this entry: the question is not only whether the asset is optional but whether
+  a job-scoped permit has an asset at all. Asset-side permit types are being collected under
+  assets → *Unit / asset certifications*.
+
 
 ## Job-level "Boom Configuration" field — schema ask from payroll (Kyle)
 
@@ -177,7 +183,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Job Schedule tab — what to show when the date range yields zero days
 
-- **Status:** open
+- **Status:** resolved — see [decisions/2026-08-28-job-schedule-weekend-empty-state.md](../decisions/2026-08-28-job-schedule-weekend-empty-state.md)
 - **Asked:** 2026-08-24 — PR #391 (`fix/job-schedule-weekend-empty-hint`); tcg-scrum during review
 - **Question:** When Start Date and End Date are set but Include Saturdays / Include Sundays are
   off such that `generateDateRange` produces zero rows (e.g. a Saturday-only range with both
@@ -190,6 +196,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   SCRUM-234 Figma node `2964-119958` may show a designed empty state — not yet checked against
   this edge case.
 - **Owner:** Lisette Anzaldo / Ryan Adams
+- **Update 2026-08-28:** re-checked during PR #391 review — still unanswered. `decisions/`,
+  `vault/` and Jira (SCRUM-234, last touched 2026-06-01, Done) contain nothing on this empty
+  state. One constraint on the answer is now **verified**, though: whatever the copy is, the
+  non-edit variant cannot instruct the user to enter edit mode on a `COMPLETED` job — edit is a
+  hard block with no unlock path per
+  [decisions/2026-08-25-completed-job-view-only.md](../decisions/2026-08-25-completed-job-view-only.md).
+  The branch's `resolveWeekendExclusionEmptyMessage` keys only on `isEditing`, which does not
+  distinguish "not editing now" from "editing permanently blocked".
+- **Resolved 2026-08-28:** Fouzan Shakil (assignee / reviewer) approved the recommended answer during
+  PR #391 review — toggle-specific title *"No schedule days in this range"* with a three-mode
+  description keyed on `isEditMode` / `isEditing`, the read-only variant carrying no CTA.
+  Recorded in [decisions/2026-08-28-job-schedule-weekend-empty-state.md](../decisions/2026-08-28-job-schedule-weekend-empty-state.md).
+  **Assignee-level, not client-confirmed** — canonical copy from design or from Lisette Anzaldo /
+  Ryan Adams would supersede it.
 
 ## Project detail Accounting tab — see accounting/gaps.md
 
@@ -200,3 +220,27 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   module — it is gated on that module's scope and ~Oct–Nov 2026 kickoff. Raised by `SCRUM-897`.
   Full entry: [accounting/gaps.md](../accounting/gaps.md#project-detail-accounting-tab--what-it-shows-and-what-it-shows-before-the-module-exists).
 
+
+## Jobs Status Summary donut — where does an `ON_HOLD` job go?
+
+- **Status:** open
+- **Asked:** 2026-08-31 — raised while making the project detail *Jobs Status Summary* donut
+  read `job.status` at all. Before this change the panel bucketed jobs purely by `startDate` /
+  `endDate`, so `job.status` was never consulted and the `cancel` slice was permanently 0 —
+  a `CANCELLED` job sitting inside its own date window rendered as *In Progress*.
+- **Question:** `JobStatus` has five values (`ACTIVE`, `COMPLETED`, `INVOICED`, `CANCELLED`,
+  `ON_HOLD`) and the donut has four slices (`completed`, `inProgress`, `scheduled`, `cancel`).
+  Four of the five map without argument — `CANCELLED` → cancel, `COMPLETED` / `INVOICED` →
+  completed, `ACTIVE` → scheduled or inProgress by start date. `ON_HOLD` has no obvious home.
+  Should it (a) count as In Progress, (b) count as Scheduled, (c) get a fifth slice of its own,
+  or (d) be excluded from the donut entirely? The same answer should govern the *Active Jobs*
+  hero tile, which now counts exactly the In Progress population.
+- **Interim behaviour:** `ON_HOLD` counts as **In Progress** — open work that is neither
+  finished nor cancelled. Chosen because it changes no visible product surface (no new legend
+  entry), not because a source says so. `normalizeJobStatusForSummary` in
+  `apps/api/src/usecase/projects/projects.service.ts` is the single place to change it.
+- **Sources checked:** `projects-jobs/job-project-das.md` (the only vault file naming this panel
+  — its one line on it is *"`Quotations Revenue by Status` remove empty bars"*, nothing on the
+  donut); `projects-jobs/INDEX.md`; `projects-jobs/project-module/`; `decisions/`; vault-wide
+  grep for `ON_HOLD` / `on hold` / `Jobs Status Summary`. Nothing anywhere defines the slices.
+- **Owner:** Lisette Anzaldo / Ryan Adams

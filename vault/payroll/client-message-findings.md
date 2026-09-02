@@ -2,7 +2,7 @@
 title: Client message verification — running findings
 status: reference
 kind: reference
-updated: 2026-08-24
+updated: 2026-08-27
 tags: [module/payroll, kind/reference, payroll-rules, open-questions]
 ---
 
@@ -459,6 +459,48 @@ parallel-run · (20a/b) late-leave adjudicator + rigging replacement price sourc
 decision notes and the FY26-27 extraction) for the client to wave through.
 
 **Register after the sweep: 3 settled · 67 open · 3 conflicted.**
+
+## 2026-08-27 — ADP identifiers: Associate ID vs Position ID vs File Number (Brian Petros, relayed AI research; sender inferred from the 2026-08-25 transcript at 54:47)
+
+Message to Ehtesham & Abdul, "Regarding the IDs in ADP… here is the best technical explanation I
+have", forwarding an AI-assisted read of ADP's Worker API docs, *GUIDE – ADP Importing Paydata*,
+`qADPImportValidation` and our own `Payroll_ADP_Bucket_Crosswalk`. Five screenshots; not a
+decision by a named human — the message *recommends* a formal requirement, it does not sign one.
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| ADP identifier hierarchy: `associateOID` (person, unique across ADP) → `workerID` / Associate ID (person, unique within client) → `positionID` (one per position) → Payroll File Number + Company Code (paid position) | ✅ agrees with `adp-read-write-boundary-2026-08-18.md` and gaps → *Employee master* ("ADP mints worker identity"); 🆕 first written statement of the **hierarchy** and of File # belonging to the *position*, not the person | PAY-003, PAY-067 |
+| For a paid WFN position, `Position ID = Company Code + File Number` (`ABC` + `123456` → `ABC123456`), system-generated | 🆕 new fact; consistent with ADP samples. Company codes here are `4RZ`/`4RY`, not `ABC` | PAY-067 |
+| **One employee may hold several positions, each with its own Position ID / File Number** — ERP must not assume one File # per employee | 🆕 **material**: `model Employee` carries a single nullable `adpFileNumber` and nothing else ADP-shaped. Contradicts the built shape, not any written rule → **new gap** below | PAY-003 |
+| Proposed ERP model: `Employee{ADPAssociateOID, ADPAssociateID}` + `EmployeePosition{ADPPositionID, ADPCompanyCode, ADPPayrollFileNumber, IsPrimary, status, effective dates, ADPJobCode, ADPPayGroup}`; payroll transactions reference the **position**, not the employee | 🆕 proposal; unbuilt, unticketed. Converges with `decisions/2026-06-30-adp-erp-employee-data-ownership.md` (ADP masters the legal record) | PAY-003 |
+| Current Excel/Power Query export identifies rows by `Co Code + Batch ID + File #`, first three fields per ADP's guide; no Associate/Position ID is sent | ✅ agrees — `EPI4RZ32.csv` verified 2026-08-24; crosswalk §4 temp-rate rows keyed by File # | PAY-067 |
+| Paydata API mirrors this: `payrollFileNumber` under the payroll profile, `associateOID` on the worker | ✅ agrees with `pay-data-input.modify/meta` (`adp-api-responses/`) | PAY-067 |
+| **Crosswalk correction:** implementation note 8 ("File Number… allows uppercase alphanumeric") is wrong; File # is numeric, 51–999999, six positions, enforced by `qADPImportValidation` | ✅ agrees with the **already-closed** gap *ADP File Number — the crosswalk's format rule is wrong* (ADP regex `^0*(5[1-9]|[6-9][0-9]|[1-9][0-9]{2,5})$`). Client now concurs in writing; `adp-bucket-crosswalk.md` §8 text still uncorrected | PAY-067 |
+| Associate ID must be stored and "must not be replaced by the payroll File Number" | 🆕 requirement-shaped; not in any FRD/matrix row | PAY-003 |
+
+**Client questions from this message:** (23) does TCG's own ADP data actually contain any
+employee with more than one paid position today (Ventura `4RY` vs `4RZ` is the obvious case) —
+this decides whether `EmployeePosition` is a day-one migration or a schema allowance; (24) is
+the message's requirement block to be treated as **signed** — if so a decision note is owed and
+PAY-003's field mapping can close against it.
+
+## Cross-module — 2026-08-27 follow-ups after the FCC migration first pass (Brian Petros)
+
+Message to the TCG team after the 2026-08-26 sprint review. FYI half: CodingCops has imported
+"a lot of information from FCC" into the ERP (first pass — contact emails/phones redacted, SSNs
+skipped, per the transcript); Brian will say when it is viewable. Six follow-ups for future
+meetings, none payroll-owned; each is now an entry (or an update) in its owning module:
+
+| Item | Owning register |
+| --- | --- |
+| Patrick to explain customer data synced with HubSpot & Microsoft | admin → *Integrations* (updated) |
+| Ask owners about "customer-owned assets" | assets → *Customer-owned assets* (new) |
+| Employee certification requirements and types (per job / per unit / other) | payroll → *Employee certifications* (new) |
+| Unit/asset certifications: registrations, insurance, loan, maintenance, permits | assets → *Unit / asset certifications* (new) |
+| Permits can be asset-specific **or** job-specific | projects-jobs → *Asset on a permit* (updated) |
+| GL codes in FCC/ERP vs QuickBooks | accounting → *GL codes* (new) |
+
+No claim in it contradicts a written rule; the material new fact is the two-scope permit.
 
 ## Parked — 2026-08-24 (build proceeds on defaults)
 

@@ -2,7 +2,7 @@
 title: Dispatch — module index
 status: reference
 kind: index
-updated: 2026-08-24
+updated: 2026-08-29
 tags: [module/dispatch, kind/reference]
 ---
 
@@ -20,12 +20,15 @@ DAS, scheduling, yard operations. Backend usecases: `das, das-allocations, das-l
 | [daily-allocation-system.md](daily-allocation-system.md) | The DAS spec: drag & drop allocation, dispatch lifecycle, availability, live asset map | 8.7 |
 | [dispatcher-needs.md](dispatcher-needs.md) | What dispatchers said they need (discovery) | 3.9 |
 | [yard-operations-jz.md](yard-operations-jz.md) | Yard operations punch list | 0.6 |
+| [crane-configurations.md](crane-configurations.md) | **What a crane configuration is** — operator load, `.1/.2/.3` support loads, the dispatch-sheet legend, GPS-verified time | 5.5 |
 
 ## Decisions that bind this module
 
 - [2026-08-20-job-completed-on-last-day-offload.md](../decisions/2026-08-20-job-completed-on-last-day-offload.md) — Project Job becomes Completed on last-day yard offload — decision
 - [2026-08-20-job-completion-scope-no-vendor-no-backfill.md](../decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md) — Job completion scope — no vendor path and no historical backfill in SCRUM-903 — decision
-- [2026-08-20-quantity-based-das-sets.md](../decisions/2026-08-20-quantity-based-das-sets.md) — Quantity N on a quotation line becomes N DAS/Yard sets
+- [2026-08-25-completed-job-view-only.md](../decisions/2026-08-25-completed-job-view-only.md) — Completed Project Jobs are hard view-only — decision
+- [2026-08-31-quotation-qty-not-das-sets.md](../decisions/2026-08-31-quotation-qty-not-das-sets.md) — Quotation qty is billing only; one DAS/Yard set per root; child qty independent
+- [2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) — Create **and** edit both land on the entity's detail page, app-wide; supersedes the create half of 2026-08-20
 
 ## Open questions
 

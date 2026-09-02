@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-09-01
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -35,6 +35,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Owner: Patrick (demo), then whoever writes it down.
 - Status: open
 - **From (frozen original):** [gaps.md#integrations-hubspot-microsoft-365-dialpad-mapsly](../gaps.md#integrations-hubspot-microsoft-365-dialpad-mapsly)
+- **Update 2026-08-27:** Brian Petros, written message to the TCG team, 2026-08-27 ("A couple things that came up in my discussion with CodingCops today, that we'll discuss in future meetings"), following the 2026-08-26 ERP sprint review — logged in [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros) — still open; Brian re-lists "have Patrick explain more details
+  regarding Customer data synced with HubSpot & Microsoft". The 2026-08-26 sprint review
+  (`../meetings/transcripts/2026-08-26-erp-sprint-review.md`, ~18–20 min) adds the shape:
+  Microsoft, HubSpot and Dialpad are synced with each other, **FCC is not**, and salespeople may
+  update contacts in HubSpot — so the customer/contact migration from FCC may be the stale copy.
+  Customer-side pointer: customers/gaps.md. The brief names the contact: **Patrick McKiernan**, and adds "show legacy FCC ID on UI" — the annotated migration brief, [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md) A1.
+
 
 ## Map provider, no-key fallback, and which table owns address coordinates
 
@@ -71,3 +78,342 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Brian Petros (data and integrations — the only recorded voice on address
   coordinates), with Patrick for the Mapsly half.
 
+
+## What a newly created tenant must contain — provisioned defaults, or an empty portal
+
+- **Status:** open
+- **Asked:** 2026-08-27 — PR #421 review (branch `refactor/explicit-tenant-seeding`, no ticket); tcg-scrum escalation
+- **Observed 2026-09-01 — the premise that provisioning happens today does not hold.** A tenant
+  created through Super Admin (`CODING-COPS`) came up with **zero departments and zero department
+  roles**, while `PLATFORM` and `TCG-DEFAULT` each carry 15 system departments (`DEPT-ACCOUNTS`,
+  `DEPT-FLEET`, `DEPT-YARD`, …, all `is_system: true`) and 18 roles. Those exist because
+  `seed-data.ts` created them, not because tenant creation did — `AdminTenantsService.create()`
+  writes the `TenantCompany` row and nothing else. So option (a) above is not "today's behaviour"
+  for admin-created tenants; the empty portal is. The consequence this entry predicts is real and
+  observed: with no departments there are no roles, so the first user cannot be given one without
+  hand-creating both.
+- **Question:** When a tenant is created — by the admin "create tenant" action or by self-signup —
+  which reference data must exist on day one? Four sets are in question and each can be answered
+  in a line: (a) **system departments and their department roles**, (b) **billing code types**,
+  (c) **industries**, (d) the **payroll premium catalog** (see payroll/gaps.md → *Payroll premium
+  catalog*). Options for each: **provisioned automatically at tenant creation** (today's
+  behaviour, `seedTenantDefaults`), **created by the tenant's own admins through the existing
+  settings CRUD** (an empty portal on first sign-in), or **run by an operator as a per-tenant
+  onboarding step**. If empty is the answer, does anything gate first use — a new tenant with no
+  departments has no roles to assign a user to.
+- **Sources checked:** **Vault — nothing.** `INDEX.md`; `admin/INDEX.md` (the module holds one
+  content file, `tcg-documents.md`, on attachments); `admin/gaps.md`; `decisions/` (13 notes, none
+  on tenant provisioning, departments, roles or reference-data seeding);
+  [STRUCTURE.md](../STRUCTURE.md):42 routes the `seed` facet to `admin/` but **no content exists
+  behind it**; vault-wide grep outside `meetings/` for `new tenant|tenant creation|create a
+  tenant|new company|empty portal|default department|system department|default role|seed` — no
+  product statement, only incidental mentions of today's seeded craft codes in
+  `decisions/2026-08-21-scrum-877-*` (which explicitly says seed data "is not necessarily what a
+  tenant's admins have since configured"). **`meetings/` — nothing** (full sweep of 57
+  transcripts, 7 summaries and the curated minutes): `new tenant`, `provision`, `seeding`, `empty
+  portal`, `default department`, `master data`, `reference data` return zero hits; every `seeder`
+  hit is the FCC migration seeder. The nearest statements are Ehtesham describing departments as
+  something *you create* (`meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:68,
+  :72; `meetings/transcripts/2026-05-05-tcg-erp-system.md`:92) and CodingCops reporting that they
+  "added all of the basic cards" for billing code types and industry codes **for TCG**
+  (`meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md`:148) — a description of
+  what was loaded into TCG's own tenant, not a rule about new ones.
+- **Weak signals and one conflict, not an answer:**
+  - **Jira says seed, twice, and both are `Done`.** `SCRUM-467` *Seed Departments & Roles*:
+    *"System should include predefined, hardcoded departments and their roles… Sales Department →
+    Managers automatically created/assigned, Dispatch Department, Yard Department."* `SCRUM-593`
+    *Departments (seeding and templates)*: *"Seed default departments; seed manager default
+    permissions as per our best understanding."* **PR #421 removes exactly that behaviour**, so
+    the PR's premise and two closed tickets disagree. Neither ticket is superseded by anything
+    written.
+  - **`SCRUM-871` (In Review, assignee Fouzan Shakil) is the likely origin of the PR's premise
+    and does not support its scope.** Its title — *"When you create a new tenant the system
+    automatically provisions several default Data from other tenant in Billing code type"* — reads
+    as unwanted provisioning, but its only comment (Aiman Farooq, QA, 2026-08-21) reframes it as a
+    **leak**: *"One Billing Code is appearing in the new tenant even though it should not. Please
+    investigate the tenant data isolation for Billing Codes."* That is `SCRUM-537`'s isolation
+    problem (a row belonging to another tenant being visible), not a statement that a new tenant
+    must have no departments, roles, industries or premiums. It names **billing codes only**.
+  - **`SCRUM-925` (2026-08-24 planning) is a precedent in the opposite direction, for one table
+    only:** *"No data migration, no seed. `CraftCode` starts empty; admins create every craft and
+    its rates through the API."* Written for craft codes, not generalised.
+- **Blocked:** PR #421 (`refactor/explicit-tenant-seeding`) cannot be signed off as
+  product-correct — it changes `apps/api/src/usecase/admin/admin-tenants.service.ts` and
+  `apps/api/src/usecase/tenant-companies/tenant-companies.service.ts` against no written
+  requirement, and against `SCRUM-467`/`SCRUM-593`. `SCRUM-871` cannot be closed until it is known
+  whether the ask was "stop seeding" or "stop leaking". Also open by consequence: no script yet
+  exists for the `SEED_TENANT_CODE` path the PR leaves as the only way to populate a tenant.
+- **Owner:** Fouzan Shakil (assignee of `SCRUM-871` and the named decider on the 2026-08-20/25
+  decision notes), with Ehtesham Anwar for what onboarding a second tenant is meant to look like.
+
+## Which countries, states and cities may an address name?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. Routed here because
+  [../STRUCTURE.md](../STRUCTURE.md):42 assigns reference data *(addresses, cities, states,
+  countries, industries)* to this module. Form-interaction half in
+  [../customers/gaps.md](../customers/gaps.md).
+- **Question:** The branch replaces the DB-seeded `Country`/`State`/`City` tables with the
+  `@countrystatecity/countries` npm package behind the same endpoints, and narrows what the
+  pickers offer. Three parts, each answerable in a line. (a) Is **United States the only
+  selectable country**, or is the full list kept with the US merely pre-selected? (b) Does the
+  state list stop at the **50 states + DC**, or must **Puerto Rico, Guam, the US Virgin Islands,
+  American Samoa, the Northern Marianas** and the **military postal regions (AE/AA/AP)** be
+  selectable — TCG bills federal and military work, and an APO address cannot be entered without
+  them. (c) Whose **city name vocabulary** is canonical: the package's (`New York City`,
+  `Washington D.C.`) or the names already stored (`New York`, `Washington`)?
+- **Sources checked:** **Vault — nothing on any of the three.** `INDEX.md`; `admin/INDEX.md`
+  (the module's one content file is `tcg-documents.md`, on attachments); `admin/gaps.md`;
+  `../customers/customers-INDEX.md` and all five candidates; `../decisions/` (24 notes, none on
+  addresses, geography or reference-data vocabulary); vault-wide grep for `countr`, `iso 3166`,
+  `puerto rico`, `territor`, `guam`, `military postal` — **no vault file states a country list, a
+  state value set, or a city naming rule.** `../STRUCTURE.md`:42 routes the facet here but no
+  content sits behind it. `.ai/aidlc/` — no ticket mentions any of these terms.
+- **Jira sources the default, not the restriction.** `SCRUM-39` *Country Field Should Be Dropdown
+  and Pre-Selected as USA* (Done, 2026-04-16) and `SCRUM-60` (Done, same day, Yards) both ask for
+  *"a dropdown with **predefined options**"* with *"**USA pre-selected by default**"*. A default
+  inside a list is not a list of one, so (a)'s narrowing is **not** covered by them. `SCRUM-103`
+  (Done) fixes the field order *Country → State → City → Zip* and keeps Country on every form.
+  Both reporters are **Aiman Farooq, CodingCops QA** — the same internal-QA voice whose scope
+  judgement `../customers/gaps.md` → *Customer-level comments* records as having overwritten a
+  client ask, so these are not adjudicated product decisions and no decision note was written
+  from them.
+- **Two written counter-signals to the narrowing:**
+  - **`SCRUM-36`** *Missing Dependent Location Fields…* (Done, 2026-04-15) presupposes country is
+    changeable: its repro step is *"**Change country/region** or attempt data entry"*, and its
+    expected result is that *"Phone Number, Fax, and Zipcode fields should enforce
+    **country/region-based validation and formatting rules dynamically**"*. Dynamic per-country
+    formatting has no purpose in a one-country picker.
+  - **The FCC migration loads 252 countries and 73 states.**
+    [../meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md):68
+    lists *States / countries — 73 / 252* as a **loaded** module. 73 is 22 more than 50 + DC.
+    Nothing supersedes that row, and this branch stops loading it (see next entry).
+  - **Every Jira ticket names the field "State / Province"**, not "State" — `SCRUM-36`,
+    `SCRUM-29`, `SCRUM-28`, `SCRUM-17`, and `SCRUM-962` (To Do, created 2026-09-01 by Umair Khan)
+    calls it *"Province"* outright. "Province" is not a US subdivision, so the shipped label and a
+    50-states-plus-DC list disagree about what the field is for.
+- **Weak signal for US-centricity, not a decision:** the legacy FCC extract
+  (`../payroll/legacy-payroll-app-db-extract/data/source-feed.md`:170, :175) shows every sampled
+  customer row carrying `Country=USA` and `StateCode=CA`. That is migration data describing a
+  California crane business, not a statement about what the picker must offer.
+- **`SCRUM-962` is the branch's likely origin and does not authorise any of this.** *"Verify and
+  fix the City and Province dropdowns, as they were not displaying correctly. The dropdown data
+  should be populated correctly through the relevant API."* — a display defect, To Do,
+  unassigned, created the same day as the branch. It asks for the dropdowns to work, not for the
+  country list to shrink or the city vocabulary to change.
+- **Blocked:** sign-off of `feat/us-geo-package-lookup` as product-correct; `SCRUM-962` closure.
+  (c) additionally puts a **shipped, twice-ticketed behaviour at risk** — `SCRUM-789` (Done) and
+  `SCRUM-819` (Done) filter the **Permits Agency dropdown by the selected City**, so a change of
+  city vocabulary can silently empty that dropdown for agencies attached to the old names. That
+  consequence needs checking whichever way (c) is answered.
+- **Owner:** Brian Petros (data and migration — the recorded voice on FCC address data), with
+  Melissa McNutt for what the forms must offer operationally.
+
+## Do the Country/State/City tables stay, and does the FCC load still ship 73 states / 252 countries?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup` (no ticket);
+  tcg-scrum escalation.
+- **Question:** The branch leaves the Prisma `Country`, `State` and `City` models in place but
+  removes every writer — verified at `apps/api/src/utility/seed-data.ts`:927–929 (*"Countries,
+  states and cities are no longer seeded"*) and `apps/api/fcc-seeder/src/seed-all.ts`:134–135
+  (*"States and countries are not imported"*). No drop migration ships. Two parts, each
+  answerable in a line. (a) Do the three tables get **dropped**, **kept as a historical record**,
+  or **kept because something still needs to write them**? (b) The FCC migration brief advertises
+  *States / countries — 73 / 252* as loaded; is **retiring that load** intended, and does TCG need
+  telling, given they are reviewing the brief row by row?
+- **Sources checked:** **Vault — nothing.** `../decisions/` (24 notes; the nearest,
+  [../decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md),
+  governs **entity records**, not schema tables, and settles neither); `admin/INDEX.md`;
+  `../STRUCTURE.md`:42; `.ai/aidlc/` (no ticket). Jira: no ticket proposes removing, keeping or
+  dropping these tables.
+- **The vault treats an orphaned column as a defect, not a pattern.**
+  [../customers/gaps.md](../customers/gaps.md) → *Customer-level comments* records
+  `comments String[] @default([])` as surviving on `model Customer` *"orphaned with no UI"* — cited
+  as part of an open problem needing resolution. So *"left in place with no writers"* has a
+  precedent here, and that precedent is a complaint.
+- **Related, same class:** *What a newly created tenant must contain* (above) already asks which
+  reference data a tenant gets on day one and explicitly lists **industries**; countries, states
+  and cities are the same facet in `../STRUCTURE.md`:42 and should be answered with it, not
+  separately.
+- **Blocked:** nothing ships broken — the endpoints keep serving. This needs an answer before the
+  tables are dropped, and before the next FCC migration review with TCG.
+- **Owner:** Brian Petros for the migration half; Fouzan Shakil for the schema half.
+
+## Is an ODbL share-alike geo dataset acceptable, and who signs that off?
+
+- **Status:** open — **not a product question.** Recorded here because no register owns it.
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup`; tcg-scrum escalation.
+- **Question:** The branch adds `@countrystatecity/countries`, chosen over the GPL-licensed
+  `country-state-city` and over a React UI kit, on the stated grounds that its **ODbL** licence is
+  the more permissive of the two. ODbL is a **share-alike database licence carrying an attribution
+  obligation**, so two things need a named human, and neither is the product team's: (a) is ODbL
+  acceptable for a commercial closed-source ERP, and who at TCG or CodingCops accepts that risk?
+  (b) is the **attribution requirement discharged** anywhere a user or auditor can see it — the
+  branch adds none.
+- **Sources checked:** **no third-party-licence or dependency policy exists anywhere.** `domain/`
+  (the six SOP files — the vault's only `verified` content — cover SDLC, sprint planning, standup,
+  grooming, sprint close and Jira ticket standards, and none mentions dependencies or licensing);
+  `../decisions/` (24 notes; the two grep hits for *licence* use the word idiomatically); no
+  `LICENSE` file at repo root; `.ai/aidlc/GUIDE.md` and the ticket folders carry no dependency
+  gate. So the choice is not *contradicted* by anything — there is simply no policy to check it
+  against, and no reviewer who is designated to.
+- **Blocked:** nothing technically. Flagged because a licence obligation adopted with no owner and
+  no attribution is the kind of thing found later by someone else.
+- **Owner:** **not the product team** — whoever owns legal and IP risk at CodingCops (escalate via
+  Ehtesham Anwar), with a standing dependency-licence rule as the durable fix.
+
+## Whose company identity do customer-facing emails carry when a deployment sets no env?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket);
+  tcg-scrum escalation. Raised on quotation delivery email; routed here because tenancy and
+  settings are this module's, per [../STRUCTURE.md](../STRUCTURE.md). Pointer in
+  [../quotations/gaps.md](../quotations/gaps.md).
+- **Question:** `COMPANY_ADDRESS_LINE`, `COMPANY_EMAIL`, `COMPANY_PHONE` and `COMPANY_WEBSITE`
+  defaulted to empty strings, so any deployment that had not set all four sent customers a
+  quotation email with the tenant name and a blank footer — while the PDF attached to that same
+  email carried TCG's full address block. The branch fixes the blank footer by defaulting the four
+  keys to TCG's own details (4820 Harbor Industrial Way, Los Angeles; `billing@thecraneguys.com`;
+  (310) 555-0148), matching what the quotation document prints. Two questions, each answerable in
+  a line. (a) Is a **hardcoded TCG identity** the right fallback, given that a second tenant which
+  forgets the env would then mail *its* customers TCG's address and billing email — a worse
+  failure than a blank footer, because it is wrong rather than merely empty? (b) Should company
+  identity be **per-tenant data** on the tenant company record and administered in settings,
+  rather than per-deployment environment variables at all? The env-var design already assumes one
+  tenant per deployment, which nothing in the vault establishes.
+- **Sources checked:** **Vault — nothing.** Vault-wide grep for `company address`,
+  `COMPANY_ADDRESS`, `email footer`, `branding`, `Harbor Industrial`, `thecraneguys.com` outside
+  `meetings/` returns one hit, [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md):168
+  — *"Branding/logo"* as a required element of the **printed** quotation, not email, and from
+  personal-space provenance. `admin/INDEX.md` (the module's one content file is
+  `tcg-documents.md`, on attachments); `decisions/` (21 notes, none on company identity, branding
+  or tenant profile data); `.ai/aidlc/` (no ticket). The phone number's `555` exchange is a
+  reserved-for-fiction range, so at least one of the three defaults is placeholder rather than
+  TCG's real detail — which the answer to (a) should confirm either way.
+- **Related:** *What a newly created tenant must contain* (above) — same class of question, and
+  the same unstated assumption about whether the platform is single- or multi-tenant in practice.
+- **Blocked:** nothing is blocked — the branch's behaviour is strictly better than the blank
+  footer it replaces. This needs an answer before a second tenant is onboarded, not before merge.
+- **Owner:** product team, with Ehtesham Anwar for the second-tenant question.
+
+## A SUPER_ADMIN inside a tenant cannot create tenant-scoped records at all
+
+- **Status:** open
+- **Asked:** 2026-09-01 — creating a department in a fresh tenant while signed in as a
+  `SUPER_ADMIN` whose `tenantCompanyId` is that tenant. Not a ticket question; found in use.
+- **Question:** should a `SUPER_ADMIN` be able to belong to a tenant at all, and if so, what
+  tenant do its writes land in? Today the combination is created without objection by the admin
+  user form and then **fails on every tenant-scoped create with a 500**, not a permissions
+  message: `Argument 'tenantCompany' is missing`.
+- **Why it happens:** the tenant-scoping Prisma extension short-circuits on role —
+  `apps/api/src/orm/prisma.service.ts:230`, *"Super admins operate across all tenants — skip
+  tenant scoping"* — and returns the query untouched. Services that rely on the extension to
+  inject `tenantCompanyId` therefore get nothing injected. `DepartmentsService.create()` is one:
+  it passes the form data straight to the repository and never sets the tenant itself, so Prisma
+  rejects the create. Services that set `tenantCompanyId` explicitly — `craft-codes`,
+  `craft-modifiers`, `sub-categories` — are unaffected, so the behaviour is **inconsistent across
+  modules** and only shows up on the ones that delegate.
+- **The read side is worse than a 500, because it is silent.** The same skip means such a user
+  sees every tenant's rows in every list and picker. Observed: 33 departments offered in a tenant
+  that owns none. Choosing one would write another tenant's `departmentId` onto a local record,
+  with no guard on either the read or the write.
+- **Sources checked:** `prisma.service.ts:226-239` — the two skip conditions are `!context` and
+  `userRole === SUPER_ADMIN`; **neither checks whether the user belongs to `PLATFORM`**.
+  `admin-users.service.ts:91` — `role: (data.role ?? 'USER')`, so the API accepts `SUPER_ADMIN`
+  for a user being created inside a specific tenant and nothing rejects it.
+  `admin-tenants.service.ts` `create()` — creates the tenant row only, no user, so the
+  tenant+SUPER_ADMIN pairing is made by hand rather than by the product.
+  `decisions/` — nothing on super-admin tenancy. `meetings/` — nothing.
+- **Note:** whichever way it is answered, the two halves are separable. *Should the combination
+  exist* is a product question. *Should a create 500 when it does* is a defect either way —
+  `DepartmentsService` should set `tenantCompanyId` explicitly like its neighbours rather than
+  depending on an extension that is documented as conditional.
+
+## Must an entity picker search the server, or only offer a search box?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. Routed here as the
+  app-wide picker standard; per [../STRUCTURE.md](../STRUCTURE.md):60 a cross-module question
+  goes to the module most likely to own the answer.
+- **Question:** The branch converts entity dropdowns across the app to server-searched,
+  paged pickers and adds a pre-push guard that fails a build reintroducing a whole-table read.
+  The written asks stop short of that. **Does "searchable dropdown" mean the option set is
+  fetched per keystroke from the API, or only that the control has a search box over whatever
+  it already holds?** The two differ in a user-visible way: a server-searched picker's
+  empty-search state is **deliberately incomplete**, so a user who scrolls without typing no
+  longer sees every row. Nobody has said that trade is acceptable, and no page-size, ranking or
+  empty-state rule is written anywhere.
+- **Sources checked:** **Vault — nothing states a picker data-loading rule.** `INDEX.md`;
+  this module's `INDEX.md` (its one content file is `tcg-documents.md`, on attachments);
+  `../customers/customers-INDEX.md` and all five candidates; `../quotations/quotations-INDEX.md`;
+  `../decisions/` (24 notes — none on pickers, list loading or search); vault-wide grep for
+  `dropdown`, `type-ahead`, `autocomplete`, `combobox`, `debounce`, `paginat`, `preload`,
+  `infinite scroll`. The only vault hits describe *which* dropdowns exist or how they look
+  (`../vendors-agencies/vendors.md`:47 linked Category/Sub-Category, `../quotations/quotation.md`:13
+  "should open upwards", `../dispatch/daily-allocation-system.md`:33), never how their options load.
+- **Jira sources the intent but not the mechanism, and the clearest line is internal-QA voice:**
+  - **`SCRUM-952`** *Searchable dropdown* (**To Do**, 2026-09-01, Umair Khan) — *"Each dropdown
+    across the app should have a **search option**."* This is the branch's likely origin and it
+    asks for the **affordance**, not for server-side resolution. A client-filtered list satisfies
+    it as written.
+  - **`SCRUM-638`** *Employee* (Done, 2026-07-08, Aiman Farooq) item 20 — *"Implement **infinite
+    scrolling** in dropdowns so paginated data is loaded progressively instead of loading
+    everything at once"*, prompted by item 19: *"There are **76 assets** in total, but the
+    dropdown is not displaying all of them."* This is the **only** written line that asks a
+    dropdown not to load its whole table, and its stated remedy is progressive scroll, not
+    type-ahead search. `SCRUM-639` item 32 and `SCRUM-638` item 34 add *"Handle pagination and
+    search on the backend instead of the frontend"* — both about **listing tables**, in listing
+    context, not pickers.
+  - **`SCRUM-703`** *move pagination, filteration searching(debounce) on backend (across the app)*
+    (Done, 2026-07-16, Umair Khan, **no description**) — the Jira twin of
+    [../customers/customer.md](../customers/customer.md):16 item 4. Verbatim scope, zero detail,
+    already **Done**; whether "across the app" was ever meant to reach entity pickers is exactly
+    what is unrecorded.
+  - Reporter caveat: `SCRUM-638`/`639`/`952` are **CodingCops internal voices** (Aiman Farooq,
+    Umair Khan), the same class this register already flags under *Which countries, states and
+    cities may an address name?* as not adjudicated product decisions. `customer.md` is a **punch
+    list** — a bug list, not a specification — and cross-module, per
+    [../gaps.md#feedback-punch-lists-are-not-scoped-to-the-module-they-are-filed-under](../gaps.md).
+- **The convention is written, but a rule cannot make a requirement true.**
+  `.ai/claude/contexts/web.md`:98–172 states the rule in full and a pre-push guard
+  (`scripts/check-dropdown-preloads.sh`) enforces it. That file is the sanctioned home for **how
+  we build**; it is not a product source, and it was edited on the same branch as the code it
+  describes.
+- **Blocked:** sign-off of `feat/move-dropdowns-BE` as product-correct; closure of `SCRUM-952`.
+  Nothing ships broken — the API routes are dual-mode, so an unparameterised call still returns
+  the bare array.
+- **Owner:** Mohsin Ali for the UX standard (the punch lists are his feedback); Fouzan Shakil
+  for whether the guard stays a hard gate.
+
+## Is the countries/states/cities preload an intended exemption, or an unreviewed carve-out?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket);
+  tcg-scrum escalation.
+- **Question:** Every other entity picker on the branch moves to server search; countries,
+  states and cities keep a **preloaded list with a 24-hour client cache**
+  (`apps/web/src/features/countries/hooks/use-countries.ts`:14,
+  `features/states/hooks/use-states.ts`:14, `features/cities/hooks/use-cities.ts`:24). Two parts,
+  each answerable in a line. (a) Is the **24-hour staleness** acceptable for address reference
+  data, given a newly added city would not appear for a day? (b) The same data is reached **two
+  different ways on purpose** — `components/molecules/address-fields.tsx` preloaded, Permits'
+  `CitySelect` server-searched. `web.md`:153–155 calls that inconsistency *"known and intended"*.
+  **Intended by whom?** Two controls over one dataset behaving differently is the kind of thing a
+  user reports as a bug.
+- **Sources checked:** **Vault — nothing on either part.** The two open entries above
+  (*Which countries, states and cities may an address name?*, *Do the Country/State/City tables
+  stay…*) cover **which values** are offered and **where they are stored**; neither touches how
+  the picker loads them or how long it may hold them. `../decisions/` — none on caching,
+  staleness or reference-data freshness. Jira: `SCRUM-549` (Done) and `SCRUM-962` (To Do) are
+  both **display defects** — the city dropdown not working — and neither states a loading or
+  caching strategy.
+- **Note:** (b) is the more consequential half. If the answer is that the inconsistency is *not*
+  intended, the fix direction matters: `SCRUM-789` and `SCRUM-819` (both Done) filter the Permits
+  Agency dropdown by the selected city, so the two controls are not interchangeable today.
+- **Blocked:** sign-off of the exemption in `feat/move-dropdowns-BE`. Should be answered together
+  with the two geo entries above — same facet, same owner.
+- **Owner:** Fouzan Shakil for the caching decision; Melissa McNutt for whether one-day staleness
+  is operationally acceptable on an address field.

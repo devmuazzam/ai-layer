@@ -1,8 +1,8 @@
 # meetings/transcripts/ — raw client meeting transcripts
 
-**57 files, 2026-01-15 → 2026-08-18.** Migrated 2026-08-19 from a OneDrive/Teams/
+**59 files, 2026-01-15 → 2026-08-26.** 57 migrated 2026-08-19 from a OneDrive/Teams/
 Read.ai/Fireflies export (see `../../sync/` — there is no automated pipeline for this;
-it was a one-time manual pull). Each file is a transcript **as captured**, not curated —
+it was a one-time manual pull); two more added 2026-08-27 from a 2026-08-27 OneDrive drop. Each file is a transcript **as captured**, not curated —
 no analysis, no cross-referencing, no conflict-flagging. That work exists separately for
 three of these dates as the curated minutes in `../` (2026-08-05, 08-07, 08-12) and, at a
 broader scale, in the *Recordings vs. Confluence Audit*.
@@ -84,3 +84,5 @@ and two dates in July have `no-recording` at all.
 | 2026-08-12 | ERP Sprint Review | Transcript | 39.3 | [2026-08-12-erp-sprint-review.md](2026-08-12-erp-sprint-review.md) |
 | 2026-08-13 | Payroll Process | Transcript | 69.2 | [2026-08-13-payroll-process.md](2026-08-13-payroll-process.md) |
 | 2026-08-18 | Accounting Process | Transcript | 58.1 | [2026-08-18-accounting-process.md](2026-08-18-accounting-process.md) |
+| 2026-08-25 | Accounting Process | Transcript | 58.0 | [2026-08-25-accounting-process.md](2026-08-25-accounting-process.md) |
+| 2026-08-26 | ERP Sprint Review | Transcript | 51.4 | [2026-08-26-erp-sprint-review.md](2026-08-26-erp-sprint-review.md) |

@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-08-29
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -153,3 +153,82 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Status: open
 - **From (frozen original):** [gaps.md#schedule-fields-the-build-already-agrees-and-the-new-fields-are-written-nowhere](../gaps.md#schedule-fields-the-build-already-agrees-and-the-new-fields-are-written-nowhere)
 
+
+## Crane configuration — is a support load an Asset, or a line on the crane?
+
+- **Status:** open
+- **Asked:** 2026-08-29 — reading `3.3.1_MODULE-DISPATCH-JOBS` into the vault
+- **Question:** The approved workbook lists `26502 OL`, `26502.1`, `26502.2`, `26502.3`
+  as their own unit codes with their own names, crew roles and ticket numbers. Are these
+  meant to exist in TCG as **Assets** (own unit code, own row in the fleet), or as a
+  **configuration on the parent crane** that expands into ticketed loads at dispatch time?
+  The workbook's shape says Asset; the phrase *"it will depend on the crane's
+  configuration"* says the second. This decides whether the operator load appears in the
+  asset list, whether it can be independently unavailable, and whether utilisation counts
+  it. **No Asset-side model exists either way** — nothing in `schema.prisma` represents a
+  load as a unit under a parent crane.
+- **Corrected 2026-09-01 — the original entry's evidence was wrong.** It claimed
+  `counterweight`, `CWT` and `operator load` *"return zero hits across API, web and
+  schema."* They do not. All three of the workbook's load kinds are already seeded as
+  **billing code types** in `apps/api/src/utility/seed-data.ts`: `CWT` Counter Weight Truck
+  (line 76), `OPL` Operator Load (line 86), `SUPP` Support Load (line 99). That points at a
+  third answer the entry did not offer — a load is already modelled as **a billable line**,
+  which is what a quotation resource hangs off — and it is the only one of the three with
+  anything built behind it. `apps/api/src/service/ticket-labor-entries/` also reasons about
+  Operator Load explicitly, as *"Operator Load trucks that also allocate as ASSET but have
+  no `mainBoomLength`"* (`ticket-labor-entries.repository.ts:327`), so the ticket side
+  already treats an OL as allocating like an asset while being priced as its own code.
+  Do not answer this question from the "nothing is built" premise.
+- **Sources checked:** `ASSETS_DISPATCH_(Lisette-approved).xlsx`, `Dispatch PDF Blank
+  Master.pdf` annotations, `crane-configurations.md`, `schema.prisma`
+  (`Asset`, `SubCategoryAssociatedResource`, `SubJobLoadoutItem`, `UnitTypeResource`);
+  and on the 2026-09-01 correction, `apps/api/src/utility/seed-data.ts:70-100`,
+  `apps/api/src/service/ticket-labor-entries/ticket-labor-entries.repository.ts:327`.
+
+## Crane configuration — which loads are mandatory, and per what?
+
+- **Status:** open
+- **Asked:** 2026-08-29 — reading `3.3.1_MODULE-DISPATCH-JOBS` into the vault
+- **Question:** The sheet says the operator load *"is require to go out anytime the crane
+  goes out — all the cranes from 9001 and on"*, but *"4005 and 4006 sometimes require this
+  in different configurations"*, and the `.1/.2/.3` loads *"are not always required… it
+  will depend on the crane's configuration"*. So: is the requirement keyed to the crane, to
+  the sub-category, or to the lift being quoted? And who picks the configuration — sales at
+  quotation time, or dispatch at allocation time? Without this the system cannot know how
+  many tickets a crane generates.
+- **Bearing on quotations, noted 2026-09-01.** Until the "who picks it" half is answered,
+  **nothing is required of the quotations module** and none should be inferred: a quote
+  today prices `OPL` / `CWT` / `SUPP` as ordinary resource lines a salesperson adds by
+  hand, with no expansion from the parent crane. Related and separately unanswered: the
+  rate card gives Operator Load a **5 h minimum and 8 h maximum**, which `BillingCode` has
+  no field for — see `../quotations/gaps.md`.
+- **Sources checked:** `crane-configurations.md`, `ASSETS_DISPATCH_(Lisette-approved).xlsx`;
+  and on the 2026-09-01 note, `apps/api/src/utility/seed-data.ts:70-100`,
+  `apps/api/prisma/schema.prisma:1246-1266` (`BillingCode`).
+
+## GPS-verified time on a job — what is being verified?
+
+- **Status:** open
+- **Asked:** 2026-08-29 — Melissa McNutt, 2026-04-18
+- **Question:** The request in full is *"on the job we would like to add a time verified by
+  GPS — just a click button or check box."* Unspecified: **which** time (on-site, left
+  yard, start work, end work — the ticket already stamps six), **whose** GPS (the crane's
+  telematics, the employee's phone, the tractor), what the checkbox **asserts** (a claim by
+  the dispatcher, or a system comparison against a real coordinate), and what happens when
+  GPS and the stamped time disagree. As a checkbox it is trivial; as verification it needs a
+  telematics source. `gps` returns zero hits across API, web and mobile.
+- **Sources checked:** `crane-configurations.md`, `schema.prisma` (`JobTicket` timeline
+  stamps), grep across `apps/`.
+
+## Default crew per unit, overridable per job
+
+- **Status:** open
+- **Asked:** 2026-08-29 — raised in the margin of `Dispatch PDF Blank Master.pdf`, unanswered
+- **Question:** *"Can we add where we can assign crew members to a unit but to where it can
+  easily be changed? Let's ask Lisette this would be helpful. I could see an error happening
+  if the normally assigned crew members aren't going."* A standing crew per unit that
+  pre-fills allocation and can be overridden. `EmployeeAsset` already links employees to
+  assets — is that the same concept, or is this a dispatch-time default distinct from
+  ownership? The note names Lisette as the person to ask; no record that she was.
+- **Sources checked:** `crane-configurations.md`, `schema.prisma` (`EmployeeAsset`,
+  `JobResourceAllocation`).

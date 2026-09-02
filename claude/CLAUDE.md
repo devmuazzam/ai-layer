@@ -25,6 +25,15 @@ unverified` (migrated from Confluence, never adjudicated), and it has open confl
 where several documents disagree. If a file's `conflicts_with` is non-empty, do not pick
 one and answer from it — read the conflict stub.
 
+**Read the vault and ticket folders by section, never whole.** Several files there are
+80–220 KB (`SCRUM-926/spec.md`, `payroll/gaps.md`, `payroll/legacy-payroll-app-db-extract/`,
+`meetings/transcripts/`). One whole-file read of those is 20–55k tokens and is why sessions
+hit *prompt too long*. Before opening anything under `.ai/vault/` or `.ai/aidlc/`, check its
+size (`wc -c`); over ~40 KB, `grep -n` for the heading or anchor and read only that range
+(`sed -n`, or `Read` with offset/limit). Never read a meeting transcript or a retired
+`gaps` file in full. Research that spans several large files belongs in a subagent
+(`tcg-scrum`, `Explore`) that returns the conclusion, not the pages.
+
 **A question a ticket raised belongs to that ticket** — §12 of `.ai/aidlc/SCRUM-###/spec.md`,
 the section that also blocks its sign-off. A ticket folder has no `gaps.md`. To see what is
 open across every ticket: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`.
@@ -89,6 +98,7 @@ the directory; **on other tools they do not — open them by path.**
 | Web | `apps/web/` | Next.js 16 + Tailwind v4 + shadcn/ui | 3001 |
 | Mobile | `apps/mobile/` | Expo SDK 54 + Expo Router | 8081 |
 | Shared | `packages/shared/` | Pure TypeScript | — |
+| E2E | `qa-automation/` | Playwright + Prisma 7 — live API + Postgres | — |
 
 Node 22.22.0 (`.nvmrc`), pnpm 10 workspaces, orchestrated by **Nx** (package-based — every
 `package.json` script is a target; Nx owns ordering, caching and affected-only runs; the apps
@@ -178,6 +188,14 @@ projects. JSDoc on public APIs.
 then `nx affected` lint (web excluded), typecheck (mobile excluded), build. `SKIP_GATES=1 git
 push` skips the gates, never the branch guard.
 
+**`data-testid` in `apps/web` is a contract.** `qa-automation/` addresses the UI through
+it, and that suite is **outside the pnpm workspace and not yet an Nx project** — so no hook
+and no CI job lints, typechecks or runs it, and renaming an ID breaks a test nothing will
+report. (Registering it as an Nx project is an accepted PR #386 follow-up; until that lands,
+the grep below is the only signal there is.)
+New screens ship with IDs; before renaming one, `grep -rn '<the-id>' qa-automation/e2e`.
+Scheme and the shared-component rule: `contexts/web.md` → *Test IDs*.
+
 **Lint does not enforce most of the conventions in this file.** There is no rule for
 module boundaries, duplication, or hardcoded colours. Passing lint is not evidence a
 convention was followed.
@@ -192,3 +210,5 @@ convention was followed.
 - `.ai/vault/<module>/gaps.md` — live module questions · root/payroll `gaps.md` retired, historical only
 - `.ai/aidlc/agents/` — the AI-DLC phase agents
 - `.ai/vault/sync/confluence-sync.md` — how the vault tracks Confluence
+- `.ai/claude/contexts/web.md` → *Test IDs* — the `data-testid` contract `qa-automation/` depends on
+- `.ai/claude/skills/demo-walkthrough/WALKTHROUGH.md` — fresh tenant → calculated payroll, every URL and pre-req. **Describes shipped code, never a source for a spec**; kept current by `close-ticket` step 5

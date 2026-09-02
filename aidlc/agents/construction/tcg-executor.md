@@ -40,7 +40,7 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | `.ai/vault/` | **read-only** — product intent, index first |
 | The client repo | **write**, limited to what the unit's slice-contents table names |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read** — retired 2026-08-20, historical entries only. Cite an existing entry by anchor; never append a ticket's question here |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — `payroll/gaps.md` is 120 KB, grep it too |
 | `spec.md`, `units.md` | **no write access** |
 
 You do not edit the spec or the units to match what you built. If they are wrong, stop and
@@ -115,8 +115,10 @@ all:
 2. **Say which requirement blocked you**, and what specifically you needed.
 3. **Append the question to §12 of `.ai/aidlc/SCRUM-###/spec.md`**, in the shape the
    existing §12 entries use, phrased so a one-line reply resolves it. §12 is the ticket's
-   gaps register — a ticket has no `gaps.md`, and `.ai/vault/gaps.md` is retired (see the
-   top of that file), not a place to send a question regardless of whose it is.
+   gaps register — a ticket has no `gaps.md`. `.ai/vault/gaps.md` and
+   `.ai/vault/payroll/gaps-2026-08-20-retired.md` are retired and frozen; the live
+   product-wide registers are `.ai/vault/<module>/gaps.md`, but a question *this ticket*
+   raised never goes there — §12, always.
 4. **Report it.** Do not bury it in a code comment — a `// TODO: confirm threshold` is a
    decision that already shipped.
 
@@ -187,6 +189,15 @@ This matters more here than anywhere, because this repo will actively mislead yo
   canonical is unresolved.
 - A convention documented in one file is contradicted by another in at least two cases.
 
+**Before writing new pricing, rate, or premium logic of any kind**, `grep -rn`
+`.ai/vault/decisions/` for the entity and rule name, and grep the repo for any existing
+implementation of the same rule (a sibling `packages/shared` constant, a repository method
+with a similar name) before deciding how a fallback or edge case behaves. Matching behaviour
+already shipped elsewhere for the same rule is a source; failing to check for one is not a
+judgement call — a boom-adder fallback shipped in SCRUM-926/U4 that silently contradicted a
+`[VERIFIED]` decision already implemented correctly one layer over is exactly this failure
+(`.ai/aidlc/SCRUM-926/reflection.md` ED-1).
+
 **Passing `pnpm lint` is not evidence a convention was followed.** There is no rule for
 module boundaries, duplication, or hardcoded colour. The gate is much weaker than it looks.
 
@@ -210,8 +221,23 @@ feature unit makes the diff unreviewable.
 | --- | --- | --- |
 | `apps/api` | `contexts/api.md` | `presentation → usecase → service → orm`, never upward. Module registration is the one sanctioned exception. Barrel exports |
 | `apps/api/prisma` | `contexts/prisma.md` | **A schema change requires a committed migration in the same unit.** UUID PK + per-tenant code. Derive the code prefix, do not assume it. **Confirm whether your model is inside the tenant-scoping allowlist** — scoping is not unconditional |
-| `apps/web` | `contexts/web.md` | Feature-first. Reuse before creating. Theme variables, no hardcoded colour. Focused-submit validation |
+| `apps/web` | `contexts/web.md` | Feature-first. Reuse before creating. Theme variables, no hardcoded colour. Focused-submit validation. **Every new control and state region carries a `data-testid`** |
 | `apps/mobile` | `contexts/mobile.md` | `StyleSheet.create` and `theme/tokens.ts` — not Tailwind. `SecureStore` for tokens. 48px targets |
+
+### Web UI ships addressable
+
+`qa-automation/` drives the real app through `data-testid`, so a screen without IDs is a
+screen the E2E suite cannot reach — and one nothing will flag, because that suite is not an
+Nx project and no gate runs it. Building the UI and then retrofitting IDs means touching the
+same production files twice.
+
+So while you are in the file: every interactive control, every error and success banner,
+every invalid/empty state gets `<module>-<flow>-<element>`, kebab-case. A shared component
+takes its ID from the call site — never hardcoded, or two instances on one form collide.
+Scheme, the prop pattern and the worked examples are in `contexts/web.md` → *Test IDs*.
+
+If the unit changes a screen that already has IDs, `grep -rn '<the-id>' qa-automation/e2e`
+before renaming, and update the spec in the same unit. That is in scope, not a follow-up.
 
 ## 6. Finish means the gates ran
 

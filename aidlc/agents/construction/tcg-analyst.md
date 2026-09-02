@@ -39,7 +39,7 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | `.ai/claude/contexts/` | **read-only** — the conventions that bind |
 | Shell, for gates and greps | **run** — lint, build, tests, searches |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read** — retired 2026-08-20, historical entries only. Cite an existing entry by anchor; never append a ticket's question here |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — `payroll/gaps.md` is 120 KB, grep it too |
 | Source, spec, units | **no write access** |
 
 **You do not fix what you find.** A reviewer who edits is no longer reviewing, and the
@@ -125,6 +125,7 @@ unenforced, and each has cost this codebase already.
 | **Enum exhaustiveness** | If a status enum gained a member, every `switch` and mapping over it needs a case. A missing one renders blank rather than throwing |
 | **Migration** | Schema moved without a committed migration is an incomplete change, not a pending one |
 | **Unconfirmed × permanent** | Does this diff make an `[UNVERIFIED]` requirement expensive to reverse — a one-way migration, a backfill, an enum or response shape others will depend on? Unverified alone is routine and never a finding on its own; the pair is. Check the unit's *Risk* block declared it, and raise it if the pair appeared during the build |
+| **Test IDs** | Web UI in the diff: does every new control and state region carry a `data-testid`, and did any *existing* ID get renamed or dropped? `qa-automation/` binds to them, and nothing runs it — `grep -rn '<the-id>' qa-automation/e2e` is the only signal there is |
 | **Contract** | Did a DTO or response shape change? The frontends do not import API types, so nothing catches it at build time. Delegate to `tcg-contract-tracer` rather than eyeballing it |
 
 For a schema-touching unit, delegate the depth to `tcg-prisma-guardian` and report its

@@ -77,6 +77,7 @@ reads as competence.
 | Elaborated on | `YYYY-MM-DD` |
 | Vault state at elaboration | *N files; six `domain/` files verified; N entries open in `gaps.md`* |
 | Open questions raised by this spec | *N, all in §12* — or `none` |
+| Already-shipped behaviour reached | *N consumers in §11a; N with no source for what happens to them* — or `none: new surface only` |
 | Rules consulted | *list the `.ai/claude/contexts/*.md` files that bind this feature* |
 
 ## 1. Requirements ledger
@@ -108,6 +109,10 @@ Repeat this block per requirement. Keep the field order.
   and that this spec does not choose between them.*
 - **Open question:** none — *or* — *the one-line-answerable question*, logged at
   `gaps.md#<anchor>`
+- **Ripple:** *what already ships that this requirement reaches — the existing consumers of
+  the shape, column, component, filter or value it changes, enumerated with a command, and
+  what happens to each, with its source. `none — new surface only (established by: <command>)`
+  where true. `OPEN — see Q<n>` where nothing says what the existing consumers should do.*
 - **Acceptance:** *how a reviewer checks this is done. Concrete enough to fail.*
 - **Notes for the executor:** *e.g. which existing component/service to reuse; which rule
   file governs it. `NOT SPECIFIED` is allowed.*
@@ -121,6 +126,9 @@ Repeat this block per requirement. Keep the field order.
   is a finding, and the search that produced it is part of the record.*
 - **Conflict:** n/a
 - **Open question:** *the question*, logged at `gaps.md#<anchor>`
+- **Ripple:** `OPEN — cannot be stated until the question above is answered.` *An open
+  requirement still has a knowable radius; list the existing consumers if you enumerated
+  them, and say that what happens to them is part of the question.*
 - **Acceptance:** `OPEN — cannot be stated until the question above is answered.`
 - **Notes for the executor:** *the smallest change that does not depend on the unknown, if
   one exists, explicitly labelled a workaround. Otherwise `blocked`.*
@@ -249,6 +257,23 @@ Invented validation is still invention. A max length nobody wrote down is `NOT S
 - **Audit / activity log:** *`ActivityLog` entries, or `N/A`*
 - **Migration/rollout order:** *e.g. schema → API → web → mobile, behind what*
 
+## 11a. Ripple — already-shipped behaviour these requirements reach
+
+*Numbered `11a` on purpose: §12 is referenced by name across the AI layer and does not move.*
+
+Every row here is behaviour that works today and that this ticket changes, touches or
+depends on. The enumeration is a repo fact and must name the command that produced it; what
+should happen to each consumer is a product fact and needs a source, or an open question in
+§12. See `tcg-elaborator.md` §9.
+
+| Existing consumer | Reached via | Req | What happens to it | Source | Enumerated by |
+| --- | --- | --- | --- | --- | --- |
+| *file / screen / endpoint / job* | shared export / DTO / schema field / component / filter / config | REQ-nn | unchanged / changes deliberately / migrated / **OPEN — Q**n | `<path>` or `SCRUM-###` | `git grep -rn '<term>' <paths>` |
+
+- **Surfaces with no existing behaviour in this area:** *say which, and how you established
+  it — an absent grep result is a finding, an unrun grep is not*
+- **Consumers with no source for what happens to them:** *list them; each is a §12 question*
+
 ## 12. Open questions — the stop-and-ask list
 
 **The elaborator stops here.** Nothing below is built until these are answered.
@@ -295,6 +320,7 @@ exists so nobody mistakes the spec's silence for the feature's simplicity.
 - [ ] Every `[CONFLICT]` requirement has a decision note in `.ai/vault/decisions/`
 - [ ] Answers written back into `spec.md` with their new sources and flags
 - [ ] Every §12 question updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
+- [ ] Every §11a ripple row has a source for what happens to that consumer, or a §12 question
 - [ ] Decomposed into vertical units — `units.md`
 
 Answered by: ______________  Date: ______________

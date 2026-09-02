@@ -122,3 +122,18 @@ the Foreman **$3/hr** premium that pins "four men pay… $3 more per hour"; the 
 
 Original files per `original_file:` frontmatter → apply the pass-1/2 tables above → apply
 this table. Frontmatter `normalized_substitutions` is cumulative across passes.
+
+---
+
+# Pass 4 — 2026-08-27 (two new transcripts only)
+
+Applied to the two files added 2026-08-27; no earlier file was touched.
+
+| File | Heard as | Corrected to | n |
+| --- | --- | --- | --- |
+| 2026-08-26-erp-sprint-review.md | ADB file (payroll context) | ADP file | 1 |
+| 2026-08-26-erp-sprint-review.md | graph code(s) | craft code(s) | 2 |
+| 2026-08-26-erp-sprint-review.md | graph board · draft board(s) (same sentence as "craft boards") | craft board(s) | 3 |
+| 2026-08-25-accounting-process.md | — | — | 0 |
+
+Left unchanged, visible to readers: "prompt code", "graph quarters", "Leiann" (08-26, 36:15).

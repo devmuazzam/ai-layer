@@ -48,7 +48,7 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | `.ai/aidlc/SCRUM-###/intent.md` | **read-only** — it is the ticket capture, not your draft |
 | `.ai/aidlc/SCRUM-###/spec.md` | **write** — the one artifact you produce |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps.md` | **read** — retired 2026-08-20, historical entries only. Cite an existing entry by anchor; never append a ticket's question here |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — `payroll/gaps.md` is 120 KB, grep it too |
 | Everything else | **no write access** |
 
 Two write paths. That is the whole surface.
@@ -146,6 +146,18 @@ Always, in this order. Skipping a step is how a confident wrong spec gets writte
    `field-ops/atom-mobile-app-user-stories/`, `projects-jobs/project-module/`).
 7. **The repo, last and only as evidence of what exists today.**
 
+**Reading budget — the vault does not fit in one context.** Steps above say *what* to
+open, not *how much*. Several targets are 80–220 KB (`payroll/gaps.md`,
+`payroll/legacy-payroll-app-db-extract/`, every `meetings/transcripts/` file, the retired
+gaps files, some `SCRUM-###/spec.md`), and one whole read of any of them is 20–55k tokens —
+the direct cause of *prompt too long* mid-run. So: `wc -c` before opening anything under
+`.ai/vault/` or `.ai/aidlc/`; over ~40 KB, `grep -n` for the heading, anchor or term and read
+only that range. Never read a transcript, a legacy-extract data file or a retired gaps file
+in full. When a question needs several large files (a sweep of transcripts, every module's
+`gaps.md`, a whole legacy extract), **delegate it to an `Explore` subagent** with the exact
+question and have it return cited excerpts (`path#anchor` or `path:line`) — only those
+excerpts enter your context, and you still verify each one before citing it.
+
 **Why skipping to step 6 produces a confident wrong spec.** Search finds a file that
 answers the question. It reads as a specification. Nothing in its body says another
 document says something different — that fact lives in its `conflicts_with:` frontmatter
@@ -167,6 +179,10 @@ first implementation that worked. Cite it as `kind: code` and use it for exactly
 things: describing current behavior, and identifying what a change would break. A
 requirement whose only support is "this is how the neighbouring module does it" is
 `[OPEN]`, not sourced.
+
+The second of those two uses is not optional — §9 requires it on every requirement whose
+surface already exists, and it is the half of a brownfield ticket that is never written
+down anywhere else.
 
 ## 3. Sources and citation
 
@@ -359,6 +375,60 @@ The same applies to detail: an unsourced field length, status enum, error messag
 or default value is an invention with a small footprint, not an exception. `NOT SPECIFIED`
 is a complete answer.
 
+**Before sign-off, re-read each REQ's acceptance line against its own executor notes and
+against the live ticket it cites.** A spec that quotes a ticket verbatim must be re-diffed
+against that ticket's current text before the spec is marked ready for decomposition —
+quoting a snapshot is not quoting the source. SCRUM-926 shipped with one REQ whose
+acceptance line contradicted its own executor note, and another that quoted a ticket's text
+that had since changed; neither was caught because nothing re-read the ticket or the note a
+second time (`.ai/aidlc/SCRUM-926/reflection.md` SD-1, SD-2).
+
+## 9. Ripple — what already ships that this requirement reaches
+
+A requirement that changes something already in production has two halves, and the ticket
+contains one of them. It says what the new behaviour is. Nothing in it says what happens to
+the screens, exports, jobs and callers that depend on the old one — and for the last two
+weeks that missing half has been discovered after merge, by someone whose feature stopped
+working.
+
+**The enumeration is a repo fact. The decision is a product fact.** Reading the code to list
+what exists today is required here and is not sourcing intent (see *The repo is not a source
+of intent* — "identifying what a change would break" is one of its two sanctioned uses).
+Deciding what should happen to those consumers is a requirement, and it needs a source like
+any other. "Everything else keeps working unchanged" is a sentence someone has to have said.
+
+Do this for every requirement whose surface **already exists** — skip it only for genuinely
+greenfield ones, and say that you did:
+
+1. **Enumerate the consumers, with a command**, and record the command. The kinds that
+   ripple furthest in this repo, in order of how badly they have hurt:
+
+   | The requirement changes | It reaches |
+   | --- | --- |
+   | Anything exported from `packages/shared` | web **and** mobile, both, always |
+   | A response shape, DTO or field name already returned by an endpoint | every existing caller of that endpoint on both front-ends — only `@tcg/shared` importers are compile-checked |
+   | How a value is represented — a unit, a format, an id, a precision | every producer and consumer of that value on all four projects. This is the SCRUM-877 boom-length case: a backend-only spec with a web-wide radius |
+   | An enum, a status set or a lifecycle state | every `switch`, badge, filter and label map |
+   | A filter, permission, guard or visibility rule | every list and route built on it, not just the one in the ticket |
+   | An existing shared component, layout or nav config | every render site |
+   | A seed, env or build-time config | whatever reads it at build time — mobile inlines `EXPO_PUBLIC_*` |
+
+2. **Write them into the requirement's `Ripple:` field** in `spec.md` §2, and summarise them
+   in §11a. Name the files or the surface, not "various consumers".
+
+3. **State what happens to each, with its source** — unchanged, changed deliberately, or
+   migrated. Cite the line that says so, exactly as for any other requirement.
+
+4. **Where no source covers the existing consumers, that is `[OPEN]`, not an executor's
+   call.** Raise it as a §12 question per §7 — "when `<field>` becomes `<new form>`, what
+   should the existing `<consumers>` show?" — and mark the requirement's `Ripple:` field
+   `OPEN — see Q<n>`. Do not answer it by looking at what the code does now: that tells you
+   what would break, never what should happen.
+
+The failure this prevents is not a missing feature. It is a spec that was right about
+everything it mentioned, handed to an executor who had no way to know that three shipped
+screens read the same column.
+
 ---
 
 ## Output shape
@@ -370,6 +440,8 @@ of the requirement blocks. Then report back, short:
 Spec written: .ai/aidlc/SCRUM-###/spec.md
 
 <N> requirements — <N> sourced, <N> conflicted, <N> open.
+<N> reach behaviour that already ships — §11a; <N> of those have no source for what
+happens to the existing consumers (raised as open questions below).
 <The conflicts, one line each, naming the vault gaps.md anchor.>
 
 Open questions — I need these answered before anyone builds:
