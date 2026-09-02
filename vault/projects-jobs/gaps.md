@@ -257,3 +257,33 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   says nothing about what happens when a multi-tab save fails part-way, which is the part
   that matters once a leave guard flushes several tabs at once.
   Full entry: [assets/gaps.md](../assets/gaps.md#one-tab-one-patch--and-what-the-leave-guards-save-means-when-several-tabs-are-dirty).
+
+## Converted-quotation schedule days — checked by default, and what that puts on the DAS board
+
+- **Status:** open
+- **Asked:** 2026-09-02 — raised while fixing the Job Schedule tab opening with every checkbox
+  clear on a job created by converting a quotation.
+- **Question:** `createJobFromQuotationInTx` auto-creates the job schedule and one interval per
+  weekday in the quotation's date range. Those intervals were created `isActive: false`, so the
+  Schedule tab opened with nothing selected, *Selected Working Days* read 0, and view mode — which
+  lists only active rows — showed *"No working days selected."* A job with **no** saved schedule
+  opens fully checked, because the web's own `generateDateRange` defaults a generated row to
+  active. The two creation paths disagreed and nothing written says which is right. Beyond the
+  checkbox, `isActive` is also what puts a day on the dispatch board: `ensureSubJobsForDate`
+  creates a sub-job for any active interval that lacks one, and `DasService.getSummary` /
+  `getSubJobs` call it on **every** board fetch. So the question underneath the checkbox is
+  whether converting a quotation should place every weekday of the job on the DAS board
+  immediately, or whether "this is a working day" and "dispatch this day" are meant to be two
+  separate acts.
+- **Interim behaviour:** intervals are now created **active**, so the tab opens checked and the
+  two creation paths agree. Chosen for that consistency, not because a source says so. The single
+  place to change it is the `jobScheduleInterval.create` call in `createJobFromQuotationInTx`
+  (`apps/api/src/usecase/projects/projects.service.ts`); `projects-schedule-conversion.spec.ts`
+  pins the behaviour. Already-converted jobs keep their stored inactive rows — no backfill was
+  run, so the two populations differ until someone decides.
+- **Sources checked:** `projects-jobs/INDEX.md`; `projects-jobs/job-project-das.md`;
+  `projects-jobs/project-module/`; `dispatch/` including `daily-allocation-INDEX.md`;
+  `decisions/`; vault-wide grep for `isActive`, `working day`, `Selected Working Days`,
+  `schedule interval` and `sub-job`. Nothing states the intended default, and nothing defines the
+  relationship between a scheduled day and a DAS sub-job.
+- **Owner:** Lisette Anzaldo / Ryan Adams
