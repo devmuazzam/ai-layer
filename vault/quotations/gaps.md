@@ -233,7 +233,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## The surcharge is blanket in the contract but per-resource in the model, and it has no name
 
-- **Status:** open
+- **Status:** partly resolved — (a) and (b) answered and implemented 2026-09-02; **(c) remains open**
 - **Asked:** 2026-09-01 — processing quote OM-35140, supplied by Melissa McNutt 2026-08-31.
 - **Question:** three sub-questions on the 12% surcharge. (a) The T&C is unconditional — *"ALL
   CHARGES ARE SUBJECT TO A 12% FUEL & INSURANCE SURCHARGE"* — but `Surcharge` is stored per price
@@ -258,6 +258,30 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** a fourth item from the same page is unmodelled anywhere and is not part of this
   question, but should not be lost: *"ALL SUBCONTRACTORS WILL BE BILLED AT A MINIMUM OF 10% MARK
   UP."*
+- **Resolved 2026-09-02 — (a) and (b).** See
+  [decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md).
+  The client had already answered (a) in the 2026-05-05 ERP review, which this entry had not
+  reached: **ans.nisar @ 1:13:10** asked *"does it affect surcharge for all the quotations, or does
+  it vary?"* and **Melissa McNutt @ 1:13:29** answered *"One line for all the quotations. Yeah, one
+  price. Actually, on price list there may be different, but we can set those up per the price
+  list."* One rate per quote, price list overriding the tenant-wide default; per-line variation is
+  membership only (`BillingCode.applySurcharge`), never rate. (b) is answered by adding
+  `Surcharge.label`, defaulted to `Fuel & Insurance Surcharge` and editable — a column rather than a
+  constant because TCG asked to rename it and the industry bills emissions and environmental
+  surcharges through the same mechanism.
+- **A third fault this entry did not name, found 2026-09-02 and fixed with it.** `resolveRate`
+  decided the surcharge *rate* per item, so a mixed quote — some lines priced from the price list,
+  some falling back to their billing code — carried **two different rates in one total**, matching
+  no stated percentage. This was arithmetic rather than policy: reproduced against quote OM-35140,
+  which came out at $5,616.80 instead of $5,157.60 with every line 12% high. The printed quote also
+  folded the surcharge into each line's amount and showed no named row; it now prints clean line
+  amounts plus `Fuel & Insurance Surcharge  1.00  Each  12.00%  $552.60`, reconciling to $5,157.60.
+- **(c) is still open and needs TCG.** Does invoicing recompute the surcharge against actual hours,
+  and against which subtotal? The T&C says it *"WILL BE APPLIED ON FINAL INVOICES"*, so the quote
+  figure is an estimate over estimated hours. Nothing in any recording addresses it. Related:
+  `QuotationResource.finalAmount` still stores the surcharge-inclusive figure — deliberately
+  unchanged, because redefining it reaches invoicing, which is what (c) is about.
+- **Owner for (c):** TCG — Melissa McNutt or Micaela Dipane (accounting).
 
 ## Billable hour minimums and maximums are contractual but have nowhere to live
 
@@ -485,7 +509,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Should a per-resource surcharge column be shown on quotation resource rows?
 
-- **Status:** open
+- **Status:** open — but no longer blocked; the modelling question it waited on was settled 2026-09-02
 - **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket);
   tcg-scrum escalation
 - **Question:** the branch adds a **Surcharge** column before **Amount** on every quotation
@@ -507,6 +531,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [quotation.md](quotation.md); `decisions/`; `.ai/aidlc/` (the nearest is `processed.log`
   `SCRUM-873`, *"resources surcharge chip from billing codes"*, a Path C fix with no spec folder
   and no acceptance criteria).
+- **Unblocked 2026-09-02.** This entry deferred to the modelling question, which is now decided:
+  [decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md).
+  The rate is uniform across a quote, so a per-row surcharge column no longer displays a contested
+  model — it displays one number repeated, plus which rows are in the base. That reframes the
+  question rather than answering it: is per-row *membership* worth a column when the rate is
+  constant, or does the single printed line plus a per-row indicator suffice? Still a product call.
 - **Owner:** product team
 - **Update 2026-09-01** — a second branch, `fix/subcategory-asset-dropdown-surcharge` (no ticket),
   now **removes** the Surcharge column from the create/edit Resources tab while leaving it on the
