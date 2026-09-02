@@ -331,3 +331,43 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [payroll/gaps.md](../payroll/gaps.md) — that one is about **when** each lunch is due, this one is
   about **how many slots exist and for which unit**. The e-ticket does not carry threshold hours, so
   it does not touch the first question.
+
+## Were mobile pickers in scope for "move dropdowns to the backend"?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. Routed here as the module
+  that owns the mobile surface.
+- **Question:** The branch converts web entity pickers to server-searched, paged reads and adds a
+  pre-push guard against whole-table reads. It touches **no mobile file** (191 web paths, 63 API,
+  plus the guard script and `pre-push`), and the guard scans `apps/web/src/**` only
+  (`scripts/check-dropdown-preloads.sh`:20, `WEB_GLOB`). Mobile therefore **keeps the exact
+  pattern the branch removed from web**, and nothing will report it: `apps/mobile/data/services/
+  resource-catalog/resource-catalog.service.ts` declares unparameterised `listSubCategories()`,
+  `listEmployeeTypes()` and `listBillingCodeCustomTypes()`, and its own doc comment (:13–16) says
+  it *"mirrors web's combination of `assetManagementApi.getSubCategories()`,
+  `useGetEmployeeTypes()`, `useBillingCodeCustomTypesList()`"* — three of the readers now on the
+  guard's `READERS` deny-list. Two parts: (a) was mobile **deliberately out of scope** for this
+  change, or simply not done? (b) if the app-wide asks (`SCRUM-952` *"each dropdown across the
+  app"*, `SCRUM-703` *"across the app"*) cover mobile, **which ticket carries that work**, and
+  should the guard be extended to `apps/mobile` so the divergence is detectable?
+- **Sources checked:** **Vault — nothing on mobile picker data loading.** `INDEX.md`;
+  [field-ops-mobile-INDEX.md](field-ops-mobile-INDEX.md) and all three competing documents;
+  [atom-mobile-app-user-stories/INDEX.md](atom-mobile-app-user-stories/INDEX.md);
+  `../decisions/` (24 notes, none on mobile pickers or scope); `.ai/claude/contexts/mobile.md`
+  (no `dropdown`, `picker`, `select`, `combobox` or `preload` — and it warns of itself that
+  *"gaps here are unwritten rather than intentional"*). `.ai/aidlc/` — no ticket folder mentions
+  dropdowns or pickers on mobile.
+- **Jira has one live ticket on exactly this seam, and it is unresolved.** **`SCRUM-912`**
+  *Align Quotation Resources Tab UI on Mobile with Web* (**In Progress**, 2026-08-19) records the
+  two surfaces already diverging on this control — *"Web: users first select a resource, then a
+  category, then a subcategory. Mobile: the bottom sheet displays subcategories, employees and
+  custom resources together in a consolidated list"* — and asks outright *"Is this difference
+  intentional, or should the mobile experience be aligned with the web flow?"* **That question was
+  open before this branch and the branch changes the web side of it**, so whatever answer
+  `SCRUM-912` gets is now aimed at a moved target. No other ticket scopes mobile dropdowns.
+- **Blocked:** nothing ships broken — mobile works as before, and the API routes are dual-mode so
+  its unparameterised calls still return bare arrays. This needs an answer before `SCRUM-912` is
+  resolved, and before anyone reads a green pre-push as meaning the app has no preloaded pickers.
+- **Owner:** Fouzan Shakil for the scope and guard question; whoever owns `SCRUM-912` for the
+  parity half.

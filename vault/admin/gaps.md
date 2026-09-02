@@ -330,3 +330,90 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   exist* is a product question. *Should a create 500 when it does* is a defect either way —
   `DepartmentsService` should set `tenantCompanyId` explicitly like its neighbours rather than
   depending on an extension that is documented as conditional.
+
+## Must an entity picker search the server, or only offer a search box?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. Routed here as the
+  app-wide picker standard; per [../STRUCTURE.md](../STRUCTURE.md):60 a cross-module question
+  goes to the module most likely to own the answer.
+- **Question:** The branch converts entity dropdowns across the app to server-searched,
+  paged pickers and adds a pre-push guard that fails a build reintroducing a whole-table read.
+  The written asks stop short of that. **Does "searchable dropdown" mean the option set is
+  fetched per keystroke from the API, or only that the control has a search box over whatever
+  it already holds?** The two differ in a user-visible way: a server-searched picker's
+  empty-search state is **deliberately incomplete**, so a user who scrolls without typing no
+  longer sees every row. Nobody has said that trade is acceptable, and no page-size, ranking or
+  empty-state rule is written anywhere.
+- **Sources checked:** **Vault — nothing states a picker data-loading rule.** `INDEX.md`;
+  this module's `INDEX.md` (its one content file is `tcg-documents.md`, on attachments);
+  `../customers/customers-INDEX.md` and all five candidates; `../quotations/quotations-INDEX.md`;
+  `../decisions/` (24 notes — none on pickers, list loading or search); vault-wide grep for
+  `dropdown`, `type-ahead`, `autocomplete`, `combobox`, `debounce`, `paginat`, `preload`,
+  `infinite scroll`. The only vault hits describe *which* dropdowns exist or how they look
+  (`../vendors-agencies/vendors.md`:47 linked Category/Sub-Category, `../quotations/quotation.md`:13
+  "should open upwards", `../dispatch/daily-allocation-system.md`:33), never how their options load.
+- **Jira sources the intent but not the mechanism, and the clearest line is internal-QA voice:**
+  - **`SCRUM-952`** *Searchable dropdown* (**To Do**, 2026-09-01, Umair Khan) — *"Each dropdown
+    across the app should have a **search option**."* This is the branch's likely origin and it
+    asks for the **affordance**, not for server-side resolution. A client-filtered list satisfies
+    it as written.
+  - **`SCRUM-638`** *Employee* (Done, 2026-07-08, Aiman Farooq) item 20 — *"Implement **infinite
+    scrolling** in dropdowns so paginated data is loaded progressively instead of loading
+    everything at once"*, prompted by item 19: *"There are **76 assets** in total, but the
+    dropdown is not displaying all of them."* This is the **only** written line that asks a
+    dropdown not to load its whole table, and its stated remedy is progressive scroll, not
+    type-ahead search. `SCRUM-639` item 32 and `SCRUM-638` item 34 add *"Handle pagination and
+    search on the backend instead of the frontend"* — both about **listing tables**, in listing
+    context, not pickers.
+  - **`SCRUM-703`** *move pagination, filteration searching(debounce) on backend (across the app)*
+    (Done, 2026-07-16, Umair Khan, **no description**) — the Jira twin of
+    [../customers/customer.md](../customers/customer.md):16 item 4. Verbatim scope, zero detail,
+    already **Done**; whether "across the app" was ever meant to reach entity pickers is exactly
+    what is unrecorded.
+  - Reporter caveat: `SCRUM-638`/`639`/`952` are **CodingCops internal voices** (Aiman Farooq,
+    Umair Khan), the same class this register already flags under *Which countries, states and
+    cities may an address name?* as not adjudicated product decisions. `customer.md` is a **punch
+    list** — a bug list, not a specification — and cross-module, per
+    [../gaps.md#feedback-punch-lists-are-not-scoped-to-the-module-they-are-filed-under](../gaps.md).
+- **The convention is written, but a rule cannot make a requirement true.**
+  `.ai/claude/contexts/web.md`:98–172 states the rule in full and a pre-push guard
+  (`scripts/check-dropdown-preloads.sh`) enforces it. That file is the sanctioned home for **how
+  we build**; it is not a product source, and it was edited on the same branch as the code it
+  describes.
+- **Blocked:** sign-off of `feat/move-dropdowns-BE` as product-correct; closure of `SCRUM-952`.
+  Nothing ships broken — the API routes are dual-mode, so an unparameterised call still returns
+  the bare array.
+- **Owner:** Mohsin Ali for the UX standard (the punch lists are his feedback); Fouzan Shakil
+  for whether the guard stays a hard gate.
+
+## Is the countries/states/cities preload an intended exemption, or an unreviewed carve-out?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket);
+  tcg-scrum escalation.
+- **Question:** Every other entity picker on the branch moves to server search; countries,
+  states and cities keep a **preloaded list with a 24-hour client cache**
+  (`apps/web/src/features/countries/hooks/use-countries.ts`:14,
+  `features/states/hooks/use-states.ts`:14, `features/cities/hooks/use-cities.ts`:24). Two parts,
+  each answerable in a line. (a) Is the **24-hour staleness** acceptable for address reference
+  data, given a newly added city would not appear for a day? (b) The same data is reached **two
+  different ways on purpose** — `components/molecules/address-fields.tsx` preloaded, Permits'
+  `CitySelect` server-searched. `web.md`:153–155 calls that inconsistency *"known and intended"*.
+  **Intended by whom?** Two controls over one dataset behaving differently is the kind of thing a
+  user reports as a bug.
+- **Sources checked:** **Vault — nothing on either part.** The two open entries above
+  (*Which countries, states and cities may an address name?*, *Do the Country/State/City tables
+  stay…*) cover **which values** are offered and **where they are stored**; neither touches how
+  the picker loads them or how long it may hold them. `../decisions/` — none on caching,
+  staleness or reference-data freshness. Jira: `SCRUM-549` (Done) and `SCRUM-962` (To Do) are
+  both **display defects** — the city dropdown not working — and neither states a loading or
+  caching strategy.
+- **Note:** (b) is the more consequential half. If the answer is that the inconsistency is *not*
+  intended, the fix direction matters: `SCRUM-789` and `SCRUM-819` (both Done) filter the Permits
+  Agency dropdown by the selected city, so the two controls are not interchangeable today.
+- **Blocked:** sign-off of the exemption in `feat/move-dropdowns-BE`. Should be answered together
+  with the two geo entries above — same facet, same owner.
+- **Owner:** Fouzan Shakil for the caching decision; Melissa McNutt for whether one-day staleness
+  is operationally acceptable on an address field.

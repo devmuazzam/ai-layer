@@ -118,10 +118,37 @@ Variants that already exist, so you do not need a new component:
 - **Free-text with history** — `CreatableCombobox` takes an optional `fetchPage`.
 - **Cascading resource trees** — `MultiOptionDropdownMenu` takes an optional `fetchSearch`.
 - **Rows that must stay visible but unpickable** — `AsyncComboboxOption.disabled`, rather
-  than filtering them out of the page.
+  than filtering them out of the page. `SubCategorySelect` takes a `disabledIds` map and
+  `EmployeeSelect` a `disabledCodes` map, each keyed to the reason shown as the row's
+  description; `WorkspaceFilterGroup.render` lets a table filter host a picker instead of a
+  `<select>`. This is what replaces a hand-rolled roster list that greyed out its own rows —
+  the craft-code assign dialog was one, over a `limit: 200` read.
+
+**Do not re-filter or re-sort a page after it arrives.** Both look harmless and both are
+wrong: dropping rows shrinks the page below the `total` that `hasMore` is derived from, and
+sorting only reorders the rows in hand, so a "recommended" row on page 2 still ranks below a
+plain one on page 1. Push the filter into the query (`includeArchived`, `status`) and the
+order into `orderBy`. `craft-code-select.tsx` carries the worked reasoning.
 
 Any list hook that survives spreads `SEARCHABLE_LIST_QUERY` (`staleTime: 0, gcTime: 0`).
 A hook feeding a picker must not set its own `staleTime`.
+
+**A cascading tree is browsed, not scrolled, so it does not paginate.** Give it a
+server-capped one-shot read plus an authoritative `fetchSearch`, and let the empty-search
+state be deliberately incomplete — `GET /resource-catalog/tree` and `/search` are the
+worked pair. Never load the whole table just to render the cascade.
+
+### Multi-select — there is no multi-select picker
+
+`AsyncCombobox` is single-select (`value: string`), and nothing in the app extends it.
+`MultiOptionDropdownMenu` is **not** a multi-select despite the name: `selectedId` is one
+id, picking closes the menu, and there is no deselect. "Multi-option" describes the tree.
+
+**To pick several of something, repeat a row** — N rows, each an independent
+`<entity>-select.tsx`. Vendor associated assets, price-list items, PO line items, quotation
+tools and employee secondary crafts all work this way, and it is the sanctioned pattern.
+A checkbox list over an entity table (the approval-request approvers) still has to search
+and page the server; `approver-list.tsx` is that shape.
 
 **The exemption is countries, states and cities.** They are effectively immutable, every
 address field needs them, and they keep their 24 h cache — so `components/molecules/address-fields.tsx`
@@ -134,9 +161,32 @@ the bare array it always did, and with any of them a `{ data, total, page, limit
 page. `utility/picker-list.helpers.ts` implements it. Every such route carries
 `@SkipThrottle()` — type-ahead bursts otherwise exhaust the global throttler budget.
 
-`scripts/check-dropdown-preloads.sh` runs on pre-push and fails on a list read of 100+ rows
-in `apps/web`. If yours is genuinely not a dropdown (a card section, a validation set), say
-so in a comment at the call site and add the path to `ALLOWED` in that script.
+`scripts/check-dropdown-preloads.sh` runs on pre-push and makes two checks over `apps/web`:
+a list read with a hardcoded `limit:` of 100+, and a call to a reader that takes **no limit
+at all** and so returns the whole table (`getAssets(`, `getTools(`, `getCategories(`,
+`getSubCategories(`, `useGetEmployeeTypes(`, `useBillingCodeCustomTypesList(`,
+`getEligibleApprovers(`). The second check exists because the first cannot see the more
+common shape — nine preloaded pickers shipped under a green guard, every one of them
+calling an unparameterised reader.
+
+**Every `READERS` pattern stops at the opening paren, never `()`.** An options-bag overload
+returns the same whole table as the bare call, and `getAssets\(\)` did not match
+`getAssets({ includeArchived: true })` — a tenth preloaded picker sat under the green guard
+for exactly that reason. Stopping at `(` still leaves the paged `getCategoriesList(` alone.
+
+It also **warns on allow-list entries that no longer match anything**. A line left behind
+after its picker is migrated is a standing exemption for whatever lands at that path next,
+which is the same silent-green failure in slower motion. The warning does not fail the push
+— a stale line is not a defect in the change being pushed — so clear it when you see it.
+
+If yours is genuinely not a dropdown (a card section, a validation set, a print payload, a
+name→id lookup), say so in a comment at the call site and add the path to the matching
+allow-list in that script. Adding a new whole-table reader means adding it to `READERS`.
+
+**Not everything that looks preloaded is.** A pool the screen already owns — one vendor's
+allocation resources on the DAS board, with their live per-day statuses — is board state,
+not a read of an entity table, and there is nothing there to page. Say so at the call site
+(`vendor-resource-select.tsx`) so the next reviewer does not re-open it.
 
 ## Test IDs — `apps/web` is under E2E test
 
