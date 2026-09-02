@@ -39,6 +39,7 @@ date        ticket      path  branch                              by    pr    no
 2026-08-24  SCRUM-877   A     fix/scrum-877-u2-labor-persistence   dev   395   Labor & Unit details persistence, craft modifiers, asset info, and crew hours calculation
 2026-08-24  SCRUM-900   A     scrum-900                           fouzan  394   tool detail In Use reset after schedule-day completion (Q1:B Q2:C Q3:B)
 2026-08-24  SCRUM-908   C     scrum-908                           fouzan  399   Tools & Rigging listing: Per-Day Utilization column + single-date picker
+2026-08-25  SCRUM-726   C     feat/SCRUM-726                      areeba  -     bulk confirm popups; singular/plural titles by selection count
 2026-08-25  SCRUM-903   B     fix/reopened-qa-aug25   fouzan  -     reopen: COMPLETED jobs view-only (web tabs + API guards)
 2026-08-25  SCRUM-630   B     fix/reopened-qa-aug25   fouzan  -     reopen: vendor contact logging + Removed tab classification
 2026-08-25  SCRUM-855   C     fix/reopened-qa-aug25   fouzan  -     reopen: validation focus/error styling QA deltas
@@ -57,6 +58,8 @@ date        ticket      path  branch                              by    pr    no
 2026-08-25  SCRUM-873   C     fix/SCRUM-873                      areeba  -     resources surcharge chip from billing codes; lost banner wrap; edit status read-only
 2026-08-27  SCRUM-648   B     feat/SCRUM-648                      areeba  -     department archive + All/Archived quick filters
 
+
+2026-08-31  -           C     feat/save-on-enter                  areeba  -     Enter-to-save on web create/edit forms; Enter advances wizards on non-final steps
 2026-08-31  -           C     fix/quotation-das-resources            fouzan  436   stop qty exploding into DAS sets; child qty independent of parent
 2026-09-01  -           C     fix/quotation-das-resources            fouzan  -     follow-on after PR 436 merged, same branch: upload stores without emailing, signing return syncs to WON, terminal-envelope guard, salesperson required, inline Report To contact, surcharge column, create → detail. No ticket; 7 behaviours escalated to module gaps, navigation recorded as decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md
 2026-09-01  SCRUM-961   A     feat/craft-code-form-cleanup       haris   446   craft-code form: removed 5 unbacked controls, exposed wageGroup, rates consolidated onto the detail panel; began as C, escalated on the subsistence decision - ticket and spec backfilled after the code
