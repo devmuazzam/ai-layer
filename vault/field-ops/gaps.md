@@ -282,3 +282,92 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Status: open — needs confirmation
 - **From (frozen original):** [gaps.md#signer-photo-codingcops-committed-on-the-call-and-no-ticket-exists](../gaps.md#signer-photo-codingcops-committed-on-the-call-and-no-ticket-exists)
 
+
+## Post-trip inspection — Melissa says it does not happen, two signed documents say it does
+
+- **Status:** open
+- **Asked:** 2026-09-01 — processing the e-ticket and quote Melissa McNutt supplied 2026-08-31.
+- **Question:** does a post-trip inspection exist? Melissa's covering message says plainly
+  *"here is a sample of the pre-trip, **we currently don't do post trips**. I'll check with Kyle
+  and see if we can use the same template."* But the ticket the crew signed that day, and the
+  contract the customer signed, both assert one. If the ERP builds pre-trip only, it ships a
+  workflow whose own attestation text is false; if it builds post-trip, it ships a step nobody
+  performs. And billing depends on it: charges *"begin and end with Pre & Post trip inspections"*.
+- **Sources checked:**
+  [e-ticket-worked-example.md](e-ticket-worked-example.md) §5 item 13 — the employee attestation
+  on ticket 45954, signed by Jonathen A at 14:27 on 2026-06-10: *"By signing this check list I am
+  also signing that I performed and completed my Pre Trip Inspection, Rigging Inspection and
+  **Post Trip Inspection**."* Also
+  [quotations/quote-terms-and-rate-card.md](../quotations/quote-terms-and-rate-card.md) §7, from
+  quote OM-35140 p.2: *"All charges begin and end with **Pre & Post trip inspections** at
+  equipment(s) dispatched location(s)."* Against those:
+  [fr-fop-009-pre-trip-checklist.md](frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md)
+  and [fr-fop-007](frd-new-format-draft/05-functional-requirements/fr-fop-007-guided-ticket-workflow.md)
+  specify **pre-trip only**; `grep -ri "post.?trip"` across `field-ops/` returns no functional
+  requirement for one. So the FRD matches Melissa's practice and contradicts both signed documents.
+- **Note:** Melissa named the owner herself — *"I'll check with Kyle"* — so this has a live path to
+  an answer. A third possibility neither document rules out: the post-trip is performed but recorded
+  as the *arrival-at-yard* leg of the same checklist rather than a separate one, which would make
+  the attestation true and the FRD incomplete rather than wrong.
+- **Owner:** Melissa McNutt → Kyle.
+
+## Lunch slots differ between the crane ticket and the tractor ticket
+
+- **Status:** open
+- **Asked:** 2026-09-01 — processing the e-ticket Melissa McNutt supplied 2026-08-31.
+- **Question:** on ticket 45954 the crane's Time Stamps checklist offers **four** lunch slots
+  (Lunch Time, 2nd, 3rd, 4th) and the tractor's offers **one**. Is the number of lunch slots a
+  property of the unit type — a tractor driver cannot plausibly reach a fourth lunch, a crane crew
+  on a 22-hour day can — or have two checklist templates simply drifted apart? This decides whether
+  the ERP renders lunch capture from a per-template configuration or from one shared rule applied to
+  every unit on the ticket.
+- **Sources checked:** [e-ticket-worked-example.md](e-ticket-worked-example.md) §5 — crane `10003`
+  items 9–12 are Lunch / 2nd / 3rd / 4th; tractor `AT15` item 9 is Lunch alone, and its list
+  continues straight to the two attestations at 10 and 11, so items 10–12 are **absent**, not blank.
+  `payroll/wtl-charts.md` and `SCRUM-864` both define **four** thresholds without qualifying them by
+  unit. `brs.md` BRS-LUNCH-002 lists **three** and is marked ✓ Confirmed. None of the three mentions
+  unit type at all.
+- **Note:** related to but separate from the *Lunch thresholds* entry in
+  [payroll/gaps.md](../payroll/gaps.md) — that one is about **when** each lunch is due, this one is
+  about **how many slots exist and for which unit**. The e-ticket does not carry threshold hours, so
+  it does not touch the first question.
+
+## Were mobile pickers in scope for "move dropdowns to the backend"?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. Routed here as the module
+  that owns the mobile surface.
+- **Question:** The branch converts web entity pickers to server-searched, paged reads and adds a
+  pre-push guard against whole-table reads. It touches **no mobile file** (191 web paths, 63 API,
+  plus the guard script and `pre-push`), and the guard scans `apps/web/src/**` only
+  (`scripts/check-dropdown-preloads.sh`:20, `WEB_GLOB`). Mobile therefore **keeps the exact
+  pattern the branch removed from web**, and nothing will report it: `apps/mobile/data/services/
+  resource-catalog/resource-catalog.service.ts` declares unparameterised `listSubCategories()`,
+  `listEmployeeTypes()` and `listBillingCodeCustomTypes()`, and its own doc comment (:13–16) says
+  it *"mirrors web's combination of `assetManagementApi.getSubCategories()`,
+  `useGetEmployeeTypes()`, `useBillingCodeCustomTypesList()`"* — three of the readers now on the
+  guard's `READERS` deny-list. Two parts: (a) was mobile **deliberately out of scope** for this
+  change, or simply not done? (b) if the app-wide asks (`SCRUM-952` *"each dropdown across the
+  app"*, `SCRUM-703` *"across the app"*) cover mobile, **which ticket carries that work**, and
+  should the guard be extended to `apps/mobile` so the divergence is detectable?
+- **Sources checked:** **Vault — nothing on mobile picker data loading.** `INDEX.md`;
+  [field-ops-mobile-INDEX.md](field-ops-mobile-INDEX.md) and all three competing documents;
+  [atom-mobile-app-user-stories/INDEX.md](atom-mobile-app-user-stories/INDEX.md);
+  `../decisions/` (24 notes, none on mobile pickers or scope); `.ai/claude/contexts/mobile.md`
+  (no `dropdown`, `picker`, `select`, `combobox` or `preload` — and it warns of itself that
+  *"gaps here are unwritten rather than intentional"*). `.ai/aidlc/` — no ticket folder mentions
+  dropdowns or pickers on mobile.
+- **Jira has one live ticket on exactly this seam, and it is unresolved.** **`SCRUM-912`**
+  *Align Quotation Resources Tab UI on Mobile with Web* (**In Progress**, 2026-08-19) records the
+  two surfaces already diverging on this control — *"Web: users first select a resource, then a
+  category, then a subcategory. Mobile: the bottom sheet displays subcategories, employees and
+  custom resources together in a consolidated list"* — and asks outright *"Is this difference
+  intentional, or should the mobile experience be aligned with the web flow?"* **That question was
+  open before this branch and the branch changes the web side of it**, so whatever answer
+  `SCRUM-912` gets is now aimed at a moved target. No other ticket scopes mobile dropdowns.
+- **Blocked:** nothing ships broken — mobile works as before, and the API routes are dual-mode so
+  its unparameterised calls still return bare arrays. This needs an answer before `SCRUM-912` is
+  resolved, and before anyone reads a green pre-push as meaning the app has no preloaded pickers.
+- **Owner:** Fouzan Shakil for the scope and guard question; whoever owns `SCRUM-912` for the
+  parity half.

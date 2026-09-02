@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-08-27
+updated: 2026-08-31
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -220,3 +220,27 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   module — it is gated on that module's scope and ~Oct–Nov 2026 kickoff. Raised by `SCRUM-897`.
   Full entry: [accounting/gaps.md](../accounting/gaps.md#project-detail-accounting-tab--what-it-shows-and-what-it-shows-before-the-module-exists).
 
+
+## Jobs Status Summary donut — where does an `ON_HOLD` job go?
+
+- **Status:** open
+- **Asked:** 2026-08-31 — raised while making the project detail *Jobs Status Summary* donut
+  read `job.status` at all. Before this change the panel bucketed jobs purely by `startDate` /
+  `endDate`, so `job.status` was never consulted and the `cancel` slice was permanently 0 —
+  a `CANCELLED` job sitting inside its own date window rendered as *In Progress*.
+- **Question:** `JobStatus` has five values (`ACTIVE`, `COMPLETED`, `INVOICED`, `CANCELLED`,
+  `ON_HOLD`) and the donut has four slices (`completed`, `inProgress`, `scheduled`, `cancel`).
+  Four of the five map without argument — `CANCELLED` → cancel, `COMPLETED` / `INVOICED` →
+  completed, `ACTIVE` → scheduled or inProgress by start date. `ON_HOLD` has no obvious home.
+  Should it (a) count as In Progress, (b) count as Scheduled, (c) get a fifth slice of its own,
+  or (d) be excluded from the donut entirely? The same answer should govern the *Active Jobs*
+  hero tile, which now counts exactly the In Progress population.
+- **Interim behaviour:** `ON_HOLD` counts as **In Progress** — open work that is neither
+  finished nor cancelled. Chosen because it changes no visible product surface (no new legend
+  entry), not because a source says so. `normalizeJobStatusForSummary` in
+  `apps/api/src/usecase/projects/projects.service.ts` is the single place to change it.
+- **Sources checked:** `projects-jobs/job-project-das.md` (the only vault file naming this panel
+  — its one line on it is *"`Quotations Revenue by Status` remove empty bars"*, nothing on the
+  donut); `projects-jobs/INDEX.md`; `projects-jobs/project-module/`; `decisions/`; vault-wide
+  grep for `ON_HOLD` / `on hold` / `Jobs Status Summary`. Nothing anywhere defines the slices.
+- **Owner:** Lisette Anzaldo / Ryan Adams

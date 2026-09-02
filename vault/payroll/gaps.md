@@ -1148,6 +1148,26 @@ someone has confirmed otherwise.
 - **Answer:** short = **$85/day, 45–77.5 mi, worked days only**; long = **$200/day,
   > 77.5 mi, every calendar day of the holdover, worked or not**. The engine's $85-Mon-Fri
   hard-coding is the defect; C-05 in the conflict register is answered the $200 way.
+- **Corroborated 2026-09-01, contractually.** Quote OM-35140 p.3, supplied by Melissa McNutt
+  2026-08-31, states the same rule in a **customer-facing contract** rather than a recording:
+  *"Subsistence will be charged at $85.00 per man when equipment is to be operated by crew who
+  would travel **from yard to job, forty-five miles or more** from yard location… When equipment /
+  employees… are working in a subsistence area **over 77.5 miles** from home base location they
+  shall receive **$200.00 per man per day** subsistence **for the week and weekend**."* This
+  independently confirms all three parts of the recorded answer — the two amounts, the 45 / 77.5
+  mile thresholds, and *for the week and weekend* matching "every calendar day of the holdover".
+  It also settles sub-question **(c)**: the distance is measured **yard to job**, and the employee's
+  home is not an input — the phrase *"home base location"* refers to the equipment's home yard, as
+  the same sentence's *"yard location in which equipment in question is identified as home base"*
+  makes explicit.
+  **Sub-question (b) now leans the other way, though.** The e-ticket's Time Stamps checklist item 8
+  reads *"If Subsistence is applicable please click deficiency and note long or short sub in the
+  comments"* — capture in the field is a **manual flag plus a comment token**, with no mileage
+  input, exactly as the legacy engine does it. So the *entitlement* is distance-based per the
+  contract, while the *capture* is a token. Whether the ERP should compute distance and pre-fill
+  that flag is still unasked. Sources:
+  [quotations/quote-terms-and-rate-card.md](../quotations/quote-terms-and-rate-card.md) §3,
+  [field-ops/e-ticket-worked-example.md](../field-ops/e-ticket-worked-example.md) §5.
 
 ## Lunch thresholds — the recording is the origin, and it disagrees with the WTL charts
 
@@ -1663,3 +1683,165 @@ someone has confirmed otherwise.
 - **Sources checked:** `payroll/fcc-employee-types-and-crafts.md`, SCRUM-914 description,
   `schema.prisma` (`DepartmentRole`, `EmployeeType`), `packages/shared/src/enums/index.ts`,
   `apps/web/src/features/das/right-section/components/employee-card.helpers.ts`.
+
+## Premium catalog CRUD — the engine reads six literal codes, not the catalog
+
+- **Status:** open
+- **Asked:** 2026-08-31 — building CRUD for payroll premium types (no ticket; the premium
+  catalog has never been specified by one, per §*Payroll premium catalog* above)
+- **Question:** Two consequences of the engine binding to codes rather than to the table, each
+  newly reachable now that the catalog has a create/archive surface. **(a) Should archiving a
+  premium stop it pricing payroll?** `PayrollRepository.listPremiums()` applies no `status`
+  filter, and `PayrollService.premiumRates()` consumes that same unfiltered list — so a row
+  archived through the UI keeps its amount in the next calculate, and if it were filtered out it
+  would fall to the hardcoded `??` default rather than to zero. Neither "archived still pays",
+  "archived pays the code default" nor "archived pays nothing" is written anywhere.
+  **(b) What is a premium created under a new code supposed to do?** `premiumRates()` reads
+  exactly `FOREMAN`, `MILITARY`, `LATTICE_OP`, `LATTICE_OI`, `SHIFT_2`, `SHIFT_3`; a seventh row
+  is stored, listed and editable but priced by nothing. Either the create surface needs a
+  constraint saying so, or the engine needs to consume the catalog generically — which is a rule
+  question (what does a premium *do*: base-rate adder, on-top adder, per-day flat?), not a
+  refactor.
+- **Sources checked:** `payroll/INDEX.md`; this register — §*Payroll premium catalog —
+  configured per tenant, or constants in the engine* (same root cause, different half: it asks
+  what an **empty** table means, this asks what a **non-matching** row means); `rules/PAY-008`,
+  `PAY-036`, `PAY-037`, `PAY-044`, `PAY-070`, `PAY-071`; `erp-payroll-module-frd/01` §2.1;
+  `decisions/` (none on premiums). **Ticket sweep:** `SCRUM-926`'s `spec.md` and `units.md`
+  mention no premium CRUD, no `PayrollPremiumType` and no premium settings screen — the list and
+  amount-edit that shipped were never specified either.
+- **Note:** the CRUD built on 2026-08-31 deliberately left `premiumRates()` untouched, so no
+  calculated pay changes. Delete is a soft archive (`status: INACTIVE`), matching every other
+  tenant reference list (craft codes, union codes, work-comp codes, billing code types).
+- **Blocked:** whether the premiums settings screen can be described as "turning a premium off";
+  generic premium evaluation; the effective-dating `PAY-008` wants on these rates.
+- **Owner:** Brian Petros (what a premium is allowed to be), with Fouzan Shakil for whether the
+  engine should consume the catalog generically.
+- **Rules:** [PAY-008](rules/PAY-008-effective-dated-configuration.md), [PAY-036](rules/PAY-036-second-shift.md), [PAY-037](rules/PAY-037-third-shift.md), [PAY-044](rules/PAY-044-lattice-boom-premium.md), [PAY-070](rules/PAY-070-foreman-premium.md), [PAY-071](rules/PAY-071-military-base-premium.md)
+
+## L12 holiday list — the engine is missing "Day After Independence Day"
+
+- Question: does I.U.O.E. Local 12 recognise **ten** paid holidays or **nine**? Quote OM-35140's
+  terms name ten; the legacy engine's holiday dimension carries nine per year and has **no row for
+  Day After Independence Day in any year**. If ten is right, every 5 July since the engine was
+  built has been paid and billed at straight/overtime instead of triple-time.
+- Candidates:
+  - [quotations/quote-terms-and-rate-card.md](../quotations/quote-terms-and-rate-card.md) §5, from
+    [assets/2026-08-31_quote-OM-35140.pdf](../quotations/assets/2026-08-31_quote-OM-35140.pdf) p.2 —
+    *"New Year's Day - Presidents' Day - Memorial Day - Independence Day-Day After Independence Day
+    - Labor Day - Veterans Day - Thanksgiving Day - Day After Thanksgiving - Christmas Day"*. **Ten.**
+    A customer-facing contractual document, supplied by Melissa McNutt 2026-08-31.
+  - `legacy-payroll-app-db-extract/config-values.md:165-194` (`dim.LU12_Holiday`) — **nine** per
+    year, at `3.00` multiplier, consistently across 2025, 2026, 2027 and 2028: New Year's,
+    Presidents', Memorial, Independence, Labor, Veterans', Thanksgiving, Day after Thanksgiving,
+    Christmas. The table models observed-date shifting (`Observed (Sunday Rule)`,
+    `Observed (Sat Rule)`), so it is maintained — the omission is not staleness of the whole table.
+    `grep -ri "day after independence"` over the entire vault returns nothing.
+- Note: the two lists agree on nine names and differ by exactly one. Do **not** assume the quote is
+  right because it is newer — it is a sales document and the engine is what actually paid people.
+  Either the quote over-promises the customer a triple-time day, or the engine has under-paid a
+  holiday for years. Both are worth knowing before the ERP inherits either list.
+- Blocked: the payroll holiday calendar, the triple-time rule, and whatever quoting uses to price
+  holiday work.
+- Owner: Corrina Bustos (payroll) to confirm what is actually paid on 5 July; Melissa McNutt owns
+  the quote terms.
+- Status: open — needs confirmation
+- **Asked:** 2026-09-01 — processing the quote and e-ticket Melissa supplied 2026-08-31.
+
+## Union general membership meeting days — the quote contradicts itself, twice
+
+- Question: are the two I.U.O.E. Local 12 general membership meeting days **triple-time or
+  double-time**, and are they in the ERP's holiday calendar at all?
+- Candidates:
+  - Quote OM-35140 p.2, **Triple-time Charges** — *"Work performed on any of the holidays listed
+    below… **Including general membership meeting days (Union Holidays) per I.U.O.E.**"*
+  - Quote OM-35140 p.2, the very next paragraph — *"If any work is performed on the (1st) Saturday
+    following the (1st) Friday in the months of June and December then **Double-time** rates shall
+    apply and crew shall be guaranteed no less than (8) hours"*. **The same document, two
+    paragraphs apart, prices the same days at 3× and 2×.**
+  - `legacy-payroll-app-db-extract/config-values.md` `dim.LU12_Holiday` — these days are **absent**;
+    the table holds only the nine named calendar holidays. So the engine treats them as ordinary
+    Saturdays (overtime), matching neither reading.
+  - `mcog-l12-mla-2025-2028/04-articles-vi-to-xv-funds-and-contributions.md:37` mentions
+    *"Semi-Annual Membership Meeting or a special called General Membership Meeting"* — but only in
+    the context of amending fund contributions. **The MLA extract we hold says nothing about pay
+    rates on those days.**
+- Note: three sources, three answers (3× / 2× / not a holiday). The 8-hour guarantee appears in the
+  double-time paragraph only. The date rule itself — first Saturday following the first Friday in
+  June and December — is unambiguous and worth capturing regardless of which multiplier wins.
+- Blocked: holiday calendar seeding, the triple-time rule, holiday guarantee hours.
+- Owner: Corrina Bustos; Melissa McNutt for the quote wording, which needs fixing either way.
+- Status: open — needs confirmation
+- **Asked:** 2026-09-01 — processing the quote Melissa supplied 2026-08-31.
+
+## Missed meal period — three documents, three different charges
+
+- Question: when a crew works through a required meal period, what exactly is billed — **crew time
+  only, or crew time plus equipment**? And at what rate?
+- Candidates:
+  - Quote OM-35140 p.3 **Meal Periods** — *"customer will be charged one-half (1/2) hour of Crew
+    time Double-time **at the rate $270/hour per crew member** for every missed meal period."*
+    Crew only, named rate. Note $270 is not twice the $150 Crew & Standby rate quoted on the same
+    page, so it is an independent figure, not a derived one.
+  - **LEM ticket Terms and Conditions of Contract (CA) §15**, supplied by Melissa 2026-08-31 —
+    *"If meal periods are worked then customer will be charged one-half (1/2) hour of Crew time
+    Double-time."* Crew only, **no rate, no equipment**.
+  - **E-ticket 45954, Work Through Lunch Authorization** (the one the customer actually signs on
+    the job) — *"customer will be charged one-half (1/2) hour of Crew time Double-time **& one-half
+    (1/2) hour for all cranes and equipment**."* **Adds an equipment charge the other two omit.**
+    See [field-ops/e-ticket-worked-example.md](../field-ops/e-ticket-worked-example.md) §6.
+- Note: the document the **customer signs in the field** is the most expensive of the three, and it
+  is the only one that charges equipment. That is the version with a signature against it, which
+  makes it the strongest contractually and the one billing should probably follow — but the quote
+  is what the customer agreed to at order time, and it says something narrower. This is a billing
+  question with a payroll shadow: the WTL adjustment on the pay side
+  ([PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)) is separate and is **not** what is
+  in dispute here.
+- Blocked: WTL billing on quotations/invoices; the printed text of the WTL authorization the ERP
+  will render for signature.
+- Owner: Melissa McNutt (owns the quote and LEM T&Cs); Corrina Bustos to confirm what is invoiced.
+- Status: open — needs confirmation
+- **Asked:** 2026-09-01 — processing the quote and e-ticket Melissa supplied 2026-08-31.
+
+## Boom pay rates cannot hold a second union — and the failure is silent
+
+- **Status:** open
+- **Asked:** 2026-09-01 — reviewing the craft-modifier configuration screen while setting up a
+  fresh tenant. Not a ticket question: no ticket asks for a second union, and the defect only
+  appears when one is added.
+- **Question:** `CraftModifier` (the boom pay rate brackets) is scoped to the **tenant**, not to
+  a union code. If TCG ever bargains with a second local whose long-boom schedule differs from
+  L12's $0.75-per-20-ft, there is nowhere to put the second set of numbers. Should the model
+  carry a nullable `unionCodeId` — null meaning "any union", so existing rows keep working —
+  or is one boom schedule per tenant a deliberate simplification we are content to keep?
+- **Why it matters more than it looks:** the two failure modes are both quiet.
+  **At configuration**, the overlap guard blocks the second set with a message about data entry
+  rather than modelling: *"That range overlaps existing brackets: OP-BP-06 (181-200 ft). Remove
+  them first…"* — `findOverlapping`
+  (`apps/api/src/service/craft-modifiers/craft-modifiers.repository.ts:55-71`) filters on
+  `tenantCompanyId` + `status: ACTIVE` with **no union term**, so the guard that is correct for
+  one union is exactly what prevents a second. The only way past it is deactivating the first
+  union's brackets, which breaks that union.
+  **At calculation**, nothing errors at all.
+  `CraftRateResolverService.resolveBoomAdder` (`apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts:210-230`)
+  takes `unionKind` (`UNION` / `NON_UNION`) but **never the union's identity**, and fetches
+  `craftModifiers.findAll(scope)` where scope is the tenant. A second local's operator resolves
+  cleanly against the first local's bracket and is paid a confident, wrong number. `ResolvedRate`
+  carries `unionKind` but not which union's table the adder came from, so the ledger line cannot
+  show it either. Silent wrong pay under a collective bargaining agreement.
+- **Sources checked:** `apps/api/prisma/schema.prisma` `model CraftModifier` — columns are
+  `code, label, minFt, maxFt, operatorAdder, oilerAdder, status` plus audit; the only constraint
+  is `@@unique([tenantCompanyId, code])`, no `unionCodeId` anywhere. The two code sites above.
+  **FCC already models this correctly** — `FMS_UNION_CRAFT_MODIFIER` carries a `UnionCode`
+  column (every row `L12`), so `fcc-seeder`'s `resolveCraftModifierBrackets` is dropping
+  information the source already holds. `mcog-l12-mla-2025-2028/02-article-iv-classifications-and-wage-rates.md`
+  → *Additional rate for high booms* is one agreement's schedule and says nothing about others.
+  No `decisions/` note covers per-union boom rates.
+- **Not urgent, deliberately:** `FMS_UNION_MASTER` has exactly one row and TCG bargains with one
+  local, so this is theoretical today. Logged because the trigger — someone adding a second union
+  code — is invisible: nothing in the schema or the UI warns that doing so makes boom pay wrong.
+- **Owner:** product, with payroll. A schema question, not a payroll-rules question.
+- **Related:** the same screen gives no hint that boom rates apply to **union crafts only** —
+  `resolveBoomAdder` returns no adder when `unionKind !== 'UNION'`, which is correct and matches
+  the legacy rule (*"the labor row's craft is a union craft (`L12…`)"*), but a tenant with both
+  `L12` and `NON-UNION` codes would reasonably expect the brackets to cover everyone. That one is
+  copy, not schema.
