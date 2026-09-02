@@ -2,7 +2,7 @@
 title: Customers — open questions
 status: reference
 kind: gaps
-updated: 2026-09-01
+updated: 2026-09-02
 tags: [module/customers, kind/gaps, open-questions]
 ---
 
@@ -160,6 +160,49 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Melissa McNutt (policy/customer) for the form and the copy. Provider choice, fallback
   policy and coordinate ownership are the admin half —
   [admin/gaps.md](../admin/gaps.md#map-provider-no-key-fallback-and-which-table-owns-address-coordinates).
+
+## Job-site map on read-only surfaces — the view tab and the create wizard's pending sites
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/job-site-view-map` (no ticket, no `.ai/aidlc/`
+  folder); tcg-scrum escalation. The **display** half; the **form** half — whether the pin is
+  required, and the copy when no map can be shown — is the entry above
+  ([#job-site-map](#job-site-map--required-on-the-form-and-what-shows-when-it-is-unavailable)),
+  whose part (c) is scoped to *forms* and so does not reach either surface below.
+- **Question:** the branch puts the shared `AddressMapPicker` in `readOnly` mode behind a per-row
+  *Show map / Hide map* collapsible, rendered only when the site has finite lat/lng. Three parts,
+  each answerable in a line. (a) On the customer's **read-only Job Sites tab**, should a saved job
+  site offer its pin at all, and if so is a **collapsed-by-default** toggle right, or should the map
+  be **always visible**, or reached by opening the site? (b) Should the same map appear on **pending
+  sites in the create-customer wizard** — records not yet saved, whose coordinates exist only in
+  form state? (c) When a site has **no coordinates** the row shows no map and no explanation. Is
+  silent absence intended here, or should it carry the same *"Map view not available."* copy the
+  form uses?
+- **Sources checked:** `customers/customers-INDEX.md` and all five candidates — **no candidate
+  mentions a map on any surface**; `customers/customer.md` (Mohsin punch list, the largest customer
+  source) — the word "map" does not appear, and its item 20 *"FINALIZED APPROACH for notes,
+  contacts, attachments and jobsite"* enumerates what the job-site **view** page carries (an add
+  button, plus edit and delete per record) **without a map**; `customers/customer-and-job-sites.md`
+  — job-site asks are contacts, certificates and *"Add directions in job sites"*, which is the
+  legacy FCC `Directions` **text** column, not a map (established in the entry above);
+  `assets/user-story-and-tasks.md`; `../decisions/` (25 notes, none on maps or on view-page
+  composition). Jira: `SCRUM-699` *need to integrate map for jobsite* (In Progress,
+  **`description: null`**) — its entire recorded content is form-side, the map↔dropdown two-way
+  sync raised by Aiman Farooq 2026-08-25 and 2026-08-27; `SCRUM-936` (QA) extracted the shared
+  picker and lists **"Wiring the picker into every address form … per-form wire-up is follow-up"**
+  under *Out of scope* — the follow-up it names is **forms**, and it was written by the implementing
+  developer describing built code, so it cannot be cited as the requirement either way.
+- **Not contradicted, and two same-shaped precedents that do not transfer:** `SCRUM-585` *View
+  Ticket Details* (QA) requires *"Ticket displays the job location, map/location information"* — a
+  read-only map on a detail view, but the **mobile** field-worker ticket, a different persona and
+  entity; `SCRUM-252` *Live Asset Map View* (In Progress) puts a map behind **a toggle** that
+  returns to the list when switched off — a toggle precedent, but the DAS asset panel. Neither is a
+  source for the customer Job Sites tab.
+- **Blocked:** sign-off of `feat/job-site-view-map` as product-correct; the same per-surface
+  wire-up decision for vendor, yard, employee and quotation job-site displays.
+- **Owner:** Melissa McNutt (policy/customer) — the same owner as the form entry above; answer both
+  together. Provider and fallback policy remain the admin half
+  ([admin/gaps.md](../admin/gaps.md#map-provider-no-key-fallback-and-which-table-owns-address-coordinates)).
 
 ## Changing State clears City — and a saved out-of-state city is now kept rather than cleared
 
