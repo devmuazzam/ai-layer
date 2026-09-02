@@ -233,7 +233,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## The surcharge is blanket in the contract but per-resource in the model, and it has no name
 
-- **Status:** partly resolved — (a) and (b) answered and implemented 2026-09-02; **(c) remains open**
+- **Status:** resolved 2026-09-02 — (a), (b) and (c) all answered; see the resolution notes below
 - **Asked:** 2026-09-01 — processing quote OM-35140, supplied by Melissa McNutt 2026-08-31.
 - **Question:** three sub-questions on the 12% surcharge. (a) The T&C is unconditional — *"ALL
   CHARGES ARE SUBJECT TO A 12% FUEL & INSURANCE SURCHARGE"* — but `Surcharge` is stored per price
@@ -276,12 +276,22 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   which came out at $5,616.80 instead of $5,157.60 with every line 12% high. The printed quote also
   folded the surcharge into each line's amount and showed no named row; it now prints clean line
   amounts plus `Fuel & Insurance Surcharge  1.00  Each  12.00%  $552.60`, reconciling to $5,157.60.
-- **(c) is still open and needs TCG.** Does invoicing recompute the surcharge against actual hours,
-  and against which subtotal? The T&C says it *"WILL BE APPLIED ON FINAL INVOICES"*, so the quote
-  figure is an estimate over estimated hours. Nothing in any recording addresses it. Related:
-  `QuotationResource.finalAmount` still stores the surcharge-inclusive figure — deliberately
-  unchanged, because redefining it reaches invoicing, which is what (c) is about.
-- **Owner for (c):** TCG — Melissa McNutt or Micaela Dipane (accounting).
+- **Resolved 2026-09-02 — (c). Yes: invoicing recomputes it, against the invoice's own lines.**
+  Micaela Dipane walks the whole flow in `meetings/transcripts/2026-07-23-accounting-invoicing.md`.
+  She corrects the hours to actual — **@ 18:34** *"So then in here, **we'll do 5 hours**. The
+  overtime and double time aren't applicable in this one. And if you leave it zero, it erases it
+  automatically."* — adds anything the quote missed (**@ 18:03** *"if that wasn't in there… you just
+  add your overtime or double time line item"*), and only then **@ 18:49** *"From the invoice, we'll
+  add in the NOTAM, the travel permit, and then **our surcharge**. And then we hit save."* The
+  surcharge is applied to the corrected invoice, not carried across from the quote. Melissa McNutt
+  states the recompute rule in general terms on 2026-06-17 @ 30:52 — *"The one thing that would need
+  to auto change is a surcharge. It would need to calculate everything."*
+  **Consequence:** `QuotationResource.finalAmount` keeping the surcharge inside it is harmless — the
+  invoice does not inherit that figure, it recalculates from its own lines. The quote's surcharge is
+  an estimate over quoted hours, exactly as the T&C implies.
+  **An earlier note on this entry said no recording addressed (c). That was wrong** — it read
+  Micaela's line about *adding* the surcharge without the six lines above it where she edits the
+  hours.
 
 ## Billable hour minimums and maximums are contractual but have nowhere to live
 
