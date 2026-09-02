@@ -92,6 +92,25 @@ see **Risk** below.
 - **Touches existing data:** yes / no — *backfill described where*
 - **Blast radius:** *what breaks if this is wrong*
 
+### Ripple — what already works that this unit reaches
+
+From `spec.md` §11a, narrowed to what this slice actually touches. `none — new surface only`
+is a valid row when the grep that establishes it is named.
+
+| Existing consumer | Reached via | Regression proof in this unit | Source for what happens to it |
+| --- | --- | --- | --- |
+| *file / screen / endpoint* | shared export / DTO / schema field / component / filter / config | *test path, or* **none — unbuilt** | `spec.md` REQ-nn / `<path>` / **OPEN — Q**n |
+
+**A pre-existing consumer with no regression proof is an unbuilt part of this unit, not a
+follow-up.** A test written for the new call site does not cover the old one — that is the
+`refactor-untested` defect (`reflections/INDEX.md`, SCRUM-900 SD-1), and it is invisible to
+every gate. If a consumer's fix genuinely belongs to another unit, that unit is a dependency
+of this one and the ledger says so; it never lands in *Deliberately not in this unit*.
+
+A cross-surface ripple — a `packages/shared` export or a response shape web or mobile already
+consume — either updates its consumers inside this unit, or **Sequencing** names the window
+in which they disagree and what is broken during it.
+
 **`[UNVERIFIED]` + not reversible is the combination that must be raised before the unit is
 built.** Either alone is routine. Together they mean a source nobody has confirmed is about
 to be made expensive to undo — name it in the ledger and say what would settle the source.

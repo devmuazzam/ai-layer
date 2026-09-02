@@ -2,7 +2,7 @@
 title: Payroll module - vault index
 source: onedrive/OneDrive_1_8-11-2026/
 migrated: 2026-08-13
-updated: 2026-08-18
+updated: 2026-08-31
 status: unverified
 conflicts_with: []
 jira: []
@@ -70,6 +70,7 @@ that produced the rest of the vault.
 | closed/resolved historical questions | [gaps-2026-08-20-retired.md](gaps-2026-08-20-retired.md) — frozen snapshot |
 | **what is still unanswered** about payroll or ADP | [gaps.md](gaps.md) — the payroll half of the open-question register, 41 entries. `grep -n '^## '` first; read only your section |
 | what a payroll SME said verbally, not yet in the rule matrix | [2026-08-20-payroll-rules-meeting-notes.md](2026-08-20-payroll-rules-meeting-notes.md) — WTL, rest period, subsistence, craft-code rate overrides. `status: unverified`, cleaned from a call transcript |
+| **what FCC holds for an employee** | [fcc-employee-types-and-crafts.md](fcc-employee-types-and-crafts.md) — the 16-type list mixing field and portal roles, the **multi-type join we extract then discard on seed**, and the craft-code update sheets |
 
 ## The spine of the domain
 
@@ -106,6 +107,20 @@ defers four topics to documents held on SharePoint — and all four are files in
 That table was omitted by the 2026-08-10 migration ("outside the scope of this vault") and
 restored on 2026-08-13. **So `payroll/` is a declared dependency of the field-ops FRD, not a
 neighbouring module.**
+
+## Decisions that bind this module
+
+Seven `decisions/` notes carry `module/payroll`. None is `verified` — all are `reference`,
+meaning a named person on the team decided them and they bind implementation until TCG says
+otherwise.
+
+- [2026-09-01-subsistence-not-a-craft-attribute.md](../decisions/2026-09-01-subsistence-not-a-craft-attribute.md) — subsistence is a property of the trip, not the trade; supersedes the per-craft modifier shown on 2026-08-13
+- [2026-08-25-non-union-base-rate-per-person.md](../decisions/2026-08-25-non-union-base-rate-per-person.md) — non-union base rate comes from `Employee.hourlyRate`
+- [2026-08-25-boom-adder-on-top-unmultiplied.md](../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md) — **working** decision, not confirmed by labor counsel
+- [2026-08-25-craft-locked-rate-override-scoped-to-union.md](../decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md) — **working** reading of the note below
+- [2026-08-24-payroll-time-rounding-method.md](../decisions/2026-08-24-payroll-time-rounding-method.md) — start down, end up, 30-minute increments
+- [2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) — day-level deviations locked to craft-code amounts
+- [2026-06-30-adp-erp-employee-data-ownership.md](../decisions/2026-06-30-adp-erp-employee-data-ownership.md) — which employee field is owned by ADP, the ERP, or QuickBooks
 
 ## Where payroll meets the rest of the vault
 

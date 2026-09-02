@@ -2,7 +2,7 @@
 title: Customers — open questions
 status: reference
 kind: gaps
-updated: 2026-08-27
+updated: 2026-09-01
 tags: [module/customers, kind/gaps, open-questions]
 ---
 
@@ -160,6 +160,51 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Melissa McNutt (policy/customer) for the form and the copy. Provider choice, fallback
   policy and coordinate ownership are the admin half —
   [admin/gaps.md](../admin/gaps.md#map-provider-no-key-fallback-and-which-table-owns-address-coordinates).
+
+## Changing State clears City — and a saved out-of-state city is now kept rather than cleared
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. The form-interaction half;
+  the reference-data half (which countries, states and city names exist at all) is
+  [admin/gaps.md](../admin/gaps.md#which-countries-states-and-cities-may-an-address-name).
+- **Question:** On every address form — the shared `address-fields` molecule, so customers, job
+  sites, vendors, yards, employees and quotations at once — the branch changes two things about
+  the State→City dependency. Two parts, each answerable in a line. (a) When the user **picks a
+  different State**, should the City always be **cleared**, or kept when a city of the same name
+  exists in the new state? (b) When a record **already holds a city that does not belong to its
+  state** — a bad migration row, or a Google reverse-geocode result — should the form **keep it
+  visible** (today's new behaviour: retained as an "orphan" option outside the filtered list), or
+  **silently clear it** (the previous behaviour)?
+- **Sources checked:** `customers/customers-INDEX.md` and all five candidates — **none describes
+  address-field interaction**; `customers/customer.md` (the Mohsin punch list, the largest
+  customer source) and `customers/customer-and-job-sites.md`; `../decisions/` (24 notes, none on
+  form cascade or dependent dropdowns); `../assets/user-story-and-tasks.md`; `.ai/aidlc/` — no
+  ticket.
+- **(a) is sourced; (b) is not, and cuts against the ticket that sources (a).** `SCRUM-36`
+  *Missing Dependent Location Fields and Inconsistent Validation…* (Done, 2026-04-15) requires
+  *"State / Province, County, and City fields should be implemented as **proper dependent
+  dropdowns, where each selection filters the next level accordingly**"* — that covers clearing
+  the City when the State changes. But the **defect that ticket was filed against** is precisely
+  what (b) now reinstates: *"State / Province, County, and City fields are not consistently
+  behaving as dependent dropdowns, **leading to incorrect or unrelated selections**."* An orphan
+  city retained outside its state is an unrelated selection, deliberately kept.
+- **And two Done tickets pull the opposite way on (b).** `SCRUM-547` *Country Field Not Pre-Filled
+  on Edit Customer Form* (Done): *"The field should **show the saved value** on edit"*; `SCRUM-549`
+  *City Dropdown Issues Across the Application* (Done): the city is *"supposed to be
+  **pre-selected** in case of create/edit both"*. Orphan retention is the mechanism that satisfies
+  those two — so this is a **genuine conflict between three Done tickets**, not an unsourced
+  invention, and it needs one human call rather than a code fix. Worth stating in the answer: the
+  two goals can both be met by keeping the value **and** flagging it as out-of-state, which no
+  ticket asks for and nothing currently does.
+- **Note:** `SCRUM-197` *Implement Infinite Scroll for City and State Dropdowns* (Done) expected
+  cities to *"load dynamically as the user scrolls"* because *"performance may degrade with long
+  static lists"*. The branch instead fetches cities **per selected state**, which serves the same
+  concern by a different route; no ticket blesses the substitution, but nothing is contradicted.
+- **Blocked:** sign-off of `feat/us-geo-package-lookup` as product-correct; `SCRUM-962` (To Do,
+  *Fix City and Province Dropdowns*) closure.
+- **Owner:** Melissa McNutt (policy/customer) for the form behaviour — the same owner as the
+  job-site form entry above.
 
 ## Pointers — 2026-08-27 client follow-ups touching customers
 

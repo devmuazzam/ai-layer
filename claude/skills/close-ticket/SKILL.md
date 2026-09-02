@@ -1,6 +1,6 @@
 ---
 name: close-ticket
-description: Run the writeback after a PR merges — reflection, gap disposition, decision notes, the reflections index, and pushing the overlay. Use when a PR is merged, when a ticket is being closed, or when asked what still needs recording from work that has shipped.
+description: Run the writeback after a PR merges — reflection, gap disposition, decision notes, the reflections index, the demo walkthrough, and pushing the overlay. Use when a PR is merged, when a ticket is being closed, or when asked what still needs recording from work that has shipped.
 ---
 
 What the loop learned, written down before the context is gone.
@@ -9,7 +9,7 @@ Merging is the moment the loop's memory either updates or silently does not. Eve
 here is recoverable for about a day and expensive to reconstruct after that — which is why
 this is a checklist and not a habit.
 
-**Not every step runs on every ticket.** Steps 1, 4, 5 and 6 always run. Steps 2 and 3
+**Not every step runs on every ticket.** Steps 1, 4, 6 and 7 always run. Steps 2, 3 and 5
 depend on the path the ticket took, and §"How much of this runs" says which.
 
 ---
@@ -43,7 +43,7 @@ Name the units that shipped, and the ones that did not. A unit that was cut, aba
 partly built is the most valuable line in the reflection and the easiest to forget once the
 branch is deleted.
 
-If units are still open, this is not a close — it is a checkpoint. Do steps 4, 5 and 6 and
+If units are still open, this is not a close — it is a checkpoint. Do steps 4, 6 and 7 and
 stop.
 
 ## 2. Reflect — `tcg-reflector`
@@ -91,13 +91,47 @@ git -C .ai diff origin/main -- vault/gaps.md vault/payroll/gaps.md   # should be
 grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md                # everything still open, all tickets
 ```
 
-## 5. Fill in the ledger row, then push the overlay
+## 5. Keep the demo walkthrough true
+
+`claude/skills/demo-walkthrough/WALKTHROUGH.md` pins the platform's surfaces — URLs, sidebar
+labels, required form fields, expected payroll numbers, and a ranked list of live defects. A
+merged ticket routinely makes some of that wrong, and **nothing fails when it does**: the file
+is only read on demo day, by which point the person reading it is in front of an audience.
+
+**This is not vault content and this step is not an exception to §"The one thing this never
+does".** The walkthrough answers *how do I make it do the thing?*; the vault answers *what
+should it do?* Updating a runbook to match shipped code is correct. Writing shipped behaviour
+into `vault/<module>/` is still forbidden, and still step 3's job to route as a finding.
+
+Decide in ten seconds — does this ticket's diff touch a pinned surface?
+
+```bash
+git diff --name-only origin/main~1 origin/main | grep -E \
+  'app/\(protected\)/|components/sidebar/|-form\.ts|\.schema\.ts|payroll-engine/|usecase/payroll/|seed-data|\.env'
+```
+
+| Hit | Update |
+| --- | --- |
+| `app/(protected)/**` | the URL in that phase |
+| `components/sidebar/**` | §1.3's sidebar map, and every `**Sidebar:**` line it changed |
+| a form schema | the required-field list in that phase |
+| `payroll-engine/**`, `usecase/payroll/**` | phase 13's expected numbers |
+| seeding / provisioning / env | phase 0 and Appendix C |
+
+**And the one nobody remembers: if this ticket fixed something in Appendix B, strike the row.**
+Move it to Appendix B → *Fixed*, with the PR number. A defect list that still cries wolf about
+last sprint's fix gets ignored wholesale, which loses the entries that are still real — and a
+struck row kept with its PR is what makes a later regression legible as a regression.
+
+No hits, no edit. Say so in the hand-back rather than leaving it ambiguous.
+
+## 6. Fill in the ledger row
 
 Find this ticket's row in `.ai/aidlc/processed.log` (written by `commit` at branch
 creation) and fill in the `pr` column with the merged PR number — that row is the only
 proof, for a path B/C ticket, that it ever ran the loop. Never edit any other column.
 
-## 6. Push the overlay
+## 7. Push the overlay
 
 ```bash
 git -C .ai status --short
@@ -106,7 +140,7 @@ git -C .ai add -A && git -C .ai commit && git -C .ai push
 
 The overlay is a separate repo on purpose. The consequence is that **every artifact above
 lives on one laptop until this runs** — the reflection, the decision notes, the gap entries,
-the index rows. None of it is memory yet.
+the index rows, the walkthrough edits. None of it is memory yet.
 
 **In a linked worktree, this push is not enough.** `.ai` there is an overlay worktree on a
 per-ticket branch, so the push above lands on that branch — which nobody reads. Finish with:
@@ -129,15 +163,19 @@ Matching the paths in `aidlc/GUIDE.md` → *Not every ticket runs the full loop*
 
 | Path | Steps |
 | --- | --- |
-| **A — full loop** | All six |
-| **B — bug fix** | 1, 4, 5, 6 always. Step 2 when the bug had a cause worth recording — a missing rule, or a third occurrence of something. Step 3 whenever the bug came from the documentation being wrong, which for a bug is common |
-| **C — small change** | 1, 4, 5, 6. Reflection almost never |
+| **A — full loop** | All seven |
+| **B — bug fix** | 1, 4, 6, 7 always. Step 2 when the bug had a cause worth recording — a missing rule, or a third occurrence of something. Step 3 whenever the bug came from the documentation being wrong, which for a bug is common. Step 5 when the grep hits — **and a bug fix is the likeliest path to strike an Appendix B row** |
+| **C — small change** | 1, 4, 6, 7. Reflection almost never. Step 5 when the grep hits — a one-line route or label change is exactly the kind that does |
 
-**Steps 4, 5 and 6 have no exemption.** They are the ones that cost nothing and lose
+**Steps 4, 6 and 7 have no exemption.** They are the ones that cost nothing and lose
 everything — an unpushed overlay makes every other step on this list private, a C-path
 change that opened a gap is exactly as important as an A-path one that did, and a ledger row
 never filled in with its PR number is the only place a path B/C ticket's completion was ever
 going to be recorded.
+
+**Step 5 is conditional on purpose.** Most tickets touch nothing the walkthrough pins, and a
+mandatory step that is usually a no-op is a step people stop reading. The grep decides it, not
+judgment.
 
 ---
 
@@ -151,6 +189,7 @@ Reflection:   <path | skipped — path B/C, no cause worth recording>
 Index rows:   <n appended, classes — or none>
 Decisions:    <paths written | none — no human answered anything during the build>
 Gaps:         opened <n>, closed <n>, partially closed <n — name them>
+Walkthrough:  <phases updated, Appendix B rows struck → Fixed | untouched — grep found no pinned surface>
 Ledger:       processed.log row filled in with PR #<n> | NOT FOUND — <why>
 Overlay:      pushed <sha> | NOT PUSHED — <why>
 Rule changes: <n proposed, n applied by me, n left as proposed>

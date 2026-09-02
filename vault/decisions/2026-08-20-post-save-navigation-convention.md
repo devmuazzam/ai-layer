@@ -4,12 +4,22 @@ source: decision/Fouzan Shakil
 decided: 2026-08-20
 decided_by: Fouzan Shakil (developer on TCG, assignee on SCRUM-896's branch) — stated directly in chat on 2026-08-20, against `SCRUM-896/spec.md` §12 Q2. He is not the client-side product owner; `spec.md` §12 Q2 nominated "product team" as owner. This is an internal navigation convention decided by a named person on the team, binding on implementation now, and open to being overruled by the client. `status: reference` rather than `verified` for that reason, matching `decisions/2026-08-20-quantity-based-das-sets.md`.
 status: reference
+superseded_by: decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md
 conflicts_with: []
 resolves: SCRUM-896/spec.md#q2
 jira: [SCRUM-896]
 tags: [module/projects-jobs, kind/decision, requirements, lift-plans]
 entities: [lift-plan, project]
 ---
+
+> **Superseded in part, 2026-09-01**, by
+> [`decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md`](2026-09-01-post-save-navigation-create-goes-to-detail.md).
+> **The create half below is dead** — after creating an entity the user now lands on that
+> **new entity's detail page**, app-wide, not on the listing. Fouzan Shakil reversed his own
+> statement. **The edit → detail half of this note is unchanged and still stands**, which is
+> why `status:` here is still `reference` and not `superseded`. Every carve-out under *What
+> this does NOT settle* also survives. Read the 2026-09-01 note before acting on anything
+> below.
 
 ## Decision
 

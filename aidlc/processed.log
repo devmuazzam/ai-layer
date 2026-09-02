@@ -24,7 +24,7 @@ note       one line — what the ticket was, free text
 
 date        ticket      path  branch                              by    pr    note
 ----        ------      ----  ------                              --    --    ----
-2026-08-24  -           C     fix/job-schedule-weekend-empty-hint  fouzan  -     Job Schedule tab hints when date range is weekend-only and toggles exclude all days
+2026-08-24  -           C     fix/job-schedule-weekend-empty-hint  fouzan  391   Job Schedule tab hints when date range is weekend-only and toggles exclude all days
 2026-08-19  SCRUM-907   C     fix/SCRUM-907-quantity-das-sets     fouzan  -     explode qty N into N DAS sets on convert; duplicates SCRUM-892
 2026-08-20  SCRUM-896   C     scrum-896                           fouzan  -     after plan update go to detail; remove listing delete (no plan archive API yet)
 2026-08-20  SCRUM-903   B     fix/SCRUM-903-job-completed-status   fouzan  384   after DAS/yard offload complete, set Job.status=COMPLETED (not Closed)
@@ -44,6 +44,7 @@ date        ticket      path  branch                              by    pr    no
 2026-08-25  SCRUM-855   C     fix/reopened-qa-aug25   fouzan  -     reopen: validation focus/error styling QA deltas
 2026-08-25  SCRUM-857   C     fix/reopened-qa-aug25   fouzan  -     reopen: create-form button standardization (listed modules)
 2026-08-25  SCRUM-939   B     fix/reopened-qa-aug25   fouzan  -     employee status-only PATCH no longer requires workCellPhone
+2026-08-25  SCRUM-890   B     fix/SCRUM-890-create-list-nav   areeba  -     customer create → listing; update → detail (QA reopen)
 2026-08-25  SCRUM-817   A     task/SCRUM-817                      dev   -     Ticket & Shift Reschedule Email Templates & Notifications
 2026-08-25  SCRUM-926   A     feat/SCRUM-925-u1-craft-codes-rates  dev   412   epic: craft codes, rates, assignments, boom modifiers, resolver — row backfilled 2026-08-26, close-ticket, no ledger line existed at merge
 2026-08-25  SCRUM-925   A     feat/SCRUM-925-u1-craft-codes-rates  dev   412   U1 — craft codes with effective-dated union rates — row backfilled 2026-08-26
@@ -56,3 +57,10 @@ date        ticket      path  branch                              by    pr    no
 2026-08-25  SCRUM-873   C     fix/SCRUM-873                      areeba  -     resources surcharge chip from billing codes; lost banner wrap; edit status read-only
 2026-08-27  SCRUM-648   B     feat/SCRUM-648                      areeba  -     department archive + All/Archived quick filters
 
+2026-08-31  -           C     fix/quotation-das-resources            fouzan  436   stop qty exploding into DAS sets; child qty independent of parent
+2026-09-01  -           C     fix/quotation-das-resources            fouzan  -     follow-on after PR 436 merged, same branch: upload stores without emailing, signing return syncs to WON, terminal-envelope guard, salesperson required, inline Report To contact, surcharge column, create → detail. No ticket; 7 behaviours escalated to module gaps, navigation recorded as decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md
+2026-09-01  SCRUM-961   A     feat/craft-code-form-cleanup       haris   446   craft-code form: removed 5 unbacked controls, exposed wageGroup, rates consolidated onto the detail panel; began as C, escalated on the subsistence decision - ticket and spec backfilled after the code
+2026-09-02  -           C     fix/withdraw-sub-category-name-unique   haris   -     staging migrate deploy stuck on P3009: 20260901120000 sub-category unique index failed on real duplicates. Constraint withdrawn (requirement unratified, merge would destroy templates); added a unique-constraint pre-flight to migrate-deploy.sh and fixed its dead P3009 recovery path
+2026-09-02  -           C     feat/sub-category-name-unique-with-dedup   haris   -     re-instate tenant-unique sub-category names the right way: rename collisions then constrain; adds preflight-skip so a self-dedup migration is not blocked by the guard added earlier the same day
+2026-09-02  -           C     fix/preflight-ssl-libpq-semantics       haris   -     pre-flight could not reach RDS (pg 8.22 reads sslmode=require as verify-full, Prisma does not); failed closed and blocked a deploy. uselibpqcompat=true; note that ssl:{rejectUnauthorized:false} does NOT override sslmode from a connection string
+2026-09-02  -           C     feat/move-dropdowns-BE                  fouzan   -     app-wide dropdown migration: 17 API list routes made dual-mode via utility/picker-list.helpers.ts, ~30 web `<entity>-select` pickers moved onto AsyncCombobox/fetchPage, new resource-catalog tree+search pair for the cascading MultiOptionDropdownMenu. Row written retroactively at PR review — the branch never ran the loop, and no ticket is cited (SCRUM-952 'Searchable dropdown' and SCRUM-703 are the plausible origins, neither confirmed). Five behaviours had no product source and were escalated to admin/assets/quotations/field-ops gaps; quotation + associated-resource trees still preload and are deferred to the label-string-over-FK ticket; mobile deliberately out of scope, open on SCRUM-912

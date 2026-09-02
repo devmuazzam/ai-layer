@@ -22,10 +22,12 @@ Quotations, pricing, billing codes, mob/demob. Backend usecases: `quotations, qu
 | [quotation.md](quotation.md) | JZ punch list: industry codes, pre-quote package, Customer PO | 0.8 |
 | [mobilization-and-demobilization.md](mobilization-and-demobilization.md) | Mob/demob process — newest content in the vault | 5.0 |
 | [billing-code-and-price-list.md](billing-code-and-price-list.md) | Billing code and price list punch list | 0.5 |
+| [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) | **The customer-facing rate card and T&Cs** — surcharge arithmetic, minimums, long-boom billing, special equipment, holiday schedule | 7.4 |
 
 ## Decisions that bind this module
 
-- [2026-08-20-quantity-based-das-sets.md](../decisions/2026-08-20-quantity-based-das-sets.md) — Quantity N on a quotation line becomes N DAS/Yard sets
+- [2026-08-31-quotation-qty-not-das-sets.md](../decisions/2026-08-31-quotation-qty-not-das-sets.md) — Quotation qty is billing only; one DAS/Yard set per root; child qty independent
+- [2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) — Create **and** edit both land on the entity's detail page, app-wide; supersedes the create half of 2026-08-20. A quote created from a project (`?projectId=`) still returns to that project
 
 ## Open questions
 

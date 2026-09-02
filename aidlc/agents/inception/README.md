@@ -39,6 +39,14 @@ reviewable *before* anything is decomposed against it.
 A `units.md` whose slices each answer *"if this ships alone, what can someone now do?"* —
 with any `[OPEN]` requirement still marked open, not quietly resolved on the way through.
 
+And a second answer the phase now owes, because the last two weeks' defects were not missing
+features but working ones that stopped: *what already ships that this reaches?* The
+elaborator enumerates it (`tcg-elaborator.md` §9 → `spec.md` §11a and each requirement's
+`Ripple:` field) and refuses to decide what happens to an existing consumer that no source
+mentions; the decomposer puts the regression proof for that consumer inside the unit that
+touches it (`tcg-decomposer.md` §7). Neither is a code question — the enumeration is a repo
+fact, what should happen to it is a product fact, and only the second one needs a human.
+
 Open questions from either agent are appended to §12 of the ticket's `spec.md` — a ticket
 has no `gaps.md`, and a question a ticket raised stays in the file the next person opens.
 [`../../../vault/gaps.md`](../../../vault/gaps.md) is read-only to both agents, for citing an

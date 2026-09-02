@@ -98,6 +98,7 @@ the directory; **on other tools they do not — open them by path.**
 | Web | `apps/web/` | Next.js 16 + Tailwind v4 + shadcn/ui | 3001 |
 | Mobile | `apps/mobile/` | Expo SDK 54 + Expo Router | 8081 |
 | Shared | `packages/shared/` | Pure TypeScript | — |
+| E2E | `qa-automation/` | Playwright + Prisma 7 — live API + Postgres | — |
 
 Node 22.22.0 (`.nvmrc`), pnpm 10 workspaces, orchestrated by **Nx** (package-based — every
 `package.json` script is a target; Nx owns ordering, caching and affected-only runs; the apps
@@ -187,6 +188,14 @@ projects. JSDoc on public APIs.
 then `nx affected` lint (web excluded), typecheck (mobile excluded), build. `SKIP_GATES=1 git
 push` skips the gates, never the branch guard.
 
+**`data-testid` in `apps/web` is a contract.** `qa-automation/` addresses the UI through
+it, and that suite is **outside the pnpm workspace and not yet an Nx project** — so no hook
+and no CI job lints, typechecks or runs it, and renaming an ID breaks a test nothing will
+report. (Registering it as an Nx project is an accepted PR #386 follow-up; until that lands,
+the grep below is the only signal there is.)
+New screens ship with IDs; before renaming one, `grep -rn '<the-id>' qa-automation/e2e`.
+Scheme and the shared-component rule: `contexts/web.md` → *Test IDs*.
+
 **Lint does not enforce most of the conventions in this file.** There is no rule for
 module boundaries, duplication, or hardcoded colours. Passing lint is not evidence a
 convention was followed.
@@ -201,3 +210,5 @@ convention was followed.
 - `.ai/vault/<module>/gaps.md` — live module questions · root/payroll `gaps.md` retired, historical only
 - `.ai/aidlc/agents/` — the AI-DLC phase agents
 - `.ai/vault/sync/confluence-sync.md` — how the vault tracks Confluence
+- `.ai/claude/contexts/web.md` → *Test IDs* — the `data-testid` contract `qa-automation/` depends on
+- `.ai/claude/skills/demo-walkthrough/WALKTHROUGH.md` — fresh tenant → calculated payroll, every URL and pre-req. **Describes shipped code, never a source for a spec**; kept current by `close-ticket` step 5
