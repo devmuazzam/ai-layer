@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-08-31
+updated: 2026-09-02
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -244,3 +244,16 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   donut); `projects-jobs/INDEX.md`; `projects-jobs/project-module/`; `decisions/`; vault-wide
   grep for `ON_HOLD` / `on hold` / `Jobs Status Summary`. Nothing anywhere defines the slices.
 - **Owner:** Lisette Anzaldo / Ryan Adams
+
+## Does "Each tab saves independently" apply beyond Job details? — see assets/gaps.md
+
+- Cross-module pointer (no status of its own — the sweep counts it once, in `assets/gaps.md`).
+  [project-module/02-view-manage-job-details.md](project-module/02-view-manage-job-details.md):58
+  — *"Each tab saves independently — navigating away does not lose unsaved work on another
+  tab"* — is the **only** written statement of per-tab save independence in the vault
+  (`status: unverified`, about the Job detail page). PR #470 built exactly that shape for
+  Asset Management's sub-category detail page, with no source of its own, so the question of
+  whether that line was meant app-wide or only for Jobs now blocks another module. It also
+  says nothing about what happens when a multi-tab save fails part-way, which is the part
+  that matters once a leave guard flushes several tabs at once.
+  Full entry: [assets/gaps.md](../assets/gaps.md#one-tab-one-patch--and-what-the-leave-guards-save-means-when-several-tabs-are-dirty).

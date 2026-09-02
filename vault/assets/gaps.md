@@ -556,3 +556,163 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   because the detail page's in-place editing makes a template save one click away from any
   viewer, so the failure gets easier to reach. The same `deleteMany`+`create` shape is in
   `categories.repository.ts`, but category templates do not key asset answers.
+- **Blocked:** any further work on template editing, on either surface; the migration that
+  would be needed to carry existing `attribute_values` across a re-mint. Routing lines added
+  2026-09-02 by tcg-scrum on a PR-review pass; the question text above is unchanged.
+- **Owner:** product team — Brian Petros for whether a template field keeps its identity
+  across edits (this is a data-retention question, not a UI one). Fouzan Shakil to sequence
+  the fix once the answer exists.
+
+## Editing a record on its detail page — is in-place tab editing the pattern, and what stays on /edit?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of merged PR #470 / commit `8b286d84`, branch
+  `feat/asset-tabs-inline-edit`; tcg-scrum escalation. **Not a ticket question:** the branch
+  cites no `SCRUM-###` and has no `.ai/aidlc/SCRUM-###/` folder, so there is no `spec.md` §12
+  to hold it. It does carry a `processed.log` row (2026-09-02, path C, haris), which records
+  the interaction pattern as *"chosen by the user in-session"* — a session choice by the
+  implementer, not a product decision, which is why it is asked here.
+- **Question:** four parts, each answerable in a line. (a) Is editing tab content **directly
+  on the detail page** the intended pattern for Asset Management, or should a detail page stay
+  read-only with `/edit` the only editor? (b) If in place is right, **does `/edit` survive** —
+  as shipped the same components render on both surfaces (`configuration-tabs.tsx` is reused,
+  deliberately, so the two cannot drift), so the same fields are now editable in two places
+  and a user can reach either. (c) Is the **split correct** — identity fields (name, category,
+  billing code, permit required, target hours) on `/edit` only, tab content on detail? (d) Does
+  this **generalise** to other modules' detail pages, or is it assets-only?
+- **What shipped, so the question is concrete:** **five** tabs hold live fields with a
+  Save/Cancel pair — Category → Attributes; Sub-Category → Attributes, Associated Field
+  Assets, Substitution; Asset → Additional Info. The commit message counts **six** and
+  includes Sub-Category → Assets List, but that tab renders `AssetsTable` with a create-asset
+  dialog and has no dirty-tracked editor (`sub-category-show-view.tsx`:86–95) — a create
+  affordance, not in-place editing. `/edit` is untouched and still reachable from each detail
+  hero, which is what makes (b) a live question rather than a hypothetical.
+- **Sources checked:** **Vault — nothing on where an asset record is edited.** [INDEX.md](../INDEX.md);
+  this module's [INDEX.md](INDEX.md); [categories-and-sub-categories.md](categories-and-sub-categories.md)
+  (0.3 KB, `status: unverified`) — its nearest bullet is *"Edit should re-direct to show page"*,
+  which is about where an edit **lands**, and reads Show and Edit as **two surfaces**;
+  [user-story-and-tasks.md](user-story-and-tasks.md) (`provenance: personal-space`) — yard,
+  HubSpot, 2FA, customer and quotation stories only, **no asset or category detail-page story
+  at all**; [tool-and-rigging.md](tool-and-rigging.md) (yard dashboard, utilization);
+  [loading-list.md](loading-list.md); [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md).
+  `../decisions/` — 26 notes, and the only one in this neighbourhood is
+  [2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md)
+  (with its 2026-08-20 predecessor), which is **"post-save success path only"** — it settles
+  where a save *lands*, never where editing *happens*. Vault-wide grep for
+  `inline edit` / `edit in place` / `editable in place` returns **no hit** outside this
+  register. Meetings: 8 files carry `module/assets`; a sweep for in-place / same-page editing
+  language finds nothing on it.
+- **The nearest written analogue is a different module, and it is unverified.**
+  [projects-jobs/project-module/02-view-manage-job-details.md](../projects-jobs/project-module/02-view-manage-job-details.md):40,
+  43, 58 says, of a **Job** detail page: *"Work description and notes are visible and
+  editable"*, *"Any editable field can be updated and saved without affecting the linked
+  quotation"*, and *"Each tab saves independently"*. So a tabbed detail page whose tabs are
+  editable **is** written down once, for Jobs, `status: unverified`. Nothing says it
+  generalises to assets, categories or sub-categories, and this register does not assume it
+  does — that is part (d) of the question, not its answer.
+- **Jira points both ways, and neither ticket is about a detail page.** Against:
+  `SCRUM-207` (Done 2026-05-05) — *"Asset Management → Categories Tab – Show/Edit View,
+  Navigation, and UX Issues"* — treats Show page and Edit mode as **distinct modes** and files
+  arriving in Edit mode unasked as a **defect**: *"Clicking Create New Sub-Category / Create
+  New incorrectly redirects to Category Edit mode instead of respective create forms"*, and
+  *"In Edit mode, 'Last Updated On' is shown unnecessarily"*. `SCRUM-918` (To Do) *"Improve
+  Edit Icon Styling in Categories → Sub-Categories"* assumes an edit icon, i.e. a separate
+  destination. Loosely for: `SCRUM-823` (Done, Aiman Farooq) *"Add Save Button on All Tabs in
+  Asset Creation"* — *"users can save the asset from any tab without navigating to the final
+  step"* — the same instinct (commit from where you are) but in the **create wizard**, not the
+  detail page. A search of `SCRUM` for asset + tab/edit/attribute/detail surfaces no ticket
+  for this feature.
+- **Note:** in-place editing makes post-save navigation **vacuous** for these five tabs — the
+  user never leaves the detail page, so *edit → detail* is satisfied trivially. That is not the
+  same as being authorised by it, and the note itself says it decides the success path only.
+  The closest client-voiced *"don't make me leave the screen"* is
+  [meetings/2026-06-22-sprint-4-additional.md](../meetings/2026-06-22-sprint-4-additional.md):93
+  — a **Create PO** button in DAS that *"generates the PO for that vendor and job without
+  leaving the screen"* — a create-in-context ask on a different surface, not a detail-tab
+  editor.
+- **Blocked:** sign-off of PR #470; whether `/edit` is retired, kept, or reduced to identity
+  fields; whether the next module's detail page copies this or stays read-only.
+- **Owner:** Fouzan Shakil for (a), (b) and (d) — he is the precedent-holder, having decided
+  the post-save navigation convention the same way, and these are internal UI conventions the
+  team can settle if the client has no view. (c) is product: route to TCG via Brian Petros if
+  anyone disputes that identity fields belong on a form rather than a detail tab.
+
+## Save and Cancel hidden until a section is dirty — intended, or an affordance nobody finds?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of merged PR #470 / commit `8b286d84`, branch
+  `feat/asset-tabs-inline-edit`; tcg-scrum escalation. No ticket, so no `spec.md` §12. Filed
+  here because that is where the work surfaced; **the question is app-wide, not assets-only.**
+- **Question:** two parts. (a) Is a commit affordance that is **absent until the first
+  keystroke** acceptable on pages users have learned are read-only — how is a user meant to
+  discover a field is editable before touching it? (b) Should undoing an edit **by hand**
+  retire Save/Cancel, or should the pair stay until the user explicitly saves or cancels?
+- **What shipped:** `apps/web/src/features/assets/shared/inline-edit-actions.tsx`:33 —
+  `if (!isDirty) return null`, so the section header shows nothing at all until a change
+  exists; once dirty it shows an amber *"Unsaved changes"* marker plus Cancel and Save.
+  Dirtiness is **structural**, not a sticky flag: `shared/use-inline-draft.ts`:59–62 deep-compares
+  the draft against the live server value, so typing a character and deleting it retires the
+  pair exactly as Cancel would. Both behaviours are deliberate and documented in the file's
+  own doc comment — the question is not what it does, but who chose it.
+- **Sources checked:** **Vault — nothing on dirty state as a UI convention.** `../decisions/`
+  (26 notes) has no form-interaction note; the only UI conventions decided so far are post-save
+  navigation and archive-instead-of-delete, both app-wide and both Fouzan Shakil's. Vault-wide
+  grep for `dirty` returns **three hits and no convention**: two are this register's create-prefill
+  entry, one is a pointer to it from `../quotations/gaps.md`:100; the remaining matches are
+  *"quick and dirty"* in payroll transcripts. `apps/web/AGENTS.md` → *Forms* sets failed-submit
+  behaviour (focus the first invalid field, navigate to the offending step) and is **silent on
+  dirty-state affordances** — and a build rule could not settle this anyway.
+- **The same family is already open in this register.**
+  [Create-form prefill from URL query params](#create-form-prefill-from-url-query-params--the-whole-contract-is-unwritten)
+  Q3 asks whether a prefilled value counts as a user edit — *"should prefill mark the form dirty
+  and trip the unsaved-changes guard, so Cancel prompts on a form the user never typed in?"*
+  That is the same underlying question (what counts as a change, and what the UI owes the user
+  once something does) reached from the create side. Both are cheapest to settle **once**, the
+  way post-save navigation was, rather than per module.
+- **Blocked:** sign-off of PR #470; the next screen that needs an in-place editor, which will
+  otherwise copy this from precedent and harden it by repetition.
+- **Owner:** Fouzan Shakil — an internal UI convention, same class as post-save navigation.
+  Worth one line from Melissa McNutt on (a) if operators are the ones expected to discover it.
+
+## One tab, one PATCH — and what the leave guard's Save means when several tabs are dirty
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of merged PR #470 / commit `8b286d84`, branch
+  `feat/asset-tabs-inline-edit`; tcg-scrum escalation. No ticket, so no `spec.md` §12.
+- **Question:** three parts. (a) Is **per-tab independent save** the intent for a sub-category
+  — saving Attributes commits only attributes and leaves pending edits on Substitution still
+  pending, unsaved, with their own Save button? (b) When the leave guard's Save flushes several
+  dirty tabs and one of them fails validation or the API rejects it, the run **stops there**,
+  so the tabs already flushed are committed and the rest are not — **is a partial commit
+  acceptable**, and what should the user be told? (c) Does the Job-detail line *"Each tab saves
+  independently"* apply beyond Job details, or was it only ever about Jobs?
+- **What shipped:** three slices — `template`, `associatedResources`, `substituteSubCategoryIds`
+  — each PATCHing `/sub-categories/:id` with only its own key, which the API applies behind
+  separate `!== undefined` guards, so a rejected slice leaves the other two untouched
+  (`apps/web/src/features/assets/sub-category/hooks/use-sub-category-inline-edit.ts`:66–136,
+  212–248). `saveDirty` (:256–263) runs them **sequentially and returns on the first failure**:
+  `if (attributes.isDirty && !(await attributes.save())) return false;` and so on. That is the
+  partial-commit window in (b).
+- **Not the question:** *sequential rather than parallel* is an engineering choice with a
+  reason stated in the code and the commit message — all three PATCH the same row the API
+  re-reads to build its activity diff, so overlapping writes would race. That needs no product
+  call. What needs one is the **user-visible outcome** when the flush stops half-way.
+- **Sources checked:** **Vault — nothing on save granularity for assets.** This module's
+  [INDEX.md](INDEX.md), [categories-and-sub-categories.md](categories-and-sub-categories.md)
+  (nothing on saving), [user-story-and-tasks.md](user-story-and-tasks.md),
+  [tool-and-rigging.md](tool-and-rigging.md); `../decisions/` — 26 notes, none on save
+  granularity, partial commits or unsaved-changes guards. The **one** written statement of
+  per-tab independence anywhere in the vault is
+  [projects-jobs/project-module/02-view-manage-job-details.md](../projects-jobs/project-module/02-view-manage-job-details.md):58
+  — *"Each tab saves independently — navigating away does not lose unsaved work on another
+  tab"* — `status: unverified`, about the **Job** detail page, and it says nothing about what
+  happens when a multi-tab save fails part-way. That is (c).
+- **Jira:** `SCRUM-823` (Done) *"Add Save Button on All Tabs in Asset Creation"* is the nearest
+  ticket — *"users can save the asset from any tab without navigating to the final step"* — but
+  it is the **create wizard** committing one record from any step, not three independent PATCHes
+  against an existing record. No ticket covers per-slice save or partial-commit behaviour.
+- **Blocked:** sign-off of PR #470; any error-handling design for the leave-guard Save; any
+  reuse of this three-slice shape on another multi-tab detail page.
+- **Owner:** Fouzan Shakil for (a) and (b) as internal conventions; (c) needs whoever owns the
+  Job-details document to say whether that line was meant app-wide — route to TCG via Brian
+  Petros if it is read as product intent rather than a developer's note.

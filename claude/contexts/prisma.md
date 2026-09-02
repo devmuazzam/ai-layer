@@ -61,6 +61,38 @@ and is not in it, that is a finding, not a detail.
 - Timestamps are `@db.Timestamptz` — used ~285 times; match it.
 - Indexes: `idx_<table>_<column>`; unique constraints `uq_<table>_<what>`.
 
+## Every picker search is currently a sequential scan
+
+The searchable dropdowns all match with `contains` + `mode: 'insensitive'`, which Postgres
+runs as `ILIKE '%term%'`. A leading wildcard **cannot use a btree index**, and the schema
+has **no trigram index anywhere** — `grep -ri pg_trgm` over the repo and its migrations
+returns nothing. So today every keystroke that reaches the API scans the table.
+
+Nothing in the app hides this at small row counts, which is exactly why it is written down
+rather than left to be rediscovered: it degrades with tenant size, not with code changes.
+
+Fixing it needs `CREATE EXTENSION IF NOT EXISTS pg_trgm` plus GIN indexes
+(`USING gin (col gin_trgm_ops)`). The columns that carry the search traffic:
+
+| Table | Columns |
+| --- | --- |
+| `jobs` | `job_id`, `name` |
+| `employees` | `first_name`, `last_name`, `employee_code`, `adp_file_number` (payroll picker searches through the relation) |
+| `notifications` | `title`, `body` |
+| `sub_categories` / `categories` | `name` (resource-catalog searches both in one OR) |
+| `billing_code_custom_types` | `title`, `billing_code_custom_type_id` |
+| reference-code tables | `code`, `label`, `description` — the nine Settings picklists |
+
+Separately, these `orderBy` columns have no supporting index, which matters once the
+tiebreaker below is in play: `jobs.created_at`, `customer_contacts.created_at`,
+`department_roles.created_at`, `plans.created_at`. A composite
+`(tenant_company_id, created_at DESC, id)` covers both the filter and the sort.
+
+**Picker pagination sorts on a unique last key.** `findPickerList` appends `{ id: 'asc' }`
+unless the caller already sorts by `id`, because offset paging over a non-unique sort can
+show one row twice and skip another between page 1 and page 2. Hand-rolled picker queries
+(`jobs.repository.ts`, the eligible-approvers query) must do the same.
+
 ## Migrations
 
 **Any schema change requires a committed migration** under `apps/api/prisma/migrations/`.
