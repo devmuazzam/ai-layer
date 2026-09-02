@@ -354,6 +354,22 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   SKIPPED in the deploy log rather than passing them silently, and the opt-out is scoped to
   the declaring migration only — an unmarked violation in the same run still blocks.
 
+- **Update 2026-09-02 (pre-flight's first real run blocked a deploy — SSL)** — the guard
+  worked as designed and still cost a deploy. `pg` 8.22 treats `sslmode=require` as
+  `verify-full`; Prisma follows libpq semantics, where `require` encrypts without verifying
+  the CA. Against RDS the two disagree: `migrate deploy` connected, the pre-flight died with
+  `self-signed certificate in certificate chain`, and because it fails closed it refused a
+  deploy that had nothing pending to check. Fixed by adding `uselibpqcompat=true` when
+  sslmode is `require`/`prefer`/`allow`, honouring `verify-full`/`verify-ca` unchanged.
+  **Worth keeping:** passing `ssl: { rejectUnauthorized: false }` alongside a connection
+  string does **not** override `sslmode` — the connection-string parser wins and the connect
+  still fails. That was the first fix attempted; it was only caught by testing against the
+  real RDS certificate rather than a local Postgres. A guard that runs before every deploy
+  has to be exercised against the environment it guards.
+  **Staging outcome, verified directly:** unique index present, zero remaining duplicate
+  groups, 7 rows renamed — `Operator Load (2)/(3)` in `2644892a`,
+  `90 Ton Hydraulic Truck Crane (2)/(3)` in `64355383`, and three singles in `ec5404f8`.
+
 - **NEW (2026-09-02): `Plan.craneCategory` stores a sub-category NAME, not an FK**
 - **Status:** open
 - **Asked:** 2026-09-02 — found while assessing whether renaming duplicates was safe
