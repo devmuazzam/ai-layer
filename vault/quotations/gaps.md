@@ -519,7 +519,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Should a per-resource surcharge column be shown on quotation resource rows?
 
-- **Status:** open — but no longer blocked; the modelling question it waited on was settled 2026-09-02
+- **Status:** resolved 2026-09-02 — **no.** Removed; replaced by a per-row membership badge
 - **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket);
   tcg-scrum escalation
 - **Question:** the branch adds a **Surcharge** column before **Amount** on every quotation
@@ -541,13 +541,26 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [quotation.md](quotation.md); `decisions/`; `.ai/aidlc/` (the nearest is `processed.log`
   `SCRUM-873`, *"resources surcharge chip from billing codes"*, a Path C fix with no spec folder
   and no acceptance criteria).
-- **Unblocked 2026-09-02.** This entry deferred to the modelling question, which is now decided:
+- **Resolved 2026-09-02 — the column is removed.** The entry deferred to the modelling question,
+  which is now decided:
   [decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md).
-  The rate is uniform across a quote, so a per-row surcharge column no longer displays a contested
-  model — it displays one number repeated, plus which rows are in the base. That reframes the
-  question rather than answering it: is per-row *membership* worth a column when the rate is
-  constant, or does the single printed line plus a per-row indicator suffice? Still a product call.
-- **Owner:** product team
+  With one rate per quote the column showed **the same percentage repeated down the page**, and an
+  amount that is `line × that rate`. It also displayed the per-line model the decision replaced, on
+  the screen where users form their mental model of how the charge works — which was the reason this
+  question was blocked rather than a layout preference.
+  **Nothing was lost.** The per-row surcharge amount and percentage were already in the Amount
+  tooltip (`Surcharge (12%)  +$427.20`), and they stay there. What the row now carries instead is
+  the one fact not derivable from anywhere else: a **Surcharged / No surcharge** badge saying
+  whether the line is inside the surcharge base — the opt-out Melissa McNutt describes at
+  2026-05-05 @ 1:03:10, which had no UI at all until the same day. The rate itself is stated once,
+  on the existing quote-level Surcharge chip.
+  This also aligns the editing view with the customer document: the printed quote shows one named
+  surcharge line, not a per-row column.
+  **What this does not decide:** whether the badge is the right *treatment* — nobody has yet exempted
+  a line in practice (Joe Schacatano, 2026-05-05 @ 1:03:44: *"I can't give you like a single example.
+  I would just say we have to have the option"*), so the exempt state is currently unexercised. If
+  TCG starts using it and the badge proves too quiet, that is a new question, not this one.
+  `ResourceSurchargeCell` is deleted; the read-only detail grid drops from eight columns to seven.
 - **Update 2026-09-01** — a second branch, `fix/subcategory-asset-dropdown-surcharge` (no ticket),
   now **removes** the Surcharge column from the create/edit Resources tab while leaving it on the
   read-only detail tab. The stated reason is that the column was read-only inside a form — the
