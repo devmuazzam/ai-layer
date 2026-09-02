@@ -146,6 +146,73 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Fouzan Shakil (assignee of `SCRUM-871` and the named decider on the 2026-08-20/25
   decision notes), with Ehtesham Anwar for what onboarding a second tenant is meant to look like.
 
+
+## Departments — does archive replace delete outright, and what may an archived department still be used for
+
+- **Status:** open
+- **Asked:** 2026-08-31 — PR #422 review (branch `feat/SCRUM-648`, Path B per
+  `.ai/aidlc/processed.log`:57, so there is no `SCRUM-648/spec.md` §12 to hold this); tcg-scrum
+  escalation
+- **Question:** [decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  settles that archive is the removal action app-wide and that the mechanism is the existing
+  `archivedAt` column. It explicitly does **not** settle the three things PR #422 decided for
+  departments, each answerable in a line. **(a) Does `DELETE /departments/:code` go away, or stay
+  alongside archive?** The PR removes it; the decision says the fate of the `DELETE` endpoints is
+  undecided, and every other converted entity kept theirs (see *Weak signals*). **(b) May a
+  department be archived while employees or department roles still reference it?** Hard delete
+  blocked on both counts; archive has no reference guard, and with `DELETE` gone there is now no
+  operation anywhere that enforces one — a department can leave the active list while staff are
+  still assigned to it. Is that intended, or should archive warn, block, or require reassignment
+  first? **(c) What may an archived department still be selected in?** `GET /departments` now
+  defaults to `archivedAt: null`, so archived departments disappear from the employee create form,
+  both asset forms and the dashboard as well as from the list. Is disappearing from every picker
+  the intended participation rule, and what happens to employees and assets already pointing at a
+  department that is later archived?
+- **Sources checked:** [INDEX.md](../INDEX.md); [STRUCTURE.md](../STRUCTURE.md) routing;
+  `decisions/` (17 notes) — **only two touch archive, and both disclaim this ground.**
+  [decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  → *What this does NOT settle* names "whether the `DELETE` endpoints stay" and "what an archived
+  record still participates in (search, reports, references from live records)" as open;
+  [decisions/2026-08-20-planning-tracker-archived-filter.md](../decisions/2026-08-20-planning-tracker-archived-filter.md)
+  confirms `archivedAt: null` as the correct *default* for one surface and then says in terms that
+  the statement "was not made app-wide" and does not tell other listing surfaces what to do. No
+  decision note mentions departments at all. `admin/INDEX.md` (one content file,
+  `tcg-documents.md`, on attachments); this register; vault-wide grep for `department` — the only
+  product-level department content is a four-bullet section in
+  [customers/customer.md](../customers/customer.md):84–91 (naming, sorting, description copy,
+  role permissions) which **says nothing about deleting or archiving a department**; every other
+  hit is ADP's org-unit codelist or a meeting transcript. `payroll/INDEX.md`, which owns the
+  `departments` usecase per [STRUCTURE.md](../STRUCTURE.md):40, has **no department content**.
+  **Jira was not consulted — no Jira MCP was available in this session**, so `SCRUM-648`'s own
+  description and `SCRUM-652` (referenced by `customers/customer.md` item 11) are unread and could
+  still carry an answer. Check those before treating this as fully unsourced.
+- **Weak signals, not answers:** the app-wide decision's design guidance is *"like other entities
+  already have… the answer to 'how should archive behave here?' is 'read one of the 17'"*, which
+  makes the existing implementations the nearest thing to a written rule. They point **away** from
+  (a) and **toward** (b)'s archive half. Nineteen Prisma models now carry `archivedAt`. Of the
+  entities with `archive`/`unarchive` endpoints, **every one except quotations also kept its
+  entity-level `DELETE`** — yards, purchase-orders, customers, manufacturers, plans, vendors,
+  agencies, categories, sub-categories, tools, assets, price-listings, permits, employee, parts,
+  projects, billing-codes. Departments is now the second entity in the app to have archive and no
+  delete. Conversely, archive **without** a reference guard is the settled pattern:
+  `apps/api/src/usecase/customers/customers.service.ts` keeps the reference counts on `remove()`
+  and deliberately omits them from `archive()`, commented *"so referenced records… stay intact"*.
+  So (b) is only a departure because (a) removed the guarded path — answer (a) and (b) may follow.
+  All of this is **code, which is not a requirement source**; it is cited to show which way the
+  convention runs, not to settle anything.
+- **Not in question:** the All / Archived quick filters themselves. `customers/customer.md` item 11
+  asks for an archived quick filter above the search bar **"(across the app)"**, and the PR uses
+  the shared `buildAllArchivedQuickFilters` helper that nine other listings already use. That file
+  is an unverified cross-module punch list, so the support is weak, but it is written.
+- **Blocked:** PR #422 (`feat/SCRUM-648`) cannot be signed off as product-correct. Also blocked by
+  consequence: whether the other 17 entities should now lose their `DELETE` endpoints too, since
+  departments is the first to do so and nothing records that as the intended direction.
+- **Owner:** Fouzan Shakil for (a) and (b) — he is the named decider on the app-wide archive
+  decision, and this is the first case that tests what it meant — with Ehtesham Anwar for (c), as
+  the only recorded voice on departments as org structure
+  (`meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:68, :72).
+- **Cross-link:** payroll/gaps.md → *Pointers — departments archive* (STRUCTURE.md:40 routes the
+  `departments` usecase to payroll, and (b) turns on employee assignments)
 ## Which countries, states and cities may an address name?
 
 - **Status:** open
