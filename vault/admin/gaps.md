@@ -484,3 +484,78 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   with the two geo entries above — same facet, same owner.
 - **Owner:** Fouzan Shakil for the caching decision; Melissa McNutt for whether one-day staleness
   is operationally acceptable on an address field.
+
+## The picker's two tuned numbers — a 400 ms delay and a 100-row ceiling — rest on nothing written
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `perf/dropdown-search-requests` (no ticket, no
+  `.ai/aidlc/` folder); tcg-scrum escalation. Follow-on to `feat/move-dropdowns-BE`, whose picker
+  standard is open above (*Must an entity picker search the server, or only offer a search box?*).
+  Routed here for the same reason: both numbers sit on **app-wide shared code** —
+  `apps/web/src/lib/searchable-list-query.ts` and
+  `apps/api/src/presentation/shared/dto/query-picker.dto.ts` — so they set the standard for every
+  picker and all 17 picker routes at once.
+- **Question:** Two values the branch picks, each answerable in a line. **(a)** Every server-driven
+  search in the app now waits **400 ms** after the last keystroke (`SEARCH_DEBOUNCE_MS`); pickers
+  previously waited 250 ms. Debouncing itself is asked for (below) — but **nothing written says how
+  long a user may wait for search results**, so there is nothing to check 400 against, and nothing
+  that would call 250 or 600 wrong. Is a 400 ms floor on perceived search latency acceptable
+  app-wide, list tables and pickers alike? **(b)** A picker route now refuses a `limit` above
+  **100** (`QueryPickerDto` `@Max(500)` → `@Max(100)`) — a hard ceiling on what any client may ask
+  of 17 routes. Is 100 the intended ceiling, and should one number govern every picker family? It
+  does not today: `query-resource-catalog.dto.ts` carries **both** `@Max(100)` (:32) and `@Max(500)`
+  (:50), and `query-reference-code-list.dto.ts` keeps `@Max(500)` (:22).
+- **Sources checked:** **Vault — nothing sets a search-latency or page-ceiling rule.** `INDEX.md`;
+  this module's `INDEX.md`; `../decisions/` (25 notes — none on latency, debounce, caching or page
+  size); `../customers/customers-INDEX.md` and all five candidates; the picker entries in
+  `../assets/gaps.md` and `../quotations/gaps.md`. Vault-wide `rg` for `debounce`, `250ms|400ms`,
+  `abort|cancel`, `hasMore`, `page size|pageSize|per page|page limit`, `keystroke|as you type`,
+  `latency|responsive|slow`. **No vault file states a millisecond value of any kind.** The only
+  page-size statement anywhere is [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md):96–97
+  — *"Default records per page is 25"*, *"User can select other page sizes (e.g. 25 / 50 / 100)"* —
+  which is **customer-listing pagination, not a picker**, and sits in the vault's least
+  authoritative file (a personal Confluence space; check its `provenance_note`). The one
+  performance NFR that exists,
+  [../field-ops/frd-new-format-draft/07-non-functional-requirements.md](../field-ops/frd-new-format-draft/07-non-functional-requirements.md):23,
+  asks only for *"acceptable response times under field network conditions"* — mobile, and
+  unquantified.
+- **Jira asks for debouncing three times and never names a value; nothing asks for a limit ceiling.**
+  - **`SCRUM-845`** *Implement Search Debouncing in Permit Tracker and Planning Tracker* (**To Do**,
+    2026-08-03, Aiman Farooq) — *"Searching… is triggering **excessive API requests**… Implement
+    search debouncing in both modules to **reduce unnecessary API calls** and improve performance."*
+    The clearest statement of intent in either source, and it names **two tracker modules**, not the
+    app.
+  - **`SCRUM-870`** *add debounce to search* (**QA**, 2026-08-10, ali riaz) — body is a **Loom link
+    only**, unreadable from here; whatever it shows is not written down anywhere.
+  - **`SCRUM-703`** *move pagination, filteration searching(debounce) on backend (across the app)*
+    (Done, 2026-07-16, Umair Khan, **no description**) — the only "across the app" phrasing, and
+    zero detail. Twin of [../customers/customer.md](../customers/customer.md):16 item 4.
+  - **`SCRUM-757`** *Performance Issues and Excessive API Calls…* (To Do, 2026-07-16) — *"opening a
+    single page triggers multiple repeated API requests… unnecessary network activity that could
+    negatively impact performance and scalability"*. Sources the direction this branch's aborting
+    serves, on the Plan Comments page.
+  - **Reporter caveat:** all four are **CodingCops internal voices** (Aiman Farooq, Umair Khan,
+    ali riaz) — the same class this register already flags under *Which countries, states and
+    cities may an address name?* as not adjudicated product decisions.
+  - `SCRUM-801` *Vendor: Pagination limit is missing* and `SCRUM-804` (both Done) concern the
+    **row-count selector on listing tables**, not a server-side cap, so neither reaches (b).
+- **Note — the branch's own ticket does not source either number.** **`SCRUM-963`** *Move the
+  search dropdowns to fetch from backend instead of showing cached data* (**QA**, created
+  2026-09-02 15:27, Fouzan Shakil, self-assigned, **no description, no comments, no labels**) was
+  filed for the predecessor branch after the fact. It records *that* the work happened, and its
+  title reaches only the cached-data move — not debouncing, aborting, caps or counting. Worth
+  knowing when reading the entry above, which was written when no ticket existed at all.
+- **Note — three sibling behaviours were checked and need no product answer, so they are not
+  asked here.** **Aborting a superseded request** is the mechanism `SCRUM-845`/`SCRUM-757` ask for,
+  and the only thing a user sees is that stale rows stay up while the replacement loads
+  (`isAbortError` gates the `catch`) rather than the panel blanking mid-type. **Dropping `total`
+  from `findPickerList`** is invisible: `AsyncComboboxPage` only ever carried `items` and `hasMore`,
+  no picker UI read a count, and the admin list routes that page with numbered controls still
+  return `total`. **Filling the panel immediately on an empty query** changes *when* the first page
+  arrives, not which rows it holds. The real product question about that empty state — that it is
+  **deliberately incomplete** — is already open above and this branch does not move it.
+- **Blocked:** nothing ships broken. (a) is a reversible constant; (b) only narrows what a client
+  may request. What is blocked is signing either number off as intended, and settling the
+  three-way cap inconsistency in (b) before more routes copy one of them.
+- **Owner:** Mohsin Ali for (a) — the search-responsiveness standard, the same owner as the picker
+  UX question above; Fouzan Shakil for (b) and for whether one cap governs every picker DTO.
