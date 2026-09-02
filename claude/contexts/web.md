@@ -107,9 +107,41 @@ and `Select` from `@/components/atoms` is an alias for it.
 Build a `features/<entity>/components/<entity>-select.tsx` on the shape of
 `features/vendors/components/vendor-select.tsx`: an `AsyncCombobox` whose `fetchPage` calls
 the feature's API service directly, keeping a `Map` of fetched rows so `onChange` can hand
-the whole record upstream. It bypasses React Query on purpose — the debounce (250 ms) and
-the stale-response guard live in `useAsyncComboboxData`. Page size is `PICKER_PAGE_SIZE`
-from `lib/searchable-list-query.ts`; do not hardcode one.
+the whole record upstream. It bypasses React Query on purpose — the debounce, the
+stale-response guard and the abort all live in `useAsyncComboboxData`. Page size is
+`PICKER_PAGE_SIZE` from `lib/searchable-list-query.ts`; do not hardcode one.
+
+### One debounce, and it has to clear a keystroke
+
+`SEARCH_DEBOUNCE_MS` in `lib/searchable-list-query.ts` is **400 ms and is the only one** —
+list tables, `SearchBar` and every picker read that constant. Do not declare a local delay.
+
+400 is not arbitrary and is not a comfort margin. A debounce shorter than the gap between
+two keystrokes buys nothing at all: at 40 WPM a character lands roughly every 300 ms, so
+the pickers' original 250 ms let **every letter through as its own request** — a five-letter
+word was five round trips, which is the defect this number exists to prevent. If you are
+tempted to lower it, that is the bar it has to clear.
+
+The empty query a panel opens on is not typing, so `useAsyncComboboxData` skips the timer
+for it and the panel fills at once.
+
+### A superseded request is aborted, not just ignored
+
+A request-id ref only stops a late response overwriting a newer one — the request itself
+still runs to completion and the server still pays for it. So `fetchPage` receives a
+`signal` (`AsyncComboboxFetchPageParams`), and the picker service must forward it:
+
+```ts
+listPage: async ({ signal, ...params }: PickerPageQuery) =>
+  api.get(path, { params, signal });
+```
+
+**Destructure the signal off before the rest reaches axios `params`** — spreading it in
+serialises it into the query string. `PickerPageQuery` and `Abortable<T>` in
+`lib/searchable-list-query.ts` exist so that shape is written once.
+
+An abort is not a failure. `isAbortError` gates the `catch`, because blanking the panel
+mid-type is worse than leaving the previous rows up.
 
 Variants that already exist, so you do not need a new component:
 
@@ -125,10 +157,27 @@ Variants that already exist, so you do not need a new component:
   the craft-code assign dialog was one, over a `limit: 200` read.
 
 **Do not re-filter or re-sort a page after it arrives.** Both look harmless and both are
-wrong: dropping rows shrinks the page below the `total` that `hasMore` is derived from, and
-sorting only reorders the rows in hand, so a "recommended" row on page 2 still ranks below a
-plain one on page 1. Push the filter into the query (`includeArchived`, `status`) and the
-order into `orderBy`. `craft-code-select.tsx` carries the worked reasoning.
+wrong: dropping rows shrinks the page below the `limit` the server sized `hasMore` against,
+and sorting only reorders the rows in hand, so a "recommended" row on page 2 still ranks
+below a plain one on page 1. Push the filter into the query (`includeArchived`, `status`)
+and the order into `orderBy`. `craft-code-select.tsx` carries the worked reasoning.
+
+### `hasMore` comes from the server, except where it cannot
+
+Picker routes (`findPickerList`) answer `hasMore` directly and **no longer return `total`**
+— counting the matches on every keystroke doubled the query for a number nothing renders.
+Read `result.hasMore`.
+
+Some pickers sit on **admin list routes** instead (`getAssetsList`, `customersService.list`,
+`vendorsApi.findAll`, and about a dozen more). Those carry `total` and no `hasMore`, because
+their tables page with numbered controls. Those correctly compute
+`result.page * result.limit < result.total`. **Check which kind of route you are on before
+copying either line** — reading `hasMore` off a response that has none is falsy, and the
+list silently stops at page one.
+
+**Known gap:** `loadMore` guards on `isLoading` read from a closure, so a fast scroll can
+fire several duplicate page requests before the re-render lands. A ref guard fixes it; it
+is not fixed yet.
 
 Any list hook that survives spreads `SEARCHABLE_LIST_QUERY` (`staleTime: 0, gcTime: 0`).
 A hook feeding a picker must not set its own `staleTime`.
