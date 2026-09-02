@@ -94,3 +94,22 @@ Three non-obvious hazards in `apps/api/Dockerfile`'s prod stage (fixed 2026-08-2
 
 Multi-tenant. Scoping is applied by a Prisma client extension and **is not
 unconditional** — see `contexts/prisma.md` before assuming a query is scoped.
+
+## Picker list routes — page without counting
+
+`utility/picker-list.helpers.ts` `findPickerList` is the shared dual-mode helper for
+searchable dropdowns. On a paged call it answers `hasMore` by taking `limit + 1` rows and
+trimming — **not** a second `count()`. `PickerPage.total` is optional and usually absent;
+nothing in the picker UI renders it, and counting on every keystroke doubled the work.
+
+Hand-rolled picker queries (jobs list picker path, eligible approvers, resource-catalog
+tree) must use the same overshoot pattern. Resource-catalog **search** still needs
+per-kind counts for window placement across kinds — that is the standing exception, not a
+licence to count elsewhere.
+
+`QueryPickerDto` (and the jobs / resource-catalog search DTOs that mirror it) cap
+`limit` at `@Max(100)`. Do not raise that for a "just in case" page size — the web
+constant is `PICKER_PAGE_SIZE` and stays well below it.
+
+Pagination `orderBy` must end on a unique key — see `contexts/prisma.md` (*Picker
+pagination sorts on a unique last key*).
