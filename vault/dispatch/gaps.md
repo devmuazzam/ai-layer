@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-08-29
+updated: 2026-09-03
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -156,7 +156,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Crane configuration — is a support load an Asset, or a line on the crane?
 
-- **Status:** open
+- **Status:** resolved 2026-09-03 — **an Asset.** See the resolution note below
 - **Asked:** 2026-08-29 — reading `3.3.1_MODULE-DISPATCH-JOBS` into the vault
 - **Question:** The approved workbook lists `26502 OL`, `26502.1`, `26502.2`, `26502.3`
   as their own unit codes with their own names, crew roles and ticket numbers. Are these
@@ -184,10 +184,30 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (`Asset`, `SubCategoryAssociatedResource`, `SubJobLoadoutItem`, `UnitTypeResource`);
   and on the 2026-09-01 correction, `apps/api/src/utility/seed-data.ts:70-100`,
   `apps/api/src/service/ticket-labor-entries/ticket-labor-entries.repository.ts:327`.
+- **Resolved 2026-09-03 — a load is an Asset.** Full rule set and citations in
+  [crane-configuration-rules.md](crane-configuration-rules.md) §1.4. **This entry had not reached the
+  meeting transcripts** — its Sources-checked list is the workbook and the PDFs only, and three
+  meetings answer it directly. Each load trailer has its own unit code, VIN, trailer number and
+  plate (`2026-05-19` @ 31:15 *"bin numbers, trailer numbers, plate numbers, everything"*), is
+  permanently loaded with its own counterweight and **never migrates to another crane**
+  (@ 28:14 *"No, that's permanent"*; @ 28:56 *"that specific like 1901.2, that's not going to go to
+  another crane. That's only for that specific crane"*; `2026-04-14` @ 16:28 *"Each counterweight,
+  each trailer, that's the way it's supposed to go. It doesn't change… We don't change them"*). It is
+  also separately billable (`2026-04-14` @ 12:02) and separately ticketed with its own driver
+  (Corrina Bustos, `2026-05-19` @ 35:56). So: **own row in the fleet, allocatable, counts for
+  utilisation** — the billing-code reading in the 2026-09-01 correction is the *pricing* of the same
+  thing, not a rival answer to what it is.
+- **The follow-on that is now the real work.** Nothing in `schema.prisma` nests a load under a
+  parent crane, and `SubCategoryAssociatedResource` cannot hold **one tractor per trailer** — the
+  tractor is a flat sibling of the crane and the unique constraint permits exactly one tractor row
+  per parent, so a 265 T needing four tractors is unrepresentable
+  (Melissa McNutt, `2026-04-14` @ 29:04 *"each every trailer will always have a tractor"*).
+  See [crane-configuration-rules.md](crane-configuration-rules.md) §8 for the full
+  representable/not table.
 
 ## Crane configuration — which loads are mandatory, and per what?
 
-- **Status:** open
+- **Status:** resolved 2026-09-03 — keyed to the **sub-category** as a default template; **sales** picks at quotation time; dispatch overrides. See the resolution note below
 - **Asked:** 2026-08-29 — reading `3.3.1_MODULE-DISPATCH-JOBS` into the vault
 - **Question:** The sheet says the operator load *"is require to go out anytime the crane
   goes out — all the cranes from 9001 and on"*, but *"4005 and 4006 sometimes require this
@@ -205,6 +225,32 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** `crane-configurations.md`, `ASSETS_DISPATCH_(Lisette-approved).xlsx`;
   and on the 2026-09-01 note, `apps/api/src/utility/seed-data.ts:70-100`,
   `apps/api/prisma/schema.prisma:1246-1266` (`BillingCode`).
+- **Resolved 2026-09-03.** Full rule set and citations in
+  [crane-configuration-rules.md](crane-configuration-rules.md) §5. **This entry had not reached the
+  meeting transcripts either.** Both halves are answered:
+  - **Per what** — the sub-category, as a *default template that is always overridable*, never a
+    hard constraint (`2026-05-19` @ 27:12 *"the quotations will be based on these current
+    configurations… It'll just be like a starting point, and then they can modify it"*). The default
+    at **190 T and above is the full configuration** (`2026-04-14` @ 17:12 *"it's a full crane,
+    unless it's specified by the sales rep that they don't need all the trailers"*), and loads are
+    **ordered, taken as a prefix, dropped from the tail** (@ 16:28 *"don't take the last load or
+    don't take the last two. They just need the first ones"*; @ 17:12 *"they will specify 190
+    operator load, which is the very first one, plus one more"*).
+  - **Who picks it** — **sales, at quotation time**; dispatch then decides how to haul it, because
+    route and scales decide whether counterweight comes off the crane onto a truck (`2026-04-14`
+    @ 5:45 *"the sales guys put on their jobs, they'll put the counterweight that they need. And then
+    based on the cities, then that's when I determine whether we're going to go through scales or
+    not"*; @ 5:04 *"as soon as you pull a counterweight, it's a separate truck regardless"*).
+  - **The 4005/4006 "sometimes"** is not ambiguity to be modelled — the same meeting resolved it into
+    **discrete named load options** `3300` / `7300` / `full` that sales picks from a dropdown
+    (@ 4:21, @ 12:26), and asked for the same treatment on the 190 T-and-up groups (@ 14:24). That
+    retrofit is **requested and undecided** — carried forward in
+    [crane-configuration-rules.md](crane-configuration-rules.md) §10.
+- **Bearing on quotations, updated 2026-09-03.** The 2026-09-01 note said nothing is required of the
+  quotations module until "who picks it" was answered. It is now answered: **sales picks**. What
+  follows for quotations is not thereby settled — expansion from the parent crane, the ordering
+  constraint, and the per-slot counterweight weight all still need a product call before they are
+  built. Do not read this resolution as a spec for that.
 
 ## GPS-verified time on a job — what is being verified?
 

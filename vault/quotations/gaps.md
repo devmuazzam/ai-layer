@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-09-03
+updated: 2026-09-04
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -662,7 +662,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   child of an `isGroup` parent. Does a line need to be able to be a child *and* visible? **(e)** when a
   template changes, do existing quotations re-seed or stay a snapshot? **(f)** does the job type
   sit on the quotation as a whole or per resource row — FCC keys it per resource type, so one
-  quote could in principle mix an *Hourly* crane with an *Hourly w/ Mob* one.
+  quote could in principle mix an *Hourly* crane with an *Hourly w/ Mob* one. **(g)** the
+  anomalies Brian flagged on delivery (2026-09-04) — a 110 Ton All Terrain Crane requiring
+  **Operator + Oiler**, a *Lift Plan* requiring a **Sales Admin**, a *Qualified Rigger and
+  Signalman* requiring a **Rigger** — *"do we need to continue to do anything special with
+  these?"* His question, for Joe. **(h)** two rows in that sheet carry a `JobTypeYardID` with
+  **no job type at all**, so the job-type child is optional exactly as the yard child is: does a
+  job-type-less configuration mean "applies to every job type", or "this resource type is not
+  job-type-driven"? The answer decides whether the ERP's job-type slot is nullable.
 - **Sources checked:** [fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md)
   — the three messages transcribed, including Brian's FCC table map (§5): the configuration hangs
   off `FMS_UNIT_TYPE_JOBTYPE_YARD.JobTypeYardID`, with job type, yard, equipment, employees and
@@ -680,11 +687,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** any spec that would seed quotation resources or automate mob/demob assembly;
   whether these FCC tables are in migration scope; whether `isIncluded`/`isGroup` need a
   per-line visibility flag beside them.
-- **Owner:** Joe Schacatano / Ryan Adams (sales & quotation) for whether job type ships and what
-  the list is; Brian Petros for the full export of FCC estimate configurations — he confirmed
-  the same day that he can generate it from the database. **Not yet received; §5 of the source
-  doc says where to file it and the four columns to ask for** (parent/child, sub-item flag,
-  template key, row order).
+- **Owner:** Joe Schacatano / Ryan Adams (sales & quotation) for whether job type ships, what the
+  job-type list is, and the (g) anomalies — Brian has explicitly routed those to Joe; Brian Petros
+  for `Quantity2/3` and the `EmployeeRequirementScope` question.
+- **Extract status:** **delivered 2026-09-04** — `FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx`,
+  SharePoint *Project Repository → 2.1.1_DATA-MIGRATION → NexGenFMS_for_ERP*. **Not yet pulled
+  into the repo and not yet opened**; §7 of the source doc lists the six things to check against
+  it on first open. Nothing below this line depends on that file — it changes (a) (b) (c) from
+  *unanswered* to *answerable*.
 
 ## FCC estimate templates were already extracted — and the seeder flattened them to one FK
 
@@ -719,8 +729,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md):78,
   which already listed *"unit-type estimate templates"* among the things **extracted but with no
   TCG home** — this entry is that line, costed.
-- **Blocked:** the shape of the ask for Brian's full extract (§7 of the source doc); any decision
-  on whether a migrated tenant's associated resources need re-seeding.
+- **Blocked:** any decision on whether a migrated tenant's associated resources need re-seeding.
+  **No longer blocking the ask** — the full extract was delivered 2026-09-04
+  (`FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx`); the open half is now whether the seeder is
+  changed to preserve what that file proves is there.
 - **Owner:** CodingCops (seeder) for the flattening and the collision check; TCG via Brian Petros
   for what `Quantity2/3` etc. are.
 

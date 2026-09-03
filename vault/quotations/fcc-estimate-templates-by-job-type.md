@@ -1,8 +1,8 @@
 ---
 title: FCC estimate templates — Resource Type × Job Type × Yard
-source: teams-messages/client — 2026-09-03, Brian Petros to ehtesham.anwar (CodingCops); three same-day messages — the FCC walkthrough, the parent/child follow-up, and the FCC table map. Screens and diagrams transcribed here; no images kept
+source: teams-messages/client — Brian Petros to ehtesham.anwar (CodingCops); three messages 2026-09-03 (walkthrough, parent/child follow-up, FCC table map) plus the 2026-09-04 delivery of FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx. Screens, diagrams and sheets transcribed here; no images kept
 migrated: 2026-09-03
-updated: 2026-09-03
+updated: 2026-09-04
 status: unverified
 conflicts_with: []
 jira: []
@@ -283,27 +283,91 @@ Two consequences worth stating plainly:
   job types on one crane ever differ in *Unit/People*, that difference is gone in TCG today, and
   the rows may have merged or collided. Nobody has checked which.
 
-## 7. Incoming — the full extract
+## 7. The extract, delivered 2026-09-02
 
-Brian: *"Looks like I'll be able to generate the full extract for you of all these configurations
-in FCC."* Not arrived as of 2026-09-03. File it under [assets/](assets/) when it lands.
+`FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx`, in the TCG SharePoint at
+**Project Repository → 2.1.1_DATA-MIGRATION → NexGenFMS_for_ERP** — alongside
+`FCC_CUSTOMERS_20260705.xlsx`, `FCC_EMPLOYEES_20260705.xlsx`,
+`FCC_UNITS-ASSETS_20260706.xlsx`, `__NexGenFMS_Inventory_20260702_0246.xlsx` and the
+`__VS_CODE_DataMigration` folder. Brian, announcing it: *"all the details going on behind the
+scenes in FCC database regarding the Resource Types… It replicates (with more details) what is
+going on in the FCC Resource Types screen."*
 
-**Ask for it as production rows of the six tables in §5, complete.** §6 shows the test extract
-already carried them and the seeder discarded the parts that matter, so the request is narrow and
-should be explicit about the columns, not the screen:
+**Not yet pulled into the repo, and not yet opened.** Everything in §5–6 stands; this section
+records what the delivery message shows and what to check on first open.
 
-1. `FMS_UNIT_TYPE_JOBTYPE_YARD` in full, with `JobTypeYardID` — the spine, and the count that
-   says how many templates exist fleet-wide;
-2. `FMS_UNIT_TYPE_ESTIMATE` with **`Item`, `ParentEstimateID`, `LineNumb`, `Comments` and
-   `JobTypeYardID`** — the five columns `linked-seed-files.ts` does not read today;
-3. `FMS_UNITTYPE_JOBTYPES` + `FMS_JOB_TYPES` — the **full job-type list**, which is still
-   unknown beyond `Hourly` and `Hourly w/ Mob`;
-4. `FMS_UNITTYPE_YARDS` — the yard exceptions, to confirm that absence really means *All Yards*;
-5. `FMS_UNIT_TYPE_EQUIPMENT` and `FMS_UNIT_TYPE_EMPLOYEES` with `JobTypeYardID` — to answer
-   whether *Unit/People* ever differs between two job types on one resource type;
-6. an explanation of **`Quantity2/3`, `Rate2/3`, `Amount2/3`**, populated on all 564 rows and
-   matching nothing on the screen.
+### On first open, check it against §5 and §6
 
-It answers, or fails to answer, sub-questions (a) (c) and (b) in
-[gaps.md](gaps.md#estimate-defaults-per-resource-type--job-type--yard--fcc-has-them-tcg-has-no-job-type-at-all) —
-which is the point of asking for these columns rather than a screen-shaped report.
+The columns §6 says our seeder never read are the reason to open this file at all:
+
+1. `FMS_UNIT_TYPE_JOBTYPE_YARD` complete — how many configurations exist fleet-wide (69 in the
+   test extract);
+2. estimate lines with **`Item`, `ParentEstimateID`, `LineNumb`, `Comments`, `JobTypeYardID`**;
+3. the **full job-type list** — still unknown beyond `Hourly`, `Hourly w/ Mob`, and now the code
+   `Z` (below);
+4. yard exceptions, to confirm absence really means *All Yards*;
+5. equipment and employee rows carrying `JobTypeYardID`, to settle whether *Unit/People* ever
+   differs between two job types on one resource type;
+6. what **`Quantity2/3`, `Rate2/3`, `Amount2/3`** are — populated on all 564 rows, matching
+   nothing on the screen.
+
+### The Main tab, more fully
+
+The delivery message shows a longer slice of the resource-type list than §1 did — and it is not
+a fleet list. In order: Service Truck, Yard Truck, **Spreader Bar**, 22 Ton Boom Truck, 30 Ton
+Self Loader, 40 Ton, 45 Ton All Terrain Crane, 60 / 75 / 90 Ton Hydraulic Truck Crane, 90 Ton RT,
+100 Ton Hydraulic Truck Crane, 110 Ton All Terrain Crane, 130 Ton RT, 140 Ton Hydraulic Truck
+Crane, 150 Ton RT, 165 Ton Crane. `Schedule Type` varies with the row — Truck, Yard, Mobile
+Crane, Self Loader, Rough Terrain Crane — `Category` is **Unit** (greyed) throughout, and
+`Target Hours/Month` is 160 on most, **200** on the 30 Ton Self Loader, and **blank** on Service
+Truck, Spreader Bar, 130 Ton RT, 150 Ton RT and 165 Ton Crane.
+
+The anomaly sheet below adds two more resource types that are not machines at all — **Lift Plan**
+and **Qualified Rigger and Signalman** — which is the same observation
+[assets/fcc-units-and-schedule-types.md](../assets/fcc-units-and-schedule-types.md) already makes
+about schedule types: in FCC, a *resource type* is anything schedulable and billable.
+
+### The anomaly sheet — four rows Brian wants adjudicated
+
+*"There is an extra sheet with these… a few anomalies that stand out, with slightly different
+configurations. We can ask Joe and others if we need to continue to do anything special with
+these."*
+
+Columns: `ResourceTypeID`, `ResourceType`, `JobTypeYardID`, `JobTypeCode`, `JobType`, `YardCode`,
+`Yard`, `UnitPeopleEmployeeLineID`, `LineNumber`, `EmpTypeID`, `EmployeeType`, `EmpID`,
+`EmployeeName`, `EmployeeRequirementScope`.
+
+| ResourceTypeID | ResourceType | JobTypeYardID | JobTypeCode | JobType | Yard | LineID | Line# | EmpTypeID | EmployeeType | EmpID / Name | Scope |
+| ---: | --- | ---: | --- | --- | --- | ---: | ---: | ---: | --- | --- | --- |
+| 63 | 110 Ton All Terrain Crane | 63 | `Z` | Hourly w/ Mob | All Yards | 50 | 3 | 1 | Operator | — | Employee Type Only |
+| 63 | 110 Ton All Terrain Crane | 63 | `Z` | Hourly w/ Mob | All Yards | 51 | 4 | 2 | Oiler | — | Employee Type Only |
+| 27 | Lift Plan | 17 | *(blank)* | *(blank)* | All Yards | 24 | 1 | 9 | Sales Admin | — | Employee Type Only |
+| 26 | Qualified Rigger and Signalman | 19 | *(blank)* | *(blank)* | All Yards | 25 | 2 | 5 | Rigger | — | Employee Type Only |
+
+Four things this sheet establishes, before anyone opens the workbook:
+
+1. **A configuration can have no job type at all.** Rows 3 and 4 have a `JobTypeYardID` (17, 19)
+   with `JobTypeCode` and `JobType` empty. So `FMS_UNIT_TYPE_JOBTYPE_YARD` is not "one row per
+   job type" — the job-type child is **optional**, exactly as the yard child is (§5). Any ERP
+   model of this needs both slots nullable, and needs an answer to what a job-type-less
+   configuration means: a default for every job type, or a configuration that is simply not
+   job-type-driven because the resource type is not hourly equipment.
+2. **`JobType` has a code.** `Hourly w/ Mob` is `Z` — so job types are a coded reference list,
+   and the code is not derivable from the label. The full list comes from `FMS_JOB_TYPES`.
+3. **The employee requirement may be able to name a person.** `EmpID` and `EmployeeName` sit
+   beside `EmpTypeID`/`EmployeeType`, and `EmployeeRequirementScope` reads *"Employee Type
+   Only"* on all four rows. **Inference, not established:** the scope column exists because
+   there is another value — a requirement pinned to a specific employee. If so, that is a
+   capability `SubCategoryAssociatedResource` does not have (it associates an *employee type*),
+   and it should be confirmed or dismissed from the workbook rather than designed around.
+4. **Line numbers are stored, and appear to span the whole Unit/People grid.** The 110 Ton's two
+   employee rows are `LineNumber` **3** and **4** — not 1 and 2 — while the two single-employee
+   resource types use 1 and 2. **Inference:** ordering is one sequence across the equipment and
+   employee children of a configuration, so the crane's lines 1–2 are its equipment rows. Check
+   against `FMS_UNIT_TYPE_EQUIPMENT.LineNumb` on open.
+
+The anomalies themselves — a crane requiring **Operator + Oiler**, a *Lift Plan* requiring a
+**Sales Admin**, a *Qualified Rigger and Signalman* requiring a **Rigger** — are product
+questions for Joe Schacatano, logged in
+[gaps.md](gaps.md#estimate-defaults-per-resource-type--job-type--yard--fcc-has-them-tcg-has-no-job-type-at-all)
+as sub-question (g).

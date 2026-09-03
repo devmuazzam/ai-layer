@@ -2,7 +2,7 @@
 title: Dispatch — module index
 status: reference
 kind: index
-updated: 2026-08-29
+updated: 2026-09-03
 tags: [module/dispatch, kind/reference]
 ---
 
@@ -21,6 +21,7 @@ DAS, scheduling, yard operations. Backend usecases: `das, das-allocations, das-l
 | [dispatcher-needs.md](dispatcher-needs.md) | What dispatchers said they need (discovery) | 3.9 |
 | [yard-operations-jz.md](yard-operations-jz.md) | Yard operations punch list | 0.6 |
 | [crane-configurations.md](crane-configurations.md) | **What a crane configuration is** — operator load, `.1/.2/.3` support loads, the dispatch-sheet legend, GPS-verified time | 5.5 |
+| [crane-configuration-rules.md](crane-configuration-rules.md) | **The rules, and where each one came from** — shape, cardinality, load ordering, crew, ticketing, `isRequired` semantics, instance binding, boom dolly; what is enforceable against `SubCategoryAssociatedResource` today and what needs schema | 21 |
 
 ## Decisions that bind this module
 

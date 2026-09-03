@@ -21,6 +21,12 @@ The `Dispatcher Needs` PDF in the same folder is already migrated as
 actually is*. Everything before it described dispatch as jobs against cranes and crews;
 this says a crane is not one dispatchable thing.
 
+> **The rules are in a separate file.** This one describes the artefacts. For what is
+> *binding* — cardinality, load ordering, crew pairing, ticketing, what `isRequired`
+> means and who picks a configuration — read
+> [crane-configuration-rules.md](crane-configuration-rules.md), which sources every rule
+> to the 2026-04-14, 2026-05-19 and 2026-05-21 meetings this file did not reach.
+
 ---
 
 ## 1. A crane goes out as several units, each with its own ticket
