@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-08-31
+updated: 2026-09-04
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -80,7 +80,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   live ADP setup (D-006); plus accumulator/hours-flag settings for every new code (D-009).
 - **D-001 and D-006 RESOLVED 2026-08-13** by a live call to
   `GET /events/payroll/v1/pay-data-input.modify/meta` —
-  [payroll/adp-api-responses/pay-data-input-meta.md](payroll/adp-api-responses/pay-data-input-meta.md).
+  [payroll/adp-api-responses/pay-data-input-meta.md](adp-api-responses/pay-data-input-meta.md).
   - **The company codes are `4RZ` (THE CRANE GUYS LLC) and `4RY` (The Crane Guys, LLC - Ventura).
     `631` is not a company code at all.** The standing instruction to treat 631 and 4RZ as
     different identifiers is discharged — they were never the same *kind* of identifier.
@@ -147,7 +147,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Danny Bryan and Mike Vlaming. The Atom page is a CodingCops-authored user story with no cited
   source. **A missed third or fourth meal is a double-time penalty, so this is a money
   difference.** An alert fired on the wrong threshold causes the penalty it exists to prevent.
-  **Code check 2026-08-13** ([payroll/legacy-payroll-app-code-extract.md](payroll/legacy-payroll-app-code-extract.md)):
+  **Code check 2026-08-13** ([payroll/legacy-payroll-app-code-extract.md](legacy-payroll-app-code-extract.md)):
   the legacy source confirms the *mechanics* — four meals, taken meal = `WTL_MEAL_DEDUCT`, missed
   meal = paid add — but the threshold values live in SQL procedures not present in the archive.
   Still open.
@@ -205,11 +205,11 @@ someone has confirmed otherwise.
 
 - **Partially delivered 2026-08-09.** Brian Petros supplied **four** codes by chat —
   `FRR`/`FRO`/`FRD`/`FRT` (Foreman REG/OT/DT/TRI), recorded in
-  [payroll/foreman-and-military-premiums.md](payroll/foreman-and-military-premiums.md).
+  [payroll/foreman-and-military-premiums.md](foreman-and-military-premiums.md).
   **The Military Base premium in the same message has no codes at all.** Roughly twelve of the
   promised sixteen are still outstanding, as is the comprehensive rules documentation.
 - **ANSWERED 2026-08-13 — CodingCops pulled the table itself.**
-  [payroll/adp-api-responses/pay-data-input-meta.md](payroll/adp-api-responses/pay-data-input-meta.md)
+  [payroll/adp-api-responses/pay-data-input-meta.md](adp-api-responses/pay-data-input-meta.md)
   holds the complete live list: **52 Hours & Earnings codes, 65 deduction codes, 16 memo codes**.
   The export TCG owed no longer has to be requested — the API returns it on demand, scoped to a
   company code.
@@ -265,7 +265,7 @@ someone has confirmed otherwise.
 - **Largely answered 2026-08-13: `4RY` appears dormant.**
   `GET /payroll/v1/pay-schedule/payroll-groups/4RY` fails with *"No payroll schedules found for
   company code: 4RY"*
-  ([payroll/adp-api-responses/pay-schedule.md](payroll/adp-api-responses/pay-schedule.md)).
+  ([payroll/adp-api-responses/pay-schedule.md](adp-api-responses/pay-schedule.md)).
   **A company with no pay schedule cannot run payroll.** No worker carries
   `payrollGroupCode: 4RY`, and none sits on location `VEN`.
 - **Consequence: the ERP does not need multi-company submission.** Exactly one company can accept
@@ -284,7 +284,7 @@ someone has confirmed otherwise.
 
 - Question: how does the ERP parse ADP errors uniformly?
 - **It cannot.** Two shapes observed, and they disagree on every field name
-  ([payroll/adp-api-responses/pay-schedule.md](payroll/adp-api-responses/pay-schedule.md) §6):
+  ([payroll/adp-api-responses/pay-schedule.md](adp-api-responses/pay-schedule.md) §6):
   - **Code-list family** — root `confirmMessage`, nested
     `resourceMessages[].processMessages[].processMessageID.idValue` carries a machine-readable code
     (`API_AccessDeniedFeature`), ISO 8601 UTC timestamps.
@@ -308,11 +308,11 @@ someone has confirmed otherwise.
 ## Home yard cannot come from ADP — subsistence has no upstream source
 
 - Question: where does the ERP get **home yard / reporting location**, required by
-  [payroll/erp-payroll-module-frd/02-payroll-period-and-source-data.md](payroll/erp-payroll-module-frd/02-payroll-period-and-source-data.md)
+  [payroll/erp-payroll-module-frd/02-payroll-period-and-source-data.md](erp-payroll-module-frd/02-payroll-period-and-source-data.md)
   and by **PR-048 Standard Subsistence**?
 - Candidates: not ADP. `GET /codelists/hr/v3/worker-management/locations/WFN/1` returns exactly
   **two** values — `DEF — DEFAULT LOCATION` and `VEN — Ventura`
-  ([payroll/adp-api-responses/codelist-worker-management.md](payroll/adp-api-responses/codelist-worker-management.md)).
+  ([payroll/adp-api-responses/codelist-worker-management.md](adp-api-responses/codelist-worker-management.md)).
 - Note: PR-048 turns on *home yard, job, distance, overnight and equipment status*. A two-value
   list, one of which is literally "DEFAULT", expresses none of that. Home yard must be mastered in
   the ERP, sourced from FCC.
@@ -325,7 +325,7 @@ someone has confirmed otherwise.
 ## Union codes — one value, so the CRUD question mostly dissolves
 
 - Question: does the ERP need the ability to add union codes, as asked in
-  [meetings/2026-06-26-discussion-points-with-tcg-team.md](meetings/2026-06-26-discussion-points-with-tcg-team.md)?
+  [meetings/2026-06-26-discussion-points-with-tcg-team.md](../meetings/2026-06-26-discussion-points-with-tcg-team.md)?
 - Candidates: ADP holds exactly **one** union code — `L12 — Local 12`.
 - Note: with one value that changes only if TCG signs a second labour agreement, a CRUD screen is
   hard to justify. The narrower live question is whether the ERP masters `L12` or reads it from
@@ -349,7 +349,7 @@ someone has confirmed otherwise.
   `confirmMessage` with `protocolStatusCode`, `requestStatusCode`, a per-request
   `confirmMessageID` GUID, and `resourceMessages[].processMessages[].processMessageID` as the
   machine-readable error code
-  ([payroll/adp-api-responses/codelist-worker-management.md](payroll/adp-api-responses/codelist-worker-management.md)).
+  ([payroll/adp-api-responses/codelist-worker-management.md](adp-api-responses/codelist-worker-management.md)).
   The ERP must branch on `processMessageID`, never on `userMessage.messageTxt`.
 - **Why it matters:** the Payroll Data Input guide documents success as `200 OK` with
   `messageText: NA` and no identifier, which is the basis for the finding that ADP gives no
@@ -371,7 +371,7 @@ someone has confirmed otherwise.
 - **Not from ADP.** `baseRemuneration` returns `nameCode`, `currencyCode` and `effectiveDate`, but
   **`amountValue` is absent on every rate for every worker** — hourly, annual, pay-period salary
   and every `additionalRemunerations` entry
-  ([payroll/adp-api-responses/workers-list.md](payroll/adp-api-responses/workers-list.md)).
+  ([payroll/adp-api-responses/workers-list.md](adp-api-responses/workers-list.md)).
   Almost certainly a use-case entitlement boundary: the API Central project is scoped to Payroll
   Input, not compensation.
 - Note: union rates were always going to come from the craft table, so this was assumed solved.
@@ -429,7 +429,7 @@ someone has confirmed otherwise.
 - Candidates: today it is Department. Evidence:
   `GET /codelists/hr/v3/worker-management/cost-numbers/WFN/1?companyCode=4RZ` returns **`204 No
   Content`** while `departments` returns 12 org units —
-  [payroll/adp-api-responses/codelist-departments.md](payroll/adp-api-responses/codelist-departments.md).
+  [payroll/adp-api-responses/codelist-departments.md](adp-api-responses/codelist-departments.md).
 - Note: the 12 departments are org units — Operators, Oilers/Drivers, Mechanics, Yard, Field,
   Safety, Sales, Dispatch, Accounting, Management, Salary Admin, Officer. They say *what kind of
   worker*, never *which job*. TCG runs far more jobs than twelve.
@@ -475,7 +475,7 @@ someone has confirmed otherwise.
   documentation. **None has arrived.**
 - Note: until it does, the migrated payroll documents stand as written. **Do not assume a rule has
   changed because a revision was promised.** When it arrives it may supersede parts of
-  [payroll/codingcops-rule-matrix.md](payroll/codingcops-rule-matrix.md) — treat that as a
+  [payroll/codingcops-rule-matrix.md](codingcops-rule-matrix.md) — treat that as a
   re-migration, not an edit.
 - Blocked: nothing yet; it will block rule implementation that the revision touches.
 - Owner: Brian Petros (TCG); Corrina (TCG) for the Value Engineering workflow.
@@ -520,7 +520,7 @@ someone has confirmed otherwise.
 
 - Question: does the $3/hr foreman premium attach to an **employee-day** or to a **labor entry**,
   and is it multiplied by OT/DT/TRI or flat?
-- Candidates: [payroll/foreman-and-military-premiums.md](payroll/foreman-and-military-premiums.md)
+- Candidates: [payroll/foreman-and-military-premiums.md](foreman-and-military-premiums.md)
   is the only source. Brian Petros states the day-level granularity **as an assumption in his own
   words** — "it is assumed that this will be for all hours for that day/row" — and adds that a
   split day needs a separate row.
@@ -547,7 +547,7 @@ someone has confirmed otherwise.
 
 - Question: how does a job get flagged as a military-base job site, and where does the qualifying-
   location list live?
-- Candidates: [payroll/foreman-and-military-premiums.md](payroll/foreman-and-military-premiums.md)
+- Candidates: [payroll/foreman-and-military-premiums.md](foreman-and-military-premiums.md)
   only. **No ADP codes were supplied for this premium.**
 - Note: this is the **first premium in the vault that attaches to the job, not the worker** —
   "$10/hr added to ALL hours for ALL employees on the job". Nothing in the payroll data model
@@ -558,7 +558,7 @@ someone has confirmed otherwise.
   that **the Local 12 Business Agent is phoned to verify when necessary**. That human verification
   has to be modelled as a state with a person and a date, or the ERP will silently guess.
 - Cross-link: this makes **Corrina's Davis-Bacon business rules** (owed to Ryan per the
-  [7 Aug minutes](meetings/2026-08-07-labor-compliance-certified-payroll.md)) **a payroll blocker
+  [7 Aug minutes](../meetings/2026-08-07-labor-compliance-certified-payroll.md)) **a payroll blocker
   as well as a Labor Compliance one.** The same determination drives both Certified Payroll
   eligibility and a $10/hr premium for every worker on the job.
 - **Code check 2026-08-13:** no military-premium logic exists in the legacy source either —
@@ -577,7 +577,7 @@ someone has confirmed otherwise.
 - Question: can a foreman on a military-base job draw both premiums — $13/hr over base?
 - Candidates: nothing states it either way. Both premiums are described in isolation.
 - Note: the L12 agreement's **no-pyramiding** clause
-  ([payroll/mcog-l12-mla-2025-2028/01](payroll/mcog-l12-mla-2025-2028/01-article-iii-working-rules.md))
+  ([payroll/mcog-l12-mla-2025-2028/01](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md))
   is exactly the kind of provision that restricts stacked premiums. Note also that Foreman is a
   **company** rule and Military is a **union** rule — whether a company rule is subject to the
   union's pyramiding restriction is a question for labor counsel, not for the codebase.
@@ -598,7 +598,7 @@ someone has confirmed otherwise.
 - **Product resolved 2026-08-13: ADP Workforce Now (classic).** Confirmed from a screenshot of a
   live practitioner session at `workforcenow.adp.com/theme/admin.html#/home` — classic WFN nav, not
   WFN Next Generation. The documentation set in
-  [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md) is therefore
+  [payroll/adp-integration-capabilities.md](adp-integration-capabilities.md) is therefore
   the correct one.
 - **RESOLVED 2026-08-13: TCG already has ADP API Central.** Confirmed from the Marketplace
   `My Apps` screen — **ADP® API Central for ADP Workforce Now® [Launchpad]** and **ADP® API
@@ -665,7 +665,7 @@ someone has confirmed otherwise.
 - Blocked: finalising either architecture document; any claim that the ERP is the system of record
   for what was *paid* (as opposed to what *should be* paid).
 - Owner: whoever opens the ADP support ticket — question 7 in
-  [adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
+  [adp-integration-capabilities.md](adp-integration-capabilities.md).
 - Status: open
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#erpadp-round-trip-what-happens-when-a-practitioner-edits-the-batch](gaps-2026-08-20-retired.md#erpadp-round-trip-what-happens-when-a-practitioner-edits-the-batch)
@@ -674,9 +674,9 @@ someone has confirmed otherwise.
 
 - Question: does TCG submit payroll to ADP by **spreadsheet import** (today's process) or by the
   **Pay Data Input API**?
-- Candidates: [payroll/adp-sop-v3.8.md](payroll/adp-sop-v3.8.md) documents the Excel/Power
+- Candidates: [payroll/adp-sop-v3.8.md](adp-sop-v3.8.md) documents the Excel/Power
   Query/VBA process the ERP is meant to replace.
-  [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md) documents the
+  [payroll/adp-integration-capabilities.md](adp-integration-capabilities.md) documents the
   API.
 - **Interim path stated (client, 2026-08-24 exchange):** while deciding, TCG is setting up
   **manual CSV upload through the ADP browser UI** — the bridge process, not the decision.
@@ -703,7 +703,7 @@ someone has confirmed otherwise.
 ## Employee master — who creates a worker, ERP or ADP
 
 - Question: if an employee is created in the ERP, should it create the worker in ADP?
-- Candidates: [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
+- Candidates: [payroll/adp-integration-capabilities.md](adp-integration-capabilities.md).
 - Note: **ADP mints worker identity** — `associateOID`, `workerID`, `positionID` and the File
   Number are all ADP-generated, and the pay-data API validates `payrollFileNumber` against ADP's
   own master. The ERP cannot invent them. Inbound (ADP → ERP) is well supported via `GET workers`
@@ -723,7 +723,7 @@ someone has confirmed otherwise.
 ## Earning-code setup in ADP — a manual prerequisite nobody owns
 
 - Question: who creates TCG's earning codes inside ADP Workforce Now, and when?
-- Candidates: [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
+- Candidates: [payroll/adp-integration-capabilities.md](adp-integration-capabilities.md).
 - **2026-08-24, from the client-message batch:** Brian (June-era) — the new import workbook
   needs "a few more fields in ADP"; a **meeting with the ADP rep** was planned to confirm.
   Owner emerging: **Brian + the ADP rep**. **Largely closed 2026-08-24:** the additions are enumerated (S2/S3 diff, LBT, lattice
@@ -757,7 +757,7 @@ someone has confirmed otherwise.
 - Remaining question: does TCG intend to **buy** such a connector, or build it? The Marketplace
   option exists and is the conventional route.
 - Candidates: nothing in the vault. The
-  [7 Aug minutes](meetings/2026-08-07-labor-compliance-certified-payroll.md) name **SMG Compliance**
+  [7 Aug minutes](../meetings/2026-08-07-labor-compliance-certified-payroll.md) name **SMG Compliance**
   and **LCP Tracker** as the external systems, and the TPM architecture draft shows SMG generating
   WH-347s.
 - Note: **certified payroll is not native to Workforce Now.** WH-347 generation is served by
@@ -825,7 +825,7 @@ someone has confirmed otherwise.
 - **Catalogue opened 2026-08-13 — it exists, and it is large.** `APIs > Events` shows
   **Events (0) subscribed** against **147 events available** to subscribe, across 10 domains and
   249 sub-categories. Full detail in
-  [payroll/adp-event-notifications.md](payroll/adp-event-notifications.md).
+  [payroll/adp-event-notifications.md](adp-event-notifications.md).
 - **The `204` is now fully explained**: the queue is entitled and functioning, and nothing is
   subscribed. It was never going to contain anything.
 - **A pay-data event EXISTS, found 2026-08-13.** Filtering API Domain → Payroll returns **12
@@ -874,7 +874,7 @@ someone has confirmed otherwise.
   `workDate` = *"the date on which the worker clocked overtime"*,
   `earnedPayPeriodStartDate/EndDate` = *"used for FLSA in CA in the US"*. **But the WFN
   `pay-data-input.modify/meta` response does not expose either**
-  ([payroll/adp-api-responses/pay-data-input-meta.md](payroll/adp-api-responses/pay-data-input-meta.md)).
+  ([payroll/adp-api-responses/pay-data-input-meta.md](adp-api-responses/pay-data-input-meta.md)).
   The schema is ADP's generic cross-product model; `/meta` is what WFN actually accepts.
 - **Why it matters:** TCG's California daily overtime, seventh-consecutive-day and FLSA rules are
   all **date-attributed**. If WFN accepted `workDate`, the ERP could send per-day attribution
@@ -1475,7 +1475,7 @@ someone has confirmed otherwise.
 ## Labor Compliance module — no vault coverage
 
 - Question: what is the Labor Compliance module, end to end?
-- Candidates: [meetings/2026-08-07-labor-compliance-certified-payroll.md](meetings/2026-08-07-labor-compliance-certified-payroll.md)
+- Candidates: [meetings/2026-08-07-labor-compliance-certified-payroll.md](../meetings/2026-08-07-labor-compliance-certified-payroll.md)
   is the **only source in the vault**. There is no FRD, no user stories, no BRS section.
 - Note: the module name was **agreed in that meeting** — "Labor Compliance" chosen as the primary
   name because it encompasses Certified Payroll, Davis-Bacon and related requirements. It spans
@@ -1851,3 +1851,50 @@ someone has confirmed otherwise.
   the legacy rule (*"the labor row's craft is a union craft (`L12…`)"*), but a tenant with both
   `L12` and `NON-UNION` codes would reasonably expect the brackets to cover everyone. That one is
   copy, not schema.
+
+## A labor-entry edit can reprice an approved week — and the ERP has no path for it
+
+- **Status:** open
+- **Asked:** 2026-09-04 — Brian Petros, Teams message to ehtesham.anwar on payroll-rule lookback
+  windows; logged in [client-message-findings.md](client-message-findings.md#2026-09-04--rule-lookback-windows-and-recalculation-across-an-approved-week-brian-petros--ehteshamanwar)
+  as questions (25)–(28). **Rules:** PAY-068, PAY-066, PAY-002; window half touches PAY-026,
+  PAY-045, PAY-046.
+- **Question:** payroll rules read *surrounding* labor entries, so an edit to one entry changes
+  the result of others — *"there could be no change to the data of that individual labor entry,
+  and yet the surrounding labor entries impact its calculated results"* — including entries in a
+  week already processed, approved and closed. His example: a 48-hour entry whose end falls at the
+  very start of a payroll week, or whose start falls at the very end. **When that happens, does
+  the ERP reopen the period, post a delta adjustment into the current period, or refuse — and who
+  is allowed to trigger it?** Both the automatic case (a recalculation reaches backwards on its
+  own) and the manual case (payroll deliberately amends a closed week) need an answer.
+- **Built state, verified:** the ERP currently **refuses**. `PayrollPeriodStatus` is
+  `OPEN · CALCULATED · REVIEW · APPROVED · EXPORTED` (`apps/api/prisma/schema.prisma:200-206`) —
+  **no `CLOSED`, no `REOPENED`**, against the seven PAY-002 names — and
+  `apps/api/src/usecase/payroll/payroll.service.ts:139-148` throws
+  *"Cannot recalculate a period that is already approved/exported"*, citing PAY-066. Recalculation
+  is manual-only and never fires on a ticket edit (SCRUM-921 AC5). So a change that ought to
+  reprice a closed week silently does not, and there is no delta path. **This is a specification
+  hole, not a defect** — PAY-068's blocking item is *"Confirm correction workflow"* and PAY-066's
+  is *"Confirm reopen/correction policy"*, both unanswered since 2026-08-24.
+- **The second half — the calculate window.** `payroll.service.ts:151-155` selects
+  `findCompleteTicketsInRange(weekStart, weekEnd + 1 day)`: the period and nothing else. The
+  legacy engine deliberately reaches outside it — **4 days back and 4 days forward** for WTL
+  meal-period groups, **7 days back** for the rest period (Brian's summary card; he calls both
+  overshoot). Ehtesham's narrower reading is right for the *rule* — 8-hour rest looks back 8 hours
+  — but the ERP must still be able to *see* the prior day to apply it. **Not currently wrong by
+  luck:** the three rules that need cross-boundary data — PAY-026 seventh consecutive day,
+  PAY-045 rest period, PAY-046 meal opportunity — are not implemented in
+  `packages/payroll-engine/src`. The day any of them is, this window is a bug.
+- **Sources checked:** [rules/PAY-068](rules/PAY-068-retroactive-correction.md),
+  [PAY-066](rules/PAY-066-payroll-snapshot.md), [PAY-002](rules/PAY-002-pay-period-status-workflow.md),
+  [PAY-045](rules/PAY-045-rest-period-premium.md) (8-hour gap, 30-minute stitch — a rule window,
+  not a selection window), [PAY-026](rules/PAY-026-seventh-consecutive-day.md),
+  [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md);
+  the engine's implemented-rule set; `decisions/` holds no note on reopen, close or retroactive
+  correction.
+- **Blocked:** any close/reopen UI; the ADP re-export story for an amended week; and the decision
+  on whether the calculate window widens — all three are the same question asked at different
+  layers.
+- **Owner:** TCG payroll (Brian Petros, Corrina for practice) for the correction policy;
+  CodingCops for the window. Brian has offered to walk through it in a meeting — that meeting is
+  where PAY-068 and PAY-066 close.

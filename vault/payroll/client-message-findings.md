@@ -2,7 +2,7 @@
 title: Client message verification — running findings
 status: reference
 kind: reference
-updated: 2026-08-27
+updated: 2026-09-04
 tags: [module/payroll, kind/reference, payroll-rules, open-questions]
 ---
 
@@ -501,6 +501,57 @@ meetings, none payroll-owned; each is now an entry (or an update) in its owning 
 | GL codes in FCC/ERP vs QuickBooks | accounting → *GL codes* (new) |
 
 No claim in it contradicts a written rule; the material new fact is the two-scope permit.
+
+## 2026-09-04 — rule lookback windows, and recalculation across an approved week (Brian Petros ↔ ehtesham.anwar)
+
+Brian, refining the legacy payroll refresh, on why he cannot select a payroll week's dates alone:
+*"the payroll rules required labor entries before and after."* His summary card: the non-union CA
+procedure calculates **daily OT/DT, weekly OT and seventh-day rules across a Saturday–Friday
+workweek**; the **WTL procedure looks 4 days backward and 4 days forward** when forming
+meal-period groups; the **rest-period procedure looks 7 days backward**. He volunteers that the
+windows are deliberate overshoot — 8-hour rest *"doesn't need a full 7 days… maybe 3–4"*.
+Ehtesham replies that 8-hour rest should look back **8 hours**, not 7 days. Brian agrees that is
+what his engine does when it *evaluates*, and draws the distinction the thread turns on: his
+window is the **initial select** of candidate labor dates out of a data warehouse, *"whereas the
+erp will have all labor entries available to it."* He then asks the question that matters.
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Daily OT/DT, weekly OT and seventh-day run across a **Saturday–Friday** workweek | ✅ agrees — now a fifth independent source | PAY-001 (settled), PAY-023/024/025/026 |
+| **Payroll rules need labor entries outside the week being processed** | 🆕 stated as a principle for the first time. **The build does not do this:** `payroll.service.ts:151-155` loads `findCompleteTicketsInRange(weekStart, weekEnd + 1 day)` — the period and nothing else, no lookback, no lookahead | PAY-026, PAY-045, PAY-046 |
+| WTL forms **meal-period groups** with a **4-day backward / 4-day forward** window | 🆕 **in no vault document.** Our engine has no grouping at all: WTL fires per job-day off `WTL_TRIGGERS = [5.01, 10.51, 16.01, 21.51]` hours against the mobile-captured `wtlCount` (`packages/payroll-engine/src/calculate.ts:22,56-81`). Either the legacy grouping is a data-warehouse selection artefact, or the ERP's WTL is a different rule wearing the same name | PAY-046, PAY-047 |
+| Rest-period procedure looks **7 days backward** | 🆕 as a *selection* window, and Brian calls it overshoot. Not a rule change: PAY-045's rule is an **8-hour gap** with a 30-minute stitch (`RequiredRestHours=8.00`, `StitchGapMinutes=30`) | PAY-045 |
+| Ehtesham: look back **8 hours** before the job start; on-job time in that window triggers the rule | ✅ agrees with PAY-045 as recorded, and Brian confirms his app evaluates the same way | PAY-045 |
+| **Selection window ≠ rule window** — the pre-select exists because the legacy app reads a warehouse; the ERP holds every labor entry | ✅ sound, ⚠️ **but not automatic**: the ERP's calculate is period-scoped today, so "has all entries available" is a property of the database, not of the code. A rule needing yesterday's entry still cannot see it | PAY-026, PAY-045 |
+| Editing a labor entry during review can change **other** entries in the same week — and in a **previously processed/approved/closed** week — with no change to the edited entry's own data | 🆕 **the load-bearing question of the message.** It is not a defect report; nothing has been built for it. `PAY-068` (retroactive correction) is matrix-only, its blocking item literally *"Confirm correction workflow"*; `PAY-066`'s is *"Confirm reopen/correction policy"* | PAY-068, PAY-066, PAY-002 |
+| Worked example: a **48-hour labor entry** ending at the very start of a week, or starting at the very end | 🆕 concrete boundary case, unaddressed. Related but not identical to PAY-004's 23.5-hour cap and PAY-019's cross-midnight policy | PAY-004, PAY-019 |
+
+**The ERP's answer to his question today, verified in code — worth sending back to him:**
+
+- `PayrollPeriodStatus` is **`OPEN · CALCULATED · REVIEW · APPROVED · EXPORTED`**
+  (`schema.prisma:200-206`). There is **no `CLOSED` and no `REOPENED`** — PAY-002 names seven
+  statuses, five are built.
+- `calculate()` **refuses outright** once a period is `APPROVED` or `EXPORTED`
+  (`payroll.service.ts:139-148`), citing PAY-066: an approved week's snapshot must never move.
+  Recalculation is the only path that recomputes anything and it is manual only, never triggered
+  by a ticket edit (SCRUM-921 AC5).
+- So the honest answer is: **it cannot happen at all right now.** A change that ought to reprice a
+  closed week silently does not, there is no reopen, and there is no delta-adjustment path — which
+  is exactly the hole PAY-068 was written to fill and nobody has specified.
+- One mitigation, and it is luck rather than design: the three rules that most need cross-boundary
+  data — **PAY-026 seventh consecutive day, PAY-045 rest period, PAY-046 meal opportunity** — are
+  **not implemented in the engine** (`packages/payroll-engine/src` references 007, 012, 013, 020,
+  022–025, 027, 032–034, 036, 037, 043, 047, 070). The period-scoped window is therefore not
+  currently producing wrong numbers for them; it will the day any of the three is built.
+
+**Client questions from this message:** (25) when a labor entry changes after its week is
+approved or exported, does the ERP **reopen** the period, issue a **delta adjustment** into the
+current period, or refuse — and who may do it? That is PAY-068 and PAY-066's blocking item, now
+asked by the client in his own words. (26) does the ERP's calculate window widen to include
+adjacent days, and by how much — or does each cross-boundary rule fetch what it needs? (27) what
+*is* a WTL meal-period group, and does the ERP need one, given our WTL is per-day and slot-based?
+(28) how is a 48-hour labor entry straddling the Sat–Fri boundary assigned — split at the
+boundary, or priced whole into one period?
 
 ## Parked — 2026-08-24 (build proceeds on defaults)
 
