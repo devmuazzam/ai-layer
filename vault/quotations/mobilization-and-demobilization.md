@@ -2,13 +2,20 @@
 title: Mobilization & Demobilization
 source: confluence/TCG/Mobilization & Demobilization
 migrated: 2026-08-10
-updated: 2026-08-10
+updated: 2026-09-03
 status: unverified
 conflicts_with: []
 jira: []
 tags: [module/assets, module/customers, module/projects-jobs, module/quotations, kind/reference, mob-demob, time-tracking, yards]
 entities: [mob-demob, quotation, asset, customer, job, field-ticket, build-up, fcc, job-site, yard]
 ---
+
+> **See also (editorial, added 2026-09-03):** this document describes the bundle as it appears
+> on a quote. The layer above it — where the bundle *comes from* — is
+> [fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md): in FCC the
+> mob/demob line-up is a stored estimate template on the crane, selected by **Job Type**
+> (`Hourly w/ Mob` vs `Hourly`), and `Sub-Item` is a generic per-line visibility flag rather
+> than a mob/demob-only device — which qualifies **FR-8** below.
 
 ## **Mobilization & Demobilization**
 

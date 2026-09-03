@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-09-01
+updated: 2026-09-03
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -25,7 +25,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 - Question: what are the Job Schedule Master, the Ready-to-Schedule Checklist, the One-Page
   Customer Intake, the Geographic Heat Map, and "Red Path"?
-- Candidates: [meetings/2026-08-12-sell-side-workflow-and-scheduling.md](meetings/2026-08-12-sell-side-workflow-and-scheduling.md)
+- Candidates: [meetings/2026-08-12-sell-side-workflow-and-scheduling.md](../meetings/2026-08-12-sell-side-workflow-and-scheduling.md)
   only. Brian Petros shared source files in the meeting; **those files are not in the vault**.
 - Note: **"Red Path" is undefined.** It is used as though established. Add it to the undefined-terms
   list. Two scheduling rules stated in the meeting — cranes under maintenance must not be
@@ -636,6 +636,44 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   It surfaces on quotation delivery mail because that is the only customer-facing email path today.
 - **Owner:** product team
 
+
+## Estimate defaults per resource type / job type / yard — FCC has them, TCG has no job type at all
+
+- **Status:** open
+- **Asked:** 2026-09-03 — Brian Petros, Teams message to ehtesham.anwar, following Joe (Schacatano)
+  raising in that day's meeting that quotation estimates are per crane **and** differ per Job
+  Type. Not a ticket question: no `SCRUM-###` is in flight on quotation estimate defaults.
+- **Question:** does the ERP adopt FCC's estimate-template model — a **Job Type** dimension, and
+  a default set of estimate lines held per **(resource type, job type, yard)** that seeds a
+  quotation's resources — or do estimators keep assembling every quote by hand as they do today?
+  Six sub-questions the message does not settle: **(a)** what is the full job-type list, is it
+  tenant-configurable, and does every resource type carry the same list? **(b)** does a job type
+  also vary the *Unit/People* set (the message says "potentially different"; the 100 Ton's two
+  job types are identical)? **(c)** is the yard slot ever narrower than *All Yards*, and if so
+  what resolves a tie? **(d)** is customer visibility a **per-line flag** as in FCC, or derived
+  from group membership as shipped (`quotation-pdf.service.ts` hides every child of an
+  `isGroup` parent) — i.e. must a line be able to be a child *and* visible? **(e)** when a
+  template changes, do existing quotations re-seed or stay a snapshot? **(f)** does the job type
+  sit on the quotation as a whole or per resource row — FCC keys it per resource type, so one
+  quote could in principle mix an *Hourly* crane with an *Hourly w/ Mob* one.
+- **Sources checked:** [fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md)
+  (the message, transcribed, with the built-state comparison);
+  [mobilization-and-demobilization.md](mobilization-and-demobilization.md) — covers the mob/demob
+  bundle and its sub-item behaviour but **not the template above it**, and its FR-8 "special case"
+  claim is sharpened rather than contradicted; [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md)
+  for the four-hour minimum that appears as the `Hourly` template's 4.00-hour default;
+  [assets/fcc-units-and-schedule-types.md](../assets/fcc-units-and-schedule-types.md) for the
+  resource-type ↔ sub-category mapping. Built state: no job-type concept exists in
+  `apps/api/prisma/schema.prisma`, `packages/shared` or `apps/web`
+  (`Quotation.billingType` is a display-only `Rental`/`Parts` select, not this);
+  `SubCategoryAssociatedResource` is the *Unit/People* equivalent but is keyed by parent
+  sub-category alone; nothing seeds quotation resource rows from any template.
+- **Blocked:** any spec that would seed quotation resources or automate mob/demob assembly;
+  whether these FCC tables are in migration scope; whether `isIncluded`/`isGroup` need a
+  per-line visibility flag beside them.
+- **Owner:** Joe Schacatano / Ryan Adams (sales & quotation) for whether job type ships and what
+  the list is; Brian Petros for the promised full export of FCC estimate configurations —
+  **not yet received; §5 of the source doc says where to file it.**
 
 ## Quotation module defect audit (2026-09-01)
 

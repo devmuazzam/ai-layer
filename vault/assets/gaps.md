@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-09-02
+updated: 2026-09-03
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -716,3 +716,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Fouzan Shakil for (a) and (b) as internal conventions; (c) needs whoever owns the
   Job-details document to say whether that line was meant app-wide — route to TCG via Brian
   Petros if it is read as product intent rather than a developer's note.
+## Job Type as a dimension of a resource type — pointer, owned by quotations
+
+- **Status:** open — **answer owned by quotations**, per [STRUCTURE.md](../STRUCTURE.md) →
+  *Where a question goes* (spans modules; the module likeliest to own the answer holds it).
+- **Asked:** 2026-09-03 — Brian Petros, Teams message showing FCC's `Maintain → Resources → Resource
+  Types` screen, where a resource type's *Unit/People* and *Estimate* configuration is keyed by
+  **(job type, yard)**, not by the resource type alone.
+- **Why it lands here too:** the asset-side half is real. FCC's resource type is TCG's
+  `SubCategory`, and its *Unit/People* tab is `SubCategoryAssociatedResource` — which today has
+  **no job-type key**, so if job type ships, associated resources gain a dimension.
+- **Read:** [quotations/gaps.md](../quotations/gaps.md#estimate-defaults-per-resource-type--job-type--yard--fcc-has-them-tcg-has-no-job-type-at-all)
+  · source: [quotations/fcc-estimate-templates-by-job-type.md](../quotations/fcc-estimate-templates-by-job-type.md)
