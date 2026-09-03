@@ -651,10 +651,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   also vary the *Unit/People* set (the message says "potentially different"; the 100 Ton's two
   job types are identical) — **unanswerable from a migrated tenant**, because the seeder dropped
   `JobTypeYardID` from all 161 equipment and 117 employee rows (see the flattening entry below)?
-  **(c)** is the yard slot ever narrower than *All Yards* — the FCC schema says *All Yards* is
-  **the absence of a `FMS_UNITTYPE_YARDS` row** (Brian, "apparently"), and the test extract holds
-  4 such rows against 69 job-type/yard configurations, so exceptions exist; what resolves a tie
-  when a yard-specific and an all-yards template both match? **(d)** FCC stores **both** an explicit
+  **(c)** ~~is the yard slot ever narrower than *All Yards*~~ — **answered by the
+  2026-09-02 extract README**: absence of a `FMS_UNITTYPE_YARDS` row *is* All Yards, and exactly
+  **4 of the 75 production configurations are specifically Main Yard**. What remains is an ERP
+  design question, not an FCC one: what resolves a tie when a yard-specific and an all-yards
+  template both match? **(d)** FCC stores **both** an explicit
   parent/child link *and* an independent per-line `Sub-Item` visibility flag (Brian's follow-up
   the same day: the screen "doesn't display the line item and sub-item relationship very well",
   but "in the database this appears to me more clear, with parent/child relationship"). TCG has
@@ -666,10 +667,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   anomalies Brian flagged on delivery (2026-09-04) — a 110 Ton All Terrain Crane requiring
   **Operator + Oiler**, a *Lift Plan* requiring a **Sales Admin**, a *Qualified Rigger and
   Signalman* requiring a **Rigger** — *"do we need to continue to do anything special with
-  these?"* His question, for Joe. **(h)** two rows in that sheet carry a `JobTypeYardID` with
-  **no job type at all**, so the job-type child is optional exactly as the yard child is: does a
-  job-type-less configuration mean "applies to every job type", or "this resource type is not
-  job-type-driven"? The answer decides whether the ERP's job-type slot is nullable.
+  these?"* His question, for Joe. **(h)** ~~what a configuration with no job type means~~ — **answered
+  by the same README, and it forbids the obvious reading**: *"No Job Type child row is retained as
+  NULL / No Job Type Stored; do not automatically convert it to All Job Types."* **29 of the 75
+  production configurations carry no job type.** The ERP's job-type slot is therefore nullable and
+  NULL is a distinct value — what a NULL configuration should *do* when a quote is priced is still
+  unanswered, and is now the live half of this. **(i)** the README says `OptionFlag_Raw` is
+  preserved *"its business meaning was not assumed in this package"*, and every current row is
+  `M` — while our seeder reads `OptFlag === 'M'` as `isRequired`. What does `M` mean?
 - **Sources checked:** [fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md)
   — the three messages transcribed, including Brian's FCC table map (§5): the configuration hangs
   off `FMS_UNIT_TYPE_JOBTYPE_YARD.JobTypeYardID`, with job type, yard, equipment, employees and
@@ -690,11 +695,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Joe Schacatano / Ryan Adams (sales & quotation) for whether job type ships, what the
   job-type list is, and the (g) anomalies — Brian has explicitly routed those to Joe; Brian Petros
   for `Quantity2/3` and the `EmployeeRequirementScope` question.
-- **Extract status:** **delivered 2026-09-04** — `FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx`,
-  SharePoint *Project Repository → 2.1.1_DATA-MIGRATION → NexGenFMS_for_ERP*. **Not yet pulled
-  into the repo and not yet opened**; §7 of the source doc lists the six things to check against
-  it on first open. Nothing below this line depends on that file — it changes (a) (b) (c) from
-  *unanswered* to *answerable*.
+- **Extract status:** **delivered 2026-09-04** — `FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx`
+  (prepared 2026-09-02), SharePoint *Project Repository → 2.1.1_DATA-MIGRATION → NexGenFMS_for_ERP*.
+  **Its README sheet has been read and is transcribed in §7 of the source doc; the five data sheets
+  have not been opened** and are not in the repo. The README answered (c) and the FCC half of (h);
+  (a) the job-type list and (b) whether *Unit/People* varies by job type are now a group-and-compare
+  away in `02_JobType_Yard` and `03_UnitPeople_Resources`. Production scale: 76 resource types,
+  75 configurations, 328 equipment rows, 4 employee rows, 701 estimate lines (432 sub-items).
 
 ## FCC estimate templates were already extracted — and the seeder flattened them to one FK
 
@@ -719,9 +726,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   stop throwing away the data we have". The columns are populated upstream and therefore
   recoverable — `field-gaps.md:630-650` records `Item` 564/564, `JobTypeYardID` 564/564, `LineNumb`
   564/564, `ParentEstimateID` **322/564** (57% of estimate lines are children), `Comments` 201/564.
-- **Also unexplained:** `Quantity2/3`, `Rate2/3`, `Amount2/3` are populated on all 564 rows and
-  correspond to nothing on the FCC screen. Do not design a line model that assumes one
-  quantity/rate/amount until someone asks what the second and third are.
+- **Also unexplained, but smaller than it looked:** `Quantity2/3`, `Rate2/3`, `Amount2/3` are
+  non-null on all 564 test-extract rows. The production README says the neighbouring `PrimaryEst`,
+  `Multiplier`, `MeasureCode2` and `MeasureCode3` *"are not used"* by current active data, so these
+  are probably zero-filled too — ask Brian, do not design around them. One consequence is already
+  real: `link-billing-codes.ts:227` orders candidates by **`PrimaryEst`**, a field production data
+  does not use, so the first-wins pick is effectively input order.
 - **Sources checked:** `apps/api/fcc-seeder/docs/linked-tables-mapping.md:20-32`,
   `docs/seed-files-index.md:20,42-49`, `docs/fcc-unmapped-entities.md:30-40`,
   `docs/field-gaps.md:585-655`, `src/linked-seed-files.ts:385-400`,
@@ -729,6 +739,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md):78,
   which already listed *"unit-type estimate templates"* among the things **extracted but with no
   TCG home** — this entry is that line, costed.
+- **Two defects now provable, not just fidelity loss** (both from the production README's
+  confirmed behaviours, §7 of the source doc): **(1)** a requirement expressed as a schedule type
+  with no unit type — the README's named case is **Bare Rental**, *"Unit/People = Mobile Crane and
+  Type is blank"* — is **silently skipped** at insert, because `linked-seed-files.ts:337` fills the
+  association from `EquipUnitTypeID` alone and `seed-all.ts:1433` drops rows with no association.
+  **(2)** `assocSeen` keys on `(parent, associated)` (`seed-all.ts:1439`), so one companion
+  required by two job-type configurations of the same resource type collapses to **one row,
+  first-wins**, taking whichever `isRequired` came first — 328 production equipment rows fold onto
+  at most 76 sub-categories and nobody has counted the collisions.
 - **Blocked:** any decision on whether a migrated tenant's associated resources need re-seeding.
   **No longer blocking the ask** — the full extract was delivered 2026-09-04
   (`FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx`); the open half is now whether the seeder is
