@@ -650,9 +650,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   tenant-configurable, and does every resource type carry the same list? **(b)** does a job type
   also vary the *Unit/People* set (the message says "potentially different"; the 100 Ton's two
   job types are identical)? **(c)** is the yard slot ever narrower than *All Yards*, and if so
-  what resolves a tie? **(d)** is customer visibility a **per-line flag** as in FCC, or derived
-  from group membership as shipped (`quotation-pdf.service.ts` hides every child of an
-  `isGroup` parent) — i.e. must a line be able to be a child *and* visible? **(e)** when a
+  what resolves a tie? **(d)** FCC stores **both** an explicit
+  parent/child link *and* an independent per-line `Sub-Item` visibility flag (Brian's follow-up
+  the same day: the screen "doesn't display the line item and sub-item relationship very well",
+  but "in the database this appears to me more clear, with parent/child relationship"). TCG has
+  the parent link only and derives visibility from it — `quotation-pdf.service.ts` hides every
+  child of an `isGroup` parent. Does a line need to be able to be a child *and* visible? **(e)** when a
   template changes, do existing quotations re-seed or stay a snapshot? **(f)** does the job type
   sit on the quotation as a whole or per resource row — FCC keys it per resource type, so one
   quote could in principle mix an *Hourly* crane with an *Hourly w/ Mob* one.
@@ -672,8 +675,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   whether these FCC tables are in migration scope; whether `isIncluded`/`isGroup` need a
   per-line visibility flag beside them.
 - **Owner:** Joe Schacatano / Ryan Adams (sales & quotation) for whether job type ships and what
-  the list is; Brian Petros for the promised full export of FCC estimate configurations —
-  **not yet received; §5 of the source doc says where to file it.**
+  the list is; Brian Petros for the full export of FCC estimate configurations — he confirmed
+  the same day that he can generate it from the database. **Not yet received; §5 of the source
+  doc says where to file it and the four columns to ask for** (parent/child, sub-item flag,
+  template key, row order).
 
 ## Quotation module defect audit (2026-09-01)
 

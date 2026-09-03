@@ -1,6 +1,6 @@
 ---
 title: FCC estimate templates — Resource Type × Job Type × Yard
-source: teams-message/client — 2026-09-03, Brian Petros to ehtesham.anwar (CodingCops), 9 FCC screenshots
+source: teams-messages/client — 2026-09-03, Brian Petros to ehtesham.anwar (CodingCops); the walkthrough with 9 FCC screenshots, plus his same-day follow-up on parent/child and the extract
 migrated: 2026-09-03
 updated: 2026-09-03
 status: unverified
@@ -131,9 +131,23 @@ The message states it directly: *"the 'Sub-Item' boxes that are checked means th
 items do not show on the estimate for the customer"*, and, of the `Hourly` template, *"all
 'Sub-Item' are not checked… so all of these display on the estimate."*
 
-**It is a per-line visibility flag, not a parent/child link.** Nothing in the screen draws a
-child to a parent: membership is positional — a ticked run belongs to the unticked roll-up row
-that closes it. That is a real difference from how TCG models the same idea (§4).
+**Two mechanisms, not one — corrected by Brian's same-day follow-up.** The grid shows the flag
+and nothing else, and Brian reads it the same way: *"the user screen in FCC doesn't display the
+'line item' and 'sub-item' relationship very well… I can't tell which child belongs to which
+parent."* But *"in the database this appears to me more clear, with parent/child
+relationship."*
+
+So **FCC stores an explicit parent link, and `Sub-Item` is a separate per-line visibility
+flag.** Reading membership off row order — a ticked run belonging to the unticked roll-up that
+closes it — is a **UI artifact of this screen, not the model**. It is how the tables above were
+transcribed and it is almost certainly right for this crane, but it is an inference: do not
+carry row order into a spec, and treat the grouping in §2 as provisional until the extract
+lands. What the two blocks *are* is not in doubt; which row is whose child is, on the screen
+alone.
+
+That leaves the real divergence from TCG sharper, not softer (§4): FCC has **both** a stored
+parent and an independent visibility flag; TCG has only the parent and derives visibility from
+it.
 
 Three details worth carrying:
 
@@ -156,7 +170,8 @@ Three details worth carrying:
 | *Estimate* default lines | **nothing** | 🆕 **no such model.** `Template`/`CustomSection`/`CustomField` (`schema.prisma:695`) is the custom-**field** designer for categories, not a line template |
 | `Job Type` (`Hourly`, `Hourly w/ Mob`) | **nothing.** `Quotation.billingType` is the closest name and is unrelated — a hardcoded two-value select, `Rental` / `Parts` (`apps/web/src/features/quotations/components/molecules/other-info-section.tsx:60`), display-only on the detail and print views | 🆕 **the dimension does not exist**, anywhere in schema, shared types or web |
 | `Yard` on the template key | `Quotation.yard` is a free `VarChar(100)` on the quote; nothing keys defaults by it | 🆕 |
-| `Sub-Item` (hidden from customer) | `QuotationResource.isGroup` + `parentId`; the PDF hides **every child of a group parent** (`apps/api/src/usecase/docusign/quotation-pdf.service.ts:562-566`), and `isIncluded` controls whether a child counts toward the parent total | ⚠️ **same outcome, different mechanism** — TCG derives hiding from parenthood, FCC flags each line. A line that is a child *and* visible is expressible in FCC, not in TCG |
+| Parent/child on estimate lines — **stored in the FCC DB**, not shown on the screen | `QuotationResource.parentId` + `isGroup` (`schema.prisma:1840`) | ✅ equivalent exists |
+| `Sub-Item` (hidden from customer) — an **independent per-line flag** beside that parent link | **no counterpart.** The PDF hides **every child of a group parent** (`apps/api/src/usecase/docusign/quotation-pdf.service.ts:562-566`); `isIncluded` controls only whether a child counts toward the parent total, never whether it prints | ⚠️ **same outcome by a different mechanism** — TCG derives visibility from parenthood, FCC stores it per line. A line that is a child *and* visible to the customer is expressible in FCC, not in TCG |
 | Mob/demob roll-up rows | `isGroup` parents summing checked children (`apps/api/src/usecase/quotations/quotation-resource-totals.ts:4`) | ✅ agrees with [mobilization-and-demobilization.md](mobilization-and-demobilization.md) FR-1/FR-2/FR-6 |
 | The template *itself* — defaults arriving on a new quote | **nothing.** Adding a resource to a quotation pulls no associated resources and no default lines; grouping is generic and hand-built per quote (no `Mobilization` preset anywhere in `apps/web/src/features/quotations`) | 🆕 **this is the gap** |
 
@@ -170,8 +185,19 @@ template simply ticks none of them. Build the flag as general; the special case 
 document covered: mob/demob is not a thing an estimator assembles per quote in FCC — it is a
 **job type on the crane** whose template already contains it.
 
-## 5. Incoming
+## 5. Incoming — the full extract, now confirmed feasible
 
-Brian is extracting **all** of these configurations out of FCC into a report and will send it. When it lands: file it under `assets/` here, and it becomes the source for how many job
-types exist, whether any is yard-specific, and how far the templates vary across the fleet —
-none of which this message answers.
+Brian's follow-up: *"Looks like I'll be able to generate the full extract for you of all these
+configurations in FCC."* It has **not arrived as of 2026-09-03**. When it does, file it under
+[assets/](assets/) here and it becomes the source for what this walkthrough cannot answer: how
+many job types exist, whether any template is yard-specific rather than *All Yards*, and how far
+the templates vary across the fleet.
+
+**Worth asking for explicitly, since he is generating it from the database rather than the
+screen** — the four things the screen hides or flattens:
+
+1. the **parent/child column** (his own point — the relationship the UI does not draw), so
+   grouping is read rather than inferred from row order;
+2. the **`Sub-Item` flag** alongside it, since the two are independent;
+3. the **template key** — resource type, job type *and* yard on every row;
+4. the **row ordering** field, if the sequence is stored rather than incidental.
