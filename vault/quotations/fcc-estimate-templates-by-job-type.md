@@ -1,6 +1,6 @@
 ---
 title: FCC estimate templates — Resource Type × Job Type × Yard
-source: teams-messages/client — 2026-09-03, Brian Petros to ehtesham.anwar (CodingCops); three same-day messages — the 9-screenshot walkthrough, the parent/child follow-up, and the FCC table map (3 screenshots)
+source: teams-messages/client — 2026-09-03, Brian Petros to ehtesham.anwar (CodingCops); three same-day messages — the FCC walkthrough, the parent/child follow-up, and the FCC table map. Screens and diagrams transcribed here; no images kept
 migrated: 2026-09-03
 updated: 2026-09-03
 status: unverified
@@ -27,13 +27,13 @@ a full export of every estimate configuration in FCC is being prepared and will 
 
 ## 1. Where it lives in FCC
 
-`Main menu → Maintain → Resources → Resource Types`
-([screenshot](assets/2026-09-03_fcc-resource-types-02-menu-path.png)). The sibling entries under
-*Resources* are Units, Components & Tools, Ad-hoc Checklists, Customer Owned Units, Resource
-Types, Schedule Types, Down Reasons.
+`Main menu → Maintain → Resources → Resource Types`. Under *Maintain*, the groups are Resources,
+Parts, Employees, Customers, E-Tickets, Sales Assistant and Codes; **Resources** opens onto Units,
+Components & Tools, Ad-hoc Checklists, Customer Owned Units, **Resource Types**, Schedule Types
+and Down Reasons — so the templates sit one menu away from the fleet units they are not (§5).
 
 The screen has four tabs and a master/detail shape — pick a row on **Main**, and the other three
-tabs re-scope to it ([screenshot](assets/2026-09-03_fcc-resource-types-03-main-tab.png)):
+tabs re-scope to it. The window's own filters are `View: All` and `Status: Active`:
 
 | Tab | Holds |
 | --- | --- |
@@ -56,8 +56,8 @@ job-type/yard configurations (§6).
 ## 2. The 100 Ton Hydraulic Truck Crane, both job types
 
 Its **Job Type/Yard** tab has exactly two rows
-([Hourly selected](assets/2026-09-03_fcc-resource-types-04-job-type-yard-hourly.png) ·
-[Hourly w/ Mob selected](assets/2026-09-03_fcc-resource-types-07-job-type-yard-hourly-w-mob.png)):
+— selecting either re-scopes the *Unit/People* and *Estimate* tabs, which then carry that job
+type and yard in their headers:
 
 | Job Type | Yard | Comments |
 | --- | --- | --- |
@@ -68,8 +68,8 @@ Its **Job Type/Yard** tab has exactly two rows
 
 ### Unit/People — identical across both job types
 
-Both [Hourly](assets/2026-09-03_fcc-resource-types-05-unit-people-hourly.png) and
-[Hourly w/ Mob](assets/2026-09-03_fcc-resource-types-08-unit-people-hourly-w-mob.png) show:
+Both job types show the same two rows (columns: `Unit/People`, `Type`, `Comments` — comments
+empty on both):
 
 | Unit/People | Type |
 | --- | --- |
@@ -81,7 +81,7 @@ crane they happen to match. Do not read that as a rule.
 
 ### Estimate — `Hourly`
 
-[Screenshot](assets/2026-09-03_fcc-resource-types-06-estimate-hourly.png). Four lines, **no
+Four lines, **no
 `Sub-Item` ticked**, so all four print on the customer's estimate:
 
 | Billing Code | Qty | UoM | Comments | Sub-Item |
@@ -96,7 +96,7 @@ than a rule — cross-check [quote-terms-and-rate-card.md](quote-terms-and-rate-
 
 ### Estimate — `Hourly w/ Mob`
 
-[Screenshot](assets/2026-09-03_fcc-resource-types-09-estimate-hourly-w-mob.png). **Twenty** lines
+**Twenty** lines
 in this order — two ticked blocks, each closed by an unticked roll-up row:
 
 | # | Billing Code | Qty | UoM | Comments | Sub-Item |
@@ -191,8 +191,7 @@ document covered: mob/demob is not a thing an estimator assembles per quote in F
 
 Brian's third message of the day — *"here are the related tables with relationships in FCC"* —
 supplies the schema, which retires most of the guessing above.
-[Table map](assets/2026-09-03_fcc-resource-types-10-table-map.png) ·
-[relationship tree](assets/2026-09-03_fcc-resource-types-12-relationship-tree.png).
+He sent it as a table map and as a relationship tree; both are transcribed below.
 
 | Screen area | FCC table(s) | Relationship |
 | --- | --- | --- |
@@ -237,7 +236,8 @@ The *Main* tab is **not** a list of fleet assets. Brian:
 > the template with the individual fleet asset."*
 
 He is right about the data and it corrects his own earlier framing
-([screenshot](assets/2026-09-03_fcc-resource-types-11-resource-types-not-units.png)) — but
+(the *Main* tab rows he listed — 75 Ton Hydraulic Truck Crane, 90 Ton Hydraulic Truck Crane,
+100 Ton RT, 100 Ton Hydraulic Truck Crane, …) — but
 **adopting the word is a decision, not a given**: TCG already spends "resource" on quotation and
 job line items (`QuotationResource`, `JobResource`, `SubCategoryAssociatedResource`), and this
 level is `SubCategory` today. Logged in [assets/gaps.md](../assets/gaps.md#nomenclature-for-the-template-level--resource-type-not-unit).
