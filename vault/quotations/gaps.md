@@ -695,6 +695,16 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Joe Schacatano / Ryan Adams (sales & quotation) for whether job type ships, what the
   job-type list is, and the (g) anomalies — Brian has explicitly routed those to Joe; Brian Petros
   for `Quantity2/3` and the `EmployeeRequirementScope` question.
+- **Sourcing upgraded 2026-09-02 — the module owner asked for it directly.** In the sprint demo
+  Joe Schacatano, unprompted and correcting Brian's "schedule types": *"you need to share with
+  them the pictures of the **resource types**, which is how the quotes populate currently, because
+  **that's how they should be populated on the quotes**. And the additional items like the riggers,
+  we can add them specific to the job. We don't want that to populate."* That is the owner of
+  sales and quotation stating the requirement — template-driven quote lines from the resource
+  type, with job-specific additions made by hand. It does not answer the design sub-questions
+  below, but it removes any doubt that the behaviour is wanted.
+  [meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §2.
+  Ehtesham put *"schedule types vs asset configurations"* on the 2026-09-03 agenda.
 - **Extract status:** **delivered 2026-09-04** — `FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx`
   (prepared 2026-09-02), SharePoint *Project Repository → 2.1.1_DATA-MIGRATION → NexGenFMS_for_ERP*.
   **Its README sheet has been read and is transcribed in §7 of the source doc; the five data sheets
@@ -1259,3 +1269,29 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - Web and mobile `calculateResourcePricing` match.
 - All nine `QuotationStatus` members have labels and matching status buckets.
 - Empty approver pool throws; it does not auto-approve.
+
+## The signing email should come from the salesperson, not from DocuSign
+
+- **Status:** open
+- **Asked:** 2026-09-02 — Joe Schacatano, in the sprint demo
+  ([meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §1;
+  transcript 15:46–17:50).
+- **Question:** *"Is that the only option? … I'm not a fan of DocuSign. It's not us, it's not our
+  voice. Whereas if it's an e-mail from the person, the salesperson, yet it has the digital
+  signature capability."* Ehtesham offered two answers in the call: **(a)** before the first scope
+  closes, integrate the salesperson's **Outlook** so the system sends from their own address —
+  Joe said yes to this; **(b)** after it, a **customer portal** where the quotation, the
+  first-time-customer packet and the signature all live, which is *"already planned after the
+  first scope."* Neither is specified. What is owed: does (a) mean per-user OAuth to Microsoft
+  365 and sending as the individual, or a from-name/reply-to change on the existing
+  `support@craneguys.com` path — and does DocuSign remain the signing rail underneath either?
+- **Sources checked:** the DocuSign envelope path as built (`apps/api/src/usecase/docusign/`,
+  branded email + webhook); [*Company identity on customer-facing email*](#company-identity-on-customer-facing-email--see-admin)
+  above, which is the tenant-identity half of the same surface and points at
+  [../admin/gaps.md](../admin/gaps.md); [quotation-flow-process.md](quotation-flow-process.md)
+  steps 1–27, which name DocuSign as the mechanism and say nothing about the sender.
+- **Note:** this is a *presentation* objection, not a signing-technology one — Joe's own summary
+  was *"everything else that you guys have is perfect."* Solving it with a from-address change is
+  cheap; solving it with a portal is a scope item. Do not conflate them.
+- **Owner:** Joe Schacatano (accepted the Outlook answer in the call); CodingCops for which
+  mechanism, and Patrick for Microsoft 365 permissions if it is per-user OAuth.

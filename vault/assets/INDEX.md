@@ -31,7 +31,7 @@ Assets, yards-as-records, tools & rigging, categories. Backend usecases: `asset-
 
 ## Meetings
 
-7 meeting files carry `module/assets` — list them:
+12 meeting files carry `module/assets` — list them:
 
 ```
 grep -rl 'module/assets' vault/meetings/

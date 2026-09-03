@@ -35,6 +35,24 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** no FRD, no matrix, no ticket exists for accounting; the wishlist is the
   only source. Payroll-integration rows already live in the payroll register; mobile time entry
   is largely the Atom app; job-document storage overlaps field-ops/projects attachments.
+- **The outer edge was answered on 2026-09-01 — decision-shaped, no decision note yet.** Brent
+  Wagstaff put the question directly (*"are we maintaining the books in this new ERP or are we
+  not?"*) and ehtesham.anwar answered: **QuickBooks keeps the books** — *"all of the workflows
+  that are in QuickBooks should remain in QuickBooks because we are not creating again an
+  invoicing software… that would be foolish to build within the ERP"* — while the **ERP takes the
+  reporting**, fed from QuickBooks by webhook and joined to customers, projects, jobs and
+  quotations. **Journal entries, trial balance, P&L and balance-sheet accounts are out**, named by
+  Brent and left out by both parties. **Integration is by API, not QODBC** (Patrick asked; same
+  path as ADP and Samsara). A **self-service report builder** is wanted and explicitly deferred
+  until the essentials exist. Brent's reading back — *"you're going to build the side that feeds
+  an accounting system, but the new ERP is also going to take information back and build
+  reports"* — was confirmed. Source:
+  [meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §1.
+  **This tiers the wishlist's top by exclusion, not by listing:** core GL/AR/AP ledger work is
+  out; reporting, automation and the ERP-side joins are in. It does **not** tier the AI ambitions
+  (OCR, predictions, collections assistant) or the customer portal. A `decisions/` note is owed —
+  the parties are named and the statement is unambiguous, which is exactly the shape `tcg-scrum`
+  writes up.
 
 ## Project detail Accounting tab — what it shows, and what it shows before the module exists
 

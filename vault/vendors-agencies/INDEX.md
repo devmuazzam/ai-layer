@@ -34,7 +34,7 @@ Vendors, agencies, purchase orders. Backend usecases: `vendors, agencies, purcha
 
 ## Meetings
 
-4 meeting files carry `module/vendors-agencies` — list them:
+6 meeting files carry `module/vendors-agencies` — list them:
 
 ```
 grep -rl 'module/vendors-agencies' vault/meetings/

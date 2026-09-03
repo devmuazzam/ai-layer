@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-09-03
+updated: 2026-09-04
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -278,3 +278,19 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   ownership? The note names Lisette as the person to ask; no record that she was.
 - **Sources checked:** `crane-configurations.md`, `schema.prisma` (`EmployeeAsset`,
   `JobResourceAllocation`).
+- **A second shape of the same question, 2026-09-02 — the oiler who also rigs.** In the sprint
+  demo Wes Staley: *"if I have an operator, a crane going out, an operator load, and a third man,
+  but I need the third man to serve as a rigger also — how do we include that so it's not two
+  different boxes?"* Joe Schacatano's answer is that it changes **neither dispatch nor pay**, so it
+  belongs in the **note / description of work** on the ticket, or possibly a *third man acts as
+  rigger* **checkbox at the quoting stage** — and explicitly **not** a combined "oiler/rigger"
+  resource, because a combined label tells the employee nothing: *"Am I the oiler or am I the
+  rigger? Am I doing both?"* Wes's actual requirement is narrower than the modelling argument —
+  the man must be **told** on his ticket. Ehtesham accepted neither as final and asked TCG for
+  **more use cases of this shape**, warning that such configurations *"are going to get lost"*.
+  So: is a role-on-this-job distinct from the resource slot a person is dispatched into, and if
+  the answer is "notes only", what guarantees the note reaches the ticket? Source:
+  [meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §6
+  (transcript 40:45–53:18). Related: the sub-category association chain demoed in the same call —
+  100 ton crane → oiler + operator load → tractor → operator/rigger, with optional members
+  removable on the quotation — which is the built answer to *what* goes out, not *who does what*.

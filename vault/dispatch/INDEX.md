@@ -37,7 +37,7 @@ DAS, scheduling, yard operations. Backend usecases: `das, das-allocations, das-l
 
 ## Meetings
 
-24 meeting files carry `module/dispatch` — list them:
+26 meeting files carry `module/dispatch` — list them:
 
 ```
 grep -rl 'module/dispatch' vault/meetings/

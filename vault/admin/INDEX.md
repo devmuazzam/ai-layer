@@ -22,7 +22,7 @@ Auth, users, tenancy, settings, reference data. Backend usecases: `auth, users, 
 
 ## Meetings
 
-3 meeting files carry `module/admin` — list them:
+6 meeting files carry `module/admin` — list them:
 
 ```
 grep -rl 'module/admin' vault/meetings/

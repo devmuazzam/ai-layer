@@ -28,7 +28,7 @@ The Atom field-worker mobile app. Backend usecases: `field-tickets, ticket-*, pr
 
 ## Meetings
 
-14 meeting files carry `module/field-ops` — list them:
+16 meeting files carry `module/field-ops` — list them:
 
 ```
 grep -rl 'module/field-ops' vault/meetings/

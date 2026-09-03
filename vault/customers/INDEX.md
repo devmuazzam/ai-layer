@@ -31,7 +31,7 @@ Customers, customer contacts, job sites. Backend usecases: `customers, customer-
 
 ## Meetings
 
-7 meeting files carry `module/customers` — list them:
+8 meeting files carry `module/customers` — list them:
 
 ```
 grep -rl 'module/customers' vault/meetings/

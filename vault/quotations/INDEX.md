@@ -36,7 +36,7 @@ Quotations, pricing, billing codes, mob/demob. Backend usecases: `quotations, qu
 
 ## Meetings
 
-19 meeting files carry `module/quotations` — list them:
+21 meeting files carry `module/quotations` — list them:
 
 ```
 grep -rl 'module/quotations' vault/meetings/

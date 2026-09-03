@@ -24,7 +24,7 @@ Invoicing and accounting (module not yet built). Backend usecases: `billing, exp
 
 ## Meetings
 
-6 meeting files carry `module/accounting` — list them:
+11 meeting files carry `module/accounting` — list them:
 
 ```
 grep -rl 'module/accounting' vault/meetings/

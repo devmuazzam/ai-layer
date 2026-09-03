@@ -1898,3 +1898,117 @@ someone has confirmed otherwise.
 - **Owner:** TCG payroll (Brian Petros, Corrina for practice) for the correction policy;
   CodingCops for the window. Brian has offered to walk through it in a meeting — that meeting is
   where PAY-068 and PAY-066 close.
+
+## The union-classified employee who must not be paid on union rules
+
+- **Status:** open
+- **Asked:** 2026-09-01 — Brian Petros, in the accounting/onboarding call
+  ([meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §4;
+  transcript 32:49–34:30). **Rules:** PAY-009, and it is a concrete instance of
+  *Payroll rule applicability by Payroll Group* above.
+- **Question:** TCG has at least one live employee who is **union by classification but must not
+  be processed on union rules** — hourly, and admin/management. Brian walked the three obvious
+  selectors and showed each one fails: *"all labor union employees"* catches him; *"exclude admin"*
+  drops legitimate field staff; *"hourly only"* does not separate him either. Corrina recalls Kyle
+  being told a **special classification** would exist for cases like this. **Brian's preference is
+  the opposite of a special case:** *"instead of having those special classification types, I'd
+  like to be able to handle it with the initial setup of employees based on the primary class."*
+  So: does the ERP add an escape-hatch classification, or is the group predicate rebuilt so the
+  primary class alone decides? And how many such outliers exist — one, or a category?
+- **Sources checked:** [rules/PAY-009](rules/PAY-009-payroll-group-classification.md) — the
+  2026-06-09 client message gives the five groups' exact predicates (`L12%` + `EmpTypeID`,
+  `ADMIN%` + `PayType`, `SYS%` hidden) and **none of them expresses this case**; the group
+  applicability entry above; `PayrollGroup` in `apps/api/prisma/schema.prisma:192-198` is a fixed
+  five-value enum (`L12_FIELD`, `L12_MECHANIC`, `NON_UNION_HOURLY`, `NON_UNION_SALARY`, `SYS`)
+  with no override field anywhere.
+- **Blocked:** the final ERP mapping in PAY-009 — it cannot close while a known employee falls
+  outside every predicate.
+- **Owner:** Corrina Bustos and Brian Petros for how many, and which policy; CodingCops for the
+  model once told.
+
+## Premiums are attached to employees; they belong to the job
+
+- **Status:** open
+- **Asked:** 2026-09-02 — Brian Petros in the sprint demo, with Joe Schacatano supplying the
+  trigger rules ([meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §3;
+  transcript 43:35–45:08). **Rules:** PAY-043, PAY-044, PAY-071, PAY-070.
+- **Question:** the demoed premium configuration reads as **per employee** — *"anything that
+  employee did, it would be added"* — and Brian's correction is that lattice, military and shift
+  adders are properties of **the job**: *"it needs to be at the job level."* Joe then gave the
+  triggers he expects, and they are automatic, not a dispatcher prompt: **a crawler assigned to
+  the job populates lattice pay**, and federal/prevailing wages populate **only when certified
+  payroll or federal job is checked at the quoting stage or on the job** — explicitly *"as opposed
+  to it being a pop up every time you dispatch."* Ehtesham added that some of this may also belong
+  on the **customer profile**. So: what is the authoritative carrier of each premium — asset,
+  job, quotation flag, customer, or employee — and which are derived rather than chosen?
+- **Sources checked:** [rules/PAY-044](rules/PAY-044-lattice-boom-premium.md) — lattice already
+  reads *"job flagged lattice + employee Group ≥ 6 → premium on all job hours"*, i.e. **the rule
+  register already says job-level**, so the demo UI and the rule disagree;
+  [PAY-043](rules/PAY-043-long-boom-premium.md) (boom-window slices, asset-derived);
+  [PAY-071](rules/PAY-071-military-base-premium.md); `Quotation.certifiedPayroll` exists as a
+  boolean (`schema.prisma`), which is the flag Joe describes; `PayrollPremiumType` +
+  `PayrollPremiumAppliesTo` are the built catalog.
+- **Blocked:** the premium-selection UI on DAS ticket send, and any spec that fixes where a
+  premium is stored.
+- **Owner:** Joe Schacatano for the trigger rules (he stated them; they need writing down as a
+  decision), Corrina for payroll practice.
+
+## Annual craft-rate change — nine codes, one rule, no bulk path
+
+- **Status:** open
+- **Asked:** 2026-09-02 — Corrina Bustos in the sprint demo (§4; transcript 23:55–25:25).
+  **Rules:** PAY-008, PAY-010.
+- **Question:** effective-dated craft rates are built and demoed — adding a rate auto-ends the
+  previous one the day before — but each of **Local 12's nine craft codes** must be edited
+  individually. Corrina: *"per the union handbook, every July 1st, the rate changes… can we lump
+  sum and do it to every single one?"* Ehtesham's condition is exact: buildable **if there is a
+  written rule** (e.g. one group moves by an amount and the others follow by a fixed delta or
+  percentage). Corrina offered to send the handbook verbiage — **it has not arrived**. So: what
+  is the July-1 rule, in the handbook's own words, and does it derive the other eight codes from
+  one, or are all nine independent values published each year?
+- **Sources checked:** [rules/PAY-008](rules/PAY-008-effective-dated-configuration.md),
+  [PAY-010](rules/PAY-010-l12-union-base-rate.md) (settled: labor-entry craft prices the row);
+  `CraftCodeRate` with effective dating is built (`schema.prisma`);
+  [mcog-l12-mla-2025-2028/02-article-iv-classifications-and-wage-rates.md](mcog-l12-mla-2025-2028/02-article-iv-classifications-and-wage-rates.md)
+  carries the wage schedule but no statement of how a year's increase is distributed across groups.
+- **Owner:** Corrina Bustos — the handbook verbiage is the whole answer.
+
+## Craft assignment has no history
+
+- **Status:** open
+- **Asked:** 2026-09-02 — Brian Petros, endorsed by Corrina Bustos (§5; transcript 25:28–26:29).
+  **Rules:** PAY-003, PAY-027 (assignment), PAY-064.
+- **Question:** *"at the employee level, to say okay, they were this craft code from this date to
+  this date."* Corrina compares it to ADP, which records **what changed and when** automatically.
+  Craft **rates** are effective-dated; a craft **assignment** to an employee is not. Does an
+  employee's craft assignment become effective-dated (so a historical payroll reprices on the
+  craft in force on the work date), or is a change-log audit trail enough? The two answers cost
+  very different things, and only the first is safe for retroactive correction (PAY-068).
+- **Sources checked:** `EmployeeCraftAssignment` in `apps/api/prisma/schema.prisma:2544` — carries
+  the assignment and primary/secondary, **no effective dates**; `CraftCodeRate` does have them;
+  [rules/PAY-068](rules/PAY-068-retroactive-correction.md), which needs the historical answer.
+- **Owner:** Corrina Bustos / Brian Petros for the requirement; CodingCops for the model.
+
+## Field staff are told to inflate reported hours so minimum-pay rules come out right
+
+- **Status:** open
+- **Asked:** 2026-09-02 — Brian Petros, closing the sprint demo (§8; transcript 1:01:03–1:02:05).
+  **Rules:** PAY-039, PAY-040, PAY-029, PAY-062.
+- **Question:** Brian states current practice plainly — in some situations employees are
+  *"instructing them currently to modify their time for minimum pay hours, so they actually are
+  artificially bumping up their time"* — and proposes the opposite for the ERP: the system records
+  **actual** hours, the rules produce the payable result, and nobody edits the clock. *"Maybe it
+  might be a shift in how we instruct the field employees to create their time."* Two things need
+  deciding: **(a)** is that shift adopted, i.e. does the ERP refuse inflated actuals and pay the
+  minimum as a computed component instead; **(b)** if so, what changes in the field instructions
+  and in what payroll reviewers see, since a week's numbers will no longer match how the same week
+  looked in FCC.
+- **Why it matters beyond payroll:** actual-hours integrity is what makes GPS verification,
+  overlap detection and billing-vs-payroll reconciliation meaningful. The vault already carries
+  the doctrine on the *output* side — added hours exist as ledger components and `Gap_Hrs`
+  columns, never as time windows (`PAY-029`) — but nothing says the *input* must be untouched.
+- **Sources checked:** [rules/PAY-039](rules/PAY-039-reporting-pay-no-work.md),
+  [PAY-040](rules/PAY-040-work-provided-minimum.md), [PAY-029](rules/PAY-029-overlapping-labor-detection.md)
+  (phantom-hours invariant), [PAY-062](rules/PAY-062-labor-entry-detail.md); no `decisions/` note
+  on time-entry integrity.
+- **Owner:** TCG payroll leadership — this is a practice change, not a build option.

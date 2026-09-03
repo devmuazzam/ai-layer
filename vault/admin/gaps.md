@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-09-01
+updated: 2026-09-04
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -559,3 +559,47 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   three-way cap inconsistency in (b) before more routes copy one of them.
 - **Owner:** Mohsin Ali for (a) — the search-responsiveness standard, the same owner as the picker
   UX question above; Fouzan Shakil for (b) and for whether one cap governs every picker DTO.
+## Time display — military, 12-hour, or per-user, and does the date ride along?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — sprint demo, four people in three positions
+  ([meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §7;
+  transcript 57:01, 59:14–1:00:47).
+- **Question:** Corrina Bustos asked whether everything will be **military time**. Melissa McNutt
+  wants it because *"there's no people putting AM instead of PM and the computer could calculate
+  it better"* — she ties it to boom pay accuracy. Ehtesham: the system can handle both, *"that's
+  not going to be a breaking point"*, though he initially said *"we only need to have military
+  time."* Joe Schacatano wants it as a **per-user setting**: *"some people fully operate off
+  military… a lot of people don't even know how to read military."* Brian Petros adds the
+  requirement that outlives the format argument: **show the date**, because *"a lot of the jobs go
+  past midnight."* So: is time format a **user preference** (web and mobile), a tenant setting, or
+  fixed — and is a cross-midnight timestamp always rendered with its date?
+- **Why it is not cosmetic:** the entry side is where AM/PM errors are made, and those errors
+  become payroll hours. A per-user *display* preference is safe; a per-user *entry* format needs
+  the parse to be unambiguous. Cross-midnight display bears on `payroll/rules/PAY-019`, whose
+  policy is still conflicted.
+- **Sources checked:** no vault document states a time-format standard; the mobile ticket flow
+  and the payroll slice view are the two surfaces that show times today.
+- **Owner:** product, with Corrina and Melissa for payroll practice.
+
+## Departments, roles and their capabilities — the authorization layer is unbuilt and the list is unwritten
+
+- **Status:** open
+- **Asked:** 2026-09-01 — Abdul Rehman, in the accounting/onboarding call
+  ([meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §3;
+  transcript 29:54–30:31, 34:48).
+- **Question:** stated plainly by the builder: *"right now we haven't implemented any authorization
+  layer based on these department and roles."* What is needed from TCG is **how many departments,
+  how many roles, and what each role may do** — a session with Corrina Bustos was proposed and
+  Brian said he would start assembling it with her. Two specifics were named: employee **type** in
+  the ERP is currently the raw FCC roles import with **no mapping to departments**, and Brian
+  expects role definition to sharpen as the 15 September user-journey walkthrough goes module by
+  module (*"as we go through the user journeys… we may be able to better identify, okay, this is
+  the role that we'll need to do this"*).
+- **Sources checked:** `User`, `Employee`, `EmployeeType` and the permissions surface in
+  `apps/api/prisma/schema.prisma`; the FCC seeder maps FCC roles onto employee types with no
+  department link; no vault document lists TCG's departments or role capabilities.
+- **Blocked:** every permission check in the app, and the 15 September test plan, which needs
+  users set up per role.
+- **Owner:** Corrina Bustos and Brian Petros to supply the list; CodingCops for the model.
+
