@@ -553,6 +553,88 @@ adjacent days, and by how much — or does each cross-boundary rule fetch what i
 (28) how is a 48-hour labor entry straddling the Sat–Fri boundary assigned — split at the
 boundary, or priced whole into one period?
 
+## 2026-09-04 — long-boom day breakdowns, drive time included (Corrina Bustos, Teams)
+
+Corrina posted two hand-worked day breakdowns to ehtesham.anwar *"to make sure drive time is
+computed"*, one for a single job and one for two jobs in one day. **This is the first written
+source anywhere in the vault that treats drive time as a payroll concept** — before this,
+"drive time" appears once in the whole vault, in
+[quotations/mobilization-and-demobilization.md](../quotations/mobilization-and-demobilization.md),
+on the billing side. Each day is split into `drive out` / `build up, work, breakdown` / `drive
+back`, with **(Long boom pay)** marked on the middle segment only.
+
+**One job — 4:00am to 11:30pm.** Drive `4am-8am`: 2 OT, 2 ST. Work `8am-9:30pm`: 6 ST, 2 OT,
+5.5 DBL. Drive `9:30pm-11:30pm`: 2 DBL. Totals **8 / 4 / 7.5 = 19.5**, ties to the clock.
+
+**Two jobs — 6:30am to 1:30am.** J1 drive `6:30-8am`: 1.5 ST. J1 work `8am-5:30pm`: 6.5 ST, 3 OT.
+J1 drive `5:30-6:30pm`: **1 OT, 1 DBL**. J2 drive `6:30-7:30pm`: 1 DBL. J2 work `7:30-11:30pm`:
+4 DBL. J2 drive `11:30pm-1:30am`: 2 DBL. Totals **8 / 4 / 8 = 20.0** against **19** clock hours.
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Drive time is **paid** and accumulates toward the 8-hour and 12-hour thresholds exactly like on-job time | 🆕 **first written source.** No payroll rule, FRD part or gap entry had ever stated it. Consistent with the engine by construction (it prices labor windows, not activity types) but never asserted | PAY-022, PAY-023, PAY-024 |
+| Hours before 6:00am pay as OT (the `4am-8am` drive splits 2 OT + 2 ST) | ✅ agrees, MLA Article III §A.1 *"outside of regular working hours"*, window 06:00-17:00 | PAY-021 |
+| Those pre-6AM OT hours **do not consume the 8-hour straight-time bank** — the day still pays a full 8 ST despite a 4:00am start | ✅ agrees, and this is the **first named-human corroboration** of the engine's *"special pre-6AM ST-bank rule"* (`calculations.md:248`, `...PROC.sql:1056-1114`). The rule had been code-only; `rules-plain-language.md` §2's slice-index prose reads the other way and its own worked example (entry 83338, 04:00-17:00 → 8/4/1) agrees with Corrina. Her breakdown is the tiebreak | PAY-021, PAY-022, PAY-023 |
+| The 8 / 12-hour ladder runs **continuously from shift start, across both jobs**, and does not reset for job 2 | ✅ agrees, `ChainGroup` chains entries < 8h apart into one shift | PAY-023 |
+| Accumulation keeps counting **past midnight** (the last drive runs to 1:30am and prices as DBL) | ✅ agrees. The example itself does not discriminate `CalendarDay` from `AnchorFloor` (both calendar days are weekdays), but **her reply the same day settles PAY-019** — see the resolution below | PAY-019 |
+| **Long boom pay is marked on build-up / work / breakdown only, never on drive time** | ✅ agrees, and corroborates the boom-window scope (`ArrivedJob → LeftJob`) direct from Corrina. Sharpens the PAY-043 vs PAY-044 contrast she drew in message 20: long boom = boom-window slices, lattice = the entire job | PAY-043, PAY-044 |
+| Two-job day pays **20 hours against 19 clock hours** — the `5:30-6:30pm` drive carries *"1 ot, 1 dbl"* | ✅ **resolved same day: an error in the hand-worked example**, which she has corrected. Engine's 8 / 4 / **7** stands (ST bank ends 2:30pm, 12-hour mark at 6:30pm). The WTL-folded-into-buckets hypothesis is **dead**: WTL premium stays in the ledger, never in the hour buckets | PAY-046, PAY-047 |
+| Neither breakdown shows a **meal deduction** on spans of 19.5 h and 19 h, both in the 3-meal bracket | ℹ️ not a finding. With the extra hour explained as an error, both breakdowns are simply **gross clock spans before meal handling** — they were sent to show drive time, not lunches | PAY-046, PAY-047 |
+
+**Verified against:** `usp_Run_Pricing_Engine` STEP D-E via
+[calculations.md](legacy-payroll-app-db-extract/calculations.md);
+[rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §2, §4, §5, §10;
+[MLA Article III](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md).
+
+**Two questions were sent to Corrina on Teams, 2026-09-04. She answered both the same day.**
+
+**(29) The 19-hour day that totalled 20 paid hours.** Corrina: *"Thank you for bringing the 20
+hours to my attention. I have updated it and the extra hour was an error."* A transcription slip,
+not a rule. The engine's 8 / 4 / 7 stands and the example has been corrected at her end.
+
+**(30) Crossing midnight into a Saturday, Sunday or holiday.** Corrina: *"the question would remain
+irrelevant if they worked into Saturday or Sunday due to the fact that they were already on Double
+time. if they were to work into a holiday they would be owned an additional 8 hours at triple time
+as the rule is that the ee is owed a minimum of 8 hours."* **This closes PAY-019**, the decision
+the engine's own config row parked for the Payroll Manager. Two things settled:
+
+- **The higher rate governs, never a downgrade.** A shift already at DT does not drop to Saturday
+  x1.5 after midnight. That is the as-built `CalendarDay` policy read through the no-pyramiding
+  precedence chain (`DT` outranks `SATURDAY`), and equally what the inactive `AnchorFloor` (`max`)
+  would give. The only reading her answer rules out is Brian's pure-anchor summary, *"the entire
+  job is associated with the date in which the labor started"* — which would have paid Friday
+  rates straight through a Saturday morning.
+- **Spilling into a holiday is holiday work.** Post-midnight slices price at x3 **and** the 8-hour
+  holiday minimum fires. The MLA is unconditional on this — *"A minimum of eight (8) hours at
+  triple (3) time... shall be paid for all work performed under this Agreement on the following
+  holidays"* (Article III, Holidays §1) — and the engine agrees, because §7 groups the holiday
+  minimum by **calendar day**, so any slices > 0 on the holiday trigger `gap = 8 - hours worked
+  that day` at x3.
+
+**The question her holiday answer raised was answered from the record rather than sent back to
+her** (registered and closed in
+[gaps.md](gaps.md#holiday-8-hour-minimum-on-a-shift-that-only-spills-past-midnight-into-the-holiday)):
+the minimum is owed **once per employee per calendar date**, summing every entry that touches the
+day. `usp_Apply_GuaranteedHours.PROC.sql:443-487` groups `BY EmpID, CalendarDate` with
+`ShiftAnchorDate` explicitly nulled, and Corrina had already said it on the **2026-06-11** demo
+recording at 19:11: *"Put 8 hours per day guaranteed on a holiday."* A 0.5-hour spillover plus a
+later 6-hour holiday shift is one day at 6.5 hours and a 1.5-hour gap, not two minimums.
+
+**Corrected example 2, as she reissued it 2026-09-04.** J1 drive `6:30-8am` 1.5 ST; J1 work
+`8am-5:30pm` 6.5 ST + 3 OT (long boom); J1 drive `5:30-6:30pm` **1 OT**; J2 drive `6:30-7:30pm`
+1 DBL; J2 work `7:30-11:30pm` 4 DBL (long boom); J2 drive `11:30pm-1:30am` 2 DBL. Totals
+**8 ST / 4 OT / 7 DBL = 19.0**, ties to the clock and matches `usp_Run_Pricing_Engine` slice for
+slice. **Both breakdowns are now clean engine-agreeing reference cases** and belong in
+[rule-examples-catalog.md](rule-examples-catalog.md) as the drive-time and two-job rows, which it
+currently has none of.
+
+**Owed:** a `decisions/` note for the cross-midnight adjudication (PAY-019 moves from `conflicted`
+to settled), and `cfg.CrossMidnightDayTypePolicy` can stay on `CalendarDay` with the question
+closed rather than parked.
+
+**Not asked, deliberately:** the pre-6AM ST-bank reading and the long-boom/drive-time exclusion
+are settled by this message rather than opened by it, so nothing was sent back restating them.
+
 ## Parked — 2026-08-24 (build proceeds on defaults)
 
 Per the build lead: the five remaining questions are **not asked now** — the build is

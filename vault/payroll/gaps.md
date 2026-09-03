@@ -2012,3 +2012,112 @@ someone has confirmed otherwise.
   (phantom-hours invariant), [PAY-062](rules/PAY-062-labor-entry-detail.md); no `decisions/` note
   on time-entry integrity.
 - **Owner:** TCG payroll leadership — this is a practice change, not a build option.
+
+## Long-boom day breakdowns — drive time, cross-midnight, and the 20-hour day
+
+- **Status:** resolved 2026-09-04 — **both questions answered by Corrina Bustos the same day.**
+  See the resolution notes below. One **new** open question falls out of her holiday answer,
+  registered separately below.
+- **Asked:** 2026-09-04 — Corrina Bustos posted two hand-worked long-boom day breakdowns on Teams
+  (one job, and two jobs in one day) *"to make sure drive time is computed"*; verified segment by
+  segment against `usp_Run_Pricing_Engine` and two questions were sent back.
+  **Rules:** PAY-019, PAY-021, PAY-022, PAY-023, PAY-024, PAY-033, PAY-043, PAY-046, PAY-047.
+- **Question (1):** the **two-job** day runs 6:30am to 1:30am, **19 clock hours**, but the buckets
+  summed to **20 paid hours** (8 ST, 4 OT, 8 DBL), the `5:30pm-6:30pm` drive line reading
+  *"1 ot, 1 dbl"*. The engine gives **8 / 4 / 7**: the ST bank runs out at 2:30pm and the 12-hour
+  mark lands at 6:30pm, so that hour is OT and double time starts at 6:30pm. Working hypothesis at
+  the time was worked-through-lunch double time folded into the drive line.
+- **Resolution (1) — Corrina, 2026-09-04:** *"Thank you for bringing the 20 hours to my attention.
+  I have updated it and the extra hour was an error."* **Not WTL.** A transcription slip in the
+  hand-worked example; the engine's 8 / 4 / 7 stands, and the WTL-folded-into-buckets hypothesis is
+  dead. WTL premium continues to live only in the ledger (`WTL_MEAL_DEDUCT` / `WTL_APPLICABLE_ADD`),
+  never inside the hour buckets.
+- **Question (2):** that day's last drive crosses midnight between two weekdays, so no rate
+  changes. If it ran into a Saturday, Sunday or holiday, do the hours after midnight pay at the new
+  day's rate, or does the whole shift stay on the rate for the day it started? This was the parked
+  **PAY-019** decision, put to the person the engine's own config note names as its owner.
+- **Resolution (2) — Corrina, 2026-09-04:** *"the question would remain irrelevant if they worked
+  into Saturday or Sunday due to the fact that they were already on Double time. if they were to
+  work into a holiday they would be owned an additional 8 hours at triple time as the rule is that
+  the ee is owed a minimum of 8 hours."* Two things settled. **(a) The higher rate governs, never a
+  downgrade** — a shift already at DT does not drop to Saturday x1.5 after midnight. That is the
+  as-built `CalendarDay` policy read through the no-pyramiding precedence chain (`DT` outranks
+  `SATURDAY`), and it is also what the inactive `AnchorFloor` (`max`) would give. Brian's
+  pure-anchor summary — *"the entire job is associated with the date in which the labor started"* —
+  is the only reading her answer rules out. **(b) Spilling into a holiday is holiday work**, so the
+  post-midnight slices price at x3 *and* the MLA's 8-hour holiday minimum fires: *"A minimum of
+  eight (8) hours at triple (3) time... shall be paid for all work performed... on the following
+  holidays"* (Article III, Holidays §1). The engine agrees: §7 groups the holiday minimum by
+  **calendar day**, so slices > 0 on the holiday trigger `gap = 8 - hours worked that day` at x3.
+- **What the same message settled without being asked:** the **one-job** breakdown ties to the
+  engine **exactly**, segment by segment, and is the first named-human corroboration of the
+  **pre-6AM straight-time-bank rule** (`calculations.md:248`): pre-6AM slices price as
+  outside-window OT at x1.5 **and** do not consume the 8-hour ST bank, while still counting toward
+  the 12-hour DT threshold. Her `4am-8am` drive splitting as *"2 ot, 2 st"* while the day still
+  pays a full 8 ST is only reproducible under that rule. It also corroborates PAY-043's boom-window
+  scope: long boom pay is marked on build-up / work / breakdown only, never on drive time. And it
+  is the **first written source anywhere in the vault that treats drive time as a payroll concept**
+  at all.
+- **Sources checked:** [rules/PAY-019](rules/PAY-019-cross-midnight-processing.md),
+  [PAY-021](rules/PAY-021-l12-standard-work-window.md), [PAY-022](rules/PAY-022-daily-straight-time.md),
+  [PAY-023](rules/PAY-023-daily-overtime.md), [PAY-024](rules/PAY-024-daily-double-time.md),
+  [PAY-033](rules/PAY-033-holiday-pay.md), [PAY-043](rules/PAY-043-long-boom-premium.md),
+  [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md);
+  [legacy-payroll-app-db-extract/calculations.md](legacy-payroll-app-db-extract/calculations.md)
+  STEP D-E and the `CrossMidnightDayTypePolicy` config row;
+  [rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §2, §3, §7, §10;
+  [MLA Article III](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) §A.1 and Holidays §1.
+- **Owner:** Corrina Bustos. **Owed:** a `decisions/` note for the cross-midnight adjudication, and
+  the `cfg.CrossMidnightDayTypePolicy` question can now be closed.
+- **Full verification:** [client-message-findings.md](client-message-findings.md#2026-09-04--long-boom-day-breakdowns-drive-time-included-corrina-bustos-teams)
+
+## Holiday 8-hour minimum on a shift that only spills past midnight into the holiday
+
+- **Status:** resolved 2026-09-04 — **answered from the record, no client question needed.** Once
+  per employee **per calendar date**, summing every entry that touches the day. See below.
+- **Asked:** 2026-09-04 — fell out of Corrina's cross-midnight answer.
+  **Rules:** PAY-033, PAY-019, PAY-032.
+- **Question:** Corrina stated that a shift working into a holiday owes *"an additional 8 hours at
+  triple time as the rule is that the ee is owed a minimum of 8 hours"*. Three things followed that
+  were unstated: **(a)** does a mere *spillover* past midnight trigger it; **(b)** if the crew then
+  works the holiday properly later the same day, is the minimum owed once per calendar day or once
+  per shift; **(c)** is the holiday minimum's calendar-day grouping deliberate when every other
+  guarantee groups on `ShiftAnchorDate`?
+- **Resolution (a):** **yes.** The MLA is unconditional — *"A minimum of eight (8) hours at triple
+  (3) time... shall be paid for all work performed under this Agreement on the following holidays"*
+  (Article III, Holidays §1), with no minimum duration — Corrina stated it directly on 2026-09-04,
+  and the engine has **no spillover suppression**. The only thing that can switch the minimum off
+  is `cfg.Craft_MinimumPayPolicy.ApplyMinimumPay` (`usp_Apply_GuaranteedHours:140, 464`), a
+  **per-craft** flag, which is the mechanism that exempts admin crafts. Nothing keys on how the
+  holiday hours were arrived at.
+- **Resolution (b): once per employee per calendar date, not per shift.** Two independent sources.
+  **Code** (`sql/app/usp_Apply_GuaranteedHours.PROC.sql:443-487`): the `HolidayGroups` CTE declares
+  `ScopeBasis = 'CalendarDate'`, `GroupScope = 'EmployeeCalendarDate'`, sets
+  `ShiftAnchorDate = CONVERT(date, NULL)` explicitly, and closes `GROUP BY EmpID, CalendarDate`;
+  the gap is `8.00 - SUM(Slice_Hours)` over **all** of that employee's holiday slices that date,
+  allocated to the latest holiday-slice entry (`AllocationMethod = 'LastHolidaySliceEntry'`, `:742`).
+  So a 0.5-hour spillover plus a later 6-hour holiday shift is one day at 6.5 hours and a 1.5-hour
+  gap, not two minimums; reach 8 hours across the day by any combination and no gap is paid.
+  **Recording** — 2026-06-11 *Payroll-App demo-02*, Corrina Bustos at 19:11: *"Put 8 hours per day
+  guaranteed on a holiday"*, and at 19:16 on the non-holiday case *"it's a four-hour minimum per day
+  or their true time."* Brian Petros describes the grouping at 19:21 in the same exchange: *"there's
+  another labor entry that same day, and so that's where this grouping kicks in, so it's like
+  looking at the entire day for the employee… they actually work 6 hours that day, so the rule
+  didn't apply."* Code and client agree.
+- **Resolution (c): deliberate.** `ScopeBasis` / `GroupScope` are **named, emitted columns**, and the
+  calendar-date holiday group sits in the same CTE block as the shift-anchored groups, each
+  declaring its own basis. It is a modelled distinction, not an artefact. ⚠️ **Worth carrying into
+  the ERP as a known asymmetry:** in plain language Corrina says "per day" for both the 4-hour and
+  the 8-hour minimum, but the engine means **`ShiftAnchorDate`** for the daily/long-boom minimums
+  (§5, §6) and **`CalendarDate`** for the holiday and special-Saturday minimums (§7). The two
+  definitions diverge only on a cross-midnight shift, and on such a shift the holiday date is
+  exactly what is in dispute — so the asymmetry is load-bearing precisely where it is least visible.
+- **Sources checked:** `sql/app/usp_Apply_GuaranteedHours.PROC.sql:140, 353, 402, 443-487, 742-768`;
+  [rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §5, §6, §7;
+  [rules/PAY-033](rules/PAY-033-holiday-pay.md), [PAY-032](rules/PAY-032-l12-holiday-calendar.md),
+  [PAY-019](rules/PAY-019-cross-midnight-processing.md);
+  [MLA Article III](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) Holidays §1;
+  63 meeting transcripts swept for holiday-minimum scope — 2026-06-11 is the only one that reaches
+  it, and it reaches it directly.
+- **Owner:** answered; no client action outstanding. **Owed:** fold into the PAY-033 decision note
+  alongside the PAY-019 cross-midnight adjudication.
