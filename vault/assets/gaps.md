@@ -726,5 +726,38 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Why it lands here too:** the asset-side half is real. FCC's resource type is TCG's
   `SubCategory`, and its *Unit/People* tab is `SubCategoryAssociatedResource` — which today has
   **no job-type key**, so if job type ships, associated resources gain a dimension.
+- **Concrete already:** `FMS_UNIT_TYPE_EQUIPMENT` (161 rows) and `FMS_UNIT_TYPE_EMPLOYEES` (117)
+  are keyed in FCC by `JobTypeYardID` and were seeded onto `SubCategoryAssociatedResource` **with
+  that key dropped on every row** (`apps/api/fcc-seeder/docs/field-gaps.md:589,610`) — so a
+  migrated tenant cannot show whether two job types differ in *Unit/People*, and rows may have
+  merged. Costed in [quotations/gaps.md](../quotations/gaps.md#fcc-estimate-templates-were-already-extracted--and-the-seeder-flattened-them-to-one-fk).
 - **Read:** [quotations/gaps.md](../quotations/gaps.md#estimate-defaults-per-resource-type--job-type--yard--fcc-has-them-tcg-has-no-job-type-at-all)
   · source: [quotations/fcc-estimate-templates-by-job-type.md](../quotations/fcc-estimate-templates-by-job-type.md)
+
+## Nomenclature for the template level — "Resource Type", not "Unit"
+
+- **Status:** open
+- **Asked:** 2026-09-03 — Brian Petros, third Teams message of the day, closing his FCC table map:
+  *"Physical units such as a particular crane/unit code are elsewhere in `FMS_UNITS` and are
+  associated to these Resource Types through the Unit Type configuration… So in the new ERP
+  nomenclature I would explicitly call these **Resource Types**, not Units, to avoid confusing the
+  template with the individual fleet asset."* It corrects his own earlier framing of the FCC
+  *Main* tab as a list of units.
+- **Question:** what does the ERP call the level that FCC calls a Resource Type — the thing a
+  quotation line and a template attach to, as against a physical crane with a unit code? Brian is
+  right about the data; adopting his word is still a decision, because **"resource" is already
+  spent in this codebase on something else**: `QuotationResource` and `JobResource` are line items
+  on a quote or job, and `SubCategoryAssociatedResource` is what a sub-category drags along.
+  Renaming the taxonomy level to *Resource Type* would put three different meanings of "resource"
+  in one schema; leaving it as `SubCategory` keeps a name no client uses. A third option is to use
+  *Resource Type* in the **UI language only** and leave the model names alone.
+- **Sources checked:** [quotations/fcc-estimate-templates-by-job-type.md](../quotations/fcc-estimate-templates-by-job-type.md)
+  §5; [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) (schedule type ≈ Category,
+  unit type ≈ Sub-Category); built state — the FCC seeder maps all 68 `FMS_UNIT_TYPES` rows onto
+  `SubCategory` (`apps/api/fcc-seeder/docs/seed-files-index.md:20`), while the schema *also* carries
+  an unused `UnitType`/`UnitCategory`/`ResourceCategory` trio whose only web surface,
+  `/asset-management/unit-types`, renders "This module is under development".
+- **Note:** whatever is chosen, `UnitType` vs `SubCategory` is a **live duplication** independent of
+  the naming question — two models for one FCC table, one of them unpopulated. Worth settling in
+  the same pass.
+- **Owner:** CodingCops for the model names; TCG (Brian Petros / Dylan Masterson) for the UI word.

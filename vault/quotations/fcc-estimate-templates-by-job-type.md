@@ -1,6 +1,6 @@
 ---
 title: FCC estimate templates — Resource Type × Job Type × Yard
-source: teams-messages/client — 2026-09-03, Brian Petros to ehtesham.anwar (CodingCops); the walkthrough with 9 FCC screenshots, plus his same-day follow-up on parent/child and the extract
+source: teams-messages/client — 2026-09-03, Brian Petros to ehtesham.anwar (CodingCops); three same-day messages — the 9-screenshot walkthrough, the parent/child follow-up, and the FCC table map (3 screenshots)
 migrated: 2026-09-03
 updated: 2026-09-03
 status: unverified
@@ -49,8 +49,9 @@ Type/Yard row is selected. One crane therefore owns as many estimate templates a
 types.
 
 `Description` = *100 Ton Hydraulic Truck Crane*, `Yard` = **All Yards** on every row sampled —
-so the yard slot is a real dimension, and "All Yards" is its wildcard, but no yard-specific
-variant has been seen yet.
+so the yard slot is a real dimension and "All Yards" is its wildcard. Yard-specific templates do
+exist but are rare: the FCC test extract holds **4** `FMS_UNITTYPE_YARDS` rows against 69
+job-type/yard configurations (§6).
 
 ## 2. The 100 Ton Hydraulic Truck Crane, both job types
 
@@ -138,7 +139,8 @@ parent."* But *"in the database this appears to me more clear, with parent/child
 relationship."*
 
 So **FCC stores an explicit parent link, and `Sub-Item` is a separate per-line visibility
-flag.** Reading membership off row order — a ticked run belonging to the unticked roll-up that
+flag** — `FMS_UNIT_TYPE_ESTIMATE.ParentEstimateID` and `.Item` respectively, named in his table
+map the same day (§5). Reading membership off row order — a ticked run belonging to the unticked roll-up that
 closes it — is a **UI artifact of this screen, not the model**. It is how the tables above were
 transcribed and it is almost certainly right for this crane, but it is an inference: do not
 carry row order into a spec, and treat the grouping in §2 as provisional until the extract
@@ -165,7 +167,7 @@ Three details worth carrying:
 
 | FCC concept | TCG today | Verdict |
 | --- | --- | --- |
-| Resource type (`100 Ton Hydraulic Truck Crane`) | `SubCategory`; also `UnitType` from the FCC extract (`schema.prisma:1006`) | ✅ exists — see [assets/fcc-units-and-schedule-types.md](../assets/fcc-units-and-schedule-types.md) |
+| Resource type (`100 Ton Hydraulic Truck Crane`) = `FMS_UNIT_TYPES` | `SubCategory` — that is where the seeder puts all 68 rows (`fcc-seeder/docs/seed-files-index.md:20`). A separate `UnitType` model exists (`schema.prisma:1006`) but has no product surface: `/asset-management/unit-types` renders "This module is under development" | ✅ exists, under a different name — see [assets/fcc-units-and-schedule-types.md](../assets/fcc-units-and-schedule-types.md) and the naming ask in §5 |
 | *Unit/People* rows | `SubCategoryAssociatedResource` (`schema.prisma:630`) — asset sub-category / employee type / custom type, with `isRequired` | ✅ close equivalent, **but keyed only by parent sub-category — no job type** |
 | *Estimate* default lines | **nothing** | 🆕 **no such model.** `Template`/`CustomSection`/`CustomField` (`schema.prisma:695`) is the custom-**field** designer for categories, not a line template |
 | `Job Type` (`Hourly`, `Hourly w/ Mob`) | **nothing.** `Quotation.billingType` is the closest name and is unrelated — a hardcoded two-value select, `Rental` / `Parts` (`apps/web/src/features/quotations/components/molecules/other-info-section.tsx:60`), display-only on the detail and print views | 🆕 **the dimension does not exist**, anywhere in schema, shared types or web |
@@ -185,19 +187,123 @@ template simply ticks none of them. Build the flag as general; the special case 
 document covered: mob/demob is not a thing an estimator assembles per quote in FCC — it is a
 **job type on the crane** whose template already contains it.
 
-## 5. Incoming — the full extract, now confirmed feasible
+## 5. The FCC tables behind the screen
 
-Brian's follow-up: *"Looks like I'll be able to generate the full extract for you of all these
-configurations in FCC."* It has **not arrived as of 2026-09-03**. When it does, file it under
-[assets/](assets/) here and it becomes the source for what this walkthrough cannot answer: how
-many job types exist, whether any template is yard-specific rather than *All Yards*, and how far
-the templates vary across the fleet.
+Brian's third message of the day — *"here are the related tables with relationships in FCC"* —
+supplies the schema, which retires most of the guessing above.
+[Table map](assets/2026-09-03_fcc-resource-types-10-table-map.png) ·
+[relationship tree](assets/2026-09-03_fcc-resource-types-12-relationship-tree.png).
 
-**Worth asking for explicitly, since he is generating it from the database rather than the
-screen** — the four things the screen hides or flattens:
+| Screen area | FCC table(s) | Relationship |
+| --- | --- | --- |
+| **Main** | `FMS_UNIT_TYPES` | one Resource Type |
+| Schedule Type | `FMS_SCHEDULE_TYPES` | `FMS_UNIT_TYPES.UnitSchedType` |
+| **Job Type/Yard** | `FMS_UNIT_TYPE_JOBTYPE_YARD` | configuration underneath the Resource Type; its `JobTypeYardID` is **the key everything else hangs from** |
+| Job Type | `FMS_UNITTYPE_JOBTYPES` + `FMS_JOB_TYPES` | child of `JobTypeYardID` |
+| Yard | `FMS_UNITTYPE_YARDS` + `FMS_YARD_MASTER` | child of `JobTypeYardID`; **no row = apparently All Yards** |
+| **Unit/People** — unit / equipment | `FMS_UNIT_TYPE_EQUIPMENT` | child of `JobTypeYardID` |
+| ↳ *Unit/People* column | `FMS_SCHEDULE_TYPES` | via `FMS_UNIT_TYPE_EQUIPMENT.UnitSchedCode` |
+| ↳ *Type* column | `FMS_UNIT_TYPES` | via `FMS_UNIT_TYPE_EQUIPMENT.UnitTypeID` |
+| **Unit/People** — employee | `FMS_UNIT_TYPE_EMPLOYEES` | child of `JobTypeYardID` |
+| **Estimate** | `FMS_UNIT_TYPE_ESTIMATE` | child of `JobTypeYardID` |
+| ↳ Billing Code | `FMS_BILLING_CODES` | `BillingCodeID` |
+| ↳ Unit of Measure | `FMS_MEASURES` | `MeasureCode` |
+| ↳ Sub-Item checkbox | `FMS_UNIT_TYPE_ESTIMATE.Item` | `1` = checked → hidden as a separate customer estimate line |
+| ↳ Sub-item owner | `FMS_UNIT_TYPE_ESTIMATE.ParentEstimateID` | references the parent's `UnitTypeEstimateID` |
 
-1. the **parent/child column** (his own point — the relationship the UI does not draw), so
-   grouping is read rather than inferred from row order;
-2. the **`Sub-Item` flag** alongside it, since the two are independent;
-3. the **template key** — resource type, job type *and* yard on every row;
-4. the **row ordering** field, if the sequence is stored rather than incidental.
+Four things this settles that the screenshots could not:
+
+1. **`JobTypeYardID` is the real spine.** Job type and yard are *both* children of one
+   configuration row, and *Unit/People (equipment)*, *Unit/People (employees)* and *Estimate*
+   are three sibling children of that same row. The template key is not "(resource type, job
+   type, yard)" as three columns — it is one configuration id that resolves to those.
+2. **Yard absence is the wildcard.** *All Yards* is not a stored value; it is **no
+   `FMS_UNITTYPE_YARDS` row**. Brian marks this "apparently" — treat as strong but unconfirmed.
+3. **Sub-item and parenthood are two columns**, exactly as his earlier follow-up said: `Item`
+   for visibility, `ParentEstimateID` for structure.
+4. **The *Unit/People* grid is a (schedule type, unit type) pair** — the left column is a
+   schedule type (`Tractor`, `Trailer` are schedule types `TR` and `R`), the right column a unit
+   type (`Tractor - Semi`, `Operator Load`). That is the same Category → Sub-Category shape
+   already recorded in [assets/fcc-units-and-schedule-types.md](../assets/fcc-units-and-schedule-types.md),
+   and it maps onto `SubCategoryAssociatedResource` — which is how TCG models it.
+
+### Resource Types are not Units — a naming ask
+
+The *Main* tab is **not** a list of fleet assets. Brian:
+
+> *"Physical units such as a particular crane/unit code are elsewhere in `FMS_UNITS` and are
+> associated to these Resource Types through the Unit Type configuration… So in the new ERP
+> nomenclature I would explicitly call these **Resource Types**, not Units, to avoid confusing
+> the template with the individual fleet asset."*
+
+He is right about the data and it corrects his own earlier framing
+([screenshot](assets/2026-09-03_fcc-resource-types-11-resource-types-not-units.png)) — but
+**adopting the word is a decision, not a given**: TCG already spends "resource" on quotation and
+job line items (`QuotationResource`, `JobResource`, `SubCategoryAssociatedResource`), and this
+level is `SubCategory` today. Logged in [assets/gaps.md](../assets/gaps.md#nomenclature-for-the-template-level--resource-type-not-unit).
+
+## 6. We already hold this data — and the seeder flattened it
+
+The FCC test extract (`NexGenFMS-Test`) **already covers every table in Brian's map**, and the
+seeder's own docs say what happened to them. This changes the ask: the missing thing is not
+mainly the data, it is the fidelity.
+
+| FCC table | Rows in the test extract | Where it went |
+| --- | ---: | --- |
+| `FMS_UNIT_TYPES` | 68 | → `SubCategory` (`fcc-seeder/docs/seed-files-index.md:20`) |
+| `FMS_UNIT_TYPE_JOBTYPE_YARD` | **69** | **nowhere** — `docs/fcc-unmapped-entities.md:34` |
+| `FMS_UNITTYPE_JOBTYPES` | 43 | **nowhere** — `:35` |
+| `FMS_UNITTYPE_YARDS` | **4** | **nowhere** — no TCG sub-category–yard join (`seed-files-index.md:49`) |
+| `FMS_UNIT_TYPE_EQUIPMENT` | 161 | → `SubCategoryAssociatedResource`, **`JobTypeYardID` and `UnitSchedCode` dropped on all 161** (`docs/field-gaps.md:589`) |
+| `FMS_UNIT_TYPE_EMPLOYEES` | 117 | → `SubCategoryAssociatedResource`, **`JobTypeYardID` dropped on all 117** (`docs/field-gaps.md:610`) |
+| `FMS_UNIT_TYPE_ESTIMATE` | **564** | **not inserted at all.** Seed applies `BillingCodeID` → `BillingCode.subCategoryId` so associated resources come out billable (`docs/linked-tables-mapping.md:32`, `src/lib/link-billing-codes.ts:225-241`) |
+
+**What the estimate flattening costs, precisely.** `linked-seed-files.ts:385-400` reads each row's
+`Quantity`, `MeasureCode`, `Rate`, `Amount`, `PrimaryEst` and `Status` and **does not read**
+`JobTypeYardID`, `Item`, `ParentEstimateID`, `LineNumb` or `Comments`. Then `link-billing-codes.ts`
+uses even the fields it kept only to *order* candidates — primary estimates first — and writes a
+single `subCategoryId` onto each billing code, first-wins, skipping codes already linked and any
+`EMPLOYEES`-type code. 564 template lines become at most one FK per billing code.
+
+`docs/field-gaps.md:630-650` confirms the columns are populated upstream and therefore
+recoverable from a re-extract: `Item` **564/564**, `JobTypeYardID` **564/564**, `LineNumb`
+**564/564**, `ParentEstimateID` **322/564** — so **57% of estimate lines are children**, which is
+what the two ticked blocks in §2 look like at fleet scale. `Comments` 201/564. It also lists
+`Quantity2/3`, `Rate2/3`, `Amount2/3` populated on all 564 — **three quantity/rate/amount slots
+per line, unexplained**; ask before designing anything that assumes one.
+
+Two consequences worth stating plainly:
+
+- **The 69 `FMS_UNIT_TYPE_JOBTYPE_YARD` rows are the evidence for how big this is.** 68 resource
+  types, 69 job-type/yard configurations, 43 job-type rows, 4 yard rows — so most resource types
+  carry one configuration, a minority carry more, and yard-specific templates are rare but real.
+  Confirm against the full extract; the test extract is not production.
+- **A migrated tenant's associated resources are already job-type-blind.** 161 equipment and 117
+  employee rows were collapsed onto the parent sub-category with `JobTypeYardID` discarded. If two
+  job types on one crane ever differ in *Unit/People*, that difference is gone in TCG today, and
+  the rows may have merged or collided. Nobody has checked which.
+
+## 7. Incoming — the full extract
+
+Brian: *"Looks like I'll be able to generate the full extract for you of all these configurations
+in FCC."* Not arrived as of 2026-09-03. File it under [assets/](assets/) when it lands.
+
+**Ask for it as production rows of the six tables in §5, complete.** §6 shows the test extract
+already carried them and the seeder discarded the parts that matter, so the request is narrow and
+should be explicit about the columns, not the screen:
+
+1. `FMS_UNIT_TYPE_JOBTYPE_YARD` in full, with `JobTypeYardID` — the spine, and the count that
+   says how many templates exist fleet-wide;
+2. `FMS_UNIT_TYPE_ESTIMATE` with **`Item`, `ParentEstimateID`, `LineNumb`, `Comments` and
+   `JobTypeYardID`** — the five columns `linked-seed-files.ts` does not read today;
+3. `FMS_UNITTYPE_JOBTYPES` + `FMS_JOB_TYPES` — the **full job-type list**, which is still
+   unknown beyond `Hourly` and `Hourly w/ Mob`;
+4. `FMS_UNITTYPE_YARDS` — the yard exceptions, to confirm that absence really means *All Yards*;
+5. `FMS_UNIT_TYPE_EQUIPMENT` and `FMS_UNIT_TYPE_EMPLOYEES` with `JobTypeYardID` — to answer
+   whether *Unit/People* ever differs between two job types on one resource type;
+6. an explanation of **`Quantity2/3`, `Rate2/3`, `Amount2/3`**, populated on all 564 rows and
+   matching nothing on the screen.
+
+It answers, or fails to answer, sub-questions (a) (c) and (b) in
+[gaps.md](gaps.md#estimate-defaults-per-resource-type--job-type--yard--fcc-has-them-tcg-has-no-job-type-at-all) —
+which is the point of asking for these columns rather than a screen-shaped report.

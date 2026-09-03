@@ -649,8 +649,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Six sub-questions the message does not settle: **(a)** what is the full job-type list, is it
   tenant-configurable, and does every resource type carry the same list? **(b)** does a job type
   also vary the *Unit/People* set (the message says "potentially different"; the 100 Ton's two
-  job types are identical)? **(c)** is the yard slot ever narrower than *All Yards*, and if so
-  what resolves a tie? **(d)** FCC stores **both** an explicit
+  job types are identical) — **unanswerable from a migrated tenant**, because the seeder dropped
+  `JobTypeYardID` from all 161 equipment and 117 employee rows (see the flattening entry below)?
+  **(c)** is the yard slot ever narrower than *All Yards* — the FCC schema says *All Yards* is
+  **the absence of a `FMS_UNITTYPE_YARDS` row** (Brian, "apparently"), and the test extract holds
+  4 such rows against 69 job-type/yard configurations, so exceptions exist; what resolves a tie
+  when a yard-specific and an all-yards template both match? **(d)** FCC stores **both** an explicit
   parent/child link *and* an independent per-line `Sub-Item` visibility flag (Brian's follow-up
   the same day: the screen "doesn't display the line item and sub-item relationship very well",
   but "in the database this appears to me more clear, with parent/child relationship"). TCG has
@@ -660,7 +664,9 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   sit on the quotation as a whole or per resource row — FCC keys it per resource type, so one
   quote could in principle mix an *Hourly* crane with an *Hourly w/ Mob* one.
 - **Sources checked:** [fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md)
-  (the message, transcribed, with the built-state comparison);
+  — the three messages transcribed, including Brian's FCC table map (§5): the configuration hangs
+  off `FMS_UNIT_TYPE_JOBTYPE_YARD.JobTypeYardID`, with job type, yard, equipment, employees and
+  estimate lines as its children, `Item` = sub-item and `ParentEstimateID` = parent line;
   [mobilization-and-demobilization.md](mobilization-and-demobilization.md) — covers the mob/demob
   bundle and its sub-item behaviour but **not the template above it**, and its FR-8 "special case"
   claim is sharpened rather than contradicted; [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md)
@@ -679,6 +685,44 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the same day that he can generate it from the database. **Not yet received; §5 of the source
   doc says where to file it and the four columns to ask for** (parent/child, sub-item flag,
   template key, row order).
+
+## FCC estimate templates were already extracted — and the seeder flattened them to one FK
+
+- **Status:** open
+- **Asked:** 2026-09-03 — found while recording Brian Petros' FCC table map
+  ([fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md) §5–6). Not a
+  ticket question: no `SCRUM-###` covers estimate templates or this part of the seeder.
+- **Question:** the FCC test extract already carried every table behind the Resource Type
+  configuration, and the seeder discarded the structure. `FMS_UNIT_TYPE_ESTIMATE` — **564 rows** —
+  is not inserted at all: `linked-seed-files.ts:385-400` reads `Quantity`, `MeasureCode`, `Rate`,
+  `Amount`, `PrimaryEst`, `Status` and **never reads `JobTypeYardID`, `Item`, `ParentEstimateID`,
+  `LineNumb` or `Comments`**, and `link-billing-codes.ts:225-241` then uses those rows only to
+  order candidates before writing a single `BillingCode.subCategoryId`, first-wins. So: **is the
+  flattening intended and permanent, or a first-pass shortcut to be undone once the ERP has
+  somewhere to put a template?** And separately — `FMS_UNIT_TYPE_EQUIPMENT` (161 rows) and
+  `FMS_UNIT_TYPE_EMPLOYEES` (117) were seeded onto `SubCategoryAssociatedResource` with
+  **`JobTypeYardID` dropped on every row** (`fcc-seeder/docs/field-gaps.md:589,610`): if any
+  resource type's two job types differ in *Unit/People*, that difference is already gone in a
+  migrated tenant, and rows may have merged or collided. **Nobody has checked whether any do.**
+- **Why it is not merely a migration detail:** it decides what the promised full extract has to
+  contain, and it is the difference between "we need new data from the client" and "we need to
+  stop throwing away the data we have". The columns are populated upstream and therefore
+  recoverable — `field-gaps.md:630-650` records `Item` 564/564, `JobTypeYardID` 564/564, `LineNumb`
+  564/564, `ParentEstimateID` **322/564** (57% of estimate lines are children), `Comments` 201/564.
+- **Also unexplained:** `Quantity2/3`, `Rate2/3`, `Amount2/3` are populated on all 564 rows and
+  correspond to nothing on the FCC screen. Do not design a line model that assumes one
+  quantity/rate/amount until someone asks what the second and third are.
+- **Sources checked:** `apps/api/fcc-seeder/docs/linked-tables-mapping.md:20-32`,
+  `docs/seed-files-index.md:20,42-49`, `docs/fcc-unmapped-entities.md:30-40`,
+  `docs/field-gaps.md:585-655`, `src/linked-seed-files.ts:385-400`,
+  `src/lib/link-billing-codes.ts:225-241`;
+  [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md):78,
+  which already listed *"unit-type estimate templates"* among the things **extracted but with no
+  TCG home** — this entry is that line, costed.
+- **Blocked:** the shape of the ask for Brian's full extract (§7 of the source doc); any decision
+  on whether a migrated tenant's associated resources need re-seeding.
+- **Owner:** CodingCops (seeder) for the flattening and the collision check; TCG via Brian Petros
+  for what `Quantity2/3` etc. are.
 
 ## Quotation module defect audit (2026-09-01)
 

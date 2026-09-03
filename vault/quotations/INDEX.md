@@ -23,7 +23,7 @@ Quotations, pricing, billing codes, mob/demob. Backend usecases: `quotations, qu
 | [mobilization-and-demobilization.md](mobilization-and-demobilization.md) | Mob/demob process — newest content in the vault | 5.0 |
 | [billing-code-and-price-list.md](billing-code-and-price-list.md) | Billing code and price list punch list | 0.5 |
 | [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) | **The customer-facing rate card and T&Cs** — surcharge arithmetic, minimums, long-boom billing, special equipment, holiday schedule | 7.4 |
-| [fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md) | **Where FCC keeps estimate defaults** — per (resource type, job type, yard); the 100 Ton crane's `Hourly` and `Hourly w/ Mob` templates transcribed, sub-item semantics, and what TCG has instead | 11.4 |
+| [fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md) | **Where FCC keeps estimate defaults** — the `FMS_UNIT_TYPE_JOBTYPE_YARD` table map, the 100 Ton crane's `Hourly` and `Hourly w/ Mob` templates transcribed, sub-item vs parent semantics, what TCG has instead, and what the seeder already threw away | 20.9 |
 
 ## Decisions that bind this module
 

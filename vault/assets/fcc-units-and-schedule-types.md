@@ -2,7 +2,7 @@
 title: FCC units report — schedule types, unit types, and the raw unit table
 source: shared-folder/OneDrive_1_8-31-2026
 migrated: 2026-08-31
-updated: 2026-05-29
+updated: 2026-09-03
 status: unverified
 conflicts_with: []
 jira: []
@@ -11,6 +11,12 @@ entities: [asset, unit, category, sub-category, yard, department]
 ---
 
 # FCC units report
+
+> **See also (added 2026-09-03):** what FCC hangs *off* a unit type — the Job Type/Yard
+> configuration and its estimate templates — is mapped table by table in
+> [quotations/fcc-estimate-templates-by-job-type.md](../quotations/fcc-estimate-templates-by-job-type.md).
+> It confirms this file's reading from the other side: the FCC *Unit/People* grid pairs a
+> **schedule type** with a **unit type**, i.e. Category → Sub-Category.
 
 Client-supplied export of every unit in NexGen FMS, delivered 2026-08-31.
 
