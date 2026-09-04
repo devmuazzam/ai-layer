@@ -2,7 +2,7 @@
 title: Customers — open questions
 status: reference
 kind: gaps
-updated: 2026-08-27
+updated: 2026-09-04
 tags: [module/customers, kind/gaps, open-questions]
 ---
 
@@ -55,8 +55,35 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   line-90 voice suspected. The "CRM built on top" ambition has no vault or Jira presence of any kind.
 - Blocked: any CRM scope discussion; whether the customer detail page should carry a Tasks tab.
 - Owner: Melissa McNutt (policy/customer).
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps.md#tasks-on-customers-reversed-on-tape-then-removed-with-no-artefact](../gaps.md#tasks-on-customers-reversed-on-tape-then-removed-with-no-artefact)
+- Update 2026-09-04 (Project Repository ingest): the drop adds a **third, contradicting ask and
+  evidence of where tasks actually live today — no decision.** (a) TCG's own annotation on FCC's
+  Maintain Customers screens ([fcc-maintain-customers-tcg-review.md](fcc-maintain-customers-tcg-review.md)
+  → *Customer tasks*, slide 6) reads verbatim *"Customer Tasks: Need ability to enter tasks for
+  each customer."* — the opposite of `customer-and-job-sites.md:38` *"Remove tasks from customers"*;
+  the deck is undated relative to that punch list and neither is adjudicated. (b) The screenshot on
+  the same slide shows FCC's customer **Tasks tab** (columns *Complete · Priority · Type · Title ·
+  Due · Remind · Assignee · Assigner*) **empty** for TCG's largest utility account, and on FCC's
+  quote screen the identical Tasks grid is annotated by TCG *"Not used"*
+  ([../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md) §6, slide 8)
+  — so the container exists in FCC and the one customer and one quote the deck shows carry no
+  tasks. No `FMS_*TASK*` table is among the 40 tables the nightly staging copy pulls
+  ([../payroll/tcg-rawfms-staging-database/INDEX.md](../payroll/tcg-rawfms-staging-database/INDEX.md)),
+  so the drop cannot say how many customer tasks FCC holds overall. (c) In the client's written sales
+  process, tasks and follow-ups are a **HubSpot** record, not an FCC or ERP one: the operating
+  architecture assigns *"next action, follow-up"* to HubSpot/CRM
+  ([../quotations/sales-operating-system/01-operating-system-architecture.md](../quotations/sales-operating-system/01-operating-system-architecture.md)
+  §9), the coordinator manual's closeout standard is *"CRM has outcome, notes, next opportunity and
+  follow-up task"* and its daily cadence reviews *"open tasks"* in HubSpot
+  ([../quotations/sales-operating-system/03-sales-coordinator-operations-manual.md](../quotations/sales-operating-system/03-sales-coordinator-operations-manual.md)
+  §3, §7, §10), and the HubSpot playbook's ch. 8 is *"task/email/calendar management"*
+  ([../quotations/hubspot-sales-playbook.md](../quotations/hubspot-sales-playbook.md) §6). All of
+  this is **evidence of practice and of asks, not a TCG decision** about the ERP. Still for the
+  client: whether the ERP customer record carries tasks at all, and if so whether they replace,
+  mirror or ignore HubSpot's — the CRM-build-vs-buy question is itself unresolved (03-06 action
+  items: *"assess what can be built natively into the platform vs. purchased externally"*,
+  [../meetings/summaries/2026-03-06-ai-generated-meeting-action-items.md](../meetings/summaries/2026-03-06-ai-generated-meeting-action-items.md)).
 
 ## Customer-level comments — asked for on tape, removed by a QA ticket four weeks later
 
@@ -99,8 +126,40 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `SCRUM-898`'s scope, which will decide the paradigm for every module.
 - Owner: Melissa McNutt (policy/customer). The 03-20 speaker is unrecoverable, so this must be put
   to the customer owner rather than to "whoever said it".
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps.md](../gaps.md#customer-level-comments-asked-for-on-tape-removed-by-a-qa-ticket-four-weeks-later)
+- Update 2026-09-04 (Project Repository ingest): the drop answers the *"same thing or a second
+  feature?"* half **for FCC** and adds an attributed client ask — **no decision on the ERP.**
+  (a) In FCC, comments and notes are **two different things.** `FMS_CUSTOMERS.Comments` is one
+  `varchar(max)` column on the customer row (a single free-text **Comments** tab, empty for the
+  customer shown), while `FMS_CUSTOMER_NOTES` is a separate table — `Name varchar(30)`,
+  `PopUpMessage varchar(max)`, `DisplayMessage varchar(50)` (the multi-valued scope: All /
+  Invoices / Jobs / Order Entry / Quotes / Work Orders), `Comments varchar(max)`, plus
+  Created/Modified audit columns — shown as a **Notes** grid *Pop-Up Message · Display Message In
+  · Comments*
+  ([../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMERS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMERS_Raw.sql),
+  [ddl/stg.FMS_CUSTOMER_NOTES_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMER_NOTES_Raw.sql),
+  [fcc-legacy-customer-data-model.md](fcc-legacy-customer-data-model.md) → *FMS_CUSTOMER_NOTES*,
+  [fcc-maintain-customers-tcg-review.md](fcc-maintain-customers-tcg-review.md) → *Comments tab /
+  Notes tab*). 119 note rows exist against 6,057 customers in the 2026-06-23 staging copy; the
+  quote deck shows the pop-up firing on quote open with two operational instructions for one
+  customer ([../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md) →
+  *The customer pop-up*). Legacy fact, not a TCG decision. (b) TCG's own annotation on the FCC
+  screens, written beside both tabs (slides 3 and 6): *"Customer Comments/Notes: Need ability to
+  enter comments/notes for each customer. Need ability to enable "pop-up" notifications per
+  customer… that would (for example) pop-up when user schedules/opens job for that customer, when
+  billing interacts with billing screens, etc."* — this is the first written record of the
+  pop-up requirement the *Note* above says was recorded nowhere; it is an unadjudicated ask,
+  undated relative to `SCRUM-49`. (c) An **attributed** client ask, older than the drop but
+  unrecorded here: Melissa McNutt, 2026-06-17 ERP sprint review at 7:31 — *"if a customer is on
+  hold, like if they haven't paid us, and so if like sales goes to or dispatch goes to schedule a
+  job, something will pop up that Accounting can add in their customer profile that they're on
+  payment hold"*; Ehtesham Anwar deferred it to Accounting discovery (7:50–8:30)
+  ([../meetings/transcripts/2026-06-17-erp-sprint-review.md](../meetings/transcripts/2026-06-17-erp-sprint-review.md)).
+  Melissa's 2026-05-02 review-log entry #8 separately asks to *"Add a note section"*
+  ([../erp-review-log.md](../erp-review-log.md)). Still for the client: whether the ERP wants one
+  surface or two (free comments vs scoped pop-up notes), which scopes the pop-up fires on, and
+  whether the orphaned `Customer.comments String[]` is the home for either.
 
 ## Customer status values — neither side was built
 
@@ -133,8 +192,43 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Blocked: the customer status filter (`SCRUM-191`, Done, ships a filter over the three-value enum);
   any CRM or pipeline work that needs a Prospect state; the unbuilt activity indicator.
 - Owner: Melissa McNutt (policy/customer).
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps.md](../gaps.md#customer-status-values-neither-side-was-built)
+- Update 2026-09-04 (Project Repository ingest): the drop settles what **FCC** holds and repeats
+  the four-value ask in writing — **no decision on the ERP's field.** (a) FCC's status is a
+  single `Status char(1) NULL` column with three codes, `A` Active / `T` Inactive / `P` Prospect —
+  stated by FCC's own import template, where Status is one of only three unconditionally required
+  fields ([fcc-customer-import-template.md](fcc-customer-import-template.md) → Sheet 1 and *The
+  validation formulas*), and by the migration extract's `CASE`
+  ([fcc-legacy-customer-data-model.md](fcc-legacy-customer-data-model.md) → *Status code list*).
+  `ProspectCode varchar(15) NULL` and `ProspectStatus bit NOT NULL` are **separate columns**
+  ([../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMERS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMERS_Raw.sql)),
+  and the legacy payroll app's own reporting view derives `Customer_Type` = Prospect / Customer
+  from the bit while decoding `Status` as `'A'` Active / **`'I'`** Inactive / else Unknown
+  ([../payroll/tcg-rawfms-staging-database/sql/rpt.v_Base_Customers.VIEW.sql](../payroll/tcg-rawfms-staging-database/sql/rpt.v_Base_Customers.VIEW.sql):39-43)
+  — so two legacy artefacts disagree on the inactive code (`T` vs `I`) and the source does not
+  say how `Status = P` and `ProspectStatus = 1` interact. Legacy facts, not decisions; there is
+  **no On Hold** anywhere in FCC. (b) The four-value ask now exists in writing: TCG's annotation
+  on FCC's Maintain Customers slide 2 lists *Active · Inactive · Prospect · On Hold*, beside a
+  closed dropdown ([fcc-maintain-customers-tcg-review.md](fcc-maintain-customers-tcg-review.md)
+  → *Customer status*). Unadjudicated. (c) What On Hold means has one attributed statement, older
+  than the drop and unrecorded here — Melissa McNutt, 2026-06-17 ERP sprint review at 7:31: a
+  customer is on hold *"if they haven't paid us"*, Accounting sets it *"in their customer
+  profile"*, and it should *"pop up"* when sales or dispatch schedules a job; Ehtesham Anwar
+  deferred it to Accounting discovery, noting the RCS pattern of a status changing once accounting
+  details are entered (7:50–8:30,
+  [../meetings/transcripts/2026-06-17-erp-sprint-review.md](../meetings/transcripts/2026-06-17-erp-sprint-review.md)).
+  The AP/AR value engine models the same thing as **`Job On Hold`**, owner Ops/COO, on the unpaid
+  branch ([../accounting/ap-ar-value-engine-and-whiteboard-flow.md](../accounting/ap-ar-value-engine-and-whiteboard-flow.md))
+  — a job-level, not customer-level, hold. (d) On *Prospect*: the client's sales documents place
+  the prospect/opportunity lifecycle in **HubSpot** (12 stages,
+  [../quotations/hubspot-sales-playbook.md](../quotations/hubspot-sales-playbook.md) §2) and make
+  *"customer status confirmation"* the required output of the New Customer Playbook
+  ([../quotations/sales-operating-system/04-value-engine-and-playbook-index.md](../quotations/sales-operating-system/04-value-engine-and-playbook-index.md)
+  §4). Still for the client: whether the ERP's `CustomerStatus` gains `PROSPECT` and `ON_HOLD`,
+  whether On Hold is a customer status or an accounting flag that blocks scheduling, and whether
+  the auto-calculated activity indicator is a separate field — the drop has nothing on the latter.
+- Update 2026-09-04, from the record (computed the same day from `stg.FMS_CUSTOMERS_Raw` in the restored 2026-06-23 backup, 6,057 rows): FCC's `Status` column holds **`A` × 6,038, `T` × 15, `P` × 1**, and one stray `8`. So the import template and the migration `CASE` are right — Inactive is **`T`** — and the payroll app's reporting view, which decodes `I`, would show all fifteen inactive customers as *Unknown*; that view is not on the migration path, so nothing is mis-keyed today, but the letter to migrate is `T`. `ProspectCode` is empty on every row and `ProspectStatus` is a bit set on 4,141 of the 6,057 — a flag FCC populates independently of the single `P` status row, meaning nobody at TCG maintains "prospect" through the status field. Which set the ERP carries, and whether On Hold is a status or an accounting flag, still needs the client.
 
 ## Job-site map — required on the form, and what shows when it is unavailable
 
@@ -160,6 +254,163 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Melissa McNutt (policy/customer) for the form and the copy. Provider choice, fallback
   policy and coordinate ownership are the admin half —
   [admin/gaps.md](../admin/gaps.md#map-provider-no-key-fallback-and-which-table-owns-address-coordinates).
+- **Update 2026-09-04 (Project Repository ingest):** the legacy system answers none of (a)–(c) as
+  a TCG rule, but it shows current practice. **System facts** — FCC's job-site table declares
+  `Latitude numeric(20,6) NULL`, `Longitude numeric(20,6) NULL` and `AddressUnknown bit NOT NULL`
+  ([`ddl/stg.FMS_CUSTOMER_LOCATIONS_Raw.sql`](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMER_LOCATIONS_Raw.sql),
+  26,060 rows), so a site saves with no coordinates at all; the vendor's Avalara guide states the
+  inverse escape hatch — *"An Address Unknown checkbox lets the user enter longitude and latitude
+  instead; address validation then does not occur"*
+  ([accounting/avalara-sales-tax-in-nexgen.md](../accounting/avalara-sales-tax-in-nexgen.md) →
+  *Address validation — the gate*) — i.e. in FCC a pin is an **alternative** to an address, never a
+  requirement on top of it. FCC never embeds a map in the form: the Customer Job Sites window
+  carries a `Map` **toolbar button** ([fcc-maintain-customers-tcg-review.md](fcc-maintain-customers-tcg-review.md)
+  → *Customer Job Sites (slides 8–12)*), and *"job sites are geocoded via Google on create/modify;
+  the map opens in the user's own browser, provider switchable between Google and Bing per user"*
+  ([dispatch/fcc-nexgen-dispatch-guide.md](../dispatch/fcc-nexgen-dispatch-guide.md) §10). For (c),
+  the FCC screens recorded today put a map on the **job site**, the **yard** (a map button opening
+  *Geofence Settings* — Latitude · Longitude · Radius;
+  [admin/fcc-nexgen-administration-and-security.md](../admin/fcc-nexgen-administration-and-security.md)
+  → *Yards (slides 10–17)*), the **quote** (`MAP` toolbar;
+  [quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md) → *The quote
+  form*) and the **scheduled job** (`Map · Directions`; dispatch guide → *Menus and the main
+  window*); the customer, vendor and employee screens recorded show none. **Client statements** —
+  the 2026-03-20 screen review: *"Map and geolocation features are promising to enhance job site
+  management and dispatch efficiency"* and the team *"wants the ability to override yard addresses
+  and create geofences"*
+  ([meetings/summaries/2026-03-20-fcc-fields-screens-review.md](../meetings/summaries/2026-03-20-fcc-fields-screens-review.md));
+  and *"map-based job-site permit intelligence"* in the ERP review log's 2026-05-05 extraction
+  ([erp-review-log.md](../erp-review-log.md) → Sheet 2, *Job site and permits* — an AI-generated
+  extraction of the meeting, not a hand-written row). None of this says a site must carry a pin to
+  be saved, none gives the no-map copy, and the FCC shape is legacy practice, not a TCG decision.
+  Still needs the client: (a), (b), and the per-form list in (c).
+
+## Job-site map on read-only surfaces — the view tab and the create wizard's pending sites
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/job-site-view-map` (no ticket, no `.ai/aidlc/`
+  folder); tcg-scrum escalation. The **display** half; the **form** half — whether the pin is
+  required, and the copy when no map can be shown — is the entry above
+  ([#job-site-map](#job-site-map--required-on-the-form-and-what-shows-when-it-is-unavailable)),
+  whose part (c) is scoped to *forms* and so does not reach either surface below.
+- **Question:** the branch puts the shared `AddressMapPicker` in `readOnly` mode behind a per-row
+  *Show map / Hide map* collapsible, rendered only when the site has finite lat/lng. Three parts,
+  each answerable in a line. (a) On the customer's **read-only Job Sites tab**, should a saved job
+  site offer its pin at all, and if so is a **collapsed-by-default** toggle right, or should the map
+  be **always visible**, or reached by opening the site? (b) Should the same map appear on **pending
+  sites in the create-customer wizard** — records not yet saved, whose coordinates exist only in
+  form state? (c) When a site has **no coordinates** the row shows no map and no explanation. Is
+  silent absence intended here, or should it carry the same *"Map view not available."* copy the
+  form uses?
+- **Sources checked:** `customers/customers-INDEX.md` and all five candidates — **no candidate
+  mentions a map on any surface**; `customers/customer.md` (Mohsin punch list, the largest customer
+  source) — the word "map" does not appear, and its item 20 *"FINALIZED APPROACH for notes,
+  contacts, attachments and jobsite"* enumerates what the job-site **view** page carries (an add
+  button, plus edit and delete per record) **without a map**; `customers/customer-and-job-sites.md`
+  — job-site asks are contacts, certificates and *"Add directions in job sites"*, which is the
+  legacy FCC `Directions` **text** column, not a map (established in the entry above);
+  `assets/user-story-and-tasks.md`; `../decisions/` (25 notes, none on maps or on view-page
+  composition). Jira: `SCRUM-699` *need to integrate map for jobsite* (In Progress,
+  **`description: null`**) — its entire recorded content is form-side, the map↔dropdown two-way
+  sync raised by Aiman Farooq 2026-08-25 and 2026-08-27; `SCRUM-936` (QA) extracted the shared
+  picker and lists **"Wiring the picker into every address form … per-form wire-up is follow-up"**
+  under *Out of scope* — the follow-up it names is **forms**, and it was written by the implementing
+  developer describing built code, so it cannot be cited as the requirement either way.
+- **Not contradicted, and two same-shaped precedents that do not transfer:** `SCRUM-585` *View
+  Ticket Details* (QA) requires *"Ticket displays the job location, map/location information"* — a
+  read-only map on a detail view, but the **mobile** field-worker ticket, a different persona and
+  entity; `SCRUM-252` *Live Asset Map View* (In Progress) puts a map behind **a toggle** that
+  returns to the list when switched off — a toggle precedent, but the DAS asset panel. Neither is a
+  source for the customer Job Sites tab.
+- **Blocked:** sign-off of `feat/job-site-view-map` as product-correct; the same per-surface
+  wire-up decision for vendor, yard, employee and quotation job-site displays.
+- **Owner:** Melissa McNutt (policy/customer) — the same owner as the form entry above; answer both
+  together. Provider and fallback policy remain the admin half
+  ([admin/gaps.md](../admin/gaps.md#map-provider-no-key-fallback-and-which-table-owns-address-coordinates)).
+- **Update 2026-09-04 (Project Repository ingest):** legacy practice only, no decision. In FCC the
+  map is never rendered inline on a read view — it is an on-demand `Map` **toolbar button** on the
+  Customer Job Sites window ([fcc-maintain-customers-tcg-review.md](fcc-maintain-customers-tcg-review.md)
+  → *Customer Job Sites (slides 8–12)*) and on Schedule Jobs, and *"the map opens in the user's own
+  browser"* ([dispatch/fcc-nexgen-dispatch-guide.md](../dispatch/fcc-nexgen-dispatch-guide.md)
+  §10); walking that window on 2026-03-20, TCG's reviewer noted *"There's an option to pull up the
+  map"* ([meetings/transcripts/2026-03-20-fcc-fields-screens-review.md](../meetings/transcripts/2026-03-20-fcc-fields-screens-review.md),
+  the *Job sites* passage — speaker not attributed in the transcript). That is the closest the
+  record comes to (a): a map reached by an explicit action, not always visible — a system fact
+  about FCC, not a statement of what the ERP tab should do. Nothing in the drop shows a pending-site
+  list (b): FCC has no create-customer wizard, and the vendor's own import template *"has no
+  job-site / location tab at all"* ([fcc-customer-import-template.md](fcc-customer-import-template.md)).
+  For (c), FCC shows no copy for a site without coordinates; `Latitude`/`Longitude` are nullable
+  and `AddressUnknown bit NOT NULL` is the explicit flag
+  ([`ddl/stg.FMS_CUSTOMER_LOCATIONS_Raw.sql`](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMER_LOCATIONS_Raw.sql)),
+  and the migration exports `AddressUnknown` but drops `GeoFenceRadius` and `ValidationStatus`
+  ([fcc-legacy-customer-data-model.md](fcc-legacy-customer-data-model.md) → *`FMS_CUSTOMER_LOCATIONS`
+  — FCC's job sites*) — so a *reason* a migrated site has no pin will exist in the data, but nothing
+  says whether the tab should surface it. Still needs the client: all three parts.
+
+## Changing State clears City — and a saved out-of-state city is now kept rather than cleared
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. The form-interaction half;
+  the reference-data half (which countries, states and city names exist at all) is
+  [admin/gaps.md](../admin/gaps.md#which-countries-states-and-cities-may-an-address-name).
+- **Question:** On every address form — the shared `address-fields` molecule, so customers, job
+  sites, vendors, yards, employees and quotations at once — the branch changes two things about
+  the State→City dependency. Two parts, each answerable in a line. (a) When the user **picks a
+  different State**, should the City always be **cleared**, or kept when a city of the same name
+  exists in the new state? (b) When a record **already holds a city that does not belong to its
+  state** — a bad migration row, or a Google reverse-geocode result — should the form **keep it
+  visible** (today's new behaviour: retained as an "orphan" option outside the filtered list), or
+  **silently clear it** (the previous behaviour)?
+- **Sources checked:** `customers/customers-INDEX.md` and all five candidates — **none describes
+  address-field interaction**; `customers/customer.md` (the Mohsin punch list, the largest
+  customer source) and `customers/customer-and-job-sites.md`; `../decisions/` (24 notes, none on
+  form cascade or dependent dropdowns); `../assets/user-story-and-tasks.md`; `.ai/aidlc/` — no
+  ticket.
+- **(a) is sourced; (b) is not, and cuts against the ticket that sources (a).** `SCRUM-36`
+  *Missing Dependent Location Fields and Inconsistent Validation…* (Done, 2026-04-15) requires
+  *"State / Province, County, and City fields should be implemented as **proper dependent
+  dropdowns, where each selection filters the next level accordingly**"* — that covers clearing
+  the City when the State changes. But the **defect that ticket was filed against** is precisely
+  what (b) now reinstates: *"State / Province, County, and City fields are not consistently
+  behaving as dependent dropdowns, **leading to incorrect or unrelated selections**."* An orphan
+  city retained outside its state is an unrelated selection, deliberately kept.
+- **And two Done tickets pull the opposite way on (b).** `SCRUM-547` *Country Field Not Pre-Filled
+  on Edit Customer Form* (Done): *"The field should **show the saved value** on edit"*; `SCRUM-549`
+  *City Dropdown Issues Across the Application* (Done): the city is *"supposed to be
+  **pre-selected** in case of create/edit both"*. Orphan retention is the mechanism that satisfies
+  those two — so this is a **genuine conflict between three Done tickets**, not an unsourced
+  invention, and it needs one human call rather than a code fix. Worth stating in the answer: the
+  two goals can both be met by keeping the value **and** flagging it as out-of-state, which no
+  ticket asks for and nothing currently does.
+- **Note:** `SCRUM-197` *Implement Infinite Scroll for City and State Dropdowns* (Done) expected
+  cities to *"load dynamically as the user scrolls"* because *"performance may degrade with long
+  static lists"*. The branch instead fetches cities **per selected state**, which serves the same
+  concern by a different route; no ticket blesses the substitution, but nothing is contradicted.
+- **Blocked:** sign-off of `feat/us-geo-package-lookup` as product-correct; `SCRUM-962` (To Do,
+  *Fix City and Province Dropdowns*) closure.
+- **Owner:** Melissa McNutt (policy/customer) for the form behaviour — the same owner as the
+  job-site form entry above.
+- **Update 2026-09-04 (Project Repository ingest):** the legacy system has **no State→City
+  dependency at all**, which bears on (b) as evidence of what migrated rows will contain — not as a
+  TCG decision. **System facts** — FCC stores `City varchar(50) NULL` as free text beside
+  `StateCode varchar(5) NULL`, `County varchar(50) NULL` and `CountyCode` on every job site
+  ([`ddl/stg.FMS_CUSTOMER_LOCATIONS_Raw.sql`](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMER_LOCATIONS_Raw.sql)),
+  and the same `City` / `StateCode` pair on the customer row
+  ([fcc-legacy-customer-data-model.md](fcc-legacy-customer-data-model.md) → *How this maps onto the
+  ERP*, *Addresses*); its schema has an `FMS_STATES` reference table (34 inbound FK columns —
+  [admin/fcc-nexgen-database-catalogue.md](../admin/fcc-nexgen-database-catalogue.md) → *the
+  most-referenced parent tables*) and **no city table** anywhere in the catalogue; the FCC job-site
+  screen shows City as a typed field and only **County** as a dropdown
+  ([fcc-maintain-customers-tcg-review.md](fcc-maintain-customers-tcg-review.md) → *Customer Job
+  Sites (slides 8–12)*); and the vendor's import template validates City by **length only** (≤ 30)
+  and State by **exact length** (2 characters), with no check that the city belongs to the state
+  ([fcc-customer-import-template.md](fcc-customer-import-template.md) → *The validation formulas,
+  exactly*). So every one of the 26,060 job sites and 5,742 customers arriving from FCC carries a
+  free-text city that the ERP's state-filtered list may or may not contain — (b)'s "bad migration
+  row" is the ordinary case, not the exception. Nothing in the drop bears on (a): no FCC document
+  describes clearing a dependent field. Still needs the client: the one call between `SCRUM-36`
+  and `SCRUM-547`/`SCRUM-549` on (b), and (a).
 
 ## Pointers — 2026-08-27 client follow-ups touching customers
 
@@ -172,3 +423,27 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Also for the record: the FCC first-pass migration **redacted customer contact emails and phone
   numbers** and skipped SSNs (2026-08-26 sprint review); un-redaction is planned for production.
 - **Owner:** see the two owning entries.
+- **Update 2026-09-04 (Project Repository ingest):** both owning entries are still open; the drop
+  adds evidence to each, recorded here only for the customer-data angle. (a) Ryan Adams' sales
+  governance set (client-authored, dated 2026-08-06) names **six systems of record and no
+  integration**: HubSpot is *"a shared system of record for opportunities, customers, contacts,
+  activity, follow-up and forecasting"*
+  ([quotations/hubspot-sales-playbook.md](../quotations/hubspot-sales-playbook.md) §1; the company-
+  and contact-record data standard is §3), FCC holds *"Customer/jobsite, quote, job number …"* and
+  QuickBooks the *"Customer billing contact"*
+  ([quotations/sales-operating-system/01-operating-system-architecture.md](../quotations/sales-operating-system/01-operating-system-architecture.md)
+  §9), the New Customer Packet's system of record is *"FCC, HubSpot, Accounting files"*
+  ([quotations/sales-operating-system/05-forms-and-records-matrix.md](../quotations/sales-operating-system/05-forms-and-records-matrix.md)
+  §2), and the Sales Coordinator *"must reconcile differences before handoff"*
+  ([quotations/sales-operating-system/03-sales-coordinator-operations-manual.md](../quotations/sales-operating-system/03-sales-coordinator-operations-manual.md)
+  §3). That is a client statement that the contact record lives in HubSpot **and** FCC (and
+  QuickBooks for billing), with no single owner named — Patrick's explanation of the sync is still
+  what the admin entry waits on. (b) FCC's *Customer Owned Units* screen is now recorded — keyed by
+  Serial Number/VIN, with a read-only customer block and a unit-level file-links dialog
+  ([assets/asset-record-requested-additions.md](../assets/asset-record-requested-additions.md) →
+  *Customer Owned Units (slides 20–24)*;
+  [field-ops/fcc-nexgen-service-guide.md](../field-ops/fcc-nexgen-service-guide.md) → *Customer
+  Owned Units*) — and its row count is stated two ways: **12** in the 2026-08-26 migration brief vs
+  **79** in [assets/fcc-units-and-schedule-types.md](../assets/fcc-units-and-schedule-types.md) →
+  *The 42 unit / equipment / storage tables*. Neither pointed-to question is answered; this pointer
+  stays open until both are.

@@ -95,6 +95,16 @@ transcript will otherwise put the control back.
   runs payroll says no".
 - **Owner:** Corrina Bustos — for what is *paid*, not for what is *owed*.
 - **Status:** open — needs confirmation
+- **Update 2026-09-04 (Project Repository ingest):** the caveat above is lifted. The **complete**
+  Truck Crane MLA 2025–2028 is now in the vault as clean Word text —
+  `.ai/vault/payroll/mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md` (17 articles,
+  Appendix A, camera MOU) — and Article V *Subsistence Allowance* §1 reads *"Employees covered by
+  this Agreement who are required by the Employer to remain away from home overnight will be paid
+  a subsistence allowance"*: no classification, group or craft is named anywhere in the article,
+  and the only other subsistence clause (Article III, *Craft Pay Rate*) still keys on the building
+  trades craft being worked with, not on the employee's craft. So the whole contract, not just an
+  extract, says no craft is excluded. Still open for the reason already given — Corrina Bustos has
+  to say what is *paid* by practice.
 
 ## 13. What this deliberately does not specify
 

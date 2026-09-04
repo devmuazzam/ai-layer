@@ -2,7 +2,7 @@
 title: Payroll source manifest - OneDrive drop 2026-08-11
 source: onedrive/OneDrive_1_8-11-2026/
 migrated: 2026-08-13
-updated: 2026-08-18
+updated: 2026-09-04
 status: reference
 conflicts_with: []
 jira: []
@@ -21,6 +21,20 @@ This exists so nobody has to re-derive whether something was missed, and so the 
 > where its content went. Name any file from this drop and it resolves — including the ones
 > deliberately not migrated, so "we don't have that" is a written answer rather than a guess.
 > This page stays the drop-level narrative; that folder is the per-file index.
+
+> **Re-shared 2026-09-04, verified file by file.** The same folder came back as
+> `3.7.1_MODULE-HR-LABOR-PAYROLL/` inside the client's SharePoint "Project Repository" drop. All 34
+> files were compared against this manifest by name. **33 are accounted for below. One was not:
+> `Payroll-rule dependency matrix.docx`** — a ~9,000-word TCG-side position paper on calculation
+> scope, immutable closed periods and retro adjustments, now
+> [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md). Its worked example
+> (8/22–8/28) postdates the 2026-08-11 snapshot, so the likelier reading is that it was added to
+> SharePoint after this drop was taken rather than missed by the migration. Two further changes:
+> `TCG - backup - 2026-06-10_L12andNU.7z`, listed under *Binaries* below, was **opened** and turns
+> out to be full application source — see
+> [legacy-payroll-app-source-tree-2026-06-10.md](legacy-payroll-app-source-tree-2026-06-10.md);
+> and the drop-level record for every file, including these, is
+> [sync/project-repository-2026-09-04.md](../sync/project-repository-2026-09-04.md).
 
 ## Migrated
 
@@ -46,13 +60,17 @@ This exists so nobody has to re-derive whether something was missed, and so the 
 | `PAYROLL_CALC_EXTRACT.zip` (464 KB) — read-only extract of `TCG_PayrollAPP`: 141 SQL definitions, DDL, config rows, distinct codes, source feed, tests, worked examples | 2026-08-18 | [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) — everything except the extract's `parts/` provenance copies |
 | 4 ADP Workforce Now screenshots (Manage Regular Payroll #31, ROLL / SALARY / PTO001 worksheets, company 4RZ) | 2026-08-18 | the ADP hand-off section of [legacy-payroll-app-db-extract/INDEX.md](legacy-payroll-app-db-extract/INDEX.md) |
 
+**2026-09-04 — `TCG_SQL_backup_2026-06-23.7z` restored.** The SQL backup that was listed but never opened is now processed: `TCG_PayrollAPP_20260623.bak` → [legacy-payroll-app-db-backup-2026-06-23.md](legacy-payroll-app-db-backup-2026-06-23.md) (code identical to the 2026-08-18 extract; data and run history recorded), `TCG_RawFMS_20260623.bak` → [tcg-rawfms-staging-database/INDEX.md](tcg-rawfms-staging-database/INDEX.md) (schema, ETL, reference rows). Archive and a table export are kept off-SharePoint; see those pages for the confidentiality note.
+
 ## Not migrated, and why
 
 ### Scanned images — no text layer
 
-`pdftotext` returned **zero characters** for all three. They are photographed/scanned copies of
-the union agreement. Nothing was extracted; nothing was inferred. The readable route to the same
-content is [mcog-l12-mla-2025-2028/](mcog-l12-mla-2025-2028/INDEX.md).
+`pdftotext` returned **zero characters** for all three. **OCR'd on 2026-09-04** (tesseract, 200 dpi):
+they are *not* three copies of one document — the 40-page file is the Truck Crane MLA, the
+108-page file is the **SCCA Southern California MLA** (a different agreement), and the 4-page file
+is Local 12's **2025-08-15 wage notice**. All three are now in
+[mcog-l12-mla-2025-2028/](mcog-l12-mla-2025-2028/INDEX.md) → *The scanned PDFs — OCR'd 2026-09-04*.
 
 | File | Size |
 | --- | ---: |
@@ -60,17 +78,16 @@ content is [mcog-l12-mla-2025-2028/](mcog-l12-mla-2025-2028/INDEX.md).
 | `MCOG LABOR UNION L12/07.01.2025 truck crane MLA (1).pdf` | 2.6 MB |
 | `PAYROLL_APP_build/L12_Union-Labor-Agreements/OE-Local-12-MLA-25-28-Comp.pdf` | 2.4 MB |
 
-**If the full agreement text is ever needed, these need OCR** — they are not currently searchable
-by any tool, including this vault.
+~~If the full agreement text is ever needed, these need OCR~~ — done 2026-09-04; searchable text now in the vault.
 
 ### Full agreement text, superseded by the payroll extract
 
 | File | Size | Note |
 | --- | ---: | --- |
 | `MCOG LABOR UNION L12/MCOG Union 12 Master Labor Agreement 2022-2025 and 2025-2028.pdf` | 15.9 MB | Text-extractable (1,753 lines). Contains **both** the expiring 2022–2025 and current 2025–2028 agreements — a live trap for citing a superseded rate. Not migrated because the payroll-relevant sections are already in `mcog-l12-mla-2025-2028/` |
-| `PAYROLL_APP_build/L12_Union-Labor-Agreements/MCOG … 2025-2028 EXTRACTED.docx` | 1.1 MB | Near-identical to the migrated payroll summary |
-| `MCOG LABOR UNION L12/2026 MCOG_updated_corrected_2026-06-22.pdf` | 248 KB | Rate sheet, 212 lines |
-| `MCOG LABOR UNION L12/2026 MCOG_incorrectOldVersion.pdf` | 366 KB | **Filename says it is wrong.** Do not cite |
+| `PAYROLL_APP_build/L12_Union-Labor-Agreements/MCOG … 2025-2028 EXTRACTED.docx` | 1.1 MB | ~~Near-identical to the migrated payroll summary~~ **Wrong — corrected 2026-09-04.** It is the *whole* agreement as clean text (17 articles, Appendix A, camera MOU), not the payroll extract. Now [mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md). The same text is embedded as an OLE object in `PayrollAPP_LABOR-LOGIC-EXAMPLES.xlsx` |
+| `MCOG LABOR UNION L12/2026 MCOG_updated_corrected_2026-06-22.pdf` | 248 KB | Rate sheet, 212 lines — **migrated 2026-09-04** to [mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md](mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md) |
+| `MCOG LABOR UNION L12/2026 MCOG_incorrectOldVersion.pdf` | 366 KB | **Filename says it is wrong.** Do not cite — diffed 2026-09-04: differs from the corrected sheet only in the supplemental-dues column ($3.45 vs $1.75) |
 
 ### Legacy walkthrough documents, superseded by the knowledge pack
 
@@ -85,8 +102,7 @@ The knowledge pack's own source-of-truth order ranks these below its dated Markd
 
 ### Live payroll data and workbook machinery
 
-Real employee payroll data and the macro-enabled workbooks that produce it. Not migrated: they
-are data and tooling, not specification, and copying employee payroll rows into a second system
+Real employee payroll data and the macro-enabled workbooks that produce it. Not migrated as data. **The VBA in the three `.xlsm` files was read on 2026-09-04** → [adp-workbook-vba-macros.md](adp-workbook-vba-macros.md). They remain data and tooling, not specification, and copying employee payroll rows into a second system
 is what the knowledge pack's `SECURITY_REDACTION_CHECKLIST.md` warns against. The **process**
 they implement is captured in [adp-sop-v3.8.md](adp-sop-v3.8.md) and
 [adp-bucket-crosswalk.md](adp-bucket-crosswalk.md).

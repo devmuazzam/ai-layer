@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-09-01
+updated: 2026-09-04
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -33,7 +33,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   as one.
 - Blocked: the action item to review existing integrations for ERP incorporation.
 - Owner: Patrick (demo), then whoever writes it down.
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps.md#integrations-hubspot-microsoft-365-dialpad-mapsly](../gaps.md#integrations-hubspot-microsoft-365-dialpad-mapsly)
 - **Update 2026-08-27:** Brian Petros, written message to the TCG team, 2026-08-27 ("A couple things that came up in my discussion with CodingCops today, that we'll discuss in future meetings"), following the 2026-08-26 ERP sprint review — logged in [payroll/client-message-findings.md](../payroll/client-message-findings.md#cross-module--2026-08-27-follow-ups-after-the-fcc-migration-first-pass-brian-petros) — still open; Brian re-lists "have Patrick explain more details
   regarding Customer data synced with HubSpot & Microsoft". The 2026-08-26 sprint review
@@ -41,6 +41,54 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Microsoft, HubSpot and Dialpad are synced with each other, **FCC is not**, and salespeople may
   update contacts in HubSpot — so the customer/contact migration from FCC may be the stale copy.
   Customer-side pointer: customers/gaps.md. The brief names the contact: **Patrick McKiernan**, and adds "show legacy FCC ID on UI" — the annotated migration brief, [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md) A1.
+- Update 2026-09-04 (Project Repository ingest): the drop answers most of part (a) — *what the
+  integrations do* — for HubSpot and Microsoft 365, nothing for Dialpad or Mapsly, and leaves
+  part (b) — *what moves into the ERP* — with three client statements that do not line up and no
+  decision. **The "Candidates: none of substance" line above is now stale.** (i) HubSpot — Ryan
+  Adams' sales governance set (client-authored, dated 2026-08-06) defines it as *"a shared system
+  of record for opportunities, customers, contacts, activity, follow-up and forecasting"*, the
+  owner of opportunity stage, owner, next action, follow-up, quote status and lost reason, with a
+  12-stage lifecycle and a company/contact/jobsite data standard
+  ([quotations/hubspot-sales-playbook.md](../quotations/hubspot-sales-playbook.md) §1–3;
+  [quotations/sales-operating-system/01-operating-system-architecture.md](../quotations/sales-operating-system/01-operating-system-architecture.md)
+  §9). The same set names **six systems of record — HubSpot, FCC, Outlook, company file storage,
+  QuickBooks, FAA/external portals — and no integration between them**: the Sales Coordinator
+  *"must reconcile differences before handoff"*
+  ([03-sales-coordinator-operations-manual.md](../quotations/sales-operating-system/03-sales-coordinator-operations-manual.md)
+  §3), and the controlled forms file to *"FCC, HubSpot, Accounting files"* / *"HubSpot/FCC"*
+  ([05-forms-and-records-matrix.md](../quotations/sales-operating-system/05-forms-and-records-matrix.md)
+  §2). (ii) Microsoft 365 — TCG's own RFP (client-authored, *DRAFT v1.0*, February 2026) lists it
+  among the systems in use (*"email, file storage, profiles/Active Directory — OneDrive,
+  SharePoint, Teams"*), makes it a **High-priority required integration — "SSO, user directory,
+  document storage (SharePoint/OneDrive)"**, *"SSO via Azure AD"*, and adds a Phase 1 *"Microsoft
+  365 Optimization"* module
+  ([admin/tcg-erp-rfp-2026-02-26.md](tcg-erp-rfp-2026-02-26.md) → *Required integrations*, *Phase
+  1*). The Teams rollout deck says TCG is *"moving our day-to-day communication and file sharing
+  into Microsoft Teams"* ([project-repository-filing-rules.md](project-repository-filing-rules.md)
+  → *The companion Teams rollout deck*). FCC practice, not a decision: NexGen user IDs come *"from
+  Active Directory — this is for all users, including field employees"*
+  ([fcc-nexgen-administration-and-security.md](fcc-nexgen-administration-and-security.md) §4).
+  (iii) Dialpad and Mapsly appear **nowhere in the drop**; the only description of either remains
+  Brian Petros' oral account at the 2026-08-11 sales-process meeting
+  (`../meetings/transcripts/2026-08-11-sales-process.md`, ~57:57–1:02:31: Dialpad transcribes
+  calls and texts into HubSpot and is the number salespeople dial out on; Mapsly shows every
+  customer near a job walk and lets management see a salesperson's location in working hours; an
+  inbound Outlook email adds a missing contact to HubSpot) — which this entry's *Candidates* line
+  predates. (iv) The RFP names **neither HubSpot, Dialpad nor Mapsly** in its systems-in-use or
+  integrations lists — consistent with the 2026-03-06 transcript (~1:31), where Ryan Adams was
+  still choosing between HubSpot and Salesforce, so the RFP predates the CRM stack and cannot
+  speak for it. (v) On part (b) the record holds, without a `decisions/` note: RFP Phase 1
+  *"Customer & Quote Management — CRM-style customer records"* (February); Melissa McNutt,
+  2026-06-25, *"We want to have our own [CRM] where we could develop it and not have HubSpot"*
+  (`../meetings/transcripts/2026-06-25-cc-tcg-erp-system.md`, ~47:04), with CodingCops proposing
+  an interim fetch-customers-from-HubSpot button; and Brian Petros, 2026-08-11, that job-box intake
+  is *"better in the ERP and have the ERP talk directly to HubSpot"* (~1:04:04). Still needs the
+  client: Patrick McKiernan's walkthrough of the actual sync (which way each of Outlook → HubSpot,
+  Dialpad → HubSpot and HubSpot ↔ Microsoft contacts runs, and whether Mapsly reads HubSpot); a
+  named decision on whether the ERP integrates with HubSpot, replaces it, or both in sequence; and
+  whether the RFP's Microsoft 365 SSO / SharePoint integration is in the SOW's scope — the SOW
+  page names no third-party integration at all
+  ([codingcops-sow-and-engagement-terms.md](codingcops-sow-and-engagement-terms.md)).
 
 
 ## Map provider, no-key fallback, and which table owns address coordinates
@@ -83,6 +131,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 - **Status:** open
 - **Asked:** 2026-08-27 — PR #421 review (branch `refactor/explicit-tenant-seeding`, no ticket); tcg-scrum escalation
+- **Observed 2026-09-01 — the premise that provisioning happens today does not hold.** A tenant
+  created through Super Admin (`CODING-COPS`) came up with **zero departments and zero department
+  roles**, while `PLATFORM` and `TCG-DEFAULT` each carry 15 system departments (`DEPT-ACCOUNTS`,
+  `DEPT-FLEET`, `DEPT-YARD`, …, all `is_system: true`) and 18 roles. Those exist because
+  `seed-data.ts` created them, not because tenant creation did — `AdminTenantsService.create()`
+  writes the `TenantCompany` row and nothing else. So option (a) above is not "today's behaviour"
+  for admin-created tenants; the empty portal is. The consequence this entry predicts is real and
+  observed: with no departments there are no roles, so the first user cannot be given one without
+  hand-creating both.
 - **Question:** When a tenant is created — by the admin "create tenant" action or by self-signup —
   which reference data must exist on day one? Four sets are in question and each can be answered
   in a line: (a) **system departments and their department roles**, (b) **billing code types**,
@@ -136,6 +193,260 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   exists for the `SEED_TENANT_CODE` path the PR leaves as the only way to populate a tenant.
 - **Owner:** Fouzan Shakil (assignee of `SCRUM-871` and the named decider on the 2026-08-20/25
   decision notes), with Ehtesham Anwar for what onboarding a second tenant is meant to look like.
+- **Update 2026-09-04 (Project Repository ingest):** No source in the drop states what a new
+  tenant must contain — the drop describes FCC, and the question is the ERP's. What it shows about
+  current practice, all legacy-system fact and none of it a TCG decision: **(a)** TCG's ten FCC
+  departments are TCG-created rows, not vendor defaults — `ST` Storage by `bpetros` 2025-10-31 and
+  `CR` Customer Repair by `jstricker` 2025-08-13
+  ([../payroll/tcg-rawfms-staging-database/data/fcc-job-status-type-and-department-codes.md](../payroll/tcg-rawfms-staging-database/data/fcc-job-status-type-and-department-codes.md)
+  → *Department*; [../assets/fcc-units-and-schedule-types.md](../assets/fcc-units-and-schedule-types.md)
+  → *Departments — 10, all active*) — and FCC's own unit-import template ships its
+  `Companies / Yards / Departments / States / Salespeople` sheets **empty**, *"so the template as
+  delivered cannot be filled in without the tenant's own code lists"* (same page): FCC's model is
+  that the customer supplies its code lists. **(c)** TCG's 33 industries are all `Status = 1`
+  ([../customers/fcc-legacy-customer-data-model.md](../customers/fcc-legacy-customer-data-model.md)
+  → *`FMS_INDUSTRIES`*). **Settings scope:** NexGen's per-company configuration is one row of
+  `FMS_SYSTEM_DEFAULT` with **455 columns**
+  ([fcc-nexgen-database-catalogue.md](fcc-nexgen-database-catalogue.md) → *The widest tables*),
+  and the company record TCG annotated carries counters, payroll defaults, T&Cs/footers and
+  branding ([fcc-nexgen-administration-and-security.md](fcc-nexgen-administration-and-security.md)
+  → *Company (slides 2–9)*); a second company, *The Repair Guys*, appears only in GL scope.
+  Nothing in the drop touches (b) billing code types or (d) the premium catalog as day-one data.
+  The client still has to say which of (a)–(d) a new tenant is provisioned with, and whether
+  anything gates first sign-in.
+
+
+## Departments — does archive replace delete outright, and what may an archived department still be used for
+
+- **Status:** open
+- **Asked:** 2026-08-31 — PR #422 review (branch `feat/SCRUM-648`, Path B per
+  `.ai/aidlc/processed.log`:57, so there is no `SCRUM-648/spec.md` §12 to hold this); tcg-scrum
+  escalation
+- **Question:** [decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  settles that archive is the removal action app-wide and that the mechanism is the existing
+  `archivedAt` column. It explicitly does **not** settle the three things PR #422 decided for
+  departments, each answerable in a line. **(a) Does `DELETE /departments/:code` go away, or stay
+  alongside archive?** The PR removes it; the decision says the fate of the `DELETE` endpoints is
+  undecided, and every other converted entity kept theirs (see *Weak signals*). **(b) May a
+  department be archived while employees or department roles still reference it?** Hard delete
+  blocked on both counts; archive has no reference guard, and with `DELETE` gone there is now no
+  operation anywhere that enforces one — a department can leave the active list while staff are
+  still assigned to it. Is that intended, or should archive warn, block, or require reassignment
+  first? **(c) What may an archived department still be selected in?** `GET /departments` now
+  defaults to `archivedAt: null`, so archived departments disappear from the employee create form,
+  both asset forms and the dashboard as well as from the list. Is disappearing from every picker
+  the intended participation rule, and what happens to employees and assets already pointing at a
+  department that is later archived?
+- **Sources checked:** [INDEX.md](../INDEX.md); [STRUCTURE.md](../STRUCTURE.md) routing;
+  `decisions/` (17 notes) — **only two touch archive, and both disclaim this ground.**
+  [decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  → *What this does NOT settle* names "whether the `DELETE` endpoints stay" and "what an archived
+  record still participates in (search, reports, references from live records)" as open;
+  [decisions/2026-08-20-planning-tracker-archived-filter.md](../decisions/2026-08-20-planning-tracker-archived-filter.md)
+  confirms `archivedAt: null` as the correct *default* for one surface and then says in terms that
+  the statement "was not made app-wide" and does not tell other listing surfaces what to do. No
+  decision note mentions departments at all. `admin/INDEX.md` (one content file,
+  `tcg-documents.md`, on attachments); this register; vault-wide grep for `department` — the only
+  product-level department content is a four-bullet section in
+  [customers/customer.md](../customers/customer.md):84–91 (naming, sorting, description copy,
+  role permissions) which **says nothing about deleting or archiving a department**; every other
+  hit is ADP's org-unit codelist or a meeting transcript. `payroll/INDEX.md`, which owns the
+  `departments` usecase per [STRUCTURE.md](../STRUCTURE.md):40, has **no department content**.
+  **Jira was not consulted — no Jira MCP was available in this session**, so `SCRUM-648`'s own
+  description and `SCRUM-652` (referenced by `customers/customer.md` item 11) are unread and could
+  still carry an answer. Check those before treating this as fully unsourced.
+- **Weak signals, not answers:** the app-wide decision's design guidance is *"like other entities
+  already have… the answer to 'how should archive behave here?' is 'read one of the 17'"*, which
+  makes the existing implementations the nearest thing to a written rule. They point **away** from
+  (a) and **toward** (b)'s archive half. Nineteen Prisma models now carry `archivedAt`. Of the
+  entities with `archive`/`unarchive` endpoints, **every one except quotations also kept its
+  entity-level `DELETE`** — yards, purchase-orders, customers, manufacturers, plans, vendors,
+  agencies, categories, sub-categories, tools, assets, price-listings, permits, employee, parts,
+  projects, billing-codes. Departments is now the second entity in the app to have archive and no
+  delete. Conversely, archive **without** a reference guard is the settled pattern:
+  `apps/api/src/usecase/customers/customers.service.ts` keeps the reference counts on `remove()`
+  and deliberately omits them from `archive()`, commented *"so referenced records… stay intact"*.
+  So (b) is only a departure because (a) removed the guarded path — answer (a) and (b) may follow.
+  All of this is **code, which is not a requirement source**; it is cited to show which way the
+  convention runs, not to settle anything.
+- **Not in question:** the All / Archived quick filters themselves. `customers/customer.md` item 11
+  asks for an archived quick filter above the search bar **"(across the app)"**, and the PR uses
+  the shared `buildAllArchivedQuickFilters` helper that nine other listings already use. That file
+  is an unverified cross-module punch list, so the support is weak, but it is written.
+- **Blocked:** PR #422 (`feat/SCRUM-648`) cannot be signed off as product-correct. Also blocked by
+  consequence: whether the other 17 entities should now lose their `DELETE` endpoints too, since
+  departments is the first to do so and nothing records that as the intended direction.
+- **Owner:** Fouzan Shakil for (a) and (b) — he is the named decider on the app-wide archive
+  decision, and this is the first case that tests what it meant — with Ehtesham Anwar for (c), as
+  the only recorded voice on departments as org structure
+  (`meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:68, :72).
+- **Cross-link:** payroll/gaps.md → *Pointers — departments archive* (STRUCTURE.md:40 routes the
+  `departments` usecase to payroll, and (b) turns on employee assignments)
+- **Update 2026-09-04 (Project Repository ingest):** Evidence of FCC practice, not a TCG decision
+  on (a)–(c). **Deactivate, never delete:** `FMS_DEPARTMENTS` carries `Status bit NOT NULL`
+  ([../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_DEPARTMENTS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_DEPARTMENTS_Raw.sql):11)
+  and the `Maintain → Company → Departments` grid shows it as a `Status` column
+  ([fcc-nexgen-administration-and-security.md](fcc-nexgen-administration-and-security.md) →
+  *Departments (slide 18)*); the sibling `FMS_JOB_TYPES` lookup shows how FCC retires a code —
+  `Contract`, `Monthly`, `Weekly` set to `Status = 0` in 2020, still present on 2026-06-23, still
+  referenced by historical jobs, and still listed with their status on the quote screen's job-type
+  list ([../payroll/tcg-rawfms-staging-database/data/fcc-job-status-type-and-department-codes.md](../payroll/tcg-rawfms-staging-database/data/fcc-job-status-type-and-department-codes.md)
+  → *Job type*; [../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md)
+  → *Job Types and Quote Status codes*). FCC's stated security default is to **disable the
+  "Delete Master" button on every screen** — *"most users do not need to delete a master record…
+  however, there are exceptions"* (same admin page → *`Admin > Menu Security`*): hard delete exists
+  in FCC but is withheld from most profiles. Departments in FCC are also **document-number
+  prefixes** (`OM-36540` quotes; `OM-` / `FL-` / `SH-` purchase orders —
+  [../vendors-agencies/purchase-orders-fcc/fcc-po-entry-walkthrough.md](../vendors-agencies/purchase-orders-fcc/fcc-po-entry-walkthrough.md)),
+  one reason a legacy department is never removed: every historical number carries its code. All
+  ten TCG departments are `Status = 1`, so the drop offers no archived-department case to read (c)
+  from. Still needed from the client: whether the ERP keeps `DELETE`, whether archive must guard
+  live employee/role references, and what an archived department may still be picked in.
+
+## Which countries, states and cities may an address name?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. Routed here because
+  [../STRUCTURE.md](../STRUCTURE.md):42 assigns reference data *(addresses, cities, states,
+  countries, industries)* to this module. Form-interaction half in
+  [../customers/gaps.md](../customers/gaps.md).
+- **Question:** The branch replaces the DB-seeded `Country`/`State`/`City` tables with the
+  `@countrystatecity/countries` npm package behind the same endpoints, and narrows what the
+  pickers offer. Three parts, each answerable in a line. (a) Is **United States the only
+  selectable country**, or is the full list kept with the US merely pre-selected? (b) Does the
+  state list stop at the **50 states + DC**, or must **Puerto Rico, Guam, the US Virgin Islands,
+  American Samoa, the Northern Marianas** and the **military postal regions (AE/AA/AP)** be
+  selectable — TCG bills federal and military work, and an APO address cannot be entered without
+  them. (c) Whose **city name vocabulary** is canonical: the package's (`New York City`,
+  `Washington D.C.`) or the names already stored (`New York`, `Washington`)?
+- **Sources checked:** **Vault — nothing on any of the three.** `INDEX.md`; `admin/INDEX.md`
+  (the module's one content file is `tcg-documents.md`, on attachments); `admin/gaps.md`;
+  `../customers/customers-INDEX.md` and all five candidates; `../decisions/` (24 notes, none on
+  addresses, geography or reference-data vocabulary); vault-wide grep for `countr`, `iso 3166`,
+  `puerto rico`, `territor`, `guam`, `military postal` — **no vault file states a country list, a
+  state value set, or a city naming rule.** `../STRUCTURE.md`:42 routes the facet here but no
+  content sits behind it. `.ai/aidlc/` — no ticket mentions any of these terms.
+- **Jira sources the default, not the restriction.** `SCRUM-39` *Country Field Should Be Dropdown
+  and Pre-Selected as USA* (Done, 2026-04-16) and `SCRUM-60` (Done, same day, Yards) both ask for
+  *"a dropdown with **predefined options**"* with *"**USA pre-selected by default**"*. A default
+  inside a list is not a list of one, so (a)'s narrowing is **not** covered by them. `SCRUM-103`
+  (Done) fixes the field order *Country → State → City → Zip* and keeps Country on every form.
+  Both reporters are **Aiman Farooq, CodingCops QA** — the same internal-QA voice whose scope
+  judgement `../customers/gaps.md` → *Customer-level comments* records as having overwritten a
+  client ask, so these are not adjudicated product decisions and no decision note was written
+  from them.
+- **Two written counter-signals to the narrowing:**
+  - **`SCRUM-36`** *Missing Dependent Location Fields…* (Done, 2026-04-15) presupposes country is
+    changeable: its repro step is *"**Change country/region** or attempt data entry"*, and its
+    expected result is that *"Phone Number, Fax, and Zipcode fields should enforce
+    **country/region-based validation and formatting rules dynamically**"*. Dynamic per-country
+    formatting has no purpose in a one-country picker.
+  - **The FCC migration loads 252 countries and 73 states.**
+    [../meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md):68
+    lists *States / countries — 73 / 252* as a **loaded** module. 73 is 22 more than 50 + DC.
+    Nothing supersedes that row, and this branch stops loading it (see next entry).
+  - **Every Jira ticket names the field "State / Province"**, not "State" — `SCRUM-36`,
+    `SCRUM-29`, `SCRUM-28`, `SCRUM-17`, and `SCRUM-962` (To Do, created 2026-09-01 by Umair Khan)
+    calls it *"Province"* outright. "Province" is not a US subdivision, so the shipped label and a
+    50-states-plus-DC list disagree about what the field is for.
+- **Weak signal for US-centricity, not a decision:** the legacy FCC extract
+  (`../payroll/legacy-payroll-app-db-extract/data/source-feed.md`:170, :175) shows every sampled
+  customer row carrying `Country=USA` and `StateCode=CA`. That is migration data describing a
+  California crane business, not a statement about what the picker must offer.
+- **`SCRUM-962` is the branch's likely origin and does not authorise any of this.** *"Verify and
+  fix the City and Province dropdowns, as they were not displaying correctly. The dropdown data
+  should be populated correctly through the relevant API."* — a display defect, To Do,
+  unassigned, created the same day as the branch. It asks for the dropdowns to work, not for the
+  country list to shrink or the city vocabulary to change.
+- **Blocked:** sign-off of `feat/us-geo-package-lookup` as product-correct; `SCRUM-962` closure.
+  (c) additionally puts a **shipped, twice-ticketed behaviour at risk** — `SCRUM-789` (Done) and
+  `SCRUM-819` (Done) filter the **Permits Agency dropdown by the selected City**, so a change of
+  city vocabulary can silently empty that dropdown for agencies attached to the old names. That
+  consequence needs checking whichever way (c) is answered.
+- **Owner:** Brian Petros (data and migration — the recorded voice on FCC address data), with
+  Melissa McNutt for what the forms must offer operationally.
+- **Update 2026-09-04 (Project Repository ingest):** FCC's own shape, as system fact — it states
+  no permitted list. **Country is free text in FCC:** `FMS_CUSTOMER_LOCATIONS.Country` is
+  `varchar(50)` with a separate `CountryCode varchar(5)`
+  ([../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMER_LOCATIONS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMER_LOCATIONS_Raw.sql):11,
+  :46; `FMS_CUSTOMERS` has the same pair), and TCG's customer import template makes Country
+  *optional, up to 30 characters* while **State is exactly 2 characters**
+  ([../customers/fcc-customer-import-template.md](../customers/fcc-customer-import-template.md) →
+  *Sheet 1*, *The validation formulas, exactly*). **State is a code against a lookup:** `StateCode
+  varchar(5)` and an `FMS_STATES` table FK-referenced by 34 columns
+  ([fcc-nexgen-database-catalogue.md](fcc-nexgen-database-catalogue.md) → *Keys and
+  relationships*); its row count is not in the drop, so the migration brief's *73 states* is
+  neither confirmed nor contradicted. **City is free text** (`varchar(50)`), and the job-site
+  screen pairs it with a `County` dropdown, a `Country` field and a `ValidateAddress` button
+  ([../customers/fcc-maintain-customers-tcg-review.md](../customers/fcc-maintain-customers-tcg-review.md)
+  → *The site detail*); FCC's contact screen labels the field **`State/Prov`** (same page). None of
+  this answers (a), (b) or (c) — a free-text country column says nothing about what a picker must
+  offer, and no page in the drop names a territory or an APO address. Client still needed on all
+  three.
+
+## Do the Country/State/City tables stay, and does the FCC load still ship 73 states / 252 countries?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup` (no ticket);
+  tcg-scrum escalation.
+- **Question:** The branch leaves the Prisma `Country`, `State` and `City` models in place but
+  removes every writer — verified at `apps/api/src/utility/seed-data.ts`:927–929 (*"Countries,
+  states and cities are no longer seeded"*) and `apps/api/fcc-seeder/src/seed-all.ts`:134–135
+  (*"States and countries are not imported"*). No drop migration ships. Two parts, each
+  answerable in a line. (a) Do the three tables get **dropped**, **kept as a historical record**,
+  or **kept because something still needs to write them**? (b) The FCC migration brief advertises
+  *States / countries — 73 / 252* as loaded; is **retiring that load** intended, and does TCG need
+  telling, given they are reviewing the brief row by row?
+- **Sources checked:** **Vault — nothing.** `../decisions/` (24 notes; the nearest,
+  [../decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md),
+  governs **entity records**, not schema tables, and settles neither); `admin/INDEX.md`;
+  `../STRUCTURE.md`:42; `.ai/aidlc/` (no ticket). Jira: no ticket proposes removing, keeping or
+  dropping these tables.
+- **The vault treats an orphaned column as a defect, not a pattern.**
+  [../customers/gaps.md](../customers/gaps.md) → *Customer-level comments* records
+  `comments String[] @default([])` as surviving on `model Customer` *"orphaned with no UI"* — cited
+  as part of an open problem needing resolution. So *"left in place with no writers"* has a
+  precedent here, and that precedent is a complaint.
+- **Related, same class:** *What a newly created tenant must contain* (above) already asks which
+  reference data a tenant gets on day one and explicitly lists **industries**; countries, states
+  and cities are the same facet in `../STRUCTURE.md`:42 and should be answered with it, not
+  separately.
+- **Blocked:** nothing ships broken — the endpoints keep serving. This needs an answer before the
+  tables are dropped, and before the next FCC migration review with TCG.
+- **Owner:** Brian Petros for the migration half; Fouzan Shakil for the schema half.
+- **Update 2026-09-04 (Project Repository ingest):** Nothing in the drop speaks to the ERP tables'
+  fate or to retiring the load. One source fact bears on (b): in FCC, `FMS_STATES` is a real
+  lookup — FK-referenced by **34 columns**, among the dozen most-referenced tables in the database
+  ([fcc-nexgen-database-catalogue.md](fcc-nexgen-database-catalogue.md) → *Keys and
+  relationships*) — and the migration-profiling scripts in the same drop class `_STATE` /
+  `_COUNTRY` tables as *Possible Lookup / Master Reference* (same page → *The classification
+  scheme*). So every migrated customer and job-site row carries a `StateCode` that must resolve
+  against **something** in the ERP; which table that is, and whether the brief's 73 / 252 row is
+  withdrawn, still needs Brian Petros and Fouzan Shakil. Legacy-system fact, not a decision.
+
+## Is an ODbL share-alike geo dataset acceptable, and who signs that off?
+
+- **Status:** open — **not a product question.** Recorded here because no register owns it.
+- **Asked:** 2026-09-01 — PR review of branch `feat/us-geo-package-lookup`; tcg-scrum escalation.
+- **Question:** The branch adds `@countrystatecity/countries`, chosen over the GPL-licensed
+  `country-state-city` and over a React UI kit, on the stated grounds that its **ODbL** licence is
+  the more permissive of the two. ODbL is a **share-alike database licence carrying an attribution
+  obligation**, so two things need a named human, and neither is the product team's: (a) is ODbL
+  acceptable for a commercial closed-source ERP, and who at TCG or CodingCops accepts that risk?
+  (b) is the **attribution requirement discharged** anywhere a user or auditor can see it — the
+  branch adds none.
+- **Sources checked:** **no third-party-licence or dependency policy exists anywhere.** `domain/`
+  (the six SOP files — the vault's only `verified` content — cover SDLC, sprint planning, standup,
+  grooming, sprint close and Jira ticket standards, and none mentions dependencies or licensing);
+  `../decisions/` (24 notes; the two grep hits for *licence* use the word idiomatically); no
+  `LICENSE` file at repo root; `.ai/aidlc/GUIDE.md` and the ticket folders carry no dependency
+  gate. So the choice is not *contradicted* by anything — there is simply no policy to check it
+  against, and no reviewer who is designated to.
+- **Blocked:** nothing technically. Flagged because a licence obligation adopted with no owner and
+  no attribution is the kind of thing found later by someone else.
+- **Owner:** **not the product team** — whoever owns legal and IP risk at CodingCops (escalate via
+  Ehtesham Anwar), with a standing dependency-licence rule as the durable fix.
 
 ## Whose company identity do customer-facing emails carry when a deployment sets no env?
 
@@ -170,3 +481,319 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** nothing is blocked — the branch's behaviour is strictly better than the blank
   footer it replaces. This needs an answer before a second tenant is onboarded, not before merge.
 - **Owner:** product team, with Ehtesham Anwar for the second-tenant question.
+- **Update 2026-09-04 (Project Repository ingest):** Two facts, neither a decision. **(b) In FCC,
+  company identity is per-company data, not deployment config:** `Maintain → Company` holds the
+  physical-address block, Email and WebSite, a Mailing Address tab, per-company **T&Cs and
+  Footers**, and a **Brand** tab whose on-screen rule is *"If unchecked; e-tickets will display
+  the company details from the Mailing Address tab"* — with footer and brand tabs again at yard
+  level ([fcc-nexgen-administration-and-security.md](fcc-nexgen-administration-and-security.md) →
+  *Company (slides 2–9)*, *Yards (slides 10–17)*). FCC's QuickBooks connector nonetheless assumes
+  **one company per NexGen database**
+  ([../accounting/nexgen-quickbooks-integration/01-fcc-connector-field-mapping.md](../accounting/nexgen-quickbooks-integration/01-fcc-connector-field-mapping.md)),
+  and a second company, *The Repair Guys*, appears in TCG's GL scope — per-company in data,
+  single-company in deployment, the same ambiguity this entry names. **(a) The hardcoded address
+  may not be TCG's:** TCG's own quoting SOP footer gives **10850 Portal Dr., Los Alamitos, CA
+  90720**, two other TCG forms give **14480 Alondra Blvd, La Mirada, CA 90638**, and TCG's Sales
+  Operating System flags this itself — *"Confirm current company address… before republishing
+  customer-facing material"*
+  ([../quotations/tcg-creating-quotes-sop.md](../quotations/tcg-creating-quotes-sop.md) → *Two
+  addresses, one company*). Neither is the *4820 Harbor Industrial Way* the branch defaults to.
+  Still needed: which address TCG wants on customer mail, and whether identity moves onto the
+  tenant record.
+
+## A SUPER_ADMIN inside a tenant cannot create tenant-scoped records at all
+
+- **Status:** open
+- **Asked:** 2026-09-01 — creating a department in a fresh tenant while signed in as a
+  `SUPER_ADMIN` whose `tenantCompanyId` is that tenant. Not a ticket question; found in use.
+- **Question:** should a `SUPER_ADMIN` be able to belong to a tenant at all, and if so, what
+  tenant do its writes land in? Today the combination is created without objection by the admin
+  user form and then **fails on every tenant-scoped create with a 500**, not a permissions
+  message: `Argument 'tenantCompany' is missing`.
+- **Why it happens:** the tenant-scoping Prisma extension short-circuits on role —
+  `apps/api/src/orm/prisma.service.ts:230`, *"Super admins operate across all tenants — skip
+  tenant scoping"* — and returns the query untouched. Services that rely on the extension to
+  inject `tenantCompanyId` therefore get nothing injected. `DepartmentsService.create()` is one:
+  it passes the form data straight to the repository and never sets the tenant itself, so Prisma
+  rejects the create. Services that set `tenantCompanyId` explicitly — `craft-codes`,
+  `craft-modifiers`, `sub-categories` — are unaffected, so the behaviour is **inconsistent across
+  modules** and only shows up on the ones that delegate.
+- **The read side is worse than a 500, because it is silent.** The same skip means such a user
+  sees every tenant's rows in every list and picker. Observed: 33 departments offered in a tenant
+  that owns none. Choosing one would write another tenant's `departmentId` onto a local record,
+  with no guard on either the read or the write.
+- **Sources checked:** `prisma.service.ts:226-239` — the two skip conditions are `!context` and
+  `userRole === SUPER_ADMIN`; **neither checks whether the user belongs to `PLATFORM`**.
+  `admin-users.service.ts:91` — `role: (data.role ?? 'USER')`, so the API accepts `SUPER_ADMIN`
+  for a user being created inside a specific tenant and nothing rejects it.
+  `admin-tenants.service.ts` `create()` — creates the tenant row only, no user, so the
+  tenant+SUPER_ADMIN pairing is made by hand rather than by the product.
+  `decisions/` — nothing on super-admin tenancy. `meetings/` — nothing.
+- **Note:** whichever way it is answered, the two halves are separable. *Should the combination
+  exist* is a product question. *Should a create 500 when it does* is a defect either way —
+  `DepartmentsService` should set `tenantCompanyId` explicitly like its neighbours rather than
+  depending on an extension that is documented as conditional.
+
+## Must an entity picker search the server, or only offer a search box?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. Routed here as the
+  app-wide picker standard; per [../STRUCTURE.md](../STRUCTURE.md):60 a cross-module question
+  goes to the module most likely to own the answer.
+- **Question:** The branch converts entity dropdowns across the app to server-searched,
+  paged pickers and adds a pre-push guard that fails a build reintroducing a whole-table read.
+  The written asks stop short of that. **Does "searchable dropdown" mean the option set is
+  fetched per keystroke from the API, or only that the control has a search box over whatever
+  it already holds?** The two differ in a user-visible way: a server-searched picker's
+  empty-search state is **deliberately incomplete**, so a user who scrolls without typing no
+  longer sees every row. Nobody has said that trade is acceptable, and no page-size, ranking or
+  empty-state rule is written anywhere.
+- **Sources checked:** **Vault — nothing states a picker data-loading rule.** `INDEX.md`;
+  this module's `INDEX.md` (its one content file is `tcg-documents.md`, on attachments);
+  `../customers/customers-INDEX.md` and all five candidates; `../quotations/quotations-INDEX.md`;
+  `../decisions/` (24 notes — none on pickers, list loading or search); vault-wide grep for
+  `dropdown`, `type-ahead`, `autocomplete`, `combobox`, `debounce`, `paginat`, `preload`,
+  `infinite scroll`. The only vault hits describe *which* dropdowns exist or how they look
+  (`../vendors-agencies/vendors.md`:47 linked Category/Sub-Category, `../quotations/quotation.md`:13
+  "should open upwards", `../dispatch/daily-allocation-system.md`:33), never how their options load.
+- **Jira sources the intent but not the mechanism, and the clearest line is internal-QA voice:**
+  - **`SCRUM-952`** *Searchable dropdown* (**To Do**, 2026-09-01, Umair Khan) — *"Each dropdown
+    across the app should have a **search option**."* This is the branch's likely origin and it
+    asks for the **affordance**, not for server-side resolution. A client-filtered list satisfies
+    it as written.
+  - **`SCRUM-638`** *Employee* (Done, 2026-07-08, Aiman Farooq) item 20 — *"Implement **infinite
+    scrolling** in dropdowns so paginated data is loaded progressively instead of loading
+    everything at once"*, prompted by item 19: *"There are **76 assets** in total, but the
+    dropdown is not displaying all of them."* This is the **only** written line that asks a
+    dropdown not to load its whole table, and its stated remedy is progressive scroll, not
+    type-ahead search. `SCRUM-639` item 32 and `SCRUM-638` item 34 add *"Handle pagination and
+    search on the backend instead of the frontend"* — both about **listing tables**, in listing
+    context, not pickers.
+  - **`SCRUM-703`** *move pagination, filteration searching(debounce) on backend (across the app)*
+    (Done, 2026-07-16, Umair Khan, **no description**) — the Jira twin of
+    [../customers/customer.md](../customers/customer.md):16 item 4. Verbatim scope, zero detail,
+    already **Done**; whether "across the app" was ever meant to reach entity pickers is exactly
+    what is unrecorded.
+  - Reporter caveat: `SCRUM-638`/`639`/`952` are **CodingCops internal voices** (Aiman Farooq,
+    Umair Khan), the same class this register already flags under *Which countries, states and
+    cities may an address name?* as not adjudicated product decisions. `customer.md` is a **punch
+    list** — a bug list, not a specification — and cross-module, per
+    [../gaps.md#feedback-punch-lists-are-not-scoped-to-the-module-they-are-filed-under](../gaps.md).
+- **The convention is written, but a rule cannot make a requirement true.**
+  `.ai/claude/contexts/web.md`:98–172 states the rule in full and a pre-push guard
+  (`scripts/check-dropdown-preloads.sh`) enforces it. That file is the sanctioned home for **how
+  we build**; it is not a product source, and it was edited on the same branch as the code it
+  describes.
+- **Blocked:** sign-off of `feat/move-dropdowns-BE` as product-correct; closure of `SCRUM-952`.
+  Nothing ships broken — the API routes are dual-mode, so an unparameterised call still returns
+  the bare array.
+- **Owner:** Mohsin Ali for the UX standard (the punch lists are his feedback); Fouzan Shakil
+  for whether the guard stays a hard gate.
+
+## Is the countries/states/cities preload an intended exemption, or an unreviewed carve-out?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket);
+  tcg-scrum escalation.
+- **Question:** Every other entity picker on the branch moves to server search; countries,
+  states and cities keep a **preloaded list with a 24-hour client cache**
+  (`apps/web/src/features/countries/hooks/use-countries.ts`:14,
+  `features/states/hooks/use-states.ts`:14, `features/cities/hooks/use-cities.ts`:24). Two parts,
+  each answerable in a line. (a) Is the **24-hour staleness** acceptable for address reference
+  data, given a newly added city would not appear for a day? (b) The same data is reached **two
+  different ways on purpose** — `components/molecules/address-fields.tsx` preloaded, Permits'
+  `CitySelect` server-searched. `web.md`:153–155 calls that inconsistency *"known and intended"*.
+  **Intended by whom?** Two controls over one dataset behaving differently is the kind of thing a
+  user reports as a bug.
+- **Sources checked:** **Vault — nothing on either part.** The two open entries above
+  (*Which countries, states and cities may an address name?*, *Do the Country/State/City tables
+  stay…*) cover **which values** are offered and **where they are stored**; neither touches how
+  the picker loads them or how long it may hold them. `../decisions/` — none on caching,
+  staleness or reference-data freshness. Jira: `SCRUM-549` (Done) and `SCRUM-962` (To Do) are
+  both **display defects** — the city dropdown not working — and neither states a loading or
+  caching strategy.
+- **Note:** (b) is the more consequential half. If the answer is that the inconsistency is *not*
+  intended, the fix direction matters: `SCRUM-789` and `SCRUM-819` (both Done) filter the Permits
+  Agency dropdown by the selected city, so the two controls are not interchangeable today.
+- **Blocked:** sign-off of the exemption in `feat/move-dropdowns-BE`. Should be answered together
+  with the two geo entries above — same facet, same owner.
+- **Owner:** Fouzan Shakil for the caching decision; Melissa McNutt for whether one-day staleness
+  is operationally acceptable on an address field.
+
+## The picker's two tuned numbers — a 400 ms delay and a 100-row ceiling — rest on nothing written
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `perf/dropdown-search-requests` (no ticket, no
+  `.ai/aidlc/` folder); tcg-scrum escalation. Follow-on to `feat/move-dropdowns-BE`, whose picker
+  standard is open above (*Must an entity picker search the server, or only offer a search box?*).
+  Routed here for the same reason: both numbers sit on **app-wide shared code** —
+  `apps/web/src/lib/searchable-list-query.ts` and
+  `apps/api/src/presentation/shared/dto/query-picker.dto.ts` — so they set the standard for every
+  picker and all 17 picker routes at once.
+- **Question:** Two values the branch picks, each answerable in a line. **(a)** Every server-driven
+  search in the app now waits **400 ms** after the last keystroke (`SEARCH_DEBOUNCE_MS`); pickers
+  previously waited 250 ms. Debouncing itself is asked for (below) — but **nothing written says how
+  long a user may wait for search results**, so there is nothing to check 400 against, and nothing
+  that would call 250 or 600 wrong. Is a 400 ms floor on perceived search latency acceptable
+  app-wide, list tables and pickers alike? **(b)** A picker route now refuses a `limit` above
+  **100** (`QueryPickerDto` `@Max(500)` → `@Max(100)`) — a hard ceiling on what any client may ask
+  of 17 routes. Is 100 the intended ceiling, and should one number govern every picker family? It
+  does not today: `query-resource-catalog.dto.ts` carries **both** `@Max(100)` (:32) and `@Max(500)`
+  (:50), and `query-reference-code-list.dto.ts` keeps `@Max(500)` (:22).
+- **Sources checked:** **Vault — nothing sets a search-latency or page-ceiling rule.** `INDEX.md`;
+  this module's `INDEX.md`; `../decisions/` (25 notes — none on latency, debounce, caching or page
+  size); `../customers/customers-INDEX.md` and all five candidates; the picker entries in
+  `../assets/gaps.md` and `../quotations/gaps.md`. Vault-wide `rg` for `debounce`, `250ms|400ms`,
+  `abort|cancel`, `hasMore`, `page size|pageSize|per page|page limit`, `keystroke|as you type`,
+  `latency|responsive|slow`. **No vault file states a millisecond value of any kind.** The only
+  page-size statement anywhere is [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md):96–97
+  — *"Default records per page is 25"*, *"User can select other page sizes (e.g. 25 / 50 / 100)"* —
+  which is **customer-listing pagination, not a picker**, and sits in the vault's least
+  authoritative file (a personal Confluence space; check its `provenance_note`). The one
+  performance NFR that exists,
+  [../field-ops/frd-new-format-draft/07-non-functional-requirements.md](../field-ops/frd-new-format-draft/07-non-functional-requirements.md):23,
+  asks only for *"acceptable response times under field network conditions"* — mobile, and
+  unquantified.
+- **Jira asks for debouncing three times and never names a value; nothing asks for a limit ceiling.**
+  - **`SCRUM-845`** *Implement Search Debouncing in Permit Tracker and Planning Tracker* (**To Do**,
+    2026-08-03, Aiman Farooq) — *"Searching… is triggering **excessive API requests**… Implement
+    search debouncing in both modules to **reduce unnecessary API calls** and improve performance."*
+    The clearest statement of intent in either source, and it names **two tracker modules**, not the
+    app.
+  - **`SCRUM-870`** *add debounce to search* (**QA**, 2026-08-10, ali riaz) — body is a **Loom link
+    only**, unreadable from here; whatever it shows is not written down anywhere.
+  - **`SCRUM-703`** *move pagination, filteration searching(debounce) on backend (across the app)*
+    (Done, 2026-07-16, Umair Khan, **no description**) — the only "across the app" phrasing, and
+    zero detail. Twin of [../customers/customer.md](../customers/customer.md):16 item 4.
+  - **`SCRUM-757`** *Performance Issues and Excessive API Calls…* (To Do, 2026-07-16) — *"opening a
+    single page triggers multiple repeated API requests… unnecessary network activity that could
+    negatively impact performance and scalability"*. Sources the direction this branch's aborting
+    serves, on the Plan Comments page.
+  - **Reporter caveat:** all four are **CodingCops internal voices** (Aiman Farooq, Umair Khan,
+    ali riaz) — the same class this register already flags under *Which countries, states and
+    cities may an address name?* as not adjudicated product decisions.
+  - `SCRUM-801` *Vendor: Pagination limit is missing* and `SCRUM-804` (both Done) concern the
+    **row-count selector on listing tables**, not a server-side cap, so neither reaches (b).
+- **Note — the branch's own ticket does not source either number.** **`SCRUM-963`** *Move the
+  search dropdowns to fetch from backend instead of showing cached data* (**QA**, created
+  2026-09-02 15:27, Fouzan Shakil, self-assigned, **no description, no comments, no labels**) was
+  filed for the predecessor branch after the fact. It records *that* the work happened, and its
+  title reaches only the cached-data move — not debouncing, aborting, caps or counting. Worth
+  knowing when reading the entry above, which was written when no ticket existed at all.
+- **Note — three sibling behaviours were checked and need no product answer, so they are not
+  asked here.** **Aborting a superseded request** is the mechanism `SCRUM-845`/`SCRUM-757` ask for,
+  and the only thing a user sees is that stale rows stay up while the replacement loads
+  (`isAbortError` gates the `catch`) rather than the panel blanking mid-type. **Dropping `total`
+  from `findPickerList`** is invisible: `AsyncComboboxPage` only ever carried `items` and `hasMore`,
+  no picker UI read a count, and the admin list routes that page with numbered controls still
+  return `total`. **Filling the panel immediately on an empty query** changes *when* the first page
+  arrives, not which rows it holds. The real product question about that empty state — that it is
+  **deliberately incomplete** — is already open above and this branch does not move it.
+- **Blocked:** nothing ships broken. (a) is a reversible constant; (b) only narrows what a client
+  may request. What is blocked is signing either number off as intended, and settling the
+  three-way cap inconsistency in (b) before more routes copy one of them.
+- **Owner:** Mohsin Ali for (a) — the search-responsiveness standard, the same owner as the picker
+  UX question above; Fouzan Shakil for (b) and for whether one cap governs every picker DTO.
+## Time display — military, 12-hour, or per-user, and does the date ride along?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — sprint demo, four people in three positions
+  ([meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §7;
+  transcript 57:01, 59:14–1:00:47).
+- **Question:** Corrina Bustos asked whether everything will be **military time**. Melissa McNutt
+  wants it because *"there's no people putting AM instead of PM and the computer could calculate
+  it better"* — she ties it to boom pay accuracy. Ehtesham: the system can handle both, *"that's
+  not going to be a breaking point"*, though he initially said *"we only need to have military
+  time."* Joe Schacatano wants it as a **per-user setting**: *"some people fully operate off
+  military… a lot of people don't even know how to read military."* Brian Petros adds the
+  requirement that outlives the format argument: **show the date**, because *"a lot of the jobs go
+  past midnight."* So: is time format a **user preference** (web and mobile), a tenant setting, or
+  fixed — and is a cross-midnight timestamp always rendered with its date?
+- **Why it is not cosmetic:** the entry side is where AM/PM errors are made, and those errors
+  become payroll hours. A per-user *display* preference is safe; a per-user *entry* format needs
+  the parse to be unambiguous. Cross-midnight display bears on `payroll/rules/PAY-019`, whose
+  policy is still conflicted.
+- **Sources checked:** no vault document states a time-format standard; the mobile ticket flow
+  and the payroll slice view are the two surfaces that show times today.
+- **Owner:** product, with Corrina and Melissa for payroll practice.
+- **Update 2026-09-04 (Project Repository ingest):** No source states a time-format standard; the
+  drop shows **mixed practice**, all of it legacy fact. **FCC prints 12-hour with AM/PM on every
+  customer-facing surface:** the e-ticket's margin times (`Start Time 3:00 AM … End Time 7:30 PM`
+  on ticket 44944), the Atom ticket lists (`7:30 AM` / `4:30 PM`) and the quote screen's default
+  window (`08:00 AM–04:30 PM`)
+  ([../field-ops/e-ticket-worked-example-44944.md](../field-ops/e-ticket-worked-example-44944.md)
+  → *Times and the two signature panels*;
+  [../field-ops/fcc-e-ticket-and-atom-guides.md](../field-ops/fcc-e-ticket-and-atom-guides.md) →
+  *Ticket list screens*; [../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md)).
+  **Brian's date requirement has a precedent in FCC:** the e-ticket report's *"as recorded by the
+  workflow"* column stamps every time with its date (`5/12/2026 10:16 PM`) while the customer
+  column carries time only — on a ticket that ran 3:00 AM to 7:30 PM, 16.5 hours (same 44944 page,
+  the two-column time table). TCG's paper forms write AM/PM (the Field Safety Audit's `Time AM/PM`
+  field; the paper ticket's `5:00–7:00 AM` —
+  [../field-ops/safety-compliance/03-field-audit-and-safety-value.md](../field-ops/safety-compliance/03-field-audit-and-safety-value.md),
+  [../field-ops/field-paper-forms.md](../field-ops/field-paper-forms.md)); TCG's scheduling SOPs
+  write 24-hour (`08:00 the day before`, `Thursday 12:00 noon` —
+  [../projects-jobs/scheduling/day-prior-confirmation-email.md](../projects-jobs/scheduling/day-prior-confirmation-email.md),
+  [../projects-jobs/scheduling/dispatch-scheduling-path.md](../projects-jobs/scheduling/dispatch-scheduling-path.md)).
+  Field entry in FCC is **free text** — `9-9:30am` is one string in a Comments field
+  ([../field-ops/e-ticket-worked-example.md](../field-ops/e-ticket-worked-example.md)), the error
+  class Melissa describes. As system fact only: the nightly FCC copy stamps loads in UTC while
+  FCC's own `ModifiedDate` is server-local
+  ([../payroll/tcg-rawfms-staging-database/INDEX.md](../payroll/tcg-rawfms-staging-database/INDEX.md)
+  → *How the copy is refreshed*). Still needed: whether format is per-user, per-tenant or fixed,
+  and whether a cross-midnight timestamp always renders with its date.
+
+## Departments, roles and their capabilities — the authorization layer is unbuilt and the list is unwritten
+
+- **Status:** open
+- **Asked:** 2026-09-01 — Abdul Rehman, in the accounting/onboarding call
+  ([meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §3;
+  transcript 29:54–30:31, 34:48).
+- **Question:** stated plainly by the builder: *"right now we haven't implemented any authorization
+  layer based on these department and roles."* What is needed from TCG is **how many departments,
+  how many roles, and what each role may do** — a session with Corrina Bustos was proposed and
+  Brian said he would start assembling it with her. Two specifics were named: employee **type** in
+  the ERP is currently the raw FCC roles import with **no mapping to departments**, and Brian
+  expects role definition to sharpen as the 15 September user-journey walkthrough goes module by
+  module (*"as we go through the user journeys… we may be able to better identify, okay, this is
+  the role that we'll need to do this"*).
+- **Sources checked:** `User`, `Employee`, `EmployeeType` and the permissions surface in
+  `apps/api/prisma/schema.prisma`; the FCC seeder maps FCC roles onto employee types with no
+  department link; no vault document lists TCG's departments or role capabilities.
+- **Blocked:** every permission check in the app, and the 15 September test plan, which needs
+  users set up per role.
+- **Owner:** Corrina Bustos and Brian Petros to supply the list; CodingCops for the model.
+- **Update 2026-09-04 (Project Repository ingest):** The list TCG must supply is still unwritten;
+  the drop adds four written inputs for the Corrina/Brian session. **(1) TCG's own RFP** requires
+  *"role-based access control by department/role (dispatcher, field tech, manager, accounting,
+  exec)"* and tabulates **seven user types** — Sales/Estimating, Dispatch/Operations, Field Crew,
+  Mechanics, Accounting/Billing, Management/Executives, IT/Admin — each with primary functions and
+  access device ([tcg-erp-rfp-2026-02-26.md](tcg-erp-rfp-2026-02-26.md) → *Section 4*, *Section
+  5*): client-authored, but a draft that names roles without capabilities. **(2) The current org
+  structure** is the 16 June 2026 chart — President with seven direct functions: CFO, HR, VP Sales
+  (Sales Manager + Dispatch Manager), VP Fleet & Field Ops (Crane Superintendent, Fleet, Facility,
+  Shop), Safety Manager, Data Analytics — and **no IT box**
+  ([engagement-directory-and-org-charts.md](engagement-directory-and-org-charts.md) → *The 16 June
+  2026 chart*). **(3) One role already has a prose permissions spec:** the Sales Coordinator
+  manual's authority-limit table (*may not bypass required review gates… may not promise crane
+  availability… may not approve credits outside delegated limits* —
+  [../quotations/sales-operating-system/03-sales-coordinator-operations-manual.md](../quotations/sales-operating-system/03-sales-coordinator-operations-manual.md)
+  §2), plus the review log's *"Sales can view Dispatch but not edit"* and *"maintain the
+  department/role permission structure, configurable"*
+  ([../erp-review-log.md](../erp-review-log.md) → *Employees, HR and permissions*). **(4) In FCC,
+  "department" is cost coding, not org structure:** the ten FCC departments prefix quote, job and
+  PO numbers and four of them own no units at all
+  ([../payroll/tcg-rawfms-staging-database/data/fcc-job-status-type-and-department-codes.md](../payroll/tcg-rawfms-staging-database/data/fcc-job-status-type-and-department-codes.md);
+  [../assets/fcc-units-and-schedule-types.md](../assets/fcc-units-and-schedule-types.md) →
+  *Departments — 10, all active*), while FCC's permission unit is the **profile** — profile → menu
+  security → per-field/tab settings → per-user capability flags, plus company/yard scope
+  ([fcc-nexgen-administration-and-security.md](fcc-nexgen-administration-and-security.md) → *The
+  four layers*). Corrina's own review-log question — *"Department — what is this field used
+  for?"* (#12) — is still unanswered there. The engagement documents disagree on the role count
+  (SOW acceptance criteria: Admin / Sales Person / Customer; security response: CUSTOMER / HR /
+  ADMIN — [codingcops-sow-and-engagement-terms.md](codingcops-sow-and-engagement-terms.md),
+  [responsive-design-and-security-posture.md](responsive-design-and-security-posture.md)). All
+  of this is background; still needed from TCG: the department list, the role list, and each
+  role's capabilities.
+

@@ -3,12 +3,16 @@
 Read this first — **then read only what the tables point you at.** 153 files migrated from Confluence
 2026-08-10, plus 37 payroll files from a OneDrive drop 2026-08-13, plus 66 client-meeting files
 (transcripts/summaries/assets) from a OneDrive drop, plus 34 per-file payroll source pages
-(`payroll/sources/`), all added 2026-08-19. This index is a routing table: it tells you which file
-answers which question, and it is the only vault file meant to be read whole.
+(`payroll/sources/`), all added 2026-08-19, plus **~100 pages from the client's SharePoint
+"Project Repository" (17 archives, 894-file city-permit library, 482 source files) added
+2026-09-04** — every source file dispositioned in
+[sync/project-repository-2026-09-04.md](sync/project-repository-2026-09-04.md). This index is a
+routing table: it tells you which file answers which question, and it is the only vault file meant
+to be read whole.
 
 ## Read these five lines before you answer anything
 
-1. **Nothing here is verified except the six `domain/` SOP files.** Everything else is `status: unverified` — migrated faithfully, never adjudicated. It is not necessarily current.
+1. **Nothing here is verified except the six `domain/` *SOP* files** (`development-process`, `sprint-planning`, `daily-scrum`, `backlog-grooming`, `sprint-closing`, `jira`). `domain/` now holds four more pages — `fcc-nexgen-fms` and the three value-engine pages from the 2026-09-04 drop — and those are **`unverified` like everything else**. Everything else is `status: unverified` — migrated faithfully, never adjudicated. It is not necessarily current.
 2. **Nine open conflicts.** If a file's `conflicts_with` is non-empty, do not pick one and answer from it. Read the conflict stub instead. List below. One of the nine was found *after* the migration, by a drift check against Confluence, and one by reading the meeting recordings against the vault — the source keeps moving, so this list is not closed.
 3. **`FR-FOP-NNN` ids are ambiguous.** Both field-ops FRDs number their requirements from 001, so `FR-FOP-013` is *Lunch Monitoring* in one document and *Lunch Timer and Alerts* in the other. **Always cite the document as well as the id.** A bare "FR-FOP-013" identifies nothing.
 4. **`PR-NNN` ids are ambiguous too, and for the same reason.** The payroll requirements document and the payroll rule matrix each number their rules from 001, so `PR-010` is *Non-Union Salary Rate* in one and *L12 union base rate* in the other. Cite the document. See [payroll/INDEX.md](payroll/INDEX.md).
@@ -33,6 +37,9 @@ answers which question, and it is the only vault file meant to be read whole.
 | a specific field-ops requirement | [field-ops/fr-fop-numbering.md](field-ops/fr-fop-numbering.md) to pick the right document, then the leaf file |
 | how the team runs sprints / Jira / reviews | the six SOP files in `domain/` — the only `verified` content in the vault |
 | what `FCC` or `NexGen` means | [domain/fcc-nexgen-fms.md](domain/fcc-nexgen-fms.md) — the only glossary entry. Every other domain term is still undefined; see "Undefined terms" below |
+| what the client themselves asked for, across every module | [erp-review-log.md](erp-review-log.md) — TCG's own feedback register: 14 dated entries by named staff + 69 AI-extracted items. **Nothing in it is adjudicated** |
+| the name of *any* file that was in the 2026-09-04 SharePoint drop (now deleted locally) | [sync/project-repository-2026-09-04-file-inventory.md](sync/project-repository-2026-09-04-file-inventory.md) — all 1,446 paths with sizes and duplicate groups; `grep` it |
+| where a file from the 2026-09-04 SharePoint drop went | [sync/project-repository-2026-09-04.md](sync/project-repository-2026-09-04.md) — every source file, including the ones deliberately not migrated |
 | why something is missing | [README.md](README.md) → *What this vault does not contain* |
 
 ## Open conflicts — all unresolved
@@ -56,7 +63,7 @@ Questions a ticket raised are not here — they live in §12 of that ticket's
 
 ---
 
-## domain/ — team process (the only `verified` files)
+## domain/ — team process (the six SOPs are the only `verified` files)
 
 | File | Answers | KB |
 | --- | --- | --- |
@@ -66,6 +73,16 @@ Questions a ticket raised are not here — they live in §12 of that ticket's
 | [domain/backlog-grooming-sop.md](domain/backlog-grooming-sop.md) | How is refinement meant to run? | 3.4 |
 | [domain/sprint-closing-sop.md](domain/sprint-closing-sop.md) | How does a sprint get formally closed? | 3.8 |
 | [domain/jira-sop.md](domain/jira-sop.md) | What must a ticket contain before it enters a sprint? | 2.9 |
+
+**Also in `domain/`, and `unverified`** — how TCG itself works, not how we work:
+
+| File | Answers | KB |
+| --- | --- | --- |
+| [domain/INDEX.md](domain/INDEX.md) | Router for this folder | — |
+| [domain/fcc-nexgen-fms.md](domain/fcc-nexgen-fms.md) | What `FCC` / `NexGen` / `Atom` mean — term resolution only, **never a requirement source** | — |
+| [domain/value-engines-and-playbooks-method.md](domain/value-engines-and-playbooks-method.md) | **What a "value engine" and a "playbook" are** — TCG's house process-mapping method, its five symbols and how one is authored. Read this before reading any value-engine instance | — |
+| [domain/tcg-it-value-engines-and-playbooks.md](domain/tcg-it-value-engines-and-playbooks.md) | TCG IT's own app-development and change-management process — including a change-approval gate whose applicability to our releases is **unanswered** | — |
+| [domain/wes-whiteboard-value-engines.md](domain/wes-whiteboard-value-engines.md) | AI transcriptions of whiteboard photographs — **transcription, not verified process** | — |
 
 ## meetings/ — sprint plans (retrospective, see caveat 5) and client minutes
 
@@ -145,6 +162,8 @@ register.
 | [payroll/mcog-l12-mla-2025-2028/INDEX.md](payroll/mcog-l12-mla-2025-2028/INDEX.md) | What does the union contract actually say? 5 parts | 74.0 |
 | [payroll/payroll-app-current-state/INDEX.md](payroll/payroll-app-current-state/INDEX.md) | How does the legacy Payroll App behave today? 9 files (2026-06 pack; corrected by the db-extract) | 51.0 |
 | [payroll/legacy-payroll-app-db-extract/INDEX.md](payroll/legacy-payroll-app-db-extract/INDEX.md) | **How does the legacy Payroll App actually calculate pay?** Full DB extract 2026-08-18 — all SQL, all config, worked examples, ADP worksheet layout | 12.6 |
+| [payroll/tcg-rawfms-staging-database/INDEX.md](payroll/tcg-rawfms-staging-database/INDEX.md) | **What do FCC's core tables really look like, and how does the legacy app copy them nightly?** `TCG_RawFMS` restored from the 2026-06-23 backup: 44 DDL files, 98 SQL objects, ticket-status matrix, every checklist question, the 52-bracket craft-modifier master | 14.7 |
+| [payroll/legacy-payroll-app-db-backup-2026-06-23.md](payroll/legacy-payroll-app-db-backup-2026-06-23.md) | What state was the legacy app's database in on 2026-06-23? Code identical to the extract; pay periods, run logs, the *Refresh from NexGen* permission story | 7.2 |
 | [payroll/adp-bucket-crosswalk.md](payroll/adp-bucket-crosswalk.md) | How does a pay component become an ADP paydata field? 9 open decisions | 22.3 |
 | [payroll/adp-hour-earning-codes.md](payroll/adp-hour-earning-codes.md) | Which ADP Hours/Earnings codes exist? (partial export) | 2.9 |
 | [payroll/adp-sop-v3.8.md](payroll/adp-sop-v3.8.md) | How is payroll produced today, step by step? (the process being replaced) | 11.7 |
@@ -167,18 +186,18 @@ One folder per product module, mirroring the backend ([STRUCTURE.md](STRUCTURE.m
 the BE mapping, the tag facets, and the old→new redirect map). **A new module question (no ticket)
 goes in that module's `gaps.md`** — see STRUCTURE.md → *Where a question goes*.
 
-| Module | Read first | Also holds |
+| Module | Read first | Also holds *(page counts as of 2026-09-04, INDEX and gaps excluded)* |
 | --- | --- | --- |
-| `payroll/` | [payroll/INDEX.md](payroll/INDEX.md) | Payroll — separate migration, own caveats — — source files, gaps.md |
-| `field-ops/` | [field-ops/INDEX.md](field-ops/INDEX.md) | The Atom field-worker mobile app · conflict stub — 4 source files, gaps.md |
-| `quotations/` | [quotations/INDEX.md](quotations/INDEX.md) | Quotations, pricing, billing codes, mob/demob · conflict stub — 6 source files, gaps.md |
-| `dispatch/` | [dispatch/INDEX.md](dispatch/INDEX.md) | DAS, scheduling, yard operations · conflict stub — 4 source files, gaps.md |
-| `customers/` | [customers/INDEX.md](customers/INDEX.md) | Customers, customer contacts, job sites · conflict stub — 3 source files, gaps.md |
-| `vendors-agencies/` | [vendors-agencies/INDEX.md](vendors-agencies/INDEX.md) | Vendors, agencies, purchase orders · conflict stub — 6 source files, gaps.md |
-| `projects-jobs/` | [projects-jobs/INDEX.md](projects-jobs/INDEX.md) | Projects, jobs, plans, permits — 2 source files, gaps.md |
-| `assets/` | [assets/INDEX.md](assets/INDEX.md) | Assets, yards-as-records, tools & rigging, categories — 3 source files, gaps.md |
-| `accounting/` | [accounting/INDEX.md](accounting/INDEX.md) | Invoicing and accounting (module not yet built) — — source files, gaps.md |
-| `admin/` | [admin/INDEX.md](admin/INDEX.md) | Auth, users, tenancy, settings, reference data — 1 source files, gaps.md |
+| `payroll/` | [payroll/INDEX.md](payroll/INDEX.md) | Payroll — separate migration, own caveats — 180 pages, gaps.md |
+| `field-ops/` | [field-ops/INDEX.md](field-ops/INDEX.md) | The Atom field-worker mobile app · conflict stub — 112 pages, gaps.md |
+| `quotations/` | [quotations/INDEX.md](quotations/INDEX.md) | Quotations, pricing, billing codes, mob/demob · conflict stub — 27 pages, gaps.md |
+| `dispatch/` | [dispatch/INDEX.md](dispatch/INDEX.md) | DAS, scheduling, yard operations · conflict stub — 13 pages, gaps.md |
+| `customers/` | [customers/INDEX.md](customers/INDEX.md) | Customers, customer contacts, job sites · conflict stub — 9 pages, gaps.md |
+| `vendors-agencies/` | [vendors-agencies/INDEX.md](vendors-agencies/INDEX.md) | Vendors, agencies, purchase orders · conflict stub — 14 pages, gaps.md |
+| `projects-jobs/` | [projects-jobs/INDEX.md](projects-jobs/INDEX.md) | Projects, jobs, plans, permits — 26 pages, gaps.md |
+| `assets/` | [assets/INDEX.md](assets/INDEX.md) | Assets, yards-as-records, tools & rigging, categories — 12 pages, gaps.md |
+| `accounting/` | [accounting/INDEX.md](accounting/INDEX.md) | Invoicing and accounting (module not yet built) — 13 pages, gaps.md |
+| `admin/` | [admin/INDEX.md](admin/INDEX.md) | Auth, users, tenancy, settings, reference data — 11 pages, gaps.md |
 
 Cross-cutting, tag-routed: `meetings/` (chronological — [transcripts INDEX](meetings/transcripts/INDEX.md), [summaries INDEX](meetings/summaries/INDEX.md); `grep -rl 'module/<x>' vault/meetings/`),
 [decisions/](decisions/) (flat; tagged `module/<x>`), [domain/](domain/) (process SOPs), [brs.md](brs.md) (product-wide BRS).

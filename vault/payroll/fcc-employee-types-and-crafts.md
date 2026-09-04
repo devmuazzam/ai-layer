@@ -1,8 +1,8 @@
 ---
 title: FCC employees report — employee types, multi-type assignment, craft code updates
-source: shared-folder/OneDrive_1_8-31-2026
+source: shared-folder/OneDrive_1_8-31-2026; corrected 2026-09-04 from shared-folder/Project-Repository-2026-09-04/2.1.1_DATA-MIGRATION/NexGenFMS_for_ERP/FCC_EMPLOYEES_20260705.xlsx
 migrated: 2026-08-31
-updated: 2026-05-29
+updated: 2026-09-04
 status: unverified
 conflicts_with: []
 jira: [SCRUM-914]
@@ -22,19 +22,34 @@ craft-code working sheets — `CraftCode_UPDATES`, `CraftCode_BEFORE-AFTER`,
 
 ## 1. FCC's employee types mix field roles and portal roles in one list
 
-`FMS_EMPLOYEE_TYPES` — 16 rows, one flat list:
+`FMS_EMPLOYEE_TYPES` — **15 rows**, one flat list, all active:
 
 | Field roles | Portal / admin roles |
 | --- | --- |
-| Operator, Oiler, Mechanic, Yard Man, Rigger, Driver, Shop | Management, Sales Admin, Accounting Admin, Dispatch Admin, Safety Admin |
+| Operator, Oiler, Mechanic, Yard Man, Rigger, Driver, Shop, **3rd Man**, **Job Foreman** | Management, Sales Admin, Accounting Admin, Dispatch Admin, Safety Admin, **Salesmen** |
 
 This is the distinction raised in the departments-and-roles discussion — *"there are
 system level roles and there are field roles."* FCC never separated them, which is
 why the migrated data cannot answer the question on its own.
 
-Note **Rigger** is `EmpTypeID` 5 and has existed since 2019. **Third Man is not in this
-list** — despite `CraftRoleType.THIRD_MAN` existing in `@tcg/shared` and the client asking
-for it in UAT. So Third Man is a craft-code concept in FCC, not an employee type.
+**Rigger** is `EmpTypeID` 5 and has existed since 2019.
+
+> **⚠️ Corrected 2026-09-04.** This section previously said *"16 rows"* and *"**Third Man is not in
+> this list** — so Third Man is a craft-code concept in FCC, not an employee type."* **Both
+> statements were wrong.** The list has **15** rows and **`3rd Man` is `EmpTypeID` 14**, created
+> 2021-11-09 by `melissam`. Verified against two independent extracts that agree row for row: the
+> `FMS_EMPLOYEE_TYPES` sheet of `2026-05-29_FCC_EMPLOYEES_REPORT.xlsx` (the file this page was
+> written from) and the `EMPLOYEE_TYPES` sheet of `FCC_EMPLOYEES_20260705.xlsx`, extracted
+> 2026-07-02. So `CraftRoleType.THIRD_MAN` in `@tcg/shared` and the UAT request for Third Man
+> **do** have an FCC employee-type counterpart — the migration does not have to invent one.
+>
+> Two further rows the original text did not mention: **`Salesmen`** (13, 2019-08-01) and
+> **`Job Foreman`** (15, created **2026-02-18 by `corrinab`** — during the ERP engagement).
+> `Job Foreman` bears on [PAY-070](rules/PAY-070-foreman-premium.md), which the register notes is
+> *"in no other document"*: FCC now has a foreman employee type.
+>
+> Full table with ids and creation dates:
+> [fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §2.
 
 ---
 
@@ -79,3 +94,15 @@ performed, and `Apprentice Craft Code UPDATES` is separate again, matching
 `FCC_vs_ERP_(Employees)` is the client's own field-by-field comparison of FCC against
 what we built. **None of these has been read line by line** — they are named here so the
 next person knows they exist.
+
+---
+
+## 4. Where the rest of the FCC employee vocabulary lives
+
+Added 2026-09-04 from the Project Repository drop:
+[fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) — the live code
+lists (craft codes and the `-A`/`-B`/`-C` ST/OT/DT convention, union craft rates, classifications,
+certificates, ethnicity), the FCC import template's employee schema and enumerations, the
+migration SQL, and TCG's annotated Maintain-Employees deck. That page also carries the vendor's
+own statement of the multi-type rule — *"at least one primary… unlimited secondary"* — which
+confirms §2 above is FCC policy rather than a TCG local custom.

@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-08-24
+updated: 2026-09-04
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -65,6 +65,43 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   work; the accounting reconciliation Ryan described.
 - Owner: Joe Schacatano (stated the three levels) and Ryan Adams (stated the cancellation rule) —
   sales & quotation. Liz Lopez for how it meets the permit-driven PO path she owns.
-- Status: open — needs confirmation
+- **Status:** open — needs confirmation
 - **From (frozen original):** [gaps.md#purchase-orders-at-three-levels-joe-and-ryan-on-tape-nothing-written](../gaps.md#purchase-orders-at-three-levels-joe-and-ryan-on-tape-nothing-written)
+- Update 2026-09-04 (Project Repository ingest): the December 2025 draft P&P set in
+  [purchase-orders-fcc/](purchase-orders-fcc/INDEX.md) is the first written material on either half
+  of this question — and all of it is **FCC practice, not a TCG decision for the new ERP**; all three
+  P&Ps are drafts by Brian Petros with Effective Date `[fill in]`, never shown approved.
+  **(a) Standalone.** FCC does not require a Job on a PO: the Job Number sits on the *Detail* line
+  and both the policy and the walkthrough say to leave it blank when no Job exists —
+  [po-001](purchase-orders-fcc/po-001-pre-job-purchase-orders.md) → *Step 3 — Detail lines*;
+  [fcc-po-entry-walkthrough](purchase-orders-fcc/fcc-po-entry-walkthrough.md) → *[Detail] tab*:
+  *"Include the Job Number — if there is no Job yet, leave it blank"*.
+  [po-002](purchase-orders-fcc/po-002-vendor-billing-and-customer-invoicing.md) rule 2:
+  *"Quote-anchored POs are valid even if no Job exists yet"*, and AP may voucher against them. The
+  Fleet parts POs in the purchasing-guide screenshots (`FL-1723`, from requisition `FL-1628`) hang
+  off a Work Order and Unit, never a job
+  ([fcc-nexgen-purchasing-guide](fcc-nexgen-purchasing-guide.md) → *The requisition-to-PO link*).
+  So FCC's own record sides with the built `jobId?` and with Joe, and
+  `meetings/2026-06-22-sprint-4-additional.md:91` stays the outlier. **But every no-job PO in the
+  drop is still anchored to something** — a Quote Number, which PO-001 rule 2 makes *mandatory* when
+  no Job exists, or a work order — which matches Joe's "it's got to have a trail"; a PO tied to
+  nothing at all (his third, "for the business" case) appears nowhere in the drop, and
+  [dispatch/travel-permits-playbook.md](../dispatch/travel-permits-playbook.md) has Dispatch
+  *"create a PO# against the job number"* for permits.
+  **(b) Quote lost → PO closed.** Nothing automatic exists in FCC. In FCC a PO is closed by a
+  voucher (fcc-nexgen-purchasing-guide → *The four-stage chain*), not by a quote outcome;
+  [po-003](purchase-orders-fcc/po-003-linking-pre-job-pos-to-jobs.md) → *Step 5* and *Controls* has
+  AP *periodically* review POs carrying a Quote Number but no Job Number, establish with
+  Sales/Dispatch whether the Job was *"cancelled, never booked, or still pending"*, and *"link or
+  close out"* by hand — no report named, no frequency set. The page itself records that it *"does
+  not say what to do with a quote-only PO whose Job was cancelled, beyond 'resolve' it"*, and PO-002
+  says the same for a Job cancelled after AP has vouchered. The mechanism all three P&Ps rely on —
+  the quote number in a comments field — also carries Melissa McNutt's unanswered 3 Dec 2025
+  objection ([commissioning-email-thread](purchase-orders-fcc/commissioning-email-thread.md) →
+  *The unresolved objection*).
+  **Still needs the client:** whether the new ERP requires an anchor (job, quotation, work order or
+  other) on every PO or allows a truly unanchored one; whether quote-lost → PO-closed is automatic
+  (Ryan and Joe on tape) or stays a periodic AP audit (PO-003); and the same person must dispose of
+  the 2026-06-22 "every PO must be linked to a job number" line, which the drop contradicts for FCC
+  but does not overrule for the ERP.
 

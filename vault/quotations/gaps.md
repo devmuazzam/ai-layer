@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-09-01
+updated: 2026-09-04
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -25,7 +25,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 - Question: what are the Job Schedule Master, the Ready-to-Schedule Checklist, the One-Page
   Customer Intake, the Geographic Heat Map, and "Red Path"?
-- Candidates: [meetings/2026-08-12-sell-side-workflow-and-scheduling.md](meetings/2026-08-12-sell-side-workflow-and-scheduling.md)
+- Candidates: [meetings/2026-08-12-sell-side-workflow-and-scheduling.md](../meetings/2026-08-12-sell-side-workflow-and-scheduling.md)
   only. Brian Petros shared source files in the meeting; **those files are not in the vault**.
 - Note: **"Red Path" is undefined.** It is used as though established. Add it to the undefined-terms
   list. Two scheduling rules stated in the meeting — cranes under maintenance must not be
@@ -36,7 +36,62 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Blocked: the Customer Intake action item on CC, which depends on TCG confirming the intake
   questions, fields and business rules.
 - Owner: TCG team for intake questions/fields/rules; Brian Petros for the workflow source files.
-- Status: open
+- **Status:** resolved 2026-09-04 — answered from the record, no client question needed. All five are
+  now in the vault from the client's own source files (the 2026-09-04 Project Repository drop): a
+  permit-aware scheduling workbook, a pre-Dispatch checklist playbook, a 94-question call sheet, a
+  KPI-tracker sheet, and the short-notice permit path in the Green/Yellow/Red playbook.
+- Resolution (a) — **Job Schedule Master**: the Excel workbook *THE CRANE GUYS — PERMIT-AWARE JOB
+  SCHEDULER* (`__Job Schedule Master (from Ryan 2026-08-11)/Job Schedule Master.xlsx`), written up in
+  [projects-jobs/scheduling/job-schedule-master-workbook.md](../projects-jobs/scheduling/job-schedule-master-workbook.md).
+  A `SCHEDULER COMMAND CENTER` takes job date · crane · city · start time · hours and computes crane
+  availability, annual/blanket permit coverage, permit lead time, latest permit submission and a
+  `FINAL PATH` (Green/Yellow/Red); 36 monthly dispatch boards behind it. Client artefact; shipped empty
+  of live jobs.
+- Resolution (b) — **Ready-to-Schedule Checklist**: the *Ready to Schedule* playbook (plus the
+  *Sales Coordinator Scheduling* and *Scheduling Sheet* playbooks, same source set), written up in
+  [projects-jobs/scheduling/ready-to-schedule.md](../projects-jobs/scheduling/ready-to-schedule.md).
+  Eight sections (Customer · Project · Compliance · Crane · …) that must all be complete before the
+  Sales Coordinator contacts Dispatch — *"cannot be scheduled until every required item has been
+  collected"*. Owned by the Sales Coordinator role.
+- Resolution (c) — **One-Page Customer Intake**: sheet `One Page Intake` of
+  `The_Crane_Guys_Intake_JobWalk_DATABASE_v13….xlsx` — *"SALES COORDINATOR CRANE JOB INTAKE — ONE PAGE
+  CALL SHEET"*, 94 questions in 15 sections, each with a Required flag and a named dropdown, with the
+  companion Job Walk Sheet; written up in [sales-intake-and-job-walk.md](sales-intake-and-job-walk.md)
+  §1–§3. Its Sources sheet attributes the questions to the *"Sales Coordinator questionnaire uploaded
+  by Ryan"*. This is the field list; it is `status: unverified`, and **it is not a TCG confirmation
+  that these are the ERP's intake fields** — the 2026-08-12 action item on the TCG team stands.
+- Resolution (d) — **Geographic Heat Map**: a sheet of `RYAN_ADAMS_KPI_TRACKER_BACKEND_CONNECTED.xlsx`
+  — a **city-level grouping of quote/invoice location**, fed from the `SOURCE_Invoices` FCC export;
+  [sales-reporting-workbooks.md](sales-reporting-workbooks.md) §2.1 and §2.3. It is a report sheet,
+  not a map artefact, which matches the meeting's *"reviewed … to analyze company activity by city"*.
+- Resolution (e) — **"Red Path"**: defined by two client documents. The *Dispatch Scheduling — Green /
+  Yellow / Red Path Playbook* ([projects-jobs/scheduling/dispatch-scheduling-path.md](../projects-jobs/scheduling/dispatch-scheduling-path.md))
+  — Red is any job for which *"the full applicable [permit] lead time is unavailable"*, counted on a
+  permit clock that excludes Thursday noon → Monday morning; automatic triggers include *"less than
+  72 eligible working hours of notice"*; a Red job needs the customer permit waiver **and** direct
+  Dispatch approval before it may be scheduled. The *Sales admin process mapping — Dispatch* board
+  ([dispatch/dispatch-value-engine-and-playbooks.md](../dispatch/dispatch-value-engine-and-playbooks.md)
+  §3) says the same in fewer words: *"Jobs without 72 hour notice"*. Brian Petros used the term the
+  same way on the 2026-08-11 recording (44:52, *"red path is before 72 hours of the job"*). Both are
+  client statements of practice; no human has ratified them, and the two Yellow definitions and the
+  workbook's extra Red reason (crane unavailable) disagree — see the *Two places the sources disagree*
+  section of the path page.
+- Also closed by the same drop, though not part of the question: **permits** now have a section
+  ([projects-jobs/city-permits/INDEX.md](../projects-jobs/city-permits/INDEX.md) — annual vs
+  job-specific, city eligibility, lead times, waiver, FAA) and a travel-permit SOP
+  ([dispatch/travel-permits-playbook.md](../dispatch/travel-permits-playbook.md)); and the
+  *cranes under maintenance must not be selectable* rule is stated by the workbook (*"Scheduled, Saved,
+  Tentative, Hold, and Maintenance are treated as unavailable"*). The *double booking must be
+  supported* rule is still stated nowhere, and the workbook's rule that a `Scheduled` crane is
+  unavailable is the opposite instinct — that remains for the Daily Allocation System.
+- Sources checked: `projects-jobs/scheduling/{job-schedule-master-workbook,ready-to-schedule,dispatch-scheduling-path,INDEX}.md`,
+  `quotations/sales-intake-and-job-walk.md` §1–§2, `quotations/sales-reporting-workbooks.md` §2,
+  `dispatch/dispatch-value-engine-and-playbooks.md` §3, `projects-jobs/city-permits/INDEX.md`,
+  `dispatch/travel-permits-playbook.md`, `meetings/2026-08-12-sell-side-workflow-and-scheduling.md`,
+  `meetings/transcripts/2026-08-11-sales-process.md` (grep for the five terms only),
+  `sync/project-repository-2026-09-04.md`.
+- Owner: answered; no client action outstanding on this question. The 2026-08-12 action item — TCG to
+  confirm the intake questions, fields and business rules — is unaffected and stays on the meeting page.
 - **From (frozen original):** [gaps.md#sell-side-scheduling-artefacts-no-vault-coverage](../gaps.md#sell-side-scheduling-artefacts-no-vault-coverage)
 
 ## "Customer PO" on the quotation — which of three things does it mean?
@@ -74,7 +129,38 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Blocked: any spec work citing `quotations/quotation.md`; whether the vestigial web type should be
   deleted; the pre-quote package scope.
 - Owner: Ryan Adams / Joe Schacatano (sales & quotation).
-- Status: open
+- **Status:** open
+- Update 2026-09-04 (Project Repository ingest): the drop shows where the customer PO lives **today**,
+  and it lives in three places at once — evidence of FCC practice, not a TCG decision on (a)/(b)/(c).
+  (1) **On the quote:** FCC's Job Quote *Main* tab carries a `PO No` field, and TCG's own review note
+  on that screen reads *"This is the 'Customer PO number' — the PO Number that Customer give us"*
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §6 slide 4 and *Main tab, as populated*).
+  The printed quote's acceptance block is *"Date · Print · Sign · PO Number"*, and its preamble
+  makes a customer PO one of three artefacts that confirm a job (*"a signed copy of the estimate,
+  written confirmation of the quote's approval, or a PO for the project"*)
+  ([quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §8 and the acceptance block). (2) **On
+  the job:** `FMS_JOB_MASTER.PoNumb` and `CustPOAmount`
+  (`../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_JOB_MASTER_Raw.sql:14, 187`); the job screen
+  shows `PO Number` on Main and a `PO(s)` panel ([fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md)
+  §4); the 2017 vendor manual lists *PO number* among fields that exist *only* on the job
+  (quote-entry §5), which the live screen contradicts. (3) **On the customer:** `FMS_CUSTOMERS.PORequire`
+  and `POBeforeTicket` flags (`…/ddl/stg.FMS_CUSTOMERS_Raw.sql:24, 88`;
+  [../customers/fcc-legacy-customer-data-model.md](../customers/fcc-legacy-customer-data-model.md)),
+  and a customer pop-up note in use — *"Please do not schedule without a PO#"* (quote-entry, *The
+  customer pop-up*). TCG's March 2026 design diagrams disagree with each other on the same point: the
+  lifecycle SVG says *"Log customer PO # — record on job / schedule tab"* and *"reference it on our
+  invoice"*, while the entity-hierarchy page puts a `PO Number` pill on the Quote
+  ([quote-lifecycle-permits-and-purchase-orders.md](quote-lifecycle-permits-and-purchase-orders.md)
+  §1–§2, §4). The playbooks treat the PO as a scheduling gate, not a quote field — *"Purchase order
+  received"* on the Ready-to-Schedule checklist
+  ([../projects-jobs/scheduling/ready-to-schedule.md](../projects-jobs/scheduling/ready-to-schedule.md)),
+  *"Purchase order required"* asked at intake ([sales-intake-and-job-walk.md](sales-intake-and-job-walk.md)
+  §1 sect. 14), *"Get PO for Job or COD needed to schedule"*
+  ([sales-operating-system/06-value-engine-flow-and-lead-workflow.md](sales-operating-system/06-value-engine-flow-and-lead-workflow.md)).
+  **What still needs the client:** nothing in the drop says what JZ's punch-list bullet asked for,
+  whether the field `SCRUM-149` removed should return, or which of quote / job / customer TCG wants as
+  the ERP's home for the number. `customers/customer-and-job-sites.md:41` is still the unanswered
+  ask for a customer-PO form. `Q-26` in this register now defers to this entry for the product answer.
 - **From (frozen original):** [gaps.md#customer-po-on-the-quotation-which-of-three-things-does-it-mean](../gaps.md#customer-po-on-the-quotation-which-of-three-things-does-it-mean)
 
 ## Billing-rate effective dating for pricing sheets — raised by the client, no design yet
@@ -89,6 +175,24 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** FCC `UNION_CRAFT.BillingRate` exists but is **0.000 on every sampled row**
   — a dead path; billing actually comes from pricing sheets. Vault: [billing-code-and-price-list.md](billing-code-and-price-list.md)
   (status draft/in-progress/active discussed 2026-03-12, no effective-dating design anywhere).
+- **Update 2026-09-04 (Project Repository ingest):** legacy practice only, no decision. FCC does not
+  version billing-code or price-list rates at all — a rate is one `Default Rate` per code and one
+  `Rate` per (code, list)
+  ([fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md) §4 *BIGGE's Billing
+  Codes tab*, and *Billing Codes – WPF*). What FCC dates is the **assignment**: the customer record
+  carries `Price List` with an **`Expires`** date (§4 *The Customers screen*;
+  `../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CUSTOMERS_Raw.sql:40-41` `PriceList` /
+  `PriceExpires`), the job site carries the same pair
+  ([../customers/fcc-legacy-customer-data-model.md](../customers/fcc-legacy-customer-data-model.md)),
+  and **the job carries its own copy** (`ddl/stg.FMS_JOB_MASTER_Raw.sql:109,171`; the real SCE job
+  `OM55127` shows *Price List `SO CAL EDISON`* in its Related Information panel, §4) — so an old job
+  invoices at whatever its list says *now*, not at the rate in force on its work date. The only
+  effective-dated, yard-scoped rate record FCC has is the **Billing Costs** row (*Effective Start /
+  End Date*, §*Billing Costs pane*), which TCG says it does not use — while TCG's slide-14 note asks
+  for effective-dated, backdatable **burden** rates for financial reporting (§5), a TCG requirement
+  about cost, not billing. Still needs the client: whether ERP billing rates / price-list rates are
+  to be effective-dated at all, at which grain (code, list, or assignment), and whether the
+  burden-rate ask extends to them.
 
 ## Billing-code create form prefill — six query params, no producer, no source
 
@@ -204,6 +308,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   asks whether the dropped attachments and the carried-over stored totals are intended.
 - **Owner:** needs assignment — Ryan Adams / Joe Schacatano (sales & quotation) for what a re-quote
   should carry.
+- **Update 2026-09-04 (Project Repository ingest):** the legacy system has a written copy contract,
+  and it is narrower than ours. FCC's **Copy Quote** opens a *Copy Job Detail* dialog — *"Select the
+  data to copy"* — with three checkboxes, **Estimate · Equipment · People**, all ticked by default,
+  plus **Start Date / End Date** for the new quote; unticking a box *"provide[s] the user with a
+  clean slate for that area"*, the copy is unsaved until saved, and the stated use case is *"the
+  customer wants the same unit back at the same site"*
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §5, and the Atom capture under *`Sales
+  Guide (Atom)v.1.0.docx`*). Documents are not among the options — quote files live in a separate
+  *Maintain File Links* window with their own `Include On Job` flag (*Quote documents*, slide 10).
+  So in FCC a copy is the resource tree and the estimate lines, chosen per area, with new dates and
+  no documents; FCC's only stored header total is `Quote Max`, the estimate sum
+  ([fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md) §4), and whether a
+  copy recomputes it is not shown. That is legacy behaviour, not a TCG decision — (a) attachments,
+  (b) `discountValidUntil`, and (c) carry-vs-recompute of stored totals still need Ryan / Joe.
 
 ## Long-boom billing has no model — the pay-side boom table is not it
 
@@ -230,10 +348,24 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   would silently couple a customer price to a union-negotiated pay rate. Also unresolved: the
   billing brackets start at 200′ and stop at 340′, while cranes in the fleet carry boom past 400′
   (the pay table runs to `421-440`) — what is billed above 340′ is unstated.
+- **Update 2026-09-04 (Project Repository ingest):** two things, neither a decision. (a) The second
+  real quote, OM-36229 (2026-03-08, a 40-ton job), prints the **identical** three-bracket /
+  four-tier long-boom table — *"identical to OM-35140 and … confirmed, not changed"*
+  ([quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §9) — so the table is standing
+  boilerplate on every quote, not a per-job term. (b) On the billing side FCC has **`LBP` — Long
+  Boom Pay** as one of its 37 **Billing Code Types**
+  ([fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md) §*Billing Code
+  Types*), i.e. a category a billing code can belong to — but no long-boom billing *code* appears in
+  the §3 catalogue, on either estimate template, on the two real quotes' rate tables, or on the six
+  April 2026 invoice packets
+  ([../accounting/invoice-packets-2026-04-worked-examples.md](../accounting/invoice-packets-2026-04-worked-examples.md)).
+  So the legacy system classifies long boom as a billing type and holds no priced code for it in
+  anything seen, which is consistent with the uplift being billed by hand, if at all. Where the four
+  tier rates should live, and what is billed above 340′, still need the client.
 
 ## The surcharge is blanket in the contract but per-resource in the model, and it has no name
 
-- **Status:** open
+- **Status:** resolved 2026-09-02 — (a), (b) and (c) all answered; see the resolution notes below
 - **Asked:** 2026-09-01 — processing quote OM-35140, supplied by Melissa McNutt 2026-08-31.
 - **Question:** three sub-questions on the 12% surcharge. (a) The T&C is unconditional — *"ALL
   CHARGES ARE SUBJECT TO A 12% FUEL & INSURANCE SURCHARGE"* — but `Surcharge` is stored per price
@@ -258,6 +390,40 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** a fourth item from the same page is unmodelled anywhere and is not part of this
   question, but should not be lost: *"ALL SUBCONTRACTORS WILL BE BILLED AT A MINIMUM OF 10% MARK
   UP."*
+- **Resolved 2026-09-02 — (a) and (b).** See
+  [decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md).
+  The client had already answered (a) in the 2026-05-05 ERP review, which this entry had not
+  reached: **ans.nisar @ 1:13:10** asked *"does it affect surcharge for all the quotations, or does
+  it vary?"* and **Melissa McNutt @ 1:13:29** answered *"One line for all the quotations. Yeah, one
+  price. Actually, on price list there may be different, but we can set those up per the price
+  list."* One rate per quote, price list overriding the tenant-wide default; per-line variation is
+  membership only (`BillingCode.applySurcharge`), never rate. (b) is answered by adding
+  `Surcharge.label`, defaulted to `Fuel & Insurance Surcharge` and editable — a column rather than a
+  constant because TCG asked to rename it and the industry bills emissions and environmental
+  surcharges through the same mechanism.
+- **A third fault this entry did not name, found 2026-09-02 and fixed with it.** `resolveRate`
+  decided the surcharge *rate* per item, so a mixed quote — some lines priced from the price list,
+  some falling back to their billing code — carried **two different rates in one total**, matching
+  no stated percentage. This was arithmetic rather than policy: reproduced against quote OM-35140,
+  which came out at $5,616.80 instead of $5,157.60 with every line 12% high. The printed quote also
+  folded the surcharge into each line's amount and showed no named row; it now prints clean line
+  amounts plus `Fuel & Insurance Surcharge  1.00  Each  12.00%  $552.60`, reconciling to $5,157.60.
+- **Resolved 2026-09-02 — (c). Yes: invoicing recomputes it, against the invoice's own lines.**
+  Micaela Dipane walks the whole flow in `meetings/transcripts/2026-07-23-accounting-invoicing.md`.
+  She corrects the hours to actual — **@ 18:34** *"So then in here, **we'll do 5 hours**. The
+  overtime and double time aren't applicable in this one. And if you leave it zero, it erases it
+  automatically."* — adds anything the quote missed (**@ 18:03** *"if that wasn't in there… you just
+  add your overtime or double time line item"*), and only then **@ 18:49** *"From the invoice, we'll
+  add in the NOTAM, the travel permit, and then **our surcharge**. And then we hit save."* The
+  surcharge is applied to the corrected invoice, not carried across from the quote. Melissa McNutt
+  states the recompute rule in general terms on 2026-06-17 @ 30:52 — *"The one thing that would need
+  to auto change is a surcharge. It would need to calculate everything."*
+  **Consequence:** `QuotationResource.finalAmount` keeping the surcharge inside it is harmless — the
+  invoice does not inherit that figure, it recalculates from its own lines. The quote's surcharge is
+  an estimate over quoted hours, exactly as the T&C implies.
+  **An earlier note on this entry said no recording addressed (c). That was wrong** — it read
+  Micaela's line about *adding* the surcharge without the six lines above it where she edits the
+  hours.
 
 ## Billable hour minimums and maximums are contractual but have nowhere to live
 
@@ -288,6 +454,30 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `../dispatch/gaps.md` is separately unsure whether an operator load is an Asset, a crane
   configuration, or a billable line. It is at least a billable line: `OPL` is seeded in
   `apps/api/src/utility/seed-data.ts:86`.
+- **Update 2026-09-04 (Project Repository ingest):** the record shows *where* the minimum lives
+  today and *how* it is applied, but states no rule for the ERP. (i) **Quoting time — a default
+  quantity plus a comment.** The estimate template seeds the crane line at 4.00 h, and the live
+  90-ton quote seeds *Operator Load* at 5.00 h with the comment *"5 hour minimum"*
+  ([fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md) §4 *Estimate tab*;
+  [fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md) §2); TCG's own SOP
+  says *"FCC will automatically generate the crane and the minimum hours for the machine you are
+  quoting"* ([tcg-creating-quotes-sop.md](tcg-creating-quotes-sop.md) §5). Nothing enforces it — the
+  vendor manual says every seeded line *"may be changed or deleted"*. (ii) **Invoicing time — by
+  hand.** The April 2026 packets bill *Operator Load* at **qty 8** under the printed text *"5 hour
+  minimum with 8 hour max per day"*, and cranes at their actual hours (8.50, 11.50, 13)
+  ([../accounting/invoice-packets-2026-04-worked-examples.md](../accounting/invoice-packets-2026-04-worked-examples.md)
+  *Labour and support — Layout A*), so the max is applied by whoever enters the quantity. (iii)
+  **The customer-facing statement** is per equipment class — 22-ton 3 h, everything else in the
+  fleet 4 h ([../customers/new-customer-packet.md](../customers/new-customer-packet.md) *Hour
+  minimums by equipment class*) — while the contract adds an **8-hour minimum workday** including
+  assembly / disassembly (clause 8) and an 8-hour crew minimum for cranes left on site (clause 11)
+  ([quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §10), and the E-Ticket T&C the
+  4-hour-or-true-time cancellation rule
+  ([../field-ops/field-paper-forms.md](../field-ops/field-paper-forms.md) §14). The Sales OS lists
+  *"minimums"* as a required quote-development input
+  ([sales-operating-system/03-sales-coordinator-operations-manual.md](sales-operating-system/03-sales-coordinator-operations-manual.md)
+  §4, phase 4). All legacy practice and contract text; (a) where the min / max is modelled, (b)
+  default-up / warn / reject, and (c) quote-time vs invoice-time enforcement still need the client.
 
 ## Is the $50,000 approval threshold inclusive or exclusive?
 
@@ -314,6 +504,23 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   says only *"Total Exceeds"*, which inherits the same ambiguity.
 - **Note:** the threshold is environment-configurable, so whatever is decided should be stated
   as a rule about the comparison ("at or above" vs "above"), not about the number $50,000.
+- **Update 2026-09-04 (Project Repository ingest):** the boundary is stated twice by the client and
+  the two statements disagree, so this stays open. Ryan Adams, 2026-05-05
+  ([transcript](../meetings/transcripts/2026-05-05-tcg-erp-system.md) 1:20:25): *"if we picked a
+  number, let's say 50,000, **any quote over 50,000** that it had to be reviewed"* — exclusive. Wes
+  Staley, 2026-06-17 sprint review
+  ([transcript](../meetings/transcripts/2026-06-17-erp-sprint-review.md) 50:36): *"the manager would
+  be notified for the **50,000 and over**, and the reduced rate"* — inclusive. Neither was a
+  decision — both were describing the idea — and the AI extraction of the May meeting records only
+  *"flag quotes over a dollar threshold — $50,000 was the figure discussed"*
+  ([../erp-review-log.md](../erp-review-log.md) → *Quote approval*). TCG's own Sales Operating
+  System lists *"Confirm approval thresholds for discounts, free lift plans, invoice adjustments and
+  strategic concessions"* as an **unfinished** governance decision
+  ([sales-operating-system/01-operating-system-architecture.md](sales-operating-system/01-operating-system-architecture.md)
+  §12, item 7), and TCG's quoting SOP makes supervisor approval **unconditional** before any quote
+  is sent ([tcg-creating-quotes-sop.md](tcg-creating-quotes-sop.md) §7) — a different regime from a
+  threshold altogether. Still needs the client: "at or above" vs "above", stated as a rule about the
+  comparison.
 
 ## Does "Valid until <date>" mean end of that day, or the instant of midnight?
 
@@ -334,6 +541,22 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   create-quotation.helpers.ts` `parseDateInput` for the client-side parse. No vault file
   defines what a validity period means; `quote-terms-and-rate-card.md` covers rates and terms
   but not the expiry boundary.
+- **Update 2026-09-04 (Project Repository ingest):** the validity *period* is now sourced; the
+  *boundary* is not. Both real quotes carry the same preamble — *"This is not a contract and **will
+  expire 30 days from issue.** After the 30 days rates are subject to change without notice"* — and
+  clause 17 of the numbered T&C repeats *"Quote valid 30 days, subject to equipment availability at
+  time of order"* ([quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §8, §10). The Sales
+  OS *Quote Sent* email template requires the **expiration** to be stated in the covering email as
+  well as the PDF
+  ([sales-operating-system/05-forms-and-records-matrix.md](sales-operating-system/05-forms-and-records-matrix.md)
+  §8), and the punch list asks for a *"`Valid Until` placement update"*
+  ([quotations.md](quotations.md)). FCC itself has no valid-until field — its quote dates are `Job
+  Date`, `Ending Date`, `Final Date` (*"the last date to submit bids"*), `Submitted Date`, `Award
+  Date`, all date-only ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §2 *Main tab*) — so
+  there is no legacy precedent for an instant. What follows for the ERP, none of it decided: the
+  client's own paper puts the default at **issue date + 30 days**, expressed in calendar days, not
+  instants; whether the 30th day is inside or outside, and in whose timezone, is not stated
+  anywhere. Still needs the client.
 
 ## Should editing a quotation adopt the customer's current price list?
 
@@ -355,6 +578,24 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `quotation.priceList` that this then replaces.
   [billing-code-and-price-list.md](billing-code-and-price-list.md) describes how price lists
   resolve a rate but says nothing about re-pricing an existing quotation on edit.
+- **Update 2026-09-04 (Project Repository ingest):** legacy practice only, no decision. In FCC the
+  price list is fixed **at creation** and travels with the record rather than being re-read from the
+  customer: the lifecycle diagram's first node is *"Create quotation — customer + price list
+  selected"*
+  ([quote-lifecycle-permits-and-purchase-orders.md](quote-lifecycle-permits-and-purchase-orders.md)
+  §1); the quote's Estimate tab has its own `Price List` field above the grid, and the Customer
+  Information panel shows the list the quote was priced on
+  ([fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md) §4;
+  [fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) *Main tab, as populated*); a line's rate
+  arrives from the list *"if not set"* at entry, i.e. once
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §2 *Estimate tab*); and the **job carries
+  its own `PriceList` / `PriceExpires` columns**
+  (`../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_JOB_MASTER_Raw.sql:109,171`), shown live as
+  *Price List `SO CAL EDISON`* on job `OM55127`. TCG's own annotation says only that the estimate
+  *"includes the rates (based on the customer/price list)"*
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §6, slide 6) — silent on re-pricing. So
+  the legacy default is "keep the list it was written against"; whether the ERP should re-price on
+  edit still needs the client.
 
 ## Should a quotation with a past job date or valid-until still be editable?
 
@@ -377,6 +618,19 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `apps/api/src/usecase/quotations/quotations.service.ts:338-346` — the service's own contract
   comment lists expired among the statuses that *"remain editable"*, which the DTO
   contradicts. Nothing in the vault states whether past-dated quotations are editable.
+- **Update 2026-09-04 (Project Repository ingest):** the legacy system locks a quote on
+  **conversion**, not on a date. *"If a quote has already been converted to a job, it will appear
+  grayed-out… no changes can be made to the quote and all changes must occur in the job screen"*
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §5); the March 2026 lifecycle diagram's
+  node 6 is *"Convert to job — quotation locked in system"*
+  ([quote-lifecycle-permits-and-purchase-orders.md](quote-lifecycle-permits-and-purchase-orders.md)
+  §1); and the review log's extraction says *"the quote must remain static after signature"*
+  ([../erp-review-log.md](../erp-review-log.md) → *Quotations, jobs and projects*). FCC's Job Date /
+  Ending Date are optional — the live Mastec quote shows both as `00/00/0000`
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) *Main tab, as populated*) — and its `PEND`
+  / `FW1` / `FW2` statuses exist so an unconverted quote can be followed up over time (*Job Types
+  and Quote Status codes*). None of that states a rule about past dates on edit; it shows the
+  client's current tool has no such rule. Still needs the client.
 
 ## Does uploading a plan or document notify the customer, and do those files ride the DocuSign envelope?
 
@@ -410,6 +664,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** whether branch `fix/quotation-das-resources` commit `00d8e83a` ships as-is. Nothing
   else is blocked — both behaviours are complete and self-consistent.
 - **Owner:** product team
+- **Update 2026-09-04 (Project Repository ingest):** legacy practice on (a), nothing on (b). In FCC
+  a file added to a quote's *Maintain File Links* is **stored only**; sending it is a separate,
+  deliberate action — highlight the row and click **E-Mail**, or **Post Doc** to DocuSign, and *"to
+  access DocuSign, a quote document must first be generated"*
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §4). Each file row carries an **`Include
+  On Job`** flag, and on TCG's own system the layout drawing (*"Job layout"*) is ticked while the
+  quote PDF is not — uploads are routed to the *job*, with TCG's note *"Lift plans and other
+  documents per Job Quote"* beside it (*Quote documents*, slide 10); job-site files have the same
+  flag as `Include on Job \ Quote`
+  ([../customers/fcc-maintain-customers-tcg-review.md](../customers/fcc-maintain-customers-tcg-review.md)).
+  Whether Post Doc can carry more than the generated quote PDF is not shown by any capture, so (b) —
+  and the [quotations.md](quotations.md) conflict line — stand as they were. (a)'s answer in the
+  legacy system is "store, then send explicitly"; whether the ERP should match it still needs the
+  client.
 
 ## After embedded signing returns, should the app pull DocuSign status immediately or wait for the webhook?
 
@@ -436,6 +704,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   method for different reasons and neither settles this. `decisions/` — nothing on signature
   timing.
 - **Owner:** product team
+- **Update 2026-09-04 (Project Repository ingest):** legacy practice only. In FCC envelope state is
+  refreshed by a manual **Get Status** button on *Maintain File Links* — there is no push — and the
+  salesperson receives *"an email notification … when the customer opens the document"*; observed
+  states are blank → Delivered → Complete, with a separate `Downloaded` / `Signed Document` row
+  after download ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §4, and the v1.2 / v2.2
+  capture notes). So the client's current tool is pull-on-demand, and the lag complained about in
+  the ERP is one FCC never hid. That is evidence of what they are used to, not a decision on
+  pull-on-return vs webhook; still needs the product team.
 
 ## Is a salesperson required on quotation create?
 
@@ -461,6 +737,29 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [quotation.md](quotation.md); [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md);
   `decisions/`; `.ai/aidlc/`.
 - **Owner:** product team
+- **Update 2026-09-04 (Project Repository ingest):** TCG's own quoting procedure fills the field
+  every time, but as a convention, not a validation rule. The Creating Quotes SOP prescribes
+  **Salesperson — *"Enter your name (the person creating the quote)"*** and **Taken By — *"Enter
+  your name (you are the person taking the call or entering the info)"***
+  ([tcg-creating-quotes-sop.md](tcg-creating-quotes-sop.md) §4), and the live Mastec quote shows
+  Salesperson, Taken By and Checked By as the same person
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) *Main tab, as populated*). Two things cut
+  against "salesperson = logged-in user": FCC's salesperson is a **separate 33-row lookup**
+  (`FMS_SALES_PERSON`, `UserID` nullable —
+  `../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_SALES_PERSON_Raw.sql`), distinct from *Taken
+  By* (`FMS_CHECKED_TAKEN`, 31 coordinator rows —
+  [../payroll/tcg-rawfms-staging-database/data/fcc-checked-taken-list.md](../payroll/tcg-rawfms-staging-database/data/fcc-checked-taken-list.md)),
+  with commissions keyed on the salesperson and coordinator pay on Taken By
+  ([sales-commissions.md](sales-commissions.md) §11); and Melissa described sales coordinators
+  drafting quotes *for* a salesperson — *"salesperson Jason, quote done by [the coordinator]"* as
+  two distinct names ([2026-06-17 sprint
+  review](../meetings/transcripts/2026-06-17-erp-sprint-review.md) 45:35, 48:05). The Sales OS makes
+  *"assigned salesperson"* a required lead-intake input
+  ([sales-operating-system/03-sales-coordinator-operations-manual.md](sales-operating-system/03-sales-coordinator-operations-manual.md)
+  §4, phase 1) and HubSpot requires an assigned owner on every opportunity
+  ([hubspot-sales-playbook.md](hubspot-sales-playbook.md)). So the record supports a salesperson
+  being **always present** and **not necessarily the creator**; it does not state "required" as a
+  rule, nor what a non-sales creator defaults to. Still needs the client.
 
 ## Can a Report To contact be created inline from the quotation form?
 
@@ -482,10 +781,26 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [../customers/customers-INDEX.md](../customers/customers-INDEX.md);
   [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md); `decisions/`; `.ai/aidlc/`.
 - **Owner:** product team
+- **Update 2026-09-04 (Project Repository ingest):** legacy practice only, no decision. On FCC's
+  quote Main tab **every lookup — Customer, Job Site, Report To, Quoted To — has a `New` button
+  beside it**, and TCG's own annotation is *"Can click 'New' to create new Customer, Job Site,
+  etc."* ([fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md) §4 *The Job
+  Quotes screen*; [fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §6 slide 4, and *Main tab,
+  as populated*). So inline creation of both contacts exists in the tool the client uses today, for
+  Quote To as well as Report To. On what it writes: FCC's contacts are customer-owned rows
+  (`FMS_CUSTOMER_CONTACTS`, `ContactType` Ordered By / Report To / Both —
+  [../customers/fcc-legacy-customer-data-model.md](../customers/fcc-legacy-customer-data-model.md)),
+  and the job-site Contacts tab shows the same rows as the customer's
+  ([../customers/fcc-maintain-customers-tcg-review.md](../customers/fcc-maintain-customers-tcg-review.md),
+  slide 11); the 2026-06-23 FCC copy holds no quote-level contact table, but it holds no quote
+  tables at all, so that does not prove where the `New` button writes. TCG's SOP minimum for a
+  contact is *"name and phone number"* ([tcg-creating-quotes-sop.md](tcg-creating-quotes-sop.md)
+  §4). Whether the ERP should do the same, and with the customer module's validation, still needs
+  the client.
 
 ## Should a per-resource surcharge column be shown on quotation resource rows?
 
-- **Status:** open
+- **Status:** resolved 2026-09-02 — **no.** Removed; replaced by a per-row membership badge
 - **Asked:** 2026-09-01 — PR review of branch `fix/quotation-das-resources` (no ticket);
   tcg-scrum escalation
 - **Question:** the branch adds a **Surcharge** column before **Amount** on every quotation
@@ -507,7 +822,67 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [quotation.md](quotation.md); `decisions/`; `.ai/aidlc/` (the nearest is `processed.log`
   `SCRUM-873`, *"resources surcharge chip from billing codes"*, a Path C fix with no spec folder
   and no acceptance criteria).
-- **Owner:** product team
+- **Resolved 2026-09-02 — the column is removed.** The entry deferred to the modelling question,
+  which is now decided:
+  [decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md).
+  With one rate per quote the column showed **the same percentage repeated down the page**, and an
+  amount that is `line × that rate`. It also displayed the per-line model the decision replaced, on
+  the screen where users form their mental model of how the charge works — which was the reason this
+  question was blocked rather than a layout preference.
+  **Nothing was lost.** The per-row surcharge amount and percentage were already in the Amount
+  tooltip (`Surcharge (12%)  +$427.20`), and they stay there. What the row now carries instead is
+  the one fact not derivable from anywhere else: a **Surcharged / No surcharge** badge saying
+  whether the line is inside the surcharge base — the opt-out Melissa McNutt describes at
+  2026-05-05 @ 1:03:10, which had no UI at all until the same day. The rate itself is stated once,
+  on the existing quote-level Surcharge chip.
+  This also aligns the editing view with the customer document: the printed quote shows one named
+  surcharge line, not a per-row column.
+  **What this does not decide:** whether the badge is the right *treatment* — nobody has yet exempted
+  a line in practice (Joe Schacatano, 2026-05-05 @ 1:03:44: *"I can't give you like a single example.
+  I would just say we have to have the option"*), so the exempt state is currently unexercised. If
+  TCG starts using it and the badge proves too quiet, that is a new question, not this one.
+  `ResourceSurchargeCell` is deleted; the read-only detail grid drops from eight columns to seven.
+- **Update 2026-09-01** — a second branch, `fix/subcategory-asset-dropdown-surcharge` (no ticket),
+  now **removes** the Surcharge column from the create/edit Resources tab while leaving it on the
+  read-only detail tab. The stated reason is that the column was read-only inside a form — the
+  percentage resolves from the billing code or price-list item and could never be typed into. The
+  underlying values (`surchargeEnabled`, `surchargePercentage`, `surchargeAmount`) stay in form
+  state, the payload, the Amount tooltip and the footer totals, and the sidebar surcharge section,
+  the pricing chips and the print path are untouched. **The question above is still open**, and the
+  removal answers half of it (not on create/edit, yes on detail) without a decision — so it is
+  recorded here rather than closed.
+  **Jira was checked this time**, and two issues bear on it, neither settling it:
+  `SCRUM-873` (QA, updated 2026-09-01) Create Flow item 4 — *"In the Resources tab, the surcharge
+  is displayed as Inactive even though the surcharge is active. Please fix the status display"* —
+  is a client ask to **fix**, not remove, a surcharge indicator on the create-flow Resources tab.
+  It most likely names the chip rather than the column (the branch leaves the chips alone), but the
+  two cannot be told apart from the ticket text, and it establishes that surcharge visibility on
+  the create flow is something the client tracks. `SCRUM-567` (Done) — *"Unit, Rate, and Amount
+  should remain synchronized based on Billing Code. Unit should be displayed as a disabled field.
+  Surcharge must automatically recalculate when quantity, rate, or amount changes"* — a shipped
+  requirement describing live surcharge recalculation while a line is being edited, alongside a
+  field that is **displayed but disabled**; whether "recalculate" implies "visible while editing"
+  is exactly what is unstated. `SCRUM-401` (Done) — *"system-generated and not manually entered by
+  the salesperson so nobody ever forgets it"* — supports the read-only premise but says nothing
+  about per-row display. Whoever answers the heading question should answer these together.
+- **Update 2026-09-01 (PR review, branch `fix/subcategory-asset-dropdown-surcharge`)** —
+  **Merge blocker (product):** comprehensive PR review recommends **do not ship** until product
+  explicitly confirms removing the Surcharge column from create/edit. Primary tension: `SCRUM-873`
+  Create Flow item 4 asks to **fix** surcharge status display on the create-flow Resources tab,
+  not remove a surcharge indicator; the ticket text cannot distinguish the pricing chip from the
+  dedicated column (the branch leaves chips and sidebar surcharge sections untouched). A client QA
+  ticket and an unsourced UI removal on the same tab is a high-risk combination without sign-off.
+  **Split UX now shipped without a decision:** create/edit users see surcharge only inside the
+  Amount cell tooltip and footer totals; the read-only detail tab still shows a dedicated Surcharge
+  column (`detail-resources-tab.tsx`). Whether that asymmetry is intended is unstated.
+  **Engineering gaps:** no `qa-automation/e2e/` spec references the column or grid layout;
+  `packages/shared` unchanged (web-only). Branch has no `.ai/aidlc/` folder and no ticket on the
+  branch itself — ad-hoc work routed here per [STRUCTURE.md](../STRUCTURE.md).
+- **Update 2026-09-01 (post-merge, PR #451 → main)** — merged to `main` without closing this
+  question. Create/edit no longer show a dedicated Surcharge column; detail tab still does.
+  Product must still confirm whether that split and the removal itself match client intent
+  (see `SCRUM-873` tension above). Reverting the column is a one-file web change if product
+  decides against the removal.
 
 ## May the send-signature modal close before the quotation data has refetched?
 
@@ -542,6 +917,172 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   It surfaces on quotation delivery mail because that is the only customer-facing email path today.
 - **Owner:** product team
 
+
+## Estimate defaults per resource type / job type / yard — FCC has them, TCG has no job type at all
+
+- **Status:** open
+- **Asked:** 2026-09-03 — Brian Petros, Teams message to ehtesham.anwar, following Joe (Schacatano)
+  raising in that day's meeting that quotation estimates are per crane **and** differ per Job
+  Type. Not a ticket question: no `SCRUM-###` is in flight on quotation estimate defaults.
+- **Question:** does the ERP adopt FCC's estimate-template model — a **Job Type** dimension, and
+  a default set of estimate lines held per **(resource type, job type, yard)** that seeds a
+  quotation's resources — or do estimators keep assembling every quote by hand as they do today?
+  Six sub-questions the message does not settle: **(a)** what is the full job-type list, is it
+  tenant-configurable, and does every resource type carry the same list? **(b)** does a job type
+  also vary the *Unit/People* set (the message says "potentially different"; the 100 Ton's two
+  job types are identical) — **unanswerable from a migrated tenant**, because the seeder dropped
+  `JobTypeYardID` from all 161 equipment and 117 employee rows (see the flattening entry below)?
+  **(c)** ~~is the yard slot ever narrower than *All Yards*~~ — **answered by the
+  2026-09-02 extract README**: absence of a `FMS_UNITTYPE_YARDS` row *is* All Yards, and exactly
+  **4 of the 75 production configurations are specifically Main Yard**. What remains is an ERP
+  design question, not an FCC one: what resolves a tie when a yard-specific and an all-yards
+  template both match? **(d)** FCC stores **both** an explicit
+  parent/child link *and* an independent per-line `Sub-Item` visibility flag (Brian's follow-up
+  the same day: the screen "doesn't display the line item and sub-item relationship very well",
+  but "in the database this appears to me more clear, with parent/child relationship"). TCG has
+  the parent link only and derives visibility from it — `quotation-pdf.service.ts` hides every
+  child of an `isGroup` parent. Does a line need to be able to be a child *and* visible? **(e)** when a
+  template changes, do existing quotations re-seed or stay a snapshot? **(f)** does the job type
+  sit on the quotation as a whole or per resource row — FCC keys it per resource type, so one
+  quote could in principle mix an *Hourly* crane with an *Hourly w/ Mob* one. **(g)** the
+  anomalies Brian flagged on delivery (2026-09-04) — a 110 Ton All Terrain Crane requiring
+  **Operator + Oiler**, a *Lift Plan* requiring a **Sales Admin**, a *Qualified Rigger and
+  Signalman* requiring a **Rigger** — *"do we need to continue to do anything special with
+  these?"* His question, for Joe. **(h)** ~~what a configuration with no job type means~~ — **answered
+  by the same README, and it forbids the obvious reading**: *"No Job Type child row is retained as
+  NULL / No Job Type Stored; do not automatically convert it to All Job Types."* **29 of the 75
+  production configurations carry no job type.** The ERP's job-type slot is therefore nullable and
+  NULL is a distinct value — what a NULL configuration should *do* when a quote is priced is still
+  unanswered, and is now the live half of this. **(i)** the README says `OptionFlag_Raw` is
+  preserved *"its business meaning was not assumed in this package"*, and every current row is
+  `M` — while our seeder reads `OptFlag === 'M'` as `isRequired`. What does `M` mean?
+- **Sources checked:** [fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md)
+  — the three messages transcribed, including Brian's FCC table map (§5): the configuration hangs
+  off `FMS_UNIT_TYPE_JOBTYPE_YARD.JobTypeYardID`, with job type, yard, equipment, employees and
+  estimate lines as its children, `Item` = sub-item and `ParentEstimateID` = parent line;
+  [mobilization-and-demobilization.md](mobilization-and-demobilization.md) — covers the mob/demob
+  bundle and its sub-item behaviour but **not the template above it**, and its FR-8 "special case"
+  claim is sharpened rather than contradicted; [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md)
+  for the four-hour minimum that appears as the `Hourly` template's 4.00-hour default;
+  [assets/fcc-units-and-schedule-types.md](../assets/fcc-units-and-schedule-types.md) for the
+  resource-type ↔ sub-category mapping. Built state: no job-type concept exists in
+  `apps/api/prisma/schema.prisma`, `packages/shared` or `apps/web`
+  (`Quotation.billingType` is a display-only `Rental`/`Parts` select, not this);
+  `SubCategoryAssociatedResource` is the *Unit/People* equivalent but is keyed by parent
+  sub-category alone; nothing seeds quotation resource rows from any template.
+- **Blocked:** any spec that would seed quotation resources or automate mob/demob assembly;
+  whether these FCC tables are in migration scope; whether `isIncluded`/`isGroup` need a
+  per-line visibility flag beside them.
+- **Owner:** Joe Schacatano / Ryan Adams (sales & quotation) for whether job type ships, what the
+  job-type list is, and the (g) anomalies — Brian has explicitly routed those to Joe; Brian Petros
+  for `Quantity2/3` and the `EmployeeRequirementScope` question.
+- **Sourcing upgraded 2026-09-02 — the module owner asked for it directly.** In the sprint demo
+  Joe Schacatano, unprompted and correcting Brian's "schedule types": *"you need to share with
+  them the pictures of the **resource types**, which is how the quotes populate currently, because
+  **that's how they should be populated on the quotes**. And the additional items like the riggers,
+  we can add them specific to the job. We don't want that to populate."* That is the owner of
+  sales and quotation stating the requirement — template-driven quote lines from the resource
+  type, with job-specific additions made by hand. It does not answer the design sub-questions
+  below, but it removes any doubt that the behaviour is wanted.
+  [meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §2.
+  Ehtesham put *"schedule types vs asset configurations"* on the 2026-09-03 agenda.
+- **Extract status:** **delivered 2026-09-04** — `FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx`
+  (prepared 2026-09-02), SharePoint *Project Repository → 2.1.1_DATA-MIGRATION → NexGenFMS_for_ERP*.
+  **Its README sheet has been read and is transcribed in §7 of the source doc; the five data sheets
+  have not been opened** and are not in the repo. The README answered (c) and the FCC half of (h);
+  (a) the job-type list and (b) whether *Unit/People* varies by job type are now a group-and-compare
+  away in `02_JobType_Yard` and `03_UnitPeople_Resources`. Production scale: 76 resource types,
+  75 configurations, 328 equipment rows, 4 employee rows, 701 estimate lines (432 sub-items).
+- **Update 2026-09-04 (Project Repository ingest):** four of the nine sub-questions move; none
+  closes. **(a) The job-type list is now known** — FCC's `Maintain → Job Types` holds **11 codes,
+  four with `Status` on**: `B` Bare, `H` Hourly, `S` Storage, `Z` Hourly w/ Mob (Contract, Monthly,
+  Weekly, OCIP/CCIP, Prevailing Wage, PSA/PLA, Vacation switched off) — the same list on the quote
+  deck and in the 2026-06-23 database ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) *Job
+  Types and Quote Status codes*;
+  [../payroll/tcg-rawfms-staging-database/data/fcc-job-status-type-and-department-codes.md](../payroll/tcg-rawfms-staging-database/data/fcc-job-status-type-and-department-codes.md)).
+  It is a user-maintained lookup with a Status flag, so tenant-configurable in FCC. **Not every
+  resource type carries the same list**: `FMS_UNITTYPE_JOBTYPES` is a 42-row allow-list — `H` on 22
+  unit types, `Z` on 18, `B` and `O` on one each — and **18 unit types carry both `H` and `Z`**
+  ([../payroll/tcg-rawfms-staging-database/data/fcc-unittype-jobtype-allow-list.md](../payroll/tcg-rawfms-staging-database/data/fcc-unittype-jobtype-allow-list.md)).
+  **(e)** The vendor's 2018 manual describes the template as a seed — it fires *"after the Type
+  column is populated and tabbed out of"*, everything it inserts *"may be changed or deleted"*, and
+  *"the same concept applies to the Schedule Jobs window"*
+  ([fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md) §8.1); nothing
+  describes re-seeding an existing quote, so FCC behaviour is snapshot-on-insert, and the template
+  is not quote-only. **(f)** In FCC the job type sits in **both** places — `Job Type` is a field on
+  the quote's Main tab (*Hourly* on the live quote) *and* the key of each resource type's
+  configuration — and §8.4 of the same page shows the term carrying three meanings in FCC, so any
+  ERP spec must say which it adopts. **(d)** `Sub-Item` has a third layer, a billing-code-level
+  *Default as Sub-Item* (§8.2). Unchanged: (b) still needs `03_UnitPeople_Resources` opened; (g)
+  still Joe's; (h) the NULL-configuration behaviour; (i) what `M` means. All of this is FCC as held,
+  not a TCG decision on what the ERP adopts.
+
+## FCC estimate templates were already extracted — and the seeder flattened them to one FK
+
+- **Status:** open
+- **Asked:** 2026-09-03 — found while recording Brian Petros' FCC table map
+  ([fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md) §5–6). Not a
+  ticket question: no `SCRUM-###` covers estimate templates or this part of the seeder.
+- **Question:** the FCC test extract already carried every table behind the Resource Type
+  configuration, and the seeder discarded the structure. `FMS_UNIT_TYPE_ESTIMATE` — **564 rows** —
+  is not inserted at all: `linked-seed-files.ts:385-400` reads `Quantity`, `MeasureCode`, `Rate`,
+  `Amount`, `PrimaryEst`, `Status` and **never reads `JobTypeYardID`, `Item`, `ParentEstimateID`,
+  `LineNumb` or `Comments`**, and `link-billing-codes.ts:225-241` then uses those rows only to
+  order candidates before writing a single `BillingCode.subCategoryId`, first-wins. So: **is the
+  flattening intended and permanent, or a first-pass shortcut to be undone once the ERP has
+  somewhere to put a template?** And separately — `FMS_UNIT_TYPE_EQUIPMENT` (161 rows) and
+  `FMS_UNIT_TYPE_EMPLOYEES` (117) were seeded onto `SubCategoryAssociatedResource` with
+  **`JobTypeYardID` dropped on every row** (`fcc-seeder/docs/field-gaps.md:589,610`): if any
+  resource type's two job types differ in *Unit/People*, that difference is already gone in a
+  migrated tenant, and rows may have merged or collided. **Nobody has checked whether any do.**
+- **Why it is not merely a migration detail:** it decides what the promised full extract has to
+  contain, and it is the difference between "we need new data from the client" and "we need to
+  stop throwing away the data we have". The columns are populated upstream and therefore
+  recoverable — `field-gaps.md:630-650` records `Item` 564/564, `JobTypeYardID` 564/564, `LineNumb`
+  564/564, `ParentEstimateID` **322/564** (57% of estimate lines are children), `Comments` 201/564.
+- **Also unexplained, but smaller than it looked:** `Quantity2/3`, `Rate2/3`, `Amount2/3` are
+  non-null on all 564 test-extract rows. The production README says the neighbouring `PrimaryEst`,
+  `Multiplier`, `MeasureCode2` and `MeasureCode3` *"are not used"* by current active data, so these
+  are probably zero-filled too — ask Brian, do not design around them. One consequence is already
+  real: `link-billing-codes.ts:227` orders candidates by **`PrimaryEst`**, a field production data
+  does not use, so the first-wins pick is effectively input order.
+- **Sources checked:** `apps/api/fcc-seeder/docs/linked-tables-mapping.md:20-32`,
+  `docs/seed-files-index.md:20,42-49`, `docs/fcc-unmapped-entities.md:30-40`,
+  `docs/field-gaps.md:585-655`, `src/linked-seed-files.ts:385-400`,
+  `src/lib/link-billing-codes.ts:225-241`;
+  [meetings/2026-08-26-fcc-migration-client-brief.md](../meetings/2026-08-26-fcc-migration-client-brief.md):78,
+  which already listed *"unit-type estimate templates"* among the things **extracted but with no
+  TCG home** — this entry is that line, costed.
+- **Two defects now provable, not just fidelity loss** (both from the production README's
+  confirmed behaviours, §7 of the source doc): **(1)** a requirement expressed as a schedule type
+  with no unit type — the README's named case is **Bare Rental**, *"Unit/People = Mobile Crane and
+  Type is blank"* — is **silently skipped** at insert, because `linked-seed-files.ts:337` fills the
+  association from `EquipUnitTypeID` alone and `seed-all.ts:1433` drops rows with no association.
+  **(2)** `assocSeen` keys on `(parent, associated)` (`seed-all.ts:1439`), so one companion
+  required by two job-type configurations of the same resource type collapses to **one row,
+  first-wins**, taking whichever `isRequired` came first — 328 production equipment rows fold onto
+  at most 76 sub-categories and nobody has counted the collisions.
+- **Blocked:** any decision on whether a migrated tenant's associated resources need re-seeding.
+  **No longer blocking the ask** — the full extract was delivered 2026-09-04
+  (`FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx`); the open half is now whether the seeder is
+  changed to preserve what that file proves is there.
+- **Owner:** CodingCops (seeder) for the flattening and the collision check; TCG via Brian Petros
+  for what `Quantity2/3` etc. are.
+- **Update 2026-09-04 (Project Repository ingest):** the collision is now countable from the
+  client's own database rather than the test extract. The 2026-06-23 FCC copy's
+  `FMS_UNITTYPE_JOBTYPES` — printed in full at
+  [../payroll/tcg-rawfms-staging-database/data/fcc-unittype-jobtype-allow-list.md](../payroll/tcg-rawfms-staging-database/data/fcc-unittype-jobtype-allow-list.md)
+  — has 42 `(JobTypeYardID, JobTypeCode, UnitTypeID)` rows, and **18 unit types carry two
+  configurations**, an `H` and a `Z` each (unit types 3, 4, 5, 6, 7, 8, 9, 20, 21, 22, 23, 28, 34,
+  56, 63, 65, 67, 70). Every one of those 18 is a place where `assocSeen` keyed on `(parent,
+  associated)` folds two job-type configurations into one row, first-wins. `FMS_UNIT_TYPE_ESTIMATE`
+  and `FMS_UNIT_TYPE_EQUIPMENT` are **not** in that copy (`ddl/` has `FMS_UNIT_TYPES`,
+  `FMS_UNIT_TYPE_DETAILS`, `FMS_UNITTYPE_JOBTYPES` only), so whether the two configurations actually
+  differ in *Unit/People* still needs the delivered workbook's `03_UnitPeople_Resources` opened. The
+  vendor manual adds that the same defaults fire on **Schedule Jobs**
+  ([fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md) §8.1), so a
+  flattened seed affects jobs, not only quotes. Whether the seeder is changed remains CodingCops';
+  `Quantity2/3` remains Brian's.
 
 ## Quotation module defect audit (2026-09-01)
 
@@ -929,6 +1470,19 @@ editability). Each entry below is a concrete code defect still open until fixed.
 - **Sources checked:** audit #q-26 cites `quotation-api.ts:164, 195-208`,
   `quotation-payloads.ts:81-94`, `schema.prisma` Quotation model, `main.ts`
   ValidationPipe.
+- **Update 2026-09-04 (Project Repository ingest):** the premise *"PO lives on Project/Job"* is now
+  contested by the client's own screens. FCC's quote Main tab has a **`PO No`** field and TCG
+  annotated it *"This is the 'Customer PO number' — the PO Number that Customer give us"*
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §6 slide 4, and *Main tab, as populated*),
+  while the 2017 vendor manual (§5), TCG's March 2026 lifecycle diagram (*"Log customer PO # —
+  record on job / schedule tab"*,
+  [quote-lifecycle-permits-and-purchase-orders.md](quote-lifecycle-permits-and-purchase-orders.md)
+  §1) and the job screen's `PO(s)` panel
+  ([fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md) §4) put it on the job.
+  `FMS_JOB_MASTER.PoNumb` exists
+  (`../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_JOB_MASTER_Raw.sql:14`); the 2026-06-23 copy
+  holds no quote table to check the quote side. So "remove the phantom field" is not safe to assume
+  — the product answer is the *Customer PO* entry above, and this finding should follow it.
 
 ## Q-27 — certifiedPayroll nullable on API, required in web types
 
@@ -984,6 +1538,75 @@ editability). Each entry below is a concrete code defect still open until fixed.
   `quotation-expiry.service.ts:45-47`; `prisma.service.ts:81-94`;
   `quotations.controller.ts:88-94`. Audit: #q-30.
 
+## Who picks the approvers — the requester, or the role?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation.
+- **Question:** The branch converts the approval-request approver checklist
+  (`apps/web/src/features/quotation-approvals/components/approver-list.tsx`) to a
+  **server-searched, page-at-a-time roster** with a debounced search box, replacing a call that
+  loaded every eligible approver. Reviewing it surfaced a prior question the paging change only
+  makes sharper: **is a requester supposed to choose a subset of approvers at all?** The two
+  written sources describe a role-derived pool that is notified in full, not a hand-picked list:
+  - **`SCRUM-573`** *Notify All Sales Managers for Approval* (Done, 2026-06-25, Umair Khan) —
+    *"the system shall notify **all users assigned the Sales Manager role**, allowing **any**
+    authorized manager to review and approve… ensure approval requests are **visible to all
+    eligible approvers**."*
+  - **`SCRUM-397`** *Quotation Approval System: Two Trigger Rules* (Done, 2026-05-08, Umair Khan)
+    AC 3 — *"Approval notification email goes to **multiple managers so there is no
+    single-person bottleneck if someone is sick**."*
+  If the pool is the role and everyone in it is notified, a picker that lets a requester select
+  three of eleven managers **reintroduces exactly the bottleneck `SCRUM-397` was written to
+  prevent** — and searching and paging that picker is a second-order question that only exists
+  because the picker does. Two parts: (a) does the requester choose approvers, or does the role
+  define them? (b) if the requester does choose, **what did that decision supersede in
+  `SCRUM-573`/`SCRUM-397`, and where is it written?**
+- **Sources checked:** **Vault — nothing names an approver or an approver-selection step.**
+  `INDEX.md`; [quotations-INDEX.md](quotations-INDEX.md) and all four candidates;
+  [quotation-flow-process.md](quotation-flow-process.md) steps 18–20 — *"Check whether internal
+  approval is required… **Manager** reviews the quotation… Approve / Reject / Request changes"* —
+  a single unnamed manager, **no selection step at any point in the 27 steps**;
+  [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md) (the only
+  acceptance-criteria-level quotation source — covers send, customer approval, print and delivery
+  format, **not internal approval**); `../decisions/` (24 notes, none on approvers). Grep across
+  `quotations/` content files for `approver` / `eligible approver` — **no matches outside this
+  register.** Jira: `SCRUM-574`, `SCRUM-658`, `SCRUM-822` touch approval permissions, emails and
+  button colour; none introduces approver selection.
+- **Note:** this is adjacent to but distinct from **Q-20** above (*Approver pool includes
+  inactive / invite-only users*). Q-20 asks who may be **in** the pool; this asks whether a human
+  **narrows** it. Answering Q-20 alone leaves the picker's existence unexplained, and if (a) comes
+  back "the role defines them" then Q-20's fix changes shape entirely.
+- **Blocked:** sign-off of `feat/move-dropdowns-BE`'s approver changes as product-correct.
+  Nothing ships broken — the paged roster works.
+- **Owner:** Brian Petros or Mohsin Ali — whoever owns the quotation approval chain; the two
+  Done tickets are Umair Khan's write-up of it.
+- **Update 2026-09-04 (Project Repository ingest):** the client's own process documents name a
+  **role**, never a picker, and the one recorded design conversation contradicts itself. Sales OS:
+  *"Final pricing approval remains with the salesperson/manager under the approval matrix"*
+  ([sales-operating-system/03-sales-coordinator-operations-manual.md](sales-operating-system/03-sales-coordinator-operations-manual.md)
+  §2); discounts escalate to *"Salesperson / Sales Manager"* (§7); the Commercial Decision Form
+  records a *"named approver"* after the fact
+  ([sales-operating-system/05-forms-and-records-matrix.md](sales-operating-system/05-forms-and-records-matrix.md)
+  §7); and the *approval matrix* itself is missing from the drop, with *"confirm approval
+  thresholds"* listed as undone
+  ([sales-operating-system/01-operating-system-architecture.md](sales-operating-system/01-operating-system-architecture.md)
+  §12). The review log's May extraction says *"notifications to designated managers/executives ·
+  multiple approvers, so absences do not block sales"* ([../erp-review-log.md](../erp-review-log.md)
+  → *Quote approval*). In the [2026-06-17 sprint
+  review](../meetings/transcripts/2026-06-17-erp-sprint-review.md) (48:37–50:36) Ehtesham first said
+  *"Nobody will be able to select who is reviewing. We are going to automatically pick"*, then
+  *"they can select any particular sales manager"*; ans.nisar proposed notifying **all** managers;
+  Melissa: *"we only have one right now."* No TCG statement chooses. (a) and (b) still need Brian or
+  Mohsin.
+
+## Pointer — cascading resource picker completeness
+
+The quotation Resources tab is the largest consumer of the cascading resource picker, whose
+capped browse state is open in
+[../assets/gaps.md](../assets/gaps.md) → *The cascading resource picker may now show an
+incomplete tree — is that acceptable?* (2026-09-02). Answered there, not here.
+
 ### Checked and found sound (not open defects)
 
 Recorded so they are not re-filed. Full evidence in the audit doc.
@@ -996,3 +1619,47 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - Web and mobile `calculateResourcePricing` match.
 - All nine `QuotationStatus` members have labels and matching status buckets.
 - Empty approver pool throws; it does not auto-approve.
+
+## The signing email should come from the salesperson, not from DocuSign
+
+- **Status:** open
+- **Asked:** 2026-09-02 — Joe Schacatano, in the sprint demo
+  ([meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §1;
+  transcript 15:46–17:50).
+- **Question:** *"Is that the only option? … I'm not a fan of DocuSign. It's not us, it's not our
+  voice. Whereas if it's an e-mail from the person, the salesperson, yet it has the digital
+  signature capability."* Ehtesham offered two answers in the call: **(a)** before the first scope
+  closes, integrate the salesperson's **Outlook** so the system sends from their own address —
+  Joe said yes to this; **(b)** after it, a **customer portal** where the quotation, the
+  first-time-customer packet and the signature all live, which is *"already planned after the
+  first scope."* Neither is specified. What is owed: does (a) mean per-user OAuth to Microsoft
+  365 and sending as the individual, or a from-name/reply-to change on the existing
+  `support@craneguys.com` path — and does DocuSign remain the signing rail underneath either?
+- **Sources checked:** the DocuSign envelope path as built (`apps/api/src/usecase/docusign/`,
+  branded email + webhook); [*Company identity on customer-facing email*](#company-identity-on-customer-facing-email--see-admin)
+  above, which is the tenant-identity half of the same surface and points at
+  [../admin/gaps.md](../admin/gaps.md); [quotation-flow-process.md](quotation-flow-process.md)
+  steps 1–27, which name DocuSign as the mechanism and say nothing about the sender.
+- **Note:** this is a *presentation* objection, not a signing-technology one — Joe's own summary
+  was *"everything else that you guys have is perfect."* Solving it with a from-address change is
+  cheap; solving it with a portal is a scope item. Do not conflate them.
+- **Owner:** Joe Schacatano (accepted the Outlook answer in the call); CodingCops for which
+  mechanism, and Patrick for Microsoft 365 permissions if it is per-user OAuth.
+- **Update 2026-09-04 (Project Repository ingest):** context, no mechanism. The objection has a
+  legacy root: FCC's DocuSign invite goes out *"from an administrator controlled email address"*
+  (vendor manual, [fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §4), so Joe has never had a
+  signing email from the salesperson. Against that, the printed quote already carries the
+  **salesperson's own cell and email** in its Customer Information block
+  ([quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §8); TCG's Sales OS names
+  **Outlook** as the system of record for customer correspondence and approvals
+  ([sales-operating-system/01-operating-system-architecture.md](sales-operating-system/01-operating-system-architecture.md)
+  §9;
+  [sales-operating-system/03-sales-coordinator-operations-manual.md](sales-operating-system/03-sales-coordinator-operations-manual.md)
+  §3); and its *Quote Sent* template fixes what the covering email must contain — quote number,
+  scope, exclusions, expiration, next steps, required customer forms
+  ([sales-operating-system/05-forms-and-records-matrix.md](sales-operating-system/05-forms-and-records-matrix.md)
+  §8). The March 2026 lifecycle diagram says only *"Submit to customer — digital signature via
+  email"*
+  ([quote-lifecycle-permits-and-purchase-orders.md](quote-lifecycle-permits-and-purchase-orders.md)
+  §1). Nothing in the drop says per-user Microsoft 365 sending vs a from-name / reply-to change, or
+  whether DocuSign stays underneath. Still Joe's and CodingCops'.

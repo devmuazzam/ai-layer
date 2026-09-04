@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-08-31
+updated: 2026-09-04
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -37,7 +37,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   **Do not infer the answer from what the legacy system does — that is the thing being questioned.**
 - Blocked: any payroll rule implementation that is not L12-Field-only.
 - Owner: TCG management, payroll leadership, and labor counsel — named as such in both documents.
-- Status: open
+- **Status:** open
 - Legacy behaviour (2026-08-18, code-verified — not a policy answer): the engine applies every L12
   rule to any labor row whose `CraftCode LIKE 'L12%'` (Field and Mechanic identically); Non-Union
   Admin Hourly rows are repriced by `app.usp_Apply_CA_NonUnionAdminHourly_OT` (daily 8/12, weekly
@@ -65,8 +65,9 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   populated for all 68 rules, and leaves all ten implementation-tracking columns blank.
 - Blocked: treating any payroll rule as specified.
 - Owner: TCG management, payroll team, labor counsel, union representatives.
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps-2026-08-20-retired.md#the-24-decisions-required-before-the-payroll-rule-catalog-is-final](gaps-2026-08-20-retired.md#the-24-decisions-required-before-the-payroll-rule-catalog-is-final)
+- Update 2026-09-04 (Project Repository ingest): the list is numbered 1–24 in [erp-payroll-module-frd/11](erp-payroll-module-frd/11-security-decisions-and-acceptance.md) §25, and the record now settles or bears on several of them without anyone having swept the list. **Decided (decision notes):** #6 half-hour rounding — [decisions/2026-08-24-payroll-time-rounding-method.md](../decisions/2026-08-24-payroll-time-rounding-method.md) (start down, end up, 30 min, all employees; `verified`); #8 cross-midnight day-type — [decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md) (Corrina Bustos in writing: higher rate governs after midnight, spill into a holiday owes the 8-hour minimum; `verified`); part of #15 — [decisions/2026-09-01-subsistence-not-a-craft-attribute.md](../decisions/2026-09-01-subsistence-not-a-craft-attribute.md) (eligibility is a property of the trip, distance computed per job; the employer-election workflow is not decided). **Contract text now in the vault, not an interpretation:** #12 — the full Truck Crane MLA ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md) Art. III *Payment of Wages* §5 and Art. IV §3: the higher rate applies to *all time worked on that job during that day*). **Recommended by one TCG-side author, adjudicated by nobody:** #7, #13, #14 and #22 are each answered as proposals in [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md) (reconstruct the timeline from labor intervals rather than FCC hours; freeze the day-type WTL premium only after the Payroll Manager confirms; replace `WTL:0` with an explicit *Lunch Taken* indicator; closed payroll immutable with a retro delta) — §15 lists them as unadjudicated collisions. **Evidence of practice, not decisions:** #20 — the live ADP mapping is now read from the workbook's own engine ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §3–§4); #17 — TCG's annotated FCC deck says apprentice level is *based on number of hours worked* and must be manually modifiable ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §8), which names the driver but not the source system; FCC's L12 *Payroll Defaults* slide encodes OT after 8 / DT after 12 / Saturday all-OT / 30-minute rounding as the incumbent's configuration (same page, *Union Codes* slides). The remaining items — #1–#5, #9–#11, #16, #18, #19, #21, #23, #24 — have nothing new; the list as a whole still needs TCG management, counsel and the union to sign it off.
 
 ## ADP export mapping — 9 open decisions, 6 blocking
 
@@ -80,7 +81,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   live ADP setup (D-006); plus accumulator/hours-flag settings for every new code (D-009).
 - **D-001 and D-006 RESOLVED 2026-08-13** by a live call to
   `GET /events/payroll/v1/pay-data-input.modify/meta` —
-  [payroll/adp-api-responses/pay-data-input-meta.md](payroll/adp-api-responses/pay-data-input-meta.md).
+  [payroll/adp-api-responses/pay-data-input-meta.md](adp-api-responses/pay-data-input-meta.md).
   - **The company codes are `4RZ` (THE CRANE GUYS LLC) and `4RY` (The Crane Guys, LLC - Ventura).
     `631` is not a company code at all.** The standing instruction to treat 631 and 4RZ as
     different identifiers is discharged — they were never the same *kind* of identifier.
@@ -96,7 +97,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Blocked: the ADP export rule (`PR-067` in the rule matrix, `PR-055` in the requirements
   document — see the id warning).
 - Owner: payroll manager, ADP administrator, HR/accounting depending on the decision.
-- Status: **partially resolved** — 2 of 9 decisions closed by live API evidence; 5 still blocking.
+- **Status:** **partially resolved** — 2 of 9 decisions closed by live API evidence; 5 still blocking.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#adp-export-mapping-9-open-decisions-6-blocking](gaps-2026-08-20-retired.md#adp-export-mapping-9-open-decisions-6-blocking)
 
@@ -115,7 +116,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   some minor (but important) errors when converting".
 - Blocked: nothing today.
 - Owner: whoever next needs a non-payroll article of the agreement.
-- Status: open
+- **Status:** resolved 2026-09-04 — answered from the record, no client question needed. All three scans were OCR'd on 2026-09-04 and turned out to be three different documents; the complete Truck Crane MLA is now in the vault as clean Word text, so every article — payroll or not — is citable.
+- Resolution: (a) The retrieval gap is closed by the vault's own record, not by a client statement. [mcog-l12-mla-2025-2028/INDEX.md](mcog-l12-mla-2025-2028/INDEX.md) → *The scanned PDFs — OCR'd 2026-09-04*: the 40-page `MCOG-O. E. Local 12 Truck Crane Master Labor Agreement 2025-2028.pdf` is the Truck Crane MLA itself → [ocr-truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/ocr-truck-crane-mla-2025-2028-full-text.md); the 108-page `OE-Local-12-MLA-25-28-Comp.pdf` is the **SCCA Southern California MLA**, a different and broader agreement → [ocr-southern-california-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/ocr-southern-california-mla-2025-2028-full-text.md); the 4-page `07.01.2025 truck crane MLA (1).pdf` is Local 12's **wage and fringe notice of 2025-08-15**, not the agreement → [local-12-wage-notice-2025-08-15.md](mcog-l12-mla-2025-2028/local-12-wage-notice-2025-08-15.md), transcribed figure by figure against the image.
+- Resolution: (b) The OCR is no longer the best copy. The `MCOG … 2025-2028 EXTRACTED.docx` that the 2026-08-13 pass dispositioned as a duplicate of the payroll summary is the *whole* Truck Crane agreement as clean text — 17 articles, Appendix A, the in-cab camera MOU and the executed signature page (TCG a party through Wesley Staley, signed 2025-09-10 / 2025-10-31) → [truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md). [source-manifest.md](source-manifest.md) → *Scanned images* and *Full agreement text* record both corrections.
+- Resolution: (c) What stays true: the human-transcribed parts 01–05 remain the citable text for payroll clauses; the workbook's warning that its own text conversion may carry *minor (but important) errors* still applies to the OCR pages, which is why the Word-text page supersedes them; and whether any TCG work falls under the SCCA agreement is unestablished — a product question for the register, not a retrieval gap.
+- Sources checked: mcog-l12-mla-2025-2028/INDEX.md; the three full-text pages and the wage notice; source-manifest.md (2026-09-04 re-share note); sync/project-repository-2026-09-04.md.
+- Owner: answered; no client action outstanding.
 - **From (frozen original):** [gaps-2026-08-20-retired.md#union-agreement-three-source-pdfs-are-unreadable-scans](gaps-2026-08-20-retired.md#union-agreement-three-source-pdfs-are-unreadable-scans)
 
 ## Field-ops lunch capture vs payroll WTL
@@ -147,7 +153,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Danny Bryan and Mike Vlaming. The Atom page is a CodingCops-authored user story with no cited
   source. **A missed third or fourth meal is a double-time penalty, so this is a money
   difference.** An alert fired on the wrong threshold causes the penalty it exists to prevent.
-  **Code check 2026-08-13** ([payroll/legacy-payroll-app-code-extract.md](payroll/legacy-payroll-app-code-extract.md)):
+  **Code check 2026-08-13** ([payroll/legacy-payroll-app-code-extract.md](legacy-payroll-app-code-extract.md)):
   the legacy source confirms the *mechanics* — four meals, taken meal = `WTL_MEAL_DEDUCT`, missed
   meal = paid add — but the threshold values live in SQL procedures not present in the archive.
   Still open.
@@ -183,7 +189,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   that does, and it will block any field-ops work that changes lunch capture.
 - Owner: product team to reconcile the BRS against the payroll sources; the three-vs-four
   threshold count needs a payroll-team or union answer, not a product decision.
-- Status: open
+- **Status:** open
 
 ---
 
@@ -200,16 +206,17 @@ someone has confirmed otherwise.
   Which of these the ERP should keep is still the open question. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) calculations B7.
 - **Rules:** [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#field-ops-lunch-capture-vs-payroll-wtl](gaps-2026-08-20-retired.md#field-ops-lunch-capture-vs-payroll-wtl)
+- Update 2026-09-04 (Project Repository ingest): four new pieces of evidence, no reconciliation. (a) **Payroll side, a further independent source for the thresholds:** [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md) §11 states 0 meals through 5.0 h, 1 at 5.5–10.5, 2 at 11.0–16.0, 3 at 16.5–21.5, 4 at 22.0–27.0 — the legacy `cfg.WTL_MaxMealThreshold` brackets exactly — so the payroll-side numbers now have three sources and the Atom values (16.5 / 22 at lunches 3–4) remain the outlier. The same paper **disowns the engine's no-token default** — *"Absence of a payroll lunch/WTL code should not cause the ERP to invent a meal"* — and proposes an explicit *Lunch Taken* indicator in place of `WTL:0`; it is a TCG-side recommendation with no stated author and has not been adjudicated (§15 collisions 1–4). (b) **Capture side, as FCC does it today:** the *Work Through Lunch* checklist carries four lunch-time slots plus a signed attestation that a 30-minute meal was taken on any day over five hours ([tcg-rawfms-staging-database/data/fcc-checklist-templates.md](tcg-rawfms-staging-database/data/fcc-checklist-templates.md) → *Work Through Lunch*), and the *Time Stamps* checklist's four-slot copy sits on 55 units against a one-slot copy on 31 ([../field-ops/gaps.md](../field-ops/gaps.md) → lunch-slot count update). Four slots is FCC practice, not a rule. (c) One missed-meal event is now traceable end to end — customer-signed WTL authorization *"Didnt take first or second lunch"* → labor modifier note `0.5 DBL 1st WTL + 0.5 Dbl 2nd WTL` ([../field-ops/e-ticket-worked-example-44944.md](../field-ops/e-ticket-worked-example-44944.md)). (d) [../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §5: Brian flagged that TCG is designing a **new payroll process that needs the actual lunch time captured**, deferred to the 9 September call with Corrina. Still needs the client: the 16.0-vs-16.5 / 21.5-vs-22 reconciliation, whether the no-token default flips, and who owns the seam.
 
 ## ADP codes — TCG owes an updated export
 
 - **Partially delivered 2026-08-09.** Brian Petros supplied **four** codes by chat —
   `FRR`/`FRO`/`FRD`/`FRT` (Foreman REG/OT/DT/TRI), recorded in
-  [payroll/foreman-and-military-premiums.md](payroll/foreman-and-military-premiums.md).
+  [payroll/foreman-and-military-premiums.md](foreman-and-military-premiums.md).
   **The Military Base premium in the same message has no codes at all.** Roughly twelve of the
   promised sixteen are still outstanding, as is the comprehensive rules documentation.
 - **ANSWERED 2026-08-13 — CodingCops pulled the table itself.**
-  [payroll/adp-api-responses/pay-data-input-meta.md](payroll/adp-api-responses/pay-data-input-meta.md)
+  [payroll/adp-api-responses/pay-data-input-meta.md](adp-api-responses/pay-data-input-meta.md)
   holds the complete live list: **52 Hours & Earnings codes, 65 deduction codes, 16 memo codes**.
   The export TCG owed no longer has to be requested — the API returns it on demand, scoped to a
   company code.
@@ -225,7 +232,7 @@ someone has confirmed otherwise.
   each one's accumulator and include-in-total-hours settings are (crosswalk **D-009**).
 - Blocked: nothing on the export any more. Rules documentation still blocks rule design.
 - Owner: TCG team (payroll / ADP administrator) for the rules; the export is self-serve.
-- Status: **export resolved**; rules documentation open.
+- **Status:** **export resolved**; rules documentation open.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#adp-codes-tcg-owes-an-updated-export](gaps-2026-08-20-retired.md#adp-codes-tcg-owes-an-updated-export)
 
@@ -243,9 +250,10 @@ someone has confirmed otherwise.
   mentions and which the ERP's paid-leave scope (**D-007**) does not cover.
 - Blocked: the non-union California overtime mapping.
 - Owner: payroll manager / ADP administrator.
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#cao-ca-ot-exists-but-the-crosswalk-reuses-generic-overtime](gaps-2026-08-20-retired.md#cao-ca-ot-exists-but-the-crosswalk-reuses-generic-overtime)
+- Update 2026-09-04 (Project Repository ingest): current practice is now readable from the workbook's own engine, and it sends non-union overtime as generic `O/T Hours`. The roster query pulls every FCC employee with a craft except `SYS%` — `ADMIN` crafts and salaried staff included — and `qPayrollComponents` maps the sheet's `OT` column to the ADP *O/T Hours* field for every row; there is no `CAO` component anywhere in the ledger, and the export validation knows only `DT/HDD/HOL/SIC/SUB` plus the twenty temp-rate codes ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §1, §3, §6). The ADP Worksheet screenshot shows the same column set with no CA-OT column ([sources/screenshot of ADP labor entry screen.png.md](sources/screenshot%20of%20ADP%20labor%20entry%20screen.png.md)). The legacy app computes CA non-union daily/weekly/seventh-day OT (procedures dated 2026-06-09, [legacy-payroll-app-db-backup-2026-06-23.md](legacy-payroll-app-db-backup-2026-06-23.md)) but formats no ADP feed. This is evidence that `CAO` is unused by the current process, not a decision that it should stay unused; who created it and what `1XQ`/`1XX` are for still need the payroll manager / ADP administrator.
 
 ## Ventura — a second ADP company nobody has mentioned
 
@@ -265,7 +273,7 @@ someone has confirmed otherwise.
 - **Largely answered 2026-08-13: `4RY` appears dormant.**
   `GET /payroll/v1/pay-schedule/payroll-groups/4RY` fails with *"No payroll schedules found for
   company code: 4RY"*
-  ([payroll/adp-api-responses/pay-schedule.md](payroll/adp-api-responses/pay-schedule.md)).
+  ([payroll/adp-api-responses/pay-schedule.md](adp-api-responses/pay-schedule.md)).
   **A company with no pay schedule cannot run payroll.** No worker carries
   `payrollGroupCode: 4RY`, and none sits on location `VEN`.
 - **Consequence: the ERP does not need multi-company submission.** Exactly one company can accept
@@ -276,7 +284,7 @@ someone has confirmed otherwise.
   answer decides whether the ERP models company as a field or a constant.
 - Blocked: nothing now.
 - Owner: TCG payroll.
-- Status: **largely resolved** — residual question open
+- **Status:** **largely resolved** — residual question open
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#ventura-a-second-adp-company-nobody-has-mentioned](gaps-2026-08-20-retired.md#ventura-a-second-adp-company-nobody-has-mentioned)
 
@@ -284,7 +292,7 @@ someone has confirmed otherwise.
 
 - Question: how does the ERP parse ADP errors uniformly?
 - **It cannot.** Two shapes observed, and they disagree on every field name
-  ([payroll/adp-api-responses/pay-schedule.md](payroll/adp-api-responses/pay-schedule.md) §6):
+  ([payroll/adp-api-responses/pay-schedule.md](adp-api-responses/pay-schedule.md) §6):
   - **Code-list family** — root `confirmMessage`, nested
     `resourceMessages[].processMessages[].processMessageID.idValue` carries a machine-readable code
     (`API_AccessDeniedFeature`), ISO 8601 UTC timestamps.
@@ -301,31 +309,32 @@ someone has confirmed otherwise.
   matters most, and it has not been observed — the guide only quotes a bare `messageText`.
 - Blocked: the ERP's ADP error-handling design.
 - Owner: CodingCops.
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#adp-returns-two-incompatible-error-envelopes-and-one-has-no-machine-readable-code](gaps-2026-08-20-retired.md#adp-returns-two-incompatible-error-envelopes-and-one-has-no-machine-readable-code)
 
 ## Home yard cannot come from ADP — subsistence has no upstream source
 
 - Question: where does the ERP get **home yard / reporting location**, required by
-  [payroll/erp-payroll-module-frd/02-payroll-period-and-source-data.md](payroll/erp-payroll-module-frd/02-payroll-period-and-source-data.md)
+  [payroll/erp-payroll-module-frd/02-payroll-period-and-source-data.md](erp-payroll-module-frd/02-payroll-period-and-source-data.md)
   and by **PR-048 Standard Subsistence**?
 - Candidates: not ADP. `GET /codelists/hr/v3/worker-management/locations/WFN/1` returns exactly
   **two** values — `DEF — DEFAULT LOCATION` and `VEN — Ventura`
-  ([payroll/adp-api-responses/codelist-worker-management.md](payroll/adp-api-responses/codelist-worker-management.md)).
+  ([payroll/adp-api-responses/codelist-worker-management.md](adp-api-responses/codelist-worker-management.md)).
 - Note: PR-048 turns on *home yard, job, distance, overnight and equipment status*. A two-value
   list, one of which is literally "DEFAULT", expresses none of that. Home yard must be mastered in
   the ERP, sourced from FCC.
 - Blocked: subsistence rule design; the employee-master migration scope.
 - Owner: CodingCops, with TCG payroll to confirm the FCC field.
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-048](rules/PAY-048-standard-subsistence.md), [PAY-049](rules/PAY-049-weekend-subsistence.md), [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#home-yard-cannot-come-from-adp-subsistence-has-no-upstream-source](gaps-2026-08-20-retired.md#home-yard-cannot-come-from-adp-subsistence-has-no-upstream-source)
+- Update 2026-09-04 (Project Repository ingest): the FCC field is now on record, and there are three of them. `stg.FMS_EMPLOYEES_Raw` carries `YardCode char(2)` ([tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql](tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql):18), and so do `FMS_UNITS` (`YardCode`, plus `YardCodePL`) and `FMS_JOB_MASTER` (`YardCode`); FCC's employee import template makes `Yard` a **required** field per employee ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §7). Two things complicate "copy the employee's yard": TCG's annotated deck asks for employee ↔ yard **many-to-many** (*"Some Employees may be working/associated with more than one Yard"*, same page §8), and the full MLA text ties subsistence distance to the **equipment's** identified home location, not the person's — Art. V §2, *"forty-five miles or more from yard location in which Employer's equipment in question is identified as home location"*, with a 60-day rule when a new home location is established and a *Multiple Yard Locations* clause ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md) → Article V). [decisions/2026-09-01-subsistence-not-a-craft-attribute.md](../decisions/2026-09-01-subsistence-not-a-craft-attribute.md) already moves the distance calculation to the job (yard-to-job on the permitted route). FCC holding a yard code is evidence of practice, not a TCG decision; which yard — employee's, unit's or job's — PR-048 measures from still needs TCG payroll.
 
 ## Union codes — one value, so the CRUD question mostly dissolves
 
 - Question: does the ERP need the ability to add union codes, as asked in
-  [meetings/2026-06-26-discussion-points-with-tcg-team.md](meetings/2026-06-26-discussion-points-with-tcg-team.md)?
+  [meetings/2026-06-26-discussion-points-with-tcg-team.md](../meetings/2026-06-26-discussion-points-with-tcg-team.md)?
 - Candidates: ADP holds exactly **one** union code — `L12 — Local 12`.
 - Note: with one value that changes only if TCG signs a second labour agreement, a CRUD screen is
   hard to justify. The narrower live question is whether the ERP masters `L12` or reads it from
@@ -335,9 +344,10 @@ someone has confirmed otherwise.
   derivation rule is confirmed, not replaceable.
 - Blocked: nothing. Scope reduction only.
 - Owner: CodingCops / TCG product.
-- Status: open, but narrowed
+- **Status:** open, but narrowed
 - **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#union-codes-one-value-so-the-crud-question-mostly-dissolves](gaps-2026-08-20-retired.md#union-codes-one-value-so-the-crud-question-mostly-dissolves)
+- Update 2026-09-04 (Project Repository ingest): a client-authored statement now exists, but its audience is unclear. TCG's annotations on the FCC *Maintain Employees* deck say *"We currently only work with one Union; however, need the ability to have multiple Labor Unions"* ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §8) — written on FCC screens, and the page records it as a request to FCC rather than an ERP requirement. The same deck's *Union Codes* slides show what a union code carries in FCC: the L12 record is the parent of the fringe lines (7 funds, $35.50/h), the 31-row craft rate table, the 52 craft modifiers and the payroll defaults (OT after 8, DT after 12, Saturday all-OT, 30-minute rounding), so in the incumbent "adding a union" means adding a whole rule set, not a code (same page, *Union Codes — TCG's live L12 configuration*; `FMS_EMPLOYEES.UnionCode varchar(10)` on the employee). Evidence of how FCC is shaped, not a TCG decision for the ERP. Whether the multi-union ask applies to the ERP, and whether the ERP masters `L12` or reads it from ADP, still need TCG product.
 
 ## ADP's error envelope is now known — but the success envelope is not
 
@@ -349,7 +359,7 @@ someone has confirmed otherwise.
   `confirmMessage` with `protocolStatusCode`, `requestStatusCode`, a per-request
   `confirmMessageID` GUID, and `resourceMessages[].processMessages[].processMessageID` as the
   machine-readable error code
-  ([payroll/adp-api-responses/codelist-worker-management.md](payroll/adp-api-responses/codelist-worker-management.md)).
+  ([payroll/adp-api-responses/codelist-worker-management.md](adp-api-responses/codelist-worker-management.md)).
   The ERP must branch on `processMessageID`, never on `userMessage.messageTxt`.
 - **Why it matters:** the Payroll Data Input guide documents success as `200 OK` with
   `messageText: NA` and no identifier, which is the basis for the finding that ADP gives no
@@ -360,7 +370,7 @@ someone has confirmed otherwise.
 - Blocked: the ERP's ADP error-handling design; the "no receipt" architecture finding.
 - Owner: CodingCops — resolvable by inspecting any successful `200` response body from a read
   endpoint first, before ever writing.
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#adps-error-envelope-is-now-known-but-the-success-envelope-is-not](gaps-2026-08-20-retired.md#adps-error-envelope-is-now-known-but-the-success-envelope-is-not)
 
@@ -371,7 +381,7 @@ someone has confirmed otherwise.
 - **Not from ADP.** `baseRemuneration` returns `nameCode`, `currencyCode` and `effectiveDate`, but
   **`amountValue` is absent on every rate for every worker** — hourly, annual, pay-period salary
   and every `additionalRemunerations` entry
-  ([payroll/adp-api-responses/workers-list.md](payroll/adp-api-responses/workers-list.md)).
+  ([payroll/adp-api-responses/workers-list.md](adp-api-responses/workers-list.md)).
   Almost certainly a use-case entitlement boundary: the API Central project is scoped to Payroll
   Input, not compensation.
 - Note: union rates were always going to come from the craft table, so this was assumed solved.
@@ -382,7 +392,12 @@ someone has confirmed otherwise.
 - Blocked: PR-009; the employee-master migration scope.
 - Owner: CodingCops (design), TCG payroll (confirm whether a second API Central project scoped to
   compensation is wanted).
-- Status: open
+- **Status:** resolved 2026-09-04 — answered from the record, no client question needed. The ERP masters it — `Employee.hourlyRate`, one rate per person, migrated from FCC's `FMS_EMPLOYEES.PayRate`; ADP was never going to be the source.
+- Resolution: (a) The design answer is an existing decision note: [decisions/2026-08-25-non-union-base-rate-per-person.md](../decisions/2026-08-25-non-union-base-rate-per-person.md) (`verified`) — the base-rate resolver branches on the craft's union kind; `NON_UNION` → `Employee.hourlyRate` at its current value, *"one rate per person, as in FCC today"*, converging with Brian Petros's written client statement of 2026-06-09 carried in [rules/PAY-012](rules/PAY-012-non-union-hourly-rate.md) (*use employee-master hourly rate; do not use union craft rate*). [decisions/2026-06-30-adp-erp-employee-data-ownership.md](../decisions/2026-06-30-adp-erp-employee-data-ownership.md) (Brian and Ehtesham, agreed on the thread) is consistent: ADP owns the *official* payroll rate, and the ERP may hold an operational rate its own calculations need.
+- Resolution: (b) The upstream column is a system fact, now on record from FCC's own schema: `stg.FMS_EMPLOYEES_Raw` holds `PayRate numeric(16,3)`, `PayRateOT`, `PayRateDB` (plus the billing trio) — [tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql](tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql):24–27; FCC's import template exposes the same six non-union rate fields ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §7); and the live workbook roster shows the practice — `CraftType ADMIN` employees carry `EmployeePayRate` from FCC with blank FY craft-rate columns, L12 employees the reverse ([adp-sop-v3.8.md](adp-sop-v3.8.md) → *PAYROLL_START*).
+- Resolution: (c) The owner line's sub-item — a second API Central project scoped to compensation — is not needed for the rate source and nobody has said it is wanted for anything else; it stays an unasked, non-blocking item, not part of this question.
+- Sources checked: decisions/2026-08-25-non-union-base-rate-per-person.md; decisions/2026-06-30-adp-erp-employee-data-ownership.md; rules/PAY-012; tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql; fcc-employee-master-reference-data.md §7; adp-sop-v3.8.md screenshots section; adp-api-responses/workers-list.md.
+- Owner: answered; no client action outstanding.
 - Legacy behaviour (2026-08-18): the payroll app takes the non-union rate from
   `FMS_EMPLOYEES.PayRate` (NexGen employee master) — `api.v_UI_Employee_TypeRate`,
   `BaseHourlyRateSource = 'Employee.PayRate'`; union rates from `FMS_UNION_CRAFT.PayRate` by the
@@ -401,7 +416,7 @@ someone has confirmed otherwise.
   is designed.
 - Blocked: nothing yet.
 - Owner: TCG payroll.
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#payrollcustomarea4-a-per-worker-code-nobody-has-documented](gaps-2026-08-20-retired.md#payrollcustomarea4-a-per-worker-code-nobody-has-documented)
 
@@ -419,7 +434,7 @@ someone has confirmed otherwise.
   Sync) costs a form, not a new credential. Worth doing to discover what else is reachable.
 - Blocked: any ERP feature depending on benefits or eligibility data.
 - Owner: CodingCops (project creation), TCG (scope decision).
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps-2026-08-20-retired.md#eligibility-classes-is-403-an-entitlement-question-not-a-data-question](gaps-2026-08-20-retired.md#eligibility-classes-is-403-an-entitlement-question-not-a-data-question)
 
 ## Labor allocation — department today, cost number if TCG wants job attribution
@@ -429,7 +444,7 @@ someone has confirmed otherwise.
 - Candidates: today it is Department. Evidence:
   `GET /codelists/hr/v3/worker-management/cost-numbers/WFN/1?companyCode=4RZ` returns **`204 No
   Content`** while `departments` returns 12 org units —
-  [payroll/adp-api-responses/codelist-departments.md](payroll/adp-api-responses/codelist-departments.md).
+  [payroll/adp-api-responses/codelist-departments.md](adp-api-responses/codelist-departments.md).
 - Note: the 12 departments are org units — Operators, Oilers/Drivers, Mechanics, Yard, Field,
   Safety, Sales, Dispatch, Accounting, Management, Salary Admin, Officer. They say *what kind of
   worker*, never *which job*. TCG runs far more jobs than twelve.
@@ -443,9 +458,10 @@ someone has confirmed otherwise.
   architecture drafts left open.
 - Blocked: the job-attribution design; the certified-payroll module's data source.
 - Owner: TCG payroll (configuration) and CodingCops (ERP design).
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-004](rules/PAY-004-labor-entry-import.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#labor-allocation-department-today-cost-number-if-tcg-wants-job-attribution](gaps-2026-08-20-retired.md#labor-allocation-department-today-cost-number-if-tcg-wants-job-attribution)
+- Update 2026-09-04 (Project Repository ingest): the file TCG actually sends carries **no allocation field at all**. The paydata CSV is `Co Code · Batch ID · File # · Reg Hours · O/T Hours · Temp Rate` plus code/amount pairs — no department, cost number or job on any row ([adp-workbook-vba-macros.md](adp-workbook-vba-macros.md) §2, [adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §4), and the ADP Worksheet the batch lands in has the same column set ([sources/screenshot of ADP labor entry screen.png.md](sources/screenshot%20of%20ADP%20labor%20entry%20screen.png.md)). So job attribution does not reach ADP today by any route; whatever Labor Distribution setting WFN holds is filled by the worker's home department, not by the batch. Separately, the 2026-09-02 demo has Joe placing the federal / certified-payroll flag **at the quoting stage or on the job** ([../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §3), which is where an ERP-side job attribution would originate. Evidence of practice; the Department-vs-Cost-Number switch is still TCG payroll's to make.
 
 ## ADP code strings collide between the earning and deduction arrays
 
@@ -462,9 +478,10 @@ someone has confirmed otherwise.
   targets is an unmade design decision.
 - Blocked: the ADP mapping configuration schema; crosswalk implementation rules 3, 4 and 5.
 - Owner: CodingCops.
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#adp-code-strings-collide-between-the-earning-and-deduction-arrays](gaps-2026-08-20-retired.md#adp-code-strings-collide-between-the-earning-and-deduction-arrays)
+- Update 2026-09-04 (Project Repository ingest): the workbook solves the same problem for the CSV path with **fixed slots and a blocking validation**, which is worth copying in spirit. Every code has one place: `DT·HDD·HOL·SIC` are Hours-3 pairs 01–04, `SUB` is Earnings-3 pair 01, and the twenty temp-rate codes sit in Hours-4 slots 01–20 by code (`LBH…LBT`, `LPR…LPT`, `LOR…LOT`, `S2R…S2T`, `S3R…S3T`); `qADPImportValidation` raises an `ERROR` for *Hours-4 code in the wrong slot*, *DT/HDD/HOL/SIC/SUB in the wrong place* and *unpaired code/amount fields*, and the VBA exporter refuses to write on any `ERROR` ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §4, §6; [adp-workbook-vba-macros.md](adp-workbook-vba-macros.md) §2). The CSV never carries a deduction column, so the `LPR`/`LPO` earning-vs-deduction collision cannot occur on that path — it is an API-only hazard. Evidence of the incumbent's mechanism, not a design decision; the ERP's mapping schema and the `earningInputs` vs `codedHoursEarningInputs` choice remain CodingCops'.
 
 ## Payroll calculation logic — Brian owes a revised version
 
@@ -475,12 +492,13 @@ someone has confirmed otherwise.
   documentation. **None has arrived.**
 - Note: until it does, the migrated payroll documents stand as written. **Do not assume a rule has
   changed because a revision was promised.** When it arrives it may supersede parts of
-  [payroll/codingcops-rule-matrix.md](payroll/codingcops-rule-matrix.md) — treat that as a
+  [payroll/codingcops-rule-matrix.md](codingcops-rule-matrix.md) — treat that as a
   re-migration, not an edit.
 - Blocked: nothing yet; it will block rule implementation that the revision touches.
 - Owner: Brian Petros (TCG); Corrina (TCG) for the Value Engineering workflow.
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps-2026-08-20-retired.md#payroll-calculation-logic-brian-owes-a-revised-version](gaps-2026-08-20-retired.md#payroll-calculation-logic-brian-owes-a-revised-version)
+- Update 2026-09-04 (Project Repository ingest): something has arrived, and it is not the promised documentation. The drop's one file absent from the 2026-08-13 manifest is `Payroll-rule dependency matrix.docx` → [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md): a ~9,000-word TCG-side position paper, **no author line, no date**, whose content matches the 2026-09-04 Brian ↔ Ehtesham exchange point for point ([client-message-findings.md](client-message-findings.md#2026-09-04--rule-lookback-windows-and-recalculation-across-an-approved-week-brian-petros--ehteshamanwar)). It explicitly supersedes parts of the as-built engine — the no-token WTL default (*"latest Payroll Manager direction supersedes some of our earlier WTL assumptions"*), the payroll period as a calculation boundary, guarantees stacking, and closed-period handling (immutable, retro delta) — and its §15 lists sixteen collisions with the vault, none adjudicated. So the calculation logic **has** moved since the `payroll/` documents, at least in those places, but as one person's recommendation rather than a re-migration of the rule matrix. The *Value Engineering / Payroll Workflow* documents turn out to be the 2025 Visio charts in [payroll-value-engines.md](payroll-value-engines.md) — people and hand-offs, not calculation. Still owed by Brian: confirmation that he authored the paper, and the comprehensive rules documentation; still owed by Corrina: nothing further on the workflow charts unless they have changed since 2025.
 
 ## Lattice Crane identification
 
@@ -493,7 +511,7 @@ someone has confirmed otherwise.
   "Confirm interaction with long boom" outstanding.
 - Blocked: `PR-044`, and the lattice earning-code mappings.
 - Owner: Kyle and Joe (TCG business stakeholders), via Brian.
-- Status: open
+- **Status:** open
 - **2026-08-19:** the 2026-08-04 "Payroll Process" recording has **Joe answering this directly** —
   crawler crane only, every dispatch qualifies, lattice on any other crane is a jib extension /
   luffing jib earning boom pay only; Corrina adds operator-and-oiler-only and that lattice **stacks**
@@ -515,12 +533,13 @@ someone has confirmed otherwise.
   field** (supersedes the subcategory idea); lattice jobs ≥ 1 week. **Corrina: the premium covers
   the entire job, not boom time.** The identification question is effectively answered in design;
   **the luffer sub-question remains open** — Kyle's relay did not address it.
+- Update 2026-09-04 (Project Repository ingest): the contract text is now complete and the trigger was restated on a recording, but the luffer question is still Kyle's. (a) The full Truck Crane MLA carries the lattice clause verbatim — *"One Dollar ($1.00) per hour over and above the hourly wage rate for the operator for lattice boom crane for Group 6 and above and fifty cents ($0.50) per hour … for the oiler"* — and, at Groups 5, 7, 8 and 9, puts mobile tower cranes under **Long Boom pay "including combined total mast and Luffing Boom"** ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md) → Article IV; the 2025-08-15 wage notice repeats both figures). That is the contract reading the parked build default (question 21) rests on; it is CodingCops' reading of contract text, not Kyle's confirmation. (b) [../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §3 — Brian: the adders *"need to be at the job level"*; Joe: *"a crawler on the job populates lattice pay"* — consistent with Kyle's 08-24 job-level *Boom Configuration* answer, still minutes rather than a decision note. (c) Practice today: lattice is a per-day dropdown on the employee sheet, expanded to `LPR…LOT` at $1.00 / $0.50 × 1 / 1.5 / 2 / 3 and sent as temp-rate rows ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §3); FCC's labor row has no lattice field — `CraftModifierCode` and `ShiftInfo` only ([tcg-rawfms-staging-database/ddl/stg.FMS_LABOR_PAYROLL_Raw.sql](tcg-rawfms-staging-database/ddl/stg.FMS_LABOR_PAYROLL_Raw.sql)). Evidence of practice, not a decision.
 
 ## Foreman premium — granularity, multiplier and capture
 
 - Question: does the $3/hr foreman premium attach to an **employee-day** or to a **labor entry**,
   and is it multiplied by OT/DT/TRI or flat?
-- Candidates: [payroll/foreman-and-military-premiums.md](payroll/foreman-and-military-premiums.md)
+- Candidates: [payroll/foreman-and-military-premiums.md](foreman-and-military-premiums.md)
   is the only source. Brian Petros states the day-level granularity **as an assumption in his own
   words** — "it is assumed that this will be for all hours for that day/row" — and adds that a
   split day needs a separate row.
@@ -537,17 +556,18 @@ someone has confirmed otherwise.
 - Blocked: implementation of the foreman premium; the ADP export rows for `FRR`/`FRO`/`FRD`/`FRT`.
 - Owner: Brian Petros (TCG); Jeff Kelley (crane superintendent) for how foreman assignment is
   actually decided and recorded per job.
-- Status: open
+- **Status:** open
 - Legacy behaviour (2026-08-18): confirmed again against the full database — no object, column
   or config row for a foreman premium in any of the 141 definitions. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 - **Rules:** [PAY-070](rules/PAY-070-foreman-premium.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#foreman-premium-granularity-multiplier-and-capture](gaps-2026-08-20-retired.md#foreman-premium-granularity-multiplier-and-capture)
+- Update 2026-09-04 (Project Repository ingest): three findings, none a decision. (a) **The premium has no route into ADP from the live workbook either.** `(PAY:FOREMAN)` is in the token vocabulary the sheets recognise, but `qPayrollComponents` expands only `LATT_*` and `SHIFT_*`; no foreman component reaches the export, so whatever is paid is folded into hand-typed hours or not paid ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) → *What the code reveals*, item 1). The `FRR/FRO/FRD/FRT` codes exist in ADP with nothing feeding them. (b) **"Shop Foreman" in the Truck Crane MLA is a Group 7 classification, not a premium** ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md) → Article IV) — a different thing from Brian's $3/hr company rule, and the only foreman the L12 truck-crane agreement knows. (c) The only contract language on foreman pay *treatment* in the vault is in the **SCCA Southern California MLA** §R: $2.00/hr over the highest supervised classification, *"added to the regular rate and become the base rate for the entire shift"* — i.e. into the rate, multiplied ([mcog-l12-mla-2025-2028/ocr-southern-california-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/ocr-southern-california-mla-2025-2028-full-text.md) → *R. Foreman*). Whether any TCG work falls under that agreement is unestablished, so this is a reference point, not a rule. FCC's labor row has no foreman column. Granularity, multiplier and the capture mechanism still need Brian / Jeff Kelley.
 
 ## Military Base premium — job-level scope, Davis-Bacon list, and the phone call
 
 - Question: how does a job get flagged as a military-base job site, and where does the qualifying-
   location list live?
-- Candidates: [payroll/foreman-and-military-premiums.md](payroll/foreman-and-military-premiums.md)
+- Candidates: [payroll/foreman-and-military-premiums.md](foreman-and-military-premiums.md)
   only. **No ADP codes were supplied for this premium.**
 - Note: this is the **first premium in the vault that attaches to the job, not the worker** —
   "$10/hr added to ALL hours for ALL employees on the job". Nothing in the payroll data model
@@ -558,32 +578,33 @@ someone has confirmed otherwise.
   that **the Local 12 Business Agent is phoned to verify when necessary**. That human verification
   has to be modelled as a state with a person and a date, or the ERP will silently guess.
 - Cross-link: this makes **Corrina's Davis-Bacon business rules** (owed to Ryan per the
-  [7 Aug minutes](meetings/2026-08-07-labor-compliance-certified-payroll.md)) **a payroll blocker
+  [7 Aug minutes](../meetings/2026-08-07-labor-compliance-certified-payroll.md)) **a payroll blocker
   as well as a Labor Compliance one.** The same determination drives both Certified Payroll
   eligibility and a $10/hr premium for every worker on the job.
 - **Code check 2026-08-13:** no military-premium logic exists in the legacy source either —
   never computed by any system.
 - Blocked: implementation of the military premium; job-site data model; Davis-Bacon identification.
 - Owner: Corrina (TCG) for Davis-Bacon criteria; Brian Petros for the ADP codes.
-- Status: open
+- **Status:** open
 - Legacy behaviour (2026-08-18): confirmed against the full database — nothing for military /
   Davis-Bacon / prevailing wage in the calculation; certified payroll exists only as a label flag
   (`UseCertifiedPayroll`). Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 - **Rules:** [PAY-071](rules/PAY-071-military-base-premium.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#military-base-premium-job-level-scope-davis-bacon-list-and-the-phone-call](gaps-2026-08-20-retired.md#military-base-premium-job-level-scope-davis-bacon-list-and-the-phone-call)
+- Update 2026-09-04 (Project Repository ingest): the job-level shape was restated by the client on a recording; the qualifying-location list is still nowhere. (a) [../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §3 — Brian: military, lattice and shift adders *"need to be at the job level"*; Joe: federal wages populate only when **certified payroll / federal job is checked at the quoting stage or on the job**, not as a dispatch-time pop-up. Minutes, not a decision note. (b) The live workbook knows `(PAY:MILITARY)` as a token but exports no military component — the `ML*` codes in ADP have nothing feeding them ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) → *What the code reveals*). (c) The Davis-Bacon companion playbook added today names the **federal funders** whose presence triggers Davis-Bacon — USACE, NAVFAC, FHWA, FAA, FEMA, HUD, DOE — as a sales-side identification aid ([certified-payroll-playbook.md](certified-payroll-playbook.md) §10); it is not a list of qualifying job-site locations and does not address adjacency. The SCCA MLA's Davis-Bacon amendment (bid-time wage rate prevails on wholly federally funded jobs) is a different agreement. (d) FCC carries the concept at two levels — `UseCertifiedPayroll` per classification and `Certified Pay` Y/N per employee — while TCG's deck asks for it **per job / job site**; the three-level collision is recorded in [fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §8 and is the same identification this premium depends on. Still Corrina's: the Davis-Bacon criteria and the location list; still to be modelled: the Business Agent verification as a state with a person and a date.
 
 ## Premium stacking and no-pyramiding
 
 - Question: can a foreman on a military-base job draw both premiums — $13/hr over base?
 - Candidates: nothing states it either way. Both premiums are described in isolation.
 - Note: the L12 agreement's **no-pyramiding** clause
-  ([payroll/mcog-l12-mla-2025-2028/01](payroll/mcog-l12-mla-2025-2028/01-article-iii-working-rules.md))
+  ([payroll/mcog-l12-mla-2025-2028/01](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md))
   is exactly the kind of provision that restricts stacked premiums. Note also that Foreman is a
   **company** rule and Military is a **union** rule — whether a company rule is subject to the
   union's pyramiding restriction is a question for labor counsel, not for the codebase.
 - Blocked: any implementation where both premiums could apply to the same hour.
 - Owner: TCG management / payroll, with labor counsel and the union rep.
-- Status: open
+- **Status:** open
 - Legacy behaviour (2026-08-18, code-verified): the engine prices each 30-min slice as
   `0.5 × (Rate_Base + Rate_Shift + boom?Rate_Boom) × Final_Multiplier` — the shift and boom
   **adders are multiplied by the OT/DT/Sat/Sun/Holiday multiplier**, and one multiplier controls a
@@ -592,13 +613,14 @@ someone has confirmed otherwise.
   the contract's is the open question. Source: [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) calculations B2.
 - **Rules:** [PAY-027](rules/PAY-027-no-pyramiding.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#premium-stacking-and-no-pyramiding](gaps-2026-08-20-retired.md#premium-stacking-and-no-pyramiding)
+- Update 2026-09-04 (Project Repository ingest): practice and contract text are now both readable; neither answers the foreman-plus-military case. (a) **Practice:** the workbook exports lattice, shift and boom as *separate* temp-rate rows, each pre-multiplied ×1 / 1.5 / 2 / 3 (`LPR…LOT` at $1.00/$0.50, `S2R…S3T` at $3/$4, `LBH…LBT` at the bracket adder) — so today lattice, shift and boom all stack with one another and all multiply ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §3). That is new evidence against the working decision [decisions/2026-08-25-boom-adder-on-top-unmultiplied.md](../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md), which the note itself says awaits TCG payroll and counsel. Foreman and military have no component in the export, so practice shows nothing about them. (b) **Contract:** the full MLA's clause is *"There shall be no pyramiding of **overtime**"* — Art. III §1 ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md)) — a restriction on multipliers, silent on stacking flat premiums; the same article's *Payment of Wages* §5 and Art. IV §3 say a higher rate applies to all time that day; the 2025-08-15 notice and Art. III say shift and hazmat premiums *become the base rate*; the SCCA MLA §R says the same of its foreman rate. (c) [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md) §15 collision 6 proposes that **guarantees** do not stack — a different question, unadjudicated. Whether a company premium is subject to the union's pyramiding restriction is still one for labor counsel and the union rep.
 
 ## ADP product, API Central entitlement and sandbox
 
 - **Product resolved 2026-08-13: ADP Workforce Now (classic).** Confirmed from a screenshot of a
   live practitioner session at `workforcenow.adp.com/theme/admin.html#/home` — classic WFN nav, not
   WFN Next Generation. The documentation set in
-  [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md) is therefore
+  [payroll/adp-integration-capabilities.md](adp-integration-capabilities.md) is therefore
   the correct one.
 - **RESOLVED 2026-08-13: TCG already has ADP API Central.** Confirmed from the Marketplace
   `My Apps` screen — **ADP® API Central for ADP Workforce Now® [Launchpad]** and **ADP® API
@@ -643,9 +665,10 @@ someone has confirmed otherwise.
   as a supervised, immediately-deleted batch with TCG payroll present — a TCG decision.
 - Blocked: write-path testing, until a test company exists.
 - Owner: TCG (ADP account administrator), with ADP.
-- Status: open — product and entitlement resolved; **test company requested from TCG 2026-08-17**
+- **Status:** open — product and entitlement resolved; **test company requested from TCG 2026-08-17**
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#adp-product-api-central-entitlement-and-sandbox](gaps-2026-08-20-retired.md#adp-product-api-central-entitlement-and-sandbox)
+- Update 2026-09-04 (Project Repository ingest): the write path is now sequenced and confirmed blocked. [../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §2 and §5: internal scope to 15 September ends at **CSV export for manual ADP import**, ADP API automation starts *after* the 15th, and **API write access appears not to be granted** (read tested, write not) — Ehtesham to send Patrick the exact permissions. The workbook's own parameters settle the identifiers the SOP screenshots only implied: Co Code `4RZ` / `THE CRANE GUYS LLC` in `__hiddenParams`, file name `EPI4RZnn` (counter restarts each payroll year), Batch ID = `YrMoWk` ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §2), while the ADP Worksheet screenshot shows company **`631 - The Crane Gu…`**, batch `ROLL` ([sources/screenshot of ADP labor entry screen.png.md](sources/screenshot%20of%20ADP%20labor%20entry%20screen.png.md)) — consistent with the rename-in-time reading, not new evidence for it. Nothing in the drop touches the test company, credential scoping or the WFN Next Generation date; those remain with TCG (ADP administrator) and Patrick.
 
 ## ERP↔ADP round trip — what happens when a practitioner edits the batch
 
@@ -665,18 +688,34 @@ someone has confirmed otherwise.
 - Blocked: finalising either architecture document; any claim that the ERP is the system of record
   for what was *paid* (as opposed to what *should be* paid).
 - Owner: whoever opens the ADP support ticket — question 7 in
-  [adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
-- Status: open
+  [adp-integration-capabilities.md](adp-integration-capabilities.md).
+- **Status:** open
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#erpadp-round-trip-what-happens-when-a-practitioner-edits-the-batch](gaps-2026-08-20-retired.md#erpadp-round-trip-what-happens-when-a-practitioner-edits-the-batch)
+- Update 2026-09-04 (Project Repository ingest): current practice is manual re-entry in both
+  directions, and the client's own documents say so. (a) ADP SOP v3.8 §6.2
+  ([adp-sop-v3.8.md](adp-sop-v3.8.md)) ends the weekly close-out with *"Import the CSV file and
+  review information in ADP before submitting — Note any changes/modifications needed so we can
+  update this Excel process"*: anything corrected on the ADP side is carried back to the workbook by
+  hand, and §5.3.1 states the workbook is *"not directly connected to ADP"*. (b) The payroll
+  playbook's exception path ([payroll-value-engines.md](payroll-value-engines.md) §2): a post-run
+  dispute resolves as **Update Payroll Excel & in FCC → Process Retro Check through ADP → Email
+  Accounting Check Info** (SOP #8–#9) — ADP-side changes are keyed into ADP and the source systems
+  are updated separately by the same person. (c) FCC's vendor manual
+  ([fcc-nexgen-payroll-processing.md](fcc-nexgen-payroll-processing.md) §2): after Export *"a labor
+  entry cannot be modified in any way"* except through a management-only post-export procedure, so
+  the incumbent has no inbound path either. Legacy-system and process facts — evidence of what TCG
+  lives with, not a TCG decision on the ERP. Whether `pay-data-input.modify` fires on a practitioner
+  edit (the test described under *Where do webhook events live*) is still the only thing that
+  answers the question as asked.
 
 ## Excel or API — the ADP submission path is not decided
 
 - Question: does TCG submit payroll to ADP by **spreadsheet import** (today's process) or by the
   **Pay Data Input API**?
-- Candidates: [payroll/adp-sop-v3.8.md](payroll/adp-sop-v3.8.md) documents the Excel/Power
+- Candidates: [payroll/adp-sop-v3.8.md](adp-sop-v3.8.md) documents the Excel/Power
   Query/VBA process the ERP is meant to replace.
-  [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md) documents the
+  [payroll/adp-integration-capabilities.md](adp-integration-capabilities.md) documents the
   API.
 - **Interim path stated (client, 2026-08-24 exchange):** while deciding, TCG is setting up
   **manual CSV upload through the ADP browser UI** — the bridge process, not the decision.
@@ -690,7 +729,7 @@ someone has confirmed otherwise.
 - Blocked: the ADP Payroll Files screen; any estimate of the ADP work; the Foreman premium's
   delivery mechanism (special Excel column vs earning code).
 - Owner: TCG payroll + CodingCops, jointly. Needs an explicit decision.
-- Status: open
+- **Status:** open
 - Observed 2026-08-18 (ADP Workforce Now screenshots, company 4RZ, weekly #31, 07/18–07/24):
   the batches ROLL (Field Roll, 85 people) and SALARY (29) are marked **Manual Entry**; PTO001
   is Paid Time Off. ROLL columns: Reg / OT / DT / Holiday 2x / Holiday 3x hours, Shift Diff 2/3
@@ -699,11 +738,26 @@ someone has confirmed otherwise.
   [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md).
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#excel-or-api-the-adp-submission-path-is-not-decided](gaps-2026-08-20-retired.md#excel-or-api-the-adp-submission-path-is-not-decided)
+- Update 2026-09-04 (Project Repository ingest): three client-authored sources, none of which
+  decides it. (a) TCG's own RFP of 2026-02-26
+  ([../admin/tcg-erp-rfp-2026-02-26.md](../admin/tcg-erp-rfp-2026-02-26.md) → *Required
+  integrations*) lists **"ADP / Paychex — Payroll export from approved labor records — High"**: the
+  client framed the requirement as an *export*, vendor-agnostic, with nothing about an API or an
+  inbound response. (b) The Excel path is now specified as a file contract:
+  [adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §2, §4 and §6 give the
+  `EPI4RZnn` file name (the counter restarts every payroll year, so names repeat), the `Payroll
+  YrMoWk` batch id, one primary row plus one temp-rate row per code-and-rate, the fixed Hours-4 slot
+  map and the fifteen validation checks the exporter refuses on;
+  [adp-workbook-vba-macros.md](adp-workbook-vba-macros.md) §2 is the exporter itself. If the interim
+  CSV path is kept, this is what the ERP must reproduce. (c) ADP SOP v3.8 §6.2 confirms the CSV is
+  imported through the ADP Payroll Dashboard and reviewed on screen before submission — no
+  machine-readable response, as this entry already notes. Still needs the client: the explicit
+  Excel-vs-API decision — the RFP's *export* wording is not it.
 
 ## Employee master — who creates a worker, ERP or ADP
 
 - Question: if an employee is created in the ERP, should it create the worker in ADP?
-- Candidates: [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
+- Candidates: [payroll/adp-integration-capabilities.md](adp-integration-capabilities.md).
 - Note: **ADP mints worker identity** — `associateOID`, `workerID`, `positionID` and the File
   Number are all ADP-generated, and the pay-data API validates `payrollFileNumber` against ADP's
   own master. The ERP cannot invent them. Inbound (ADP → ERP) is well supported via `GET workers`
@@ -716,14 +770,45 @@ someone has confirmed otherwise.
   asked for ERP-originated hiring.
 - Blocked: employee module ↔ payroll integration design.
 - Owner: TCG (payroll + HR), with CodingCops.
-- Status: open
+- **Status:** resolved 2026-09-04 — answered from the record, no client question needed. **Yes — the ERP
+  initiates the worker in ADP through the integration; ADP mints the identity and completes
+  onboarding; the ERP stores the file number it gets back and never generates one.**
+- Resolution (a):
+  [../decisions/2026-06-30-adp-erp-employee-data-ownership.md](../decisions/2026-06-30-adp-erp-employee-data-ownership.md)
+  (`status: verified` — Brian Petros proposed, Ehtesham Anwar refined, Brian agreed 2026-06-30,
+  nobody dissented on the thread) → *Where the lifecycle starts*: *"1. The ERP creates the
+  operational employee record (a pending / pre-hire). 2. The ERP initiates employee creation in ADP
+  through the integration. 3. ADP completes the HR and payroll onboarding… 4. The ERP automatically
+  captures the ADP Employee ID / file number that comes back."* — and under *Why this matters*: *"It
+  settles that our onboarding integration is a push from the ERP, not a manual ADP entry that the
+  ERP watches."* A client decision, on the record since 06-30; this entry was written before the
+  note was captured and never linked to it. The *suggested position* above (ADP masters identity,
+  ERP masters operational data) is the decision's ownership table verbatim.
+- Resolution (b): the ingest corroborates the manual practice the decision replaces, as system facts
+  only. HR's ADP-setup playbook (Corrina Bustos, 2026-05-11 —
+  [hr-onboarding-and-employee-forms.md](hr-onboarding-and-employee-forms.md) §2): the employee is
+  *born in ADP* via **Process → HR Dashboard → Hire Someone** from six fields, then the new hire
+  completes ADP's own link. ADP SOP v3.8 §5.3.1: *"FCC does not have employees' ADP IDs"* — the
+  FCC↔ADP file-number mapping lives in an Excel sheet (`tblCfgEmpInfoDetails`,
+  [adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §1).
+- Resolution (c): what stays open is tracked elsewhere and does not reopen *who creates*: the API
+  mechanism (`applicant.onboard` V2 vs the deprecated `worker.hire`, the duplicate-on-error hazard)
+  and the onboarding-complete signal — the decision note's own open-questions table and the *Fill-in
+  field employees* entry below.
+- Sources checked: decisions/2026-06-30 note in full;
+  [adp-integration-capabilities.md](adp-integration-capabilities.md);
+  [adp-read-write-boundary-2026-08-18.md](adp-read-write-boundary-2026-08-18.md);
+  hr-onboarding-and-employee-forms §2–§3; adp-sop-v3.8 §5.3.1; adp-workbook-power-query-engine §1;
+  fcc-employee-master-reference-data §7 (FCC import template).
+- Owner: answered; no client action outstanding. Owed:
+  [PAY-003](rules/PAY-003-employee-master-import.md) should cite the decision.
 - **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md), [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#employee-master-who-creates-a-worker-erp-or-adp](gaps-2026-08-20-retired.md#employee-master-who-creates-a-worker-erp-or-adp)
 
 ## Earning-code setup in ADP — a manual prerequisite nobody owns
 
 - Question: who creates TCG's earning codes inside ADP Workforce Now, and when?
-- Candidates: [payroll/adp-integration-capabilities.md](payroll/adp-integration-capabilities.md).
+- Candidates: [payroll/adp-integration-capabilities.md](adp-integration-capabilities.md).
 - **2026-08-24, from the client-message batch:** Brian (June-era) — the new import workbook
   needs "a few more fields in ADP"; a **meeting with the ADP rep** was planned to confirm.
   Owner emerging: **Brian + the ADP rep**. **Largely closed 2026-08-24:** the additions are enumerated (S2/S3 diff, LBT, lattice
@@ -743,9 +828,24 @@ someone has confirmed otherwise.
   exist in ADP, such as the four new Foreman codes and whatever the Military premium uses.
 - Blocked: first successful API submission; the Foreman and Military premium rollout.
 - Owner: TCG payroll practitioner (has `Setup` access). Needs a named person and a checklist.
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#earning-code-setup-in-adp-a-manual-prerequisite-nobody-owns](gaps-2026-08-20-retired.md#earning-code-setup-in-adp-a-manual-prerequisite-nobody-owns)
+- Update 2026-09-04 (Project Repository ingest): the workbook's Power Query
+  ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §4–§6) is the first
+  complete statement of **which client-defined codes the live import already depends on** — and
+  since the CSV imports today, each must already exist in TCG's validation table: Hours-3 `DT · HDD
+  · HOL · SIC` (slots 01–04), Earnings-3 `SUB` (slot 01), and twenty Hours-4 codes in fixed slots
+  `LBH LBO LBD LBT · LPR LPO LPD LPT · LOR LOO LOD LOT · S2R S2O S2D S2T · S3R S3O S3D S3T` (boom,
+  lattice operator/oiler, 2nd/3rd shift, each at ×1 / ×1.5 / ×2 / ×3); a code in the wrong slot is
+  an export `ERROR`. Two consequences: (a) the residual *removed / changed holiday code* question
+  now has concrete candidates to reconcile against the 08-18 pull — `HDD` and `HOL` are the holiday
+  pair the sheet sends; (b) **no WTL, foreman or military code exists anywhere in the export path**
+  (§*What the code reveals*, item 1) — those premiums are folded into ST/OT/DT hours before the
+  ledger sees them, so the four Foreman codes and whatever Military uses are still uncreated,
+  exactly as this entry says. System facts (workbook code), not a decision. Still needs the client:
+  a named owner and date for creating the new codes — no ingested document names one, and SOP §6.2
+  simply assumes the codes exist.
 
 ## Certified payroll generation — is there already an ADP Marketplace connector?
 
@@ -757,7 +857,7 @@ someone has confirmed otherwise.
 - Remaining question: does TCG intend to **buy** such a connector, or build it? The Marketplace
   option exists and is the conventional route.
 - Candidates: nothing in the vault. The
-  [7 Aug minutes](meetings/2026-08-07-labor-compliance-certified-payroll.md) name **SMG Compliance**
+  [7 Aug minutes](../meetings/2026-08-07-labor-compliance-certified-payroll.md) name **SMG Compliance**
   and **LCP Tracker** as the external systems, and the TPM architecture draft shows SMG generating
   WH-347s.
 - Note: **certified payroll is not native to Workforce Now.** WH-347 generation is served by
@@ -770,9 +870,27 @@ someone has confirmed otherwise.
   Nothing in the ERP payroll design currently carries job attribution into the ADP payload.
 - Blocked: Labor Compliance scoping; the ADP payload design for Davis-Bacon jobs.
 - Owner: TCG (ADP account administrator + Corrina for compliance).
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-072](rules/PAY-072-certified-payroll-davis-bacon-reporting.md), [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#certified-payroll-generation-is-there-already-an-adp-marketplace-connector](gaps-2026-08-20-retired.md#certified-payroll-generation-is-there-already-an-adp-marketplace-connector)
+- Update 2026-09-04 (Project Repository ingest): no connector anywhere in the client's own record,
+  and the manual process is now documented end to end. (a) TCG's RFP of 2026-02-26
+  ([../admin/tcg-erp-rfp-2026-02-26.md](../admin/tcg-erp-rfp-2026-02-26.md) → *Required
+  integrations*) lists QuickBooks Online, Samsara, Microsoft 365, ADP/Paychex export and FCC
+  migration — no certified-payroll product, no LCP Tracker, no SMG. (b) The certified-payroll value
+  engine of 2025-09-12 ([payroll-value-engines.md](payroll-value-engines.md) §3) runs **Run
+  Certified Payroll Report (SOP #3) → Report Weekly Labor & Internal Tracker (#4) → Generate CPR
+  Report & Request Check Stubs (#5)** against a **CPR Tracker** — check stubs are *requested*, i.e.
+  pay evidence comes out of ADP by hand, which is what a Marketplace connector would automate. The
+  playbook's native `.docx` (Ryan, 2026-08-06), its Davis-Bacon companion and the Pre-Job Labor
+  Compliance form ([certified-payroll-playbook.md](certified-payroll-playbook.md) §10–§12) cover
+  intake only. (c) The June-2026 org chart
+  ([../admin/engagement-directory-and-org-charts.md](../admin/engagement-directory-and-org-charts.md)
+  → *The org charts*) has **Certified Payroll (Rose Aguilera)** as a named box under HR — a business
+  owner for the buy-or-build call. (d) FCC carries `CertPay` on the employee
+  (`stg.FMS_EMPLOYEES_Raw`) and on every labor row (`stg.FMS_LABOR_PAYROLL_Raw`), so job-level
+  prevailing-wage attribution exists in the incumbent data. Process and system facts; **buy vs build
+  is still TCG's call**, and nothing ingested makes it.
 
 ## API Central access for the people actually building it
 
@@ -790,7 +908,7 @@ someone has confirmed otherwise.
 - **Blocked until resolved: all hands-on ADP work.** No credential means no token, no certificate,
   no sandbox, no Postman run, no first API call.
 - Owner: Ehtesham Anwar (CodingCops) — has the role to do it directly.
-- Status: open — and the cheapest item on this entire list to close.
+- **Status:** open — and the cheapest item on this entire list to close.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#api-central-access-for-the-people-actually-building-it](gaps-2026-08-20-retired.md#api-central-access-for-the-people-actually-building-it)
 - **2026-08-24, client big-summary message:** Brian has been granted access to the **production**
@@ -825,7 +943,7 @@ someone has confirmed otherwise.
 - **Catalogue opened 2026-08-13 — it exists, and it is large.** `APIs > Events` shows
   **Events (0) subscribed** against **147 events available** to subscribe, across 10 domains and
   249 sub-categories. Full detail in
-  [payroll/adp-event-notifications.md](payroll/adp-event-notifications.md).
+  [payroll/adp-event-notifications.md](adp-event-notifications.md).
 - **The `204` is now fully explained**: the queue is entitled and functioning, and nothing is
   subscribed. It was never going to contain anything.
 - **A pay-data event EXISTS, found 2026-08-13.** Filtering API Domain → Payroll returns **12
@@ -874,7 +992,7 @@ someone has confirmed otherwise.
   `workDate` = *"the date on which the worker clocked overtime"*,
   `earnedPayPeriodStartDate/EndDate` = *"used for FLSA in CA in the US"*. **But the WFN
   `pay-data-input.modify/meta` response does not expose either**
-  ([payroll/adp-api-responses/pay-data-input-meta.md](payroll/adp-api-responses/pay-data-input-meta.md)).
+  ([payroll/adp-api-responses/pay-data-input-meta.md](adp-api-responses/pay-data-input-meta.md)).
   The schema is ADP's generic cross-product model; `/meta` is what WFN actually accepts.
 - **Why it matters:** TCG's California daily overtime, seventh-consecutive-day and FLSA rules are
   all **date-attributed**. If WFN accepted `workDate`, the ERP could send per-day attribution
@@ -890,7 +1008,7 @@ someone has confirmed otherwise.
 - Blocked: nothing today — the design works on weekly aggregates. This is an improvement
   opportunity, and a question worth asking before the ADP export rule is finalised.
 - Owner: CodingCops to ask ADP.
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps-2026-08-20-retired.md#does-wfn-support-workdate-and-the-flsa-date-fields-on-pay-data](gaps-2026-08-20-retired.md#does-wfn-support-workdate-and-the-flsa-date-fields-on-pay-data)
 
 ## Polling or webhooks — a per-project architectural choice, not a preference
@@ -911,7 +1029,7 @@ someone has confirmed otherwise.
     later means rewriting the parser — this is not a late-binding decision.
 - Blocked: the ERP's integration deployment shape.
 - Owner: CodingCops, with TCG security sign-off if webhooks are chosen.
-- Status: open — polling is the current default and the lower-risk one
+- **Status:** open — polling is the current default and the lower-risk one
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#polling-or-webhooks-a-per-project-architectural-choice-not-a-preference](gaps-2026-08-20-retired.md#polling-or-webhooks-a-per-project-architectural-choice-not-a-preference)
 
@@ -946,7 +1064,7 @@ someone has confirmed otherwise.
 - Blocked: developer onboarding that assumes a safe sandbox credential; any deployment that needs
   the key present.
 - Owner: CodingCops (Ehtesham holds the **C** role) with TCG security sign-off on key custody.
-- Status: open — issuance done, **custody and rotation undecided**.
+- **Status:** open — issuance done, **custody and rotation undecided**.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#one-adp-certificate-covers-development-and-production](gaps-2026-08-20-retired.md#one-adp-certificate-covers-development-and-production)
 
@@ -994,7 +1112,7 @@ someone has confirmed otherwise.
   the craft-code shape should cite these pages *as unverified Confluence*, not as the vault.
 - Owner: whoever re-migrates (human, per README *Who does what*); Umair Khan for whether the pages
   are finished.
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps-2026-08-20-retired.md#confluence-payroll-user-stories-first-payroll-pages-in-confluence-unmigrated](gaps-2026-08-20-retired.md#confluence-payroll-user-stories-first-payroll-pages-in-confluence-unmigrated)
 
 ## Meeting recordings disagree with the vault — 2026-08-19 review
@@ -1101,7 +1219,7 @@ someone has confirmed otherwise.
   - `2026-08-13` week statuses — open → §*Weekly payroll week statuses — two CodingCops sources, no TCG statement*
 - Blocked: nothing yet — each pair blocks the unit that touches it.
 - Owner: `tcg-scrum` to put each pair to the named TCG person; the answer goes to `decisions/`.
-- Status: **partly disposed** — 2 superseded by `decisions/2026-06-30-adp-erp-employee-data-ownership.md`, 1 resolved by live ADP observation, 8 still open or awaiting confirmation, each with its own entry below.
+- **Status:** **partly disposed** — 2 superseded by `decisions/2026-06-30-adp-erp-employee-data-ownership.md`, 1 resolved by live ADP observation, 8 still open or awaiting confirmation, each with its own entry below.
 - **From (frozen original):** [gaps-2026-08-20-retired.md#meeting-recordings-disagree-with-the-vault-2026-08-19-review](gaps-2026-08-20-retired.md#meeting-recordings-disagree-with-the-vault-2026-08-19-review)
 
 ## Subsistence — the recording and the engine disagree on both the amount and the trigger
@@ -1142,7 +1260,7 @@ someone has confirmed otherwise.
   and the ADP **SUB PAY** mapping in `payroll/adp-bucket-crosswalk.md`.
 - Owner: Melissa McNutt (she stated the distance model); Corrina Bustos to confirm what is
   actually paid today.
-- Status: **answered** — 08-20 SME statement, corroborated 08-21
+- **Status:** **answered** — 08-20 SME statement, corroborated 08-21
 - **Rules:** [PAY-048](rules/PAY-048-standard-subsistence.md), [PAY-049](rules/PAY-049-weekend-subsistence.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#subsistence-the-recording-and-the-engine-disagree-on-both-the-amount-and-the-trigger](gaps-2026-08-20-retired.md#subsistence-the-recording-and-the-engine-disagree-on-both-the-amount-and-the-trigger)
 - **Answer:** short = **$85/day, 45–77.5 mi, worked days only**; long = **$200/day,
@@ -1204,9 +1322,31 @@ someone has confirmed otherwise.
   so building them as server-driven config keeps the answer a config change. But `SCRUM-864` has
   shipped one side of an unresolved disagreement.
 - Owner: Corrina Bustos (owns the WTL charts and Q4 in FR-TCG-FOP-001); Ryan Adams stated the values.
-- Status: open — needs confirmation
+- **Status:** open — needs confirmation
 - **Rules:** [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#lunch-thresholds-the-recording-is-the-origin-and-it-disagrees-with-the-wtl-charts](gaps-2026-08-20-retired.md#lunch-thresholds-the-recording-is-the-origin-and-it-disagrees-with-the-wtl-charts)
+- Update 2026-09-04 (Project Repository ingest): the contract text and the legacy configuration both
+  point at the WTL-chart values, and nobody at TCG has said so. (a) **Contract** — Truck Crane MLA
+  Article III → *Meal Periods* §1
+  ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md)):
+  *"No employee shall be required to work more than five (5) hours consecutively without a one-half
+  (½) hour meal period."* With each meal taken as the fixed half hour that runs 5 → 10.5 → 16 →
+  21.5, the `wtl-charts.md` sequence; no arithmetic reaches the recording's 16.5 / 22. The MLA
+  states the 5-hour rule, not the list — the derivation is this note's, not the contract's. (b)
+  **Legacy engine config**, already in the vault and not cited here before:
+  `cfg.WTL_MaxMealThreshold`
+  ([legacy-payroll-app-db-extract/config-values.md](legacy-payroll-app-db-extract/config-values.md))
+  bands the shift span **0.5–5 / 5.5–10.5 / 11–16 / 16.5–21.5 / 22–27 h → 0/1/2/3/4 meal periods**,
+  loaded 2026-05-25 — the same sequence, built by CodingCops. (c) The June-2026 demo build
+  ([../field-ops/field-app-demo-2026-06.md](../field-ops/field-app-demo-2026-06.md) §3) unlocks each
+  break **5 h after the previous one was resolved** — rolling, which also gives 5 / 10.5 / 16 / 21.5
+  when breaks are taken — but models **three** lunches, not four. (d) The paper ticket's customer
+  terms §15 ([../field-ops/field-paper-forms.md](../field-ops/field-paper-forms.md) §1) and FCC's
+  *Work Through Lunch* attestation
+  ([tcg-rawfms-staging-database/data/fcc-checklist-templates.md](tcg-rawfms-staging-database/data/fcc-checklist-templates.md)
+  → *What stands out*) restate only the 5-hour rule. Still needs the client: Corrina confirming 16 /
+  21.5 (or the recording's 16.5 / 22) as the third and fourth thresholds — `SCRUM-864` shipped the
+  recording's values.
 
 ## Time rounding — nearest half hour, or start-down/end-up?
 
@@ -1238,7 +1378,40 @@ someone has confirmed otherwise.
 - Blocked: the slice formula in the ERP pricing engine, every downstream hour bucket, and billing —
   Corrina states the rule is company-wide, not payroll-only.
 - Owner: Corrina Bustos.
-- Status: open — needs confirmation
+- **Status:** resolved 2026-09-04 — answered from the record, no client question needed. **Start down,
+  end up, to 30-minute increments, for all employees, union and non-union** — Brian Petros's written
+  statement, recorded as
+  [../decisions/2026-08-24-payroll-time-rounding-method.md](../decisions/2026-08-24-payroll-time-rounding-method.md)
+  (`status: verified`).
+- Resolution (a): the decision note quotes the client statement directly — *"starting times get
+  rounded down/back to 30 minute increments… ending times get rounded up/forward… that's for all
+  Union and non-union"* (Brian Petros, payroll summary message, backlog batch) — and records that
+  the as-built engine (`usp_Prepare_Continuous_Labor`) and the MLA's half-hour reckoning agree with
+  it. That is the start-down/end-up reading, not Corrina's nearest-half-hour worked example; the
+  note post-dates this entry and was never linked back to it.
+- Resolution (b): the ingest corroborates and nothing in it contradicts: the ADP workbook's `Total
+  Hrs` column is *"entry start rounds down, end up, to 30 min"*
+  ([adp-workbook-column-rules.md](adp-workbook-column-rules.md) → *Column by column*); the June-2026
+  field-app demo rounds *Left Yard down, Arrive Job up* — *"Rounded down/up to 30 min in your
+  favor"* ([../field-ops/field-app-demo-2026-06.md](../field-ops/field-app-demo-2026-06.md) §2); the
+  paper ticket's customer terms §13 bill in 30-minute increments
+  ([../field-ops/field-paper-forms.md](../field-ops/field-paper-forms.md) §1). The Truck Crane MLA
+  text has no rounding clause at all (`grep -i round` finds none), so the contract does not
+  arbitrate and does not object.
+- Resolution (c): one FCC fact worth carrying, not a reopening: FCC's L12 *Union Payroll Defaults*
+  hold **`Time Round To 30 Mins`**, and that field rounds **down only**
+  ([fcc-union-code-configuration.md](fcc-union-code-configuration.md) §5, note 2;
+  [fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) → *Union Codes*,
+  slide 19) — the incumbent cannot express the asymmetric rule, so either TCG does not rely on that
+  field or the end-up half happens in the workbook. That is a question about FCC's mechanism,
+  already logged on the union-code page, not about the rule.
+- Sources checked: decisions/2026-08-24 note; adp-workbook-column-rules → *Column by column*;
+  field-app-demo-2026-06 §2; field-paper-forms §1; fcc-union-code-configuration §5;
+  fcc-employee-master-reference-data → *Union Codes*;
+  [rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md):208; Truck Crane
+  MLA full text (no rounding clause); [PAY-020](rules/PAY-020-half-hour-reckoning.md).
+- Owner: answered; no client action outstanding. Owed: PAY-020 and `fr-fop-038` should cite the
+  decision; the `SCRUM-864` / field-app rounding already matches it.
 - **Rules:** [PAY-020](rules/PAY-020-half-hour-reckoning.md), [PAY-069](rules/PAY-069-money-rounding-and-rounding-adjustment-components.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#time-rounding-nearest-half-hour-or-start-downend-up](gaps-2026-08-20-retired.md#time-rounding-nearest-half-hour-or-start-downend-up)
 
@@ -1267,9 +1440,17 @@ someone has confirmed otherwise.
   dispute**: Corrina states it unprompted and no vault file contradicts it.
 - Blocked: the mobile lunch reminder in `SCRUM-864`, already in QA at 1 hour.
 - Owner: Corrina Bustos.
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#lunch-alert-lead-time-one-hour-or-thirty-minutes](gaps-2026-08-20-retired.md#lunch-alert-lead-time-one-hour-or-thirty-minutes)
+- Update 2026-09-04 (Project Repository ingest): the June-2026 demo build CodingCops walked TCG
+  through on 2026-06-16
+  ([../field-ops/field-app-demo-2026-06.md](../field-ops/field-app-demo-2026-06.md) §3) hard-codes
+  `LUNCH_WARN_MS = 1 hour` — a reminder one hour before each break unlocks — and writes a fixed
+  30-minute break on tap. So a week *after* the 06-09 *"we decided 30 minutes"* exchange the shipped
+  prototype was still at one hour, making it a third CodingCops artefact at that figure alongside
+  `SCRUM-864` and the Atom user stories. It corroborates the fixed 30-minute duration; no TCG
+  statement on the lead time appears in anything ingested. Still needs Corrina.
 
 ## What `631` actually is
 
@@ -1299,7 +1480,7 @@ someone has confirmed otherwise.
 - Blocked: nothing — the export must use `4RZ` / `4RY`. This entry exists so nobody re-derives `631`
   from the recording.
 - Owner: Brian Petros (he supplied the layout and holds the ADP file facts).
-- Status: **answered** — client statement ~2026-07-28 (message batch, captured 2026-08-24)
+- **Status:** **answered** — client statement ~2026-07-28 (message batch, captured 2026-08-24)
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#what-631-actually-is](gaps-2026-08-20-retired.md#what-631-actually-is)
 - **Answer:** `631` was TCG's **previous ADP company code**, renamed to **`4RZ`** during the
@@ -1342,9 +1523,27 @@ someone has confirmed otherwise.
   gate; the employee-creation push described in `payroll/adp-read-write-boundary-2026-08-18.md`.
 - Owner: Brian Petros (raised it, and co-owns the 06-30 decision); Corrina Bustos for the
   until-Sunday practice.
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md), [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#fill-in-field-employees-vs-the-adp-onboarding-dispatch-block](gaps-2026-08-20-retired.md#fill-in-field-employees-vs-the-adp-onboarding-dispatch-block)
+- Update 2026-09-04 (Project Repository ingest): three facts about current practice, none an
+  amendment to the 06-30 decision. (a) **Fill-ins are a dispatch tier**: Melissa's union-rules list
+  of 2026-04-08 ([../erp-review-log.md](../erp-review-log.md) → *#4 — Union rules to enforce*) sets
+  the call-out order **Tier 1 Operators → Tier 2 Oilers → Tier 3 Apprentices → Tier 4 Fill-ins**,
+  repeated in the dispatch playbook
+  ([../dispatch/dispatch-value-engine-and-playbooks.md](../dispatch/dispatch-value-engine-and-playbooks.md)
+  §4) — a client statement that fill-ins are dispatched, silent on whether they may go out before
+  ADP is complete. (b) HR's onboarding checklist (Corrina, 2026-05-11 —
+  [hr-onboarding-and-employee-forms.md](hr-onboarding-and-employee-forms.md) §3) lists **ADP as item
+  5 and the FCC profile as item 8**, with *"Field Availability List given to Dispatch"* at item 13 —
+  an ordered list, not a gate; nothing says dispatch waits for ADP. (c) **The mechanism behind the
+  Sunday deadline**: the weekly roster is pulled from FCC (`src_FccEmployees`,
+  [adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §1) and the ADP file
+  number is keyed by hand in Excel; a roster employee with no file number is an `ERROR` — *"missing
+  or invalid ADP file numbers"* — that blocks the whole week's CSV (§6). So today a fill-in can work
+  and file tickets in FCC with no ADP record, and the cost lands at payroll close-out, which is why
+  Corrina gives them *"until Sunday"*. Legacy-process facts, not a decision. Still needs Brian and
+  Corrina: whether step 5 applies to fill-ins or is amended for them.
 
 ## Lattice — Joe settled it on the recording, nothing records it
 
@@ -1381,9 +1580,31 @@ someone has confirmed otherwise.
 - Blocked: PR-044 in `payroll/codingcops-rule-matrix.md`; the `LPR/LPO/LPD/LPT` and `LOR/LOO/LOD/LOT`
   ADP mappings; the crane-configuration / asset field that would carry the flag.
 - Owner: Joe Schacatano (stated it), with Kyle Harlow — the two named on the open gap.
-- Status: open — needs confirmation
+- **Status:** open — needs confirmation
 - **Rules:** [PAY-044](rules/PAY-044-lattice-boom-premium.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#lattice-joe-settled-it-on-the-recording-nothing-records-it](gaps-2026-08-20-retired.md#lattice-joe-settled-it-on-the-recording-nothing-records-it)
+- Update 2026-09-04 (Project Repository ingest): the contract's own wording is now in the vault, and
+  it is keyed neither on *crawler* nor on *every dispatch*. (a) Truck Crane MLA Article IV
+  *Classifications and Wage Rates*
+  ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md)):
+  *"One Dollar ($1.00) per hour over and above the hourly wage rate for the operator for **lattice
+  boom crane for Group 6 and above** and fifty cents ($0.50) per hour… for the oiler for lattice
+  boom for Group 6 and above"* — restated in the Local 12 notice of 2025-08-15
+  ([mcog-l12-mla-2025-2028/local-12-wage-notice-2025-08-15.md](mcog-l12-mla-2025-2028/local-12-wage-notice-2025-08-15.md)).
+  Two things Joe's answer did not carry: the trigger is **boom type**, and it is **group-gated** —
+  `L12-G6`…`G9` only, nothing for G1–G5 or apprentices
+  ([adp-workbook-column-rules.md](adp-workbook-column-rules.md) → *Lattice*). The same Article's
+  crew provisions (¶5) speak of *"Telescopic Boom Crawler Cranes"*, so *crawler* and *lattice* are
+  not synonyms in the contract's vocabulary; *"the crawler, every time"* squares with the MLA only
+  if every TCG crawler is lattice-boomed and its crew is G6 or above. (b) **Current mechanism**: the
+  ADP workbook's per-row *Lattice Oper / Lattice Oiler* dropdowns are the entire trigger — a payroll
+  clerk's judgement per day — feeding eight ADP codes `LPR/LPO/LPD/LPT`, `LOR/LOO/LOD/LOT` at $1.00
+  / $0.50 × 1 / 1.5 / 2 / 3
+  ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §3); the legacy payroll
+  app computes no lattice at all. (c) Stacking: column-rules records *"whether they stack is
+  unresolved"* against Corrina's 58:17 *"on top of"*; the contract lists both adders with no
+  exclusion. Contract and workbook facts. **Joe's crawler-only trigger still needs the one-line
+  confirmation this entry asks for — now with the G6+ gate added to the question.**
 
 ## Pay rate follows the employee, not the role worked — Kyle and Corrina, unrecorded
 
@@ -1432,7 +1653,7 @@ someone has confirmed otherwise.
   craft-code UI demoed at 21:50 in the same call.
 - Owner: Kyle Harlow (stated it) and Corrina Bustos (worked the example); Brian Petros proposed the
   higher-rate-secondary rule.
-- Status: **resolved** — decisions/2026-08-20-craft-locked-rate-override.md
+- **Status:** **resolved** — decisions/2026-08-20-craft-locked-rate-override.md
 - **Rules:** [PAY-010](rules/PAY-010-l12-union-base-rate.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#pay-rate-follows-the-employee-not-the-role-worked-kyle-and-corrina-unrecorded](gaps-2026-08-20-retired.md#pay-rate-follows-the-employee-not-the-role-worked-kyle-and-corrina-unrecorded)
 - **Resolution (2026-08-24 sweep):** decided on the 2026-08-20 call — day-level deviations
@@ -1468,14 +1689,28 @@ someone has confirmed otherwise.
   submission state machine.
 - Owner: Corrina Bustos (whether *Received* and *Paid* are states payroll needs); Umair Khan for
   whether the Confluence page is finished.
-- Status: open
+- **Status:** open
 - **Rules:** [PAY-002](rules/PAY-002-pay-period-status-workflow.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#weekly-payroll-week-statuses-two-codingcops-sources-no-tcg-statement](gaps-2026-08-20-retired.md#weekly-payroll-week-statuses-two-codingcops-sources-no-tcg-statement)
+- Update 2026-09-04 (Project Repository ingest): two legacy status vocabularies, neither of them
+  either candidate set, and still no TCG statement. (a) The legacy Payroll App's `app.PayPeriod`
+  ([legacy-payroll-app-db-backup-2026-06-23.md](legacy-payroll-app-db-backup-2026-06-23.md) → *Pay
+  periods*) knows **`Open` and `Processed`** — 32 Sat–Fri weeks, every production week `Open`, the
+  only two `Processed` rows from API smoke tests. (b) FCC's lifecycle is **Approved → Processed →
+  Exported** on the labor row (`Approval`, `Processed`, `ProcessedDate` in
+  `stg.FMS_LABOR_PAYROLL_Raw`; the locks in
+  [fcc-nexgen-payroll-processing.md](fcc-nexgen-payroll-processing.md) §2), with no week-level state
+  at all. (c) The Excel SOP calls the week-ending step *"closing out"* the payroll (ADP SOP v3.8
+  §6.2) and the playbook runs **Process Payroll in ADP → Process Payroll in FCC → Handout Checks**
+  ([payroll-value-engines.md](payroll-value-engines.md) §2) — so *Closed* and *checks handed out*
+  are both real steps today, which is the operational fact the two candidate sets disagree on.
+  System and process facts; whether payroll needs *Received* / *Paid* as ERP states is still
+  Corrina's to say.
 
 ## Labor Compliance module — no vault coverage
 
 - Question: what is the Labor Compliance module, end to end?
-- Candidates: [meetings/2026-08-07-labor-compliance-certified-payroll.md](meetings/2026-08-07-labor-compliance-certified-payroll.md)
+- Candidates: [meetings/2026-08-07-labor-compliance-certified-payroll.md](../meetings/2026-08-07-labor-compliance-certified-payroll.md)
   is the **only source in the vault**. There is no FRD, no user stories, no BRS section.
 - Note: the module name was **agreed in that meeting** — "Labor Compliance" chosen as the primary
   name because it encompasses Certified Payroll, Davis-Bacon and related requirements. It spans
@@ -1490,13 +1725,33 @@ someone has confirmed otherwise.
   cannot be specified before Corrina supplies the Davis-Bacon identification criteria.
 - Owner: Corrina (TCG) for the Davis-Bacon business rules and identification criteria; TCG for the
   Labor Compliance setup form and Tracking Register; CC for the checklist evaluation.
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps.md#labor-compliance-module-no-vault-coverage](../gaps.md#labor-compliance-module-no-vault-coverage)
 - **2026-08-24: no longer zero coverage.** The [Certified Payroll Playbook](certified-payroll-playbook.md)
   documents the intake-to-gate business process (Sales Coordinator → Labor Compliance → NO-GO
   until reviewed), names WH-347/DIR/wage determinations, and ties to the FCC Certified Pay flag.
   Remaining open: ERP scope split (intake workflow vs report generation), the module's owner,
   and what "Ready to Schedule Value Engine" is.
+- Update 2026-09-04 (Project Repository ingest): coverage is now substantial, and a business owner
+  has a name. (a) The playbook's native `.docx` (Ryan, 2026-08-06) matched the photo transcription
+  with no corrections, and the drop adds a sibling **Davis-Bacon & federally funded jobs** playbook,
+  the **Pre-Job Labor Compliance & Payroll Information Request Form** the checklist refers to, and
+  the **certified-payroll value engine** (2025-09-12) with seven numbered SOPs, a **CPR Tracker**,
+  an internal weekly-labor tracker, a weekly non-performance loop and a customer-chases-us recovery
+  path — [certified-payroll-playbook.md](certified-payroll-playbook.md) §10–§12 and
+  [payroll-value-engines.md](payroll-value-engines.md) §3. (b) The June-2026 org chart
+  ([../admin/engagement-directory-and-org-charts.md](../admin/engagement-directory-and-org-charts.md)
+  → *The org charts*) has **Certified Payroll — Rose Aguilera** as a named box under HR (Corrina
+  Bustos). (c) TCG's RFP puts *Safety & Compliance* in Phase 3 and names no certified-payroll system
+  ([../admin/tcg-erp-rfp-2026-02-26.md](../admin/tcg-erp-rfp-2026-02-26.md)); FCC carries `CertPay`
+  per employee and per labor row plus the import template's *Certified Pay*, with the
+  job-vs-employee-vs-classification collision recorded in
+  [fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §8. (d) *"Ready to
+  Schedule Value Engine"* is now a page:
+  [../projects-jobs/scheduling/ready-to-schedule.md](../projects-jobs/scheduling/ready-to-schedule.md)
+  — the sales-coordinator gate before dispatch is contacted. Client process documents, but none of
+  them is an ERP scope statement. Still needs the client: the intake-vs-reporting scope split, the
+  module owner (Rose or Corrina), and the Davis-Bacon identification criteria.
 
 ## Employee ↔ yard and company cardinality — the ask exists in exactly one place
 
@@ -1541,8 +1796,32 @@ someone has confirmed otherwise.
   yard-scoped certification validity Melissa raised, which has no ticket at all.
 - Owner: Dylan Masterson (yard) with Brian Petros (cross-cutting/IT, for the company dimension);
   Melissa McNutt for the certification-validity consequence.
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps.md#employee-yard-and-company-cardinality-the-ask-exists-in-exactly-one-place](../gaps.md#employee-yard-and-company-cardinality-the-ask-exists-in-exactly-one-place)
+- Update 2026-09-04 (Project Repository ingest): **the ask now exists in a second place, in writing,
+  from TCG — but only the yard half.** (a) TCG's annotated FCC deck `FCC_MAINTAIN_EMPLOYEES
+  (reviewed by TCG).pptx`
+  ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §8, and the
+  slide-2 *Yard association* annotation under → *The Employees window*): *"Be able to
+  assign/associate Employees to each Yard… Some Employees may be working/associated with more than
+  one Yard."* A written client statement, undated on the slide, for per-yard reporting — it confirms
+  the 2026-03-20 recording's *multiple yards* and gives the ask an author. It says **nothing about
+  multiple companies** or the yard-within-company nesting, so the second half of the question stays
+  unsourced. (b) What FCC holds: one `CompanyCode` and one `YardCode` per employee
+  (`tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql`); the import template requires
+  exactly one *Company* and one *Yard*, each validated against the `Companies` / `Yards` sheets
+  (§7); the Employees window has *Company* and *Yard* as single dropdowns. So FCC does model the
+  company dimension the ERP dropped — singular — which is the premise the recording started from.
+  (c) Melissa's certification-validity consequence already has an FCC shape: the Certifications
+  lookup carries a **Yard Restrictions** tab — *"Any Yard Listed will not Apply to this Yard"* — so
+  a certificate requirement is switched off per yard today (→ *Employee Types and Certifications
+  lookups*). (d) One contract constraint for whoever models it: subsistence is measured from the
+  employee's **home base** and the MLA forbids reassigning employees to a new home base to avoid it
+  (Truck Crane MLA Article V —
+  [mcog-l12-mla-2025-2028/03-article-v-subsistence-allowance.md](mcog-l12-mla-2025-2028/03-article-v-subsistence-allowance.md)),
+  so a multi-yard employee still needs one designated home yard for pay. Client ask plus legacy
+  facts, not a decision; still needs Dylan and Brian for the company dimension and the nesting rule,
+  and whether `SCRUM-468` reopens.
 
 ## Employee ↔ ADP position — one person, possibly several File Numbers
 
@@ -1571,6 +1850,34 @@ someone has confirmed otherwise.
 - **Owner:** Brian Petros (to confirm the requirement is signed) with Corrina Bustos (whether
   multi-position employees exist in TCG's ADP); CodingCops for the schema.
 - **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md), [PAY-067](rules/PAY-067-adp-export.md)
+- **Update 2026-09-04 (Project Repository ingest):** every incumbent system on record assumes
+  **one ADP File Number per employee**, and none holds an Associate ID, Position ID or a second
+  Company Code. (a) The legacy Payroll App's `app.EmployeeExternalIdentifier`
+  ([legacy-payroll-app-db-extract/ddl/app.EmployeeExternalIdentifier.sql](legacy-payroll-app-db-extract/ddl/app.EmployeeExternalIdentifier.sql))
+  is unique on `EmpID × ExternalSystemCode × ExternalIdentifierName` and carries two further unique
+  indexes named `…_ADP_FILE_NUMBER_EmpID_Active` (on `EmpID`) and `…_Value_Active` (on the value),
+  so one employee has at most one live File # and one File # belongs to at most one employee;
+  `api.usp_UI_SaveEmployeeExternalIdentifier`
+  ([legacy-payroll-app-db-extract/sql/api/usp_UI_SaveEmployeeExternalIdentifier.PROC.sql](legacy-payroll-app-db-extract/sql/api/usp_UI_SaveEmployeeExternalIdentifier.PROC.sql))
+  hard-codes `ExternalSystemCode = 'ADP'` and `ExternalIdentifierName = 'FILE_NUMBER'`, refuses a
+  value already held by another `EmpID` (error 51005), and on a change **deactivates the old row
+  rather than overwriting it** — a history of File #s, never two live at once. 108 rows on
+  2026-06-23 ([legacy-payroll-app-db-backup-2026-06-23.md](legacy-payroll-app-db-backup-2026-06-23.md)).
+  (b) The ADP workbook keeps the same one-to-one mapping by hand: `Emp_ADP#s and SheetNames` is
+  *"One row (on table below) per employee"* with a single three-digit `ADPFileNo`
+  ([adp-sop-v3.8.md](adp-sop-v3.8.md) → *What the SOP's screenshots show*); the Power Query builds
+  **one primary row per employee per week** and the export refuses *"missing or duplicate primary
+  rows"*; the only Company Code anywhere is `4RZ` in `__hiddenParams`
+  ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §2, §4, §6). (c) FCC's
+  `stg.FMS_EMPLOYEES_Raw` carries `CompanyCode` (`CG` on the sampled rows) and a `PayrollNo
+  varchar(15)` whose purpose no document states
+  ([tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql](tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql)).
+  (d) The HR ADP-setup playbook has the worker **born in ADP**, with `Company Code` entered at
+  hire ([hr-onboarding-and-employee-forms.md](hr-onboarding-and-employee-forms.md) §2). These are
+  facts about the incumbent systems — evidence that one File # per person is today's working
+  assumption — **not a TCG decision** on the `EmployeePosition` proposal. Still needed from the
+  client: whether any TCG associate holds two paid positions in ADP, and whether the 2026-08-27
+  message is a signed requirement.
 
 ## Employee certifications — types and scope (per job, per unit, other)
 
@@ -1588,6 +1895,30 @@ someone has confirmed otherwise.
 - **Blocked:** employee-detail design; job-assignment validation; any certified-payroll linkage.
 - **Owner:** TCG (Melissa McNutt for compliance, Brian Petros for the list); CodingCops to bring
   the FCC certification field inventory.
+- **Update 2026-09-04 (Project Repository ingest):** the FCC certification field inventory
+  CodingCops owed is now on record, and FCC's own typology has **three scopes**, not one.
+  `FMS_CERTIFICATES.CertificationType` is `G` general (the person — NCCCO, DL, CPR, Medical, MSHA,
+  NBIS, First Aid, Harassment, Forklift), `C` customer/location (**Bechtel Passport**, **MSHA
+  Vulcan** — a badge a specific customer or site imposes) or `U` unit; the import template spells
+  it out as *"Unit (U), General (G), or Customer/Location (C)"*. The catalogue also carries
+  `LinkTo`, `UnitCertificateType`, `MaintEvery` / `TimePeriod` and `DontPromptExpCert`, and the
+  Certifications lookup has a **Yard Restrictions** tab (*"Any Yard Listed will not Apply to this
+  Yard"*) that switches a requirement off per yard — Melissa's yard-scoped validity, already in FCC
+  ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §6 and
+  *Employee Types and Certifications lookups (slides 11–13)*). Per employee, FCC stores
+  `Certificate Numb · Issue Date · Expire Date · Link To · Certificate Type · Status` plus
+  attached files with a per-file *Include in E-Documents* switch (*Certifications (slide 5)*).
+  TCG's annotated deck adds two asks that are **not** certifications in FCC: **"Cranes Qualified to
+  Operate"** / asset types allowed — the unit-class qualification, requested as its own block — and
+  **trainings** recorded beside certificates (§8). Certifications reach the FCC profile through the
+  Dispatch Assistant and are duplicated into Dropbox
+  ([hr-onboarding-and-employee-forms.md](hr-onboarding-and-employee-forms.md) §3, item 8);
+  unit-side compliance (annual crane certification, quad) is modelled as interval-bearing **unit
+  activities**, not certificates
+  ([../assets/asset-record-requested-additions.md](../assets/asset-record-requested-additions.md)).
+  All of this is what the incumbent holds and what TCG annotated on it — **not a decision** on
+  which scope the ERP validates, or where (assignment, dispatch, payroll). Brian's question stands;
+  it can now be asked against FCC's G / C / U + yard model rather than from a blank page.
 
 ## Payroll premium catalog — configured per tenant, or constants in the engine
 
@@ -1649,7 +1980,35 @@ someone has confirmed otherwise.
   premiums are per-tenant configuration or product constants.
 - **Rules:** [PAY-008](rules/PAY-008-effective-dated-configuration.md), [PAY-036](rules/PAY-036-second-shift.md), [PAY-037](rules/PAY-037-third-shift.md), [PAY-044](rules/PAY-044-lattice-boom-premium.md), [PAY-070](rules/PAY-070-foreman-premium.md), [PAY-071](rules/PAY-071-military-base-premium.md)
 - **Cross-link:** admin/gaps.md → *What a newly created tenant must contain*
+- **Update 2026-09-04 (Project Repository ingest):** two more independent sources for the amounts,
+  one for what an *unpriced* premium does in the incumbent, and nothing on tenancy. (a) The ADP
+  workbook's hidden `tblCfgADPTempRates` prices `SHIFT_2` at **$3.00**, `SHIFT_3` at **$4.00**,
+  `LATT_OPER` **$1.00** and `LATT_OILER` **$0.50** per ST hour (×1.5 / ×2 / ×3 for OT / DT+H2x /
+  H3x), sent to ADP as separate temp-rate rows
+  ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §3); Local 12's own
+  2025-08-15 notice states second shift +$3.00, third shift +$4.00, lattice $1.00 / $0.50
+  ([mcog-l12-mla-2025-2028/local-12-wage-notice-2025-08-15.md](mcog-l12-mla-2025-2028/local-12-wage-notice-2025-08-15.md)
+  p.3). The `?? 1` / `?? 1.5` fallbacks now contradict every source on record. (b) On the
+  fallback half: the workbook's export validation raises an **`ERROR` that blocks the CSV** for
+  *"a temp-rate component that had hours but never received a rate"* (§6) — the incumbent's answer
+  to a premium with no configured amount is *stop*, not *default*. A legacy-system fact, not a TCG
+  decision. (c) Where the catalog lives today is split: FCC's Union Codes → `L12` holds **all six
+  shift-premium cells at $0.00**
+  ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) → *Union Codes —
+  TCG's live L12 configuration*), so the shift adder is workbook configuration, not FCC's; and the
+  workbook's premium vocabulary is a fixed token list in `__hiddenParams` (`FOREMAN`, `MILITARY`,
+  `LATT_*`, `SHIFT_*`, `SUB_*`, `WTL_*`), of which **only `LATT_*` and `SHIFT_*` reach the ADP
+  export** — foreman and military have no export path at all (*What the code reveals*). **Still
+  needed:** whether the six-code catalog is per-tenant configuration seeded at tenant creation or
+  admin-entered, and whether an empty table fails the run — neither source speaks to a
+  multi-tenant product.
 
+## Pointers — departments archive (owned by admin)
+
+- **Status:** open
+- **Asked:** 2026-08-31 — PR #422 review (branch `feat/SCRUM-648`, Path B, no ticket folder); tcg-scrum escalation
+- **Question:** [STRUCTURE.md](../STRUCTURE.md):40 routes the `departments` usecase to this module, and one of the three open sub-questions turns on **employees** — whether a department may be archived while employees are still assigned to it, now that PR #422 removed the hard delete that used to block on `countEmployeesByDepartmentId`. The full entry, including whether `DELETE /departments/:code` should have gone and what an archived department may still be selected in, lives at [admin/gaps.md](../admin/gaps.md#departments--does-archive-replace-delete-outright-and-what-may-an-archived-department-still-be-used-for). Admin owns the answer: it already holds the sibling departments question (*What a newly created tenant must contain*) and owns department roles and permissions.
+- **Owner:** see the owning entry.
 ## Employee types — FCC holds several per employee; we store one
 
 - **Status:** open
@@ -1666,6 +2025,21 @@ someone has confirmed otherwise.
 - **Sources checked:** `payroll/fcc-employee-types-and-crafts.md`, `schema.prisma`
   (`Employee`, `EmployeeType`), `fcc-seeder/src/linked-seed-files.ts`,
   `fcc-seeder/src/seed-all.ts`, `packages/shared/src/enums/index.ts`.
+- **Update 2026-09-04 (Project Repository ingest):** the multi-type model is **FCC vendor policy
+  and TCG live practice**, not a local accident. The import template's guidance states *"Each
+  employee needs to have at least one employee type assigned as the primary employee type"* and
+  *"Unlimited secondary employee types can be added to each employee profile"*; each type also
+  carries a **`Dispatchable on`** attribute (`Jobs/Quotes · Work Orders · Both · None`, stored as
+  `FMS_EMPLOYEE_TYPES.Type`, `B` on all 15 rows)
+  ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §2). TCG's own
+  annotated Maintain-Employees deck shows a real record with **five types — 3rd Man, Driver, Oiler,
+  Operator (Primary), Rigger** — and asks, on that tab, to relate types to the asset types an
+  employee may operate (*Emp Types (slide 4)*). The 2026-05-05 review extraction records the ask
+  to *"clarify system roles vs work/job roles"*
+  ([../erp-review-log.md](../erp-review-log.md) → *Employees, HR and permissions*). All of this
+  is evidence of what FCC holds and what TCG asked for; **no TCG decision** says the ERP adopts
+  many-types-with-primary, and nothing addresses the second half — whether `EmployeeType` becomes
+  the source of truth that `CraftRoleType` derives from. Still needs the client.
 
 ## Field role vs portal role — one list in FCC, three representations in TCG
 
@@ -1683,6 +2057,25 @@ someone has confirmed otherwise.
 - **Sources checked:** `payroll/fcc-employee-types-and-crafts.md`, SCRUM-914 description,
   `schema.prisma` (`DepartmentRole`, `EmployeeType`), `packages/shared/src/enums/index.ts`,
   `apps/web/src/features/das/right-section/components/employee-card.helpers.ts`.
+- **Update 2026-09-04 (Project Repository ingest):** FCC does carry a field-vs-office axis — just
+  not on the employee-type list. (a) `FMS_EMPLOYEE_TYPES.Type` is the vendor's **`Dispatchable
+  on`** attribute (`J` jobs/quotes · `W` work orders · `B` both · `N` none — *"for example, office
+  employees"*); TCG has it set to `B` on all fifteen rows, Sales Admin and Accounting Admin
+  included, so the distinction exists and is unused
+  ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §2 and slide 11).
+  (b) The employee record itself has **`InOffice`**, `Supervisor`, a `Type` dropdown (`Scheduling &
+  Maintenance` on the example), `Classification` and `Class ID` beside `Employee Type`
+  ([tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql](tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql);
+  *The Employees window* in the same page) — and the legacy Payroll App used `InOffice = 'Y'` as
+  its office-staff exclusion
+  ([legacy-payroll-app-db-extract/sql/app/v_Base_Employees.VIEW.sql](legacy-payroll-app-db-extract/sql/app/v_Base_Employees.VIEW.sql):36).
+  (c) The 2026-05-05 review extraction asks to *"clarify system roles vs work/job roles — current
+  'roles' appear tied to permissions rather than employee work functions"*, and Corrina's
+  2026-05-04 note asks to *"add more departments to Employee Type"*
+  ([../erp-review-log.md](../erp-review-log.md) §12 and *Employees, HR and permissions*). These
+  are the incumbent's fields and the client's asks — evidence, **not a decision** on which of
+  `DepartmentRole`, `EmployeeType`, `CraftRoleType` (or SCRUM-914's sub-categories) is the source
+  of truth. Still needs the client.
 
 ## Premium catalog CRUD — the engine reads six literal codes, not the catalog
 
@@ -1717,6 +2110,25 @@ someone has confirmed otherwise.
 - **Owner:** Brian Petros (what a premium is allowed to be), with Fouzan Shakil for whether the
   engine should consume the catalog generically.
 - **Rules:** [PAY-008](rules/PAY-008-effective-dated-configuration.md), [PAY-036](rules/PAY-036-second-shift.md), [PAY-037](rules/PAY-037-third-shift.md), [PAY-044](rules/PAY-044-lattice-boom-premium.md), [PAY-070](rules/PAY-070-foreman-premium.md), [PAY-071](rules/PAY-071-military-base-premium.md)
+- **Update 2026-09-04 (Project Repository ingest):** the incumbent answers (b), and half of (a),
+  as practice rather than policy. (a) FCC's craft modifiers — its model for boom, lattice,
+  military and similar adders — carry a per-union **`Status`** plus **`StartDate` / `EndDate`**
+  ([tcg-rawfms-staging-database/ddl/stg.FMS_UNION_CRAFT_MODIFIER_Raw.sql](tcg-rawfms-staging-database/ddl/stg.FMS_UNION_CRAFT_MODIFIER_Raw.sql);
+  all 52 rows active, effective 2020-04 with no end date —
+  [tcg-rawfms-staging-database/data/fcc-craft-modifiers-full-master.md](tcg-rawfms-staging-database/data/fcc-craft-modifiers-full-master.md)),
+  so "archive" in FCC is inactive-per-union and effective-dated; what FCC pays for a labor row
+  whose modifier has since been inactivated is stated nowhere. (b) The ADP workbook's premium set
+  is a **closed token vocabulary** in `__hiddenParams`, expanded through a fixed
+  `tblCfgADPTempRates` (token × bucket → ADP code + rate) and a fixed 20-slot code map; a token
+  the table does not price is not silently defaulted — the export validation raises an **`ERROR`**
+  for *"a temp-rate component that had hours but never received a rate"* and for *"missing or
+  invalid temp-rate codes"*, and the CSV cannot be written
+  ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §3, §4, §6). In the
+  incumbent, a premium the engine does not know **blocks payroll** rather than pricing at zero or
+  at a default. The same page shows `FOREMAN` and `MILITARY` are tokens the sheets accept but that
+  never reach ADP — the workbook already lives with "stored, editable, priced by nothing" codes.
+  Legacy-system facts, **not a TCG decision** on what an archived or a seventh premium should do
+  in the ERP. Still needs Brian (what a premium may be) and Fouzan (generic evaluation).
 
 ## L12 holiday list — the engine is missing "Day After Independence Day"
 
@@ -1744,7 +2156,7 @@ someone has confirmed otherwise.
   holiday work.
 - Owner: Corrina Bustos (payroll) to confirm what is actually paid on 5 July; Melissa McNutt owns
   the quote terms.
-- Status: open — needs confirmation
+- **Status:** open — needs confirmation
 - **Asked:** 2026-09-01 — processing the quote and e-ticket Melissa supplied 2026-08-31.
 
 ## Union general membership meeting days — the quote contradicts itself, twice
@@ -1770,7 +2182,7 @@ someone has confirmed otherwise.
   June and December — is unambiguous and worth capturing regardless of which multiplier wins.
 - Blocked: holiday calendar seeding, the triple-time rule, holiday guarantee hours.
 - Owner: Corrina Bustos; Melissa McNutt for the quote wording, which needs fixing either way.
-- Status: open — needs confirmation
+- **Status:** open — needs confirmation
 - **Asked:** 2026-09-01 — processing the quote Melissa supplied 2026-08-31.
 
 ## Missed meal period — three documents, three different charges
@@ -1799,7 +2211,7 @@ someone has confirmed otherwise.
 - Blocked: WTL billing on quotations/invoices; the printed text of the WTL authorization the ERP
   will render for signature.
 - Owner: Melissa McNutt (owns the quote and LEM T&Cs); Corrina Bustos to confirm what is invoiced.
-- Status: open — needs confirmation
+- **Status:** open — needs confirmation
 - **Asked:** 2026-09-01 — processing the quote and e-ticket Melissa supplied 2026-08-31.
 
 ## Boom pay rates cannot hold a second union — and the failure is silent
@@ -1845,3 +2257,435 @@ someone has confirmed otherwise.
   the legacy rule (*"the labor row's craft is a union craft (`L12…`)"*), but a tenant with both
   `L12` and `NON-UNION` codes would reasonably expect the brackets to cover everyone. That one is
   copy, not schema.
+- **Update 2026-09-04 (Project Repository ingest):** the staging database confirms the FCC shape
+  exactly, and the client has asked for multiple unions in writing. `stg.FMS_UNION_CRAFT_MODIFIER_Raw`
+  is keyed `UnionCraftModifierID` with **`UnionCode`**, `CraftModifierCode`, `PayRateChange` /
+  `…OT` / `…DB`, `Status`, `StartDate`, `EndDate`
+  ([tcg-rawfms-staging-database/ddl/stg.FMS_UNION_CRAFT_MODIFIER_Raw.sql](tcg-rawfms-staging-database/ddl/stg.FMS_UNION_CRAFT_MODIFIER_Raw.sql)):
+  the bracket master (`FMS_CRAFT_MODIFIER`, 52 codes) is union-neutral and the **money is per
+  union**, all 52 rate rows `L12`
+  ([tcg-rawfms-staging-database/data/fcc-craft-modifiers-full-master.md](tcg-rawfms-staging-database/data/fcc-craft-modifiers-full-master.md));
+  `FMS_UNION_CRAFT` (base rates) is keyed the same way. TCG's annotated Maintain-Employees deck
+  states the requirement — *"We currently only work with one Union; however, need the ability to
+  have multiple Labor Unions"* — and FCC's Employees → Unions tab already allows several unions
+  per employee with a primary
+  ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §8 and *Unions
+  (slide 9)*). So "one boom schedule per tenant" contradicts both the source system's model and a
+  written client ask — but the ask is about unions generally: **no source says a second local's
+  boom schedule must differ, and no decision scopes `CraftModifier` to a union.** Still needs
+  product to accept the `unionCodeId` (or equivalent) shape.
+
+## A labor-entry edit can reprice an approved week — and the ERP has no path for it
+
+- **Status:** open
+- **Asked:** 2026-09-04 — Brian Petros, Teams message to ehtesham.anwar on payroll-rule lookback
+  windows; logged in [client-message-findings.md](client-message-findings.md#2026-09-04--rule-lookback-windows-and-recalculation-across-an-approved-week-brian-petros--ehteshamanwar)
+  as questions (25)–(28). **Rules:** PAY-068, PAY-066, PAY-002; window half touches PAY-026,
+  PAY-045, PAY-046.
+- **Question:** payroll rules read *surrounding* labor entries, so an edit to one entry changes
+  the result of others — *"there could be no change to the data of that individual labor entry,
+  and yet the surrounding labor entries impact its calculated results"* — including entries in a
+  week already processed, approved and closed. His example: a 48-hour entry whose end falls at the
+  very start of a payroll week, or whose start falls at the very end. **When that happens, does
+  the ERP reopen the period, post a delta adjustment into the current period, or refuse — and who
+  is allowed to trigger it?** Both the automatic case (a recalculation reaches backwards on its
+  own) and the manual case (payroll deliberately amends a closed week) need an answer.
+- **Built state, verified:** the ERP currently **refuses**. `PayrollPeriodStatus` is
+  `OPEN · CALCULATED · REVIEW · APPROVED · EXPORTED` (`apps/api/prisma/schema.prisma:200-206`) —
+  **no `CLOSED`, no `REOPENED`**, against the seven PAY-002 names — and
+  `apps/api/src/usecase/payroll/payroll.service.ts:139-148` throws
+  *"Cannot recalculate a period that is already approved/exported"*, citing PAY-066. Recalculation
+  is manual-only and never fires on a ticket edit (SCRUM-921 AC5). So a change that ought to
+  reprice a closed week silently does not, and there is no delta path. **This is a specification
+  hole, not a defect** — PAY-068's blocking item is *"Confirm correction workflow"* and PAY-066's
+  is *"Confirm reopen/correction policy"*, both unanswered since 2026-08-24.
+- **The second half — the calculate window.** `payroll.service.ts:151-155` selects
+  `findCompleteTicketsInRange(weekStart, weekEnd + 1 day)`: the period and nothing else. The
+  legacy engine deliberately reaches outside it — **4 days back and 4 days forward** for WTL
+  meal-period groups, **7 days back** for the rest period (Brian's summary card; he calls both
+  overshoot). Ehtesham's narrower reading is right for the *rule* — 8-hour rest looks back 8 hours
+  — but the ERP must still be able to *see* the prior day to apply it. **Not currently wrong by
+  luck:** the three rules that need cross-boundary data — PAY-026 seventh consecutive day,
+  PAY-045 rest period, PAY-046 meal opportunity — are not implemented in
+  `packages/payroll-engine/src`. The day any of them is, this window is a bug.
+- **Sources checked:** [rules/PAY-068](rules/PAY-068-retroactive-correction.md),
+  [PAY-066](rules/PAY-066-payroll-snapshot.md), [PAY-002](rules/PAY-002-pay-period-status-workflow.md),
+  [PAY-045](rules/PAY-045-rest-period-premium.md) (8-hour gap, 30-minute stitch — a rule window,
+  not a selection window), [PAY-026](rules/PAY-026-seventh-consecutive-day.md),
+  [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md);
+  the engine's implemented-rule set; `decisions/` holds no note on reopen, close or retroactive
+  correction.
+- **Blocked:** any close/reopen UI; the ADP re-export story for an amended week; and the decision
+  on whether the calculate window widens — all three are the same question asked at different
+  layers.
+- **Owner:** TCG payroll (Brian Petros, Corrina for practice) for the correction policy;
+  CodingCops for the window. Brian has offered to walk through it in a meeting — that meeting is
+  where PAY-068 and PAY-066 close.
+- **Update 2026-09-04 (Project Repository ingest):** four sources now bear on the correction
+  question; none is a decision. (a) **The first written answer**: the client-side
+  [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md) §13 (author inferred
+  from voice, unsigned, `unverified`) says — *open* period after a correction: automatically
+  invalidate and recalculate every impacted group and *"return the period to the appropriate
+  review state"*; *closed* period: *"Do not rewrite posted history. Preserve the closed result.
+  Recalculate the corrected result separately, compare Posted vs Corrected by component, and
+  generate the difference as a retro/payroll-adjustment transaction for approval and a future or
+  off-cycle payroll"*; a rate-table change touching a closed period uses the same retro
+  mechanism; a snapshot of source ids, classification, rates and rule versions is retained at
+  close. It does not say who may trigger any of it. (b) **What TCG lives with now**: FCC locks in
+  three stages — after *Processed*, *"business rules will need to be applied manually"*; after
+  *Exported*, *"a labor entry cannot be modified in any way"* and management follows an
+  undisclosed post-export procedure; a new entry against an exported period is **refused**
+  ([fcc-nexgen-payroll-processing.md](fcc-nexgen-payroll-processing.md) §2). (c) **A retro path
+  exists in practice**: the payroll playbook chart ends its dispute branch in *Update Payroll
+  Excel & in FCC → Process Retro Check through ADP → Email Accounting Check Info* (SOP #8–#9),
+  without saying how the retro amount is computed
+  ([payroll-value-engines.md](payroll-value-engines.md) §2). (d) **The automatic case, in the
+  legacy app**: `cfg.Nightly_RunSettings.LookbackDays = 210` — the nightly re-prices the trailing
+  30 weeks every night by design, so a backward-reaching recalculation was the norm there; but
+  **no production pay period was ever processed** (32 periods, all `Open` bar two API smoke
+  tests), so the app never met a closed week
+  ([legacy-payroll-app-db-backup-2026-06-23.md](legacy-payroll-app-db-backup-2026-06-23.md)); its
+  role model gives `canRefreshFromNexGen` to `payroll_manager` and `it_admin` only, and
+  `/payroll/process` has no UI route
+  ([legacy-payroll-app-source-tree-2026-06-10.md](legacy-payroll-app-source-tree-2026-06-10.md)).
+  (a) is a recommendation; (b)–(d) are facts about the incumbent. **Still needed:** someone with
+  authority to accept the immutable-close + retro-delta policy, and the trigger/permission rule —
+  the meeting Brian offered.
+
+## The union-classified employee who must not be paid on union rules
+
+- **Status:** open
+- **Asked:** 2026-09-01 — Brian Petros, in the accounting/onboarding call
+  ([meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §4;
+  transcript 32:49–34:30). **Rules:** PAY-009, and it is a concrete instance of
+  *Payroll rule applicability by Payroll Group* above.
+- **Question:** TCG has at least one live employee who is **union by classification but must not
+  be processed on union rules** — hourly, and admin/management. Brian walked the three obvious
+  selectors and showed each one fails: *"all labor union employees"* catches him; *"exclude admin"*
+  drops legitimate field staff; *"hourly only"* does not separate him either. Corrina recalls Kyle
+  being told a **special classification** would exist for cases like this. **Brian's preference is
+  the opposite of a special case:** *"instead of having those special classification types, I'd
+  like to be able to handle it with the initial setup of employees based on the primary class."*
+  So: does the ERP add an escape-hatch classification, or is the group predicate rebuilt so the
+  primary class alone decides? And how many such outliers exist — one, or a category?
+- **Sources checked:** [rules/PAY-009](rules/PAY-009-payroll-group-classification.md) — the
+  2026-06-09 client message gives the five groups' exact predicates (`L12%` + `EmpTypeID`,
+  `ADMIN%` + `PayType`, `SYS%` hidden) and **none of them expresses this case**; the group
+  applicability entry above; `PayrollGroup` in `apps/api/prisma/schema.prisma:192-198` is a fixed
+  five-value enum (`L12_FIELD`, `L12_MECHANIC`, `NON_UNION_HOURLY`, `NON_UNION_SALARY`, `SYS`)
+  with no override field anywhere.
+- **Blocked:** the final ERP mapping in PAY-009 — it cannot close while a known employee falls
+  outside every predicate.
+- **Owner:** Corrina Bustos and Brian Petros for how many, and which policy; CodingCops for the
+  model once told.
+- **Update 2026-09-04 (Project Repository ingest):** the legacy Payroll App already carried
+  **three escape hatches** for exactly this case, and one of them is an FCC field the three
+  selectors Brian walked did not use. `api.tvf_Employees_Active_FieldOnly_ForPayPeriodDate`
+  ([legacy-payroll-app-db-extract/sql/api/tvf_Employees_Active_FieldOnly_ForPayPeriodDate.TVF.sql](legacy-payroll-app-db-extract/sql/api/tvf_Employees_Active_FieldOnly_ForPayPeriodDate.TVF.sql):22-30)
+  takes the L12 population (`UnionCode = 'L12'` or craft `L12-%` / `HDR-%`) and then removes
+  (1) any `EmpID` in `cfg.PayrollUI_ExcludedEmpID` — a per-employee exclusion table with a
+  `Reason` column, holding two test/system users on 2026-06-23
+  ([legacy-payroll-app-db-extract/config-values.md](legacy-payroll-app-db-extract/config-values.md));
+  (2) craft `ADMIN-A`; (3) **FCC's `InOffice = 'Y'`**, surfaced as `Is_OfficeStaff` by
+  [legacy-payroll-app-db-extract/sql/app/v_Base_Employees.VIEW.sql](legacy-payroll-app-db-extract/sql/app/v_Base_Employees.VIEW.sql):36.
+  `InOffice` is a column of `stg.FMS_EMPLOYEES_Raw` (`N` on the sampled field rows), and the same
+  record carries `Supervisor`, `Classification` and a `Type` dropdown (`Scheduling & Maintenance`
+  on the deck's example)
+  ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) → *The
+  Employees window*). The ADP workbook handles the case by hand instead: the FCC roster pulls
+  every craft-coded employee, salary included, and union processing happens only for rows the
+  clerk gives a `SheetName` ([adp-sop-v3.8.md](adp-sop-v3.8.md) → *Emp_ADP#s and SheetNames*;
+  [adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §1). Legacy-system
+  facts — they show a union-classified office employee has been kept off union rules by an
+  employee-level flag or an exclusion list, **not** by the primary class alone, which is the
+  opposite of Brian's stated preference. **Still needed:** the policy (flag, list, or primary
+  class) and the head-count of outliers.
+
+## Premiums are attached to employees; they belong to the job
+
+- **Status:** open
+- **Asked:** 2026-09-02 — Brian Petros in the sprint demo, with Joe Schacatano supplying the
+  trigger rules ([meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §3;
+  transcript 43:35–45:08). **Rules:** PAY-043, PAY-044, PAY-071, PAY-070.
+- **Question:** the demoed premium configuration reads as **per employee** — *"anything that
+  employee did, it would be added"* — and Brian's correction is that lattice, military and shift
+  adders are properties of **the job**: *"it needs to be at the job level."* Joe then gave the
+  triggers he expects, and they are automatic, not a dispatcher prompt: **a crawler assigned to
+  the job populates lattice pay**, and federal/prevailing wages populate **only when certified
+  payroll or federal job is checked at the quoting stage or on the job** — explicitly *"as opposed
+  to it being a pop up every time you dispatch."* Ehtesham added that some of this may also belong
+  on the **customer profile**. So: what is the authoritative carrier of each premium — asset,
+  job, quotation flag, customer, or employee — and which are derived rather than chosen?
+- **Sources checked:** [rules/PAY-044](rules/PAY-044-lattice-boom-premium.md) — lattice already
+  reads *"job flagged lattice + employee Group ≥ 6 → premium on all job hours"*, i.e. **the rule
+  register already says job-level**, so the demo UI and the rule disagree;
+  [PAY-043](rules/PAY-043-long-boom-premium.md) (boom-window slices, asset-derived);
+  [PAY-071](rules/PAY-071-military-base-premium.md); `Quotation.certifiedPayroll` exists as a
+  boolean (`schema.prisma`), which is the flag Joe describes; `PayrollPremiumType` +
+  `PayrollPremiumAppliesTo` are the built catalog.
+- **Blocked:** the premium-selection UI on DAS ticket send, and any spec that fixes where a
+  premium is stored.
+- **Owner:** Joe Schacatano for the trigger rules (he stated them; they need writing down as a
+  decision), Corrina for payroll practice.
+- **Update 2026-09-04 (Project Repository ingest):** the incumbent carries each premium on a
+  different level, and the client's own deck states one of them. (a) **Certified pay** — FCC
+  holds a `CertPay` bit on the **employee** (`stg.FMS_EMPLOYEES_Raw`, ticked on the deck's
+  example), on the **job** (`stg.FMS_JOB_MASTER_Raw`) and on every **labor row**
+  (`stg.FMS_LABOR_PAYROLL_Raw`), plus `UseCertifiedPayroll` per classification; TCG's annotation
+  says *"Certified Pay: This should be 'Job specific'… per Job or defaulted per Job Site"* — a
+  written client statement that the carrier is the job
+  ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §3, §8). The
+  customer packet forms ask *prevailing wage Y/N* at intake, twice
+  ([../customers/new-customer-packet.md](../customers/new-customer-packet.md)). (b) **Shift and
+  boom/lattice** — per **labor row** in FCC (`ShiftInfo`, `CraftModifierCode`,
+  `UnionCraftModifierID` on `FMS_LABOR_PAYROLL`, with `NotifyShiftInfoChg` /
+  `NotifyCraftModifierChg` flags) and a default `CraftModifierCode` on the **employee**
+  ([tcg-rawfms-staging-database/ddl/stg.FMS_LABOR_PAYROLL_Raw.sql](tcg-rawfms-staging-database/ddl/stg.FMS_LABOR_PAYROLL_Raw.sql),
+  [tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql](tcg-rawfms-staging-database/ddl/stg.FMS_EMPLOYEES_Raw.sql));
+  the ADP workbook keys lattice and shift as **per-day dropdowns on the employee sheet**
+  ([adp-sop-v3.8.md](adp-sop-v3.8.md) §6.1). No lattice, military or shift flag exists on
+  `stg.FMS_JOB_MASTER_Raw`. (c) **Lattice** is contractually a property of the crane — *"lattice
+  boom crane for Group 6 and above"* — which is Joe's crawler trigger in the MLA's words
+  ([mcog-l12-mla-2025-2028/local-12-wage-notice-2025-08-15.md](mcog-l12-mla-2025-2028/local-12-wage-notice-2025-08-15.md)
+  p.3). (d) **Foreman and military** have no carrier in FCC and no path to ADP in the workbook
+  ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) → *What the code
+  reveals*). Facts about the incumbent plus one client statement on certified pay — **not a
+  decision** on the authoritative carrier per premium, and Joe's trigger rules remain unwritten.
+
+## Annual craft-rate change — nine codes, one rule, no bulk path
+
+- **Status:** open
+- **Asked:** 2026-09-02 — Corrina Bustos in the sprint demo (§4; transcript 23:55–25:25).
+  **Rules:** PAY-008, PAY-010.
+- **Question:** effective-dated craft rates are built and demoed — adding a rate auto-ends the
+  previous one the day before — but each of **Local 12's nine craft codes** must be edited
+  individually. Corrina: *"per the union handbook, every July 1st, the rate changes… can we lump
+  sum and do it to every single one?"* Ehtesham's condition is exact: buildable **if there is a
+  written rule** (e.g. one group moves by an amount and the others follow by a fixed delta or
+  percentage). Corrina offered to send the handbook verbiage — **it has not arrived**. So: what
+  is the July-1 rule, in the handbook's own words, and does it derive the other eight codes from
+  one, or are all nine independent values published each year?
+- **Sources checked:** [rules/PAY-008](rules/PAY-008-effective-dated-configuration.md),
+  [PAY-010](rules/PAY-010-l12-union-base-rate.md) (settled: labor-entry craft prices the row);
+  `CraftCodeRate` with effective dating is built (`schema.prisma`);
+  [mcog-l12-mla-2025-2028/02-article-iv-classifications-and-wage-rates.md](mcog-l12-mla-2025-2028/02-article-iv-classifications-and-wage-rates.md)
+  carries the wage schedule but no statement of how a year's increase is distributed across groups.
+- **Owner:** Corrina Bustos — the handbook verbiage is the whole answer.
+- **Update 2026-09-04 (Project Repository ingest):** the handbook verbiage is now in the vault,
+  read from the scans. **In the agreement's words** (MLA Article IV, *Classifications and Wage
+  Rates* —
+  [mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md)
+  → *ARTICLE IV*): one **"Increase Effective Dates"** line over the whole classification table —
+  **7-01-25 $6.00 · 7-01-26 $5.00 · 7-01-27 $4.50** — with the footnote *"The Union may elect at
+  its option, upon at least sixty (60) days' written notice to allocate an increase indicated to:
+  (1) Hourly Wage Rates, (2) Health and Welfare, (3) Pension, (4) Vacation-Holiday and/or
+  Supplemental Dues, (5) Joint Apprenticeship and Journeyman Retraining Trust, (6) P.A.C. and
+  (7) Defined Contribution Plan (Annuity)"*; apprentice rates are *"Based on Group 5 rate"* at
+  60 / 65 / 70 / 75 / 80 / 90 % by hours worked. Local 12's 2025-08-15 notice then publishes the
+  split — **$5.00 to wages, $1.00 to Health & Welfare** — and prints **all nine group rates**,
+  every one exactly **+$5.00** on its 7-01-24 figure (61.03→66.03 … 66.16→71.16); the 2026 and
+  2027 wage columns are **blank** on that notice (the 2026 one is filled by the *Revised June 2026* rate sheet — see the correction at the end of this bullet)
+  ([mcog-l12-mla-2025-2028/local-12-wage-notice-2025-08-15.md](mcog-l12-mla-2025-2028/local-12-wage-notice-2025-08-15.md)
+  pp.1–3). So nine values *are* published each year, but in the record they move by **one common
+  wage allocation**, and the six apprentice steps derive from Group 5. Practice matches: FCC's
+  `FMS_UNION_CRAFT` on 2026-07-01 shows every `L12-G` straight-time rate exactly **+$1.00** over
+  the deck's earlier screenshot, `-B` / `-C` re-stored at 1.5× / 2×, and `APP1` = 60 % of G5
+  ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §5 and *Pay
+  Rates (slide 17)*); the ADP workbook carries FY26-27 as +$1.00 on every group
+  ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §5). **Still
+  needed:** Corrina's confirmation that the bulk path may be *"add the published wage allocation
+  to all nine groups and recompute APP1–6 from G5"* — the contract prints nine figures and never
+  says the delta is uniform — (the 2026-07-01 allocation itself **is** in the vault — the union's rate sheet *Revised June 2026*
+  puts $1.00 of the $5.00 package on wages for all nine groups, 67.03 … 72.16, and leaves only the
+  2027-07-01 $4.50 package unsplit: [mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md](mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md);
+  the workbook and FCC both match it, so the "uniform delta" rule has now held for two consecutive
+  years in the published figures — what remains is Corrina's word that the bulk path is the rule).
+
+## Craft assignment has no history
+
+- **Status:** open
+- **Asked:** 2026-09-02 — Brian Petros, endorsed by Corrina Bustos (§5; transcript 25:28–26:29).
+  **Rules:** PAY-003, PAY-027 (assignment), PAY-064.
+- **Question:** *"at the employee level, to say okay, they were this craft code from this date to
+  this date."* Corrina compares it to ADP, which records **what changed and when** automatically.
+  Craft **rates** are effective-dated; a craft **assignment** to an employee is not. Does an
+  employee's craft assignment become effective-dated (so a historical payroll reprices on the
+  craft in force on the work date), or is a change-log audit trail enough? The two answers cost
+  very different things, and only the first is safe for retroactive correction (PAY-068).
+- **Sources checked:** `EmployeeCraftAssignment` in `apps/api/prisma/schema.prisma:2544` — carries
+  the assignment and primary/secondary, **no effective dates**; `CraftCodeRate` does have them;
+  [rules/PAY-068](rules/PAY-068-retroactive-correction.md), which needs the historical answer.
+- **Owner:** Corrina Bustos / Brian Petros for the requirement; CodingCops for the model.
+- **Update 2026-09-04 (Project Repository ingest):** FCC has no craft-assignment history either —
+  and the client-side dependency paper asks for one. `stg.FMS_EMPLOYEES_Raw.CraftCode` is a single
+  current value (stored with its `-A` suffix); none of the 40 staged tables is an employee-craft
+  history ([tcg-rawfms-staging-database/INDEX.md](tcg-rawfms-staging-database/INDEX.md)). What
+  FCC does keep is the craft **as used**: `CraftCode` on every labor row
+  (`stg.FMS_LABOR_PAYROLL_Raw`, with a `NotifyCraftChg` flag) and on every job assignment
+  (`stg.FMS_JOB_EMPLOYEES_Raw`) — which is why the legacy engine prices from the *labor row's*
+  craft and finds it disagreeing with the employee's current craft on 27 % of rows
+  ([legacy-payroll-app-db-extract/INDEX.md](legacy-payroll-app-db-extract/INDEX.md), finding 9).
+  The union **rate** table is effective-dated in schema (`FMS_UNION_CRAFT.StartDate` / `EndDate`)
+  but not consistently in data
+  ([fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §5). The
+  [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md) §13 states the
+  requirement outright — *"Employee classification must be effective-dated; a correction can
+  change the whole rule path… Recalculate all affected dates from the classification's effective
+  date"* — but it is an unsigned recommendation (`unverified`, author inferred). So the record
+  holds one client-side voice for effective-dating and a source system that manages without it by
+  stamping the craft on each labor row. **Not a decision**; still needs Corrina / Brian.
+
+## Field staff are told to inflate reported hours so minimum-pay rules come out right
+
+- **Status:** open
+- **Asked:** 2026-09-02 — Brian Petros, closing the sprint demo (§8; transcript 1:01:03–1:02:05).
+  **Rules:** PAY-039, PAY-040, PAY-029, PAY-062.
+- **Question:** Brian states current practice plainly — in some situations employees are
+  *"instructing them currently to modify their time for minimum pay hours, so they actually are
+  artificially bumping up their time"* — and proposes the opposite for the ERP: the system records
+  **actual** hours, the rules produce the payable result, and nobody edits the clock. *"Maybe it
+  might be a shift in how we instruct the field employees to create their time."* Two things need
+  deciding: **(a)** is that shift adopted, i.e. does the ERP refuse inflated actuals and pay the
+  minimum as a computed component instead; **(b)** if so, what changes in the field instructions
+  and in what payroll reviewers see, since a week's numbers will no longer match how the same week
+  looked in FCC.
+- **Why it matters beyond payroll:** actual-hours integrity is what makes GPS verification,
+  overlap detection and billing-vs-payroll reconciliation meaningful. The vault already carries
+  the doctrine on the *output* side — added hours exist as ledger components and `Gap_Hrs`
+  columns, never as time windows (`PAY-029`) — but nothing says the *input* must be untouched.
+- **Sources checked:** [rules/PAY-039](rules/PAY-039-reporting-pay-no-work.md),
+  [PAY-040](rules/PAY-040-work-provided-minimum.md), [PAY-029](rules/PAY-029-overlapping-labor-detection.md)
+  (phantom-hours invariant), [PAY-062](rules/PAY-062-labor-entry-detail.md); no `decisions/` note
+  on time-entry integrity.
+- **Owner:** TCG payroll leadership — this is a practice change, not a build option.
+- **Update 2026-09-04 (Project Repository ingest):** the ingest shows *why* the practice exists,
+  and that Brian's proposed direction is already how the legacy Payroll App works. The ADP
+  workbook has **no guarantee or minimum-pay column**: each employee-day row is `Total Hrs · ST ·
+  OT · DT · H2x · H3x` (+ lattice/shift dropdowns, boom hours, subsistence, sick), checked only by
+  `Hrs_Match` (the buckets must sum to `Total Hrs`), and the component ledger the export builds
+  from it has no minimum component — so a 4-hour or 8-hour minimum can reach ADP **only as keyed
+  hours** ([adp-sop-v3.8.md](adp-sop-v3.8.md) §6.1;
+  [adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §3). The payroll
+  playbook chart likewise has the clerk *"Separate Hours / Boom Pay & Union Rules in Payroll
+  Excel"* after times are verified ([payroll-value-engines.md](payroll-value-engines.md) §2). The
+  legacy Payroll App does the opposite: guarantees are computed from actuals as `Gap_Hrs`
+  components (`DAILY_MIN_4`, `HOLIDAY_MIN_8`, `LONG_BOOM_MIN_4`, `SPECIAL_SAT_MIN_8`), with
+  `cfg.Craft_MinimumPayPolicy` — 39 rows, set 2026-03-03 by Brian Petros, *"Admin staff: minimum
+  pay does not apply (per Payroll Manager)"* — deciding which crafts they apply to
+  ([legacy-payroll-app-db-extract/config-values.md](legacy-payroll-app-db-extract/config-values.md);
+  [legacy-payroll-app-db-extract/INDEX.md](legacy-payroll-app-db-extract/INDEX.md)), and the
+  client-side [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md) §8 restates
+  it: `GapHours = MAX(RequiredMinimum − QualifyingActualHours, 0)`, *"Do not give each individual
+  labor entry its own four-hour minimum."* None of this is the practice decision (a) or the
+  field-instruction change (b); it is evidence that the incumbent workbook *forces* the inflation
+  and the successor engine already removes the need for it. **Still needs TCG payroll
+  leadership.**
+
+## Long-boom day breakdowns — drive time, cross-midnight, and the 20-hour day
+
+- **Status:** resolved 2026-09-04 — **both questions answered by Corrina Bustos the same day.**
+  See the resolution notes below. One **new** open question falls out of her holiday answer,
+  registered separately below.
+- **Asked:** 2026-09-04 — Corrina Bustos posted two hand-worked long-boom day breakdowns on Teams
+  (one job, and two jobs in one day) *"to make sure drive time is computed"*; verified segment by
+  segment against `usp_Run_Pricing_Engine` and two questions were sent back.
+  **Rules:** PAY-019, PAY-021, PAY-022, PAY-023, PAY-024, PAY-033, PAY-043, PAY-046, PAY-047.
+- **Question (1):** the **two-job** day runs 6:30am to 1:30am, **19 clock hours**, but the buckets
+  summed to **20 paid hours** (8 ST, 4 OT, 8 DBL), the `5:30pm-6:30pm` drive line reading
+  *"1 ot, 1 dbl"*. The engine gives **8 / 4 / 7**: the ST bank runs out at 2:30pm and the 12-hour
+  mark lands at 6:30pm, so that hour is OT and double time starts at 6:30pm. Working hypothesis at
+  the time was worked-through-lunch double time folded into the drive line.
+- **Resolution (1) — Corrina, 2026-09-04:** *"Thank you for bringing the 20 hours to my attention.
+  I have updated it and the extra hour was an error."* **Not WTL.** A transcription slip in the
+  hand-worked example; the engine's 8 / 4 / 7 stands, and the WTL-folded-into-buckets hypothesis is
+  dead. WTL premium continues to live only in the ledger (`WTL_MEAL_DEDUCT` / `WTL_APPLICABLE_ADD`),
+  never inside the hour buckets.
+- **Question (2):** that day's last drive crosses midnight between two weekdays, so no rate
+  changes. If it ran into a Saturday, Sunday or holiday, do the hours after midnight pay at the new
+  day's rate, or does the whole shift stay on the rate for the day it started? This was the parked
+  **PAY-019** decision, put to the person the engine's own config note names as its owner.
+- **Resolution (2) — Corrina, 2026-09-04:** *"the question would remain irrelevant if they worked
+  into Saturday or Sunday due to the fact that they were already on Double time. if they were to
+  work into a holiday they would be owned an additional 8 hours at triple time as the rule is that
+  the ee is owed a minimum of 8 hours."* Two things settled. **(a) The higher rate governs, never a
+  downgrade** — a shift already at DT does not drop to Saturday x1.5 after midnight. That is the
+  as-built `CalendarDay` policy read through the no-pyramiding precedence chain (`DT` outranks
+  `SATURDAY`), and it is also what the inactive `AnchorFloor` (`max`) would give. Brian's
+  pure-anchor summary — *"the entire job is associated with the date in which the labor started"* —
+  is the only reading her answer rules out. **(b) Spilling into a holiday is holiday work**, so the
+  post-midnight slices price at x3 *and* the MLA's 8-hour holiday minimum fires: *"A minimum of
+  eight (8) hours at triple (3) time... shall be paid for all work performed... on the following
+  holidays"* (Article III, Holidays §1). The engine agrees: §7 groups the holiday minimum by
+  **calendar day**, so slices > 0 on the holiday trigger `gap = 8 - hours worked that day` at x3.
+- **What the same message settled without being asked:** the **one-job** breakdown ties to the
+  engine **exactly**, segment by segment, and is the first named-human corroboration of the
+  **pre-6AM straight-time-bank rule** (`calculations.md:248`): pre-6AM slices price as
+  outside-window OT at x1.5 **and** do not consume the 8-hour ST bank, while still counting toward
+  the 12-hour DT threshold. Her `4am-8am` drive splitting as *"2 ot, 2 st"* while the day still
+  pays a full 8 ST is only reproducible under that rule. It also corroborates PAY-043's boom-window
+  scope: long boom pay is marked on build-up / work / breakdown only, never on drive time. And it
+  is the **first written source anywhere in the vault that treats drive time as a payroll concept**
+  at all.
+- **Sources checked:** [rules/PAY-019](rules/PAY-019-cross-midnight-processing.md),
+  [PAY-021](rules/PAY-021-l12-standard-work-window.md), [PAY-022](rules/PAY-022-daily-straight-time.md),
+  [PAY-023](rules/PAY-023-daily-overtime.md), [PAY-024](rules/PAY-024-daily-double-time.md),
+  [PAY-033](rules/PAY-033-holiday-pay.md), [PAY-043](rules/PAY-043-long-boom-premium.md),
+  [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md);
+  [legacy-payroll-app-db-extract/calculations.md](legacy-payroll-app-db-extract/calculations.md)
+  STEP D-E and the `CrossMidnightDayTypePolicy` config row;
+  [rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §2, §3, §7, §10;
+  [MLA Article III](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) §A.1 and Holidays §1.
+- **Owner:** Corrina Bustos. **Owed:** a `decisions/` note for the cross-midnight adjudication, and
+  the `cfg.CrossMidnightDayTypePolicy` question can now be closed.
+- **Full verification:** [client-message-findings.md](client-message-findings.md#2026-09-04--long-boom-day-breakdowns-drive-time-included-corrina-bustos-teams)
+
+## Holiday 8-hour minimum on a shift that only spills past midnight into the holiday
+
+- **Status:** resolved 2026-09-04 — **answered from the record, no client question needed.** Once
+  per employee **per calendar date**, summing every entry that touches the day. See below.
+- **Asked:** 2026-09-04 — fell out of Corrina's cross-midnight answer.
+  **Rules:** PAY-033, PAY-019, PAY-032.
+- **Question:** Corrina stated that a shift working into a holiday owes *"an additional 8 hours at
+  triple time as the rule is that the ee is owed a minimum of 8 hours"*. Three things followed that
+  were unstated: **(a)** does a mere *spillover* past midnight trigger it; **(b)** if the crew then
+  works the holiday properly later the same day, is the minimum owed once per calendar day or once
+  per shift; **(c)** is the holiday minimum's calendar-day grouping deliberate when every other
+  guarantee groups on `ShiftAnchorDate`?
+- **Resolution (a):** **yes.** The MLA is unconditional — *"A minimum of eight (8) hours at triple
+  (3) time... shall be paid for all work performed under this Agreement on the following holidays"*
+  (Article III, Holidays §1), with no minimum duration — Corrina stated it directly on 2026-09-04,
+  and the engine has **no spillover suppression**. The only thing that can switch the minimum off
+  is `cfg.Craft_MinimumPayPolicy.ApplyMinimumPay` (`usp_Apply_GuaranteedHours:140, 464`), a
+  **per-craft** flag, which is the mechanism that exempts admin crafts. Nothing keys on how the
+  holiday hours were arrived at.
+- **Resolution (b): once per employee per calendar date, not per shift.** Two independent sources.
+  **Code** (`sql/app/usp_Apply_GuaranteedHours.PROC.sql:443-487`): the `HolidayGroups` CTE declares
+  `ScopeBasis = 'CalendarDate'`, `GroupScope = 'EmployeeCalendarDate'`, sets
+  `ShiftAnchorDate = CONVERT(date, NULL)` explicitly, and closes `GROUP BY EmpID, CalendarDate`;
+  the gap is `8.00 - SUM(Slice_Hours)` over **all** of that employee's holiday slices that date,
+  allocated to the latest holiday-slice entry (`AllocationMethod = 'LastHolidaySliceEntry'`, `:742`).
+  So a 0.5-hour spillover plus a later 6-hour holiday shift is one day at 6.5 hours and a 1.5-hour
+  gap, not two minimums; reach 8 hours across the day by any combination and no gap is paid.
+  **Recording** — 2026-06-11 *Payroll-App demo-02*, Corrina Bustos at 19:11: *"Put 8 hours per day
+  guaranteed on a holiday"*, and at 19:16 on the non-holiday case *"it's a four-hour minimum per day
+  or their true time."* Brian Petros describes the grouping at 19:21 in the same exchange: *"there's
+  another labor entry that same day, and so that's where this grouping kicks in, so it's like
+  looking at the entire day for the employee… they actually work 6 hours that day, so the rule
+  didn't apply."* Code and client agree.
+- **Resolution (c): deliberate.** `ScopeBasis` / `GroupScope` are **named, emitted columns**, and the
+  calendar-date holiday group sits in the same CTE block as the shift-anchored groups, each
+  declaring its own basis. It is a modelled distinction, not an artefact. ⚠️ **Worth carrying into
+  the ERP as a known asymmetry:** in plain language Corrina says "per day" for both the 4-hour and
+  the 8-hour minimum, but the engine means **`ShiftAnchorDate`** for the daily/long-boom minimums
+  (§5, §6) and **`CalendarDate`** for the holiday and special-Saturday minimums (§7). The two
+  definitions diverge only on a cross-midnight shift, and on such a shift the holiday date is
+  exactly what is in dispute — so the asymmetry is load-bearing precisely where it is least visible.
+- **Sources checked:** `sql/app/usp_Apply_GuaranteedHours.PROC.sql:140, 353, 402, 443-487, 742-768`;
+  [rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §5, §6, §7;
+  [rules/PAY-033](rules/PAY-033-holiday-pay.md), [PAY-032](rules/PAY-032-l12-holiday-calendar.md),
+  [PAY-019](rules/PAY-019-cross-midnight-processing.md);
+  [MLA Article III](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) Holidays §1;
+  63 meeting transcripts swept for holiday-minimum scope — 2026-06-11 is the only one that reaches
+  it, and it reaches it directly.
+- **Owner:** answered; no client action outstanding. **Owed:** fold into the PAY-033 decision note
+  alongside the PAY-019 cross-midnight adjudication.

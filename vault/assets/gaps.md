@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-08-31
+updated: 2026-09-04
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -115,6 +115,32 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** asset-master migration from FCC (whether such rows exist there is itself unknown).
 - **Owner:** TCG owners, via Brian Petros; CodingCops to check the FCC extract for any ownership
   flag before the meeting.
+- **Update 2026-09-04 (Project Repository ingest):** the term now has a referent — it is FCC's
+  own entity, and what follows is **legacy-system fact, not a TCG decision**. FCC `Maintain →
+  Resources → Customer Owned Units` is a window separate from Units, keyed by **Serial Number/VIN**
+  rather than a unit code, with a **Customer** lookup, a read-only customer block, tabs Main ·
+  Activities · Comments · Parts · Meter, and its own unit-level file-links dialog
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *Customer Owned
+  Units (slides 20–24)*; [../field-ops/fcc-nexgen-service-guide.md](../field-ops/fcc-nexgen-service-guide.md)
+  → *Customer Owned Units*). What they are for: a work order's `Unit Owner` defaults to Company and
+  may be set to Customer, *"in which case `Unit Code` becomes `Serial Number/VIN`"* (service guide
+  §2), and a work-order quote carries the same `Unit Owner` dropdown
+  ([../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md) → *Work Order
+  Quotes*) — i.e. customer machines TCG's shop repairs, the work the `CR` Customer Repair
+  department (created 2025-08-13, one unit in it) exists for
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §4). Labour rows can point
+  at one: `CustUnitCode varchar(30)` on
+  [ddl/stg.FMS_LABOR_PAYROLL_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_LABOR_PAYROLL_Raw.sql):8.
+  Row counts disagree by source — **79** in the 2026-07-02 production schema inventory (units page
+  §8), **12** in the `NexGenFMS-Test` extract brief. Two things are *not* this:
+  `FMS_UNITS.OwnedOrRent` ([ddl](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_UNITS_Raw.sql):141)
+  is TCG's own fleet owned-vs-rented, and FCC Storage's *"customer-owned items in the yard"*
+  ([../dispatch/fcc-nexgen-dispatch-guide.md](../dispatch/fcc-nexgen-dispatch-guide.md) → *Storage*)
+  are stored goods, not units. Brian did not yet know the answer himself on 2026-08-26 — *"I check
+  with Joe on the customer owned assets… what that's about"*
+  ([transcript](../meetings/transcripts/2026-08-26-erp-sprint-review.md) @ 58:11). Still needs the
+  client: whether the ERP carries a customer-unit entity at all (shop work orders are unscoped) and
+  whether the 79 rows migrate.
 
 ## Unit / asset certifications — registrations, insurance, loan, maintenance, permits
 
@@ -132,6 +158,41 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** asset detail design; any expiry-reminder feature beyond permits.
 - **Owner:** TCG (Dylan Masterson for yard/units, Brian Petros for the list), CodingCops to
   bring the FCC field inventory.
+- **Update 2026-09-04 (Project Repository ingest):** FCC's own answer to "which of these are one
+  family" is now on record — as legacy fact, not a TCG decision. (a) **Registration, inspection
+  and maintenance are one mechanism**: interval-bearing activities on the master activities list,
+  with `Activity/Certification` = *Certification* for the compliance ones — `ACA` Annual Crane
+  Certification (12 months), `QUAD` Quadrennial Inspection (48), `REG` Registration (DMV) (12),
+  `SMG` Smog (24), `TRAILER REGISTR` Trailer Registration (60), `ANNINS` Annual Crane Inspection
+  (12) — each with a `Certification Type` and a *Do not Prompt when Certificate is Expired* flag,
+  tracked last/next per unit on its Activities tab with next-due computed from last-done plus
+  interval ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *Master
+  Activities List*, *Activities (slide 6)*; columns `ActivityType`, `CertificationType`,
+  `DontPromptExpCert` in
+  [ddl/stg.FMS_ACTIVITIES_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_ACTIVITIES_Raw.sql)).
+  (b) **Insurance, licence and loan are unit attributes, not activities**: `Insured bit`,
+  `InsuranceValue`, `InsureStartDate`, `InsurancePeriod`, `ResidualInsureAmt`; `License`,
+  `StateCode`, `LicenseExpiry`; `MonthlyPayment` — the only loan field, Lender / Interest Rate /
+  Maturity / Balloon do not exist — plus `WarrantyExpDate`
+  ([ddl/stg.FMS_UNITS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_UNITS_Raw.sql);
+  the deck's *Buy/Sell Info* tab). (c) **Permits are not on the unit** in FCC — `FAA`, `SP`, `TP`
+  are schedule types sold per job (units page §1) and *Travel Permit – 120 Ton and above* is a
+  resource type. (d) The employee side already reaches units: `FMS_CERTIFICATES.CertificationType`
+  has a `U` = Unit value and a `UnitCertificateType` column
+  ([../payroll/fcc-employee-master-reference-data.md](../payroll/fcc-employee-master-reference-data.md)),
+  and the service guide states *"A Certification Type is used to constrain an Activity to an
+  individual based on their role"*
+  ([../field-ops/fcc-nexgen-service-guide.md](../field-ops/fcc-nexgen-service-guide.md) §1).
+  (e) The client's list predates Brian's message — Kyle Harlow, 2026-03-24 @ 24:15: *"insurance,
+  registration, quad and annual… service manual, operator's manual, load charts… a lot of those
+  are on a time basis, so you have to upload them again… customers request the quad, the annual
+  and the last 90 day inspection"*
+  ([transcript](../meetings/transcripts/2026-03-24-tcg-cc-product-sync-demo.md)); the crane pre-trip
+  checkpoints *Crane Annual and Quad Certification Stickers* and *Compliance: Registration / Tags /
+  Annual Permits* show the same set verified daily
+  ([fcc-checklist-templates.md](../payroll/tcg-rawfms-staging-database/data/fcc-checklist-templates.md)).
+  Still needs the client: the ERP's type list, which items carry an attachment with expiry and
+  reminder, and whether FCC's activity model is the pattern to keep.
 
 ## Schedule types include non-equipment — does a TCG Category?
 
@@ -147,6 +208,27 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** `assets/fcc-units-and-schedule-types.md`,
   `dispatch/crane-configurations.md`, `schema.prisma` (`Category`, `SubCategory`,
   `Permit`, `Plan`).
+- **Update 2026-09-04 (Project Repository ingest):** FCC's data already separates the two populations,
+  and two TCG statements this week bear on the question. (a) `FMS_SCHEDULE_TYPES.Schedules` is `0`
+  on exactly `LP`, `SP`, `TP` — Lift Plan, Street Permit and Travel Permit are billable but never
+  scheduled; every other type including `FAA` is `1`; `UnitOrComponent` is `U` on all 25 and the
+  import template's domain for it is **U Unit · C Component · T Tool**
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §4, §7). So FCC's answer to
+  "is a permit a unit?" is *a schedule type flagged not-schedulable*, and the non-machine rows
+  still sit on the Resource Types Main tab — *Travel Permit – 120 Ton and above* under Travel
+  Permit, *Spreader Bar* under `Yard`
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *Resource Types
+  (slides 25–28)*). Legacy fact, not a decision. (b) The load half of the question is decided:
+  [../dispatch/gaps.md](../dispatch/gaps.md) → *Crane configuration — is a support load an Asset*
+  was **resolved 2026-09-03 — an Asset** (own unit code, allocatable, counts for utilisation), so
+  non-machine Assets already exist by decision. (c) Joe, 2026-09-02, on what should template from a
+  resource type: *"the additional items like the riggers, we can add them specific to the job. We
+  don't want that to populate"*
+  ([2026-09-02 sprint demo](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md)
+  item 2) — the module owner saying Rigger and Signalman is per-job, not part of a crane's
+  template; not a statement about whether it is a Category. Still needs the client: whether TCG's
+  Category set carries the paperwork types (LP / SP / TP / FAA) or `Permit` / `Plan` stay separate
+  entities, and whether a schedulable flag on Category is the mechanism.
 
 ## Create-form prefill from URL query params — the whole contract is unwritten
 
@@ -219,6 +301,28 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   test catalog** (0 rows, per `apps/api/fcc-seeder/docs/seed-files-index.md`), so the legacy system
   holds no answer either. [dispatch/crane-configurations.md](../dispatch/crane-configurations.md)
   — describes counterweight loads per crane, not tools.
+- **Update 2026-09-04 (Project Repository ingest):** two sources bear on it; neither delivers the
+  kit. (a) An older transcript this entry had not reached answers the "does the ERP need it" part
+  with client statements — 2026-05-07 @ 50:46–53:23
+  ([transcript](../meetings/transcripts/2026-05-07-loading-and-project-module-overview.md)). The
+  answer on whether the standing kit should display (labelled *Brian Petros* in the transcript;
+  Ehtesham addresses it to Dylan): *"basic rigging that's already on there. It doesn't need to
+  display here"*, and on tracking it: *"I am not… we know off the top what they have"*. Wes Staley:
+  *"We can reach out to Leo and to Rich. They're building out each crane and all the components on
+  the 1st and 2nd loads. So we can give that information to Ehtesham"* and *"We have not done a
+  good job of making sure we know what's on each crane all the time… we definitely need that"*.
+  Ehtesham: *"once you guys have that information, send it over and we are going to create this
+  permanent section and then we can create rules"* — the *"already exists on assigned crane"*
+  warning in [tool-and-rigging.md](tool-and-rigging.md) Story 1 is this exchange. So the kit was
+  **promised as a per-crane inventory built by Leo and Rich, per load (1st / 2nd)**, and no drop
+  through 2026-09-04 contains it. (b) FCC has the model and never used it: a Components & Tools
+  record carries **Assigned Unit Code** (plus Category `Component` / `Tool`, serial, image, QR, a
+  scan log with geofence) — a tool is pinned to a unit as its own record, not as a unit attribute
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *Components &
+  Tools*); `FMS_UNIT_COMPONENTS` (51 columns) and `FMS_TOOLS` are **empty**
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §8). Legacy fact, not a
+  decision. Still needs the client: the kit list itself (Leo / Rich), per crane or per class, and
+  whether "does not need to display" or "we definitely need that" is the product rule.
 
 ## Loading list — quantity, sets, and sizes are underspecified for a schema
 
@@ -239,6 +343,26 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   says nothing about quantity type or set granularity; Story 5 — *"Each tool displays live status
   counters Total, In use and available"* assumes a countable quantity without defining it.
   No `decisions/` note touches tool quantity.
+- **Update 2026-09-04 (Project Repository ingest):** evidence on (a) and (c), none on (b). (a)/(c)
+  **The Boscaro bar's capacity depends on how it is assembled** — Kyle Harlow, 2026-04-07 @ 52:56:
+  *"the Bosco bars have so many options and the capacity changes on the configuration… the Bosco
+  kit bar can be used from 100 tons right to only good for 15. It depends on how you put it
+  together"*; Wes @ 52:25: *"we may have 5 spreader bars can lift 10,000 lbs, one that can lift
+  20"*; Melissa @ 53:48 proposed *"configurations for rigging… the Bosco bar would have
+  configuration one which gives you X capacity"* and Ehtesham said it could be built
+  ([transcript](../meetings/transcripts/2026-04-07-dispatch-scheduling-figma-demo.md)). So the `N/A`
+  is consistent with a **kit whose pieces assemble into different bars** rather than a bulk or
+  consumable item — a client description of the physical thing, not a modelling decision. (c) FCC's
+  practice also puts size in the name: its mobile tool list under *Rigging Components* reads
+  `14' Spreader Bar · Crosby Shackles - 1" · D Ring 1/2 · D Ring 3/4 · 1"X20' Wire Rope Slings`,
+  with a free-text **Size/Comments** and **Qty Out / Qty In** per tool
+  ([../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md) → *Tools on
+  mobile*), while its Components & Tools master is **one record per physical piece** with serial
+  number and QR ([asset-record-requested-additions.md](asset-record-requested-additions.md) →
+  *Components & Tools*) — and `FMS_TOOLS` and `FMS_UNIT_COMPONENTS` are both empty, so FCC never
+  exercised either shape. Legacy fact, not a decision. Still needs the client: set-vs-piece
+  tracking (b), and whether a Boscaro configuration is a tool record, a size attribute, or a
+  capacity table.
 
 ## Loading order — is the sequence a per-yard constant or per-job
 
@@ -256,3 +380,584 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   or sequence**; Story 5 likewise. No meeting transcript in `meetings/` states a load order rule —
   checked the six loading-related transcripts (2026-04-14, 2026-05-07, 2026-05-12, 2026-05-14,
   2026-07-01, 2026-04-30).
+- **Update 2026-09-04 (Project Repository ingest):** the yard's own written process is now in the
+  vault and it carries **no item sequence**: the daily loading list is per job — *job number · unit
+  going and how many loads · required rigging · leave time* — written down and sent to two chats,
+  with *leave time* as the scheduling key
+  ([../dispatch/daily-loading-value-engine.md](../dispatch/daily-loading-value-engine.md) §1).
+  Neither that value engine nor FCC's tool screens (Qty Out / Qty In, no order column —
+  [../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md) → *Tools on
+  mobile*) says whether Dylan's 1–26 is a catalog constant or per-loadout. Evidence of absence only;
+  still needs Dylan.
+
+## Sub-category names — unique per tenant, and does an archived one keep its name reserved?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — branch `fix/subcategory-asset-dropdown-surcharge` (no ticket);
+  tcg-scrum escalation
+- **Question:** two parts. (a) Must a sub-category name be unique **within a tenant**? The branch
+  adds `@@unique([tenantCompanyId, name])` to `SubCategory` and translates the collision into a
+  409, on the stated grounds that `Category` has carried the same constraint since the baseline.
+  That is a shipped code precedent, not a written requirement, and nothing says the two catalog
+  levels must behave alike — uniqueness **within the parent category** is the other plausible rule
+  and would allow a "Hydraulic" under both Cranes and Trucks. (b) If names are unique, the index is
+  deliberately **not partial**, so an **archived** sub-category keeps its name reserved. Under
+  [2026-08-20-archive-instead-of-delete-app-wide](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  archiving is the only way to retire a record, so no name is ever released — is a permanent
+  reservation intended, or should archiving free the name for reuse?
+- **Sources checked:** [categories-and-sub-categories.md](categories-and-sub-categories.md) — the
+  only vault file on this topic, 0.3 KB, and its entire sub-category section is *"Need to add
+  target hours per month - FCC"*. Nothing anywhere in the vault states a naming rule for either
+  level. [../quotations/gaps.md](../quotations/gaps.md) →
+  *Sub-category association cycles* — names sub-category **name matching** as a live defect
+  (association lookup keys on item name, so an employee type sharing a name inherits a
+  sub-category's associations); tenant-unique names would narrow that collision, but that entry
+  asks for FK-keyed lookup rather than uniqueness and is itself open. Also checked
+  [INDEX.md](INDEX.md), [../STRUCTURE.md](../STRUCTURE.md), `decisions/`, and `.ai/aidlc/`
+  (no spec folder; `processed.log` has no sub-category entry). **Jira checked:** `SCRUM-959`
+  (To Do, Umair Khan, created 2026-09-01) — *"In Subcategories > Details > Associated Field, while
+  adding resources, the subcategory should be unique"* — is the nearest hit and a **different
+  requirement**: no duplicate rows inside one sub-category's associated-resource list, not
+  tenant-wide name uniqueness. It must not be cited as the source for this change. No other SCRUM
+  issue asks for sub-category name uniqueness.
+- **Blocked:** nothing — the constraint is on `main` (PR #451). Product questions (a) and (b)
+  remain open; run the duplicate-name pre-flight before applying the migration in each environment.
+- **Owner:** product team — whoever owns asset-management catalog rules.
+- **Update 2026-09-01 (PR review, branch `fix/subcategory-asset-dropdown-surcharge`)** —
+  **Deploy blocker:** migration `20260901120000_sub_category_tenant_name_unique` adds
+  `UNIQUE (tenant_company_id, name)` with no dedup or backfill step. If any tenant already has
+  two sub-categories sharing a name, `migrate deploy` aborts and leaves schema behind code. Run
+  this pre-flight on every target environment before merge:
+  `SELECT tenant_company_id, name, COUNT(*) FROM sub_categories GROUP BY 1, 2 HAVING COUNT(*) > 1`.
+  One local DB returned zero rows at branch time; staging/production are not evidenced.
+  **Engineering gap:** no `sub-categories.service.spec.ts`; the new P2002 → 409 path on create
+  and update is untested. See also
+  [Duplicate sub-category name — inline field error or toast only?](#duplicate-sub-category-name--inline-field-error-or-toast-only).
+- **Update 2026-09-01 (post-merge, PR #451 → main)** — merged to `main`. Product questions
+  (a) and (b) remain open. **Engineering follow-ups on main:** `schema.dbml` regenerated to
+  match schema; `sub-categories.service.spec.ts` added for P2002 → 409 on create/update.
+  **Deploy:** run the duplicate-name pre-flight on staging/production before applying the
+  migration in each environment.
+
+- **Update 2026-09-02 (staging deploy failed — constraint WITHDRAWN)** — the predicted
+  deploy blocker landed. `20260901120000_sub_category_tenant_name_unique` failed against
+  `tcg_staging` at 2026-09-01 17:51:48 UTC; its failed `_prisma_migrations` row then blocked
+  every later migration with **P3009**, holding back `20260901120100_add_asset_name` and
+  `20260901160000_add_craft_modifier_id_to_ticket_labor_entries`. The pre-flight this entry
+  prescribed was never run against staging. Duplicates found: `"Operator Load"` x3 and two
+  more pairs in tenant `2644892a`, `"90 Ton Hydraulic Truck Crane"` x3 in `64355383`,
+  `"Crawler Crane"`/`"Operator Load"`/`"Truck"` in `ec5404f8`.
+  **A merge was not available:** `template.sub_category_id` is `@unique` (one-to-one), so
+  collapsing each group would destroy one template per duplicate — destructive, on a
+  requirement product has still not ratified.
+  **Resolution:** the constraint is withdrawn, not deferred —
+  `20260902000000_drop_sub_category_tenant_name_unique` drops the index, `@@unique` is off
+  the `SubCategory` model, and duplicate names are accepted again as they were before PR #451.
+  `throwIfDuplicateName` and its spec are kept but **inert**, so re-adding the rule is a
+  schema change alone. Questions (a) and (b) above are still **open and now blocking** —
+  answering yes requires a dedup migration *and* a product ruling on which duplicate
+  survives and which template is destroyed.
+  **Prevention (main repo):** `prisma/scripts/preflight-unique-constraints.mjs` now runs
+  before every `migrate deploy` — it reads the pending set from `_prisma_migrations`, scans
+  those migrations for `CREATE UNIQUE INDEX` / `ADD CONSTRAINT … UNIQUE`, and refuses the
+  deploy while the data still violates them, leaving the database untouched. Partial and
+  expression indexes are reported as unchecked rather than silently passed. Also fixed:
+  `recover_failed_migrations` in `migrate-deploy.sh` had been gating on `prisma migrate
+  status` wording that Prisma 7 no longer emits, so both deploy attempts were byte-identical
+  and no recovery was ever attempted.
+  **Still true:** no CI job applies migrations against a production-like database, so
+  "works locally" remains no evidence for a data-dependent migration.
+
+- **Update 2026-09-02 (constraint RE-INSTATED with dedup — part (a) answered)** — Syed Haris
+  ruled the staging duplicates are test data and that sub-category names are unique going
+  forward. Recorded as
+  [decisions/2026-09-02-sub-category-names-tenant-unique](../decisions/2026-09-02-sub-category-names-tenant-unique.md),
+  `status: reference` — he is not the client-side product owner, so TCG can still overrule it.
+  **Part (a) is answered; part (b) is not.** The index is still non-partial, so an archived
+  sub-category reserves its name permanently. That is shipped behaviour, never ratified.
+  **How:** `20260902010000_sub_category_tenant_name_unique_with_dedup` renames collisions
+  (oldest keeps the name, later rows take the lowest free `" (n)"`) and then creates the
+  index, in one transaction. Nothing is merged and nothing deleted — a merge was rejected
+  because `template.sub_category_id` is `@unique`, so it would destroy a template per
+  duplicate. Verified against a scratch Postgres: cross-tenant same-names untouched,
+  archived rows renamed, a pre-existing `" (2)"` correctly skipped to `" (3)"`.
+  **Pre-flight interaction:** a dedup-then-constrain migration would trip the guard added the
+  same day, since the guard runs before the rename. Migrations that make their own
+  constraints satisfiable now declare `preflight-skip` in a comment; the guard reports them as
+  SKIPPED in the deploy log rather than passing them silently, and the opt-out is scoped to
+  the declaring migration only — an unmarked violation in the same run still blocks.
+
+- **Update 2026-09-02 (pre-flight's first real run blocked a deploy — SSL)** — the guard
+  worked as designed and still cost a deploy. `pg` 8.22 treats `sslmode=require` as
+  `verify-full`; Prisma follows libpq semantics, where `require` encrypts without verifying
+  the CA. Against RDS the two disagree: `migrate deploy` connected, the pre-flight died with
+  `self-signed certificate in certificate chain`, and because it fails closed it refused a
+  deploy that had nothing pending to check. Fixed by adding `uselibpqcompat=true` when
+  sslmode is `require`/`prefer`/`allow`, honouring `verify-full`/`verify-ca` unchanged.
+  **Worth keeping:** passing `ssl: { rejectUnauthorized: false }` alongside a connection
+  string does **not** override `sslmode` — the connection-string parser wins and the connect
+  still fails. That was the first fix attempted; it was only caught by testing against the
+  real RDS certificate rather than a local Postgres. A guard that runs before every deploy
+  has to be exercised against the environment it guards.
+  **Staging outcome, verified directly:** unique index present, zero remaining duplicate
+  groups, 7 rows renamed — `Operator Load (2)/(3)` in `2644892a`,
+  `90 Ton Hydraulic Truck Crane (2)/(3)` in `64355383`, and three singles in `ec5404f8`.
+
+- **NEW (2026-09-02): `Plan.craneCategory` stores a sub-category NAME, not an FK**
+- **Status:** open
+- **Asked:** 2026-09-02 — found while assessing whether renaming duplicates was safe
+- **Question:** `Plan.craneCategory` is `VARCHAR(100)` holding the sub-category name, and two
+  web call sites resolve it with `.find((sub) => sub.name === craneCategory)`
+  (`plan-form-lift-fields.tsx:134`, `plan-form-additional-info-validation.ts:36`). `.find()`
+  returns the first match, so while duplicates existed a plan bound to whichever row the list
+  endpoint returned first — order-dependent, and that order changed in PR #459 when listing
+  moved to capacity sorting. Uniqueness makes the lookup deterministic but leaves it fragile:
+  **any future rename silently orphans every plan storing the old name**, with no FK and no
+  error. Should `craneCategory` become a `subCategoryId` FK, and what should happen to plans
+  whose stored name no longer resolves? `[INFERRED]` from code — not reproduced against a
+  database.
+- **Blocked:** nothing today; the dedup migration renames rows on staging, where the data is
+  test data. It would block any rename of a real tenant's catalog.
+- **Owner:** engineering, with product input on the orphaned-plan behaviour.
+- **Update 2026-09-04 (Project Repository ingest):** evidence on (a) only, and legacy fact rather
+  than a decision. FCC's unit import contract identifies the sub-category level by its name: *Resource
+  Type — a `Resource Description` from the Resource Types tab* is a required field, the import
+  template's validation resolves it against that tab, and the tab itself carries no ID column —
+  *"a resource type is defined by its description, not by an ID — the ID is FCC-generated"*
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §7 and the validation
+  section). The Resource Types tab is one flat list across every schedule type (§6), so the scope
+  in which a description has to identify a resource type is the whole catalogue, not the parent
+  schedule type. Nothing in the drop shows a retired resource type's name being reused, so (b) is
+  untouched.
+
+## Duplicate sub-category name — inline field error or toast only?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — PR review of branch `fix/subcategory-asset-dropdown-surcharge` (no
+  ticket)
+- **Question:** when a user submits a sub-category name that collides with an existing one within
+  the tenant, the API returns 409 with *"A sub-category with this name already exists. Please use
+  a different name."* The web create path (`use-create-sub-category-actions.ts`) and update path
+  (`sub-category-detail-state.ts`) surface this via `toastMutationError` only — there is no
+  inline validation on the name field. Is a toast sufficient, or should the name input show a
+  field-level error (matching how other form validations behave)?
+- **Sources checked:** branch implementation in
+  `apps/api/src/usecase/asset-management/sub-categories/sub-categories.service.ts` (409 message),
+  web mutation `onError` handlers; no vault or Jira statement on duplicate-name UX for
+  sub-categories. Category duplicate handling was not checked for a precedent.
+- **Blocked:** nothing — behaviour has shipped on `main` (PR #451).
+- **Owner:** product team / web UX — whoever owns form validation patterns for asset catalog.
+
+## Asset name — optional or required, shareable or not, and is it "Unit Name" or "Asset Name"?
+
+- **Status:** open
+- **Asked:** 2026-09-01 — branch `fix/subcategory-asset-dropdown-surcharge` (no branch ticket; it
+  implements `SCRUM-956`, which has no `.ai/aidlc/` spec folder, so there is no §12 to hold this);
+  tcg-scrum escalation
+- **Question:** `SCRUM-956` settles that the field exists — *"There should be a Unit Name field
+  when creating an asset"* — and settles nothing else. Three things it does not say, all of which
+  the branch decided on its own: (a) is the name **optional**? It ships nullable, with an optional
+  form field and no backfill, so every existing unit stays unnamed and the new list column renders
+  blank for them; (b) may two units **share** a name? It ships deliberately non-unique; (c) the
+  ticket and the fleet's own paperwork say **Unit Name**, the UI ships **Asset Name** — which term
+  does TCG use?
+- **Sources checked:** **Jira `SCRUM-956`** (Task, To Do, unassigned, reporter Umair Khan, created
+  2026-09-01) — the full description is the single sentence quoted above; no acceptance criteria,
+  no comments. It is one of twelve tickets the same reporter filed in four minutes that afternoon,
+  i.e. a review-session punch list rather than a specified requirement.
+  [../dispatch/crane-configurations.md](../dispatch/crane-configurations.md) §1 — the
+  Lisette-approved asset workbook, the only vault artifact carrying real unit names, and direct
+  evidence on (b) and (c): its **Unit code / Unit name** table gives `26502.1`, `26502.2` and
+  `26502.3` — three distinct unit codes all named *"265 Ton Support Load"* — so names are already
+  non-unique in the fleet TCG runs today, and the column is headed **Unit name**. `status:
+  unverified`. [../dispatch/daily-allocation-system.md](../dispatch/daily-allocation-system.md):105
+  — *"Hovering over an icon shows asset name, assigned job, and status"*, the only other vault
+  mention, and it calls the same thing **asset name**; the two together are where the term
+  ambiguity comes from. [../vendors-agencies/vendors.md](../vendors-agencies/vendors.md):44,72 —
+  the vendor-asset capture list and table columns, which carry Unit Code and **no name field at
+  all**. Also checked [INDEX.md](INDEX.md), [user-story-and-tasks.md](user-story-and-tasks.md),
+  [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md), `decisions/`, `.ai/aidlc/`.
+  **The unit-code half of the change needed no answer** — `@@unique([tenantCompanyId, unitCode])`
+  and its 409 predate the branch and are untouched by it.
+- **Blocked:** nothing. This asks whether the three unstated halves are right before the column
+  reaches every asset list and picker.
+- **Owner:** product team — the `SCRUM-956` reporter (Umair Khan) can settle (c); (a) and (b) need
+  whoever owns the asset catalog.
+- **Update 2026-09-01 (PR review, branch `fix/subcategory-asset-dropdown-surcharge`)** —
+  **Cleared-name storage:** the sub-category quick-create dialog correctly sends
+  `name: formData.name.trim() || undefined`. Main asset create/edit uses
+  `normalizeAssetPayloadForSubmit`, which normalizes dates and money but not `name` — clearing
+  the field can persist an empty string (`""`) instead of `null` or omitting the field. Should a
+  cleared name be stored as `NULL`?
+  **Surface coverage:** web ships list column, detail row, both forms, search/sort, and
+  `AssetSelect` description (`name ?? description`). Mobile dispatch path does not surface
+  `name` in this branch — intentional deferral or an oversight?
+  **Engineering gap:** no API or web tests assert create/search/sort on `name`; new
+  `data-testid`s `assets-form-name` and `assets-create-dialog-name` are not yet referenced in
+  `qa-automation/e2e/`.
+- **Update 2026-09-01 (post-merge, PR #451 → main)** — merged to `main`. Product questions
+  (a)–(c) remain open. **Engineering fix on main:** `normalizeAssetPayloadForSubmit` now trims
+  `name` and stores `null` when cleared (matching date/money normalization), so main create/edit
+  no longer persist empty strings. Mobile `name` surfacing and test coverage still open.
+- **Update 2026-09-04 (Project Repository ingest):** FCC's record on all three parts, as legacy
+  fact. (a) **Required in FCC**: `FMS_UNITS.UnitName varchar(60) NOT NULL`
+  ([ddl/stg.FMS_UNITS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_UNITS_Raw.sql):4),
+  and the import contract lists *Description — up to 60 characters* among the fields **required to
+  create a unit** ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §7) — so
+  every migrated unit has one, and nullable-with-no-backfill is TCG's departure, not FCC's.
+  (b) **Non-unique in FCC**: the deck's Unit Location History example is `26503.1` — *"265 Ton
+  Support Load"*, the same name the workbook gives `26502.1` / `.2` / `.3`
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *The nine lookups*,
+  slide 38). (c) **FCC itself uses two words for one field**: the column is `UnitName`, the label
+  on the Units Main tab is **Description** (*Unit Code · Description · Company/Owner …*), and the
+  import template calls it Description; the client's own workbook heads it *Unit name*
+  ([../dispatch/crane-configurations.md](../dispatch/crane-configurations.md) §1) — *Asset Name*
+  appears in no client source. **Engineering note:** the FCC seeder already lands `UnitName` in
+  `Asset.description`, not `name` (`apps/api/fcc-seeder/src/extract-seed-files.ts:206`), so
+  migrated units will show a blank name column until that mapping is decided. Still needs the
+  client: whether TCG keeps FCC's required-on-create rule, and the UI word.
+
+## Feet-inches fields save a bare separator when inches are empty
+
+- **Status:** open
+- **Asked:** 2026-09-02 — reading back an asset created through the form while building
+  regression fixtures.
+- **Question:** the asset form's feet-inches control serialises `jib_length` as **`"58|"`** — the
+  value, a pipe, and nothing after it — where the sibling fields on the same form save cleanly
+  (`vehicle_width: "10 ft 6 in"`, `vehicle_height: "13 ft 2 in"`, `vehicle_length: "54 ft 6 in"`).
+  So a feet-only entry keeps the separator. Is the stored format meant to be `feet|inches`, with
+  the display layer parsing it, or `"N ft M in"` as the other three suggest? Whichever it is, one
+  of the two behaviours is wrong, and they are produced by the same control.
+- **Why it matters more than cosmetics:** `jib_length` is free text (`VarChar`), so nothing
+  rejects it, and the value round-trips into the field on edit. Anything that later parses jib
+  length — a lift-plan calculation, an export, a report — meets a value that is neither a number
+  nor the format its neighbours use. `main_boom_length` is unaffected: it is `Decimal` and stored
+  `"164.00"`, which is why the boom-pay resolver is not at risk.
+- **Sources checked:** the asset row created 2026-09-01 in `CODING-COPS`
+  (`unit_code = 10001`) — `jib_length: "58|"` against three correctly formatted dimension fields
+  on the same submission. `apps/web/src/features/assets/asset/components/asset-form-sections/`
+  `feet-inches-field.tsx` is the shared control. No `decisions/` note and nothing in `meetings/`
+  states a storage format for asset dimensions.
+- **Note:** worth checking whether the same control is used on any field that *is* parsed
+  downstream before deciding the fix — the format may be load-bearing somewhere.
+- **Update 2026-09-04 (Project Repository ingest):** the migration source has no serialised format
+  to preserve — FCC stores every dimension as **two columns**: `VehicleWidthFt numeric(9,2)` +
+  `VehicleWidthIn smallint`, likewise Height, Length and Gage, and `JibLengthFt smallint` +
+  `JibLengthIn smallint`, with `BoomLength` alone a single `varchar(14)`
+  ([ddl/stg.FMS_UNITS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_UNITS_Raw.sql):36–46);
+  the import template carries them as separate 3-character feet and inches fields and the Units
+  screen shows Ft + In pairs ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md)
+  §7; [asset-record-requested-additions.md](asset-record-requested-additions.md) → *The Units
+  window*). So `feet|inches` vs `"N ft M in"` is TCG's choice alone, and whichever wins the seeder
+  composes it from two source columns. Legacy fact, not a decision.
+
+## The cascading resource picker may now show an incomplete tree — is that acceptable?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of branch `feat/move-dropdowns-BE` (no ticket, no
+  `.ai/aidlc/` folder, no `processed.log` row); tcg-scrum escalation. Routed here because the
+  cascade is Category → Sub-Category and this module owns categories; the largest consumer is
+  quotation Resources, which carries a pointer.
+- **Question:** The branch adds `GET /resource-catalog/tree` and `GET /resource-catalog/search`
+  as the data source for the cascading `MultiOptionDropdownMenu` (employee types, sub-categories,
+  custom types). `tree` is a **one-shot read capped per kind**, so with no search term the menu is
+  **deliberately incomplete** — a user browsing the cascade without typing may not see every
+  sub-category that exists. Three parts, each answerable in a line. (a) Is a **truncated
+  browse state acceptable** on a picker users currently treat as the full catalog? (b) If it is,
+  **what is the cap and how are the shown rows chosen** — the branch picks a number and an order
+  with nothing to check them against. (c) Must the menu **say** it is showing a subset, or is
+  silent truncation fine?
+- **Sources checked:** **Vault — nothing on resource-catalog picker behaviour.** `INDEX.md`;
+  this module's `INDEX.md`; [categories-and-sub-categories.md](categories-and-sub-categories.md)
+  (0.3 KB, five bullets — move under Settings, custom codes, schedule-type question,
+  active/inactive filter, remove Preview; **nothing on selection or loading**);
+  [tool-and-rigging.md](tool-and-rigging.md); [loading-list.md](loading-list.md);
+  `../quotations/quotations-INDEX.md` and all four candidates; `../decisions/` (24 notes, none on
+  pickers or catalogs). Vault-wide grep for `resource catalog` / `resource-catalog` returns **one
+  hit in the whole repo** — `.ai/claude/contexts/web.md`:136, the build convention, added on this
+  branch. Code verified: `apps/api/src/presentation/resource-catalog/resource-catalog.controller.ts`
+  :28–50, `dto/query-resource-catalog.dto.ts` (`limit` `@Max(500)`, search spans employee-type
+  name, sub-category name, parent category name, custom-type title and code).
+- **Jira establishes the control, never its data volume.** `SCRUM-491` (Done, 2026-06-02, Abdul
+  Muazzam) created the multi-menu — *"so that we can link employee and other types as well with
+  the sub-category, and in quotation resources now we are listing all these 3 types of items as
+  child items"* — which fixes **what the tree contains**, not how much of it loads. `SCRUM-811`
+  (Done) and `SCRUM-638` item 18 propagate the same nested control to other forms. `SCRUM-873`
+  (QA) item 2 asks only that it open to the right. **No ticket asks for the cascade to be
+  searched, capped or paged**, and none states a maximum.
+- **Note:** the counter-signal is in the same family of tickets. `SCRUM-638` item 19 —
+  *"There are 76 assets in total, but the dropdown is not displaying all of them"* — was filed
+  **as a defect**, and the remedy asked for in item 20 was progressive loading so the user still
+  reaches every row. A capped `tree` reintroduces the same visible symptom by design. That does
+  not make the branch wrong, but it is the one written data point and it points the other way.
+- **Blocked:** sign-off of `feat/move-dropdowns-BE`; any decision on the cap value.
+- **Owner:** Mohsin Ali for whether a truncated browse state is acceptable; Melissa McNutt for
+  how operators actually pick a sub-category (browse vs. type).
+
+## Saving a sub-category template re-mints every field id, orphaning asset attribute values
+
+- **Status:** open
+- **Asked:** 2026-09-02 — tracing the sub-category save path while making the detail page's
+  Attribute Sections tab editable in place.
+- **Question:** an asset stores its template answers in `asset.attribute_values`, a JSON blob
+  **keyed by `CustomField.id`**. Saving a sub-category's attribute sections replaces the whole
+  template — `upsertTemplateForSubCategory` does `sections: { deleteMany: {}, create: … }`, and
+  `CustomSection.id` / `CustomField.id` are `@default(uuid())` — so every field gets a **new
+  UUID** on every save, including a save that changed only a section's name. The old keys in
+  `attribute_values` then match no field. Is losing the answers the intended behaviour when a
+  template is edited, or should a field keep its identity across edits (and existing answers
+  follow it)?
+- **Why it matters:** the read path is `attrs[String(field.id)] ?? attrs[field.name]`. After a
+  re-mint the id lookup misses, and the name fallback misses too, because the blob was written
+  under the *old id*, never under the name. So every asset in the sub-category silently shows
+  blank Additional Info, and the next asset save persists the blank over the orphaned data. It
+  takes no schema change to trigger — renaming one section is enough.
+- **Sources checked:** `apps/api/src/service/asset-management/sub-categories/`
+  `sub-categories.repository.ts` (`upsertTemplateForSubCategory`, `mapTemplateSections`,
+  `mapTemplateField` — no id is carried through), `apps/api/prisma/schema.prisma`
+  (`CustomSection`, `CustomField`), `apps/web/src/features/assets/sub-category/utils/`
+  `template-sections-helpers.ts` (`serializeTemplateSectionsForSubmit` drops `id` and forwards
+  `legacyKey` only when present, which the sub-category deserializer never sets),
+  `apps/web/src/features/assets/asset/components/asset-form-additional-field.tsx`
+  (`getDynamicFieldKey` = `String(field.id)`). `assets.service.ts`'s
+  `buildAttributeLabelByKey` maps `legacyKey` → name but is used **only for activity-log
+  labelling**, not to remap stored values. No `decisions/` note covers template versioning.
+- **Note:** pre-existing — the `/edit` page has always saved this way. It is recorded now
+  because the detail page's in-place editing makes a template save one click away from any
+  viewer, so the failure gets easier to reach. The same `deleteMany`+`create` shape is in
+  `categories.repository.ts`, but category templates do not key asset answers.
+- **Blocked:** any further work on template editing, on either surface; the migration that
+  would be needed to carry existing `attribute_values` across a re-mint. Routing lines added
+  2026-09-02 by tcg-scrum on a PR-review pass; the question text above is unchanged.
+- **Owner:** product team — Brian Petros for whether a template field keeps its identity
+  across edits (this is a data-retention question, not a UI one). Fouzan Shakil to sequence
+  the fix once the answer exists.
+
+## Editing a record on its detail page — is in-place tab editing the pattern, and what stays on /edit?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of merged PR #470 / commit `8b286d84`, branch
+  `feat/asset-tabs-inline-edit`; tcg-scrum escalation. **Not a ticket question:** the branch
+  cites no `SCRUM-###` and has no `.ai/aidlc/SCRUM-###/` folder, so there is no `spec.md` §12
+  to hold it. It does carry a `processed.log` row (2026-09-02, path C, haris), which records
+  the interaction pattern as *"chosen by the user in-session"* — a session choice by the
+  implementer, not a product decision, which is why it is asked here.
+- **Question:** four parts, each answerable in a line. (a) Is editing tab content **directly
+  on the detail page** the intended pattern for Asset Management, or should a detail page stay
+  read-only with `/edit` the only editor? (b) If in place is right, **does `/edit` survive** —
+  as shipped the same components render on both surfaces (`configuration-tabs.tsx` is reused,
+  deliberately, so the two cannot drift), so the same fields are now editable in two places
+  and a user can reach either. (c) Is the **split correct** — identity fields (name, category,
+  billing code, permit required, target hours) on `/edit` only, tab content on detail? (d) Does
+  this **generalise** to other modules' detail pages, or is it assets-only?
+- **What shipped, so the question is concrete:** **five** tabs hold live fields with a
+  Save/Cancel pair — Category → Attributes; Sub-Category → Attributes, Associated Field
+  Assets, Substitution; Asset → Additional Info. The commit message counts **six** and
+  includes Sub-Category → Assets List, but that tab renders `AssetsTable` with a create-asset
+  dialog and has no dirty-tracked editor (`sub-category-show-view.tsx`:86–95) — a create
+  affordance, not in-place editing. `/edit` is untouched and still reachable from each detail
+  hero, which is what makes (b) a live question rather than a hypothetical.
+- **Sources checked:** **Vault — nothing on where an asset record is edited.** [INDEX.md](../INDEX.md);
+  this module's [INDEX.md](INDEX.md); [categories-and-sub-categories.md](categories-and-sub-categories.md)
+  (0.3 KB, `status: unverified`) — its nearest bullet is *"Edit should re-direct to show page"*,
+  which is about where an edit **lands**, and reads Show and Edit as **two surfaces**;
+  [user-story-and-tasks.md](user-story-and-tasks.md) (`provenance: personal-space`) — yard,
+  HubSpot, 2FA, customer and quotation stories only, **no asset or category detail-page story
+  at all**; [tool-and-rigging.md](tool-and-rigging.md) (yard dashboard, utilization);
+  [loading-list.md](loading-list.md); [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md).
+  `../decisions/` — 26 notes, and the only one in this neighbourhood is
+  [2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md)
+  (with its 2026-08-20 predecessor), which is **"post-save success path only"** — it settles
+  where a save *lands*, never where editing *happens*. Vault-wide grep for
+  `inline edit` / `edit in place` / `editable in place` returns **no hit** outside this
+  register. Meetings: 8 files carry `module/assets`; a sweep for in-place / same-page editing
+  language finds nothing on it.
+- **The nearest written analogue is a different module, and it is unverified.**
+  [projects-jobs/project-module/02-view-manage-job-details.md](../projects-jobs/project-module/02-view-manage-job-details.md):40,
+  43, 58 says, of a **Job** detail page: *"Work description and notes are visible and
+  editable"*, *"Any editable field can be updated and saved without affecting the linked
+  quotation"*, and *"Each tab saves independently"*. So a tabbed detail page whose tabs are
+  editable **is** written down once, for Jobs, `status: unverified`. Nothing says it
+  generalises to assets, categories or sub-categories, and this register does not assume it
+  does — that is part (d) of the question, not its answer.
+- **Jira points both ways, and neither ticket is about a detail page.** Against:
+  `SCRUM-207` (Done 2026-05-05) — *"Asset Management → Categories Tab – Show/Edit View,
+  Navigation, and UX Issues"* — treats Show page and Edit mode as **distinct modes** and files
+  arriving in Edit mode unasked as a **defect**: *"Clicking Create New Sub-Category / Create
+  New incorrectly redirects to Category Edit mode instead of respective create forms"*, and
+  *"In Edit mode, 'Last Updated On' is shown unnecessarily"*. `SCRUM-918` (To Do) *"Improve
+  Edit Icon Styling in Categories → Sub-Categories"* assumes an edit icon, i.e. a separate
+  destination. Loosely for: `SCRUM-823` (Done, Aiman Farooq) *"Add Save Button on All Tabs in
+  Asset Creation"* — *"users can save the asset from any tab without navigating to the final
+  step"* — the same instinct (commit from where you are) but in the **create wizard**, not the
+  detail page. A search of `SCRUM` for asset + tab/edit/attribute/detail surfaces no ticket
+  for this feature.
+- **Note:** in-place editing makes post-save navigation **vacuous** for these five tabs — the
+  user never leaves the detail page, so *edit → detail* is satisfied trivially. That is not the
+  same as being authorised by it, and the note itself says it decides the success path only.
+  The closest client-voiced *"don't make me leave the screen"* is
+  [meetings/2026-06-22-sprint-4-additional.md](../meetings/2026-06-22-sprint-4-additional.md):93
+  — a **Create PO** button in DAS that *"generates the PO for that vendor and job without
+  leaving the screen"* — a create-in-context ask on a different surface, not a detail-tab
+  editor.
+- **Blocked:** sign-off of PR #470; whether `/edit` is retired, kept, or reduced to identity
+  fields; whether the next module's detail page copies this or stays read-only.
+- **Owner:** Fouzan Shakil for (a), (b) and (d) — he is the precedent-holder, having decided
+  the post-save navigation convention the same way, and these are internal UI conventions the
+  team can settle if the client has no view. (c) is product: route to TCG via Brian Petros if
+  anyone disputes that identity fields belong on a form rather than a detail tab.
+
+## Save and Cancel hidden until a section is dirty — intended, or an affordance nobody finds?
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of merged PR #470 / commit `8b286d84`, branch
+  `feat/asset-tabs-inline-edit`; tcg-scrum escalation. No ticket, so no `spec.md` §12. Filed
+  here because that is where the work surfaced; **the question is app-wide, not assets-only.**
+- **Question:** two parts. (a) Is a commit affordance that is **absent until the first
+  keystroke** acceptable on pages users have learned are read-only — how is a user meant to
+  discover a field is editable before touching it? (b) Should undoing an edit **by hand**
+  retire Save/Cancel, or should the pair stay until the user explicitly saves or cancels?
+- **What shipped:** `apps/web/src/features/assets/shared/inline-edit-actions.tsx`:33 —
+  `if (!isDirty) return null`, so the section header shows nothing at all until a change
+  exists; once dirty it shows an amber *"Unsaved changes"* marker plus Cancel and Save.
+  Dirtiness is **structural**, not a sticky flag: `shared/use-inline-draft.ts`:59–62 deep-compares
+  the draft against the live server value, so typing a character and deleting it retires the
+  pair exactly as Cancel would. Both behaviours are deliberate and documented in the file's
+  own doc comment — the question is not what it does, but who chose it.
+- **Sources checked:** **Vault — nothing on dirty state as a UI convention.** `../decisions/`
+  (26 notes) has no form-interaction note; the only UI conventions decided so far are post-save
+  navigation and archive-instead-of-delete, both app-wide and both Fouzan Shakil's. Vault-wide
+  grep for `dirty` returns **three hits and no convention**: two are this register's create-prefill
+  entry, one is a pointer to it from `../quotations/gaps.md`:100; the remaining matches are
+  *"quick and dirty"* in payroll transcripts. `apps/web/AGENTS.md` → *Forms* sets failed-submit
+  behaviour (focus the first invalid field, navigate to the offending step) and is **silent on
+  dirty-state affordances** — and a build rule could not settle this anyway.
+- **The same family is already open in this register.**
+  [Create-form prefill from URL query params](#create-form-prefill-from-url-query-params--the-whole-contract-is-unwritten)
+  Q3 asks whether a prefilled value counts as a user edit — *"should prefill mark the form dirty
+  and trip the unsaved-changes guard, so Cancel prompts on a form the user never typed in?"*
+  That is the same underlying question (what counts as a change, and what the UI owes the user
+  once something does) reached from the create side. Both are cheapest to settle **once**, the
+  way post-save navigation was, rather than per module.
+- **Blocked:** sign-off of PR #470; the next screen that needs an in-place editor, which will
+  otherwise copy this from precedent and harden it by repetition.
+- **Owner:** Fouzan Shakil — an internal UI convention, same class as post-save navigation.
+  Worth one line from Melissa McNutt on (a) if operators are the ones expected to discover it.
+
+## One tab, one PATCH — and what the leave guard's Save means when several tabs are dirty
+
+- **Status:** open
+- **Asked:** 2026-09-02 — PR review of merged PR #470 / commit `8b286d84`, branch
+  `feat/asset-tabs-inline-edit`; tcg-scrum escalation. No ticket, so no `spec.md` §12.
+- **Question:** three parts. (a) Is **per-tab independent save** the intent for a sub-category
+  — saving Attributes commits only attributes and leaves pending edits on Substitution still
+  pending, unsaved, with their own Save button? (b) When the leave guard's Save flushes several
+  dirty tabs and one of them fails validation or the API rejects it, the run **stops there**,
+  so the tabs already flushed are committed and the rest are not — **is a partial commit
+  acceptable**, and what should the user be told? (c) Does the Job-detail line *"Each tab saves
+  independently"* apply beyond Job details, or was it only ever about Jobs?
+- **What shipped:** three slices — `template`, `associatedResources`, `substituteSubCategoryIds`
+  — each PATCHing `/sub-categories/:id` with only its own key, which the API applies behind
+  separate `!== undefined` guards, so a rejected slice leaves the other two untouched
+  (`apps/web/src/features/assets/sub-category/hooks/use-sub-category-inline-edit.ts`:66–136,
+  212–248). `saveDirty` (:256–263) runs them **sequentially and returns on the first failure**:
+  `if (attributes.isDirty && !(await attributes.save())) return false;` and so on. That is the
+  partial-commit window in (b).
+- **Not the question:** *sequential rather than parallel* is an engineering choice with a
+  reason stated in the code and the commit message — all three PATCH the same row the API
+  re-reads to build its activity diff, so overlapping writes would race. That needs no product
+  call. What needs one is the **user-visible outcome** when the flush stops half-way.
+- **Sources checked:** **Vault — nothing on save granularity for assets.** This module's
+  [INDEX.md](INDEX.md), [categories-and-sub-categories.md](categories-and-sub-categories.md)
+  (nothing on saving), [user-story-and-tasks.md](user-story-and-tasks.md),
+  [tool-and-rigging.md](tool-and-rigging.md); `../decisions/` — 26 notes, none on save
+  granularity, partial commits or unsaved-changes guards. The **one** written statement of
+  per-tab independence anywhere in the vault is
+  [projects-jobs/project-module/02-view-manage-job-details.md](../projects-jobs/project-module/02-view-manage-job-details.md):58
+  — *"Each tab saves independently — navigating away does not lose unsaved work on another
+  tab"* — `status: unverified`, about the **Job** detail page, and it says nothing about what
+  happens when a multi-tab save fails part-way. That is (c).
+- **Jira:** `SCRUM-823` (Done) *"Add Save Button on All Tabs in Asset Creation"* is the nearest
+  ticket — *"users can save the asset from any tab without navigating to the final step"* — but
+  it is the **create wizard** committing one record from any step, not three independent PATCHes
+  against an existing record. No ticket covers per-slice save or partial-commit behaviour.
+- **Blocked:** sign-off of PR #470; any error-handling design for the leave-guard Save; any
+  reuse of this three-slice shape on another multi-tab detail page.
+- **Owner:** Fouzan Shakil for (a) and (b) as internal conventions; (c) needs whoever owns the
+  Job-details document to say whether that line was meant app-wide — route to TCG via Brian
+  Petros if it is read as product intent rather than a developer's note.
+## Job Type as a dimension of a resource type — pointer, owned by quotations
+
+- **Status:** open — **answer owned by quotations**, per [STRUCTURE.md](../STRUCTURE.md) →
+  *Where a question goes* (spans modules; the module likeliest to own the answer holds it).
+- **Asked:** 2026-09-03 — Brian Petros, Teams message showing FCC's `Maintain → Resources → Resource
+  Types` screen, where a resource type's *Unit/People* and *Estimate* configuration is keyed by
+  **(job type, yard)**, not by the resource type alone.
+- **Why it lands here too:** the asset-side half is real. FCC's resource type is TCG's
+  `SubCategory`, and its *Unit/People* tab is `SubCategoryAssociatedResource` — which today has
+  **no job-type key**, so if job type ships, associated resources gain a dimension.
+- **Concrete already:** `FMS_UNIT_TYPE_EQUIPMENT` (161 rows) and `FMS_UNIT_TYPE_EMPLOYEES` (117)
+  are keyed in FCC by `JobTypeYardID` and were seeded onto `SubCategoryAssociatedResource` **with
+  that key dropped on every row** (`apps/api/fcc-seeder/docs/field-gaps.md:589,610`) — so a
+  migrated tenant cannot show whether two job types differ in *Unit/People*, and rows may have
+  merged. Costed in [quotations/gaps.md](../quotations/gaps.md#fcc-estimate-templates-were-already-extracted--and-the-seeder-flattened-them-to-one-fk).
+- **Read:** [quotations/gaps.md](../quotations/gaps.md#estimate-defaults-per-resource-type--job-type--yard--fcc-has-them-tcg-has-no-job-type-at-all)
+  · source: [quotations/fcc-estimate-templates-by-job-type.md](../quotations/fcc-estimate-templates-by-job-type.md)
+- **Update 2026-09-04 (Project Repository ingest):** the asset-side half now has rows behind it.
+  The 2026-09-02 `03_UnitPeople_Resources` sheet (328 rows) shows the Unit/People requirement
+  **does** differ by job type for 3 of the 17 resource types that have more than one configuration —
+  190 Ton All Terrain, 350 Ton All Terrain, 550 Ton All Terrain w/Mega Wing, each by one tractor or
+  one support load on the mobilisation-bearing configuration — and is identical for the other 14
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §6 → *Does the requirement
+  differ per job type?*). The job-type domain on those configurations is `H` Hourly · `Z` Hourly
+  w/ Mob · `B` Bare · `O` OCCIP/CCIP · *(none)* on 29 of 75 (§6 → *The job-type code list*), and
+  the 42-row unit-type ↔ job-type allow list is transcribed at
+  [fcc-unittype-jobtype-allow-list.md](../payroll/tcg-rawfms-staging-database/data/fcc-unittype-jobtype-allow-list.md).
+  So `SubCategoryAssociatedResource` without a job-type key loses real rows for three
+  sub-categories, not hypothetical ones. Legacy fact; the decision stays with quotations, per the
+  pointer above.
+
+## Nomenclature for the template level — "Resource Type", not "Unit"
+
+- **Status:** open
+- **Asked:** 2026-09-03 — Brian Petros, third Teams message of the day, closing his FCC table map:
+  *"Physical units such as a particular crane/unit code are elsewhere in `FMS_UNITS` and are
+  associated to these Resource Types through the Unit Type configuration… So in the new ERP
+  nomenclature I would explicitly call these **Resource Types**, not Units, to avoid confusing the
+  template with the individual fleet asset."* It corrects his own earlier framing of the FCC
+  *Main* tab as a list of units.
+- **Question:** what does the ERP call the level that FCC calls a Resource Type — the thing a
+  quotation line and a template attach to, as against a physical crane with a unit code? Brian is
+  right about the data; adopting his word is still a decision, because **"resource" is already
+  spent in this codebase on something else**: `QuotationResource` and `JobResource` are line items
+  on a quote or job, and `SubCategoryAssociatedResource` is what a sub-category drags along.
+  Renaming the taxonomy level to *Resource Type* would put three different meanings of "resource"
+  in one schema; leaving it as `SubCategory` keeps a name no client uses. A third option is to use
+  *Resource Type* in the **UI language only** and leave the model names alone.
+- **Sources checked:** [quotations/fcc-estimate-templates-by-job-type.md](../quotations/fcc-estimate-templates-by-job-type.md)
+  §5; [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) (schedule type ≈ Category,
+  unit type ≈ Sub-Category); built state — the FCC seeder maps all 68 `FMS_UNIT_TYPES` rows onto
+  `SubCategory` (`apps/api/fcc-seeder/docs/seed-files-index.md:20`), while the schema *also* carries
+  an unused `UnitType`/`UnitCategory`/`ResourceCategory` trio whose only web surface,
+  `/asset-management/unit-types`, renders "This module is under development".
+- **Note:** whatever is chosen, `UnitType` vs `SubCategory` is a **live duplication** independent of
+  the naming question — two models for one FCC table, one of them unpopulated. Worth settling in
+  the same pass.
+- **Owner:** CodingCops for the model names; TCG (Brian Petros / Dylan Masterson) for the UI word.
+- **Update 2026-09-04 (Project Repository ingest):** more usage evidence, still no decision.
+  (a) **The module owner uses Brian's word unprompted** — Joe, 2026-09-02: *"share with them the
+  pictures of the resource types, which is how the quotes populate currently"*, correcting Brian's
+  *schedule types* to **resource types**
+  ([2026-09-02 sprint demo](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md)
+  item 2). (b) FCC itself is inconsistent: the table is `FMS_UNIT_TYPES`, the Units window's
+  header filter says **Unit Type**, the Components & Tools header and the `Maintain → Resources`
+  menu say **Resource Type(s)**, and the import template's tab is `5. Resource Types`
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *The `Maintain →
+  Resources` menu*, *Components & Tools*; [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md)
+  §7); the client's README states the equivalence outright — *"Resource Type = FMS_UNIT_TYPES… a
+  configuration/template concept, not an individual physical Unit"*
+  ([../quotations/fcc-estimate-templates-by-job-type.md](../quotations/fcc-estimate-templates-by-job-type.md)
+  §7). (c) One more collision to weigh: FCC's *Resources* menu covers Units, Components & Tools,
+  Customer Owned Units and Resource Types alike, so in the client's vocabulary "resource" already
+  spans the physical and the template level. Still needs the decision the entry names — model
+  rename, UI-only, or leave as is — and the `UnitType` / `SubCategory` duplication.
