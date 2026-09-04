@@ -57,7 +57,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   42:17), which is the thing Lisette said helps her.
 - Blocked: `SCRUM-784` (Done) may need reverting; the DAS jobs panel layout.
 - Owner: Lisette Anzaldo (dispatch/DAS — she stated the preference and is the user of the panel).
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps.md#jobs-panel-views-lisettes-stated-preference-was-removed-without-her](../gaps.md#jobs-panel-views-lisettes-stated-preference-was-removed-without-her)
 
 ## Requested vs dispatched resources — Melissa stated it, the vault still says the opposite
@@ -98,8 +98,34 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Blocked: `projects-jobs/project-module/02-view-manage-job-details.md:50` is actively misleading for any
   spec written against it; the job Resources tab; `SCRUM-580` (Done, on unconfirmed intent).
 - Owner: Melissa McNutt (stated it), with Lisette Anzaldo (the dispatcher whose edit right it is).
-- Status: open — needs confirmation
+- **Status:** open — needs confirmation
 - **From (frozen original):** [gaps.md#requested-vs-dispatched-resources-melissa-stated-it-the-vault-still-says-the-opposite](../gaps.md#requested-vs-dispatched-resources-melissa-stated-it-the-vault-still-says-the-opposite)
+- Update 2026-09-04 (Project Repository ingest): three sources bear on it; none is a decision.
+  (a) The client's own review log, 2026-05-05 extraction
+  ([erp-review-log.md](../erp-review-log.md) → *Quotations, jobs and projects*): *"the quote must
+  remain static after signature — job information may change later without modifying the signed
+  quote"*, and the job *"inherits quote data as a starting point, then allows operational updates
+  (site contact, PO, entrance instructions, actual units)"*. That is the same intent as Melissa's
+  *"we don't re-quote"*, on record three weeks earlier — but it puts the editable record on the
+  **job** (its "actual units"), not on a separate dispatch-view record, and it is an unverified
+  AI extraction of a meeting the client marked "for reference only". (b) TCG's own playbooks
+  treat substitution as routine: sales hands over a *requested crane* plus **two alternate crane
+  options** ([projects-jobs/scheduling/ready-to-schedule.md](../projects-jobs/scheduling/ready-to-schedule.md)
+  *Crane*; [dispatch-value-engine-and-playbooks.md](dispatch-value-engine-and-playbooks.md) *Get
+  Required Info*), and the confirmation procedure's worked example is *"a 90-ton job with a 265-ton
+  assigned"* — *"verify the crane size requested against the crane size assigned"*, then the travel
+  permit and extra loads ([confirmations-playbook.md](confirmations-playbook.md) §6). So the
+  requested/assigned distinction is real in practice, and a substitution re-opens permit and
+  configuration. (c) FCC fact — evidence of current practice, not a TCG decision: `FMS_JOB_UNITS`
+  carries both `UnitTypeID` (the role, *"the role that resource is taking on the job"*) and
+  `UnitCode` (the specific unit) on the same job-unit row
+  ([stg.FMS_JOB_UNITS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_JOB_UNITS_Raw.sql)
+  lines 4–5; [fcc-nexgen-dispatch-guide.md](fcc-nexgen-dispatch-guide.md) §3), and FCC's stated
+  best practice is to leave the specific Resource blank *"until close to job execution"* — one
+  editable job row, no frozen copy; the quote header carries a `Converted To Job` field. Still
+  needs the client: whether the frozen record is the **quotation** (review log) or the job's
+  Resources tab (as built, and as `02-view-manage-job-details.md:50` contradicts), and Melissa's
+  one-line confirmation of the two-record rule.
 
 ## Schedule fields — the build already agrees, and the new fields are written nowhere
 
@@ -150,8 +176,40 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   should be corrected (a body edit — not `tcg-scrum`'s to make).
 - Owner: Brian Petros (labelled speaker, and already named as owner of the sell-side workflow source
   files), with Ryan Adams to resolve the attribution; Lisette Anzaldo for the DAS consequence.
-- Status: open
+- **Status:** open
 - **From (frozen original):** [gaps.md#schedule-fields-the-build-already-agrees-and-the-new-fields-are-written-nowhere](../gaps.md#schedule-fields-the-build-already-agrees-and-the-new-fields-are-written-nowhere)
+- Update 2026-09-04 (Project Repository ingest): the artefact the 08-11 recording was describing
+  has arrived — `Job Schedule Master.xlsx`, filed as *"from Ryan 2026-08-11"*, live-dated
+  2026-08-11 09:20
+  ([projects-jobs/scheduling/job-schedule-master-workbook.md](../projects-jobs/scheduling/job-schedule-master-workbook.md)).
+  It settles three sub-points as a matter of record and reopens one; it is a spreadsheet's
+  convention, not an ERP requirement. (a) The status list is exactly `Scheduled · Saved ·
+  Tentative · Hold · Canceled · Maintenance` (`Lists` sheet) — **"saved" is a real status, not a
+  mis-transcription**; the parenthetical above is wrong. The same six values, plus `DISPATCHED`,
+  drive the Crane Scheduling Board in
+  [quotations/sales-reporting-workbooks.md](../quotations/sales-reporting-workbooks.md) §3, whose
+  `Metrics` sheet defines `Tentative` and `Hold` as pipeline "placeholder" states. (b) The
+  per-crane/day fields are `Status · Customer / Job # · Job Location / Notes · Salesperson ·
+  Sales Admin · City · Start Time · Scheduled Hours · Support Trucks` plus the permit columns —
+  the recording's list, with a **`Sales Admin`** dropdown where the transcript says "sales
+  coordinator" (whether those are one role is not stated). (c) Availability, stated on the
+  `HOW TO USE` sheet: *"Scheduled, Saved, Tentative, Hold, and Maintenance are treated as
+  unavailable; blank or Canceled is available"* — Maintenance is a **status on the crane/day**,
+  not an asset state, and Hold blocks the crane. (d) **Contradiction with the recording:** the
+  board's unit of booking is one crane × one calendar day with a single status cell and no
+  time-of-day slot, so the model cannot hold two jobs on one crane in one day — the *"2 jobs in
+  one day with the same crane"* the speaker wanted is not what the sheet does. On attribution:
+  the file's provenance is Ryan's folder, consistent with the pair row's *"Ryan wants…"*; it does
+  not settle the speaker label. FCC facts, evidence of practice not decisions: NexGen's job
+  status has `T` Tentative but no Hold and no Maintenance
+  ([fcc-job-status-type-and-department-codes.md](../payroll/tcg-rawfms-staging-database/data/fcc-job-status-type-and-department-codes.md));
+  maintenance is a separate *Unit Down Time* record shown on the Unit Schedule only;
+  `FMS_JOB_MASTER` holds `SpersonCode`, `TakenID`, `CheckID` and no coordinator field; and an
+  overlapping booking raises an **advisory, overridable, per-unit-suppressible** violation
+  ([fcc-nexgen-dispatch-guide.md](fcc-nexgen-dispatch-guide.md) §4, §7). Still needs the client:
+  whether the six statuses and Salesperson / Sales Admin / Scheduled Hours are ERP requirements or
+  the sheet's own conventions; same-day reuse of a crane (the sheet says no, the speaker said
+  yes); and whether the :43 warning still fires once maintenance is hard-blocked — no source says.
 
 
 ## Crane configuration — is a support load an Asset, or a line on the crane?
@@ -265,6 +323,43 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   telematics source. `gps` returns zero hits across API, web and mobile.
 - **Sources checked:** `crane-configurations.md`, `schema.prisma` (`JobTicket` timeline
   stamps), grep across `apps/`.
+- **Update 2026-09-04 (Project Repository ingest):** four pieces of evidence, no decision.
+  (a) **Which times TCG already checks against GPS, on paper:** the printed daily log
+  (`HR_PAYROLL - Daily Log and Timesheet.pdf`, read 2026-09-04) closes with a boxed *"BELOW SECTION
+  FOR OFFICE USE ONLY"* block carrying **`GPS Tracker Depart for job site time`** and **`GPS Tracker
+  Arrive at yard time at the end of the day`**, written by hand beside the employee's own times
+  ([../field-ops/field-paper-forms.md](../field-ops/field-paper-forms.md) §3, item 5). A
+  client-authored form: today's practice reconciles two device times — leave-yard and
+  return-to-yard — and the office, not the employee, does it. That is practice, not a statement of
+  which time Melissa's checkbox means. (b) **What FCC records — system facts, not TCG decisions:**
+  every ticket stamp exists three ways (local, `…UTC`, `…TZ`) plus an `…Orig` copy of each —
+  `YardOut`, `YardIn`, `TimeStart`, `TimeEnd`, `LeftJob`, `ArrivedJob`, `StartWorkTime`,
+  `EndWorkTime` — with one free-text `TimeChangeJustification` and a `PostedToGeoTab` bit
+  (`../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_JOB_TICKET_Raw.sql:75-134`). FCC preserves
+  the original stamp and the reason for an edit; **no column asserts that a stamp was verified
+  against a position**, and nothing in the ingest says what `PostedToGeoTab` does. GPS enters FCC
+  only as per-unit telemetry rows — `Source = GPS`, `Latitude`/`Longitude` *"can only be populated
+  by a GPS interface"*, read-only, auto-associated to a job by date range
+  ([fcc-nexgen-dispatch-guide.md](fcc-nexgen-dispatch-guide.md) §3 *Telemetry*) — and for the
+  cranes with a support vehicle the device sits on the tractor, not the crane (Brian, 2026-08-26
+  sprint review 18:49). (c) **The one bound TCG has put on "verified":** in the 2026-06-16 field-app
+  demo Corrina asked whether the GPS card should show to the field *"since we're technically not
+  supposed to use that for time and pay"*; Wes: *"we can't use it for any sort of… getting him in
+  trouble, but we're… showing him that we know the exact time"*; Melissa: *"fine for now… might keep
+  him accountable"* (`../meetings/transcripts/2026-06-16-field-ops-mobile-app-demo.md:114-121`).
+  GPS as **display and accountability, not the pay-time source** is the only stated limit. Related
+  but distinct asks on the record: Corrina wants GPS to auto-verify short/long subsistence
+  (2026-06-09 payroll demo 57:41-58:00; Joe: against the **permitted** route, 59:17); Wes, Ehtesham
+  and Kyle agreed a Samsara vicinity check could flag the wrong unit leaving the yard (2026-07-07
+  36:09-36:57); Melissa wants end-job to *"engage the GPS"* and update the dispatch board live
+  (2026-08-12 sprint review 44:57). None of these is the 2026-04-18 checkbox. (d) TCG's Samsara
+  facts — used by dispatch, payroll, accounting and safety; FCC pulls mileage via API; accuracy poor
+  enough that Maintenance keys mileage by hand
+  ([../admin/responsive-design-and-security-posture.md](../admin/responsive-design-and-security-posture.md)
+  Part 3). **Still needs the client:** which stamp(s) the checkbox covers, whose device, and whether
+  it is a dispatcher's attestation or a system comparison — the paper form points at leave-yard and
+  return-to-yard checked by the office, but nobody has said so for the ERP.
+- **Update 2026-09-04, from the record** (computed the same day from `stg.FMS_JOB_TICKET_Raw` in the restored 2026-06-23 backup): the `PostedToGeoTab` flag is **0 on all 9,070 tickets dated 2025 or later** — a vendor column TCG never used, so it is not evidence of a second telematics provider and not a place where any GPS verification was ever recorded. FCC holds no GPS-derived time; whatever "verified by GPS" means, it has no legacy precedent in the ticket table.
 
 ## Default crew per unit, overridable per job
 
@@ -294,3 +389,29 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (transcript 40:45–53:18). Related: the sub-category association chain demoed in the same call —
   100 ton crane → oiler + operator load → tractor → operator/rigger, with optional members
   removable on the quotation — which is the built answer to *what* goes out, not *who does what*.
+- **Update 2026-09-04 (Project Repository ingest):** the legacy system has no standing crew per
+  unit, and the client keeps one by hand — evidence of practice, not a decision. (a) **FCC — system
+  facts:** the unit master `stg.FMS_UNITS_Raw` carries no employee, operator or crew column (all 160
+  columns checked; `SpersonCode` is its only person reference). The crew binding lives on the
+  **job**: `stg.FMS_JOB_UNITS_Raw` has `EmpID`, `EmpIDOiler` and `JobEmpID` per unit row, and
+  `stg.FMS_JOB_EMPLOYEES_Raw` has `UnitCode` + `PrimaryResource` per employee row
+  (`../payroll/tcg-rawfms-staging-database/ddl/`). FCC's only default mechanism, *Unit Type
+  Defaults*, injects employee **types** (Operator, Oiler…) per unit type, not named people
+  ([fcc-nexgen-dispatch-guide.md](fcc-nexgen-dispatch-guide.md) §9), and the v2.2 guide's stated
+  best practice is to leave the named `Resource` blank *"until close to job execution to reduce the
+  number of changes"* (§3). Job `OM55127` shows the result — operator, oiler and two 3rd Men named
+  on the job's Resources tab
+  ([../quotations/fcc-billing-data-and-price-lists.md](../quotations/fcc-billing-data-and-price-lists.md)
+  §4). (b) **Client statements of practice, all older than the ingest:** Lisette, 2026-02-27 demo
+  37:25 — *"the operators are also assigned to the cranes"* on her sheet; Melissa, 2026-05-19 42:09
+  — operator + oiler are *"their main crew"*, who pre/post-trip *"their crane, their assigned truck,
+  and their assigned trailer"*; Ryan, 2026-03-24 27:40 — *"a lot of the operators are operating the
+  same cranes"*. The dispatch sheet holds it as an `OPERATOR` cell per crane row, overwritten with
+  `Open` (needs cover) or `Down` ([dispatch-sheet-workbook.md](dispatch-sheet-workbook.md) §4), and
+  Lisette's *Set Schedule / Assigned Equipment* playbook re-checks *"assigned jobs to operators,
+  journeyman and apprentices"* with the superintendent before tickets go out
+  ([dispatch-value-engine-and-playbooks.md](dispatch-value-engine-and-playbooks.md) §4) — assignment
+  is re-confirmed per day, not read from a master. **Still needs the client:** whether the ERP should
+  hold a named default per unit (and whether `EmployeeAsset` is that record or an ownership link),
+  who maintains it, and what overriding it on one job does to the default. Lisette has still not
+  been asked.

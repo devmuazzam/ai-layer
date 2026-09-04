@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-09-03
+updated: 2026-09-04
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -115,6 +115,32 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** asset-master migration from FCC (whether such rows exist there is itself unknown).
 - **Owner:** TCG owners, via Brian Petros; CodingCops to check the FCC extract for any ownership
   flag before the meeting.
+- **Update 2026-09-04 (Project Repository ingest):** the term now has a referent — it is FCC's
+  own entity, and what follows is **legacy-system fact, not a TCG decision**. FCC `Maintain →
+  Resources → Customer Owned Units` is a window separate from Units, keyed by **Serial Number/VIN**
+  rather than a unit code, with a **Customer** lookup, a read-only customer block, tabs Main ·
+  Activities · Comments · Parts · Meter, and its own unit-level file-links dialog
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *Customer Owned
+  Units (slides 20–24)*; [../field-ops/fcc-nexgen-service-guide.md](../field-ops/fcc-nexgen-service-guide.md)
+  → *Customer Owned Units*). What they are for: a work order's `Unit Owner` defaults to Company and
+  may be set to Customer, *"in which case `Unit Code` becomes `Serial Number/VIN`"* (service guide
+  §2), and a work-order quote carries the same `Unit Owner` dropdown
+  ([../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md) → *Work Order
+  Quotes*) — i.e. customer machines TCG's shop repairs, the work the `CR` Customer Repair
+  department (created 2025-08-13, one unit in it) exists for
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §4). Labour rows can point
+  at one: `CustUnitCode varchar(30)` on
+  [ddl/stg.FMS_LABOR_PAYROLL_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_LABOR_PAYROLL_Raw.sql):8.
+  Row counts disagree by source — **79** in the 2026-07-02 production schema inventory (units page
+  §8), **12** in the `NexGenFMS-Test` extract brief. Two things are *not* this:
+  `FMS_UNITS.OwnedOrRent` ([ddl](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_UNITS_Raw.sql):141)
+  is TCG's own fleet owned-vs-rented, and FCC Storage's *"customer-owned items in the yard"*
+  ([../dispatch/fcc-nexgen-dispatch-guide.md](../dispatch/fcc-nexgen-dispatch-guide.md) → *Storage*)
+  are stored goods, not units. Brian did not yet know the answer himself on 2026-08-26 — *"I check
+  with Joe on the customer owned assets… what that's about"*
+  ([transcript](../meetings/transcripts/2026-08-26-erp-sprint-review.md) @ 58:11). Still needs the
+  client: whether the ERP carries a customer-unit entity at all (shop work orders are unscoped) and
+  whether the 79 rows migrate.
 
 ## Unit / asset certifications — registrations, insurance, loan, maintenance, permits
 
@@ -132,6 +158,41 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** asset detail design; any expiry-reminder feature beyond permits.
 - **Owner:** TCG (Dylan Masterson for yard/units, Brian Petros for the list), CodingCops to
   bring the FCC field inventory.
+- **Update 2026-09-04 (Project Repository ingest):** FCC's own answer to "which of these are one
+  family" is now on record — as legacy fact, not a TCG decision. (a) **Registration, inspection
+  and maintenance are one mechanism**: interval-bearing activities on the master activities list,
+  with `Activity/Certification` = *Certification* for the compliance ones — `ACA` Annual Crane
+  Certification (12 months), `QUAD` Quadrennial Inspection (48), `REG` Registration (DMV) (12),
+  `SMG` Smog (24), `TRAILER REGISTR` Trailer Registration (60), `ANNINS` Annual Crane Inspection
+  (12) — each with a `Certification Type` and a *Do not Prompt when Certificate is Expired* flag,
+  tracked last/next per unit on its Activities tab with next-due computed from last-done plus
+  interval ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *Master
+  Activities List*, *Activities (slide 6)*; columns `ActivityType`, `CertificationType`,
+  `DontPromptExpCert` in
+  [ddl/stg.FMS_ACTIVITIES_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_ACTIVITIES_Raw.sql)).
+  (b) **Insurance, licence and loan are unit attributes, not activities**: `Insured bit`,
+  `InsuranceValue`, `InsureStartDate`, `InsurancePeriod`, `ResidualInsureAmt`; `License`,
+  `StateCode`, `LicenseExpiry`; `MonthlyPayment` — the only loan field, Lender / Interest Rate /
+  Maturity / Balloon do not exist — plus `WarrantyExpDate`
+  ([ddl/stg.FMS_UNITS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_UNITS_Raw.sql);
+  the deck's *Buy/Sell Info* tab). (c) **Permits are not on the unit** in FCC — `FAA`, `SP`, `TP`
+  are schedule types sold per job (units page §1) and *Travel Permit – 120 Ton and above* is a
+  resource type. (d) The employee side already reaches units: `FMS_CERTIFICATES.CertificationType`
+  has a `U` = Unit value and a `UnitCertificateType` column
+  ([../payroll/fcc-employee-master-reference-data.md](../payroll/fcc-employee-master-reference-data.md)),
+  and the service guide states *"A Certification Type is used to constrain an Activity to an
+  individual based on their role"*
+  ([../field-ops/fcc-nexgen-service-guide.md](../field-ops/fcc-nexgen-service-guide.md) §1).
+  (e) The client's list predates Brian's message — Kyle Harlow, 2026-03-24 @ 24:15: *"insurance,
+  registration, quad and annual… service manual, operator's manual, load charts… a lot of those
+  are on a time basis, so you have to upload them again… customers request the quad, the annual
+  and the last 90 day inspection"*
+  ([transcript](../meetings/transcripts/2026-03-24-tcg-cc-product-sync-demo.md)); the crane pre-trip
+  checkpoints *Crane Annual and Quad Certification Stickers* and *Compliance: Registration / Tags /
+  Annual Permits* show the same set verified daily
+  ([fcc-checklist-templates.md](../payroll/tcg-rawfms-staging-database/data/fcc-checklist-templates.md)).
+  Still needs the client: the ERP's type list, which items carry an attachment with expiry and
+  reminder, and whether FCC's activity model is the pattern to keep.
 
 ## Schedule types include non-equipment — does a TCG Category?
 
@@ -147,6 +208,27 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** `assets/fcc-units-and-schedule-types.md`,
   `dispatch/crane-configurations.md`, `schema.prisma` (`Category`, `SubCategory`,
   `Permit`, `Plan`).
+- **Update 2026-09-04 (Project Repository ingest):** FCC's data already separates the two populations,
+  and two TCG statements this week bear on the question. (a) `FMS_SCHEDULE_TYPES.Schedules` is `0`
+  on exactly `LP`, `SP`, `TP` — Lift Plan, Street Permit and Travel Permit are billable but never
+  scheduled; every other type including `FAA` is `1`; `UnitOrComponent` is `U` on all 25 and the
+  import template's domain for it is **U Unit · C Component · T Tool**
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §4, §7). So FCC's answer to
+  "is a permit a unit?" is *a schedule type flagged not-schedulable*, and the non-machine rows
+  still sit on the Resource Types Main tab — *Travel Permit – 120 Ton and above* under Travel
+  Permit, *Spreader Bar* under `Yard`
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *Resource Types
+  (slides 25–28)*). Legacy fact, not a decision. (b) The load half of the question is decided:
+  [../dispatch/gaps.md](../dispatch/gaps.md) → *Crane configuration — is a support load an Asset*
+  was **resolved 2026-09-03 — an Asset** (own unit code, allocatable, counts for utilisation), so
+  non-machine Assets already exist by decision. (c) Joe, 2026-09-02, on what should template from a
+  resource type: *"the additional items like the riggers, we can add them specific to the job. We
+  don't want that to populate"*
+  ([2026-09-02 sprint demo](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md)
+  item 2) — the module owner saying Rigger and Signalman is per-job, not part of a crane's
+  template; not a statement about whether it is a Category. Still needs the client: whether TCG's
+  Category set carries the paperwork types (LP / SP / TP / FAA) or `Permit` / `Plan` stay separate
+  entities, and whether a schedulable flag on Category is the mechanism.
 
 ## Create-form prefill from URL query params — the whole contract is unwritten
 
@@ -219,6 +301,28 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   test catalog** (0 rows, per `apps/api/fcc-seeder/docs/seed-files-index.md`), so the legacy system
   holds no answer either. [dispatch/crane-configurations.md](../dispatch/crane-configurations.md)
   — describes counterweight loads per crane, not tools.
+- **Update 2026-09-04 (Project Repository ingest):** two sources bear on it; neither delivers the
+  kit. (a) An older transcript this entry had not reached answers the "does the ERP need it" part
+  with client statements — 2026-05-07 @ 50:46–53:23
+  ([transcript](../meetings/transcripts/2026-05-07-loading-and-project-module-overview.md)). The
+  answer on whether the standing kit should display (labelled *Brian Petros* in the transcript;
+  Ehtesham addresses it to Dylan): *"basic rigging that's already on there. It doesn't need to
+  display here"*, and on tracking it: *"I am not… we know off the top what they have"*. Wes Staley:
+  *"We can reach out to Leo and to Rich. They're building out each crane and all the components on
+  the 1st and 2nd loads. So we can give that information to Ehtesham"* and *"We have not done a
+  good job of making sure we know what's on each crane all the time… we definitely need that"*.
+  Ehtesham: *"once you guys have that information, send it over and we are going to create this
+  permanent section and then we can create rules"* — the *"already exists on assigned crane"*
+  warning in [tool-and-rigging.md](tool-and-rigging.md) Story 1 is this exchange. So the kit was
+  **promised as a per-crane inventory built by Leo and Rich, per load (1st / 2nd)**, and no drop
+  through 2026-09-04 contains it. (b) FCC has the model and never used it: a Components & Tools
+  record carries **Assigned Unit Code** (plus Category `Component` / `Tool`, serial, image, QR, a
+  scan log with geofence) — a tool is pinned to a unit as its own record, not as a unit attribute
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *Components &
+  Tools*); `FMS_UNIT_COMPONENTS` (51 columns) and `FMS_TOOLS` are **empty**
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §8). Legacy fact, not a
+  decision. Still needs the client: the kit list itself (Leo / Rich), per crane or per class, and
+  whether "does not need to display" or "we definitely need that" is the product rule.
 
 ## Loading list — quantity, sets, and sizes are underspecified for a schema
 
@@ -239,6 +343,26 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   says nothing about quantity type or set granularity; Story 5 — *"Each tool displays live status
   counters Total, In use and available"* assumes a countable quantity without defining it.
   No `decisions/` note touches tool quantity.
+- **Update 2026-09-04 (Project Repository ingest):** evidence on (a) and (c), none on (b). (a)/(c)
+  **The Boscaro bar's capacity depends on how it is assembled** — Kyle Harlow, 2026-04-07 @ 52:56:
+  *"the Bosco bars have so many options and the capacity changes on the configuration… the Bosco
+  kit bar can be used from 100 tons right to only good for 15. It depends on how you put it
+  together"*; Wes @ 52:25: *"we may have 5 spreader bars can lift 10,000 lbs, one that can lift
+  20"*; Melissa @ 53:48 proposed *"configurations for rigging… the Bosco bar would have
+  configuration one which gives you X capacity"* and Ehtesham said it could be built
+  ([transcript](../meetings/transcripts/2026-04-07-dispatch-scheduling-figma-demo.md)). So the `N/A`
+  is consistent with a **kit whose pieces assemble into different bars** rather than a bulk or
+  consumable item — a client description of the physical thing, not a modelling decision. (c) FCC's
+  practice also puts size in the name: its mobile tool list under *Rigging Components* reads
+  `14' Spreader Bar · Crosby Shackles - 1" · D Ring 1/2 · D Ring 3/4 · 1"X20' Wire Rope Slings`,
+  with a free-text **Size/Comments** and **Qty Out / Qty In** per tool
+  ([../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md) → *Tools on
+  mobile*), while its Components & Tools master is **one record per physical piece** with serial
+  number and QR ([asset-record-requested-additions.md](asset-record-requested-additions.md) →
+  *Components & Tools*) — and `FMS_TOOLS` and `FMS_UNIT_COMPONENTS` are both empty, so FCC never
+  exercised either shape. Legacy fact, not a decision. Still needs the client: set-vs-piece
+  tracking (b), and whether a Boscaro configuration is a tool record, a size attribute, or a
+  capacity table.
 
 ## Loading order — is the sequence a per-yard constant or per-job
 
@@ -256,6 +380,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   or sequence**; Story 5 likewise. No meeting transcript in `meetings/` states a load order rule —
   checked the six loading-related transcripts (2026-04-14, 2026-05-07, 2026-05-12, 2026-05-14,
   2026-07-01, 2026-04-30).
+- **Update 2026-09-04 (Project Repository ingest):** the yard's own written process is now in the
+  vault and it carries **no item sequence**: the daily loading list is per job — *job number · unit
+  going and how many loads · required rigging · leave time* — written down and sent to two chats,
+  with *leave time* as the scheduling key
+  ([../dispatch/daily-loading-value-engine.md](../dispatch/daily-loading-value-engine.md) §1).
+  Neither that value engine nor FCC's tool screens (Qty Out / Qty In, no order column —
+  [../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md) → *Tools on
+  mobile*) says whether Dylan's 1–26 is a catalog constant or per-loadout. Evidence of absence only;
+  still needs Dylan.
 
 ## Sub-category names — unique per tenant, and does an archived one keep its name reserved?
 
@@ -386,6 +519,16 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** nothing today; the dedup migration renames rows on staging, where the data is
   test data. It would block any rename of a real tenant's catalog.
 - **Owner:** engineering, with product input on the orphaned-plan behaviour.
+- **Update 2026-09-04 (Project Repository ingest):** evidence on (a) only, and legacy fact rather
+  than a decision. FCC's unit import contract identifies the sub-category level by its name: *Resource
+  Type — a `Resource Description` from the Resource Types tab* is a required field, the import
+  template's validation resolves it against that tab, and the tab itself carries no ID column —
+  *"a resource type is defined by its description, not by an ID — the ID is FCC-generated"*
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §7 and the validation
+  section). The Resource Types tab is one flat list across every schedule type (§6), so the scope
+  in which a description has to identify a resource type is the whole catalogue, not the parent
+  schedule type. Nothing in the drop shows a retired resource type's name being reused, so (b) is
+  untouched.
 
 ## Duplicate sub-category name — inline field error or toast only?
 
@@ -456,6 +599,23 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (a)–(c) remain open. **Engineering fix on main:** `normalizeAssetPayloadForSubmit` now trims
   `name` and stores `null` when cleared (matching date/money normalization), so main create/edit
   no longer persist empty strings. Mobile `name` surfacing and test coverage still open.
+- **Update 2026-09-04 (Project Repository ingest):** FCC's record on all three parts, as legacy
+  fact. (a) **Required in FCC**: `FMS_UNITS.UnitName varchar(60) NOT NULL`
+  ([ddl/stg.FMS_UNITS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_UNITS_Raw.sql):4),
+  and the import contract lists *Description — up to 60 characters* among the fields **required to
+  create a unit** ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §7) — so
+  every migrated unit has one, and nullable-with-no-backfill is TCG's departure, not FCC's.
+  (b) **Non-unique in FCC**: the deck's Unit Location History example is `26503.1` — *"265 Ton
+  Support Load"*, the same name the workbook gives `26502.1` / `.2` / `.3`
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *The nine lookups*,
+  slide 38). (c) **FCC itself uses two words for one field**: the column is `UnitName`, the label
+  on the Units Main tab is **Description** (*Unit Code · Description · Company/Owner …*), and the
+  import template calls it Description; the client's own workbook heads it *Unit name*
+  ([../dispatch/crane-configurations.md](../dispatch/crane-configurations.md) §1) — *Asset Name*
+  appears in no client source. **Engineering note:** the FCC seeder already lands `UnitName` in
+  `Asset.description`, not `name` (`apps/api/fcc-seeder/src/extract-seed-files.ts:206`), so
+  migrated units will show a blank name column until that mapping is decided. Still needs the
+  client: whether TCG keeps FCC's required-on-create rule, and the UI word.
 
 ## Feet-inches fields save a bare separator when inches are empty
 
@@ -480,6 +640,16 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   states a storage format for asset dimensions.
 - **Note:** worth checking whether the same control is used on any field that *is* parsed
   downstream before deciding the fix — the format may be load-bearing somewhere.
+- **Update 2026-09-04 (Project Repository ingest):** the migration source has no serialised format
+  to preserve — FCC stores every dimension as **two columns**: `VehicleWidthFt numeric(9,2)` +
+  `VehicleWidthIn smallint`, likewise Height, Length and Gage, and `JibLengthFt smallint` +
+  `JibLengthIn smallint`, with `BoomLength` alone a single `varchar(14)`
+  ([ddl/stg.FMS_UNITS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_UNITS_Raw.sql):36–46);
+  the import template carries them as separate 3-character feet and inches fields and the Units
+  screen shows Ft + In pairs ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md)
+  §7; [asset-record-requested-additions.md](asset-record-requested-additions.md) → *The Units
+  window*). So `feet|inches` vs `"N ft M in"` is TCG's choice alone, and whichever wins the seeder
+  composes it from two source columns. Legacy fact, not a decision.
 
 ## The cascading resource picker may now show an incomplete tree — is that acceptable?
 
@@ -733,6 +903,19 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   merged. Costed in [quotations/gaps.md](../quotations/gaps.md#fcc-estimate-templates-were-already-extracted--and-the-seeder-flattened-them-to-one-fk).
 - **Read:** [quotations/gaps.md](../quotations/gaps.md#estimate-defaults-per-resource-type--job-type--yard--fcc-has-them-tcg-has-no-job-type-at-all)
   · source: [quotations/fcc-estimate-templates-by-job-type.md](../quotations/fcc-estimate-templates-by-job-type.md)
+- **Update 2026-09-04 (Project Repository ingest):** the asset-side half now has rows behind it.
+  The 2026-09-02 `03_UnitPeople_Resources` sheet (328 rows) shows the Unit/People requirement
+  **does** differ by job type for 3 of the 17 resource types that have more than one configuration —
+  190 Ton All Terrain, 350 Ton All Terrain, 550 Ton All Terrain w/Mega Wing, each by one tractor or
+  one support load on the mobilisation-bearing configuration — and is identical for the other 14
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §6 → *Does the requirement
+  differ per job type?*). The job-type domain on those configurations is `H` Hourly · `Z` Hourly
+  w/ Mob · `B` Bare · `O` OCCIP/CCIP · *(none)* on 29 of 75 (§6 → *The job-type code list*), and
+  the 42-row unit-type ↔ job-type allow list is transcribed at
+  [fcc-unittype-jobtype-allow-list.md](../payroll/tcg-rawfms-staging-database/data/fcc-unittype-jobtype-allow-list.md).
+  So `SubCategoryAssociatedResource` without a job-type key loses real rows for three
+  sub-categories, not hypothetical ones. Legacy fact; the decision stays with quotations, per the
+  pointer above.
 
 ## Nomenclature for the template level — "Resource Type", not "Unit"
 
@@ -761,3 +944,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the naming question — two models for one FCC table, one of them unpopulated. Worth settling in
   the same pass.
 - **Owner:** CodingCops for the model names; TCG (Brian Petros / Dylan Masterson) for the UI word.
+- **Update 2026-09-04 (Project Repository ingest):** more usage evidence, still no decision.
+  (a) **The module owner uses Brian's word unprompted** — Joe, 2026-09-02: *"share with them the
+  pictures of the resource types, which is how the quotes populate currently"*, correcting Brian's
+  *schedule types* to **resource types**
+  ([2026-09-02 sprint demo](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md)
+  item 2). (b) FCC itself is inconsistent: the table is `FMS_UNIT_TYPES`, the Units window's
+  header filter says **Unit Type**, the Components & Tools header and the `Maintain → Resources`
+  menu say **Resource Type(s)**, and the import template's tab is `5. Resource Types`
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) → *The `Maintain →
+  Resources` menu*, *Components & Tools*; [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md)
+  §7); the client's README states the equivalence outright — *"Resource Type = FMS_UNIT_TYPES… a
+  configuration/template concept, not an individual physical Unit"*
+  ([../quotations/fcc-estimate-templates-by-job-type.md](../quotations/fcc-estimate-templates-by-job-type.md)
+  §7). (c) One more collision to weigh: FCC's *Resources* menu covers Units, Components & Tools,
+  Customer Owned Units and Resource Types alike, so in the client's vocabulary "resource" already
+  spans the physical and the template level. Still needs the decision the entry names — model
+  rename, UI-only, or leave as is — and the `UnitType` / `SubCategory` duplication.

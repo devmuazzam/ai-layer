@@ -1,8 +1,8 @@
 ---
 title: E-ticket worked example — job 45954, every checklist a real ticket carries
-source: client-message/Melissa McNutt — "Job E-Ticket Checklist - 45954" supplied 2026-08-31
+source: client-message/Melissa McNutt — "Job E-Ticket Checklist - 45954" supplied 2026-08-31; cross-checked 2026-09-04 against shared-folder/Project-Repository-2026-09-04/1.0.1_BUSINESS-REQUIREMENTS/job ticket - time card - equipment checklists/ (ticket 44944)
 migrated: 2026-09-01
-updated: 2026-08-31
+updated: 2026-09-04
 status: unverified
 conflicts_with: []
 jira: []
@@ -16,6 +16,17 @@ PDF: [assets/2026-08-31_job-e-ticket-checklist-45954.pdf](assets/2026-08-31_job-
 Air Boss Mechanical, 28365 Constellation Rd Valencia, worked 2026-06-10 with crane `10003`.
 Melissa supplied it as *"a sample of the pre-trip"* alongside the quote in
 [quotations/quote-terms-and-rate-card.md](../quotations/quote-terms-and-rate-card.md).
+
+> **A second completed ticket arrived in the 2026-09-04 Project Repository drop.**
+> [e-ticket-worked-example-44944.md](e-ticket-worked-example-44944.md) is ticket **44944** —
+> Southern California Edison, 2026-05-12 — and it is the **complete three-part set**: the
+> customer-facing e-ticket, the checklist report, *and* the internal **Labor & Unit Details**
+> report, which this page does not have. Read that page for the union code, craft code, craft
+> modifier, and the two parallel time records (`As recorded for the customer` vs `As recorded by
+> the workflow`). It **corroborates every structural observation below** on a different crane, crew
+> and customer — including the four-versus-one lunch-slot difference in §5, which now looks like a
+> template difference rather than drift. The FCC feature behind each of these sections is
+> documented in [fcc-e-ticket-and-atom-guides.md](fcc-e-ticket-and-atom-guides.md).
 
 The FRD already specifies pre-trip behaviour —
 [fr-fop-009-pre-trip-checklist.md](frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md)
@@ -114,6 +125,11 @@ Then:
 omits items 10–12 entirely. Whether lunch-slot count varies by unit type or the two templates
 have simply drifted is unknown — registered in [gaps.md](gaps.md).
 
+_Added 2026-09-04:_ **ticket 44944 shows exactly the same split** — crane `10002` has four lunch
+slots, tractor `AT25` has one and omits the same rows. Two independent tickets, two months apart,
+with different units. Drift on a single ticket is no longer the likely explanation; which template
+is intended is still unanswered.
+
 ## 6. Job-level checklists sit alongside unit checklists
 
 - **`Job Checklist - JSA 12.18.25`** — a Job Safety Analysis, 6 items, dated in its own title
@@ -132,3 +148,8 @@ it is one of the tables absent from the migration brief, per
 
 `Job Site Information` · `Report To` · `Customer Information` — including `Ordered By`, phone,
 email and `Terms: NEW CUSTOMER`. The customer's payment terms are printed on the field ticket.
+
+## Related — added 2026-09-04
+
+- Every question on every FCC checklist, by phase code (`BLY`/`AAJ`/`BLJ`/`AAY`), from the restored 2026-06-23 database: [../payroll/tcg-rawfms-staging-database/data/fcc-checklist-templates.md](../payroll/tcg-rawfms-staging-database/data/fcc-checklist-templates.md).
+- The section / sub-section rows that lay the ticket out, including the three-state answer grid: [../payroll/tcg-rawfms-staging-database/data/fcc-eticket-layout-tables.md](../payroll/tcg-rawfms-staging-database/data/fcc-eticket-layout-tables.md).

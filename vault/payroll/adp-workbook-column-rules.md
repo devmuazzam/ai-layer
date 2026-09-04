@@ -220,3 +220,6 @@ Contract: [mcog-l12-mla-2025-2028/](mcog-l12-mla-2025-2028/INDEX.md) Article IV.
 Engine behaviour: [legacy-payroll-app-db-extract/rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md)
 §1–§14. ADP codes: [adp-hour-earning-codes.md](adp-hour-earning-codes.md),
 [adp-bucket-crosswalk.md](adp-bucket-crosswalk.md).
+
+- **The workbook's VBA** (sheet-per-employee builder and the ADP CSV exporter) is read in [adp-workbook-vba-macros.md](adp-workbook-vba-macros.md), 2026-09-04.
+- **The Power Query engine** that turns these columns into ADP rows — component codes, temp-rate table, slot map, validation — is in [adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md), 2026-09-04. It confirms the 52-row `CraftModRates` table and adds the lattice/shift temp-rate values.

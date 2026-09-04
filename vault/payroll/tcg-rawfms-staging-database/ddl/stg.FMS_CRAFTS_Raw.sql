@@ -1,0 +1,26 @@
+-- TCG_RawFMS.stg.FMS_CRAFTS_Raw  rows=74  columns=23
+CREATE TABLE [stg].[FMS_CRAFTS_Raw] (
+    [CraftCode] varchar(10) NOT NULL,
+    [Description] varchar(30) NOT NULL,
+    [PayType] char(1) NOT NULL,
+    [PromptText] varchar(10) NOT NULL,
+    [BurdenYN] bit NOT NULL,
+    [WCYN] bit NOT NULL,
+    [UnionYN] bit NOT NULL,
+    [AcctPayType] varchar(50) NULL,
+    [Billable] bit NOT NULL,
+    [Status] bit NOT NULL,
+    [GLAcctCode] varchar(25) NULL,
+    [CreatedBy] varchar(20) NULL,
+    [CreatedDate] datetime NULL,
+    [ModifiedBy] varchar(20) NULL,
+    [ModifiedDate] datetime NULL,
+    [trgFMS_CRAFTS] bit NULL,
+    [AcctIntCode] varchar(50) NULL,
+    [PayTypeOrder] tinyint NULL,
+    [Earnings] bit NOT NULL,
+    [EarningsType] varchar(5) NULL,
+    [ExemptApprentice] bit NOT NULL,
+    [_SourceExtractedAtUTC] datetime NOT NULL,
+    [_LoadedAtUTC] datetime NOT NULL
+);

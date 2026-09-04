@@ -2,7 +2,7 @@
 title: Projects Jobs — module index
 status: reference
 kind: index
-updated: 2026-08-24
+updated: 2026-09-04
 tags: [module/projects-jobs, kind/reference]
 ---
 
@@ -16,6 +16,33 @@ Projects, jobs, plans, permits. Backend usecases: `projects, jobs, sub-jobs, pla
 | --- | --- | --- |
 | [job-project-das.md](job-project-das.md) | Cross-module punch list; DAS is 1 of 9 sections | 1.7 |
 | [project-module/INDEX.md](project-module/INDEX.md) | Project module — **its own section numbering is unreliable, see index** | 2.2 |
+| [quote-to-job-lifecycle.md](quote-to-job-lifecycle.md) | Where permits and the two kinds of PO sit between quote and job; the undated ER sketch, and where the client has since contradicted it | 9.8 |
+| [city-permits/INDEX.md](city-permits/INDEX.md) | **Permits, 7 pages** — 153-jurisdiction reference, lead times, the annual/blanket tracker, waivers, FAA/NOTAM | 3.9 |
+| [scheduling/INDEX.md](scheduling/INDEX.md) | **Scheduling, 6 pages** — the Ready to Schedule gate, the permit clock, Green/Yellow/Red, the Job Schedule Master workbook | 3.6 |
+| [lift-plans/INDEX.md](lift-plans/INDEX.md) | **Lift plans, 3 pages** — requesting, building, the pending-plan exception, package anatomy | 2.7 |
+
+### Added by the Project Repository drop, 2026-09-04
+
+Sixteen new pages arrived in one drop of TCG's SharePoint "Project Repository". They document the
+**current manual process** — the Value Engine playbooks, the per-city permit library, the permit and
+scheduling workbooks, and two complete lift-plan packages. Where they touch a subject the Confluence
+pages already cover, each new page says explicitly how the two differ rather than overwriting either.
+
+**Three things they establish that the vault did not have:**
+
+- **The permit clock.** Thursday 12:00 noon through Monday start of business does not count toward
+  permit lead time — roughly 3.5 countable days a week. It drives the whole Green / Yellow / Red
+  scheduling decision.
+- **TCG holds 338 annual and blanket permit records across 29 units and 49 agencies, and 115 of them
+  are expired.** That register is what an "is there an annual here?" flag would have to read.
+- **A lift plan is a bound multi-source package**, not a form — with four priced deliverable tiers,
+  a 24-hour standard turnaround, and four categories of expiring credential inside it.
+
+> **Security finding from this drop, for a human to act on.** The 153 per-city permit notes carry
+> **live portal usernames, passwords and security-question answers in plain text** in a shared
+> folder, plus one captured OAuth token pair. None were copied into the vault; every occurrence is
+> marked and the source path given. See
+> [city-permits/permit-acquisition-process.md](city-permits/permit-acquisition-process.md).
 
 ## Decisions that bind this module
 

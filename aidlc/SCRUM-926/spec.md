@@ -2561,6 +2561,15 @@ of code it touches. The summary counts at the top of this section predate them.
   rate-row-only window) are a real fork in what REQ-06 means, not a detail an executor's judgement
   call can settle on its own, and it was not raised as a question by whoever made the change.
 - **Status:** open.
+- **Update 2026-09-04 (Project Repository ingest):** a system fact, not a decision. FCC NexGen —
+  the legacy source the crafts are migrated from — models it the way the *later* migration does:
+  the craft row (`stg.FMS_CRAFTS_Raw`, `.ai/vault/payroll/tcg-rawfms-staging-database/ddl/stg.FMS_CRAFTS_Raw.sql`)
+  carries only a `Status` bit and no dates, while the per-union rate row (`stg.FMS_UNION_CRAFT_Raw`,
+  same folder) carries `StartDate` / `EndDate`, and the per-union modifier row
+  (`stg.FMS_UNION_CRAFT_MODIFIER_Raw`) likewise. A non-union craft in FCC therefore has no
+  temporal validity beyond `Status`, exactly the state this question flags for the ERP. That is
+  evidence of current practice for whoever answers; it does not settle whether REQ-06 is rewritten
+  or the fields restored.
 
 ### Q22 — A web surface was built against four ticket sources and §5 that all say backend-only. Accept it into the epic, or take it out?
 

@@ -1,8 +1,8 @@
 ---
 title: Crane configurations and the dispatch sheet
-source: shared-folder/3.3.1_MODULE-DISPATCH-JOBS
+source: shared-folder/3.3.1_MODULE-DISPATCH-JOBS + shared-folder/Project-Repository-2026-09-04/3.3.1_MODULE-DISPATCH-JOBS (the same folder redelivered, plus DISPATCH Technical Specs/Dispatch 2026- .xlsx)
 migrated: 2026-08-29
-updated: 2026-04-18
+updated: 2026-05-05
 status: unverified
 conflicts_with: []
 jira: []
@@ -26,6 +26,14 @@ this says a crane is not one dispatchable thing.
 > means and who picks a configuration — read
 > [crane-configuration-rules.md](crane-configuration-rules.md), which sources every rule
 > to the 2026-04-14, 2026-05-19 and 2026-05-21 meetings this file did not reach.
+
+> **Re-confirmed and extended by the 2026-09-04 drop.** That drop redelivered this whole folder
+> unchanged — the two PDFs, the approved workbook and both Melissa emails are byte-equivalent to
+> what this page was written from, so **nothing below is corrected**. It also delivered, for the
+> first time, the **live workbook these two PDFs are a page of**:
+> [dispatch-sheet-workbook.md](dispatch-sheet-workbook.md). Read that for the blank master grid,
+> 98 filled days, the fuller legend on its `Lisette` sheet, and the operator qualification matrix.
+> Where it bears on a section here, it is cited inline below.
 
 ---
 
@@ -99,6 +107,14 @@ Annotated on the filled sheet:
 for this job — this is important for a quick view in case we need to change the schedule
 after hours."*
 
+**The `Lisette` sheet of the live workbook carries a longer legend** than the one printed on the
+daily sheets, and it splits one of the entries above: `Downed equipment` is listed *separately* from
+`Double Time or Down Equipment`, and two codes are spelled out that the daily legend leaves
+implicit — `X - Not being used` (the `xxxxx` marking) and `SS - Screen shot / Job layout`. See
+[dispatch-sheet-workbook.md](dispatch-sheet-workbook.md) §3. **The colours themselves are not
+recoverable from the workbook** — its conversion is a cell dump and carries no fill — so the
+colour → meaning table above still rests on these annotated PDFs alone.
+
 Other blocks on the sheet: assigned **TRCTR** (tractor) and assigned trailer per crane;
 a trucking section (Driver / Trailer-Equip / Truck / Job / Permit); available crane
 members; available tractors and semi trucks; an **OFF** list; rentals. And a standing
@@ -114,6 +130,15 @@ GPS — just a click button or check box."*
 That is the entire requirement as stated. See [gaps.md](gaps.md) — it does not say which
 time, whose GPS, or what "verified" asserts.
 
+**The same ask is logged independently** as entry **#5** of
+[erp-review-log.md](../erp-review-log.md) (Melissa, Dispatch, 2026-04-18) — *a "time verified by
+GPS" click-button / checkbox on the job*. That is the client's own register recording the same
+sentence from the same email on the same date; it is **corroboration of the ask, not an answer to
+it**, and the review log's own status caution applies. For what the legacy system already carries
+in this area — per-unit GPS latitude, longitude, date and a `GPS` provenance value on telemetry
+rows — see [fcc-nexgen-dispatch-guide.md](fcc-nexgen-dispatch-guide.md) §3. That is context; it
+still does not say which time Melissa means.
+
 ---
 
 ## 4. One open ask carried from the sheet's margin
@@ -125,3 +150,9 @@ members aren't going."*
 
 A default crew per unit, overridable per job. Raised on the source document itself and
 never answered.
+
+The live workbook shows this being maintained **by hand, per load, per day**: a tractor code
+(`AT13`, `AT18`) or a rental number typed into the `TRCTR` cell of each counterweight row
+([dispatch-sheet-workbook.md](dispatch-sheet-workbook.md) §4). That is evidence the binding is real
+and is worked with daily — it is **not** an answer to Melissa's question, which asks for a default
+that can be changed easily. Nothing has answered it.

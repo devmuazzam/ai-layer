@@ -51,3 +51,8 @@ Near-identical to the migrated payroll summary.
 *This page exists so that any filename in the 2026-08-11 OneDrive drop resolves to something in
 the vault. It records what the file is and where its content went — it is not a copy of the file.
 Full drop-level provenance: [../source-manifest.md](../source-manifest.md).*
+
+> **Correction, 2026-09-04.** This file is **not** a near-duplicate of the payroll-specific
+> summary. It is the complete Truck Crane MLA 2025–2028 as clean text — every article, Appendix
+> A and the in-cab camera MOU. Migrated as
+> [../mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](../mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md).

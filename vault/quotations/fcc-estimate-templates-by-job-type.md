@@ -1,6 +1,6 @@
 ---
 title: FCC estimate templates — Resource Type × Job Type × Yard
-source: teams-messages/client — Brian Petros to ehtesham.anwar (CodingCops); three messages 2026-09-03 (walkthrough, parent/child follow-up, FCC table map) plus the 2026-09-04 delivery of FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx (its README sheet read in full; data sheets not yet opened). Screens, diagrams and sheets transcribed here; no images kept
+source: teams-messages/client — Brian Petros to ehtesham.anwar (CodingCops); three messages 2026-09-03 (walkthrough, parent/child follow-up, FCC table map) plus the 2026-09-04 delivery of FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx (its README sheet read in full; data sheets not yet opened). Screens, diagrams and sheets transcribed here; no images kept. §8 added 2026-09-04 from shared-folder/Project-Repository-2026-09-04 — the FCC vendor manuals and the Billing Data import template
 migrated: 2026-09-03
 updated: 2026-09-04
 status: unverified
@@ -446,3 +446,105 @@ questions for Joe Schacatano. Note the README's count: these four rows **are** t
 Brian's anomalies. Logged in
 [gaps.md](gaps.md#estimate-defaults-per-resource-type--job-type--yard--fcc-has-them-tcg-has-no-job-type-at-all)
 as sub-question (g).
+
+---
+
+## 8. Independently corroborated — the vendor's own 2018 manual, and the import template
+
+*Added 2026-09-04 from the Project Repository drop. Everything above came from Brian Petros'
+2026-09-03 Teams walkthrough and the extract that followed it. Three documents in the drop
+describe the same mechanism from other directions, and none of them contradicts it.*
+
+### 8.1 Fleet Cost & Care documented this in 2018
+
+`SalesGuide.v.2.2.docx` (**published 2018-04-24**) carries a section called **"Working with Unit
+Type Defaults"** that neither the earlier v1.2 nor the Atom guide has. In full:
+
+> *"When creating a quote, the Main tab will function as normal. When working in the Unit/People
+> tab, **after the Type column is populated and tabbed out of, then the Unit Type Default details
+> will be added.** … When this Unit Type Default is used, **because the Estimate tab was also
+> configured, the Estimate tab of the quote will already have the Estimate line items listed.**
+> All unit types, employee types, and billing codes that were auto-populated by the Unit Type
+> Default may be changed or deleted and new unit types, employee types, and billing codes may be
+> added as necessary. Although the image portrays the Quote for Jobs window, **the same concept
+> applies to the Schedule Jobs window.**"*
+
+Its worked example is *"the **265-ton Hydraulic Crane**"*.
+
+**Three things this adds to §1–§2:**
+
+- **The trigger is tabbing out of the `Type` column**, not saving the quote. Defaults arrive
+  mid-entry.
+- **Everything the template inserts is freely editable and deletable** on the quote — the template
+  is a seed, not a constraint.
+- **The same defaults fire on the Schedule Jobs window.** So Unit Type Defaults are *not*
+  quote-only; a job created directly gets them too. Nothing in the 2026 material says this, and it
+  changes where the feature would have to live in the ERP.
+
+TCG's own `Price Lists Process in FCC-NexGen.docx` shows the same behaviour from the user's side:
+*"This tab get auto-populated with 'estimate template' based on the Mobile Crane entered… and then
+the 'Type' entered (**90 Ton** in this example)… then the rest automatically populates base on the
+pre-defined template… and the '**Estimate**' tab also gets automatically populated based on the
+same Mobile Crane."* And TCG's annotation on the FCC quote screens says it twice: *"This is where
+the templates auto populate (based on the primary crane/vehicle selected)"* / *"And this screen
+includes the rates (**based on the customer/price list**)."*
+
+**So the layering is confirmed from three independent sources: the resource type supplies the
+lines, the price list supplies the rates.**
+
+### 8.2 `Sub-Item` is a billing-code default, not only a per-line tick
+
+**A third mechanism, from the import template.** `Billing Data v.01.26.xlsx` — Fleet Cost & Care's
+own billing-code import contract — has a column **`Default as Sub-Item`**, defined as:
+
+> *"(Select Y if this billing code should be **included as a sub-item rolling into another billing
+> code**)"*
+
+That sits alongside the estimate template's per-line `.Item` flag and the Estimate-tab checkbox.
+**`Sub-Item` therefore has a default at the billing-code level, a stored value on the estimate
+template, and a per-quote override on the screen.** §3 above established two mechanisms
+(`ParentEstimateID` and `.Item`); this is a third layer above both, and it means *"is this line
+hidden from the customer"* has a configured default before any template or quote exists.
+
+The same template also confirms the surcharge base is a per-code flag — `% Applied`, *"select Y if
+it should be included when calculating billing codes using a percentage"* — which is what makes
+the 12% Fuel & Insurance Surcharge computable. Both columns are written up in
+[fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md) §1.
+
+### 8.3 The `Item` checkbox procedure, as the vendor teaches it
+
+The vendor manual's FAQ describes how an estimator *builds* a group on this screen, and it is
+purely by **row order and ticking** — populate the codes, group the ones to hide together, add an
+encompassing code like `Mobilization`, then tick from the top of the group down; *"the Amounts
+column will change as the estimate line item amounts are **'pushed' toward the encompassing
+billing code**"* and *"the summary amount should be visible in the **first non-checked Item
+row**."*
+
+**That does not overturn §3.** Brian's correction stands — FCC stores an explicit
+`ParentEstimateID`. What the FAQ adds is *why the screen looks like row-order grouping*: the
+end-user procedure is ordering and ticking, and the stored parent link is derived behind it. The
+full procedure is transcribed in
+[fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §2.
+
+The vendor's stated rationale is the same argument §4 makes for building the flag as general:
+
+> *"The advantage to this approach is that it **enumerates costs to help with costing, planning,
+> metrics, and forecasting while offering a simplified quote for the customer**. It also passes
+> all of the information on to the **Dispatcher and Billing** so that down-stream managers
+> understand the intent of the salesperson."*
+
+### 8.4 "Job Type" means three different things in FCC
+
+Worth flagging because §4 treats `Job Type` as the template's second key. The drop shows the term
+carrying three unrelated meanings in the same system:
+
+| Where | Values | What it selects |
+| --- | --- | --- |
+| **Estimate template key** (this page) | `Hourly` · `Hourly w/ Mob` | which stored line-up a resource type hands the quote |
+| **Quote Main tab** (`fcc-nexgen-quote-entry.md` §2) | *"Hourly, Weekly, Monthly, **or any other user-defined measure**"* | the quote's own billing period |
+| **Billing-code import** (`fcc-billing-data-and-price-lists.md` §1) | **`N` = NA · `O` = Operated · `B` = Bare** | whether a billing code applies to operated or bare rentals |
+
+The first two may be the same user-defined list read for different purposes — the Main tab's list
+is explicitly extensible, and `Hourly w/ Mob` would be a legitimate member of it. **The documents
+do not say.** The third is unambiguously a different field. **Anyone specifying `Job Type` in the
+ERP must say which of the three they mean.**

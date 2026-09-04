@@ -1,8 +1,8 @@
 ---
 title: Payroll module - vault index
-source: onedrive/OneDrive_1_8-11-2026/
+source: onedrive/OneDrive_1_8-11-2026/; extended 2026-09-04 from shared-folder/Project-Repository-2026-09-04/
 migrated: 2026-08-13
-updated: 2026-08-31
+updated: 2026-09-04
 status: unverified
 conflicts_with: []
 jira: []
@@ -14,9 +14,17 @@ entities: [payroll-rule, payroll-group, pay-component, adp-export, guaranteed-ho
 
 **Read this before opening anything under `payroll/`.** Migrated 2026-08-13 from a OneDrive
 drop dated 2026-08-11 — a different source and a different date from the Confluence migration
-that produced the rest of the vault.
+that produced the rest of the vault. **Extended 2026-09-04** from the SharePoint "Project
+Repository" drop: six new pages (routed below), a correction to
+[fcc-employee-types-and-crafts.md](fcc-employee-types-and-crafts.md), and Davis-Bacon plus the
+pre-job labor-compliance form folded into
+[certified-payroll-playbook.md](certified-payroll-playbook.md). That drop re-shared the whole
+2026-08-11 payroll folder — **33 of its 34 files were already migrated**
+([source-manifest.md](source-manifest.md)); the exception was
+[payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md), whose content postdates
+the 2026-08-11 snapshot.
 
-## Four things that change how you read everything here
+## Five things that change how you read everything here
 
 1. **Two documents number their rules `PR-###`, independently.** The
    [ERP requirements document](erp-payroll-module-frd/INDEX.md) and the
@@ -34,7 +42,13 @@ that produced the rest of the vault.
    Union contract interpretation and California payroll law need TCG management, the payroll team,
    labor counsel and union representatives. Do not resolve a contract question by reading the
    contract harder.
-4. **The legacy Payroll App is a different stack.** SQL Server + C# + Next.js, SQL-first. This
+4. **Three systems, not two.** Alongside the ERP target and the legacy TCG Payroll App there is
+   the **incumbent FCC/NexGen system** TCG runs today — a third set of behaviours, documented by
+   its vendor in [fcc-nexgen-payroll-processing.md](fcc-nexgen-payroll-processing.md) and
+   [fcc-union-code-configuration.md](fcc-union-code-configuration.md) (added 2026-09-04). Where a
+   question is *"what happens when X changes after payroll is processed?"*, all three answer
+   differently and none of them well. Do not read an FCC behaviour as a requirement.
+5. **The legacy Payroll App is a different stack.** SQL Server + C# + Next.js, SQL-first. This
    repo is NestJS + Prisma + PostgreSQL. Read
    [payroll-app-current-state/](payroll-app-current-state/INDEX.md) for *which rules exist and
    which cases are real*, never for *how to build it here*.
@@ -45,10 +59,13 @@ that produced the rest of the vault.
 | --- | --- |
 | **what the payroll module must do** | [erp-payroll-module-frd/INDEX.md](erp-payroll-module-frd/INDEX.md) — the requirements catalog, 11 parts |
 | **which rule to build, and its status** | [rules/INDEX.md](rules/INDEX.md) — **the canonical register, 73 `PAY-###` rules**, each joining matrix + FRD + legacy + contract + conflicts. The [matrix](codingcops-rule-matrix.md) stays the source spine |
-| what the union contract actually says | [mcog-l12-mla-2025-2028/INDEX.md](mcog-l12-mla-2025-2028/INDEX.md) — contract text, payroll articles |
+| what the union contract actually says | [mcog-l12-mla-2025-2028/INDEX.md](mcog-l12-mla-2025-2028/INDEX.md) — contract text, payroll articles — **since 2026-09-04 also the full OCR text of the Truck Crane MLA and the SCCA MLA, plus the 2025-08-15 wage notice** |
 | how the current system behaves | [payroll-app-current-state/INDEX.md](payroll-app-current-state/INDEX.md) — legacy app, 9 files |
 | **how the legacy app actually calculates pay** | [legacy-payroll-app-db-extract/INDEX.md](legacy-payroll-app-db-extract/INDEX.md) — **the full database extract, 2026-08-18**: all 141 SQL definitions, every config row, the slice formula, every rule with its code, worked examples, the observed ADP worksheet layout. **Where any older payroll-app document disagrees, this wins** |
+| **what the legacy app's database looked like on 2026-06-23** (pay periods, run logs, the *Refresh from NexGen* history) | [legacy-payroll-app-db-backup-2026-06-23.md](legacy-payroll-app-db-backup-2026-06-23.md) — the SharePoint `.bak`, restored 2026-09-04; its code is identical to the 2026-08-18 extract |
+| **the FCC tables the legacy app reads — real DDL, the nightly ETL, the reference rows** | [tcg-rawfms-staging-database/INDEX.md](tcg-rawfms-staging-database/INDEX.md) — `TCG_RawFMS`, 44 tables / 98 objects, restored from the same backup; ticket-status matrix, checklist questions, craft-modifier master live under its `data/` |
 | what the legacy API/UI implements | [legacy-payroll-app-code-extract.md](legacy-payroll-app-code-extract.md) — the C#/Next.js layer (`projects.rar`, Jul 2026): rule shapes, the ADP File # validation bug, no ADP export. Its "SQL not in repo" caveat is now closed by the db-extract |
+| what the legacy app's source tree, stack and **role model** look like | [legacy-payroll-app-source-tree-2026-06-10.md](legacy-payroll-app-source-tree-2026-06-10.md) — the 2026-06-10 `.7z` backup, opened 2026-09-04: .NET 9 + Next.js, all 15 API endpoints (3 absent from the knowledge-pack contract guide), and the three-role / four-permission model, written down nowhere else |
 | how payroll reaches ADP | [adp-bucket-crosswalk.md](adp-bucket-crosswalk.md), then [adp-hour-earning-codes.md](adp-hour-earning-codes.md) |
 | **what we can read / write in ADP, and the weekly JSON** | [adp-read-write-boundary-2026-08-18.md](adp-read-write-boundary-2026-08-18.md) — payroll output is Marketplace-partner-only; static vs dynamic codes; which validation tables/worker fields are writable (no API for earning codes; no craft field); the `pay-data-input.modify` body; `applicant.onboard` V2 fields; connection prerequisites |
 | **the dev-facing calculation reference** | artifact *Crane Payroll Calculation Reference* (https://claude.ai/code/artifact/37f949e0-2c7a-4921-80c2-772c556f8e62) — groups/modifiers/WTL/premiums/rules/certified, **reconciled 2026-08-24 to the register** (PAY-### ids cited); update it whenever a rule settles |
@@ -58,6 +75,8 @@ that produced the rest of the vault.
 | **which ADP codes actually exist** | [adp-api-responses/](adp-api-responses/INDEX.md) — **live responses from production ADP**, captured 2026-08-13. The real code table, the real company codes. Where this and a design document disagree, this wins |
 | the Foreman and Military Base premiums | [foreman-and-military-premiums.md](foreman-and-military-premiums.md) — **in no other document**; supplied by Brian Petros 2026-08-09 |
 | how payroll is produced *today* | [adp-sop-v3.8.md](adp-sop-v3.8.md) — the Excel/Power Query/VBA process being replaced |
+| what the ADP workbook's macros actually do | [adp-workbook-vba-macros.md](adp-workbook-vba-macros.md) — the four VBA modules: per-employee sheet builder (`tbl___<ADPFileNo>`, File # = 1–6 alphanumerics), synchronous Power Query refresh, and the ADP paydata CSV exporter (`Co Code · Batch ID · File # · Reg Hours · O/T Hours · Temp Rate · Hours 3/4 Code+Amount` pairs, zeros blanked). Read 2026-09-04 |
+| what the ADP workbook's **Power Query** actually computes | [adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) — the FCC roster SQL, the Saturday–Friday week and Batch ID, the component ledger (ST/OT/DT/H2x/H3x/SUB/SIC + boom + lattice/shift temp rates), the ADP slot map, the 15 export checks, and the config tables. Read 2026-09-04 |
 | what Shift vs Job vs Labor Entry means | [payroll-concepts-shift-job-labor-entry.md](payroll-concepts-shift-job-labor-entry.md) — **read before any time-based rule** |
 | how worked-through-lunch actually lands | [wtl-charts.md](wtl-charts.md) — the payroll team's own lookup charts |
 | a test case for a specific rule | [rule-examples-catalog.md](rule-examples-catalog.md) — 28 real labor entries, one per rule variation |
@@ -71,6 +90,12 @@ that produced the rest of the vault.
 | **what is still unanswered** about payroll or ADP | [gaps.md](gaps.md) — the payroll half of the open-question register, 41 entries. `grep -n '^## '` first; read only your section |
 | what a payroll SME said verbally, not yet in the rule matrix | [2026-08-20-payroll-rules-meeting-notes.md](2026-08-20-payroll-rules-meeting-notes.md) — WTL, rest period, subsistence, craft-code rate overrides. `status: unverified`, cleaned from a call transcript |
 | **what FCC holds for an employee** | [fcc-employee-types-and-crafts.md](fcc-employee-types-and-crafts.md) — the 16-type list mixing field and portal roles, the **multi-type join we extract then discard on seed**, and the craft-code update sheets |
+| **whether a payroll rule may read labor outside the week** | [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md) — **the client's per-rule dependency-scope architecture, 2026-09-04**: calculation period vs calculation context vs recalculation impact, the immutable-closed-payroll + retro-delta proposal, and an 18-step engine order. **Carries 16 stated collisions with the register and the as-built code — none adjudicated** |
+| how the **incumbent** FCC system processes payroll | [fcc-nexgen-payroll-processing.md](fcc-nexgen-payroll-processing.md) — vendor Payroll Guide v1.0 (2017): the Atom→pre-processor→process→export pipeline and its three lifecycle locks. *"Once exported, a labor entry cannot be modified in any way"* |
+| **where FCC keeps a union's pay rules** | [fcc-union-code-configuration.md](fcc-union-code-configuration.md) — vendor Union Codes guide: the five tabs (shift premiums, benefits, craft rates, craft modifiers, payroll defaults). **Union defaults beat employee defaults beat company defaults** |
+| **the real FCC code lists** — crafts, classifications, certificates | [fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) — live tables at 2026-07-02, the import schema and enumerations, the migration SQL. Corrects the employee-type count to **15**, and `3rd Man` **is** one of them |
+| how payroll actually runs, step by step, today | [payroll-value-engines.md](payroll-value-engines.md) — three 2025 flowcharts: Samsara GPS verification, the payroll-manager audit, the ADP **retro-check** path, and the certified-payroll weekly loop |
+| what has to exist on an employee before they can be paid | [hr-onboarding-and-employee-forms.md](hr-onboarding-and-employee-forms.md) — the union/non-union onboarding value engines, the 19-item checklist and its eleven destinations, and the DOT/FMCSA forms |
 
 ## The spine of the domain
 

@@ -42,3 +42,5 @@ part_of: payroll/sources/INDEX.md
 *This page exists so that any filename in the 2026-08-11 OneDrive drop resolves to something in
 the vault. It records what the file is and where its content went — it is not a copy of the file.
 Full drop-level provenance: [../source-manifest.md](../source-manifest.md).*
+
+Diffed 2026-09-04 against `2026 MCOG_updated_corrected_2026-06-22.pdf`: the **only** difference is the Vacation-Holiday Supplemental Dues column — $3.45 here against $1.75 in the corrected sheet — which shifts Total Fringes ($41.20 vs $39.50) and every Total Package by $1.70. Wages, apprentice steps, classifications, rules and the holiday bulletin are identical. Still do not cite; the corrected sheet is migrated at [../mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md](../mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md).
