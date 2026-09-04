@@ -935,3 +935,53 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   of this is background; still needed from TCG: the department list, the role list, and each
   role's capabilities.
 
+
+## Must a new nav entry be permission-gated, and who may see live vehicle locations?
+
+- **Status:** open
+- **Asked:** 2026-09-04 — raised while sourcing branch `Fetaure/samsara-integration`
+  (commit `7515a638`, 2026-09-03), which adds a **Tracking** entry to the Asset Management
+  sidebar group and a `/asset-management/tracking` page reachable by **any logged-in user**.
+- **Question:** Two lines. **(1)** Is a new navigation entry allowed to ship ungated while the
+  authorization layer is unbuilt, or must every new module land with its permission from day
+  one? **(2)** **Who may see live vehicle locations** — everyone with a login, dispatch and
+  management only, or a named role? The second is the one that matters: these routes return
+  the live position, plate and VIN of every vehicle on the Samsara account.
+- **Sources checked:** **Stated intent points at gated, and TCG has voiced a concern about
+  this exact data.** Ehtesham Anwar, on how a feature gets restricted: *"once we have rules and
+  permissions integrated into the platform, we will create permissions for this as well. And if
+  a user don't have the permission, they are not going to see the [feature]"*
+  ([../meetings/transcripts/2026-06-17-erp-sprint-review.md](../meetings/transcripts/2026-06-17-erp-sprint-review.md)
+  36:38, `status: reference` — the transcript renders the last word as *"creature"*); and on
+  new modules joining the matrix: *"we are going to add to this huge list and not just the
+  permissions, also modules"*
+  ([../meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md](../meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md)).
+  On who may see positions, Brian Petros — about the Samsara map on TCG's own dispatch wall
+  screen: *"No, I don't think anybody should see it and we have problems. When the operators
+  come in and out, then they get to see. That's too much information for them"*
+  ([../meetings/transcripts/2026-04-09-dispatch-scheduling-figma-demo.md](../meetings/transcripts/2026-04-09-dispatch-scheduling-figma-demo.md)).
+  And a legal constraint from Corrina Bustos: *"we're not allowed to use, technically allowed
+  to use any trackers or anything"*
+  ([../meetings/transcripts/2026-08-04-payroll-process.md](../meetings/transcripts/2026-08-04-payroll-process.md)),
+  consistent with the one bound already recorded in `../dispatch/gaps.md` → *GPS-verified time
+  on a job* — GPS as display and accountability, not the pay-time source. TCG's RFP requires
+  *"role-based access control by department/role"* and tabulates seven user types
+  ([tcg-erp-rfp-2026-02-26.md](tcg-erp-rfp-2026-02-26.md) §4–5, client-authored,
+  `status: unverified`). **But no source says a new nav entry must be gated at merge**, and the
+  layer that would gate it does not exist — see *Departments, roles and their capabilities —
+  the authorization layer is unbuilt and the list is unwritten* in this file, which this entry
+  is a specific instance of.
+- **Note:** the state at merge is *authenticated but not authorized*. Login is enforced — the
+  HTTP routes sit behind the global `AccessTokenGuard` with no `@Public()`, and the websocket
+  gateway verifies the handshake token — but any authenticated user reaches the page. The
+  controller says so itself: *"which logged-in roles should see tracking is still undecided …
+  Until somebody decides, any authenticated user can reach it"*, citing `brs.md` **OD-012**
+  (*"GPS enforcement behavior — Decision Needed"*). In `apps/web` the pattern is mixed rather
+  than absent: Payroll and Settings are gated on `can('payroll','view')` /
+  `can('settings','view')`, while the whole Asset Management group is not — so Tracking matches
+  the group it joined and not the two groups that do gate.
+- **Blocked:** nothing today — the page works. What is blocked is knowing whether shipping it
+  ungated is a deviation to fix before the 15 September walkthrough, when users are set up per
+  role.
+- **Owner:** product team — Corrina Bustos and Brian Petros, in the same session that owes the
+  department/role/capability list.

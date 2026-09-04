@@ -961,3 +961,171 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Customer Owned Units and Resource Types alike, so in the client's vocabulary "resource" already
   spans the physical and the template level. Still needs the decision the entry names — model
   rename, UI-only, or leave as is — and the `UnitType` / `SubCategory` duplication.
+
+## Samsara vehicle tracking — what was committed is "vehicle locations in real time", and an 11k-line module shipped around it
+
+- **Status:** open
+- **Asked:** 2026-09-04 — raised while sourcing the product intent behind branch
+  `Fetaure/samsara-integration` (commit `7515a638`, 2026-09-03), which ports a standalone app
+  into the repo as a `vehicle-tracking` module. The branch has no `.ai/aidlc/SCRUM-###/`
+  folder and no `processed.log` row; it never ran the loop.
+- **Question:** **Beyond live vehicle locations, what is in scope for the Samsara integration
+  — and does TCG want vehicle history and route replay in the ERP now?** One line settles it:
+  *live map only*, or *live map plus per-vehicle day history and route replay*.
+- **Sources checked:** **Half of it is sourced, from the delivery side, and only half.** Abdul
+  Rehman committed the scope to the client on the 2026-09-02 call, one day before the commit:
+  *"We will do this in this print before 15th of September, plus the payroll module completion
+  and the Samsara integration as well, with the limited capabilities where we will see all our
+  vehicles locations in real time"*
+  ([../meetings/transcripts/2026-09-02-erp-job-tickets-and-payroll.md](../meetings/transcripts/2026-09-02-erp-job-tickets-and-payroll.md)
+  57:15, `status: reference`), recorded in the curated minutes as *"Next two weeks: … Samsara
+  vehicle locations …"*
+  ([../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md)
+  → *Client verdict on the demo*). Same speaker, same commitment, three weeks earlier:
+  *"right now, this GPS tracking is not real. For this, we will have to integrate the Samsara.
+  We'll add it in the next print so that we can have a real-time tracking"*
+  ([../meetings/transcripts/2026-08-12-erp-sprint-review.md](../meetings/transcripts/2026-08-12-erp-sprint-review.md)
+  24:05). **Client-side asks corroborate the live-location half and nothing beyond it** —
+  Melissa McNutt: *"It'd be nice if Samsara could integrate with our dispatch with our system
+  so we can verify … instead of having to do it manually"*
+  ([../meetings/transcripts/2026-03-06-sales-quoting-figma-demo.md](../meetings/transcripts/2026-03-06-sales-quoting-figma-demo.md));
+  Joe Schacatano asks for asset positions *inside a job*, not a fleet-wide page
+  ([../meetings/transcripts/2026-02-27-dispatch-scheduling-demo.md](../meetings/transcripts/2026-02-27-dispatch-scheduling-demo.md)).
+  **The history/route-replay half is the opposite of sourced.** The only time route replay was
+  put to the client it was declined — Ryan Adams proposed sending a Samsara route map; Melissa
+  McNutt: *"No. I don't think we need that in the customer packet"*; Wes Staley: *"we want the
+  full vision … it's not like needed today. **It's not like a requirement.**"*
+  ([../meetings/transcripts/2026-05-12-loading-figma-demo.md](../meetings/transcripts/2026-05-12-loading-figma-demo.md)
+  40:04–40:46). That exchange is about a **customer packet**, not an internal page, so it does
+  not forbid the feature — it is simply the only thing TCG has ever said about route history,
+  and it is *"not a requirement"*. **The umbrella scope question is still formally Open:**
+  [../field-ops/frd-new-format-draft/08-open-questions.md](../field-ops/frd-new-format-draft/08-open-questions.md)
+  #9 — *"What information from Samsara will be available in V1 and what is the integration
+  scope?"*, owner **Mashood**, **Open** (`status: unverified`); also
+  `../field-ops/field-ops-frd/11-open-questions-future-considerations.md` #10, `../brs.md`
+  **BRS-INT-002** / **OD-010** (both *"Needs Documentation"*), and TCG's RFP, which asks only
+  for a *"GPS/telematics pull for vehicle hours and location"*
+  ([../admin/tcg-erp-rfp-2026-02-26.md](../admin/tcg-erp-rfp-2026-02-26.md), client-authored,
+  `status: unverified`). `decisions/` holds **no Samsara decision** — the only mention is
+  [../decisions/2026-09-01-subsistence-not-a-craft-attribute.md](../decisions/2026-09-01-subsistence-not-a-craft-attribute.md)
+  → *What it does not settle*, which lists *"whether Samsara supplies it"* as still open, two
+  days before the commit. `README.md` → *What this vault does not contain* does not exclude
+  Samsara, so the absence is a gap, not policy. **Jira could not be checked** — the MCP search
+  returns `403 Tenant is restricted: suspended-payment`.
+- **Note:** the branch's own authority is *"Owner, 2026-09-02"* in
+  `docs/vehicle-tracking-migration-progress.md` — an unnamed internal owner making engineering
+  calls — and the plan it defers to (`Projects/samsara-vehicle-tracker/docs/MIGRATION-TO-CRANEGUYS.md`)
+  is outside this repo and unreachable. **No named person with product authority appears
+  anywhere in the record for the port.** That same file records its own step 10 as outstanding:
+  *"the §9 domain knowledge belongs in `.ai/vault/` as a new page"*. Nothing in `meetings/`
+  mentions porting a standalone tracker app into the ERP at all.
+- **Blocked:** whether the history and route-replay half of the module ships for the
+  15 September walkthrough, or is held. The live-map half is covered by Abdul's commitment and
+  is not blocked by this entry.
+- **Owner:** product team — Mashood already owns FOP open question #9; Brian Petros or Wes
+  Staley for whether route history is wanted internally now.
+
+## One Asset ↔ one Samsara asset — the record says a crane's GPS box is on a *different* asset, and reads only one of its two engines
+
+- **Status:** open
+- **Asked:** 2026-09-04 — raised while sourcing branch `Fetaure/samsara-integration`
+  (commit `7515a638`).
+- **Question:** **How many Samsara links does an Asset carry, and may two Assets share one
+  Samsara device?** Three lines settle it: (a) may the crane *and* its support tractor both
+  resolve to the tractor's Samsara asset; (b) does a two-cab crane need an upper and a lower
+  link, or does the ERP keep upper hours manual as FCC does; (c) is the link Samsara-only, or
+  must it name a telematics provider as FCC's does?
+- **Sources checked:** The branch adds `Asset.samsaraAssetId` + `Asset.samsaraAssetType` with
+  **`@@unique([tenantCompanyId, samsaraAssetId])`**, and a `canTrackAsset()` rule offering
+  Track only when the linked Samsara asset's type is `vehicle`
+  (migration `20260902130000_add_asset_samsara_link`). **The record contradicts that
+  cardinality twice, in the same meeting, from two named TCG people.** Brian Petros, on why
+  one device cannot mean one asset: *"there's a couple cranes that the GPS device cannot be put
+  on the crane itself … There's a support vehicle for those two cranes that is like assigned to
+  the crane … So the GPS device is on that tractor, not on the crane itself, because … it
+  messes with the electrical and then the crane starts malfunctioning"*
+  ([../meetings/transcripts/2026-08-26-erp-sprint-review.md](../meetings/transcripts/2026-08-26-erp-sprint-review.md)
+  18:11–18:49, `status: reference`). Corrina Bustos, on why one link cannot cover one machine:
+  *"Samsara only reads off one engine and some cranes have two cabs … the engine that actually
+  drives it, but then some have the engine or the cab of where they actually operate the crane
+  from and those hours need to be recorded as well. So that's why they do it manually because
+  Samsara doesn't pick up on both of those"* (same file, 21:48). A unique index means the
+  tractor and the crane it carries cannot both point at the one device that tracks them.
+  **The written precedent has a different shape too.** FCC's unit record carries
+  **`UpperGPS`, `LowerGPS`, `UpperGPSID`, `LowerGPSID`** — the first pair a *telematics
+  provider selector*, the second pair *that provider's asset id*
+  ([fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §Identity;
+  `status: unverified`); the client's annotated deck shows the meter screen with **`Lower GPS`
+  = `Samsara`** and **`Asset Id` = a 15-digit provider id**, no `Hours/Upper` column, and
+  states *"Only lower engines are tracked by Samsara. Upper engines are entered manually…
+  Samsara is not in upper engines"*
+  ([asset-record-requested-additions.md](asset-record-requested-additions.md) §3 and
+  §*Meter (slide 9)*, `status: unverified`); provider is a registry, not a constant —
+  `Maintain > GPS` lists *Fleet Complete, Fleet Matics, Indus Track, QualComm*
+  ([../field-ops/fcc-nexgen-service-guide.md](../field-ops/fcc-nexgen-service-guide.md) →
+  *GPS Information*). That same deck marks the area unresolved in the client's own words —
+  *"Need to discuss how this information will be managed in relation to Samsara data/tracking"*,
+  twice. The dual-engine question is separately recorded as open since March 2026
+  ([../admin/responsive-design-and-security-posture.md](../admin/responsive-design-and-security-posture.md)
+  Part 3). The only supporting principle found is generic: Abdul Rehman, *"every integration,
+  even for the ADP or for the QBooks as well, we will keep every external ID in our database"*
+  (same 2026-08-26 review, 12:30) — which justifies **having** a link field, not its cardinality.
+  **Nothing anywhere states the one-to-one rule, the per-tenant uniqueness, or the
+  `vehicle`-only restriction.** The branch's own `docs/vehicle-tracking-migration-progress.md`
+  §Step 11 attributes the tracking rule to *"three things the owner asked for after seeing the
+  feature run"*, on technical grounds — trailers and equipment have no position feed — not a
+  product one.
+- **Note:** the per-tenant unique index also contradicts the module it serves. The tracking
+  controller's own header says *"Nothing here is tenant-scoped, because the Samsara account is
+  not per-tenant: every tenant sees the same fleet"* — so one Samsara asset is visible to every
+  tenant on the map while the schema lets each tenant claim it once. One of those two is wrong
+  whichever way this entry is answered.
+- **Blocked:** the `assets` schema (a second link, a provider column or a dropped unique are
+  each a migration, not a patch), the Track Asset button and list column, and the Samsara
+  picker on the asset form.
+- **Owner:** product team — Brian Petros and Corrina Bustos already stated the two constraints
+  above; they own the answer.
+
+## The fleet day — "today" is one hardcoded timezone, and no source defines a fleet day
+
+- **Status:** open
+- **Asked:** 2026-09-04 — raised while sourcing branch `Fetaure/samsara-integration`
+  (commit `7515a638`).
+- **Question:** **In whose timezone does a fleet day start?** Options, so one line settles it:
+  (a) one company-wide constant, as built; (b) the yard the asset belongs to; (c) the tenant;
+  (d) whatever boundary payroll ends up using. Second line: must the fleet day agree with the
+  job/payroll day, given both count hours against the same machine and crew?
+- **Sources checked:** The branch measures every *"today"*, every day boundary and every
+  per-day total (drive time, on-site time, miles) against a single `FLEET_TIMEZONE` environment
+  variable defaulting to **`America/Los_Angeles`**
+  (`apps/api/src/config/vehicle-tracking.config.ts`,
+  `apps/api/src/usecase/vehicle-tracking/fleet-day.ts`). **No vault source defines a fleet day,
+  a fleet timezone or a company timezone**, and a full sweep of `meetings/` (65 transcripts,
+  17 curated minutes, 8 summaries) found no statement of one — the only `PST` hits there are
+  meeting-scheduling chatter. Everything written points the other way. Payroll's week is
+  Saturday–Friday (`PAY-001`) but *"**no workday-start concept exists anywhere in the vault**…
+  every daily-OT rule in the register presumes a workday boundary nobody has defined"*
+  ([../payroll/payroll-rule-dependency-matrix.md](../payroll/payroll-rule-dependency-matrix.md)
+  row 14, `status: unverified`). The same ambiguity is already open elsewhere:
+  `../quotations/gaps.md` asks *"in whose timezone is that day defined?"* of quote expiry;
+  `../admin/gaps.md` → *Time display — military, 12-hour, or per-user* is open. TCG has raised
+  the day boundary twice without resolving it — Brian Petros: *"do you apply it to the day that
+  it started? … or the day it ran past midnight, if it's a holiday or whatnot"*
+  ([../meetings/transcripts/2026-03-03-it-coordination-and-wireframe-demo.md](../meetings/transcripts/2026-03-03-it-coordination-and-wireframe-demo.md)),
+  and *"a lot of the jobs go past midnight. So visually, it's really helpful to see that it is
+  actually the next day"*
+  ([../meetings/transcripts/2026-09-02-erp-job-tickets-and-payroll.md](../meetings/transcripts/2026-09-02-erp-job-tickets-and-payroll.md)).
+  The only `America/Los_Angeles` in the whole vault is **ADP's `timeZoneCode` on the worker
+  record** ([../payroll/adp-api-responses/workers-meta.md](../payroll/adp-api-responses/workers-meta.md)
+  — *"consistent with a California employer"*): an observation about a payroll vendor's data,
+  **not a product decision and not a fleet-day definition.**
+- **Note:** the default is not inert — `env.validation.ts` supplies it, so a deployment that
+  sets nothing still gets Pacific silently, with nothing on screen saying which boundary a
+  figure was computed against. And TCG is not single-site: yards are a first-class module in
+  the review log's own list ([../erp-review-log.md](../erp-review-log.md)), and the platform is
+  multi-tenant, so a single process-wide constant is a stronger assumption than anything
+  written supports.
+- **Blocked:** the day picker, the day summary and every per-day figure on the tracking pages;
+  and any later reconciliation of tracked hours against field-ticket or payroll hours, which
+  cannot be compared until both agree what a day is.
+- **Owner:** product team — Brian Petros; Corrina Bustos if it must line up with payroll.

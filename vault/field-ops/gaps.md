@@ -572,3 +572,31 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   resolved, and before anyone reads a green pre-push as meaning the app has no preloaded pickers.
 - **Owner:** Fouzan Shakil for the scope and guard question; whoever owns `SCRUM-912` for the
   parity half.
+
+## Samsara integration scope — pointer, owned by assets
+
+- **Status:** open
+- **Asked:** 2026-09-04 — raised while sourcing branch `Fetaure/samsara-integration`
+  (commit `7515a638`), which shipped a `vehicle-tracking` module without running the loop.
+- **Question:** **Pointer only — the question lives in
+  [../assets/gaps.md](../assets/gaps.md) → *Samsara vehicle tracking — what was committed is
+  "vehicle locations in real time", and an 11k-line module shipped around it*.** It is
+  registered under `assets/` because that is where the code landed (the Asset record, the
+  Asset Management sidebar group, `/asset-management/tracking`), but the standing open
+  question is this module's: **FOP open question #9**, *"What information from Samsara will be
+  available in V1 and what is the integration scope?"*, owner **Mashood**, still **Open** in
+  [frd-new-format-draft/08-open-questions.md](frd-new-format-draft/08-open-questions.md).
+  Answering #9 answers both.
+- **Sources checked:** see the `assets/` entry — it carries the full source list. Field-ops'
+  own written scope for Samsara is narrower than what shipped: *validation* of Arrive Job,
+  Leave Job and Arrive Yard where the integration is available, **with manual override always
+  retained** ([frd-new-format-draft/07-non-functional-requirements.md](frd-new-format-draft/07-non-functional-requirements.md);
+  `05-functional-requirements/fr-fop-010-arrive-job.md`, `-020-leave-job.md`,
+  `-021-arrive-yard.md`, all `status: unverified` and all inside the three-way field-ops
+  conflict — read [field-ops-mobile-INDEX.md](field-ops-mobile-INDEX.md) first). The second
+  FRD's #10, *"Samsara reconciliation expectations"*, is open in the same way
+  ([field-ops-frd/11-open-questions-future-considerations.md](field-ops-frd/11-open-questions-future-considerations.md)).
+  Nothing in either document contemplates a fleet map, a websocket feed or route replay.
+- **Blocked:** nothing in field-ops directly. Recorded here so that whoever answers #9 knows a
+  module has already been built against it.
+- **Owner:** product team — Mashood, who owns #9.
