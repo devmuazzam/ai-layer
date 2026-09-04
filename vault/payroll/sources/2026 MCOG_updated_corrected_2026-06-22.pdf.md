@@ -5,8 +5,8 @@ source: onedrive/OneDrive_1_8-11-2026/
 size: 247 KB
 migrated: 2026-08-19
 status: reference
-migration_status: not-migrated
-vault_target: ""
+migration_status: migrated
+vault_target: "payroll/mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md"
 conflicts_with: []
 jira: []
 tags: [module/payroll, kind/source, provenance]
@@ -18,8 +18,8 @@ part_of: payroll/sources/INDEX.md
 
 **Path in the drop:** `MCOG LABOR UNION L12/2026 MCOG_updated_corrected_2026-06-22.pdf`
 **Size:** 247 KB
-**Status:** not migrated
-**Where the content lives:** —
+**Status:** migrated 2026-09-04
+**Where the content lives:** [../mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md](../mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md)
 
 Rate sheet, 212 lines.
 
@@ -42,3 +42,5 @@ Rate sheet, 212 lines.
 *This page exists so that any filename in the 2026-08-11 OneDrive drop resolves to something in
 the vault. It records what the file is and where its content went — it is not a copy of the file.
 Full drop-level provenance: [../source-manifest.md](../source-manifest.md).*
+
+Read in full 2026-09-04: the union's *Revised June 2026* Truck Crane MLA rate sheet, effective 2026-07-01, six pages incl. the 2026 holiday bulletin. Diffed against `2026 MCOG_incorrectOldVersion.pdf`: identical except the Vacation-Holiday Supplemental Dues column ($1.75 here, $3.45 there).

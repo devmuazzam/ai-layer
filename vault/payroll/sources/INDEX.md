@@ -48,7 +48,7 @@ This is the per-file view. The drop-level narrative is [../source-manifest.md](.
 | [`OE-Local-12-MLA-25-28-Comp.pdf`](OE-Local-12-MLA-25-28-Comp.pdf.md) | 2.3 MB | not migrated |
 | [`MCOG Union 12 Master Labor Agreement 2022-2025 and 2025-2028.pdf`](MCOG%20Union%2012%20Master%20Labor%20Agreement%202022-2025%20and%202025-2028.pdf.md) | 15.5 MB | not migrated |
 | [`MCOG Union 12 Master Labor Agreement 2025-2028 EXTRACTED.docx`](MCOG%20Union%2012%20Master%20Labor%20Agreement%202025-2028%20EXTRACTED.docx.md) | 1.1 MB | not migrated |
-| [`2026 MCOG_updated_corrected_2026-06-22.pdf`](2026%20MCOG_updated_corrected_2026-06-22.pdf.md) | 247 KB | not migrated |
+| [`2026 MCOG_updated_corrected_2026-06-22.pdf`](2026%20MCOG_updated_corrected_2026-06-22.pdf.md) | 247 KB | migrated 2026-09-04 → [../mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md](../mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md) |
 | [`2026-05-29_TCG_PayrollAPP_Technical_Walkthrough.docx`](2026-05-29_TCG_PayrollAPP_Technical_Walkthrough.docx.md) | 71 KB | not migrated |
 | [`2026-05-29_TCG_PayrollAPP_Management_Walkthrough.docx`](2026-05-29_TCG_PayrollAPP_Management_Walkthrough.docx.md) | 28 KB | not migrated |
 | [`2026-03-08_TCG_PayrollAPP_Technical_Walkthrough.docx`](2026-03-08_TCG_PayrollAPP_Technical_Walkthrough.docx.md) | 57 KB | not migrated |

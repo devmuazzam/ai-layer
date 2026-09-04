@@ -2,7 +2,7 @@
 title: MCOG Union 12 Master Labor Agreement 2025-2028 (payroll-specific summary)
 source: onedrive/OneDrive_1_8-11-2026/MCOG Union 12 Master Labor Agreement 2025-2028 (payroll-specific summary).docx
 migrated: 2026-08-13
-updated: 2026-06-23
+updated: 2026-09-04
 status: unverified
 conflicts_with: []
 jira: []
@@ -31,6 +31,11 @@ us.
 | [03-article-v-subsistence-allowance.md](03-article-v-subsistence-allowance.md) | Subsistence eligibility, amounts, and multiple yard locations |
 | [04-articles-vi-to-xv-funds-and-contributions.md](04-articles-vi-to-xv-funds-and-contributions.md) | Vacation; Health & Welfare, Pension, Annuity, Vacation-Holiday, Apprenticeship funds; supplemental dues; PAC; contract administration; delinquencies |
 | [05-articles-xvi-xvii-and-appendix-a.md](05-articles-xvi-xvii-and-appendix-a.md) | Grievance procedure, business representatives and job stewards, term of agreement, and the Appendix A contribution schedule |
+| [local-12-wage-notice-2025-08-15.md](local-12-wage-notice-2025-08-15.md) | **The 2025-07-01 rate notice** — the nine wage groups, apprentice steps, subsistence, premiums and fringe contributions as Local 12 published them on 2025-08-15. Read from the scan 2026-09-04 |
+| [wage-rate-sheet-2026-07-01.md](wage-rate-sheet-2026-07-01.md) | **The 2026-07-01 rate sheet** (union, *Revised June 2026*) — all nine groups for 7/1/24–7/1/26 (+$1.00 to wages in 2026), fringes, apprentice steps, classifications 1–9 with the lattice / hazmat premiums, the one-page rules (long boom 75¢/25¢, shifts $3/$4, subsistence $85/$200, increases through 7/1/27) and the 2026 holiday bulletin. Diffed against the `incorrectOldVersion` copy: only the supplemental-dues column differs |
+| [truck-crane-mla-2025-2028-full-text.md](truck-crane-mla-2025-2028-full-text.md) | **Full text of the Truck Crane MLA as clean Word text** — all 17 articles, Appendix A and the in-cab camera MOU. From the EXTRACTED `.docx` that had been mis-dispositioned on 2026-08-13 as a duplicate of the summary |
+| [ocr-truck-crane-mla-2025-2028-full-text.md](ocr-truck-crane-mla-2025-2028-full-text.md) | **Full text of the Truck Crane MLA** (40 pp, machine OCR) — **superseded by the Word-text page above**; keep for checking a character against the scan |
+| [ocr-southern-california-mla-2025-2028-full-text.md](ocr-southern-california-mla-2025-2028-full-text.md) | **Full text of the SCCA Southern California MLA** (108 pp, machine OCR) — **a different agreement**, the general construction parent of the Truck Crane MLA. Whether any TCG work falls under it is unestablished |
 
 ## The clauses that drive the calculation
 
@@ -53,10 +58,17 @@ Anchors for the rules implemented downstream — quoted in full in part 01:
 | First-day exception | **No 8-hour guarantee if only traveling, assembling or preparing the crane**, first day only. If customer work is performed and hours < 8, the employee must call the dispatcher to qualify for the guarantee |
 | Not qualified / unable | An employee who reports but is not qualified, or cannot work due to their own condition, **receives no reporting time** |
 
-## Related source PDFs that could not be text-extracted
+## The scanned PDFs — OCR'd 2026-09-04
 
-Three copies of the full agreement arrived as **scanned images with no text layer**, so
-`pdftotext` returned nothing. They are listed in [../source-manifest.md](../source-manifest.md).
-This extract and the SCCA-hosted PDF cited in
-[../rule-examples-catalog.md](../rule-examples-catalog.md) are the readable routes to the same
-text.
+Three PDFs in the payroll folder arrived as scans with no text layer and were recorded on
+2026-08-13 as *"copies of the union agreement"* needing OCR. On 2026-09-04 they were rendered at
+200 dpi and OCR'd with tesseract. They are **not** three copies of one document:
+
+| File | What it turned out to be | Now |
+| --- | --- | --- |
+| `MCOG LABOR UNION L12/MCOG-O. E. Local 12 Truck Crane Master Labor Agreement 2025-2028.pdf` (40 pp) | The Truck Crane MLA itself, complete | [ocr-truck-crane-mla-2025-2028-full-text.md](ocr-truck-crane-mla-2025-2028-full-text.md) |
+| `PAYROLL_APP_build/L12_Union-Labor-Agreements/OE-Local-12-MLA-25-28-Comp.pdf` (108 pp) | The **Southern California MLA with the SCCA** — a different, broader agreement | [ocr-southern-california-mla-2025-2028-full-text.md](ocr-southern-california-mla-2025-2028-full-text.md) |
+| `MCOG LABOR UNION L12/07.01.2025 truck crane MLA (1).pdf` (4 pp) | Local 12's **wage and fringe notice** of 2025-08-15, not the agreement | [local-12-wage-notice-2025-08-15.md](local-12-wage-notice-2025-08-15.md) — transcribed from the image |
+
+The human-transcribed parts 01–05 above remain the citable text for every payroll clause; the OCR
+pages are for the articles the extract left out, and for full-text search.

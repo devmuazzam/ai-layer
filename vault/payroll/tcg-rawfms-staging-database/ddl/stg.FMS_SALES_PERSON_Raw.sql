@@ -1,0 +1,26 @@
+-- TCG_RawFMS.stg.FMS_SALES_PERSON_Raw  rows=32  columns=23
+CREATE TABLE [stg].[FMS_SALES_PERSON_Raw] (
+    [SpersonCode] varchar(15) NOT NULL,
+    [LName] varchar(30) NOT NULL,
+    [FName] varchar(30) NULL,
+    [MName] varchar(30) NULL,
+    [Phone] varchar(14) NULL,
+    [Fax] varchar(14) NULL,
+    [Email] varchar(100) NULL,
+    [Status] bit NOT NULL,
+    [GroupNumb] char(2) NOT NULL,
+    [UserID] int NULL,
+    [ConvertToJob] bit NOT NULL,
+    [ViewRestriction] bit NOT NULL,
+    [CreatedBy] varchar(20) NULL,
+    [CreatedDate] datetime NULL,
+    [ModifiedBy] varchar(20) NULL,
+    [ModifiedDate] datetime NULL,
+    [trgFMS_SALES_PERSON] bit NULL,
+    [SalesForceID] varchar(50) NULL,
+    [Title] varchar(150) NULL,
+    [EmpID] varchar(15) NULL,
+    [ExpAcct] bit NOT NULL,
+    [_SourceExtractedAtUTC] datetime NOT NULL,
+    [_LoadedAtUTC] datetime NOT NULL
+);

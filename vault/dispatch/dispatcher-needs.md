@@ -1,14 +1,22 @@
 ---
 title: Dispatcher Needs
-source: confluence/TCG/Dispatcher Needs
+source: confluence/TCG/Dispatcher Needs + shared-folder/Project-Repository-2026-09-04/3.3.1_MODULE-DISPATCH-JOBS/2026-04-09_TCG-Dispatcher Needs_from-CodingCops.pdf (the same text, redelivered — provenance note below)
 migrated: 2026-08-10
-updated: 2026-04-07
+updated: 2026-04-09
 status: unverified
 conflicts_with: []
 jira: []
 tags: [module/assets, module/customers, module/dispatch, module/field-ops, module/projects-jobs, module/vendors-agencies, kind/reference, permits, scheduling, inspections]
 entities: [job, permit, asset, customer, vendor, field-ticket, schedule, project, agency, tool-rigging]
 ---
+
+> **Provenance, added 2026-09-04.** The 2026-09-04 Project Repository drop contains this same
+> document as a PDF, `3.3.1_MODULE-DISPATCH-JOBS/2026-04-09_TCG-Dispatcher Needs_from-CodingCops.pdf`.
+> Its text is **identical to this page** section for section, so nothing here is corrected. What it
+> adds is provenance the Confluence page did not carry: the filename dates it **2026-04-09** and
+> attributes it **to CodingCops**, i.e. this is the vendor's write-up of what dispatchers said in
+> discovery, filed back to the client — **not a client-authored requirements statement.** Read it
+> accordingly.
 
 ## **1. Dispatcher Needs (Extracted from Discovery)**
 

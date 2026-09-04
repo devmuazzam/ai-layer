@@ -3,7 +3,7 @@ id: PAY-043
 title: PAY-043 — Long-boom premium
 section: E-guarantees-special-pay
 status: open
-updated: 2026-08-24
+updated: 2026-09-04
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -31,3 +31,13 @@ tags: [module/payroll, kind/rule, open-questions]
 - **LB triple operationalized (July):** TCG **added the "long boom holiday (triple time)" code** (`LBT`) to ADP — after Brian's message doubting the contract supports it. Practice has now committed; the open ask flips from "does it exist?" to "**show the contract basis / Corrina's confirmation that motivated adding it**" — which also feeds the into-the-rate adjudication (PAY-011).
 - **Time-scope contrast now explicit:** long-boom premium = **boom-window slices**; lattice premium (PAY-044) = **the entire job** (Corrina, message 20). Different scopes, and they stack — the ERP must not share one eligibility window between them.
 - **Contract basis for LB TRI located:** the MLA's into-the-rate clause (boom adder becomes base when computing overtime — quoted verbatim in the attribution register) makes holiday ×3 apply to base+boom, so `LBT` is contract-derivable; the July code addition operationalized it. Question closed; the composition decision note will cite this.
+- **Boom-window scope corroborated by Corrina in a worked example, 2026-09-04:** both of her
+  hand-worked long-boom days mark **(Long boom pay)** on the `build up, work, breakdown` segment
+  only, never on the drive segments either side of it — including the drive *of the long-boom crane
+  itself*. Direct confirmation of the `ArrivedJob → LeftJob` window, and it sharpens the contrast
+  with PAY-044 (lattice = the entire job) she drew in message 20. Also note her two-job example
+  carries **two separate boom windows in one shift** (`8am-5:30pm` and `7:30-11:30pm`), which the
+  engine handles per labor row — but the **4-hour long-boom minimum groups per `ShiftAnchorDate`,
+  not per job** (§5), so a two-job day gets one minimum, not two. Both windows exceed 4 hours in
+  her example so it never fires; unasked and unrecorded for the case where one of them does.
+  Source: [client-message-findings.md](../client-message-findings.md#2026-09-04--long-boom-day-breakdowns-drive-time-included-corrina-bustos-teams).

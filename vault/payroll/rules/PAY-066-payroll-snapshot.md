@@ -3,7 +3,7 @@ id: PAY-066
 title: PAY-066 — Payroll snapshot
 section: G-audit-review-export
 status: open
-updated: 2026-08-24
+updated: 2026-09-04
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -24,3 +24,4 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm reopen/correction policy
+- **The reopen/correction policy is now a live client question (2026-09-04, Brian Petros):** an edit to one labor entry can change the priced result of *other* entries, including in a closed week. As built, `payroll.service.ts:139-148` enforces this rule literally — recalculation is refused once a period is `APPROVED` or `EXPORTED`, citing PAY-066 — so the snapshot is safe and the correction path is simply absent. Settle with PAY-068; see [gaps.md](../gaps.md#a-labor-entry-edit-can-reprice-an-approved-week--and-the-erp-has-no-path-for-it).

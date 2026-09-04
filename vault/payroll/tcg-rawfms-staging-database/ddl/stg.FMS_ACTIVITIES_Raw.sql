@@ -1,0 +1,31 @@
+-- TCG_RawFMS.stg.FMS_ACTIVITIES_Raw  rows=100  columns=27
+CREATE TABLE [stg].[FMS_ACTIVITIES_Raw] (
+    [ActivityCode] varchar(15) NOT NULL,
+    [Description] varchar(50) NOT NULL,
+    [PrevMaint] bit NOT NULL,
+    [ActionList] varchar(max) NULL,
+    [MaintEvery] int NULL,
+    [TimePeriod] varchar(10) NULL,
+    [MaintEvery2] int NULL,
+    [TimePeriod2] varchar(10) NULL,
+    [ActivityType] char(1) NULL,
+    [Status] bit NOT NULL,
+    [CertificationType] char(1) NULL,
+    [StandardTime] numeric(7,2) NULL,
+    [Category1] varchar(15) NULL,
+    [Category2] varchar(15) NULL,
+    [Category3] varchar(15) NULL,
+    [AcctIntCode] varchar(12) NULL,
+    [CreatedBy] varchar(20) NULL,
+    [CreatedDate] datetime NULL,
+    [ModifiedBy] varchar(20) NULL,
+    [ModifiedDate] datetime NULL,
+    [trgFMS_ACTIVITIES] bit NULL,
+    [Price] numeric(20,4) NULL,
+    [UnitSales] bit NOT NULL,
+    [ItemTaxCode] varchar(15) NULL,
+    [DontPromptExpCert] bit NOT NULL,
+    [_SourceExtractedAtUTC] datetime2(7) NOT NULL DEFAULT (sysutcdatetime()),
+    [_LoadedAtUTC] datetime2(7) NOT NULL DEFAULT (sysutcdatetime())
+);
+-- PRIMARY KEY PK_FMS_ACTIVITIES_Raw CLUSTERED (ActivityCode)

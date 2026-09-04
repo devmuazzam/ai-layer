@@ -2,7 +2,7 @@
 title: Accounting — open questions
 status: reference
 kind: gaps
-updated: 2026-08-27
+updated: 2026-09-04
 tags: [module/accounting, kind/gaps, open-questions]
 ---
 
@@ -35,6 +35,56 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** no FRD, no matrix, no ticket exists for accounting; the wishlist is the
   only source. Payroll-integration rows already live in the payroll register; mobile time entry
   is largely the Atom app; job-document storage overlaps field-ops/projects attachments.
+- **The outer edge was answered on 2026-09-01 — decision-shaped, no decision note yet.** Brent
+  Wagstaff put the question directly (*"are we maintaining the books in this new ERP or are we
+  not?"*) and ehtesham.anwar answered: **QuickBooks keeps the books** — *"all of the workflows
+  that are in QuickBooks should remain in QuickBooks because we are not creating again an
+  invoicing software… that would be foolish to build within the ERP"* — while the **ERP takes the
+  reporting**, fed from QuickBooks by webhook and joined to customers, projects, jobs and
+  quotations. **Journal entries, trial balance, P&L and balance-sheet accounts are out**, named by
+  Brent and left out by both parties. **Integration is by API, not QODBC** (Patrick asked; same
+  path as ADP and Samsara). A **self-service report builder** is wanted and explicitly deferred
+  until the essentials exist. Brent's reading back — *"you're going to build the side that feeds
+  an accounting system, but the new ERP is also going to take information back and build
+  reports"* — was confirmed. Source:
+  [meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §1.
+  **This tiers the wishlist's top by exclusion, not by listing:** core GL/AR/AP ledger work is
+  out; reporting, automation and the ERP-side joins are in. It does **not** tier the AI ambitions
+  (OCR, predictions, collections assistant) or the customer portal. A `decisions/` note is owed —
+  the parties are named and the statement is unambiguous, which is exactly the shape `tcg-scrum`
+  writes up.
+- **Update 2026-09-04 (Project Repository ingest):** four things bear on the tiering; none is a
+  tiering decision. **(a)** The client's own RFP of 2026-02-26
+  ([admin/tcg-erp-rfp-2026-02-26.md](../admin/tcg-erp-rfp-2026-02-26.md) §3–§4) is the only
+  client-authored phasing on record: *Invoicing & Billing* (generation, recurring billing, payment
+  tracking) sits in **Phase 2** (Sep–Nov 2026 on its timeline), *Reporting & Analytics* (finance and
+  executive KPI dashboards) in **Phase 3** (Q1 2027), *QuickBooks Online — bi-directional sync for
+  invoices, payments, GL* is a **High**-priority required integration, and a *customer portal for
+  quote approval and invoice review* is listed as **nice-to-have**. It predates both the July
+  wishlist and the 2026-09-01 boundary, and says nothing about OCR, predictions or a collections
+  assistant. **(b)** The accounting team's activity inventory
+  ([accounting-team-quickbooks-and-spreadsheet-activities.md](accounting-team-quickbooks-and-spreadsheet-activities.md))
+  shows the wishlist's budgeting, cash-flow, expense-report and month-end items are descriptions
+  of fifteen spreadsheets that already exist — evidence of current practice, not a scope
+  statement — and the AR-collections history a "collections assistant" would need currently lives
+  as prose in a QuickBooks customer note field
+  ([nexgen-quickbooks-integration/06-quickbooks-customer-contact-export.md](nexgen-quickbooks-integration/06-quickbooks-customer-contact-export.md)).
+  **(c)** The customer portal was placed *after the first scope closes* on 2026-09-02 — by
+  CodingCops (Ehtesham), not by a named TCG decision-maker
+  ([meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md)
+  → *Product questions raised* #1). **(d)** Two client sources sit uneasily beside "QuickBooks keeps
+  the books": Brian Petros's draft P&P PO-002 of 1 Dec 2025 lists its systems as *"FCC / NexGen,
+  QuickBooks (current), Sage (future)"*
+  ([vendors-agencies/purchase-orders-fcc/po-002-vendor-billing-and-customer-invoicing.md](../vendors-agencies/purchase-orders-fcc/po-002-vendor-billing-and-customer-invoicing.md)),
+  and Melissa McNutt on 2026-07-23 said *"We feel like we've outgrown QuickBooks, so we've talked
+  about, you know, Sage or NetSuite, Oracle"*
+  (`meetings/transcripts/2026-07-23-accounting-invoicing.md:201`). Both predate 2026-09-01 and
+  neither was retracted on tape; the 2026-09-01 exchange did not mention Sage. Separately, the
+  `3.8.1_MODULE-ACCOUNTING-AP-AR` archive in the drop arrived truncated (one text file, an empty
+  `Ariba/` folder), so the AP/AR process documents that would inform the tiering are still
+  missing. **Still needs the client:** a tier per wishlist item (in particular OCR, predictions,
+  the collections assistant and the portal), whether a Sage move is live or abandoned, and the
+  `decisions/` note for the 2026-09-01 boundary.
 
 ## Project detail Accounting tab — what it shows, and what it shows before the module exists
 
@@ -106,3 +156,65 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** invoicing → QuickBooks posting; payroll GL export; the accounting wishlist tiering
   above.
 - **Owner:** TCG accounting (Brent / Micaela Dipane) via Brian Petros.
+- **Update 2026-09-04 (Project Repository ingest):** the first part of the question — same list,
+  mapped pair, or independent — is now answered by the record; the other two parts are not, so the
+  entry stays open. **(a) Two independent lists, joined per account by `FMS_GL_ACCOUNTS.GLLINK` (a
+  QuickBooks `ListID`), with no synchronisation.** FCC's own connector document, attached by FCC
+  support to case 39995 in November 2025: *"we don't have any GL Sync to update the GLLINK column
+  in FMS_GL_ACCOUNTS table. They update from Export Invoice when the GLLINK not found in the table
+  it updates"* — `Account.AccountNumber ← GLAcctCode`, and invoice, credit-memo and voucher lines
+  reach QuickBooks as **GL account + amount only**
+  ([nexgen-quickbooks-integration/01-fcc-connector-field-mapping.md](nexgen-quickbooks-integration/01-fcc-connector-field-mapping.md)
+  → *GL Account*). That is a system fact about the legacy seam, not a TCG decision. The practice
+  side agrees: Sam runs the QuickBooks chart-of-accounts report *"to add General Ledger codes to
+  match FCC"*
+  ([accounting-team-quickbooks-and-spreadsheet-activities.md](accounting-team-quickbooks-and-spreadsheet-activities.md)
+  → *Sam*) — QuickBooks is edited by hand to follow FCC — and FCC's QBO setup sheet says billing-code
+  names copy to QuickBooks items for *"only Revenue accounts not expense accounts. No GL number
+  comes over"*
+  ([nexgen-quickbooks-integration/04-quickbooks-online-setup-guides.md](nexgen-quickbooks-integration/04-quickbooks-online-setup-guides.md)).
+  TCG already knew the lists differ: on 2026-03-20, looking at the FCC GL Accounts screen, staff
+  (unattributed in the transcript) said *"That's not the GL account… The code, that's how it's
+  mapped to QuickBooks… There's got to be some other mapping mechanism because… those aren't GL
+  accounts"* and parked it *"for the discussion with CodingCops… when they start getting the
+  financial stuff"* (`meetings/transcripts/2026-03-20-fcc-fields-screens-review.md:186-207`).
+  **(b) What FCC's list looks like.** The `Maintain → Company → GL Accounts` screen shows a
+  per-unit / per-crane-class chart — `100INC` *100 Ton Income*, `10001RM` *Repairs & Maintenance*,
+  `14001BD`, `1201` *Accounts Receivable (A/R)*, with A/P `2000` on the company screen — each
+  account ticked valid for **two companies, The Crane Guys, LLC and The Repair Guys**
+  ([admin/fcc-nexgen-administration-and-security.md](../admin/fcc-nexgen-administration-and-security.md)
+  → *GL Accounts (slides 19–21)*); TCG's note on that slide is *"GL Accounts to be discussed more.
+  Need to be integrated with accounting software (QuickBooks Online)."* A real PO books a fleet
+  repair to `SL03 Expenses`, a GL account named after the unit
+  ([vendors-agencies/purchase-orders-fcc/fcc-po-entry-walkthrough.md](../vendors-agencies/purchase-orders-fcc/fcc-po-entry-walkthrough.md)),
+  whereas FCC's billing-code import template expects revenue accounts by kind — `4000` equipment
+  and mobilisation, `4100` labour, `4200` miscellaneous
+  ([quotations/fcc-billing-data-and-price-lists.md](../quotations/fcc-billing-data-and-price-lists.md)
+  §3) — a template convention the live `<tons>INC` accounts on the screenshots do not follow. GL
+  codes are carried on units (five each: `GlAcctTm`, `GLAcctBare`, `GLAcctOper`, `GLAcctDelPickup`,
+  `GLAcctPermit`), crafts (`GLAcctCode` plus `AcctIntCode`, the QuickBooks wage-item `ListID`),
+  employees, jobs and labour-payroll rows (`GLAcctCode`), and departments carry an `ExpAcct` flag
+  (`payroll/tcg-rawfms-staging-database/ddl/stg.FMS_UNITS_Raw.sql:71-75`,
+  `stg.FMS_CRAFTS_Raw.sql:13,19`, `stg.FMS_EMPLOYEES_Raw.sql:42`, `stg.FMS_JOB_MASTER_Raw.sql:50`,
+  `stg.FMS_LABOR_PAYROLL_Raw.sql:32`, `stg.FMS_DEPARTMENTS_Raw.sql:18`); `FMS_GL_ACCOUNTS` itself is
+  **not** in the staging extract. **(c) Ownership, as far as the record goes.** TCG's own
+  integration checklist answers *"who is allowed to change integration settings (GL links, AR/AP
+  accounts, TERMS)"* with *"This was setup by FCC, so they have to do the updates/changes"*
+  ([nexgen-quickbooks-integration/02-integration-review-checklist.md](nexgen-quickbooks-integration/02-integration-review-checklist.md)),
+  and its reimplementation proposal states *"QuickBooks Online = accounting 'source of truth' —
+  Chart of accounts, terms, payroll items"*
+  ([nexgen-quickbooks-integration/03-proposed-reimplementation.md](nexgen-quickbooks-integration/03-proposed-reimplementation.md))
+  — a proposal to the owner/CFO with no evidence of approval, so not a decision. Brian's draft P&P
+  PO-002 records one mapping defect in the client's words: Traffic Control and Permits *"must map
+  to Subcontractor Expense"*, not *"LLC Safety"*, and *"department codes must be cleaned up to
+  support this"*
+  ([vendors-agencies/purchase-orders-fcc/po-002-vendor-billing-and-customer-invoicing.md](../vendors-agencies/purchase-orders-fcc/po-002-vendor-billing-and-customer-invoicing.md)).
+  **(d) What the ERP's `expense-gl-accounts` carries — unanswered.** `expense_gl_accounts` is an
+  empty admin-managed picklist (`code`, `label`, `description`, `status`;
+  `apps/api/prisma/schema.prisma:2575`) with no seed, no QuickBooks identifier column and no link
+  to FCC's 296 rows, which the migration brief still marks *"Need Clarification from TCG Team"*;
+  a vendor's `defaultExpenseGlAccount` is a free-text string. **Still needs the client:** whether
+  the ERP's list is FCC's per-unit chart, QuickBooks's chart, or a mapping table between them; who
+  owns that mapping once FCC is gone; and which system is the record for payroll GL, given labour
+  reaches QuickBooks via `FMS_CRAFTS.AcctIntCode` while payroll runs in ADP (Brian, 2026-08-25
+  50:33: the ADP position ID is held in a QuickBooks custom field).

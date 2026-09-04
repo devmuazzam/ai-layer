@@ -17,7 +17,7 @@ legacy engine behaviour, SQL, contract article, conflicts, test cases.
 The FRD and the matrix both use `PR-###` **with different meanings** — cite those only with
 the document. Confluence adds `PAY-CC-##` and `US/PAY-WP-##`. The register maps them all.
 
-Status: **3 settled · 67 open · 3 conflicted.** The client-question list:
+Status: **4 settled · 67 open · 2 conflicted.** The client-question list:
 `grep -l 'status: conflicted' vault/payroll/rules/` — or by section below.
 
 
@@ -53,7 +53,7 @@ Status: **3 settled · 67 open · 3 conflicted.** The client-question list:
 | --- | --- | --- |
 | [PAY-017](PAY-017-time-source-selection.md) | Time-source selection | · open |
 | [PAY-018](PAY-018-assumed-shift.md) | Assumed shift | · open |
-| [PAY-019](PAY-019-cross-midnight-processing.md) | Cross-midnight processing | ⚠️ conflicted |
+| [PAY-019](PAY-019-cross-midnight-processing.md) | Cross-midnight processing | ✅ settled |
 | [PAY-020](PAY-020-half-hour-reckoning.md) | Half-hour reckoning | ✅ settled |
 | [PAY-021](PAY-021-l12-standard-work-window.md) | L12 standard work window | · open |
 | [PAY-022](PAY-022-daily-straight-time.md) | Daily straight time | · open |

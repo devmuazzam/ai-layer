@@ -151,6 +151,14 @@ definitions and every config row.
 
 ## Where this changes existing vault documents
 
+> **Cross-check, 2026-09-04.** The client's 2026-06-23 full backup of this database (in the
+> SharePoint drop) was restored and every one of the 141 definitions compared with [sql/](sql/):
+> **all identical**, same 38 tables, same 40 synonyms. The extract stands. What the backup adds —
+> pay-period state, the nightly run log, the *Refresh from NexGen* history — is in
+> [../legacy-payroll-app-db-backup-2026-06-23.md](../legacy-payroll-app-db-backup-2026-06-23.md);
+> the `TCG_RawFMS` side of the feed is in
+> [../tcg-rawfms-staging-database/INDEX.md](../tcg-rawfms-staging-database/INDEX.md).
+
 - [../legacy-payroll-app-code-extract.md](../legacy-payroll-app-code-extract.md) — its "SQL not
   in this repo" caveat and "WTL thresholds unknown" note are superseded (banner added there).
 - [../payroll-app-current-state/](../payroll-app-current-state/INDEX.md) — ranks 1–2 of its own

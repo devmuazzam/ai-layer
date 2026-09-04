@@ -2,7 +2,7 @@
 title: Vendors Agencies — module index
 status: reference
 kind: index
-updated: 2026-08-24
+updated: 2026-09-04
 tags: [module/vendors-agencies, kind/reference]
 ---
 
@@ -11,6 +11,14 @@ tags: [module/vendors-agencies, kind/reference]
 Vendors, agencies, purchase orders. Backend usecases: `vendors, agencies, purchase-orders`. Organized per [STRUCTURE.md](../STRUCTURE.md).
 
 > **Conflict stub first:** [agencies-vendors-INDEX.md](agencies-vendors-INDEX.md) — competing sources, none verified. Do not answer from a single document while it is non-empty.
+
+> **Second, unrelated conflict — purchase orders.** Two unverified sources define "the two PO
+> types" incompatibly: [purchase-order.md](purchase-order.md) splits them by what is bought and
+> who owns the process (permit/vendor — Liz Lopez; parts/maintenance — Jeff Stricker), while
+> Melissa McNutt's email of 4 December 2025 splits them by direction (the PO the customer gives
+> us; the PO we give vendors). Set out in
+> [purchase-orders-fcc/INDEX.md](purchase-orders-fcc/INDEX.md) → *Stated conflict*. This is
+> separate from the agencies/vendors stub above and has no stub of its own.
 
 ## Files
 
@@ -21,7 +29,21 @@ Vendors, agencies, purchase orders. Backend usecases: `vendors, agencies, purcha
 | [agencies.md](agencies.md) | Agencies as a directory that auto-populates permit forms | 1.0 |
 | [agencies-module.md](agencies-module.md) | Agency UI punch list + cross-app items | 1.4 |
 | [agency-and-vendor.md](agency-and-vendor.md) | 8-line punch list: sub-contractor category, travel restrictions | 0.2 |
-| [purchase-order.md](purchase-order.md) | Purchase order handling | 4.7 |
+| [purchase-order.md](purchase-order.md) | Purchase order handling — **future-ERP** design, permit-tracker driven | 7.7 |
+| [purchase-orders-fcc/](purchase-orders-fcc/INDEX.md) | **Current-state FCC POs.** The Dec-2025 draft P&P set — quote-anchored pre-job POs, AP vouchering, retro-linking to the job — plus the FCC walkthrough and the commissioning email. Carries the *two PO types* conflict | 36.7 (6 files) |
+| [fcc-nexgen-purchasing-guide.md](fcc-nexgen-purchasing-guide.md) | What NexGen itself supports: requisition → approval limits → PO → receiver → voucher, PO variance, Export OK | 14.2 |
+| [outside-trucking-piazza-invoice-sop.md](outside-trucking-piazza-invoice-sop.md) | Piazza invoice → FCC customer invoice, with the 10% / $35 / $58.50 mark-up arithmetic | 5.5 |
+| [sub-out-crane-and-trucking.md](sub-out-crane-and-trucking.md) | Subbing a job out to another crane or trucking company — approved-vendor gate, what the sub is sent, dispatch sheet (also `module/dispatch`) | 7.0 |
+
+## The 2026-09-04 Project Repository drop
+
+Twelve files on purchase orders and sub-out landed in that drop. They added nine pages — the
+six in `purchase-orders-fcc/` and the three module-level files above — and two banners plus a
+Related section on `purchase-order.md`. Three of the twelve produced no page: an images-only
+PPTX with no text layer, a byte-identical duplicate of the NexGen PO Requisition PDF, and the
+walkthrough that PO-001 and the sales-PO example share verbatim (recorded once). The dividing line worth remembering:
+**`purchase-order.md` is the ERP we are building; `purchase-orders-fcc/` is FCC as it runs
+today.** Both are unverified and they disagree about PO types.
 
 ## Decisions that bind this module
 
@@ -34,7 +56,7 @@ Vendors, agencies, purchase orders. Backend usecases: `vendors, agencies, purcha
 
 ## Meetings
 
-4 meeting files carry `module/vendors-agencies` — list them:
+6 meeting files carry `module/vendors-agencies` — list them:
 
 ```
 grep -rl 'module/vendors-agencies' vault/meetings/

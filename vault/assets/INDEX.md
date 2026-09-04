@@ -2,7 +2,7 @@
 title: Assets — module index
 status: reference
 kind: index
-updated: 2026-08-31
+updated: 2026-09-04
 tags: [module/assets, kind/reference]
 ---
 
@@ -17,8 +17,24 @@ Assets, yards-as-records, tools & rigging, categories. Backend usecases: `asset-
 | [user-story-and-tasks.md](user-story-and-tasks.md) | **Only** source for yard management, HubSpot sync, email 2FA. From a personal space — check `provenance_note` | 4.3 |
 | [tool-and-rigging.md](tool-and-rigging.md) | Tools & rigging management, incl. the yard dashboard | 3.7 |
 | [loading-list.md](loading-list.md) | **Dylan's loadable tool catalog** — 26 items with quantities, in load order; and the permanent per-crane kit it excludes | 4.0 |
-| [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) | **FCC unit data** — 25 schedule types, 71 unit types, the 156-column unit table, and the full 692-object FCC schema inventory | 3.8 |
-| [categories-and-sub-categories.md](categories-and-sub-categories.md) | Category/sub-category questions (2 tags — thin) | 0.3 |
+| [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) | **The FCC unit data, end to end** — 25 schedule types, 76 resource types, the 156-column unit table and which 78 columns migrate, the one-unit-many-types substitution table, the import contract, and the 444-table schema inventory with a disposition each | 34.0 |
+| [crane-fleet-reference.md](crane-fleet-reference.md) | **Which cranes TCG actually has** — unit code → model → tonnage class, the four naming vocabularies that disagree, the operator/support-load trailers, rating & de-rating, wind sail, and the load-chart library (not migrated) | 23.6 |
+| [crane-selection-and-load-chart-model.md](crane-selection-and-load-chart-model.md) | Ryan's estimator workbook — the **load-chart data model, 8 recommendation gates and per-manufacturer source authority** TCG has already designed. Rules are the deliverable; the capacity numbers are flagged untranscribed | 15.5 |
+| [storage-and-warehouse-operations.md](storage-and-warehouse-operations.md) | **Only** source for storage — FCC storage tickets, rates and invoicing, plus TCG's Receiving / Inventory Audit / Shipping SOPs | 18.2 |
+| [asset-record-requested-additions.md](asset-record-requested-additions.md) | What TCG has asked to add to the asset record — emissions and GVWR fields, loan block, asset batches, fuel app, Samsara, 13 dashboards; reconciled against the review log's own list | 9.9 |
+| [fcc-atom-iti-integration.md](fcc-atom-iti-integration.md) | FCC ↔ ITI Learning Hub certificate sync, and the Atom Display Menu. *Subject is certifications — filed here by drop group* | 6.9 |
+| [equipment-onboarding.md](equipment-onboarding.md) | How a new machine becomes dispatchable — the on-boarding value engine and the (stub) FCC creation playbook | 5.8 |
+| [trailer-inspection-form.md](trailer-inspection-form.md) | The paper trailer inspection checklist, version 1 — 24 side-by-side checks plus 8 conditional ones | 4.1 |
+| [categories-and-sub-categories.md](categories-and-sub-categories.md) | Category/sub-category questions (2 tags — thin) | 0.6 |
+
+## Also relevant
+
+- [erp-review-log.md](../erp-review-log.md) §**#7 — Assets** — the client's own asset wish list
+  (categories, compliance/expiry, PERP & DOORS, crane attributes, photos, load-chart attachments),
+  plus its *Assets and rigging* and *Data import* sections
+- [quotations/fcc-estimate-templates-by-job-type.md](../quotations/fcc-estimate-templates-by-job-type.md)
+  — the estimate-template half of `FCC_UNITS-ASSETS-ResourceTypes_20260902.xlsx`; the assets half is
+  in `fcc-units-and-schedule-types.md` §6
 
 ## Decisions that bind this module
 
@@ -31,7 +47,7 @@ Assets, yards-as-records, tools & rigging, categories. Backend usecases: `asset-
 
 ## Meetings
 
-7 meeting files carry `module/assets` — list them:
+12 meeting files carry `module/assets` — list them:
 
 ```
 grep -rl 'module/assets' vault/meetings/

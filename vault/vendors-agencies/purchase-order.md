@@ -1,16 +1,33 @@
 ---
 title: Purchase order
-source: confluence/TCG/Purchase order
+source: confluence/TCG/Purchase order; cross-links and conflict banner added from shared-folder/Project-Repository-2026-09-04/1.0.1_BUSINESS-REQUIREMENTS/TCG_ACCTG_PURCHASE_ORDERS (draft SOPs)/
 migrated: 2026-08-10
-updated: 2026-07-03
+updated: 2026-09-04
 status: unverified
-conflicts_with: []
+conflicts_with: [vendors-agencies/purchase-orders-fcc/INDEX.md, vendors-agencies/purchase-orders-fcc/commissioning-email-thread.md]
 jira: []
 tags: [module/assets, module/customers, module/projects-jobs, module/vendors-agencies, kind/reference, permits, purchase-orders, lift-plans]
 entities: [permit, purchase-order, asset, job, vendor, agency, lift-plan, project, customer, quotation]
 ---
 
 # Purchase Orders (POs)
+
+> **Read the conflict first.** A second, incompatible answer to "what are the two PO types?"
+> arrived with the 2026-09-04 Project Repository drop: in an email of 4 December 2025 Melissa
+> McNutt defines Type 1 as **the PO the customer gives us** and Type 2 as **the PO we give our
+> vendors** — a split by direction, where the split below is by what is bought and which
+> department owns it. Neither is verified. Do not answer the question from this page alone —
+> see [purchase-orders-fcc/INDEX.md](purchase-orders-fcc/INDEX.md) → *Stated conflict*.
+>
+> **Read the scope difference too.** This page describes the **future ERP** — a Permit Tracker
+> that detects the permit requirement and a **Create PO** button that generates and later
+> back-fills the PO. The **current FCC/NexGen** procedure, in which Sales or Dispatch raise a
+> PO manually against a **Quote Number** before a Job exists and AP retro-links it afterwards,
+> is a separate set of pages: [purchase-orders-fcc/](purchase-orders-fcc/INDEX.md) (three draft
+> P&Ps of 1 December 2025, the FCC walkthrough, and the commissioning email thread). What the
+> underlying NexGen system itself supports — requisitions, approval limits, receivers,
+> vouchers, PO variance — is in
+> [fcc-nexgen-purchasing-guide.md](fcc-nexgen-purchasing-guide.md).
 
 ## Types of POs
 
@@ -274,3 +291,20 @@ After approval:
 
 * System automatically attaches the approved permit to the correct job.
 * No manual linking is required.
+
+---
+
+## Related — added 2026-09-04 from the Project Repository drop
+
+- [purchase-orders-fcc/INDEX.md](purchase-orders-fcc/INDEX.md) — the December 2025 P&P set:
+  quote-anchored pre-job POs, AP vouchering, retro-linking to the job.
+- [fcc-nexgen-purchasing-guide.md](fcc-nexgen-purchasing-guide.md) — Fleet Cost & Care's own
+  NexGen purchasing documentation (v2.1, 2017).
+- [sub-out-crane-and-trucking.md](sub-out-crane-and-trucking.md) — Dispatch's sub-out
+  procedure, which is the operational side of the *Third-Party Crane Company* and *Sub Hauler*
+  PO sub-types listed above; it confirms Hydraulic and Piazza as the vendors used.
+- [outside-trucking-piazza-invoice-sop.md](outside-trucking-piazza-invoice-sop.md) — how a
+  Piazza invoice reaches the customer invoice, with the mark-up arithmetic.
+
+Nothing on this page was changed by that drop other than the two banners and this section; the
+drop neither confirmed nor contradicted the permit-driven ERP workflow described above.

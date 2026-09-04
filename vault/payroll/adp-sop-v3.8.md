@@ -1,8 +1,8 @@
 ---
 title: PAYROLL for ADP - Standard Operating Procedure v3.8
-source: onedrive/OneDrive_1_8-11-2026/PAYROLL for ADP v3.0 - current/PAYROLL for ADP - SOP v3.8.docx
+source: onedrive/OneDrive_1_8-11-2026/PAYROLL for ADP v3.0 - current/PAYROLL for ADP - SOP v3.8.docx; embedded screenshots read from shared-folder/Project-Repository-2026-09-04/3.7.1_MODULE-HR-LABOR-PAYROLL/PAYROLL for ADP v3.0 - current/PAYROLL for ADP - SOP v3.8.docx
 migrated: 2026-08-13
-updated: 2026-08-05
+updated: 2026-09-04
 status: unverified
 conflicts_with: []
 jira: []
@@ -310,3 +310,125 @@ On a Mac computer, a special Apple Script needs to be installed to make this wor
 - Import the CSV file and review information in ADP before submitting
 
   - Note any changes/modifications needed so we can update this Excel process (as needed)
+
+## What the SOP's screenshots show — read 2026-09-04
+
+The docx embeds 46 images; 28 were extracted and read (eight are the same logo and Excel
+security-dialog crops as the Sales Commissions SOP; ten — the tab crops, the hidden-sheet
+list, the Lattice / Shift-Differential dropdowns, the boom summary, the Subsistence/Sick/
+Holiday columns, the notes cell and the two ADP-tab crops — were not recoverable). Every workbook screen carries the
+header **PAYROLL v3.7**: the v3.8 SOP documents the v3.7 MASTER template, as §5.1 says. Only
+what the text does not already say is recorded; the column semantics are in
+[adp-workbook-column-rules.md](adp-workbook-column-rules.md) and the macros in
+[adp-workbook-vba-macros.md](adp-workbook-vba-macros.md).
+
+**The OneDrive folder** shows two sibling files the SOP never mentions: `EMPLOYEE PAYROLL
+DETAIL .xlsx` and `MASTER (use this one).xlsx`. What they are is not stated.
+
+**Tab strip before generation:** `Emp_ADP#s and SheetNames` · `PAYROLL_START` ·
+`ADP_IMPORT_REVIEW` · `ADP_IMPORT_VALIDATION` — four visible sheets; the employee sheets are
+appended after them.
+
+**Emp_ADP#s and SheetNames.** Title *"Employees' ADP #'s and Sheet Names"*, banner *"(Enter
+employees' "ADPFileNo" and "SheetName" into the table below…)"*, then *"One row (on table below)
+per employee / FCC Employee ID must be correct / Employee must have the correct ADPFileNo and
+SheetName desired before clicking button to generate employee sheet(s)"*. Columns `FCC EmpID ·
+ADPFileNo · SheetName · EmployeeName in ADP · Employee Name in FCC`, with over-captions *"type
+in employee ID from FCC"*, *"type in ADPFileNo (populates table on PAYROLL_START sheet)"*,
+*"type in SheetName (populates table on PAYROLL_START sheet)"* and *"(this is for reference
+only)"* over the two name columns. Conventions visible in the rows: `FCC EmpID` is usually a
+one-to-four-digit number but can be initials (`AA`) or zero-padded (`0004`, `0319`, `0823`);
+`ADPFileNo` is a three-digit number; **`SheetName` is `Lastname-FirstInitial`** (`Albergo-A`,
+`ALDRIDGE-J`, `BAKER-K` — case is not normalised); salaried/admin staff have a blank
+`SheetName`, which is what stops a sheet being generated for them. The ADP and FCC name
+columns differ in form (ADP carries middle names and some all-caps entries).
+
+**PAYROLL_START.** The header block:
+
+```
+Company:        THE CRANE GUYS LLC   4RZ
+ADP Week:       Weekly #33
+ADP File Name:  EPI4RZ33
+Pay Period:     2026 (Aug 1 - Aug 7)      ← dropdown
+Payday Date:    8/13/2026   Thu
+From Start Date: 8/1/2026   Sat
+To End Date:     8/7/2026   Fri
+```
+
+So the **ADP company code is `4RZ`**, the **ADP file name is `EPI` + company code + ADP week
+number**, the pay week runs **Saturday → Friday**, and **payday is the Thursday after the week
+ends** (six days later). The dropdown lists weeks as `2026 (Jul 18 - Jul 24)`, `2026 (Jul 25 -
+Jul 31)`, … Three step boxes sit under it — *Step 1: Select Pay Period, then click "Refresh"
+button. This updates the list of employees with all active employees in FCC during that pay
+period* → `Refresh All`; *Step 2: Filter this list to only the employees that need individual
+sheets. Only the employees with "SheetName" will get a sheet… Go to "Emp_ADP#s and SheetNames"
+to update employee SheetName*; *Step 3: … click the "Create Employee Sheets" button. This will
+create a sheet for every employee on the filtered list with a "SheetName"* → `Create Employee
+Sheets`.
+
+Five slicers, whose values are the FCC classification code lists as of Aug 2026:
+
+| Slicer | Values |
+| --- | --- |
+| `CraftType` | `ADMIN` · `L12` |
+| `PayType` | `Hourly` · `Salary` |
+| `ClassCode` | `ACCOUNTING` · `DISPATCH` · `FIELD EMP` · `HR` · `MANAGEMENT` · `MECH LABOR` · `OFC ADMIN` · `OWNER` · `SAFETY DEP` · `SALES` · `SUPERINTEN` · `YARD LABOR` |
+| `EmpType` | `3rd Man` · `Accounting Admin` · `Driver` · `Management` · `Mechanic` · `Oiler` · `Operator` · `Rigger` · `Safety Admin` · `Sales Admin` · `Salesmen` · `Yard Man` |
+| `CraftCode` | `ADMIN` · `L12-APP2` · `L12-APP3` · `L12-APP5` · `L12-APP6` · `L12-BG` · `L12-G1` … `L12-G9` |
+
+The roster table's columns: `EmployeeName · EmpID · ADPFileNo · ClassCode · EmpType · UnionCode
+· PayType · CraftType · CraftCode · EmployeePayRate · FY25-26 · FY26-27 · FirstName · LastName ·
+SheetName` — blue headers are FCC data, tan (`ADPFileNo`, `SheetName`) come from the Emp_ADP#s
+sheet. A pattern holds in every visible row: employees with `UnionCode L12` / `PayType Hourly`
+/ `CraftType L12` have a **blank `EmployeePayRate` and values in `FY25-26` and `FY26-27`**;
+employees with `CraftType ADMIN` (salaried or hourly non-union) have an **`EmployeePayRate` and
+blank FY columns**. That is, the FY columns are the craft-rate lookup by fiscal year and
+`EmployeePayRate` is FCC's own rate — the screenshot shows the pattern; the SOP does not state
+it as a rule. Individual rates were not copied.
+
+Dialogs: *"Refresh Complete — Sheet update complete! Worksheet: PAYROLL_START / Connected
+tables refreshed: 1 / PivotTables refreshed: 0"* (the same dialog names `ADP_IMPORT_REVIEW` and
+`ADP_IMPORT_VALIDATION` on those sheets); *"Create Employee Sheets — Source worksheet:
+PAYROLL_START / 2 employee sheet(s) created. Employee worksheets ordered alphabetically. / 2
+row(s) skipped: – Missing required ADPFileNo for <name> [EmpID nnnn]"*.
+
+**An employee sheet.** Column order as captured: `Employee · Unit_Asset · Date · Day` |
+`Total Hrs · Hrs_Match · ST · OT · DT · H2x · H3x` | (Lattice / Shift Differential — not
+recoverable) | `Craft Modifier · LB_Total · LB_Match · LB ST · LB ST Rate · LB OT · LB OT Rate
+· LB DT · LB DT Rate · LB 3X · LB 3X Rate`. Rows run Sat 7/25/2026 → Fri 7/31/2026. `Unit_Asset`
+holds a unit number (`10001` in the example). `Hrs_Match` shows a red ✗ until the buckets sum
+to `Total Hrs`, then a green ✓; a weekly summary row below repeats `Total Hrs · Hrs_Match · ST
+· OT · DT · H2x · H3x`. The `Craft Modifier` dropdown values are boom-length brackets suffixed
+by role — `080-100Ft-Oiler`, `101-120Ft-Oiler`, `121-140Ft-Oiler`, `141-160Ft-Oiler`, …,
+`181-200Ft-Oiler` (the Operator entries were below the visible scroll). The worked example
+selects `181-200Ft-Oiler` with `LB_Total 5.0 = LB ST 4.0 + LB OT 1.0`, and the sheet shows
+**`LB ST Rate $1.50` and `LB OT Rate $2.25`** — the OT adder is the ST adder × 1.5, as the
+column-rules page states.
+
+> The SOP's own illustration keys **8.0 ST + 2.0 OT on a Saturday**. The sheet accepts it —
+> `Hrs_Match` only checks the sum — which is the point column-rules makes (*"the workbook does
+> not calculate"*), but it sits against that page's *"Saturday can never show ST"*. Whether the
+> example is a deliberate simplification or a real week is not stated.
+
+**ADP_IMPORT_REVIEW.** Title *"ADP Import Review"*, caption *"Click to refresh ADP Import data
+below…"*, `Refresh All`. Columns: `ReviewRow · Co Code · Batch ID · File # · Name · Reg Hours ·
+O/T Hours · H3_Code_01 · H3_Amount_01 · H3_Co[de_02] …` — the "Hours 3" code/amount pairs are
+numbered. `Co Code` is `4RZ`; `Batch ID` is a six-digit number (`260833` in the ADP-week-33
+example; how it is composed is not stated). An employee with double time gets a **second
+`ReviewRow` carrying `H3_Code_01 = DT` and the DT hours in `H3_Amount_01`** — DT travels to ADP
+as an Hours-3 code, not as a third hours column.
+
+**ADP_IMPORT_VALIDATION.** Title *"ADP Import Validation"*, `Refresh All`, caption *"Click to
+generate CSV file for ADP Import"* over a CSV-download icon button. Columns: `Severity ·
+IssueCode · IssueMessage · ReviewRow · File # · Name · RowType · RateCode · Temp Rate ·
+ADPFileName`. Two states are shown:
+
+| Severity | IssueCode | IssueMessage | ADPFileName |
+| --- | --- | --- | --- |
+| `ERROR` | `REVIEW_EMPTY` | *qADPImportReview contains no rows.* | |
+| `PASS` | `READY` | *No ADP import validation errors or warnings were found.* | `EPI4RZ33` |
+
+`qADPImportReview` is the Power Query behind the review sheet. The blocked-export dialog:
+*"ADP Export Blocked — 1 ADP validation error(s) must be corrected before the CSV can be
+exported. – ERROR [REVIEW_EMPTY]: qADPImportReview contains no rows."* The Windows save dialog
+is titled *"Choose the folder for the ADP Paydata CSV"*. No other `IssueCode` values are shown.
