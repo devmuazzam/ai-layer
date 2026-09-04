@@ -66,8 +66,9 @@ Signatories named in the template: Wes Staley for TCG, Zaeem Asif for CodingCops
 
 - **Engagement model:** full-time **Dedicated Team**. Each developer is available for any
   development task for **160 hours a month** (8 h/day × 5 days).
-- **Rate:** **USD $40 per hour** for all resources. Invoices generated **bi-monthly** against
-  hours spent, **raised in advance**, **Net-10** payment terms.
+- **Billing:** one hourly rate for all resources (the figure is deliberately not recorded in the
+  vault). Invoices generated **bi-monthly** against hours spent, **raised in advance**, **Net-10**
+  payment terms.
 - **Start date:** 9 March 2026. Term runs month-to-month after an initial two-month period unless
   terminated; renewal requires mutual written agreement.
 - **Leave:** engineers take sick, casual and annual leave plus public holidays; invoices are
@@ -81,23 +82,26 @@ Signatories named in the template: Wes Staley for TCG, Zaeem Asif for CodingCops
   and living expenses.
 - **Change requests:** any change to scope, features, integrations or performance expectations not
   in the Exhibit must be a written Change Request approved by both parties **before** execution,
-  billed at $40/hour, and may adjust timelines.
+  billed at the standard hourly rate, and may adjust timelines.
 - **Communication:** primary channel **Slack**; regular check-ins; **weekly progress demos or
   checkpoints**; a shared tracking sheet for hours, milestones and deliverables.
 - **Client responsibilities:** keep the task list prioritised and planned ahead — "ideally there
   needs to be a dedicated product manager who can create and prioritize the backlog"; provide
   timely access to code, documentation and servers; be available for calls and meetings.
 
-### Sprint 1 commercial breakdown
+### Sprint 1 effort breakdown
 
-| Sprint / feature area | Utilisation | Rate | Fee |
-| --- | ---: | ---: | ---: |
-| Authentication & Authorization | 90 h | $40 | $3,600 |
-| Customer (Core CRUD) | 170 h | $40 | $6,800 |
-| Quote Management (Basic CRUD) | 110 h | $40 | $4,400 |
-| Infrastructure & Shared Services | 270 h | $40 | $10,800 |
-| Product and Design (already in progress) | 320 h | $40 | $12,800 |
-| **Total** | **960 h** | **$40** | **$38,400** |
+Hours only — the SOW prices each line at the standard rate; the amounts are deliberately not
+recorded in the vault.
+
+| Sprint / feature area | Utilisation |
+| --- | ---: |
+| Authentication & Authorization | 90 h |
+| Customer (Core CRUD) | 170 h |
+| Quote Management (Basic CRUD) | 110 h |
+| Infrastructure & Shared Services | 270 h |
+| Product and Design (already in progress) | 320 h |
+| **Total** | **960 h** |
 
 Subsequent sprints were to be scoped the same way at the start of each month.
 

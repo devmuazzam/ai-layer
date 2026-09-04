@@ -22,7 +22,7 @@ uses it.
 | [tcg-documents.md](tcg-documents.md) | Document and attachment handling | 2.2 |
 | **The engagement** | | |
 | [tcg-erp-rfp-2026-02-26.md](tcg-erp-rfp-2026-02-26.md) | What did TCG ask for? Scope, phases, integrations, must-haves, timeline, evaluation | 12.8 |
-| [codingcops-sow-and-engagement-terms.md](codingcops-sow-and-engagement-terms.md) | What was contracted? NDA, rate, dedicated-team model, change requests, and the Sprint 1 feature-by-feature scope | 11.7 |
+| [codingcops-sow-and-engagement-terms.md](codingcops-sow-and-engagement-terms.md) | What was contracted? NDA, dedicated-team model, change requests, and the Sprint 1 feature-by-feature scope | 11.7 |
 | [responsive-design-and-security-posture.md](responsive-design-and-security-posture.md) | What did we tell TCG about responsiveness, auth, RBAC, data protection and Samsara, in March 2026? | 8.9 |
 | [engagement-directory-and-org-charts.md](engagement-directory-and-org-charts.md) | Who is Melissa, Corrina, Brian, Wes, Lisette? Who does what at TCG and CodingCops? | 5.9 |
 | [project-repository-filing-rules.md](project-repository-filing-rules.md) | What do the numbered folder paths in every source citation mean? | 3.9 |
