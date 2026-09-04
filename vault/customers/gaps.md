@@ -412,6 +412,61 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   describes clearing a dependent field. Still needs the client: the one call between `SCRUM-36`
   and `SCRUM-547`/`SCRUM-549` on (b), and (a).
 
+## "Auto-fill from web" on customer create — was it ever wanted, and is removing it right?
+
+- **Status:** open
+- **Asked:** 2026-09-04 — PR review of branch `fix/customer-quotation-3sep` (no ticket, no
+  `.ai/aidlc/processed.log` row, no `SCRUM-###/spec.md` to hold this); tcg-scrum escalation
+- **Question:** three parts, each answerable in a line. **(a) Should the customer create wizard
+  offer a "look up this company on the web and pre-fill its address/phone" action at all?** The
+  branch deletes it — button, hook and client types — leaving name/address/phone entirely manual.
+  **(b) If yes, is a free OpenStreetMap Nominatim query the right source?** What shipped was
+  `CustomerEnrichmentService.enrich()` calling `nominatim.openstreetmap.org/search` by company name
+  and mapping the first hit's address — a **geocoder used as a company-data provider**, which is
+  not what Nominatim is for and not the same thing as the HubSpot / Microsoft / Dialpad sync the
+  client actually talks about (see *Integrations* in [admin/gaps.md](../admin/gaps.md#integrations--hubspot-microsoft-365-dialpad-mapsly)).
+  **(c) The API side stays.** `GET /api/v1/customers/enrich`
+  (`apps/api/src/presentation/customers/customers.controller.ts`:87-93, `QueryEnrichCustomerDto`,
+  `CustomerEnrichmentService`, registered in `customers.module.ts`) is untouched and now has no
+  caller anywhere in `apps/web`. Should it be removed with the UI, or is it being kept because
+  something is expected to use it again? A live route that calls a third party on an
+  authenticated endpoint with no consumer is the part that needs an answer even if (a) is "no".
+- **Sources checked:** **Vault — nothing, in either direction.** [customers/INDEX.md](INDEX.md) and
+  the conflict stub [customers-INDEX.md](customers-INDEX.md) with all five candidates;
+  [customer.md](customer.md) and [customer-and-job-sites.md](customer-and-job-sites.md) (the two
+  punch lists — neither mentions pre-fill, lookup or enrichment); this register; `../decisions/`
+  (26 notes — none touches customer create fields, enrichment or third-party lookup);
+  vault-wide grep outside `meetings/` for `auto-?fill|enrich|clearbit|apollo|hubspot.*(lookup|fill)|website.*(scrape|lookup)`
+  — every hit is unrelated (project/lift-plan auto-fill of *internal* project data, the DAS
+  same-assets-for-shifts toggle, and payroll SQL views named `*_Enriched`). **`meetings/` — nothing
+  on a web lookup for customers**; the nearest client statements are about **syncing** contact data
+  from HubSpot/Microsoft/Dialpad (2026-08-26 sprint review ~18–20 min; Brian Petros' 2026-08-27
+  written follow-up, *"have Patrick explain more details regarding Customer data synced with HubSpot
+  & Microsoft"*), which is a different mechanism from an ad-hoc public lookup and is already open in
+  admin.
+- **Weak signal, and it cuts against the feature having a source:** the control arrived **with no
+  ticket and no spec**, inside commit `83c4c19d9` whose message is *"feat(customers): add page-size
+  pagination and soft archive (replacing delete)"* — the enrichment service, DTO, controller route,
+  web hook and button are all in that one commit, unmentioned. So this is an **unsourced removal of
+  an unsourced addition**; nobody is contradicted either way, which is exactly why it needs one line
+  from product rather than a reviewer's judgement.
+- **Jira: not consulted — unavailable this session.** The Atlassian MCP returns
+  `403 Tenant is restricted: suspended-payment` for both JQL search and single-issue reads, so
+  `SCRUM-###` descriptions could still carry an answer. Check Jira for *auto-fill*, *enrich* and
+  *customer create* before treating this as fully unsourced.
+- **Blocked:** sign-off of `fix/customer-quotation-3sep` as product-correct; disposal of the API
+  endpoint. Also blocked by consequence: manual test **CUST-CREATE-08** in
+  `qa-automation/docs/MANUAL-TESTING-Customers.md` is marked `N/A — REMOVED` by the same branch, so
+  the only written description of the behaviour is now retired inside the test pack.
+- **Owner:** product team — Brian Petros for (a) and (b), since customer/contact data provenance is
+  his ground and the HubSpot/Microsoft question is already his, with Patrick McKiernan for whether
+  an existing integration was always meant to fill this role.
+- **Cross-link:** [admin/gaps.md → *Map provider, no-key fallback…*](../admin/gaps.md#map-provider-no-key-fallback-and-which-table-owns-address-coordinates)
+  (b) — whether a read-only OpenStreetMap fallback is acceptable in production is open there, and
+  this endpoint is a second, undeclared OSM dependency; and
+  [admin/gaps.md → *Is an ODbL share-alike geo dataset acceptable…*](../admin/gaps.md#is-an-odbl-share-alike-geo-dataset-acceptable-and-who-signs-that-off)
+  — Nominatim data is ODbL with an attribution obligation, and nothing in the app attributes it.
+
 ## Pointers — 2026-08-27 client follow-ups touching customers
 
 - **Status:** open

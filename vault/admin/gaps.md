@@ -282,6 +282,144 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (`meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:68, :72).
 - **Cross-link:** payroll/gaps.md → *Pointers — departments archive* (STRUCTURE.md:40 routes the
   `departments` usecase to payroll, and (b) turns on employee assignments)
+
+## System departments and roles are now fully editable — was `isSystem` ever meant to protect anything?
+
+- **Status:** resolved (a)–(c) 2026-09-04 — see
+  [decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md](../decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md).
+  **Part (d) is not resolved** and continues as its own entry:
+  [Deleting the last admin-capable role can lock a tenant out](#deleting-the-last-admin-capable-role-can-lock-a-tenant-out--is-a-floor-required).
+  Everything below is left as written, as the record of what was in question.
+- **Asked:** 2026-09-04 — PR review of branch `fix/customer-quotation-3sep` (no ticket, no
+  `.ai/aidlc/processed.log` row, no `SCRUM-###/spec.md` to hold this); tcg-scrum escalation
+- **Question:** the branch removes **every** protection on seeded reference data in the departments
+  module, API and web, and nothing written says whether that protection was intended or accidental.
+  Four things, each answerable in a line. **(a) May a tenant edit, rename or archive a system
+  department?** `DepartmentsService.update()` and `archive()` both dropped
+  `ForbiddenException('System departments cannot be modified' / 'cannot be archived')`, and the web
+  card menu, the detail hero actions and the edit-route redirect all stopped checking `isSystem`. All
+  15 seeded departments (`DEPT-ACCOUNTS` … `DEPT-SALES`) are now editable and archivable like any
+  other. **(b) May a system *role* be deleted?** `deleteRole()` dropped
+  `ForbiddenException('System roles cannot be deleted')` and the role card now shows the Delete menu
+  on protected roles — including `ROLE-ADMIN-CA` (Company Admin) and the two Sales manager roles.
+  **(c) `lockedPermissions` is now inert on the edit screen, and it is a separate rule from
+  `isSystem`.** `role-create.tsx` no longer passes `role.lockedPermissions` into
+  `ModulePermissionsSection`, so the modules a seeded role may not lose are freely changeable:
+  Sales Coordinator and Sales Manager carry `['quotations','customers','jobs']`, Dispatch Manager
+  carries `['dispatch','asset-management','asset-main-category','asset-sub-category']`
+  (`apps/api/src/utility/seed-data.ts`:266-272, 346, 397, 406). The column and the seeded values
+  survive in the database and the API still returns them — only the UI stopped honouring them, so
+  the rule is now unenforced rather than withdrawn. Is "a role cannot be stripped of the modules
+  core to its job" a real rule, and if so where is it enforced? **(d) Is anything a tenant admin can
+  do here recoverable?** Role delete is a hard delete (`departmentRolesRepository.delete`), so
+  deleting `ROLE-ADMIN-CA` or archiving `DEPT-ADMIN` is a plausible route to a tenant with nobody
+  able to administer it. Whether that needs a floor — a last-admin-role guard, or re-running the
+  seed — is unstated either way.
+- **Sources checked:** **Vault — nothing on protecting seeded reference data.**
+  [admin/INDEX.md](INDEX.md) (the module holds one content file, `tcg-documents.md`, on
+  attachments); this register; `../decisions/` (26 notes — **none mentions departments, roles,
+  permissions or system/seeded records**; the only app-wide UI/behaviour conventions decided so far
+  are archive-instead-of-delete and post-save navigation, both Fouzan Shakil's, and neither
+  distinguishes a seeded record from a user-created one); [STRUCTURE.md](../STRUCTURE.md):42 routes
+  the `seed` facet here and **no content exists behind it**; vault-wide grep outside `meetings/` for
+  `isSystem|system-seeded|system department|system role|seeded (department|role|reference)` — the
+  **only** hits in the whole vault are this register's own tenant-provisioning entry. The one
+  product-level department passage anywhere,
+  [customers/customer.md](../customers/customer.md):84-91, is naming/sorting/description copy and
+  role permissions and says nothing about a protected set.
+- **Weak signals, and they point in opposite directions:**
+  - **The design as demoed has no protected set at all.** In
+    `meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:70 Ehtesham Anwar walks the
+    whole flow as user-created — *"you will be able to create departments… to create a department
+    role itself you will have the role name, description of the role and all of the permissions"* —
+    and the six named presets (manager, admin, editor, viewer, contributor, guest) are introduced as
+    a **"quick start template that is going to prefill everything and preselect everything for you
+    guys just for the ease of usage"**. A template is a starting point, which supports (c)'s removal
+    and says nothing about (a), (b) or (d). No participant asked for a locked department or a locked
+    role in that call or any other.
+  - **The seeded set exists only because `seed-data.ts` created it, and whether it should exist at
+    all is already an open question here** — see
+    [What a newly created tenant must contain](#what-a-newly-created-tenant-must-contain--provisioned-defaults-or-an-empty-portal).
+    An admin-created tenant comes up with **zero** departments and roles, so `isSystem: true` is
+    true only in `PLATFORM` and `TCG-DEFAULT`. **These two questions have to be answered together:**
+    if new tenants are never provisioned, unlocking the flag is close to a no-op and the flag should
+    probably go; if provisioning is restored, unlocking it decides what a tenant may do to data it
+    did not create. Answering this one alone would prejudge that one.
+  - **Two closed Jira tickets say the seeded set is deliberate**, quoted in that entry:
+    `SCRUM-467` *Seed Departments & Roles* — *"System should include predefined, hardcoded
+    departments and their roles"* — and `SCRUM-593` *"Seed default departments; seed manager default
+    permissions as per our best understanding."* Neither says whether *predefined* implies
+    *protected*, and neither is superseded by anything written.
+  - **Direction of travel in the module is the opposite of protection.** PR #422 already removed
+    `DELETE /departments/:code` in favour of archive (see the entry above), so departments have one
+    removal path and it is now available on seeded rows too.
+- **Jira: not consulted — unavailable this session.** The Atlassian MCP returns
+  `403 Tenant is restricted: suspended-payment` for both JQL search and single-issue reads, so
+  `SCRUM-467` and `SCRUM-593` could not be re-read and any newer ticket asking for this is unseen.
+  The quotes above are taken from this register, not from Jira directly. **Check Jira for a ticket
+  asking to unlock system departments before treating this as fully unsourced** — a QA or client ask
+  is the most likely origin of the change and would settle (a) and (b) immediately.
+- **Blocked:** sign-off of `fix/customer-quotation-3sep` as product-correct. Also blocked by
+  consequence: whether the `isSystem` and `lockedPermissions` columns should be dropped, kept and
+  enforced, or kept and enforced **only in the API** — the branch leaves them populated and
+  unenforced, which is the one state that guarantees the next reader guesses wrong.
+- **Owner:** Fouzan Shakil for (a)–(c) — he is the named decider on the app-wide archive and
+  post-save conventions and the assignee of `SCRUM-871`, the other tenant-defaults ticket — with
+  Ehtesham Anwar for (d) and for what a second tenant's admins are meant to be able to do to
+  data they did not create (the only recorded voice on departments as org structure,
+  `meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:70).
+- **Resolved 2026-09-04 — (a), (b) and (c). Seeded rows carry no restrictions.** A tenant admin
+  may edit, rename, archive and delete an `isSystem: true` department or role exactly as they may
+  one they created themselves; `isSystem` is a display badge and nothing more; `lockedPermissions`
+  imposes no restriction on the role edit screen. The branch's behaviour is confirmed correct.
+  Decided in PR review of `fix/customer-quotation-3sep` by the developer on the branch
+  (CodingCops) acting for the product owner — **not by Fouzan Shakil or Ehtesham Anwar**, the
+  owners this entry nominated, and not by any named TCG voice. The note is therefore
+  `status: reference`, binding on implementation and open to being overruled by TCG. Full
+  reasoning, and the parts deliberately left alone, in
+  [decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md](../decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md).
+  **Two things stay open.** (d) is untouched — the lockout floor is not an `isSystem` question and
+  carries on in the entry below. The tenant-provisioning entry above is untouched by design: this
+  settles what may be done to seeded rows *that exist*, not whether they should be created.
+  A third, smaller, follows from it — `lockedPermissions` is now inert in the UI and must not be
+  enforced in the API either, so the column should be dropped or consciously kept as inert data.
+  Populated-and-unenforced is the state this entry originally warned guarantees a wrong guess.
+
+## Deleting the last admin-capable role can lock a tenant out — is a floor required?
+
+- **Status:** open
+- **Asked:** 2026-09-04 — carried forward as part (d) of
+  [System departments and roles are now fully editable](#system-departments-and-roles-are-now-fully-editable--was-issystem-ever-meant-to-protect-anything),
+  whose (a)–(c) were resolved the same day. Separated because the resolution made this a
+  question in its own right rather than a sub-case of `isSystem`.
+- **Question:** `deleteRole()` is a **hard delete** (`departmentRolesRepository.delete`), and as of
+  2026-09-04 nothing stops a tenant admin deleting the last role that carries admin permissions —
+  or archiving the department holding it. The result is a tenant nobody can administer, with no
+  in-app route back. **Does the platform owe a floor, and what shape?** Three options, each
+  answerable in a line: (a) **a last-admin guard** — refuse the delete or archive when it would
+  leave the tenant with no admin-capable role, the way a last-owner guard works elsewhere in the
+  industry; (b) **no guard, operator recovery** — lockout is an accepted outcome and an operator
+  re-runs the seed or restores a role out of band, which needs that route to actually exist; (c)
+  **no guard at all** — the tenant owns the consequence. Related but separable: should role delete
+  be **archive** rather than hard delete, per
+  [decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)?
+  Archiving would make the mistake reversible without deciding whether to prevent it.
+- **Why `isSystem` does not answer it:** the protection removed on 2026-09-04 was shielding
+  `ROLE-ADMIN-CA` **by accident** — it shielded every seeded row, admin-capable or not, and shielded
+  nothing in a tenant that created its own admin role. A lockout floor keys on *permissions held*,
+  not on *who created the row*, so it is a different rule and survives the resolution above.
+- **Sources checked:** everything listed under the parent entry — vault-wide grep, `../decisions/`
+  (27 notes; the app-wide archive decision is the nearest and does not reach role delete or a
+  lockout floor), [admin/INDEX.md](INDEX.md), [STRUCTURE.md](../STRUCTURE.md). **Nothing anywhere
+  discusses tenant lockout, a last-admin guard, or an operator recovery path.** No recorded call
+  raises it.
+- **Blocked:** nothing today — the branch ships either way, since the risk predates it in every
+  tenant that created its own admin role. This is a latent data-loss route, not a merge blocker.
+  It does block any claim that the departments module is safe for a self-serve tenant.
+- **Owner:** Ehtesham Anwar — carried over from part (d) of the parent entry, as the only recorded
+  voice on departments as org structure
+  (`meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:70) — with Fouzan Shakil for
+  the archive-vs-hard-delete half, as decider on the app-wide archive convention.
 - **Update 2026-09-04 (Project Repository ingest):** Evidence of FCC practice, not a TCG decision
   on (a)–(c). **Deactivate, never delete:** `FMS_DEPARTMENTS` carries `Status bit NOT NULL`
   ([../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_DEPARTMENTS_Raw.sql](../payroll/tcg-rawfms-staging-database/ddl/stg.FMS_DEPARTMENTS_Raw.sql):11)
