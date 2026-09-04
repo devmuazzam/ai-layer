@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-09-01
+updated: 2026-09-04
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -602,6 +602,16 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Product must still confirm whether that split and the removal itself match client intent
   (see `SCRUM-873` tension above). Reverting the column is a one-file web change if product
   decides against the removal.
+- **Correction 2026-09-04 — the resolution's *"Nothing was lost"* no longer holds.** Branch
+  `fix/customer-quotation-3sep` (no ticket) removes the surcharge line, the `Exempt` line and the
+  pricing-source label **from the Amount tooltip as well**, and gates the info icon and arrows on
+  discount/hike only — so the per-row surcharge amount and percentage that this entry cited as
+  still available now have **no UI anywhere on create/edit**. The same branch makes the
+  *Surcharged* badge hover-only, which is the *"proves too quiet"* case this entry anticipated.
+  The resolution above is left standing as the record of what was decided on 2026-09-02 and why;
+  what changed since is a separate open question —
+  [Per-row surcharge now has no UI on create/edit, and "Final Amount" means two different
+  numbers](#per-row-surcharge-now-has-no-ui-on-createedit-and-final-amount-means-two-different-numbers).
 
 ## May the send-signature modal close before the quotation data has refetched?
 
@@ -636,6 +646,114 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   It surfaces on quotation delivery mail because that is the only customer-facing email path today.
 - **Owner:** product team
 
+## Is "New Item" allowed to be hover-only, when it is the only way to add a child row?
+
+- **Status:** open
+- **Asked:** 2026-09-04 — PR review of branch `fix/customer-quotation-3sep` (no ticket, no
+  `.ai/aidlc/processed.log` row, no `SCRUM-###/spec.md` to hold this); tcg-scrum escalation
+- **Question:** the branch replaces the always-visible **New Item** strip under a parent resource
+  row (`add-child-item-button.tsx`, an indented tinted band that sat permanently beneath the row)
+  with an insert line that **appears only while the pointer is over the row**
+  (`resource-row.add-child-insert.tsx` + `useAddChildInsertHover`). The capability, the label and
+  the handler are unchanged; what changed is that the only route to a manually added child is now
+  invisible until hovered. Is a hover-revealed affordance acceptable for an action a salesperson has
+  to find unprompted, on the screen where a quote is built? Judgement note: this is close to the
+  product/implementation line and may not need a product answer at all — it is filed because it is
+  the **second** affordance in three days to be moved behind hover with no source, so the pattern
+  needs someone's decision rather than a per-branch preference.
+- **Sources checked:** **Vault — nothing on discoverability, hover or progressive disclosure.**
+  [quotations/INDEX.md](INDEX.md) and the conflict stub [quotations-INDEX.md](quotations-INDEX.md);
+  [quotation-flow-process.md](quotation-flow-process.md) (steps 1–27 — no UI detail at this level);
+  [quotations.md](quotations.md) and [quotation.md](quotation.md) (the two punch lists — neither
+  mentions adding child rows); this register; `../decisions/` (26 notes — the only app-wide UI
+  conventions decided are post-save navigation and archive-instead-of-delete, neither about
+  affordance visibility); vault-wide grep for `hover|tooltip` outside `meetings/` returns four hits,
+  three of them this register's own surcharge entries and one an assets user story about a map pin
+  hover — **no convention anywhere.**
+- **The same question is already open app-wide, from a different module.**
+  [assets/gaps.md → *Save and Cancel hidden until a section is dirty — intended, or an affordance
+  nobody finds?*](../assets/gaps.md#save-and-cancel-hidden-until-a-section-is-dirty--intended-or-an-affordance-nobody-finds)
+  was raised 2026-09-02 on `feat/asset-tabs-inline-edit` and says in terms that **the question is
+  app-wide, not assets-only**. This is the same underlying question — what the UI owes a user who
+  has not yet interacted — reached from the quotations side, and it is cheapest to settle **once**,
+  the way post-save navigation was, rather than per module. Whoever answers that one should answer
+  this with it.
+- **Not in question:** that a manual child row can be added at all, or the *placement* of the
+  control at the start of the Item column under its parent — the deleted component was already
+  indented to the child's depth for the same reason. Only the hover gating is unsourced. The branch
+  does handle touch: `(hover: none)` pointers keep the slot permanently open, so the regression is
+  desktop-only.
+- **Jira: not consulted — unavailable this session.** The Atlassian MCP returns
+  `403 Tenant is restricted: suspended-payment`, so a QA or client ticket asking for a quieter
+  Resources tab is unseen and would settle this.
+- **Blocked:** nothing technically; sign-off of `fix/customer-quotation-3sep` as product-correct,
+  and the next screen that hides an affordance behind hover on this precedent.
+- **Owner:** Fouzan Shakil — an internal UI convention, same class as post-save navigation, and he
+  already owns the assets entry above. Worth one line from Melissa McNutt if salespeople are the
+  ones expected to discover it.
+
+## Per-row surcharge now has no UI on create/edit, and "Final Amount" means two different numbers
+
+- **Status:** open
+- **Asked:** 2026-09-04 — PR review of branch `fix/customer-quotation-3sep` (no ticket, no
+  `.ai/aidlc/processed.log` row, no `SCRUM-###/spec.md` to hold this); tcg-scrum escalation
+- **Question:** [decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md)
+  settles that a quotation carries **one** surcharge, resolved at quote level, printed as one named
+  row above clean line amounts. The branch takes three further steps that the decision does not
+  authorise, each answerable in a line. **(a) Per-row surcharge attribution now has no UI anywhere
+  on create/edit.** The Amount tooltip dropped its `Surcharge (12%)  +$427.20` line, its `Exempt`
+  line and its pricing-source label, and the info icon and up/down arrows now render **only** when a
+  discount or price hike exists — so a surcharged row is visually identical to an exempt one except
+  for the badge. This **voids the recorded rationale for removing the Surcharge column two days
+  earlier**, which was explicitly *"Nothing was lost… they stay there"* (see the entry above). Is
+  the quote-level footer line sufficient, or must a salesperson still be able to see what the
+  surcharge did to a given line? **(b) The "Surcharged" badge is now hover-only.** The default
+  (in-base) state renders at `opacity-0` until the row is hovered or the control is focused; only
+  the exception, *No surcharge*, stays visible. The same entry that introduced this badge on
+  2026-09-02 left open *"whether the badge is the right treatment"* and said that if it *"proves too
+  quiet, that is a new question"* — this makes it quieter still, two days later, with nobody having
+  reported it too loud. **(c) The tooltip's "Final Amount" is no longer the final amount.** It now
+  shows `amountBeforeDiscount − discount + hike`, excluding surcharge, while
+  `QuotationResource.finalAmount` — the field of the same name, which the decision deliberately left
+  surcharge-inclusive because redefining it reaches invoicing — is a different number. One label,
+  two meanings, on the same screen. Should the tooltip row be renamed (e.g. *After adjustments*), or
+  should it keep matching the stored field?
+- **Sources checked:** [decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md)
+  — it settles the *model* and the *printed document* and says nothing about the editing UI beyond
+  what the column entry recorded; its *What it does not settle* names the per-resource UI question
+  as still open. [Should a per-resource surcharge column be shown on quotation resource
+  rows?](#should-a-per-resource-surcharge-column-be-shown-on-quotation-resource-rows) — the
+  originating entry, whose resolution this branch partly invalidates. [The surcharge is blanket in
+  the contract but per-resource in the model](#the-surcharge-is-blanket-in-the-contract-but-per-resource-in-the-model-and-it-has-no-name)
+  — resolved, and confirms invoicing recomputes the surcharge from its own lines, so nothing
+  downstream depends on the quote's per-row figure being *visible*.
+  [billing-code-and-price-list.md](billing-code-and-price-list.md):31-32 — *"Re-design surcharge
+  placement"*, still the only vault statement about surcharge placement, still UI feedback with no
+  target layout. [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §1 — the printed
+  document shows one surcharge line, which is evidence about the customer document and not the
+  editing screen. Also checked: [quotations.md](quotations.md); [quotation.md](quotation.md);
+  `../decisions/` (26 notes); `.ai/aidlc/` (no folder or `processed.log` row for this branch).
+  Verified in code that the **quote-level** named surcharge row in the Resources table footer
+  (`resources-table-content.tsx` `SurchargeLineRow`) is untouched by this branch — it predates it
+  and still renders, so the one-surcharge model itself is intact.
+- **The strongest counter-signal is a client QA ticket, and it cannot be read this session.**
+  `SCRUM-873` Create Flow item 4 — quoted verbatim in the entry above as *"In the Resources tab, the
+  surcharge is displayed as Inactive even though the surcharge is active. Please fix the status
+  display"* — is a client ask to **fix**, not hide, surcharge status on the create-flow Resources
+  tab. (b) hides the fixed state behind hover. That combination is exactly the tension that entry
+  flagged as *"a high-risk combination without sign-off"*, and it has now happened a second time.
+  **Jira: not consulted — unavailable this session** (Atlassian MCP returns `403 Tenant is
+  restricted: suspended-payment`), so `SCRUM-873`'s current text and status are unverified here and
+  the quote is second-hand from this register. Re-read `SCRUM-873`, `SCRUM-567` and `SCRUM-401`
+  before answering — the entry above lists why each bears on this.
+- **Blocked:** sign-off of `fix/customer-quotation-3sep` as product-correct. Also blocked by
+  consequence: the read-only **detail** tab still shows a dedicated Surcharge column
+  (`detail-resources-tab.tsx`), so create/edit and detail now disagree about per-row surcharge by
+  two steps rather than one, and that asymmetry is still unstated.
+- **Owner:** product team — Melissa McNutt on (a) and (b), as the client voice who described the
+  per-line opt-out and asked for the surcharge to be unmissable (*"a standard that shows up on every
+  quote so nobody forgets it ever"*, Brian Petros, 2026-05-05 @ 1:03:00); Fouzan Shakil on (c),
+  which is naming rather than policy.
 
 ## Quotation module defect audit (2026-09-01)
 
