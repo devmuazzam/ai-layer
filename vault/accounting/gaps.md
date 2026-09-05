@@ -218,3 +218,43 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   owns that mapping once FCC is gone; and which system is the record for payroll GL, given labour
   reaches QuickBooks via `FMS_CRAFTS.AcctIntCode` while payroll runs in ADP (Brian, 2026-08-25
   50:33: the ADP position ID is held in a QuickBooks custom field).
+
+## Invoicing a travel permit that is not tied to a job — Brian named the case, nothing covers it
+
+- **Status:** open
+- **Asked:** 2026-09-05 — **Brian Petros**, written message to Ehtesham
+- **Question:** Brian named this case verbatim, with no further elaboration:
+
+  > *"Creating invoices for RCS (Roadway Construction Services) travel permits that are not tied
+  > to a specific job in FCC (Fleet Cost & Care FCC-NexGen)"*
+
+  Read literally it is a **customer-invoicing (AR) scenario for a permit with no Job Number**.
+  Whether Brian meant it as (a) a description of current FCC practice, (b) a pain point he wants
+  the ERP to fix, or (c) the title of a document he was about to send, **is not stated** — the
+  message arrived alongside a separate shared-folder note and carries no verb of intent. Do not
+  build from it until he confirms which.
+- **Why it is not already answered:** the vault covers the **procurement half** of job-less
+  permit spend in detail and the **AR half** not at all.
+  - `vendors-agencies/purchase-orders-fcc/po-001-pre-job-purchase-orders.md` — pre-job POs for
+    *"roadway / traffic control (e.g. Roadway, RCS); permits and other pre-job services ordered
+    during quote/pre-planning"*, anchored on the **Quote Number** when no Job exists.
+  - `po-002-vendor-billing-and-customer-invoicing.md:19,39` — AP may voucher a PO with no Job
+    Number; AR *holds* customer billing while waiting. **Holding is not the same as invoicing a
+    permit that will never have a job.**
+  - `po-003-linking-pre-job-pos-to-jobs.md:70` — a periodic AP review of POs carrying a Quote
+    Number but no Job Number. Again procurement-side.
+  - `dispatch/travel-permits-playbook.md` — operational permit acquisition; no invoicing.
+  - Nothing anywhere states how the **customer** gets billed for such a permit, against what
+    document, or whether the ERP must support an invoice with no job at all.
+- **Why it matters now:** it bears directly on the still-open standalone-PO question in
+  [../vendors-agencies/gaps.md](../vendors-agencies/gaps.md) → *Purchase orders at three levels*.
+  Joe Schacatano's third level — *"completely separately if we just need to create a PO in general
+  for the business for a vendor"* — is unconfirmed, and Brian's 2026-09-05 workflow diagram
+  ([../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md))
+  shows **only** quote-anchored and job-anchored vendor POs. If TCG invoices job-less permits,
+  something must anchor that invoice, and no source says what.
+  It also collides with `meetings/2026-06-22-sprint-4-additional.md:91` — *"Every PO must be
+  linked to a job number — this is required, not optional"* — already flagged as an outlier.
+- **Blocked:** the accounting module's AR scope; `SCRUM-478` (PO epic); whether the ERP's invoice
+  entity requires a job FK.
+- **Owner:** Brian Petros (raised it); Melissa McNutt for the AR policy call.

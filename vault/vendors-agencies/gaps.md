@@ -65,7 +65,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   work; the accounting reconciliation Ryan described.
 - Owner: Joe Schacatano (stated the three levels) and Ryan Adams (stated the cancellation rule) —
   sales & quotation. Liz Lopez for how it meets the permit-driven PO path she owns.
-- **Status:** open — needs confirmation
+- **Status:** open — needs confirmation on standalone POs, the mandatory audit trail, and the quote-lost → PO-closed rule. **PO type taxonomy resolved 2026-09-05** (Brian Petros) — see the update at the end of this entry.
 - **From (frozen original):** [gaps.md#purchase-orders-at-three-levels-joe-and-ryan-on-tape-nothing-written](../gaps.md#purchase-orders-at-three-levels-joe-and-ryan-on-tape-nothing-written)
 - Update 2026-09-04 (Project Repository ingest): the December 2025 draft P&P set in
   [purchase-orders-fcc/](purchase-orders-fcc/INDEX.md) is the first written material on either half
@@ -105,3 +105,22 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the 2026-06-22 "every PO must be linked to a job number" line, which the drop contradicts for FCC
   but does not overrule for the ERP.
 
+- Update 2026-09-05 (**Brian Petros**, written message + quote-to-job-to-invoice workflow diagram —
+  [decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md)):
+  **partial — two of Joe's three levels are now confirmed by a named human, the third is still not.**
+  Brian: the vendor PO *"kicks off when the Quote is created and/or after the Job is created (when
+  third-party services are involved), and loops again if there's a change order."* The diagram shows
+  both, as a dashed optional *"Issue vendor PO — optional, early, at quote stage"* off *Add resources
+  & line items*, and as *"Issue vendor PO — via permit, or directly to job"* after conversion. So
+  **quotation-level and job-level vendor POs are confirmed wanted**, which was Joe's point at 1:15:04.
+  **Standalone POs are not mentioned at all** — Joe's third level (1:15:23, *"completely separately if
+  we just need to create a PO in general for the business for a vendor"*) remains unconfirmed, as does
+  his mandatory audit trail (1:18:47).
+  **Ryan's quote-lost → PO-closed rule is neither confirmed nor contradicted.** The diagram's only
+  revision path is *"Change order needed? → Update vendor PO → back to Submit to customer"* — a
+  re-issue loop, not a cancellation. A lost quote does not appear on the diagram at all.
+  Separately, Brian's message **does** settle the PO *taxonomy* that
+  [purchase-orders-fcc/INDEX.md](purchase-orders-fcc/INDEX.md) recorded as needing a human: it is
+  **Type 1 Customer (inbound) / Type 2 Vendor (outbound)** — Melissa's direction-based split, not
+  `purchase-order.md`'s who-owns-the-process split, and not the undefined `Internal / Customer` pair
+  in `meetings/2026-06-22-sprint-4-additional.md:81`.

@@ -723,3 +723,47 @@ PDFs were never in scope for reading (jurisdiction forms, not TCG content).
 | `TCG_Value_Engine_SAMPLES-ONLY/Get Scalable - BOOK.pdf` | 6.3 MB | **Not migrated — third-party commercial reference.** *Get Scalable*, Ryan Deiss, Scalable.co 2023, ISBN 979-8-9886737-0-5. Recorded for provenance in `domain/value-engines-and-playbooks-method.md`; TCG's own notes on it were migrated instead |
 | `TCG_Value_Engine_SAMPLES-ONLY/Get Scalable - NOTES - Chapter 01 and Chapter 02.docx` | 1.3 MB | **`domain/value-engines-and-playbooks-method.md`** — new page. Despite the filename the file contains only chapter 2 |
 | `00_README_Folder_Structure_and_Rules.txt` *(loose at the repository root, outside every archive)* | 2.4 KB | **`admin/project-repository-filing-rules.md`** — new page; the numbered hierarchy, naming convention and version-control rules |
+
+## Provenance confirmed — Brian Petros, 2026-09-05
+
+Brian's covering message to Ehtesham names what he put in the Sales shared folder, and it is
+**exactly the `3.1.1_MODULE-CRM-SALES-QUOTES` tree ingested here on 2026-09-04**:
+
+> *"Hi Ehtesham, I saved a few more things to the shared folder for Sales:
+> - The Job Schedule Master (prototype Ryan created that we discussed in our meeting Tuesday)
+> - A copy of the CITY PERMITS folder (so you can see all of the permit documents)
+> - A copy of our current process for Sales Commissions (we also have a Power BI report for this
+>   distributed... picture below)"*
+
+A SharePoint screenshot supplied with it shows `Project Repository > 3.1.1_MODULE-CRM-SALES-QUOTES`
+holding four folders — `__CITY_PERMIT`, `__ERP_Sales Process (from Ryan 2026-08-06)`,
+`__Job Schedule Master (from Ryan 2026-08-11)`, `Copy of Sales Commissions Process` — matching the
+zip inventoried above. **No new ingestion is required.** Each is already migrated:
+
+| Brian's item | Vault page |
+| --- | --- |
+| Job Schedule Master | `projects-jobs/scheduling/job-schedule-master-workbook.md` |
+| CITY PERMITS folder | `projects-jobs/city-permits/` (894 files across 151 folders characterised) |
+| Sales Commissions process | `quotations/sales-commissions.md` |
+| (also present) ERP Sales Process | `quotations/`, `projects-jobs/lift-plans/`, `projects-jobs/city-permits/` |
+
+**"The Job Schedule Master is a prototype Ryan created"** is new attribution — the workbook page
+records it as a working artifact without naming its author. It also dates the discussion: *"we
+discussed in our meeting Tuesday"*, i.e. **2026-09-01**.
+
+### The Power BI screenshot adds no new facts
+
+The second screenshot is the published report page, and every element on it is already recorded in
+`quotations/sales-commissions.md` §*Distribution*: the title *"Sales Commissions — Collection Status
+— as of \<date\>"* (here *as of August 10, 2026*, jobs/invoices **FEB 2026 – JUL 2026**), the five
+slicers, and the eight table columns. The slicer **values** visible also match what is already
+enumerated at `sales-commissions.md:511,513` — `Collection Alert` = blank · 30+ · 60+ · 90+ DAYS
+UNPAID; `Commission Status` = *FCC: exported, but NO match found in QBO* · *FCC: NOT exported to
+QBO* · *Paid in full (in 90 days)* · *Paid in full (past 90 days)* · *Unpaid (in 90 days)*.
+
+Two incidental confirmations: the visible `Coordinator` slicer holds only *(Blank)* and *David
+Deitrick*, and every visible `JobCode` carries the **`OM`** prefix — the Operated & Maintained
+department code, consistent with the department-prefixed numbering described in
+`vendors-agencies/purchase-orders-fcc/fcc-po-entry-walkthrough.md`. Named salespeople appear on the
+page; **no commission amounts are shown on it**, consistent with the note that the sales team's view
+carries invoice amount and collection status only.

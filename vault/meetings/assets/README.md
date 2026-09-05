@@ -11,3 +11,9 @@ reference `../transcripts/<same-date>-*.md` for discussion context.
   review** (red/orange highlights = TCG's comments). Two copies circulated (portrait "FCC-to-TCG-ERP
   migration.pdf" and this landscape one); text-identical, one kept. Curated write-up:
   `../2026-08-26-fcc-migration-client-brief.md`; discussion: `../transcripts/2026-08-26-erp-sprint-review.md`.
+- `2026-09-05_quote-to-job-to-invoice-po-workflow.md` — **markdown, not an image.** Brian Petros'
+  Quote → Job → Invoice workflow diagram (permits + both PO types), sent 2026-09-05. The original
+  raster was pasted into a working session and never supplied as a file, so this transcription —
+  every box, edge, legend entry and panel item, plus a mermaid rendering — **is the copy of
+  record**. Interpretation: `../../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md`.
+  If the source image is later supplied, add it alongside as `.png` and keep this file.

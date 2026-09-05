@@ -129,7 +129,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - Blocked: any spec work citing `quotations/quotation.md`; whether the vestigial web type should be
   deleted; the pre-quote package scope.
 - Owner: Ryan Adams / Joe Schacatano (sales & quotation).
-- **Status:** open
+- **Status:** **largely resolved** 2026-09-05 — the ERP home for the customer PO is answered by a named human; residual questions (JZ's punch-list bullet, the vestigial web type) still open
 - Update 2026-09-04 (Project Repository ingest): the drop shows where the customer PO lives **today**,
   and it lives in three places at once — evidence of FCC practice, not a TCG decision on (a)/(b)/(c).
   (1) **On the quote:** FCC's Job Quote *Main* tab carries a `PO No` field, and TCG's own review note
@@ -161,6 +161,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   whether the field `SCRUM-149` removed should return, or which of quote / job / customer TCG wants as
   the ERP's home for the number. `customers/customer-and-job-sites.md:41` is still the unanswered
   ask for a customer-PO form. `Q-26` in this register now defers to this entry for the product answer.
+- Update 2026-09-05 (**Brian Petros**, written message + quote-to-job-to-invoice workflow diagram):
+  **answered — the customer PO is not a quotation field.** Verbatim: *"PO Type 1 (Customer PO): Simple
+  and passive on our end... the customer sends it, we log it, we put it on the invoice. It shows up at
+  the moment the customer approves the quote, and again at invoicing."* The diagram's Type 1 panel gives
+  three steps — *"Customer provides their PO #"* → *"Log it on the job (schedule tab) — no internal
+  reporting required"* → *"Reference it on our invoice"*. So of the three candidate homes, TCG wants
+  **the job / schedule tab**, surfacing at quote approval and again at invoicing. This matches the
+  March 2026 lifecycle SVG (*"record on job / schedule tab"*) and settles it against the
+  entity-hierarchy page's `PO Number` pill on the Quote. It also vindicates `SCRUM-149` (field removed
+  from the quotation) and confirms the built columns `Project.poNumber` / `Job.poNumber` are the right
+  shape — though **nothing writes them today**, so the number Brian requires on the invoice cannot yet
+  be captured. Full note: [decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md).
+  **Still open:** what JZ's 2026-06-23 punch-list bullet asked for, and whether the vestigial
+  `poNumber` in `quotation-api.ts` should be deleted.
 - **From (frozen original):** [gaps.md#customer-po-on-the-quotation-which-of-three-things-does-it-mean](../gaps.md#customer-po-on-the-quotation-which-of-three-things-does-it-mean)
 
 ## Billing-rate effective dating for pricing sheets — raised by the client, no design yet
