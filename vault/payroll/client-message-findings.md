@@ -703,6 +703,11 @@ previous entry, groups it if the gap is under 8 hours, and keeps walking back un
 (×1.5 floor, ×2.0 at 12 cumulative rest-chain hours, only the delta paid). The open item is whether
 WTL adds count toward the 12. (36) the SQL instance is not addressed in the reply.
 
+**Closed out 2026-09-07** (Ehtesham's second reply, sent): acknowledged no rule change on rest and
+non-union; **build default stated to the client — the rest chain's 12-hour counter uses actual hours,
+to be flipped if Corrina rules that WTL adds count**; SQL instance still requested. Nothing else
+outstanding from this thread.
+
 ## Parked — 2026-08-24 (build proceeds on defaults)
 
 Per the build lead: the five remaining questions are **not asked now** — the build is

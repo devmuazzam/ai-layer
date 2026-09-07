@@ -2743,3 +2743,6 @@ someone has confirmed otherwise.
 - Blocked: the PAY-045 implementation's hour counter (actual vs payable) — a one-line choice, but
   it changes which hour flips to DT on every long chain.
 - Owner: Corrina Bustos (approval), Brian Petros (engine); CodingCops waits.
+- Build default (stated to Brian in writing, 2026-09-07): **actual hours only** — the engine matches
+  Brian's app until Corrina rules otherwise; flipping to payable hours is a one-line change in the
+  chain's hour counter.
