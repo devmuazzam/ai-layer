@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -124,3 +124,84 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   **Type 1 Customer (inbound) / Type 2 Vendor (outbound)** — Melissa's direction-based split, not
   `purchase-order.md`'s who-owns-the-process split, and not the undefined `Internal / Customer` pair
   in `meetings/2026-06-22-sprint-4-additional.md:81`.
+
+## PO and vendor/agency rules the E2E suite asserts with no written source — PR #488
+
+- **Status:** open
+- **Asked:** 2026-09-07 — raised reviewing **PR #488** (`qa-automation-employees`). The specs
+  under `qa-automation/e2e/specs/purchase-orders/` (`auto-activation.spec.ts`, `line-items.spec.ts`,
+  `validation.spec.ts`, `lifecycle.spec.ts`), `.../vendors/` (`duplicates.spec.ts`,
+  `billing.spec.ts`, `lifecycle.spec.ts`, `references.spec.ts`, `validation.spec.ts`) and
+  `.../agencies/` (`duplicates.spec.ts`, `restrictions.spec.ts`, `lifecycle.spec.ts`,
+  `references.spec.ts`) assert rules **reverse-engineered from the running build** — their case docs
+  say *"verified against the live API on 2026-09-07"*, which verifies them against the code, not
+  against anyone's intent. Merging freezes current behaviour as expected behaviour.
+- **Question:** nine rules, each answerable in a line. **Purchase orders — (a)** does a `PENDING` PO
+  **auto-promote to `ACTIVE`** once an invoice number *and* an attachment both exist, and does
+  `DRAFT` never promote? **(b)** Is the PO total *line subtotals − discount* with the **PO fee
+  excluded**, and does a discount over 100% floor at 0? **(c)** Does a `belongsToAsset` toggle
+  switch a line between an `assetId` and a *part + description* pair, nulling the other side?
+  **Vendors / agencies — (d)** do duplicate **name** (case-insensitive, trimmed) and duplicate
+  **email** each return 409, does archiving **not** free them, and is a record updating itself
+  exempt? **(e)** Are vendor codes auto-minted as `VEND-#####`? **(f)** What are the vendor billing
+  enums — type, category, **eleven** billing terms, 1099 type, due-date type? **(g)** Should an
+  unreferenced vendor or agency **hard-delete** (204, cascading to children)? **(h)** What are the
+  agency **time-restriction** mechanics? **(i)** Should vendor/agency routes carry a permission
+  guard at all?
+- **Sources checked:** **Nothing states any of the nine.** (a) and (b) are **already declared
+  unspecified by a decision** — [../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md)
+  §*What this does NOT settle* (`status: reference`): *"**PO status values.** The 7 steps are
+  lifecycle stages, not necessarily stored statuses"*, with `Pending / Confirmed / Paid` and Ryan
+  Adams' *"open PO until it's closed out"* left *"unreconciled"*; and *"**The `area`, `city`, `PO
+  fee`, `discount %` and `invoice #` fields** now built and mocked up. **Still unspecified.**"* That
+  line is the vault's only mention of `PO fee` anywhere. The one written status list —
+  [../meetings/2026-06-22-sprint-4-additional.md](../meetings/2026-06-22-sprint-4-additional.md):97
+  (`status: unverified`), *"Each PO shows one of three statuses  Pending, Confirmed, Paid"* — has
+  **no `DRAFT` and no `ACTIVE`**, so the specs' vocabulary is a fourth one. The same file :87 notes
+  an invoice or receipt can be attached but attaches **no consequence** to it. (c) `belongsToAsset`
+  appears nowhere; the nearest is a form-field list, :84, *"and linked asset if applicable"*.
+  (d), (e), (g): no 409, no 204, no `VEND-` anywhere — the only legacy vendor codes are FCC's
+  three-letter form (`ROA001`, `COA003`, demo *"AUTO SU"*,
+  [fcc-nexgen-purchasing-guide.md](fcc-nexgen-purchasing-guide.md):314), and
+  [vendors.md](vendors.md):37 lists the create form with **no uniqueness constraint at all**.
+  On (g), [../decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  §*What this does NOT settle* names the question and **declines it** — *"Whether the `DELETE`
+  endpoints stay… is undecided"*, *"Whether an admin hard-delete escape hatch exists… **Do not
+  build one and do not assume its absence**"* — and leaves the cascade half open too. So the shipped
+  hard-delete is neither sanctioned nor forbidden.
+  **(f) is Conflicted — note only, do not answer from one file.** Per
+  [agencies-vendors-INDEX.md](agencies-vendors-INDEX.md) (`kind: conflict-stub`): *"**None of these
+  is verified. Do not answer from one of them alone.**"* — `vendors.md` 3.7 KB / 2026-04-30 (user
+  stories) · `agencies.md` 1.0 KB / 2026-04-30 (user stories) · `agencies-module.md` 1.4 KB /
+  2026-07-22 (punch list) · `agency-and-vendor.md` 0.2 KB / 2026-06-22 (punch list), with the stub's
+  own warning that *"the two **newest** files are the two **smallest**, and both are punch lists…
+  Ordering by date discards the specification and keeps the bug list."* The entire written basis for
+  the billing enums is four bare bullets in the smallest of them,
+  [agency-and-vendor.md](agency-and-vendor.md):15-19 — *"Add category inside vendor to make them sub
+  contractor · add contact information · add billing terms · Taxable related fields"* — **no values
+  and no counts**, so the number **eleven** is sourced nowhere. `1099` returns **zero hits
+  vault-wide**; the `Net 15/30/45/60/90` tables are **customer** terms in FCC/QuickBooks legacy data
+  ([../customers/fcc-legacy-customer-data-model.md](../customers/fcc-legacy-customer-data-model.md):344-351),
+  as is the only `dueDateType`. A vendor **type** was asked for on tape and never specified —
+  Melissa McNutt @ 21:59, [../meetings/transcripts/2026-06-17-erp-sprint-review.md](../meetings/transcripts/2026-06-17-erp-sprint-review.md):153,
+  *"vendor type would be helpful… service or parts or subcontractor."*
+  **(h): existence only, mechanics nowhere.** Two punch-list lines
+  ([agencies-module.md](agencies-module.md):28 *"time restrictions layout need to be change at view
+  page"*; [agency-and-vendor.md](agency-and-vendor.md):23 *"Add travel restrictions for agencies"*)
+  state no window semantics, no evaluation against a job date, and no effect when violated. The only
+  mechanic-shaped material is a **CodingCops proposal**, not a decision — jahanzaib.nadeem @ 17:26,
+  same transcript :135: *"we should add a field or maybe a checkbox… labeled as travel restrictions.
+  And once that checkbox is checked, then we can show the exact time, like the from time and a to
+  time"* — answering Melissa's **city** example @ 16:24, not an agency rule.
+- **Related, already open — do not duplicate:** [*Purchase orders at three levels — Joe and Ryan on
+  tape, nothing written*](#purchase-orders-at-three-levels--joe-and-ryan-on-tape-nothing-written)
+  in this file holds the standalone-PO and audit-trail half. **(i) is an instance of** the unbuilt
+  authorization layer — [../admin/gaps.md#departments-roles-and-their-capabilities--the-authorization-layer-is-unbuilt-and-the-list-is-unwritten](../admin/gaps.md#departments-roles-and-their-capabilities--the-authorization-layer-is-unbuilt-and-the-list-is-unwritten)
+  (Abdul Rehman, 2026-09-01: *"right now we haven't implemented any authorization layer based on
+  these department and roles"*; *"**Blocked:** every permission check in the app"*). Do not answer
+  (i) here.
+- **Blocked:** merging PR #488's PO, vendor and agency specs as a behavioural contract; `SCRUM-478`
+  (PO epic, To Do, empty description) still cannot be specified without (a) and (b).
+- **Owner:** product team — Joe Schacatano and Ryan Adams for the PO lifecycle (they own the related
+  entry above), Liz Lopez for the permit-driven PO path, Melissa McNutt for the vendor type and
+  billing terms she raised on 2026-06-17.

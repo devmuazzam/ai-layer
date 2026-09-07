@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -983,5 +983,62 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** nothing today — the page works. What is blocked is knowing whether shipping it
   ungated is a deviation to fix before the 15 September walkthrough, when users are set up per
   role.
+- **Owner:** product team — Corrina Bustos and Brian Petros, in the same session that owes the
+  department/role/capability list.
+
+## Settings picklist rules the E2E suite asserts with no written source — PR #488
+
+- **Status:** open
+- **Asked:** 2026-09-07 — raised reviewing **PR #488** (`qa-automation-employees`). The specs
+  (`qa-automation/e2e/specs/settings/picklist.spec.ts`, `sections.spec.ts`, `consumers.spec.ts`)
+  assert rules **reverse-engineered from the running build** — their case docs say *"verified against
+  the live API on 2026-09-07"*, which verifies them against the code, not against anyone's intent.
+  Merging freezes current behaviour as expected behaviour.
+- **Question:** three rules, each answerable in a line. **(a)** Is the **public picklist endpoint**
+  meant to be **unauthenticated**, and to return **active entries only**? **(b)** Should a picklist
+  entry's **code** be uppercased and pattern-checked, and are **code and label each unique**?
+  **(c)** Should the default list view be **All** rather than **Active**?
+- **Sources checked:** **None of the three is written.** The word *picklist* appears **four times in
+  the whole vault**, once meaningfully — [../accounting/gaps.md](../accounting/gaps.md):212-214
+  describes `expense_gl_accounts` as *"an empty admin-managed picklist (`code`, `label`,
+  `description`, `status`)"*. That is the **only** description of picklist shape anywhere and it says
+  nothing about endpoints, auth, casing, patterns, uniqueness or default views. **(a) runs against
+  the vault's one written auth posture**, which is the opposite default:
+  [responsive-design-and-security-posture.md](responsive-design-and-security-posture.md):80-84
+  (`status: unverified`) — *"Every API route is protected by default through global guards
+  (`AccessTokenGuard`, `RolesGuard`); public routes must **opt out explicitly** with `@Public()`"* —
+  and the only `@Public()` routes the vault records are filed as **defects**, not precedents
+  ([../quotations/gaps.md](../quotations/gaps.md):1230 Q-01, :1247 Q-02, :1262 Q-03, all open). So a
+  new unauthenticated endpoint needs a stated reason, and there is none. **(b)** every uppercasing
+  rule in the vault is ADP/legacy-export (`payroll/adp-bucket-crosswalk.md`,
+  `payroll/legacy-payroll-app-code-extract.md`) and must not be transferred; the only uniqueness
+  decision is [../decisions/2026-09-02-sub-category-names-tenant-unique.md](../decisions/2026-09-02-sub-category-names-tenant-unique.md),
+  which is sub-category **names** and says nothing about codes or labels. **(c)** the one written
+  default points the **other** way and is scoped to one surface —
+  [../decisions/2026-08-20-planning-tracker-archived-filter.md](../decisions/2026-08-20-planning-tracker-archived-filter.md)
+  fixes that *"the tracker's out-of-the-box state continues to hide"* archived rows, names the
+  *"**All / Active / Archived** tab set"* only as an **unchosen** UI option under *What this does NOT
+  settle*, and states the ruling *"was not made app-wide. It names one surface."*
+- **Related, already open — do not duplicate.** The suite's fourth settings assertion — *Settings is
+  admin-only while the `/asset-management` taxonomy screens are unguarded* — **is already this
+  register's**, and the specs corroborate it from the other side. See [*Must a new nav entry be
+  permission-gated, and who may see live vehicle locations?*](#must-a-new-nav-entry-be-permission-gated-and-who-may-see-live-vehicle-locations),
+  which records exactly this split: *"Payroll and Settings are gated on `can('payroll','view')` /
+  `can('settings','view')`, while the whole Asset Management group is not."* Two qualifications
+  before anyone cites that as settled: it records **observed shipped state inside an open question**
+  (*"no source says a new nav entry must be gated at merge"*), and the gate named is the
+  **front-end** one, which [responsive-design-and-security-posture.md](responsive-design-and-security-posture.md):83-84
+  calls *"cosmetic only"* — **nothing says Settings is admin-only server-side**, and
+  `picklist.spec.ts` says the reference-code controllers *"carry ZERO `@Roles`"*. Parent entry:
+  [*Departments, roles and their capabilities — the authorization layer is unbuilt and the list is
+  unwritten*](#departments-roles-and-their-capabilities--the-authorization-layer-is-unbuilt-and-the-list-is-unwritten).
+- **Pointer — employee portal invites.** PR #488 also asserts invite mechanics (`User` at
+  `PENDING_INVITE` / role `USER`, a 64-character token, rotate on resend, null on revoke). Users and
+  invitations are this module's per [../STRUCTURE.md](../STRUCTURE.md), but the question travels with
+  the employee record and is filed whole in
+  [../payroll/gaps.md#employee-module-rules-the-e2e-suite-asserts-with-no-written-source--pr-488](../payroll/gaps.md#employee-module-rules-the-e2e-suite-asserts-with-no-written-source--pr-488)
+  item (c). Answer it there.
+- **Blocked:** merging PR #488's settings specs as a behavioural contract. (a) additionally blocks
+  sign-off on the public endpoint shipping at all.
 - **Owner:** product team — Corrina Bustos and Brian Petros, in the same session that owes the
   department/role/capability list.

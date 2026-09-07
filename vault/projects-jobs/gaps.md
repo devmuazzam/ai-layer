@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -501,3 +501,65 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   acts", `SCRUM-697`'s *checked ≡ on DAS* is the built one), and Ask 3.
 - **Owner:** Lisette Anzaldo / Ryan Adams
 - **Update 2026-09-04, from the record** (computed the same day from `stg.FMS_JOB_MASTER_Raw` in the restored 2026-06-23 backup): the job-level `Dispatched` bit is **0 on every one of the 8,083 jobs starting 2025 or later**, across all seven statuses (Confirmed 2,624 · Transfer 2,544 · Cancelled 1,175 · On Job 1,138 · Tentative 590 · Finished 7 · Complete 5). TCG never used FCC's "planned vs dispatched" flag; the only state it worked with is `Status`, so the legacy record gives no precedent for a separate dispatchable state on a job or its days.
+
+## Permit rules the E2E suite asserts with no written source — PR #488
+
+- **Status:** open
+- **Asked:** 2026-09-07 — raised reviewing **PR #488** (`qa-automation-employees`), which adds
+  ~200 Playwright specs. The permit specs
+  (`qa-automation/e2e/specs/permits/`: `asset-rule.spec.ts`, `status.spec.ts`, `duplicates.spec.ts`,
+  `generate-po.spec.ts`, `restrictions.spec.ts`, `lifecycle.spec.ts`, `validation.spec.ts`) assert
+  product rules **reverse-engineered from the running build** — their case docs say *"verified
+  against the live API on 2026-09-07"*, which verifies the assertion against the code, not against
+  anyone's intent. Merging them freezes the current behaviour as the expected behaviour.
+- **Question:** seven rules, each needing a one-line answer. **(a)** Is an asset **required only on
+  the two travel permit types** and hidden for every other type? **(b)** What is the permit **status
+  vocabulary** — the build has `PENDING`/`INACTIVE` plus a separate `trackableStatus`; is that the
+  intended model? **(c)** Is expiry a **stored column** moved only by cron or by a write, rather
+  than derived on read? **(d)** Is the **duplicate guard** one active *annual* permit per
+  (asset, type, city) → 409, applied only when an asset is present? **(e)** Is it **one PO per
+  permit**, and does deleting the PO release that guard? **(f)** Do permit **time restrictions**
+  validate end-after-start and **replace wholesale** on save? **(g)** Should a repeated
+  archive/restore of an already-archived/active permit return 409?
+- **Sources checked:** **(b) is the only one with any written source, and it undercuts (c).**
+  [city-permits/permit-tracker-workbook.md](city-permits/permit-tracker-workbook.md):59
+  (`status: unverified`) gives the tracker's closed list — `VALID` · `EXPIRING SOON` · `EXPIRED` ·
+  `NOT YET ACTIVE` · **`MISSING EXPIRATION`** — a **fifth value the specs do not carry**; and :52
+  and :172-174 state these are **computed** (*"Status and days remaining update automatically"*,
+  `EXPIRING SOON if Valid To ≤ TODAY() + 60`), i.e. **derived on read, the opposite of (c)**. It is
+  also a **spreadsheet's validation list, not a product spec**. `PENDING` appears as a status in
+  [project-module/05-create-and-track-permits.md](project-module/05-create-and-track-permits.md):24
+  (*"Saves permit as Pending"*) and
+  [../vendors-agencies/purchase-order.md](../vendors-agencies/purchase-order.md):262-264, both
+  `status: unverified`; `INACTIVE` and `trackableStatus` appear in **no product source** — `INACTIVE`
+  survives only as this register's description of `permit-expiry.service.ts`. A **third, different**
+  vocabulary is narrated by CodingCops about its own build in
+  [../meetings/transcripts/2026-03-31-dispatch-scheduling-permits-figma-demo.md](../meetings/transcripts/2026-03-31-dispatch-scheduling-permits-figma-demo.md):335
+  (Ehtesham Anwar @ 1:31:03) — *open / submitted / approved / cancelled*.
+  **(a), (c), (d), (e), (f) and (g): nothing states them.** Searched all of `projects-jobs/`,
+  `assets/`, `vendors-agencies/`, `decisions/` and grep passes over `meetings/` and
+  `meetings/transcripts/`. Notable counter-evidence rather than silence on two of them: **(d)** the
+  tracker deliberately holds several simultaneous records per city — *"Blanket permits are entered
+  as separate fleet-level records under Crane # `BLANKET`"*, *"Current, future and historical
+  permits are retained separately"* (permit-tracker-workbook.md:120-124) — so a one-active-per-tuple
+  guard is contradicted by TCG's own practice; **(f)** restrictions are **free text** in the tracker
+  (:140-160, *"no movement during peak hours 7–9 AM and 4–6 PM"*), not structured rows, and
+  [../dispatch/travel-permits-playbook.md](../dispatch/travel-permits-playbook.md):201 files how
+  restricted hours reach the schedule under *Open — do not infer*. On **(e)**, every written PO
+  cardinality statement is on a different axis — *"One PO per vendor per job"*
+  ([../meetings/2026-06-22-sprint-4-additional.md](../meetings/2026-06-22-sprint-4-additional.md):86,
+  Melissa McNutt corroborating @ 38:27 on 2026-03-26); permit→PO is written only as a creation flow
+  (`purchase-order.md`:250-256), never as a constraint, and PO **deletion** appears in no source.
+  On **(g)**, [../decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md):61-63
+  explicitly leaves *"who may unarchive"* and reversal unspecified, and
+  [../INDEX.md](../INDEX.md):143 records that the **Permits** tracker is **not** covered by the
+  archived-filter decision.
+- **Related, already open — do not duplicate:** (a) is the specific case of
+  [*Asset on a permit — optional, except where a punch list says compulsory*](#asset-on-a-permit--optional-except-where-a-punch-list-says-compulsory)
+  in this file; answer that one first and (a) largely dissolves. (b)/(c) touch
+  [*Permit expiry reminders — neither 90 nor 30 shipped*](#permit-expiry-reminders--neither-90-nor-30-shipped),
+  which already holds the 90/60/30 threshold conflict.
+- **Blocked:** merging PR #488's permit specs as a behavioural contract. Nothing else — the code
+  works; what is unknown is whether it is right, and a green suite will stop anyone asking.
+- **Owner:** Lisette Anzaldo (dispatch/DAS/permits), with Liz Lopez — the same pair who own the two
+  related entries above.

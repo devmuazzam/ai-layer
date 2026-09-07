@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -1795,3 +1795,87 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   ([quote-lifecycle-permits-and-purchase-orders.md](quote-lifecycle-permits-and-purchase-orders.md)
   §1). Nothing in the drop says per-user Microsoft 365 sending vs a from-name / reply-to change, or
   whether DocuSign stays underneath. Still Joe's and CodingCops'.
+
+## Billing-code and price-list rules the E2E suite asserts with no written source — PR #488
+
+- **Status:** open
+- **Asked:** 2026-09-07 — raised reviewing **PR #488** (`qa-automation-employees`). The specs live
+  under `qa-automation/e2e/specs/accounting/` (`billing-code-surcharge.spec.ts`,
+  `billing-code-pricing.spec.ts`, `billing-code-lifecycle.spec.ts`, `billing-code-validation.spec.ts`,
+  `price-list-pricing.spec.ts`, `price-list-lifecycle.spec.ts`, `price-list-references.spec.ts`,
+  `price-list-validation.spec.ts`, `price-list-items.spec.ts`) but the questions are **quotations'** —
+  [../accounting/INDEX.md](../accounting/INDEX.md) routes billing codes and price lists here, per
+  [../STRUCTURE.md](../STRUCTURE.md). The specs assert rules **reverse-engineered from the running
+  build** (*"verified against the live API on 2026-09-07"* — verified against the code, not against
+  intent). Merging freezes current behaviour as expected behaviour.
+- **Question:** seven rules, each answerable in a line. **(a)** Is the surcharge percentage bounded
+  to **−100..100** — and are negative surcharges intended at all? **(b)** Do only **ACTIVE** billing
+  codes price a row, with DRAFT/archived yielding no rate or zero? **(c)** When **two ACTIVE billing
+  codes** sit on one sub-category, which wins — the specs accept **either** rate, so the build is
+  non-deterministic; is that acceptable, or is a tie-break required? **(d)** Does an **archived**
+  price list stop overriding while an **INACTIVE** one still prices? **(e)** Are **discount** and
+  **price hike** mutually exclusive, given the UI enforces it and the API applies both? **(f)** Is
+  the customer↔price-list binding by **name string** — so renaming a list migrates its customers but
+  orphans quotations? **(g)** Does an archived list's **name become reusable**, with restore then
+  refused?
+- **Sources checked:** **None of the seven is written.** **(a)** no bound, sign rule or precision
+  for the surcharge percentage appears anywhere — not in
+  [../decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md),
+  and not in [fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md):80-92, which
+  transcribes FCC's **entire** import validation contract (18 patterns) and contains **no percentage
+  range at all**. **(b)** billing-code status exists but its **pricing effect is unwritten**: FCC's
+  contract is *"code · description · status (A/P) · UOM"* (same file :89) with the `Data List`
+  vocabulary *"Active `A` / Inactive `T`"* (:107), and the only status behaviour recorded anywhere is
+  **display** — *"Inactive billing codes render in red"*
+  ([../dispatch/fcc-nexgen-dispatch-guide.md](../dispatch/fcc-nexgen-dispatch-guide.md):458). The
+  word **DRAFT never appears for a billing code**; the only draft-status ask is for **price lists**,
+  in a meeting summary — *"add status states for price lists (draft/in progress/active)"*
+  ([../meetings/summaries/2026-03-12-sales-pricing-in-fcc.md](../meetings/summaries/2026-03-12-sales-pricing-in-fcc.md):56)
+  — with no pricing semantics. **(c)** the client wishlist covers only the **zero** case — *"rates
+  tied to billing codes, typically by subcategory · **flag subcategories with no billing code**"*
+  ([../erp-review-log.md](../erp-review-log.md):225-227, `status: unverified`) — never the two case.
+  This register already holds the same non-determinism as a **defect**, not a rule: [*FCC estimate
+  templates were already extracted — and the seeder flattened them to one
+  FK*](#fcc-estimate-templates-were-already-extracted--and-the-seeder-flattened-them-to-one-fk)
+  records *"`link-billing-codes.ts:225-241` … **first-wins**"* ordered by *"`PrimaryEst`, a field
+  production data does not use, so the first-wins pick is effectively input order."* **A spec that
+  accepts either rate ratifies that defect.** **(d)** and **(g)** are **explicitly unsettled** by
+  [../decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  §*What this does NOT settle* — *"what an archived record still participates in (search, reports,
+  references from live records)"* and *"who may unarchive"*. FCC price lists carry Active/Inactive
+  only, with **no behaviour attached** ([fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md):105,
+  :237-245); no vault file combines "price list" with "archiv*". **(e)** the two appear only as a
+  **pair**, never as an exclusion — *"price list discounts and price hikes apply only to items in
+  that list"* ([../erp-review-log.md](../erp-review-log.md):229). **(f)** the binding is described
+  only as *"the price list is a field on the customer record"*
+  ([fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md):202-204) — **no key
+  type**. The one name-string-orphaning precedent is a **different entity** and must not be
+  transferred: [../decisions/2026-09-02-sub-category-names-tenant-unique.md](../decisions/2026-09-02-sub-category-names-tenant-unique.md):65-67
+  is `Plan.craneCategory` → `SubCategory`. On **(g)** the same decision's nearest precedent points
+  the **opposite** way — an archived sub-category *"keeps its name **reserved forever** … That is
+  shipped behaviour, not a ratified rule."*
+- **On the conflict flag — the premise needs correcting.** No conflict stub names
+  [billing-code-and-price-list.md](billing-code-and-price-list.md); [quotations-INDEX.md](quotations-INDEX.md)
+  lists four other candidates and not this file, and it is not among the nine open conflicts in
+  [../INDEX.md](../INDEX.md):52-62. The file is conflict-**marked in its own frontmatter**, against
+  exactly one document: `conflicts_with: [meetings/2026-06-26-discussion-points-with-tcg-team.md]`
+  — this file 3.4 KB / `updated: 2026-09-04` vs that one 1.5 KB / `updated: 2026-06-25`, **neither
+  `verified`**. The overlap is **literal duplication of the yards question**, *"Should we make
+  billing code and price list specific to yards"*
+  ([../customers/customers-INDEX.md](../customers/customers-INDEX.md):39-40), which is **half
+  answered** (*"Billing Codes per Yard: Need to have ability to have separate Billing Codes per
+  Yard"*; *"Nothing on the slides says anything about price lists per yard"*, :52-59). **So the
+  conflict does not bear on any of (a)–(g)** — the file is a 3.4 KB punch list whose only pricing
+  content is *"Add billing code type CRUD"* and *"Discount toggle should not be red"*. Cite it for
+  the yard question, not for these.
+- **Related, already open — do not duplicate:** (f) is adjacent to [*Should editing a quotation
+  adopt the customer's current price list?*](#should-editing-a-quotation-adopt-the-customers-current-price-list)
+  — that one asks whether an edit **re-prices**, this one asks what the binding is **keyed on**;
+  answer the key first. The surcharge **model** is settled and is not reopened here:
+  [../decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md)
+  (`status: verified`) fixes one rate per quote, price list replacing the tenant-wide default, with
+  per-line **membership** via `BillingCode.applySurcharge`. Only the **bound** in (a) is open.
+- **Blocked:** merging PR #488's accounting specs as a behavioural contract. (c) additionally blocks
+  a deterministic seeder; (f) blocks any price-list rename being safe.
+- **Owner:** product team — Melissa McNutt and Joe Schacatano (they set the surcharge and price-list
+  rules on 2026-05-05 and 2026-03-12); Ryan Adams for price-list administration.
