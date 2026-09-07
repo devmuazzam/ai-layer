@@ -27,6 +27,7 @@ Invoicing and accounting (module not yet built). Backend usecases: `billing, exp
 | File | Answers | KB |
 | --- | --- | --- |
 | [2026-07-invoicing-adjustment-taxonomy.md](2026-07-invoicing-adjustment-taxonomy.md) | **Which ticket events deduct from the invoice, which don't, which bill extra** — Tia & Micaela's taxonomy with live exhibits | 4 |
+| [../payroll/payable-vs-billable-hours.md](../payroll/payable-vs-billable-hours.md) | **How billable hours differ from payable hours** — same yard-to-yard span, then contract minimums and downtime deductions on the billing side; the open billing-model question (added 2026-09-07) | 6 |
 | [2026-07-accounting-team-erp-wishlist.md](2026-07-accounting-team-erp-wishlist.md) | **What the accounting team wants from the ERP** — the July 2026 client wishlist, cross-linked into payroll/quotations/assets. Start here when the module kicks off (~Oct–Nov 2026) | 8 |
 | [invoice-packets-2026-04-worked-examples.md](invoice-packets-2026-04-worked-examples.md) | **What a TCG invoice and its packet actually look like** — six real April 2026 packets: header fields, line shape, the real billing-code vocabulary, the surcharge and permit-markup arithmetic, and what the backing pages contain | 20 |
 | [accounting-team-quickbooks-and-spreadsheet-activities.md](accounting-team-quickbooks-and-spreadsheet-activities.md) | **Who does what in QuickBooks today, and the 15 Excel sheets and 4 OneDrive folders the department runs on** — plus the truncated-archive flag | 9 |
