@@ -139,11 +139,11 @@ enforced by anything any more** — `.ai/setup.sh` no longer installs its own ho
 `core.hooksPath` values cannot coexist and the tracked hooks won — so *rebase before you push*
 is back to being your discipline. Branch naming is not checked either.
 
-`pre-commit` runs `lint-staged` (ESLint `--fix` + Prettier on the staged files) and then
-`nx affected -t build`. Two consequences: the hook can rewrite what you staged, so re-read
+`pre-commit` runs `lint-staged` only (ESLint `--fix` + Prettier on the staged files) —
+no build. Two consequences: the hook can rewrite what you staged, so re-read
 `git diff --staged` if the commit was rejected and retried; and a worktree without
 `node_modules` refuses to commit at all — `pnpm install` there first (fast, linked from the
-store).
+store). Build, lint, and typecheck stay on `pre-push`.
 
 ## 3. Commit message — conventional, with a body that explains why
 

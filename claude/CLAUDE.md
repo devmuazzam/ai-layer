@@ -184,7 +184,8 @@ projects. JSDoc on public APIs.
 **Git hooks are tracked files in `.husky/` and run in every worktree** (a worktree without
 `node_modules` refuses to commit — `pnpm install` there first). `pre-commit`: `lint-staged`
 (ESLint `--fix` + Prettier on staged files — it can rewrite what you staged; re-read
-`git diff --staged`) then `nx affected -t build`. `pre-push`: refuses a direct push of `main`,
+`git diff --staged`) only — no build, so commits stay cheap and Nx cache restore cannot
+stomp a live `web:dev` / `api:dev`. `pre-push`: refuses a direct push of `main`,
 then `nx affected` lint (web excluded), typecheck (mobile excluded), build. `SKIP_GATES=1 git
 push` skips the gates, never the branch guard.
 
