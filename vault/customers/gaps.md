@@ -534,6 +534,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   unspecified is not recoverable after deploy.
 - **Owner:** Melissa McNutt (customer packet / onboarding forms), with Ryan Adams on the
   quotation-send side.
+- **Update (2026-09-07):** (a) is answered by
+  [decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md)
+  — Billing Information / Pre Labor Form **replace** the retired Pre-Quote Data tab (they do not
+  sit alongside it); the PDFs that stay are the separate, already-existing quotation-send
+  attachments, not Pre-Quote Data. **(b) and (c), and the Blocked line above, are untouched by that
+  decision** — it was never put to Product, `20260907120000_drop_customer_pre_quote_data` is still
+  a bare `DROP COLUMN` with no backfill, and nobody has checked whether any tenant holds data in
+  the retiring columns. This remains the sign-off blocker on the branch.
 
 ## Billing Information and Pre Labor Form tabs — the names are sourced, nothing else is
 
@@ -566,6 +574,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** the field-level shape is recoverable without a product decision if someone supplies the
   two PDFs; only the placement and the create-wizard exclusion need a person.
 - **Owner:** Melissa McNutt (owns the packet and the compliance forms).
+- **Update (2026-09-07):** two of the five unsourced items are now answered by decision, the rest
+  are not.
+  [decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md)
+  confirms Pre Labor Form **is** the same artifact as the "job and labor compliance information
+  request form."
+  [decisions/2026-09-07-pre-labor-capture-stays-customer-level.md](../decisions/2026-09-07-pre-labor-capture-stays-customer-level.md)
+  confirms both tabs belong on the **customer** record (not the quotation or project) — as a
+  phase-scoping choice, not a claim that the job/quote sources this decision cites are wrong; see
+  that note. **Still unsourced:** which fields belong in the five-sub-form composite (nobody has
+  supplied the two source PDFs), whether it should be one tab or five, and whether excluding both
+  from the create wizard is intended.
 
 ## Storing full credit card numbers and CVVs in `billing_information_data` — no source, and a compliance question
 
@@ -596,6 +615,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** merging `0010cbc5` as written.
 - **Owner:** Brian Petros (systems/compliance) — needs a named acceptance or a design change, not a
   developer's judgement.
+- **Update (2026-09-07, verified against HEAD `9daa2027`):** the specific defect described above —
+  full PAN and CVV persisted in plaintext — is **fixed**, in a later commit on the same branch
+  (`fad461fe`, *"harden billing card storage and completion"*), not by any decision recorded here.
+  `sanitizeBillingInformationDataForStorage` (`packages/shared/src/types/billing-information-data.ts`)
+  is called on every create and update (`customers.service.ts`) and **masks the PAN to last-four
+  digits** (`maskCreditCardNumberForStorage`) and **nulls `securityCode` unconditionally** before
+  the write reaches Prisma; the web tab calls the same sanitizer client-side before submit. So (b)
+  is answered in code: CVV is discarded, PAN is truncated. **(a) is still open and this does not
+  answer it** — TCG now retains a masked PAN rather than no PAN at all (no tokenization via a
+  payment processor), and nobody named has accepted that as sufficient. Narrow this entry to (a)
+  rather than treating it as closed.
 
 ## What makes Billing Information "Complete"? — an any-field rule, stampable from autofill alone
 
@@ -624,3 +654,86 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** if the timestamp has no downstream consumer, the cheapest correct move is to stop
   stamping it until the rule is decided, rather than to pick a threshold here.
 - **Owner:** Melissa McNutt (what a returned packet must contain), with accounting on approval.
+- **Update (2026-09-07, verified against HEAD `9daa2027`):** the specific defect described above —
+  autofill alone stamping Complete — is **fixed**, in the same later commit `fad461fe` noted on the
+  CVV/PAN entry above, not by any decision recorded here.
+  `packages/shared/src/types/billing-information-data.ts` now excludes `companyName`/`customerName`
+  (`IDENTITY_AUTOFILL_KEYS`) and `securityCode` (`EPHEMERAL_CARD_KEYS`) from progress-checking, so
+  opening the tab and saving with nothing typed no longer stamps `billingInformationDataCompletedAt`.
+  **(c) is answered: no, autofill does not count.** **(a), (b) and (d) are still open** — the rule
+  is still lenient any-field-in-any-sub-form (per the current docstring: *"True when any sub-form
+  has user-entered progress... Does not require every sub-form to be filled"*), which fields are
+  "genuinely required" is undefined, and (d)'s downstream-consumer question is untouched by this
+  fix. Narrow this entry to (a)/(b)/(d) rather than treating it as closed.
+## Pre-Labor / labor-compliance capture — one customer-level blob, or one record per job/quote?
+
+- **Status:** **resolved** — [decisions/2026-09-07-pre-labor-capture-stays-customer-level.md](../decisions/2026-09-07-pre-labor-capture-stays-customer-level.md)
+- **Asked:** 2026-09-07 — review of ad-hoc branch `feat/customer-billing-pre-labor-forms`
+  (commit `cc18e874`, no ticket, no `processed.log` entry); tcg-scrum escalation
+- **Question:** the Pre-Job Labor Compliance & Payroll Information Request is captured where?
+  (a) one JSON blob on `Customer`, overwritten on every save — what the branch builds; (b) one
+  record per **job/quote**, with an optional customer-level *default flag* ("LAUSD is always
+  certified payroll") that pre-populates it; or (c) both, as a customer default plus per-job
+  instances. A one-line answer settles it. If (b) or (c), the seven **required** per-project
+  fields now on the customer blob — `projectName`, `jobLocation`, `projectId`, `projectValue`,
+  `estimatedStartDate`, `estimatedEndDate`, `generalContractor`
+  (`packages/shared/src/types/pre-labor-data.ts`, `REQUIRED_STRING_FIELDS`) — belong on the job or
+  quote, not the customer, and the column is a data-loss bug rather than a layout choice.
+- **Sources checked — and they point away from (a):**
+  - [quotations/sales-operating-system/05-forms-and-records-matrix.md](../quotations/sales-operating-system/05-forms-and-records-matrix.md)
+    §2 row 2 — *Labor Compliance & Payroll Requirement Form*, system of record **"FCC job record
+    and compliance folder"**, output *"completed requirement form and attached agency packet"*.
+    The file's own gloss: *"Form 2 says the labor-compliance form's output lands in the FCC job
+    record — a compliance flag on the job, not a filed PDF."* §3 adds it is **"sent with every
+    quote"** and gates *"no scheduling release before compliance review"*. Client-authored
+    (Ryan Adams, 2026-08-06), `status: unverified`.
+  - [meetings/transcripts/2026-08-06-certified-payroll-labor-compliance.md](../meetings/transcripts/2026-08-06-certified-payroll-labor-compliance.md)
+    — Corrina Bustos 17:59–18:28 asks for a customer-level **option** so jobs auto-mark
+    (*"if we can get it at the customer level where it has that option … anytime there's a job
+    scheduled with LAUSD … it would just automatically [mark] as certified"*). That is a
+    **default**, not a store. The same passage says the marking lives on the job (17:35 *"they
+    mark it in the job"*; 17:49 the certified-payroll report keys off the job). Corrina 18:46 and
+    Melissa McNutt 18:55 then rule out a single customer-level value outright: **"it's per job
+    site … it's not all or nothing"**, *"if they do an AC lift on your house they don't need it,
+    but tomorrow they go to the police station, they're going to need it."*
+  - Precedent is itself unsourced: `Customer.preQuoteData`, the blob this pattern was copied
+    from, is recorded in [new-customer-packet.md](new-customer-packet.md) →
+    *Where this connects* as **"The schema comment does not name the fields and this packet is
+    not cited as their source — whether they correspond is unverified."** Copying it propagates
+    an unsourced shape; the commit message cites *"the Pre-Quote Data pattern and Figma layouts"*.
+  - `vault/decisions/` (31 notes on overlay `main`) — **nothing** on labor-compliance scope,
+    certified-payroll flags, or customer-vs-job form placement.
+  - Jira **not consulted — unavailable**: the Atlassian MCP is not mounted this session, and the
+    tenant was returning `403 suspended-payment` as of the 2026-08-25 customers entry above.
+    Check `SCRUM-575` and any labor-compliance ticket before treating this as fully unsourced.
+- **Note:** the same branch adds `20260907120000_drop_customer_pre_quote_data`, dropping the
+  `pre_quote_data` column that [fcc-legacy-customer-data-model.md](fcc-legacy-customer-data-model.md)
+  (line ~485) documents as *"the JSON compliance/onboarding blob that corresponds to the paper
+  packet"*. Whether any tenant holds data in it is a separate check, and the drop is irreversible.
+- **Blocked:** sign-off of `feat/customer-billing-pre-labor-forms`; the shape of
+  `Customer.preLaborData`; the certified-payroll job flag the payroll report depends on
+  (transcript 17:49 — *"if the job is not marked on there, that job won't even pop up on the
+  report"*).
+- **Owner:** Corrina Bustos (labor compliance — she raised the customer-level ask) with
+  Melissa McNutt (per-job-site variability). Ryan Adams owns the forms matrix.
+- **Cross-link:** [quotations/gaps.md → *Structured Billing / Pre-Labor tabs vs the static-PDF
+  quotation-send flow*](../quotations/gaps.md#structured-billing--pre-labor-tabs-vs-the-static-pdf-quotation-send-flow);
+  [payroll/gaps.md → *Labor Compliance module — no vault coverage*](../payroll/gaps.md#labor-compliance-module--no-vault-coverage),
+  which is the same greenfield module and is still open.
+- **Resolution (2026-09-07):** answer (a) — `Customer.preLaborData` stays a **single JSON
+  blob on the Customer record**, one instance per customer, overwritten on each save. Product
+  decided this **verbally**, relayed by Jahanzaib Nadeem; no individual Product person is
+  named and no meeting is citable, so the attribution is weaker than every other note in
+  `decisions/` — see the note's `decided_by:`.
+  **This is a phase-scoping decision, not an adjudication of the sources above.** The
+  forms-matrix "FCC job record", the 2026-08-06 *"it's per job site … it's not all or
+  nothing"* passage and the 2026-03-20 Kyle transcript are **not** contradicted, **not**
+  superseded, and stay `status: unverified` — the job-vs-customer scope question is
+  **deferred**, and they are still what a per-job design must be built against. Product
+  accepted the known limitation (a customer with several jobs retains only the most recently
+  saved project's compliance data) for this build.
+  **Still open, and not closed by this:** the certified-payroll **job flag** the payroll
+  report keys off (→ [payroll/gaps.md](../payroll/gaps.md#labor-compliance-module--no-vault-coverage));
+  Corrina's customer-level **auto-mark default**, which a singleton store is not; and the
+  `20260907120000_drop_customer_pre_quote_data` migration, which was **not** put to Product
+  and is **not** authorised by this decision.

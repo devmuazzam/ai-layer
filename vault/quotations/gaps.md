@@ -2031,3 +2031,78 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   - (a) loosens an approval control.
   - (c) and (d) are reversible UI.
 - **Owner:** product team. Ryan Adams (Sales Manager) for (a)–(d); Brian Petros for the approval half of (a).
+
+## Structured Billing / Pre-Labor tabs vs the static-PDF quotation-send flow
+
+- **Status:** **resolved** — [decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md)
+- **Asked:** 2026-09-07 — review of ad-hoc branch `feat/customer-billing-pre-labor-forms`
+  (commit `cc18e874`, no ticket, no `processed.log` entry); tcg-scrum escalation
+- **Question:** the ERP now captures the *same two documents twice*. Which is intended?
+  (a) the structured web tabs **replace** the emailed PDFs; (b) they **complement** them — TCG
+  still emails the PDF, and staff key the returned answers into the tabs; (c) the customer fills
+  the structured form themselves (self-service), and the PDFs are retired; or (d) this is an
+  uncoordinated duplicate build. One line settles it, and it decides whether
+  `PRE_QUOTE_FORM_FILES` and the send-email appendix get deleted.
+- **The duplication, concretely:** `packages/shared/src/constants/pre-quote-forms.ts` attaches two
+  static PDFs to a quotation send — `CUSTOMER_PACKET: 'New Customer Packet.pdf'` and
+  `JOB_LABOR_COMPLIANCE: 'Pre Job Labor Compliance Information Request Form final polished.pdf'` —
+  with `buildPreQuoteFormsEmailAppendix()` asking the customer to *"review and complete this
+  form, then reply to this email"*. The branch's two new Customer tabs capture the **same two
+  documents as structured fields**: Billing Information (Credit Card Authorization, Credit
+  Application, Deposit, Preliminary Notice) and Pre Labor Form. Neither side references the other
+  in code or in the commit message, which cites only *"the Pre-Quote Data pattern and Figma
+  layouts"*.
+- **Sources checked — nothing addresses the relationship:**
+  - [customers/new-customer-packet.md](../customers/new-customer-packet.md) — the packet itself,
+    `status: unverified`, migrated 2026-09-04, source dated **2025-10-23**. Its own framing is
+    decisive about what is *not* written: **"The packet is a paper/PDF process. Nothing in it says
+    any of this should be, or is being, built into the ERP."** It lists the four forms that match
+    the new Billing Information tab and notes the ERP *"already has a `preQuoteData` JSON blob on
+    `Customer` waiting to hold something of this shape"* — while stating the correspondence is
+    **unverified** and the packet is **not cited** as the blob's source.
+  - [sales-operating-system/05-forms-and-records-matrix.md](sales-operating-system/05-forms-and-records-matrix.md)
+    §1 — the nearest thing to a rule, and it argues for structured capture without naming this
+    build: *"Completed forms must be stored in the designated **system of record rather than only
+    in email**."* It does not say the ERP is that system of record for either form (row 1 names
+    "FCC, HubSpot, Accounting files"; row 2 names "FCC job record").
+  - `customers/erp-review-log.md` entry #3 (Melissa, Accounting, 2026-04-02) asks for **automatic
+    customer packet generation** — assembling the right documents per customer. That is a third
+    shape again (generate a PDF), and nobody has reconciled it with either of the two built.
+  - This register's *"Customer PO" on the quotation* entry above — `SCRUM-575` *Pre-Quote Data
+    Form & Customer PO Form* (Done, 2026-06-25) closed with the comment that it shipped under two
+    names, **"1. new customer packet 2. job and labor compliance information request form"**.
+    That is the *only* written link between the two names and the ERP, it is a closing comment
+    rather than a requirement, and the entry it sits in is open for unrelated reasons.
+  - `vault/decisions/` (31 notes on overlay `main`) — **nothing** on either form's channel.
+  - Jira **not consulted — unavailable** (Atlassian MCP not mounted this session; tenant was
+    `403 suspended-payment` as of 2026-08-25). `SCRUM-575` may carry more than its closing comment.
+- **Note:** the branch also drops `pre_quote_data`
+  (`20260907120000_drop_customer_pre_quote_data`), so whichever answer lands, the column that
+  `SCRUM-575` shipped is going away without a written decision.
+- **Blocked:** sign-off of `feat/customer-billing-pre-labor-forms`; whether
+  `PRE_QUOTE_FORM_FILES`, `buildPreQuoteFormsEmailAppendix()` and the two committed PDFs should be
+  removed, kept, or wired to the new tabs.
+- **Owner:** Ryan Adams / Joe Schacatano (sales & quotation) for the send flow; Melissa McNutt
+  (Accounting) for the packet, since the automatic-generation ask is hers.
+- **Cross-link:** [customers/gaps.md → *Pre-Labor / labor-compliance capture — one customer-level
+  blob, or one record per job/quote?*](../customers/gaps.md#pre-labor--labor-compliance-capture--one-customer-level-blob-or-one-record-per-jobquote)
+- **Resolution (2026-09-07):** answer (b) — the two mechanisms are **intentionally
+  complementary**, joined by a **manual, sequential workflow**: TCG emails the static PDFs
+  from the Send-to-Customer modal → the customer fills the PDF by hand and emails it back →
+  a TCG staff member **transcribes** the answers into the customer's Billing Information and
+  Pre Labor Form tabs. **No OCR/automatic extraction is planned; no customer self-service;
+  the PDF flow is not being replaced.** So `PRE_QUOTE_FORM_FILES`,
+  `buildPreQuoteFormsEmailAppendix()` and the two committed PDFs **stay, unwired to the
+  tabs, by design** — the PDF is the collection instrument, the tabs are the system of
+  record. Product decided this **verbally**, relayed by Jahanzaib Nadeem; **no individual
+  Product person is named** (Ryan Adams / Joe Schacatano own the send flow, Melissa McNutt
+  the packet — none is recorded as having said it), so re-confirm with a named owner before
+  deleting anything on the strength of it.
+  **Applied as a consequence:** the modal's staff-facing checkbox copy now reads "Billing
+  Information" / "Pre Labor Form" to match the tabs; the PDF filenames, prop names and the
+  customer-facing email body (which names the literal PDF titles) were **deliberately left
+  unchanged**. That asymmetry is intended — do not align the email text to the tab names.
+  **Still open, and not closed by this:** the `20260907120000_drop_customer_pre_quote_data`
+  migration; Melissa's automatic customer-packet-generation ask (`customers/erp-review-log.md`
+  #3), a third shape neither addressed nor dismissed; and `SCRUM-575`, still unread (Jira
+  unreachable this session).
