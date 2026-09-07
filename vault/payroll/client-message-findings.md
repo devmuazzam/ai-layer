@@ -708,6 +708,40 @@ non-union; **build default stated to the client — the rest chain's 12-hour cou
 to be flipped if Corrina rules that WTL adds count**; SQL instance still requested. Nothing else
 outstanding from this thread.
 
+## 2026-09-07 — non-union hourly rules summary and nine validation scenarios (Brian Petros)
+
+Following his "no rule change" reply, Brian sends a summary of the non-union rules (*"nothing
+different… just a summary"*): the Sat–Fri workweek, daily 8/12, weekly > 40 with no double counting,
+seventh consecutive day, a nine-step calculation order, the six-component audit taxonomy, no union
+minimums, cross-midnight, data-quality controls, an explicit list of **unfinalized** non-union items
+(holidays, PTO, sick, shift differential, minimums…), the salary group, and **nine validation
+scenarios** the ERP must demonstrate. Transcribed in full, with per-test ERP status, at
+[non-union-hourly-rules-2026-09-07.md](non-union-hourly-rules-2026-09-07.md).
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Sat–Fri workweek for weekly OT and seventh day | ✅ agrees (sixth source) | PAY-001, PAY-025, PAY-026 |
+| Daily 8 ST / 8–12 OT / > 12 DT, $560.00 example | ✅ agrees with plain-language §12 and the engine's thresholds. ⚠️ **engine applies them per ticket, not per workday** (`calculate.ts:241-253`) — his step 3 ("combine the employee's hours for that workday") is not what we do | PAY-012, PAY-023/024 |
+| Weekly OT converts only otherwise-ST hours after daily and seventh-day; never double counts | ✅ agrees with §12 ("taken from the latest straight-time hours") and PAY-027's no-pyramiding intent. ❌ **not built**: weekly > 40 only flags (`WEEKLY_OT_APPLIED`) | PAY-025, PAY-027 |
+| Seventh consecutive day = **all seven days of the Sat–Fri week** worked; first 8 h OT, over 8 DT; a missed day means no trigger | ✅ agrees with §12. 🆕 the "all seven days of *this* week" framing is now explicit — the count does not carry across weeks. ❌ not built | PAY-026 |
+| Nine-step calculation order; "do not total the week and calculate OT afterward" | 🆕 first written order for non-union. Consistent with the dependency-matrix paper's engine order (§ non-union). The engine has no weekly stage at all, so order is moot until 4–7 are built | PAY-012, PAY-025, PAY-026 |
+| Six explicit components; ERP must preserve *why* hours became OT (daily / weekly / seventh) | ✅ agrees with PAY-059's confirmed reporting purpose. ❌ engine emits `PAY-012` "Overtime" with no reason — a component-taxonomy gap, same shape as the legacy ledger names | PAY-059 |
+| No union minimums/guarantees for non-union hourly | ✅ agrees with §12 ("every union extra is zeroed"); ✅ engine emits none | PAY-039/040/041, PAY-043, PAY-012 |
+| Cross-midnight: positive duration, workday preserved, correct week | ✅ agrees with PAY-019 and the 2026-09-04 decision; `sliceWindow` handles it | PAY-019 |
+| Data-quality flags (missing/invalid/duplicate/overlap) apply to non-union too | ✅ agrees with PAY-028/029/060; ❌ neither 028 nor 029 is in the engine | PAY-028, PAY-029, PAY-060 |
+| Holidays, PTO, sick, vacation, shift differential, minimums, bonuses, allowances for non-union: **not finalized**, not to be inferred from union rules | 🆕 the client saying in writing that the spec is incomplete here. Registered as an open question owned by TCG | PAY-033, PAY-073, PAY-036/037 |
+| Salary group: generate no ST/OT/DT from labor; pay from configured salary; no boom | ✅ agrees with PAY-013 and the engine (one "Salary period amount", `SALARY_AMOUNT_ASSUMED` because it reads `hourlyRate`) — the salary field and frequency remain unconfirmed, and Brian wants to discuss | PAY-013 |
+| Nine validation scenarios | 🆕 the first client-supplied acceptance list for any payroll group. **Today: 1–3 pass for single-ticket days, 9 passes, 8 is partial, 4–7 fail** — see the transcription's status table | PAY-012, PAY-025, PAY-026, PAY-019 |
+
+**For the build:** the non-union hourly gap is now precisely bounded — per-workday combining, weekly
+OT reclass, seventh-day, and reason-carrying components — and the acceptance tests are written by
+the client. Sections 1–3, 12 and 13 of his document were not sent.
+
+**Client questions from this message:** (37) the full document — sections 1–3, 12 and 13 are missing
+from the screenshots; ask for the file rather than more images. (38) the §14 list and §15 salary:
+Brian proposes discussing both — put them on the next payroll meeting agenda rather than asking
+in writing; the register's blocking items for PAY-013, PAY-033 and PAY-073 are exactly these.
+
 ## Parked — 2026-08-24 (build proceeds on defaults)
 
 Per the build lead: the five remaining questions are **not asked now** — the build is

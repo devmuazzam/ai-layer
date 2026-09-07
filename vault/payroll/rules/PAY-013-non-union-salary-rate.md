@@ -3,7 +3,7 @@ id: PAY-013
 title: PAY-013 — Non-union salary rate
 section: B-group-and-rate
 status: open
-updated: 2026-08-24
+updated: 2026-09-07
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -24,3 +24,8 @@ tags: [module/payroll, kind/rule, open-questions]
 
 - **Blocking (matrix):** Management/legal confirmation
 - **Client confirmation, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** salary employees "may or may not currently have a Pay Rate in FCC… still undecided exactly how much information will be contained" — corroborates this rule's open scope in the client's own words.
+- **Client restatement (2026-09-07, [non-union-hourly-rules-2026-09-07.md](../non-union-hourly-rules-2026-09-07.md) §15):** salary is a separate group; the system must not
+  generate ST/OT/DT of any kind from recorded labor; pay comes from configured salary information;
+  no boom/modifier. Brian asks to *"discuss more about 'salary' (exempt) employee payroll"* — this
+  rule's blocking item, now on the client's own agenda (findings question 38). Engine today: one
+  `PAY-013` "Salary period amount" from `hourlyRate`, flagged `SALARY_AMOUNT_ASSUMED`.

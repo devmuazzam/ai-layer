@@ -37,6 +37,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   **Do not infer the answer from what the legacy system does — that is the thing being questioned.**
 - Blocked: any payroll rule implementation that is not L12-Field-only.
 - Owner: TCG management, payroll leadership, and labor counsel — named as such in both documents.
+- Update 2026-09-07: the **non-union hourly** half of this question now has a written client rule set
+  — [non-union-hourly-rules-2026-09-07.md](non-union-hourly-rules-2026-09-07.md) (daily 8/12, weekly
+  > 40, seventh day, order, components, no union minimums, nine acceptance tests). Still open from
+  the same message, in the client's own words: holidays/PTO/sick/shift differential/minimums for
+  non-union (§14, next entry), and how salary is paid (§15, PAY-013). Mechanics and subsistence
+  applicability are untouched by it.
 - **Status:** open
 - Legacy behaviour (2026-08-18, code-verified — not a policy answer): the engine applies every L12
   rule to any labor row whose `CraftCode LIKE 'L12%'` (Field and Mechanic identically); Non-Union
@@ -2746,3 +2752,23 @@ someone has confirmed otherwise.
 - Build default (stated to Brian in writing, 2026-09-07): **actual hours only** — the engine matches
   Brian's app until Corrina rules otherwise; flipping to payable hours is a one-line change in the
   chain's hour counter.
+
+## Non-union hourly — holidays, PTO, sick, vacation, shift differential, minimums: unspecified, by the client's own account
+
+- **Status:** open
+- **Asked:** 2026-09-07 — Brian Petros' non-union rules summary, §14 ([non-union-hourly-rules-2026-09-07.md](../non-union-hourly-rules-2026-09-07.md)); logged in [client-message-findings.md#2026-09-07--non-union-hourly-rules-summary-and-nine-validation-scenarios-brian-petros](../client-message-findings.md#2026-09-07--non-union-hourly-rules-summary-and-nine-validation-scenarios-brian-petros)
+- **Question:** what, if anything, applies to Non-Union Admin Hourly for paid holidays, holiday
+  eligibility, holiday-worked premiums, PTO, vacation, sick pay, minimum-hours rules, shift
+  differential, bonuses, allowances and other administrative premiums? Brian states these are **not
+  finalized** and must **not** be inferred from the union rules; they are *"separate
+  configuration/policy items requiring confirmation from Payroll/Management"*, and he proposes
+  discussing them. The engine today pays non-union hourly ST/OT/DT only, classifies the day type
+  (PAY-032) but adds no holiday premium — which is the correct default until this is answered.
+- **Sources checked:** the summary itself; `rules/PAY-033` (holiday pay — L12), `rules/PAY-073`
+  (sick/PTO/on-call), `rules/PAY-036/037` (shift — L12), `rules/PAY-012`;
+  `legacy-payroll-app-db-extract/rules-plain-language.md` §12 (zeroes every union extra, adds none of
+  these); `hr-onboarding-and-employee-forms.md` (non-union onboarding lists no pay policies).
+- Blocked: non-union holiday/PTO/sick pricing in the engine; the ADP export codes for those hours on
+  non-union rows.
+- Owner: TCG payroll and management (Brian Petros to bring to the next payroll meeting — findings
+  question 38).

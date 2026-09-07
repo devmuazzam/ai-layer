@@ -39,3 +39,8 @@ tags: [module/payroll, kind/rule, open-questions]
   procedure's *results* were wrong, now fixed in his app. Read the bullet above as "the 2026-08-18
   procedure's output was unreliable", not as doubt about §12's rule text. Correction logged at
   [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham) → *Correction*.
+- **Full rule set in writing (client, 2026-09-07):** [non-union-hourly-rules-2026-09-07.md](../non-union-hourly-rules-2026-09-07.md) — daily 8/12, weekly > 40 on remaining ST
+  only, seventh day, a nine-step order (*combine the employee's hours for the workday* before
+  classifying), six reason-carrying components, no union minimums, and **nine validation scenarios**.
+  ERP status per test is in that file: 1–3 pass only for single-ticket days (engine is per ticket),
+  4–7 fail, 8 partial, 9 passes. Verification: [client-message-findings.md#2026-09-07--non-union-hourly-rules-summary-and-nine-validation-scenarios-brian-petros](../client-message-findings.md#2026-09-07--non-union-hourly-rules-summary-and-nine-validation-scenarios-brian-petros).
