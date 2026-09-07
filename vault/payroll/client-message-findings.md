@@ -2,7 +2,7 @@
 title: Client message verification — running findings
 status: reference
 kind: reference
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/payroll, kind/reference, payroll-rules, open-questions]
 ---
 
@@ -634,6 +634,53 @@ closed rather than parked.
 
 **Not asked, deliberately:** the pre-6AM ST-bank reading and the long-boom/drive-time exclusion
 are settled by this message rather than opened by it, so nothing was sent back restating them.
+
+## 2026-09-07 — legacy-app comparison run: rest rule now moves hours to DT, non-union separated, WTL still open (Brian Petros → Ehtesham)
+
+Brian ran the payroll department's **manual** calculations against his Payroll App to find what the
+app gets wrong, and reports four discrepancies: **WTL** (still being discussed internally — an update
+is promised), the **8-hour rest rule** (the app *"was not calculating the ST/OT/DT hour buckets for
+this rule"* — now fixed), **non-union rules** (the app *"was mixing up the logic/calculations for
+these with the Labor Union payroll rules"* — now fixed), and **labor entries longer than 23.5 hours**
+(FCC-only; *"I don't think this will be a problem with our new ERP"*). He assumes the ERP's
+calculation has diverged from the code he sent and offers an updated SQL instance. The exhibit is
+Anthony Albergo (L12-G7, ADP file 292), payroll week **2026-08-22 → 08-28**, payday 09-03: the
+manual Excel sheet, the app's "Recommendations" row, and the app's weekly review screens.
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Rest rule: forced hours now land in a bucket, and the bucket is **DT** | ⚠️ **contradicts the register.** PAY-045 records *"apply OT floor"*, `cfg.RestPeriod_Rule.OTFloorMultiplier=1.50` (×2.0 only past 12 chain hours). The exhibit prices every forced hour at **×2.0 from the first hour**: rest premium $487.62 = 7.0 h × $69.66 × (2.0 − 1.0); $348.30 = 10.0 h × $69.66 × (2.0 − 1.5); $679.19 = 8.0 h × $69.66 × 1.0 + 3.5 h × $69.66 × 0.5. The **manual sheet agrees with the app** (08-25: 17.5 DT; 08-26: 18.0 DT; 08-27: 12.0 DT), so DT is the payroll department's practice, not an app artefact. The contract says only *"the applicable overtime rate"* | PAY-045 |
+| Rest rule trigger | 🆕 **inferred from the exhibit, unconfirmed:** 08-24 evening (5:30 PM start, 6.0 h after a chain that held 0.5 h of outside-window OT) was **not** forced, while every entry after a chain that *ended* in OT/DT was. The 2026-08-18 config (`TriggerMode='HrsOTDTPositive'` — any OT/DT in the prior chain) would have forced 08-24 evening. Either the trigger now reads the contract literally (*"end of any overtime period"*) or something else excludes it | PAY-045 |
+| Rest rule stitch/continuation as built | ✅ consistent: 08-26 22:30 → 08-27 04:00 (30-minute gap) stays one rest chain and the whole 11.5 h day is forced; 08-28 after 14 h off is clean | PAY-045 |
+| Non-union rules were entangled with union logic in some procedures; now separated | 🆕 a defect in the **source we cite** (`usp_Apply_CA_NonUnionAdminHourly_OT`, plain-language §12). Which steps were wrong is not stated. **ERP status, verified in code:** non-union hourly already has its own path — `priceNonUnionHourly` (`packages/payroll-engine/src/calculate.ts:241-253`) prices ST ≤ 8 / OT 8–12 / DT > 12 with no union extras, and `applyWtl` exits for non-L12 groups (`calculate.ts:66`). Three seams are open on our side regardless of Brian's fix: the daily thresholds run **per ticket**, not per workday (two tickets on one day each get a fresh 8 h of ST); weekly > 40 only raises `WEEKLY_OT_APPLIED` and never reclassifies (`calculate.ts:444-452`); no seventh-day rule | PAY-012, PAY-025, PAY-026 |
+| Entries > 23.5 h are impossible for the FCC-fed app; *"we probably won't have to worry about it in the ERP"* | ✅ agrees with PAY-004's cap design (ERP-born entries span natively; cap + split applies to imported FCC rows) and with the ticket-45888 adjudication. **Not built:** nothing in `apps/api` or the engine validates entry duration (no 23.5 or 24 h check anywhere). Findings question (6) can be treated as answered by the client's own framing; the migration-side flag is still owed | PAY-004 |
+| WTL is the largest discrepancy and is unresolved internally | ✅ matches the state of the register (PAY-046/047 open, `wtl-charts.md` vs recording conflict) — and the exhibit shows *what* they disagree on. Every manual-vs-app total difference this week is a WTL half-hour: 08-24 11.0 vs 11.5, 08-25 18.5 vs 19.0, 08-26 18.0 vs 16.5, 08-27 12.0 vs 12.5, 08-28 7.5 vs 8.0; 08-22 identical. On the two weekday **ST-start** days the manual sheet **adds no hours** and moves 0.5 h from ST to DT (08-24: 11.0 = 5.0/5.5/0.5; 08-28: 7.5 = 6.5/0.5/0.5), while on OT/DT days it **adds** 0.5 h at DT. That is the legacy `WTL_DT_FLOOR` behaviour (findings 2026-06-10). Brian's app adds 0.5 h everywhere — and so does **our engine** (`calculate.ts:50-81`, the "four-source-verified" add). On 08-26 the app's meal-period grouping nets +0.5 / 0 / −0.5 across three entries (16.5) where the manual sheet adds three lunches (18.0) and flags it for review | PAY-046, PAY-047 |
+| Rate on the exhibit: L12-G7 FY2025-26 $68.66, FY2026-27 **$69.66**, and the August week prices at $69.66 | ✅ agrees with `mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md` (Group VII 69.66) and the 7/1 rollover in PAY-010. The app's "Base Rate Override" column is the PAY-010/decision 2026-08-20 override | PAY-010, PAY-008 |
+| ERP calculation has diverged from the code Brian sent | ✅ true in kind: the ERP engine is a TypeScript re-implementation (`packages/payroll-engine`), not his SQL. But the register **cites his procedures as a source** for every rule, and the extract is the 2026-08-18 snapshot — the rest-rule and non-union changes he describes are exactly the procedures we cite. An updated instance is worth taking for those two | PAY-045, PAY-012, extract INDEX |
+
+**What this changes for the build:** nothing is wrong in shipped numbers today, because PAY-045 is
+not implemented and non-union already runs on its own path. What changes is the **spec** for the
+rest rule when it is built — DT from the first forced hour, per the client's own manual practice —
+and the WTL formula, which the manual sheet contradicts on weekday ST-start days. Neither is a
+decision yet.
+
+**Client questions from this message:** (33) the rest-rule rate — is the forced multiplier now
+**×2.0 from the first hour** (as both the manual sheet and the app show), and was
+`cfg.RestPeriod_Rule.OTFloorMultiplier` changed from 1.50, or is 1.5 still the floor and DT arises
+some other way? Same rule, the trigger: 08-24 evening had 6 h off after a chain containing OT and was
+not forced — is the trigger now *"prior chain ended in OT/DT"* rather than *"prior chain contained
+OT/DT"*? (34) non-union — which procedures/steps were applying union logic, and what is the corrected
+list of rules that apply to non-union hourly (daily 8/12, weekly 40, seventh day, holidays, anything
+else)? (35) WTL on a weekday ST-start day — the manual sheet reclassifies 0.5 h ST → DT with no added
+hours, the app adds 0.5 h; which is the intended rule? *Not to ask now* — Brian says an update is
+coming; hold the engine's add formula until it lands. (36) **Yes to the updated SQL instance** —
+the recommended reply — scoped to what moved since 2026-08-18: `usp_Apply_RestPeriod_Premium`,
+`cfg.RestPeriod_Rule`, `usp_Apply_CA_NonUnionAdminHourly_OT`, and any WTL change once their
+internal discussion closes.
+
+**Asked 2026-09-07** (Ehtesham's reply to Brian, sent as drafted): (33) rate and trigger, (34)
+non-union corrected rule set, (36) updated SQL instance requested. (35) deliberately held for
+Brian's WTL update. Answers land here and in PAY-045 / PAY-012 when they arrive.
 
 ## Parked — 2026-08-24 (build proceeds on defaults)
 

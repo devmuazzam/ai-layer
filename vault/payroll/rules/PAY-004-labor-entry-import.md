@@ -3,7 +3,7 @@ id: PAY-004
 title: PAY-004 — Labor-entry import
 section: A-foundation-source-data
 status: open
-updated: 2026-08-24
+updated: 2026-09-07
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -29,3 +29,9 @@ tags: [module/payroll, kind/rule, open-questions]
 - **Entered-vs-derived mismatch (same exhibit):** FCC shows *Hours Worked 15.00* vs *Derived Hours 14.50* on one entry — a concept in no vault document until now. Import validation must compare entered totals against derived (start/end) hours and flag the delta.
 - **The billing-side taxonomy now exists:** [accounting/2026-07-invoicing-adjustment-taxonomy.md](../../accounting/2026-07-invoicing-adjustment-taxonomy.md) (Tia & Micaela) — company-caused delays deduct from the invoice, customer-caused don't, training bills extra. Payroll pays in every case; the seam is now specified on both sides.
 - **Ticket-45888 adjudication (design closure):** the 24.00-h rows are beyond the 23.5-h cap → **import validation rejects/flags them for correction into split entries**; nothing prices. Cap design: ERP-born entries with real timestamps span naturally; the cap + split convention applies only to reconstructed/imported FCC rows.
+- **23.5-hour cap re-stated, and waved off for the ERP (client, 2026-09-07):** Brian lists entries
+  longer than 23.5 h as one of four discrepancy areas but says *"I don't think this will be a problem
+  with our new ERP"* — consistent with the cap design above (ERP-born entries span natively; cap +
+  split only for imported FCC rows). **Verified not built:** nothing in `apps/api` or
+  `packages/payroll-engine` validates entry duration today. Full verification:
+  [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham).

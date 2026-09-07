@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -2689,3 +2689,29 @@ someone has confirmed otherwise.
   it, and it reaches it directly.
 - **Owner:** answered; no client action outstanding. **Owed:** fold into the PAY-033 decision note
   alongside the PAY-019 cross-midnight adjudication.
+
+## Rest-period premium — ×1.5 floor, or double time from the first forced hour?
+
+- **Status:** open
+- **Asked:** 2026-09-07 — Brian Petros' comparison of the payroll department's manual calculations
+  against his Payroll App (message to Ehtesham); logged in
+  [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../payroll/client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham)
+- **Question:** when an employee returns without 8 hours off, at what multiplier are the forced hours
+  paid? The register (PAY-045) and the 2026-08-18 config say a **×1.5 floor** (×2.0 only past 12 chain
+  hours), paying only the increase over the slice's normal multiplier. The 2026-09-07 exhibit — both
+  the payroll department's manual Excel sheet and the updated app — prices every forced hour at
+  **×2.0 from the first hour** (Anthony Albergo, week 2026-08-22: 08-25 17.5 DT, 08-26 18.0 DT,
+  08-27 12.0 DT; premiums decompose exactly to a 2.0 floor at $69.66). The contract says only *"the
+  applicable overtime rate"*. A second, smaller question rides with it: is the trigger *"prior chain
+  contained OT/DT"* (`HrsOTDTPositive`, as extracted) or *"prior chain ended in an overtime period"*
+  (the contract's words, and what the exhibit's 08-24 evening entry implies)?
+- **Sources checked:** `rules/PAY-045-rest-period-premium.md`;
+  `mcog-l12-mla-2025-2028/01-article-iii-working-rules.md` → *Rest Periods*;
+  `legacy-payroll-app-db-extract/rules-plain-language.md` §9 and `config-values.md`
+  (`cfg.RestPeriod_Rule`); `payroll-rule-dependency-matrix.md` §10 (explicitly declines to state the
+  rate — *"copy this part from the approved current L12 contract/Payroll App procedure"*);
+  `2026-08-20-payroll-rules-meeting-notes.md` → *Rest period premium* ("extends the prior job's
+  OT/DT progression" — a third reading, neither floor nor flat DT); `erp-payroll-module-frd/07` PR-034.
+- Blocked: PAY-045 implementation in `packages/payroll-engine` (not started). Nothing shipped is
+  wrong today.
+- Owner: Brian Petros / payroll leadership (Corrina Bustos for the manual practice).

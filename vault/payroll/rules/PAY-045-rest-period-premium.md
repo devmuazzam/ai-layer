@@ -3,7 +3,7 @@ id: PAY-045
 title: PAY-045 — Rest-period premium
 section: F-contributions-other
 status: open
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -29,3 +29,14 @@ tags: [module/payroll, kind/rule, open-questions]
 - **Phantom hours must not affect the rest rule (client, explicit):** added hours "would not affect the 8-hour rest rule" — gap measurement uses actual entry windows ✓ by construction. **Precise check still required:** the trigger `TriggerMode='HrsOTDTPositive'` — does it read *actual-worked* OT/DT or *payable* OT/DT? Holiday-minimum gap hours are "reported as DT hours"; if the trigger reads payable columns, phantom DT could force rest on the next chain — exactly what the client says must not happen. One column-lineage check in `usp_Apply_RestPeriod_Premium` settles it.
 - **Lineage verified in code:** the trigger reads `Hrs_OT + Hrs_DT` from actual priced slices (`Act_` family); gap/phantom hours live in `Gap_*` columns and **cannot reach the trigger**. The client's twice-stated invariant holds as-built. Threshold intent: `TriggerMode` was deliberately changed from its DDL default — config evidence of tuning, corroborated by both August meetings discussing the rule.
 - **Selection window vs rule window (client thread, 2026-09-04):** Brian's legacy refresh selects **7 days backward** for this rule; Ehtesham objected that only the **8 hours** before a job start matter, and Brian agreed — his 7 days is the *initial select of candidate labor dates out of a data warehouse*, deliberate overshoot, not the rule. **Do not implement a 7-day lookback.** The rule stays the 8-hour gap with the 30-minute stitch; what the ERP owes is the ability to *see* the prior entry at all — `payroll.service.ts:151-155` currently loads only the period being calculated.
+- **Forced multiplier is now DT, not the ×1.5 floor (client comparison run, 2026-09-07):** Brian's
+  updated app — and the payroll department's **manual** sheet it was compared against — price every
+  rest-forced hour at **×2.0 from the first hour** (premium $487.62 = 7.0 h × $69.66 × 1.0 on an
+  ST block; $348.30 = 10.0 h × $69.66 × 0.5 on an OT block). That contradicts this file's *"apply OT
+  floor"* and the 2026-08-18 config `OTFloorMultiplier=1.50` (×2 only past 12 h). Brian describes the
+  change as *"now calculating the ST/OT/DT hour buckets for this rule"*. The contract's *"applicable
+  overtime rate"* does not settle it. **Trigger also looks changed:** an entry 6 h after a chain that
+  *contained* 0.5 h OT but *ended* in ST was not forced — reads as "prior chain ended in OT/DT", not
+  `HrsOTDTPositive`. Both are findings questions (33); the gaps entry is
+  [gaps.md → Rest-period premium — ×1.5 floor or double time](../gaps.md#rest-period-premium--15-floor-or-double-time-from-the-first-forced-hour).
+  Full verification: [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham).

@@ -3,7 +3,7 @@ id: PAY-012
 title: PAY-012 — Non-union hourly rate
 section: B-group-and-rate
 status: open
-updated: 2026-08-24
+updated: 2026-09-07
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -25,3 +25,12 @@ tags: [module/payroll, kind/rule, open-questions]
 - **Blocking (matrix):** Confirm rate-effective-date handling
 - **Client confirmation, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** `Base hourly rate = Employee.PayRate` ("very important"), CA DIR overtime rules linked (dir.ca.gov/dlse/faq_overtime). Display approximations ×40 / ×2080/12 / ×2080 confirmed as-built in `v_UI_Employee_TypeRate.VIEW.sql`.
 - **Blocking item grounded:** "confirm rate-effective-date handling" is no longer abstract — FCC overwrites `Employee.PayRate` in place too; the ERP's employee-rate model needs effective dating for the same reason the union table does (PAY-008).
+- **Legacy procedure was mixing union logic into non-union rows (client, 2026-09-07):** Brian reports
+  the app *"was mixing up the logic/calculations for these with the Labor Union payroll rules during
+  some of the procedures/steps"* and has fixed it — so `usp_Apply_CA_NonUnionAdminHourly_OT` as
+  extracted on 2026-08-18 (plain-language §12) is a **known-defective source**; which steps were wrong
+  is not stated (findings question 34). **ERP status, verified:** `priceNonUnionHourly`
+  (`packages/payroll-engine/src/calculate.ts:241-253`) is a separate path with no union extras, but it
+  prices the 8/12 daily thresholds **per ticket rather than per workday**, weekly > 40 only flags
+  (`WEEKLY_OT_APPLIED`, `calculate.ts:444-452`), and there is no seventh-day rule. Full verification:
+  [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham).
