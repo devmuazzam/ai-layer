@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -210,8 +210,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   whether the six statuses and Salesperson / Sales Admin / Scheduled Hours are ERP requirements or
   the sheet's own conventions; same-day reuse of a crane (the sheet says no, the speaker said
   yes); and whether the :43 warning still fires once maintenance is hard-blocked — no source says.
-
-
+- Update 2026-09-07 (2026-09-03 payroll call, [../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md](../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) §3): the **time fields** are now
+  confirmed by Dispatch and Operations on the record — Joe Schacatano 49:57: call it *start time*,
+  not *leave yard time*; Kyle Harlow 49:36 and Joe 52:28: **start time · on-site time · estimated
+  job end time (= leave-job time)** is the right set for dispatch; paid time runs from start time at
+  the yard to return to the yard with paperwork done, rounded up ([../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)). **New ask
+  from the same exchange (Joe 53:03):** an **estimated yard-arrival time**, ideally predicted from
+  the actual travel time to the job, *"so we have an idea of when their hours are going to end"* and
+  how that affects the next day's hours of service. Not in any spec or ticket; owner Joe Schacatano.
 ## Crane configuration — is a support load an Asset, or a line on the crane?
 
 - **Status:** resolved 2026-09-03 — **an Asset.** See the resolution note below

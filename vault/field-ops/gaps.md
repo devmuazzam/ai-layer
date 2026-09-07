@@ -2,7 +2,7 @@
 title: Field Ops — open questions
 status: reference
 kind: gaps
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/field-ops, kind/gaps, open-questions]
 ---
 
@@ -119,7 +119,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   in the ingest says.
 - **Status:** open
 - **From (frozen original):** [gaps.md#lunch-thresholds-and-work-through-lunch-authorization](../gaps.md#lunch-thresholds-and-work-through-lunch-authorization)
-
+- Update 2026-09-07 (2026-09-03 payroll call, [../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md](../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) §1): the **customer-unavailable
+  path is answered** — Corrina Bustos 12:59: self-signature is allowed only with a stated reason
+  (*"customer not on site"*, or driving during the meal window); *"they shouldn't ever just not get it
+  signed"*, and an unexplained self-sign disqualifies the WTL and triggers a conversation with the
+  employee. That is `fr-fop-015`'s fallback, now with the client's conditions. Also settled at
+  owner level: the *paid straight through* variant (all lunches marked taken, no times, no
+  signature, no penalty) is **not to be built** — Wes Staley, [../decisions/2026-09-03-paid-straight-through-not-in-erp.md](../decisions/2026-09-03-paid-straight-through-not-in-erp.md). The threshold
+  values and three-vs-four lunches remain open as above.
 ## On-site scope-of-work form — the recording is the only source, and a Done ticket looks like coverage
 
 - Question: is there a **mobile, operator-filled on-site scope-of-work form** — separate from the

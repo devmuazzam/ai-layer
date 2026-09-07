@@ -3,7 +3,7 @@ id: PAY-043
 title: PAY-043 — Long-boom premium
 section: E-guarantees-special-pay
 status: open
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -41,3 +41,10 @@ tags: [module/payroll, kind/rule, open-questions]
   not per job** (§5), so a two-job day gets one minimum, not two. Both windows exceed 4 hours in
   her example so it never fires; unasked and unrecorded for the case where one of them does.
   Source: [client-message-findings.md](../client-message-findings.md#2026-09-04--long-boom-day-breakdowns-drive-time-included-corrina-bustos-teams).
+- **Boom window, Operations' words (2026-09-03 call, Kyle Harlow 45:31–46:02; Corrina Bustos
+  45:32 confirms current practice):** boom pay runs **from build-up through breakdown, including all
+  hook work**; travel and meeting the customer / walking the job before the machine is set are not
+  boom time. A crane already built on arrival is a **holdover** (tower-crane jobs always are) and
+  has no build-up. **Multi-job day (Corrina 59:07):** the ST/OT/DT bucket a boom hour falls into is
+  decided against the **whole day's work**, not the boom job alone — her worked examples are the
+  2026-09-04 breakdowns in `client-message-findings.md`. Decision note [../../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md).

@@ -213,7 +213,16 @@ someone has confirmed otherwise.
 - **Rules:** [PAY-046](rules/PAY-046-meal-opportunity.md), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#field-ops-lunch-capture-vs-payroll-wtl](gaps-2026-08-20-retired.md#field-ops-lunch-capture-vs-payroll-wtl)
 - Update 2026-09-04 (Project Repository ingest): four new pieces of evidence, no reconciliation. (a) **Payroll side, a further independent source for the thresholds:** [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md) §11 states 0 meals through 5.0 h, 1 at 5.5–10.5, 2 at 11.0–16.0, 3 at 16.5–21.5, 4 at 22.0–27.0 — the legacy `cfg.WTL_MaxMealThreshold` brackets exactly — so the payroll-side numbers now have three sources and the Atom values (16.5 / 22 at lunches 3–4) remain the outlier. The same paper **disowns the engine's no-token default** — *"Absence of a payroll lunch/WTL code should not cause the ERP to invent a meal"* — and proposes an explicit *Lunch Taken* indicator in place of `WTL:0`; it is a TCG-side recommendation with no stated author and has not been adjudicated (§15 collisions 1–4). (b) **Capture side, as FCC does it today:** the *Work Through Lunch* checklist carries four lunch-time slots plus a signed attestation that a 30-minute meal was taken on any day over five hours ([tcg-rawfms-staging-database/data/fcc-checklist-templates.md](tcg-rawfms-staging-database/data/fcc-checklist-templates.md) → *Work Through Lunch*), and the *Time Stamps* checklist's four-slot copy sits on 55 units against a one-slot copy on 31 ([../field-ops/gaps.md](../field-ops/gaps.md) → lunch-slot count update). Four slots is FCC practice, not a rule. (c) One missed-meal event is now traceable end to end — customer-signed WTL authorization *"Didnt take first or second lunch"* → labor modifier note `0.5 DBL 1st WTL + 0.5 Dbl 2nd WTL` ([../field-ops/e-ticket-worked-example-44944.md](../field-ops/e-ticket-worked-example-44944.md)). (d) [../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §5: Brian flagged that TCG is designing a **new payroll process that needs the actual lunch time captured**, deferred to the 9 September call with Corrina. Still needs the client: the 16.0-vs-16.5 / 21.5-vs-22 reconciliation, whether the no-token default flips, and who owns the seam.
-
+- Update 2026-09-07 (2026-09-03 payroll call, [../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md](../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) §1): the seam narrowed from
+  the top. (a) TCG now wants **both** a lunch-taken and a lunch-worked-through signal, and *no
+  signal means nothing is added or deducted* (Corrina Bustos 6:46) — the ERP's per-lunch prompt
+  (take / work through with WTL authorization) already captures both. (b) Brian Petros 19:03,
+  40:38: the load-bearing datum is **when** the lunch fell, because the half-hour prices differently
+  in ST/OT/DT/holiday; the five-hour step-by-step prompt is *"essential"*. (c) The third scenario
+  TCG described — *"paid straight through"*, all lunches marked taken, no times, no signature, no
+  penalty — is **not to be built in the ERP in any form**: Wes Staley, [../decisions/2026-09-03-paid-straight-through-not-in-erp.md](../decisions/2026-09-03-paid-straight-through-not-in-erp.md).
+  (d) Self-signed WTL only with a stated reason (customer not on site, driving) — Corrina 12:59.
+  What this entry still holds open: the threshold numbers and the fourth-lunch question, unchanged.
 ## ADP codes — TCG owes an updated export
 
 - **Partially delivered 2026-08-09.** Brian Petros supplied **four** codes by chat —
@@ -2466,7 +2475,7 @@ someone has confirmed otherwise.
 
 ## Annual craft-rate change — nine codes, one rule, no bulk path
 
-- **Status:** open
+- **Status:** resolved 2026-09-07 — Corrina Bustos confirmed the rule on the 2026-09-03 call, in her own words; build committed on the same call.
 - **Asked:** 2026-09-02 — Corrina Bustos in the sprint demo (§4; transcript 23:55–25:25).
   **Rules:** PAY-008, PAY-010.
 - **Question:** effective-dated craft rates are built and demoed — adding a rate auto-ends the
@@ -2512,7 +2521,18 @@ someone has confirmed otherwise.
   2027-07-01 $4.50 package unsplit: [mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md](mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md);
   the workbook and FCC both match it, so the "uniform delta" rule has now held for two consecutive
   years in the published figures — what remains is Corrina's word that the bulk path is the rule).
-
+- Resolution (a): Corrina Bustos, 2026-09-03 call at 56:42, asked whether a rule sits behind a bulk
+  update — *"Yes, because all of the groups, so groups one through 9, they always increase in the
+  same dollar amount."* That is the word this entry was waiting for; the published record already
+  showed the uniform delta for two consecutive years (bullets above). Decision note:
+  [../decisions/2026-09-03-l12-bulk-rate-update-uniform-delta.md](../decisions/2026-09-03-l12-bulk-rate-update-uniform-delta.md).
+- Resolution (b): the bulk path as agreed — one add-amount applied to every selected craft rate,
+  with a **future effective date** (Brian Petros 57:21: set the rates in advance, *"so we don't have
+  to be up at like 11:59 at night"*); the previous rates are auto-ended the day before the new
+  effective date (Ehtesham 58:07). Apprentice steps were not discussed on the call; the "derive
+  APP1–6 from G5" half of the earlier question stays as recorded, unconfirmed. Curated notes:
+  [../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md](../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) §4; transcript [../meetings/transcripts/2026-09-03-payroll-lunch-rules-and-dispatch-times.md](../meetings/transcripts/2026-09-03-payroll-lunch-rules-and-dispatch-times.md).
+- Owner: answered; CodingCops to build (PAY-008 / PAY-010).
 ## Craft assignment has no history
 
 - **Status:** open

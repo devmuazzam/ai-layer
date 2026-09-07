@@ -104,6 +104,7 @@ goal and the four in-scope field-worker statements; nothing else lists its 83 it
 | [meetings/2026-08-07-labor-compliance-certified-payroll.md](meetings/2026-08-07-labor-compliance-certified-payroll.md) | **What is Labor Compliance / Certified Payroll?** The only source for a module with no other coverage | 7.5 |
 | [meetings/2026-08-12-sell-side-workflow-and-scheduling.md](meetings/2026-08-12-sell-side-workflow-and-scheduling.md) | What is the sell-side workflow — scheduling, permits, customer intake? | 6.0 |
 | [meetings/2026-08-26-fcc-migration-client-brief.md](meetings/2026-08-26-fcc-migration-client-brief.md) | **What did TCG say about the FCC test migration?** CodingCops' brief with the client's annotations; 13 asks + 2 seeder defects, all open (added 2026-08-27) | 8.7 |
+| [meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md](meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) | **What did TCG decide about lunches, paid-time boundaries, the boom window and July-1 rate updates on 2026-09-03?** Wes Staley's ruling that *paid straight through* is not to be built; yard-to-yard paid span; bulk rate path (added 2026-09-07) | 5.9 |
 
 **Every action item in these four is outstanding** unless someone has confirmed otherwise. They
 are itemised in [gaps.md](gaps.md) (modules, integrations) and [payroll/gaps.md](payroll/gaps.md) (ADP).

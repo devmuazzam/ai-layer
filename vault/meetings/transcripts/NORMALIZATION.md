@@ -137,3 +137,14 @@ Applied to the two files added 2026-08-27; no earlier file was touched.
 | 2026-08-25-accounting-process.md | — | — | 0 |
 
 Left unchanged, visible to readers: "prompt code", "graph quarters", "Leiann" (08-26, 36:15).
+
+---
+
+# Pass 5 — 2026-09-07 (one new transcript only)
+
+Applied to `2026-09-03-payroll-lunch-rules-and-dispatch-times.md`; no earlier file was touched.
+16 substitutions, judged in context: "ERB" -> "ERP" (4); "page straight through" -> "paid straight through" (4); "the launch" -> "the lunch" (2); "every train" -> "every crane" (1); "graph ports" -> "craft codes" (1); "graph quotes" -> "craft codes" (1); "SCC" -> "FCC" (1); "Cal, correct me" -> "Kyle, correct me" (1); "bot rate updates" -> "bulk rate updates" (1). "paid straight through" is the term Brian
+Petros uses in the same passage Corrina's lines were heard as "page straight through"; "every
+train" sits between "build up a crane" and "the buildup for every crane"; "graph ports/quotes"
+both occur inside the craft-code bulk-rate discussion; "Cal, correct me" addresses Kyle Harlow,
+who answers. Left unchanged: the items listed in the file's own header note.

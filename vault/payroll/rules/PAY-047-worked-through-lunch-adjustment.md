@@ -39,3 +39,10 @@ tags: [module/payroll, kind/rule, open-questions]
   now sources its slices from `v_UI_Pricing_Slices_PayrollEffective` — the rest-adjusted view — so
   the deduct basis `FULL_SELECTED_PRICED_SLICE` is priced after the rest floor. Rest before WTL.
   `cfg.WTL_Rule` itself is unchanged (2026-05-25 row); Brian's WTL rework is still pending.
+- **"Paid straight through" is not a WTL variant the ERP will price (2026-09-03 call):** all lunches
+  marked taken with no times, no customer signature, no penalty, paid start to end — Wes Staley:
+  *"I don't think that we can put this in our system. It's illegal."* Decision note
+  [../../decisions/2026-09-03-paid-straight-through-not-in-erp.md](../../decisions/2026-09-03-paid-straight-through-not-in-erp.md). Brian Petros 34:20 restates the rule this file prices: a worked-through
+  30 minutes is **double time, triple on a holiday**. Self-signed WTL only with a stated reason
+  (Corrina 12:59). Union clarification (Brian's questions) and labor-law counsel (Wes) are pending
+  on TCG's side; nothing here changes until they land.

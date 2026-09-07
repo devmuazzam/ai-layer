@@ -88,3 +88,4 @@ and two dates in July have `no-recording` at all.
 | 2026-08-26 | ERP Sprint Review | Transcript | 51.4 | [2026-08-26-erp-sprint-review.md](2026-08-26-erp-sprint-review.md) |
 | 2026-09-01 | Accounting and Payroll | Transcript | 43.1 | [2026-09-01-accounting-and-payroll.md](2026-09-01-accounting-and-payroll.md) |
 | 2026-09-02 | ERP Sprint Review — Job Tickets and Payroll | Transcript | 51.9 | [2026-09-02-erp-job-tickets-and-payroll.md](2026-09-02-erp-job-tickets-and-payroll.md) |
+| 2026-09-03 | Payroll — lunch rules, paid-time boundaries, boom window, rate updates | Transcript | 56.9 | [2026-09-03-payroll-lunch-rules-and-dispatch-times.md](2026-09-03-payroll-lunch-rules-and-dispatch-times.md) |

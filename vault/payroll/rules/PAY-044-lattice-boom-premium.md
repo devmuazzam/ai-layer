@@ -3,7 +3,7 @@ id: PAY-044
 title: PAY-044 — Lattice-boom premium
 section: E-guarantees-special-pay
 status: open
-updated: 2026-08-24
+updated: 2026-09-07
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -32,3 +32,5 @@ tags: [module/payroll, kind/rule, open-questions]
 - **Scope clarified (Corrina, from the contract): lattice pay applies to the ENTIRE JOB** — not just boom-operating time. Sharp contrast with long-boom (PAY-043: boom-window slices only), and they stack. Implementation collapses to: job flagged lattice + employee Group ≥ 6 → premium on **all** job hours. 
 - **Still unruled: the luffer question.** Kyle was consulted but the relay does not address Jeff-vs-Joe on luffers — question 21 stays open, now addressed to a Kyle who is already engaged.
 - **Luffer question — contract evidence found:** the MLA classification table (Groups 5/7) reads *"Long Boom pay **including combined total mast and Luffing Boom** applicable"* — the contract itself treats luffing boom under **long-boom pay**, siding with Joe's 08-04 classification against Jeff's "technically lattice". Kyle's confirmation is now a formality with text behind it.
+- **Boom window (2026-09-03 call):** same build-up-through-breakdown-incl-hook-work window as PAY-043,
+  per Kyle Harlow 45:31; see that file's bullet and [../../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md).
