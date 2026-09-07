@@ -40,3 +40,11 @@ tags: [module/payroll, kind/rule, open-questions]
   `HrsOTDTPositive`. Both are findings questions (33); the gaps entry is
   [gaps.md → Rest-period premium — ×1.5 floor or double time](../gaps.md#rest-period-premium--15-floor-or-double-time-from-the-first-forced-hour).
   Full verification: [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham).
+- **Withdrawn, same day (Brian's reply, 2026-09-07):** *"no change to the way the '8-hour rest' rule
+  should be calculated"*. The DT-from-the-first-hour reading above was ours: the rest chain groups
+  entries across gaps **< 8 h**, and the ×2.0 floor applies **once the chain reaches 12 cumulative
+  hours** — Aug 24 contributes 11.0 h, so the first hour of Aug 25 reaches 12 and the remaining 7.0 h
+  are floored to ×2.0 ($487.62). The trigger inference is withdrawn with it. **This file's rule
+  stands as written; build from it.** The one new question is whether WTL added hours count toward
+  the 12 — [gaps.md](../gaps.md#do-wtl-added-hours-count-toward-the-rest-chains-12-hour-double-time-threshold),
+  waiting on Corrina's WTL review. Correction logged at [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham) → *Correction*.

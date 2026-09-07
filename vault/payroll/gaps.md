@@ -2715,3 +2715,31 @@ someone has confirmed otherwise.
 - Blocked: PAY-045 implementation in `packages/payroll-engine` (not started). Nothing shipped is
   wrong today.
 - Owner: Brian Petros / payroll leadership (Corrina Bustos for the manual practice).
+- **Status:** resolved 2026-09-07 — answered by Brian Petros in writing the same day, and the answer is
+  **the register as it stood**: *"no change to the way the '8-hour rest' rule should be calculated"*.
+  Floor ×1.5; **×2.0 once the rest chain (entries grouped across gaps < 8 h) reaches 12 cumulative
+  hours**; only the delta is paid. The exhibit decomposes exactly under that rule (Aug 24 = 11.0 h,
+  Aug 25's first hour reaches 12, the remaining 7.0 h × $69.66 × 1.0 = $487.62). The "DT from the
+  first hour" reading was ours, not the client's. The trigger sub-question is withdrawn for the same
+  reason.
+- Resolution: [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../payroll/client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham) → *Correction — Brian's reply*; `rules/PAY-045` carries
+  the withdrawal. What remains is a WTL question, registered separately below.
+- Owner: answered; no client action outstanding.
+
+## Do WTL added hours count toward the rest chain's 12-hour double-time threshold?
+
+- **Status:** open
+- **Asked:** 2026-09-07 — Brian Petros' reply explaining the Aug 25 rest-rule walk-through; logged in
+  [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../payroll/client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham) → *Correction*
+- **Question:** the rest rule escalates forced hours from the ×1.5 floor to ×2.0 once the rest chain
+  reaches 12 cumulative hours. The payroll department's manual sheet counts the WTL 0.5 h **penalty**
+  (hours not actually worked) toward those 12; Brian's app counts actual hours only, so the app
+  reaches DT half an hour later than the sheet on Anthony's Aug 25. Which is intended? Brian: *"still
+  need to talk through more of the WTL scenarios internally… hopefully get more clarification from our
+  Labor Union"*; Corrina to review and approve. **Do not ask — the client has promised an update.**
+- **Sources checked:** `rules/PAY-045`, `rules/PAY-047`,
+  `legacy-payroll-app-db-extract/rules-plain-language.md` §9–10, `wtl-charts.md`; the 2026-09-07
+  exhibit (manual sheet 8/25: OT 1.0 / DT 17.5 on 18.5 h; app: OT 1.0 / DT 18.0 on 19.0 h).
+- Blocked: the PAY-045 implementation's hour counter (actual vs payable) — a one-line choice, but
+  it changes which hour flips to DT on every long chain.
+- Owner: Corrina Bustos (approval), Brian Petros (engine); CodingCops waits.

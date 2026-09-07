@@ -682,6 +682,27 @@ internal discussion closes.
 non-union corrected rule set, (36) updated SQL instance requested. (35) deliberately held for
 Brian's WTL update. Answers land here and in PAY-045 / PAY-012 when they arrive.
 
+### Correction — Brian's reply, same day (2026-09-07)
+
+Brian: *"There has been no change to the way the '8-hour rest' rule should be calculated… and no
+change to how the non-Union rules should be calculated. The only change is how our internal Payroll
+App is displaying the results."* The descriptions he sent months ago are *"our source of truth… not
+the results in the version of the Payroll App"*. He then walks Aug 25 through: the rule looks at the
+previous entry, groups it if the gap is under 8 hours, and keeps walking back until it finds an
+8-hour gap; the grouped hours accumulate, and **DT is forced once the group reaches ~12 hours**.
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Rest rule unchanged: group entries across gaps < 8 h, accumulate, force DT at 12 h | ✅ **agrees with the register as it stood** — this *is* plain-language §9 and `cfg.RestPeriod_Rule`: floor ×1.5, **×2.0 once cumulative hours in the rest chain reach 12**. The 2026-09-07 row above (*"contradicts the register… ×2.0 from the first hour"*) was **our misreading**: Aug 24 contributes 6.0 + 5.0 = 11.0 h across two sub-8-hour gaps, the first hour of Aug 25 brings the chain to 12.0, and the remaining 7.0 h are floored to ×2.0 — $487.62 exactly. Aug 24 evening was in the chain but below 12 h and already at ×1.5, so the floor added nothing. **Verdict withdrawn; question (33) answered, no rule change** | PAY-045 |
+| Trigger inference ("prior chain *ended* in OT") | ❌ **withdrawn** — the 12-hour escalation explains Aug 24 evening without any trigger change | PAY-045 |
+| Non-union: no change to the rules; the app's *results* were wrong and are now fixed | ✅ the descriptions (plain-language §12, PAY-012's client statement) stand as the source of truth; only the extracted procedure's *output* was defective. **Question (34) answered** in principle; which steps were wrong is still unstated, and no longer matters if the descriptions govern | PAY-012 |
+| Payroll department counts hours *not worked* (the WTL 0.5 h penalty) toward the 12-hour DT threshold; the app counts actual hours only | 🆕 the one genuinely new fact. It is a WTL question, not a rest-rule one: does a WTL add count as "hours worked" for the rest chain's 12-hour escalation? Brian: still being worked through internally and with the union; Corrina to review/approve. **Do not ask; wait for the update** | PAY-045, PAY-047 |
+| App display: the "Rest floor" badge should also show on the Aug 24 evening row | 🆕 a display defect in Brian's app, his own note. No ERP consequence | — |
+
+**For the ERP:** PAY-045 as written is correct and complete for the rate — build it from the register
+(×1.5 floor, ×2.0 at 12 cumulative rest-chain hours, only the delta paid). The open item is whether
+WTL adds count toward the 12. (36) the SQL instance is not addressed in the reply.
+
 ## Parked — 2026-08-24 (build proceeds on defaults)
 
 Per the build lead: the five remaining questions are **not asked now** — the build is

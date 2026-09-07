@@ -34,3 +34,8 @@ tags: [module/payroll, kind/rule, open-questions]
   prices the 8/12 daily thresholds **per ticket rather than per workday**, weekly > 40 only flags
   (`WEEKLY_OT_APPLIED`, `calculate.ts:444-452`), and there is no seventh-day rule. Full verification:
   [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham).
+- **Clarified, same day (Brian's reply, 2026-09-07):** *"no change to how the non-Union rules should
+  be calculated"* — the **descriptions** are the source of truth and stand; only the extracted
+  procedure's *results* were wrong, now fixed in his app. Read the bullet above as "the 2026-08-18
+  procedure's output was unreliable", not as doubt about §12's rule text. Correction logged at
+  [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham) → *Correction*.
