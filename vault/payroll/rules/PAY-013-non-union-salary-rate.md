@@ -29,3 +29,8 @@ tags: [module/payroll, kind/rule, open-questions]
   no boom/modifier. Brian asks to *"discuss more about 'salary' (exempt) employee payroll"* — this
   rule's blocking item, now on the client's own agenda (findings question 38). Engine today: one
   `PAY-013` "Salary period amount" from `hourlyRate`, flagged `SALARY_AMOUNT_ASSUMED`.
+- **Verified in the 2026-09-07 backup ([legacy-payroll-app-db-backup-2026-09-07/INDEX.md](../legacy-payroll-app-db-backup-2026-09-07/INDEX.md)):** `PayType = 'S'` labor is now dropped inside
+  `usp_Run_Pricing_Engine` before pricing or time validation, `v_UI_Employee_TypeRate` classifies
+  it as *Salary* ahead of the L12 predicates, and `test.usp_Test_PricingEngine_SalaryExcluded`
+  asserts zero calculated and zero exception rows. The rule text (no ST/OT/DT from labor) is now
+  enforced at the front of the legacy pipeline; how salary *is* paid remains unspecified.

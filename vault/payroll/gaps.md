@@ -2283,6 +2283,12 @@ someone has confirmed otherwise.
 
 ## A labor-entry edit can reprice an approved week — and the ERP has no path for it
 
+- Update 2026-09-07: the client's own answer, in code — the 2026-09-07 backup
+  ([legacy-payroll-app-db-backup-2026-09-07/INDEX.md](legacy-payroll-app-db-backup-2026-09-07/INDEX.md) §5): interactive recalculation is an **exact Saturday–Friday week**, the prior
+  week is **read-only context**, and the run is **blocked** when a prior-week calculation is stale
+  against its source row or a prior-week eligible entry has no calculation (`@RequireFreshPriorContext`).
+  Nothing reprices an earlier week silently; it refuses. Still no retro-delta path on their side either.
+
 - **Status:** open
 - **Asked:** 2026-09-04 — Brian Petros, Teams message to ehtesham.anwar on payroll-rule lookback
   windows; logged in [client-message-findings.md](client-message-findings.md#2026-09-04--rule-lookback-windows-and-recalculation-across-an-approved-week-brian-petros--ehteshamanwar)
@@ -2772,3 +2778,73 @@ someone has confirmed otherwise.
   non-union rows.
 - Owner: TCG payroll and management (Brian Petros to bring to the next payroll meeting — findings
   question 38).
+
+## Employee-module rules the E2E suite asserts with no written source — PR #488
+
+- **Status:** open
+- **Asked:** 2026-09-07 — raised reviewing **PR #488** (`qa-automation-employees`). The specs under
+  `qa-automation/e2e/specs/employees/` (`temp-employees.spec.ts`, `duplicates.spec.ts`,
+  `invitations.spec.ts`, `lifecycle.spec.ts`, `status.spec.ts`, `validation.spec.ts`,
+  `create.spec.ts`, `references.spec.ts`) assert rules **reverse-engineered from the running
+  build** — their case docs say *"verified against the live API on 2026-09-07"*, which verifies them
+  against the code, not against anyone's intent. Merging freezes current behaviour as expected
+  behaviour.
+- **Why this register:** there is no `employees/` module. Per
+  [../STRUCTURE.md](../STRUCTURE.md) → *The modules*, `payroll/` rolls up `employee*, departments`,
+  so employee questions belong here. The portal-invite half (item **c**) is `admin/`'s by the same
+  table (auth, users, invitations) and is kept with the rest because the answer travels with the
+  employee record; `admin/gaps.md` carries a pointer.
+- **Question:** six rules, each answerable in a line. **(a)** Is a **temporary** employee created
+  through a **3-step wizard omitting Managed Assets**, sharing the `EMP-#####` sequence with
+  `employeeStatus = TEMPORARY`? **(b)** Are **email**, **work cell** and **employee ID** each unique
+  per tenant (409 on duplicate), and does archiving **not** free them? **(c)** Does a portal invite
+  create a `User` at `PENDING_INVITE` / role `USER` with a **64-character token**, rotated on
+  resend, nulled on revoke, re-invitable after? **(d)** Do `DRAFT` employees need only identity
+  fields, and is **finalize one-way** (revert → 403)? **(e)** What is the **required-field set** at
+  finalize — is a payroll **craft** required, is SSN exactly 9 digits, must joining ≥ hiring, does
+  `Terminated` require a termination date, and is the reason capped at **400 characters**?
+  **(f)** Do **leave requests** carry an `LVR-#####` sequence, 400 on start &gt; end, 409 on overlap,
+  never delete, block deleting the employee, and apply to **permanent staff only**?
+- **Sources checked:** **The vault has no product specification for the ERP's employee-module CRUD
+  at all.** `EMP-`, `employeeStatus`, `Managed Asset`, `LVR-` and `leave request` return **zero
+  hits vault-wide**, transcripts included. Per item: **(a)** the nearest is
+  [../dispatch/daily-allocation-system.md](../dispatch/daily-allocation-system.md) §*Temporary
+  Employee management in DAS* (`status: unverified`) — temps are assigned *"**without creating full
+  HR profiles**"* — which says the record is thinner but names no step count, no omitted step, no
+  sequence and no status enum. **(b)** the only written tenant-uniqueness rule in the vault is for
+  **sub-categories**, and it leaves the archive-reuse half open:
+  [../decisions/2026-09-02-sub-category-names-tenant-unique.md](../decisions/2026-09-02-sub-category-names-tenant-unique.md)
+  §*Scope* (`status: reference`) — an archived sub-category *"keeps its name reserved forever…
+  **That is shipped behaviour, not a ratified rule**"*. It does not generalise to employees.
+  **(c)** `PENDING_INVITE` occurs once, in
+  [../quotations/gaps.md](../quotations/gaps.md):1512, about **quotation approvers**; the only
+  "Invite Employee" button described anywhere is on the **vendor** record
+  ([../vendors-agencies/vendors.md](../vendors-agencies/vendors.md):84), with no token, status or
+  role semantics. **(d)** draft appears only as a generic UI affordance —
+  [../customers/customer.md](../customers/customer.md):34 *"Add draft functionality (across the app)
+  todo"* — never with employee semantics or reversibility. **(e) is the one item with adjacent
+  material, and the source disclaims itself.**
+  [fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) (`status:
+  unverified`) §7 lists required fields including *"Social Security Number (9 digits)"* and
+  *"Default Craft Code"*, and §*validation rules* gives *"SSN exactly 9 digits… craft code must
+  exist"* — but the same page states *"**Nothing here is TCG data; it is what FCC will accept**"*.
+  It is the **legacy vendor's Excel import contract**, not the ERP's finalize validation, and it
+  lists **Term dates and Term Reason as *optional***, **contradicting** the specs' *Terminated
+  requires a termination date*. No 400-character cap exists anywhere. The date rule survives only as
+  a bare punch-list line, [../customers/customer.md](../customers/customer.md):103 — *"Hiring and
+  joining date validation"* — which names the fields and **not the direction of the comparison**.
+  **(f)** leave exists in the vault only as a **paper** form and a DAS chip:
+  [hr-onboarding-and-employee-forms.md](hr-onboarding-and-employee-forms.md) §4.1 describes an
+  *"Absence Request"* form with a two-week-notice header and two signatures, and that same file
+  registers the ERP question as open — *"**Is the absence request an ERP workflow?** … Nothing says
+  where an approved absence is recorded"*; DAS shows an *"On Leave"* KPI and lets a manager mark
+  employees on leave, a **state on a chip**, not a request record.
+  Also read: [../decisions/2026-06-30-adp-erp-employee-data-ownership.md](../decisions/2026-06-30-adp-erp-employee-data-ownership.md)
+  (`status: verified`) — it covers ADP-vs-ERP **field ownership** and the onboarding block, not CRUD
+  validation, and settles none of the six. `payroll/rules/` (PAY-001…PAY-073) is entirely payroll
+  **calculation** rules; no employee-CRUD rule exists in it.
+- **Blocked:** merging PR #488's employee specs as a behavioural contract. Item **(e)** additionally
+  blocks the migration cut — if the ERP's required set is not FCC's, the extracts were shaped to the
+  wrong contract.
+- **Owner:** product team — Corrina Bustos and Brian Petros (HR onboarding and the employee master),
+  with Lisette Anzaldo for the DAS temp/fill-in population.

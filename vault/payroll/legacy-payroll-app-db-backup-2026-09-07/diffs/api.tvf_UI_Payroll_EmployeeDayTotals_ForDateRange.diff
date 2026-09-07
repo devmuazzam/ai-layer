@@ -1,0 +1,33 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,5 +1,2 @@
+-
+-CREATE FUNCTION [api].[tvf_UI_Payroll_EmployeeDayTotals_ForDateRange]
+-(
+ @FromDate date
+ , @ToDate date
+@@ -30,9 +27,9 @@
+ Gap_Hrs_Total = SUM(ISNULL(b.Gap_Hrs_Total,0)),
+ Gap_Hrs_Boom = SUM(ISNULL(b.Gap_Hrs_Boom,0)),
+-Pay_Total_Hrs = SUM(ISNULL(b.Pay_Total_Hrs,0)),
++Pay_Total_Hrs = SUM(ISNULL(hb.Payable_Hrs, ISNULL(b.Pay_Total_Hrs,0))),
+ 
+-Hrs_ST = SUM(ISNULL(b.Hrs_ST,0)),
+-Hrs_OT = SUM(ISNULL(b.Hrs_OT,0)),
+-Hrs_DT = SUM(ISNULL(b.Hrs_DT,0)),
++Hrs_ST = SUM(ISNULL(hb.Hrs_ST, ISNULL(b.Hrs_ST,0))),
++Hrs_OT = SUM(ISNULL(hb.Hrs_OT, ISNULL(b.Hrs_OT,0))),
++Hrs_DT = SUM(ISNULL(hb.Hrs_DT, ISNULL(b.Hrs_DT,0))),
+ 
+ -- Original / compatibility dollars
+@@ -92,4 +89,6 @@
+ SUM(CASE WHEN ISNULL(b.Gap_Hrs_Total,0) > 0 AND ISNULL(b.Pay_Gap_Add,0) = 0 THEN 1 ELSE 0 END)
+ FROM Base b
++LEFT JOIN api.v_UI_Payroll_LaborEntry_HourBuckets hb
++ON hb.LaborPayrollID = b.LaborPayrollID
+ LEFT JOIN api.v_UI_Payroll_LaborEntry_Ledger_Summary l
+ ON l.LaborPayrollID = b.LaborPayrollID
+@@ -109,2 +108,3 @@
+ h.RuleApplied;
+ 
++

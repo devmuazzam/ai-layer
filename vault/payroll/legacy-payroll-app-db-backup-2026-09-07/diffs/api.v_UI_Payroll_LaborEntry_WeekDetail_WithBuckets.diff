@@ -1,0 +1,110 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,10 +1,16 @@
++AS
+ 
+-CREATE VIEW api.v_UI_Payroll_LaborEntry_WeekDetail_WithBuckets
+-AS
+ SELECT
++------------------------------------------------------------
++-- Existing employee/labor/payroll detail fields
++------------------------------------------------------------
+ d.*,
+ 
++------------------------------------------------------------
++-- Final Payroll App hour-bucket results
++------------------------------------------------------------
+ hb.Actual_Hrs AS Bucket_Actual_Hrs,
+ hb.Payable_Hrs AS Bucket_Payable_Hrs,
++
+ hb.Hrs_ST AS Bucket_Hrs_ST,
+ hb.Hrs_OT AS Bucket_Hrs_OT,
+@@ -27,5 +33,7 @@
+ hb.Has_H3x,
+ 
+--- Rate / employee-type resolution for Rate Review UI
++------------------------------------------------------------
++-- Employee type and rate-resolution fields
++------------------------------------------------------------
+ rr.LaborEntryEmployeeType,
+ rr.LaborEntryEmployeeTypeSort,
+@@ -47,18 +55,33 @@
+ rr.Labor_Source_Rate_Raw,
+ 
+-PayrollBaseRate = rr.ResolvedBaseRate,
+-PayrollBaseRateSource = rr.ResolvedBaseRateSource,
++PayrollBaseRate =
++rr.ResolvedBaseRate,
+ 
+-PayrollModifierRate = rr.ResolvedModifierRate,
+-PayrollModifierRateSource = rr.ResolvedModifierRateSource,
++PayrollBaseRateSource =
++rr.ResolvedBaseRateSource,
+ 
+-PayrollCombinedRate = rr.ResolvedCombinedRate,
+-FmsSourceRate = rr.Labor_Source_Rate_Raw,
++PayrollModifierRate =
++rr.ResolvedModifierRate,
+ 
+-SourceRateLooksLikePayrollBase = rr.SourceRateLooksLikeResolvedBase,
+-SourceRateLooksLikePayrollCombined = rr.SourceRateLooksLikeBasePlusModifier,
++PayrollModifierRateSource =
++rr.ResolvedModifierRateSource,
+ 
+-SourceRateDifferenceFromPayrollBase = rr.SourceRateDifferenceFromResolvedBase,
+-SourceRateDifferenceFromPayrollCombined = rr.SourceRateDifferenceFromResolvedCombined,
++PayrollCombinedRate =
++rr.ResolvedCombinedRate,
++
++FmsSourceRate =
++rr.Labor_Source_Rate_Raw,
++
++SourceRateLooksLikePayrollBase =
++rr.SourceRateLooksLikeResolvedBase,
++
++SourceRateLooksLikePayrollCombined =
++rr.SourceRateLooksLikeBasePlusModifier,
++
++SourceRateDifferenceFromPayrollBase =
++rr.SourceRateDifferenceFromResolvedBase,
++
++SourceRateDifferenceFromPayrollCombined =
++rr.SourceRateDifferenceFromResolvedCombined,
+ 
+ rr.CraftCodeMismatchFlag,
+@@ -66,10 +89,31 @@
+ 
+ rr.RateResolutionReviewFlag,
+-rr.RateResolutionReviewMessage
++rr.RateResolutionReviewMessage,
+ 
+-FROM api.v_Payroll_LaborEntry_WeekDetail d
+-LEFT JOIN api.v_UI_Payroll_LaborEntry_HourBuckets hb
++------------------------------------------------------------
++-- Shared hour-bucket validation fields
++------------------------------------------------------------
++hb.Expected_Payable_Hrs,
++hb.Bucketed_Payable_Hrs,
++hb.Bucket_Hrs_TieOut_Difference,
++hb.Bucket_Hrs_TieOut_Status,
++
++------------------------------------------------------------
++-- New bucket-source traceability fields
++------------------------------------------------------------
++hb.Bucket_Source,
++hb.Has_Pricing_Slices,
++hb.Pricing_Slice_Count,
++hb.Pricing_Slice_Hours,
++hb.Bucket_Source_Review_Flag,
++hb.Bucket_Source_Review_Message
++
++FROM api.v_Payroll_LaborEntry_WeekDetail AS d
++
++LEFT JOIN api.v_UI_Payroll_LaborEntry_HourBuckets AS hb
+ ON hb.LaborPayrollID = d.LaborPayrollID
+-LEFT JOIN api.v_UI_LaborEntry_TypeRateResolution rr
++
++LEFT JOIN api.v_UI_LaborEntry_TypeRateResolution AS rr
+ ON rr.LaborPayrollID = d.LaborPayrollID;
+ 
++

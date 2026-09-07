@@ -1,0 +1,55 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,5 +1,2 @@
+-
+-CREATE PROCEDURE [app].[usp_FinalizePayrollOutputs_AfterPricing]
+-@WorkDateFrom date = NULL,
+ @WorkDateTo date = NULL,
+ @RunId int = NULL
+@@ -9,4 +6,15 @@
+ SET XACT_ABORT ON;
+ 
++SET @RunId =
++COALESCE
++(
++@RunId,
++TRY_CONVERT
++(
++int,
++SESSION_CONTEXT(N'PayrollAPP_RunLogID')
++)
++);
++
+ /* ------------------------------------------------------------
+ 1) Base pay fallback
+@@ -57,5 +65,6 @@
+ @WorkDateTo = @WorkDateTo,
+ @PreviewOnly = 0,
+-@RequestedBy = N'app.usp_FinalizePayrollOutputs_AfterPricing';
++@RequestedBy = N'app.usp_FinalizePayrollOutputs_AfterPricing',
++@ReturnResults = 0;
+ END
+ ELSE
+@@ -73,4 +82,9 @@
+ - Non-union hourly ledger replacement must run after this step.
+ ------------------------------------------------------------ */
++EXEC app.usp_Rebuild_RestSliceAdjustment
++@WorkDateFrom = @WorkDateFrom,
++@WorkDateTo = @WorkDateTo,
++@RunId = @RunId;
++
+ EXEC app.usp_Rebuild_PayComponentLedger
+ @WorkDateFrom = @WorkDateFrom,
+@@ -98,5 +112,7 @@
+ @WorkDateTo = @WorkDateTo,
+ @PreviewOnly = 0,
+-@RequestedBy = N'app.usp_FinalizePayrollOutputs_AfterPricing';
++@RequestedBy = N'app.usp_FinalizePayrollOutputs_AfterPricing',
++@RunId = @RunId,
++@ReturnResults = 0;
+ END
+ ELSE
+@@ -183,2 +199,3 @@
+ END;
+ 
++

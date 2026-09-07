@@ -48,3 +48,11 @@ tags: [module/payroll, kind/rule, open-questions]
   stands as written; build from it.** The one new question is whether WTL added hours count toward
   the 12 — [gaps.md](../gaps.md#do-wtl-added-hours-count-toward-the-rest-chains-12-hour-double-time-threshold),
   waiting on Corrina's WTL review. Correction logged at [client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham](../client-message-findings.md#2026-09-07--legacy-app-comparison-run-rest-rule-now-moves-hours-to-dt-non-union-separated-wtl-still-open-brian-petros--ehtesham) → *Correction*.
+- **Verified in the 2026-09-07 backup ([legacy-payroll-app-db-backup-2026-09-07/INDEX.md](../legacy-payroll-app-db-backup-2026-09-07/INDEX.md)):** `usp_Apply_RestPeriod_Premium` and
+  `cfg.RestPeriod_Rule` are **unchanged** since the extract. The client's "buckets" fix is a new
+  post-pricing `fms.Payroll_RestSliceAdjustment` + `v_UI_Pricing_Slices_PayrollEffective` layer that
+  makes forced slices *count in the DT bucket*; the exhibit's rows carry `RestReason = 'Rest chain
+  over 12 hrs'` with the multiplier stepping 1.5 → 2.0 at the slice where the chain passes 12 h.
+  **Rest now runs before WTL:** `usp_Apply_WTL_MealPeriods` reads the rest-adjusted slices, so a WTL
+  deduct on a forced slice is priced at the rest-adjusted rate. ERP: present forced hours in DT,
+  keep the premium as its own component, evaluate rest before WTL.

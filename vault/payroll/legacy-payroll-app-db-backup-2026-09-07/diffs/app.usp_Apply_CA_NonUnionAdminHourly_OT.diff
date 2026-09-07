@@ -1,0 +1,29 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,8 +1,8 @@
+-
+ CREATE PROCEDURE [app].[usp_Apply_CA_NonUnionAdminHourly_OT]
+ @WorkDateFrom date,
+ @WorkDateTo date,
+ @PreviewOnly bit = 1,
+-@RequestedBy sysname = NULL
++@RequestedBy sysname = NULL,
++@ReturnResults bit = 1
+ AS
+ BEGIN
+@@ -617,4 +617,7 @@
+ COMMIT TRANSACTION;
+ END;
++
++IF @ReturnResults = 1
++BEGIN
+ 
+ /* Result set 1: Apply/preview high-level totals */
+@@ -887,3 +890,6 @@
+ Rows DESC;
+ END;
+-
++END;
++
++
++

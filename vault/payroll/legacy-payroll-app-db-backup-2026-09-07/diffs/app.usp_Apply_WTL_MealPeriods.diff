@@ -1,0 +1,47 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,33 +1,2 @@
+-
+-
+-
+-
+-/* ============================================================
+-WTL Phase 2B - Apply procedure with safe preview default
+-+ optional test-token overrides
+-
+-Creates/updates:
+-- app.usp_Apply_WTL_MealPeriods
+-
+-Default behavior:
+-- @CommitChanges = 0
+-- @UseTestOverrides = 0
+-- returns preview result sets only
+-- does not update payroll tables
+-
+-Test override behavior:
+-- @UseTestOverrides = 1
+-- simulates selected WTL tokens without editing FCC comments
+-- cannot be committed
+-
+-Commit behavior:
+-- @CommitChanges = 1
+-- deletes/replaces existing WTL components for the requested date range
+-- inserts WTL pay components
+-- inserts WTL review/warning/error rows into fms.Payroll_CalcException
+-============================================================ */
+-
+-CREATE PROCEDURE [app].[usp_Apply_WTL_MealPeriods]
+-@WorkDateFrom date,
+ @WorkDateTo date,
+ @UnionCode varchar(20) = 'L12',
+@@ -235,5 +204,5 @@
+ END
+ INTO #PricingSlices
+-FROM api.v_UI_Pricing_Slices_Advanced s
++FROM api.v_UI_Pricing_Slices_PayrollEffective s
+ JOIN #BaseLabor b
+ ON b.LaborPayrollID = s.LaborPayrollID
+@@ -1224,2 +1193,3 @@
+ END;
+ 
++

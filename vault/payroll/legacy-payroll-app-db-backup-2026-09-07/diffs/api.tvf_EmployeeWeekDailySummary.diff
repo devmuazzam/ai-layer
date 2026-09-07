@@ -1,0 +1,32 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,5 +1,2 @@
+-
+-CREATE FUNCTION api.tvf_EmployeeWeekDailySummary
+-(
+ @EmpID varchar(15)
+ , @AnyDateInWeek date
+@@ -50,8 +47,8 @@
+ d.Gap_Hrs_Total,
+ d.Gap_Hrs_Boom,
+-d.Pay_Total_Hrs,
+-d.Hrs_ST,
+-d.Hrs_OT,
+-d.Hrs_DT,
++Pay_Total_Hrs = d.Bucket_Payable_Hrs,
++Hrs_ST = d.Bucket_Hrs_ST,
++Hrs_OT = d.Bucket_Hrs_OT,
++Hrs_DT = d.Bucket_Hrs_DT,
+ d.Final_Gross_Pay,
+ d.ErrorCount,
+@@ -73,5 +70,5 @@
+ TotalPayableGross =
+ ISNULL(l.TotalPayableGross, d.Final_Gross_Pay)
+-FROM rpt.v_Payroll_LaborEntry_WeekDetail d
++FROM api.v_UI_Payroll_LaborEntry_WeekDetail_WithBuckets d
+ LEFT JOIN api.v_UI_Payroll_LaborEntry_Ledger_Summary l
+ ON l.LaborPayrollID = d.LaborPayrollID
+@@ -209,2 +206,3 @@
+ ON d.WorkDate = wd.WorkDate;
+ 
++

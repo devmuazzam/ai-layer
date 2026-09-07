@@ -2,7 +2,7 @@
 title: Payroll source manifest - OneDrive drop 2026-08-11
 source: onedrive/OneDrive_1_8-11-2026/
 migrated: 2026-08-13
-updated: 2026-09-04
+updated: 2026-09-07
 status: reference
 conflicts_with: []
 jira: []
@@ -123,6 +123,7 @@ they implement is captured in [adp-sop-v3.8.md](adp-sop-v3.8.md) and
 | File | Size | Note |
 | --- | ---: | --- |
 | `PAYROLL_APP_build/PayrollAPP_0.5/TCG_SQL_backup_2026-06-23.7z` | 172 MB | SQL Server database backup |
+| `PayrollAPP_2026-09-07.zip` → `TCG.PayrollApp_backup2026-09-07.7z` (Brian Petros, 2026-09-07) | 346 MB | `TCG_PayrollAPP_20260907.bak` (643 MB) restored and diffed → [legacy-payroll-app-db-backup-2026-09-07/](legacy-payroll-app-db-backup-2026-09-07/INDEX.md); `TCG_RawFMS_20260907.bak` (1.5 GB) not restored; API + web source unchanged since 2026-06-11 |
 | `PAYROLL_APP_build/PayrollAPP_0.5/TCG - backup - 2026-06-10_L12andNU.7z` | 99 MB | Application backup |
 | `PAYROLL_APP_build/PayrollAPP_0.5/README_SETUP_TCG_PayrollApp_2026-06-23.md` | 18 KB | Windows / SQL Server Express local-restore guide for the legacy stack |
 | `PAYROLL_APP_build/ADP-specific_files/wfn_importing_paydata.pdf` | 533 KB | ADP Workforce Now vendor documentation — importing paydata |

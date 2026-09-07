@@ -1,0 +1,212 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,4 +1,2 @@
+-
+-CREATE PROCEDURE api.usp_UI_RefreshPayroll_FromNexGen
+ @AnyDateInWeek date
+ , @RequestedBy sysname = NULL
+@@ -120,119 +118,47 @@
+ 
+ BEGIN TRY
+-/* Step 1: refresh RawFMS from FCC NexGen */
+-SELECT @RawBefore = ISNULL(MAX(RunId), 0)
+-FROM TCG_RawFMS.etl.RunLog;
+-
+-EXEC TCG_RawFMS.etl.usp_RunNightly_RawFMS;
+-
+-SELECT TOP (1)
+-@RawRunId = RunId,
+-@RawStatus = Status
+-FROM TCG_RawFMS.etl.RunLog
+-WHERE RunId > @RawBefore
+-ORDER BY RunId DESC;
+-
+-IF @RawRunId IS NULL
+-BEGIN
+-SELECT TOP (1)
+-@RawRunId = RunId,
+-@RawStatus = Status
+-FROM TCG_RawFMS.etl.RunLog
+-ORDER BY RunId DESC;
+-END;
+-
+-UPDATE etl.UIRefreshLog
+-SET
+-RawFMS_RunId = @RawRunId,
+-RawFMS_Status = @RawStatus
+-WHERE UIRefreshID = @UIRefreshID;
+-
+-IF ISNULL(@RawStatus, '') <> 'Succeeded'
+-BEGIN
+-SET @Msg = CONCAT(
+-'RawFMS refresh did not succeed. RawFMS RunId=',
+-COALESCE(CONVERT(varchar(20), @RawRunId), 'NULL'),
+-', Status=',
+-COALESCE(@RawStatus, 'NULL'),
+-'. PayrollAPP recalculation was not started.'
+-);
+-
+-UPDATE etl.UIRefreshLog
+-SET
+-EndedAtUTC = SYSUTCDATETIME(),
+-Status = CASE WHEN @RawStatus = 'Skipped' THEN 'Skipped' ELSE 'Failed' END,
+-Message = @Msg
+-WHERE UIRefreshID = @UIRefreshID;
+-
+-EXEC sys.sp_releaseapplock
+-@Resource = N'api.usp_UI_RefreshPayroll_FromNexGen'
+-, @LockOwner = N'Session';
+-
+-SELECT *
+-FROM etl.UIRefreshLog
+-WHERE UIRefreshID = @UIRefreshID;
+-
+-RETURN 0;
+-END;
+-
+-/* Step 2: recalculate PayrollAPP using cfg.Nightly_RunSettings = 210 days */
+-SELECT @PayrollBefore = ISNULL(MAX(RunId), 0)
+-FROM etl.RunLog;
+-
+-EXEC etl.usp_RunNightly_PayrollAPP @RebuildAll = 0;
+-
+-SELECT TOP (1)
+-@PayrollRunId = RunId,
+-@PayrollStatus = Status
+-FROM etl.RunLog
+-WHERE RunId > @PayrollBefore
+-AND RunType = 'NightlyPayroll'
+-ORDER BY RunId DESC;
+-
+-IF @PayrollRunId IS NULL
+-BEGIN
+-SELECT TOP (1)
+-@PayrollRunId = RunId,
+-@PayrollStatus = Status
+-FROM etl.RunLog
+-WHERE RunType = 'NightlyPayroll'
+-ORDER BY RunId DESC;
+-END;
+-
+-UPDATE etl.UIRefreshLog
+-SET
+-PayrollAPP_RunId = @PayrollRunId,
+-PayrollAPP_Status = @PayrollStatus
+-WHERE UIRefreshID = @UIRefreshID;
+-
+-IF ISNULL(@PayrollStatus, '') <> 'Succeeded'
+-BEGIN
+-SET @Msg = CONCAT(
+-'PayrollAPP recalculation did not succeed. PayrollAPP RunId=',
+-COALESCE(CONVERT(varchar(20), @PayrollRunId), 'NULL'),
+-', Status=',
+-COALESCE(@PayrollStatus, 'NULL'),
+-'.'
+-);
+-
+-UPDATE etl.UIRefreshLog
+-SET
+-EndedAtUTC = SYSUTCDATETIME(),
+-Status = CASE WHEN @PayrollStatus = 'Skipped' THEN 'Skipped' ELSE 'Failed' END,
+-Message = @Msg
+-WHERE UIRefreshID = @UIRefreshID;
+-
+-EXEC sys.sp_releaseapplock
+-@Resource = N'api.usp_UI_RefreshPayroll_FromNexGen'
+-, @LockOwner = N'Session';
+-
+-SELECT *
+-FROM etl.UIRefreshLog
+-WHERE UIRefreshID = @UIRefreshID;
+-
+-RETURN 0;
+-END;
+-
+-SET @Msg = CONCAT(
++/*
++Steps 1-3: shared interactive payroll refresh
++
++The shared core owns:
++- shared Web/Excel workflow lock
++- targeted payroll RawFMS refresh
++- exact RawFMS RunId
++- prior-context freshness validation
++- exact Saturday-Friday PayrollAPP recalculation
++- exact PayrollAPP RunId
++- authoritative-run validation
++*/
++
++SET @RawRunId = NULL;
++SET @RawStatus = NULL;
++SET @PayrollRunId = NULL;
++SET @PayrollStatus = NULL;
++
++
++EXEC api.usp_RefreshPayrollWeek_Core
++@PayStartDate =
++@PeriodStartDate
++, @PayEndDate =
++@PeriodEndDate
++, @RawFMSRunId =
++@RawRunId OUTPUT
++, @PayrollAppRunId =
++@PayrollRunId OUTPUT
++, @RawFMSStatus =
++@RawStatus OUTPUT
++, @PayrollAppStatus =
++@PayrollStatus OUTPUT;
++
++
++/*
++The shared core does not return successfully unless
++both underlying runs succeeded and the exact PayrollAPP
++run passed authoritative-run validation.
++*/
++
++SET @Msg =
++CONCAT
++(
+ 'Refresh succeeded. RawFMS RunId=',
+ @RawRunId,
+@@ -242,10 +168,31 @@
+ );
+ 
+-UPDATE etl.UIRefreshLog
+-SET
+-EndedAtUTC = SYSUTCDATETIME(),
+-Status = 'Succeeded',
+-Message = @Msg
+-WHERE UIRefreshID = @UIRefreshID;
++
++UPDATE etl.UIRefreshLog
++SET
++RawFMS_RunId =
++@RawRunId,
++
++RawFMS_Status =
++@RawStatus,
++
++PayrollAPP_RunId =
++@PayrollRunId,
++
++PayrollAPP_Status =
++@PayrollStatus,
++
++EndedAtUTC =
++SYSUTCDATETIME(),
++
++Status =
++'Succeeded',
++
++Message =
++@Msg
++
++WHERE UIRefreshID =
++@UIRefreshID;
++
+ 
+ EXEC sys.sp_releaseapplock
+@@ -286,2 +233,3 @@
+ END;
+ 
++

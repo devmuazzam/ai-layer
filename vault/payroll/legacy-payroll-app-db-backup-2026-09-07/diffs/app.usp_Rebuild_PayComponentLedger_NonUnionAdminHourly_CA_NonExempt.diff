@@ -1,0 +1,52 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,12 +1,24 @@
+-
+ CREATE PROCEDURE [app].[usp_Rebuild_PayComponentLedger_NonUnionAdminHourly_CA_NonExempt]
+ @WorkDateFrom date,
+ @WorkDateTo date,
+ @PreviewOnly bit = 1,
+-@RequestedBy sysname = NULL
++@RequestedBy sysname = NULL,
++@RunId int = NULL,
++@ReturnResults bit = 1
+ AS
+ BEGIN
+ SET NOCOUNT ON;
+ SET XACT_ABORT ON;
++
++SET @RunId =
++COALESCE
++(
++@RunId,
++TRY_CONVERT
++(
++int,
++SESSION_CONTEXT(N'PayrollAPP_RunLogID')
++)
++);
+ 
+ DECLARE @StartedAtUTC datetime2(3) = SYSUTCDATETIME();
+@@ -382,5 +394,5 @@
+ )
+ SELECT
+-RunId = CAST(NULL AS int),
++RunId = @RunId,
+ CalcID,
+ LaborPayrollID,
+@@ -533,4 +545,7 @@
+ END;
+ 
++IF @ReturnResults = 1
++BEGIN
++
+ SELECT
+ Mode = CASE WHEN @PreviewOnly = 1 THEN 'PREVIEW_ONLY' ELSE 'APPLIED' END,
+@@ -608,3 +623,6 @@
+ ORDER BY WorkDate, EmpID, LaborPayrollID, DisplaySort;
+ END;
+-
++END;
++
++
++

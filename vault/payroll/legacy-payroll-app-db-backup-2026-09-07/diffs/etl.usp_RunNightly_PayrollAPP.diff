@@ -1,0 +1,795 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,5 +1,8 @@
+-
+ CREATE PROCEDURE [etl].[usp_RunNightly_PayrollAPP]
+ @RebuildAll bit = 0
++, @WorkDateFromOverride date = NULL
++, @WorkDateToOverride date = NULL
++, @RequireFreshPriorContext bit = 0
++, @CreatedRunId int = NULL OUTPUT
+ WITH EXECUTE AS OWNER
+ AS
+@@ -7,4 +10,6 @@
+ SET NOCOUNT ON;
+ SET XACT_ABORT ON;
++
++SET @CreatedRunId = NULL;
+ 
+ DECLARE
+@@ -37,5 +42,286 @@
+ END;
+ 
+-DECLARE @WorkDateFrom date = DATEADD(DAY, 1 - @LookbackDays, @WorkDateTo);
++DECLARE @WorkDateFrom date =
++DATEADD(DAY, 1 - @LookbackDays, @WorkDateTo);
++
++-------------------------------------------------------------------------
++
++-------------------------------------------------------------------------
++-- Optional explicit calculation window
++--
++-- Scheduled nightly calls leave the override parameters NULL and retain
++-- the existing cfg.Nightly_RunSettings behavior.
++--
++-- Interactive Web / Excel calls may supply a complete Saturday-Friday
++-- payroll week.
++-------------------------------------------------------------------------
++DECLARE @ExplicitWindowRequested bit =
++CASE
++WHEN @WorkDateFromOverride IS NOT NULL
++OR @WorkDateToOverride IS NOT NULL
++THEN 1
++ELSE 0
++END;
++
++IF
++(
++@WorkDateFromOverride IS NULL
++AND @WorkDateToOverride IS NOT NULL
++)
++OR
++(
++@WorkDateFromOverride IS NOT NULL
++AND @WorkDateToOverride IS NULL
++)
++BEGIN
++THROW 53340,
++'WorkDateFromOverride and WorkDateToOverride must be supplied together.',
++1;
++END;
++
++IF @ExplicitWindowRequested = 1
++BEGIN
++SET @WorkDateFrom = @WorkDateFromOverride;
++SET @WorkDateTo = @WorkDateToOverride;
++
++IF @WorkDateFrom > @WorkDateTo
++BEGIN
++THROW 53341,
++'Explicit payroll calculation start date cannot be after end date.',
++1;
++END;
++END;
++
++-------------------------------------------------------------------------
++-- Prior-period context freshness guard
++--
++-- This is intended for interactive Saturday-Friday refreshes.
++--
++-- The requested week itself is recalculated and persisted.
++-- The preceding payroll week remains read-only context.
++--
++-- Block the requested calculation if:
++-- 1. an existing prior-week Payroll_Calculated row is older than the
++-- RawFMS labor row now representing that LaborPayrollID; or
++-- 2. a prior-week labor row that the pricing engine would consider
++-- eligible has no Payroll_Calculated row.
++-------------------------------------------------------------------------
++IF @RequireFreshPriorContext = 1
++BEGIN
++IF @ExplicitWindowRequested = 0
++BEGIN
++THROW 53342,
++'RequireFreshPriorContext requires an explicit calculation window.',
++1;
++END;
++
++IF DATEDIFF(DAY, @WorkDateFrom, @WorkDateTo) <> 6
++BEGIN
++THROW 53343,
++'Interactive payroll calculation must be exactly seven calendar days.',
++1;
++END;
++
++DECLARE @InteractiveSaturdayOffset int =
++(
++(
++DATEDIFF
++(
++DAY,
++CONVERT(date,'20200104'),
++@WorkDateFrom
++) % 7
++) + 7
++) % 7;
++
++IF @InteractiveSaturdayOffset <> 0
++BEGIN
++THROW 53344,
++'Interactive payroll calculation must begin on Saturday.',
++1;
++END;
++
++DECLARE
++@PriorContextStartDate date =
++DATEADD(DAY,-7,@WorkDateFrom),
++
++@PriorContextEndDate date =
++DATEADD(DAY,-1,@WorkDateFrom),
++
++@StalePriorRows bigint = 0,
++
++@MissingEligiblePriorRows bigint = 0,
++
++@ContextError nvarchar(2048);
++
++
++---------------------------------------------------------------------
++-- Existing prior-week calculations whose RawFMS source was loaded
++-- after the calculation completed are stale.
++---------------------------------------------------------------------
++SELECT
++@StalePriorRows =
++COUNT_BIG(*)
++
++FROM fms.Payroll_Calculated pc
++
++LEFT JOIN etl.RunLog r
++ON r.RunId =
++pc.RunId
++
++JOIN TCG_RawFMS.stg.FMS_LABOR_PAYROLL_Raw raw
++ON raw.LaborPayrollID =
++pc.LaborPayrollID
++
++WHERE pc.WorkDate >= @PriorContextStartDate
++AND pc.WorkDate < DATEADD(DAY,1,@PriorContextEndDate)
++
++AND
++(
++r.RunId IS NULL
++OR r.Status <> 'Succeeded'
++OR r.EndedAtUTC IS NULL
++OR raw._LoadedAtUTC > r.EndedAtUTC
++);
++
++
++---------------------------------------------------------------------
++-- Reproduce the pricing-engine eligibility boundary for prior-week
++-- labor rows.
++--
++-- Salary rows are excluded.
++-- Zero-hour/no-time placeholders are excluded using the same
++-- predicates currently used by app.usp_Run_Pricing_Engine.
++---------------------------------------------------------------------
++;WITH EligiblePriorBase AS
++(
++SELECT
++b.LaborPayrollID
++
++FROM app.v_Base_LaborPayroll b
++
++LEFT JOIN src.FMS_EMPLOYEES_Raw EPay
++ON EPay.EmpID =
++b.EmpID
++
++WHERE b.WorkDate >= @PriorContextStartDate
++AND b.WorkDate < DATEADD(DAY,1,@PriorContextEndDate)
++
++AND ISNULL(EPay.PayType,'') <> 'S'
++
++AND NOT
++(
++b.JobTicketID IS NULL
++AND b.JobCode IS NULL
++AND ISNULL(b.HoursWorked_Raw,0) = 0
++AND ISNULL(b.Source_Amount_Raw,0) = 0
++
++AND
++(
++b.TimeStart_Labor IS NULL
++OR CONVERT(time(0),b.TimeStart_Labor) = '00:00:00'
++)
++
++AND
++(
++b.TimeEnd_Labor IS NULL
++OR CONVERT(time(0),b.TimeEnd_Labor) = '00:00:00'
++)
++)
++
++AND NOT
++(
++ISNULL(b.HoursWorked_Raw,0) = 0
++AND ISNULL(b.Source_Amount_Raw,0) = 0
++
++AND
++(
++b.TimeStart_Labor IS NULL
++OR b.TimeEnd_Labor IS NULL
++
++OR
++(
++b.TimeStart_Labor IS NOT NULL
++AND b.TimeEnd_Labor IS NOT NULL
++
++AND TRY_CONVERT
++(
++datetime2(0),
++b.TimeStart_Labor
++) IS NOT NULL
++
++AND TRY_CONVERT
++(
++datetime2(0),
++b.TimeEnd_Labor
++) IS NOT NULL
++
++AND TRY_CONVERT
++(
++datetime2(0),
++b.TimeEnd_Labor
++)
++=
++TRY_CONVERT
++(
++datetime2(0),
++b.TimeStart_Labor
++)
++)
++
++OR
++(
++b.TimeStart_Labor IS NOT NULL
++AND CONVERT
++(
++time(0),
++b.TimeStart_Labor
++) = '00:00:00'
++
++AND b.TimeEnd_Labor IS NOT NULL
++AND CONVERT
++(
++time(0),
++b.TimeEnd_Labor
++) = '00:00:00'
++)
++)
++)
++)
++
++SELECT
++@MissingEligiblePriorRows =
++COUNT_BIG(*)
++
++FROM EligiblePriorBase b
++
++LEFT JOIN fms.Payroll_Calculated pc
++ON pc.LaborPayrollID =
++b.LaborPayrollID
++
++WHERE pc.LaborPayrollID IS NULL;
++
++
++IF
++(
++ISNULL(@StalePriorRows,0) > 0
++OR ISNULL(@MissingEligiblePriorRows,0) > 0
++)
++BEGIN
++SET @ContextError =
++CONCAT
++(
++'Prior payroll context is not current. Stale calculated rows=',
++ISNULL(@StalePriorRows,0),
++'; eligible prior labor rows missing from Payroll_Calculated=',
++ISNULL(@MissingEligiblePriorRows,0),
++'. Recalculate/review the prior payroll period before refreshing this week.'
++);
++
++THROW 53345,
++@ContextError,
++1;
++END;
++END;
+ 
+ -------------------------------------------------------------------------
+@@ -50,10 +336,36 @@
+ IF @LockResult < 0
+ BEGIN
++---------------------------------------------------------------------
++-- Record skipped run together with the requested calculation window.
++---------------------------------------------------------------------
+ INSERT INTO etl.RunLog
+-(RunType, StartedAtUTC, EndedAtUTC, Status, HostName, AppName, LoginName, ErrorMessage)
++(
++RunType,
++StartedAtUTC,
++EndedAtUTC,
++Status,
++HostName,
++AppName,
++LoginName,
++ErrorMessage,
++WorkDateFrom,
++WorkDateTo
++)
+ VALUES
+-('NightlyPayroll', SYSUTCDATETIME(), SYSUTCDATETIME(), 'Skipped',
+-HOST_NAME(), APP_NAME(), ORIGINAL_LOGIN(),
+-'Another PayrollAPP run is already in progress.');
++(
++'NightlyPayroll',
++SYSUTCDATETIME(),
++SYSUTCDATETIME(),
++'Skipped',
++HOST_NAME(),
++APP_NAME(),
++ORIGINAL_LOGIN(),
++'Another PayrollAPP run is already in progress.',
++@WorkDateFrom,
++@WorkDateTo
++);
++
++SET @CreatedRunId =
++CONVERT(int, SCOPE_IDENTITY());
+ 
+ RETURN 0;
+@@ -62,19 +374,64 @@
+ SET @HaveLock = 1;
+ 
++-------------------------------------------------------------------------
++-- Create authoritative NightlyPayroll run header.
++--
++-- WorkDateFrom / WorkDateTo are persisted here so that the exact
++-- calculation scope remains part of the run lineage even if the
++-- run later fails.
++-------------------------------------------------------------------------
+ INSERT INTO etl.RunLog
+-(RunType, StartedAtUTC, Status, HostName, AppName, LoginName)
++(
++RunType,
++StartedAtUTC,
++Status,
++HostName,
++AppName,
++LoginName,
++WorkDateFrom,
++WorkDateTo
++)
+ VALUES
+-('NightlyPayroll', SYSUTCDATETIME(), 'Running', HOST_NAME(), APP_NAME(), ORIGINAL_LOGIN());
++(
++'NightlyPayroll',
++SYSUTCDATETIME(),
++'Running',
++HOST_NAME(),
++APP_NAME(),
++ORIGINAL_LOGIN(),
++@WorkDateFrom,
++@WorkDateTo
++);
+ 
+ SET @RunId = SCOPE_IDENTITY();
+ 
++SET @CreatedRunId = @RunId;
++
+ BEGIN TRY
++
++---------------------------------------------------------------------
++-- Make this NightlyPayroll RunId available to downstream procedures.
++---------------------------------------------------------------------
++EXEC sys.sp_set_session_context
++@key = N'PayrollAPP_RunLogID',
++@value = @RunId;
++
+ ---------------------------------------------------------------------
+ -- Step 1: Refresh Synonyms
+ ---------------------------------------------------------------------
+ INSERT INTO etl.RunLogDetail
+-(RunId, StepName, StartedAtUTC, Status)
++(
++RunId,
++StepName,
++StartedAtUTC,
++Status
++)
+ VALUES
+-(@RunId, 'RefreshSynonyms', SYSUTCDATETIME(), 'Running');
++(
++@RunId,
++'RefreshSynonyms',
++SYSUTCDATETIME(),
++'Running'
++);
+ 
+ SET @RunDetailId = SCOPE_IDENTITY();
+@@ -93,7 +450,11 @@
+ 
+ UPDATE etl.RunLogDetail
+-SET EndedAtUTC = SYSUTCDATETIME(),
++SET
++EndedAtUTC = SYSUTCDATETIME(),
+ Status = 'Succeeded',
+-Notes = CONCAT('src synonyms ensured; count=', @SynCount)
++Notes = CONCAT(
++'src synonyms ensured; count=',
++@SynCount
++)
+ WHERE RunDetailId = @RunDetailId;
+ 
+@@ -102,7 +463,17 @@
+ ---------------------------------------------------------------------
+ INSERT INTO etl.RunLogDetail
+-(RunId, StepName, StartedAtUTC, Status)
++(
++RunId,
++StepName,
++StartedAtUTC,
++Status
++)
+ VALUES
+-(@RunId, 'PrepareContinuousLabor', SYSUTCDATETIME(), 'Running');
++(
++@RunId,
++'PrepareContinuousLabor',
++SYSUTCDATETIME(),
++'Running'
++);
+ 
+ SET @RunDetailId = SCOPE_IDENTITY();
+@@ -115,12 +486,36 @@
+ SELECT
+ @Total = COUNT_BIG(*),
+-@Gap = SUM(CASE WHEN Is_Gap_Row = 1 OR CraftCode = 'GAP-PAY' THEN 1 ELSE 0 END)
++@Gap =
++SUM
++(
++CASE
++WHEN Is_Gap_Row = 1
++OR CraftCode = 'GAP-PAY'
++THEN 1
++ELSE 0
++END
++)
+ FROM fms.Labor_PreProcessed;
+ 
+ UPDATE etl.RunLogDetail
+-SET EndedAtUTC = SYSUTCDATETIME(),
++SET
++EndedAtUTC = SYSUTCDATETIME(),
+ Status = 'Succeeded',
+-RowsAffected = CONVERT(int, CASE WHEN @Total > 2147483647 THEN 2147483647 ELSE @Total END),
+-Notes = CONCAT('Total=', @Total, '; GapRows=', @Gap)
++RowsAffected =
++CONVERT
++(
++int,
++CASE
++WHEN @Total > 2147483647
++THEN 2147483647
++ELSE @Total
++END
++),
++Notes = CONCAT(
++'Total=',
++@Total,
++'; GapRows=',
++@Gap
++)
+ WHERE RunDetailId = @RunDetailId;
+ 
+@@ -129,7 +524,17 @@
+ ---------------------------------------------------------------------
+ INSERT INTO etl.RunLogDetail
+-(RunId, StepName, StartedAtUTC, Status)
++(
++RunId,
++StepName,
++StartedAtUTC,
++Status
++)
+ VALUES
+-(@RunId, 'RunPricingEngine', SYSUTCDATETIME(), 'Running');
++(
++@RunId,
++'RunPricingEngine',
++SYSUTCDATETIME(),
++'Running'
++);
+ 
+ SET @RunDetailId = SCOPE_IDENTITY();
+@@ -147,11 +552,24 @@
+ 
+ UPDATE etl.RunLogDetail
+-SET EndedAtUTC = SYSUTCDATETIME(),
++SET
++EndedAtUTC = SYSUTCDATETIME(),
+ Status = 'Succeeded',
+-RowsAffected = CONVERT(int, CASE WHEN @CalcRows > 2147483647 THEN 2147483647 ELSE @CalcRows END),
++RowsAffected =
++CONVERT
++(
++int,
++CASE
++WHEN @CalcRows > 2147483647
++THEN 2147483647
++ELSE @CalcRows
++END
++),
+ Notes = CONCAT(
+-'Window=', CONVERT(varchar(10), @WorkDateFrom, 120),
+-'->', CONVERT(varchar(10), @WorkDateTo, 120),
+-'; Payroll_Calculated rows in window=', @CalcRows
++'Window=',
++CONVERT(varchar(10), @WorkDateFrom, 120),
++'->',
++CONVERT(varchar(10), @WorkDateTo, 120),
++'; Payroll_Calculated rows in window=',
++@CalcRows
+ )
+ WHERE RunDetailId = @RunDetailId;
+@@ -160,5 +578,6 @@
+ -- Step 4: Finalize Payroll Outputs After Pricing
+ --
+--- This wrapper now owns the full post-pricing chain:
++-- This wrapper owns the full post-pricing chain:
++--
+ -- app.usp_Apply_BasePay_Fallback_FromSource
+ -- app.usp_Apply_GuaranteedHours
+@@ -171,7 +590,17 @@
+ ---------------------------------------------------------------------
+ INSERT INTO etl.RunLogDetail
+-(RunId, StepName, StartedAtUTC, Status)
++(
++RunId,
++StepName,
++StartedAtUTC,
++Status
++)
+ VALUES
+-(@RunId, 'FinalizePayrollOutputsAfterPricing', SYSUTCDATETIME(), 'Running');
++(
++@RunId,
++'FinalizePayrollOutputsAfterPricing',
++SYSUTCDATETIME(),
++'Running'
++);
+ 
+ SET @RunDetailId = SCOPE_IDENTITY();
+@@ -189,11 +618,22 @@
+ DECLARE @LedgerLaborEntryCount bigint;
+ 
++---------------------------------------------------------------------
++-- Rows with payable hours but zero actual gross
++---------------------------------------------------------------------
+ SELECT @ZeroPayRemain = COUNT_BIG(*)
+ FROM fms.Payroll_Calculated
+ WHERE WorkDate >= @WorkDateFrom
+ AND WorkDate < DATEADD(DAY, 1, @WorkDateTo)
+-AND (ISNULL(Hrs_ST, 0) + ISNULL(Hrs_OT, 0) + ISNULL(Hrs_DT, 0)) > 0
++AND
++(
++ISNULL(Hrs_ST, 0)
+++ ISNULL(Hrs_OT, 0)
+++ ISNULL(Hrs_DT, 0)
++) > 0
+ AND ISNULL(Pay_Actual_Gross, 0) = 0;
+ 
++---------------------------------------------------------------------
++-- Guarantee allocations in window
++---------------------------------------------------------------------
+ SELECT @GuaranteeRows = COUNT_BIG(*)
+ FROM fms.Payroll_GuaranteeAllocation a
+@@ -203,4 +643,7 @@
+ AND COALESCE(g.CalendarDate, g.ShiftAnchorDate) <= @WorkDateTo;
+ 
++---------------------------------------------------------------------
++-- Rest-period premium rows
++---------------------------------------------------------------------
+ SELECT @RestRows = COUNT_BIG(*)
+ FROM fms.Payroll_Calculated
+@@ -209,4 +652,8 @@
+ AND ISNULL(Pay_Rest_Add, 0) > 0;
+ 
++---------------------------------------------------------------------
++-- Safety validation:
++-- missing source-rate rows must not retain payroll amounts.
++---------------------------------------------------------------------
+ SELECT @MissingSourceRowsWithPay = COUNT_BIG(*)
+ FROM fms.Payroll_Calculated pc
+@@ -216,5 +663,13 @@
+ AND pc.WorkDate < DATEADD(DAY, 1, @WorkDateTo)
+ AND ISNULL(pc.Act_Total_Hrs, 0) > 0
+-AND NULLIF(CONVERT(decimal(19,6), ISNULL(b.Source_Rate_Raw, 0.0)), 0.0) IS NULL
++AND NULLIF
++(
++CONVERT
++(
++decimal(19,6),
++ISNULL(b.Source_Rate_Raw, 0.0)
++),
++0.0
++) IS NULL
+ AND
+ (
+@@ -225,7 +680,11 @@
+ );
+ 
++---------------------------------------------------------------------
++-- Pay-component ledger counts in calculation window
++---------------------------------------------------------------------
+ SELECT
+ @LedgerRows = COUNT_BIG(*),
+-@LedgerLaborEntryCount = COUNT_BIG(DISTINCT pc.LaborPayrollID)
++@LedgerLaborEntryCount =
++COUNT_BIG(DISTINCT pc.LaborPayrollID)
+ FROM fms.Payroll_Calculated pc
+ JOIN fms.Payroll_PayComponent pcl
+@@ -235,16 +694,34 @@
+ 
+ UPDATE etl.RunLogDetail
+-SET EndedAtUTC = SYSUTCDATETIME(),
++SET
++EndedAtUTC = SYSUTCDATETIME(),
+ Status = 'Succeeded',
+-RowsAffected = CONVERT(int, CASE WHEN @CalcRows > 2147483647 THEN 2147483647 ELSE @CalcRows END),
++RowsAffected =
++CONVERT
++(
++int,
++CASE
++WHEN @CalcRows > 2147483647
++THEN 2147483647
++ELSE @CalcRows
++END
++),
+ Notes = CONCAT(
+-'Window=', CONVERT(varchar(10), @WorkDateFrom, 120),
+-'->', CONVERT(varchar(10), @WorkDateTo, 120),
+-'; ZeroPayRemaining=', @ZeroPayRemain,
+-'; GuaranteeAllocations=', @GuaranteeRows,
+-'; RestPremiumRows=', @RestRows,
+-'; MissingSourceRowsWithPay=', @MissingSourceRowsWithPay,
+-'; LedgerRows=', @LedgerRows,
+-'; LedgerLaborEntries=', @LedgerLaborEntryCount
++'Window=',
++CONVERT(varchar(10), @WorkDateFrom, 120),
++'->',
++CONVERT(varchar(10), @WorkDateTo, 120),
++'; ZeroPayRemaining=',
++@ZeroPayRemain,
++'; GuaranteeAllocations=',
++@GuaranteeRows,
++'; RestPremiumRows=',
++@RestRows,
++'; MissingSourceRowsWithPay=',
++@MissingSourceRowsWithPay,
++'; LedgerRows=',
++@LedgerRows,
++'; LedgerLaborEntries=',
++@LedgerLaborEntryCount
+ )
+ WHERE RunDetailId = @RunDetailId;
+@@ -252,11 +729,25 @@
+ ---------------------------------------------------------------------
+ -- Mark run succeeded
++--
++-- WorkDateFrom / WorkDateTo were already stored when the RunLog
++-- record was created.
+ ---------------------------------------------------------------------
+ UPDATE etl.RunLog
+-SET EndedAtUTC = SYSUTCDATETIME(),
++SET
++EndedAtUTC = SYSUTCDATETIME(),
+ Status = 'Succeeded',
+ ErrorMessage = NULL
+ WHERE RunId = @RunId;
+ 
++---------------------------------------------------------------------
++-- Clear shared run context
++---------------------------------------------------------------------
++EXEC sys.sp_set_session_context
++@key = N'PayrollAPP_RunLogID',
++@value = NULL;
++
++---------------------------------------------------------------------
++-- Release application lock
++---------------------------------------------------------------------
+ IF @HaveLock = 1
+ BEGIN
+@@ -270,26 +761,57 @@
+ RETURN 0;
+ END TRY
++
+ BEGIN CATCH
++
++---------------------------------------------------------------------
++-- Always clear shared run context
++---------------------------------------------------------------------
++EXEC sys.sp_set_session_context
++@key = N'PayrollAPP_RunLogID',
++@value = NULL;
++
+ SET @Err = CONCAT(
+-'Error ', ERROR_NUMBER(), ' (', ERROR_SEVERITY(), '/', ERROR_STATE(), ') ',
+-'in ', COALESCE(ERROR_PROCEDURE(), '<unknown>'),
+-' at line ', ERROR_LINE(),
+-': ', ERROR_MESSAGE()
+-);
+-
++'Error ',
++ERROR_NUMBER(),
++' (',
++ERROR_SEVERITY(),
++'/',
++ERROR_STATE(),
++') ',
++'in ',
++COALESCE(ERROR_PROCEDURE(), '<unknown>'),
++' at line ',
++ERROR_LINE(),
++': ',
++ERROR_MESSAGE()
++);
++
++---------------------------------------------------------------------
++-- Mark active detail step failed
++---------------------------------------------------------------------
+ IF @RunDetailId IS NOT NULL
+ BEGIN
+ UPDATE etl.RunLogDetail
+-SET EndedAtUTC = SYSUTCDATETIME(),
++SET
++EndedAtUTC = SYSUTCDATETIME(),
+ Status = 'Failed',
+-Notes = COALESCE(Notes + '; ', '') + @Err
++Notes =
++COALESCE(Notes + '; ', '')
+++ @Err
+ WHERE RunDetailId = @RunDetailId
+ AND EndedAtUTC IS NULL;
+ END;
+ 
++---------------------------------------------------------------------
++-- Mark overall run failed
++--
++-- WorkDateFrom / WorkDateTo remain on the RunLog row so we know
++-- precisely which calculation window the failed run attempted.
++---------------------------------------------------------------------
+ IF @RunId IS NOT NULL
+ BEGIN
+ UPDATE etl.RunLog
+-SET EndedAtUTC = SYSUTCDATETIME(),
++SET
++EndedAtUTC = SYSUTCDATETIME(),
+ Status = 'Failed',
+ ErrorMessage = @Err
+@@ -297,4 +819,7 @@
+ END;
+ 
++---------------------------------------------------------------------
++-- Release application lock
++---------------------------------------------------------------------
+ IF @HaveLock = 1
+ BEGIN
+@@ -307,6 +832,8 @@
+ 
+ RAISERROR(@Err, 16, 1);
++
+ RETURN 1;
+ END CATCH;
+ END;
+ 
++

@@ -1,0 +1,1134 @@
+/***********************************************************************
+    api.v_UI_Payroll_LaborEntry_HourBuckets
+
+    NON-UNION CA CANONICAL BUCKET FIX
+
+    Purpose:
+      * Union / pricing-based populations continue to use
+        api.v_UI_Pricing_Slices_PayrollEffective.
+      * Eligible Non-Union Admin Hourly / ADMIN* labor rows use the
+        dedicated California ST/OT/DT classification already persisted
+        in fms.Payroll_Calculated.
+      * Non-Union Admin Hourly does not inherit L12 Special Saturday
+        or Holiday H2x/H3x classification.
+
+    Important:
+      * This changes canonical bucket SOURCE selection only.
+      * It does NOT modify the CA Non-Union calculation procedure.
+      * It does NOT modify rest-period pricing-slice calculations.
+***********************************************************************/
+
+CREATE   VIEW [api].[v_UI_Payroll_LaborEntry_HourBuckets]
+AS
+
+WITH HolidayDates AS
+(
+    SELECT DISTINCT
+        WorkDate =
+            CONVERT(date, h.[Date])
+    FROM dim.LU12_Holiday AS h
+),
+
+DayClassification AS
+(
+    SELECT
+        pc.LaborPayrollID,
+
+        IsSpecialSaturday =
+            CONVERT
+            (
+                bit,
+                CASE
+                    WHEN MONTH(pc.WorkDate) IN (6, 12)
+                     AND DATENAME(weekday, pc.WorkDate) = 'Saturday'
+                     AND DAY(pc.WorkDate) <= 7
+                        THEN 1
+                    ELSE 0
+                END
+            ),
+
+        IsHoliday =
+            CONVERT
+            (
+                bit,
+                CASE
+                    WHEN hd.WorkDate IS NOT NULL
+                        THEN 1
+                    ELSE 0
+                END
+            )
+
+    FROM fms.Payroll_Calculated AS pc
+
+    LEFT JOIN HolidayDates AS hd
+        ON hd.WorkDate = CONVERT(date, pc.WorkDate)
+),
+
+/***********************************************************************
+    Eligible Non-Union Admin Hourly / California Nonexempt labor rows
+
+    Match the classification contract used by
+    app.usp_Apply_CA_NonUnionAdminHourly_OT:
+
+      * PayrollGroup = Non-Union Admin Hourly
+      * Labor craft is ADMIN*
+      * Employee is visible in Payroll UI
+
+    EXISTS is used intentionally to avoid changing row cardinality.
+***********************************************************************/
+NonUnionAdminHourlyCA AS
+(
+    SELECT DISTINCT
+        b.LaborPayrollID,
+
+        IsNonUnionAdminHourlyCA =
+            CONVERT(bit, 1)
+
+    FROM app.v_Base_LaborPayroll AS b
+
+    WHERE ISNULL(b.CraftCode, '') LIKE 'ADMIN%'
+
+      AND EXISTS
+      (
+          SELECT 1
+          FROM api.v_UI_Employee_PayrollGroupRate AS e
+          WHERE e.EmpID = b.EmpID
+            AND e.PayrollGroup = 'Non-Union Admin Hourly'
+            AND ISNULL(e.IsVisibleInPayrollUI, 1) = 1
+      )
+),
+
+SliceBuckets AS
+(
+    SELECT
+        s.LaborPayrollID,
+
+        Pricing_Slice_Count =
+            COUNT_BIG(*),
+
+        Actual_Hrs_From_Slices =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM(ISNULL(s.Slice_Hours, 0))
+            ),
+
+        Actual_Hrs_ST =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN s.Day_Type NOT IN
+                             ('SPECIAL_SAT', 'HOLIDAY')
+                         AND s.Final_Multiplier = 1.00
+                            THEN ISNULL(s.Slice_Hours, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Actual_Hrs_OT =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN s.Day_Type NOT IN
+                             ('SPECIAL_SAT', 'HOLIDAY')
+                         AND s.Final_Multiplier = 1.50
+                            THEN ISNULL(s.Slice_Hours, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Actual_Hrs_DT =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN s.Day_Type NOT IN
+                             ('SPECIAL_SAT', 'HOLIDAY')
+                         AND s.Final_Multiplier = 2.00
+                            THEN ISNULL(s.Slice_Hours, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Actual_Hrs_H2x =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN s.Day_Type = 'SPECIAL_SAT'
+                            THEN ISNULL(s.Slice_Hours, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Actual_Hrs_H3x =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN s.Day_Type = 'HOLIDAY'
+                            THEN ISNULL(s.Slice_Hours, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Has_SpecialSaturday_Slices =
+            CONVERT
+            (
+                bit,
+                MAX
+                (
+                    CASE
+                        WHEN s.Day_Type = 'SPECIAL_SAT'
+                            THEN 1
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Has_Holiday_Slices =
+            CONVERT
+            (
+                bit,
+                MAX
+                (
+                    CASE
+                        WHEN s.Day_Type = 'HOLIDAY'
+                            THEN 1
+                        ELSE 0
+                    END
+                )
+            )
+
+    FROM api.v_UI_Pricing_Slices_PayrollEffective AS s
+
+    GROUP BY
+        s.LaborPayrollID
+),
+
+RuleHourComponents AS
+(
+    SELECT
+        pc.LaborPayrollID,
+
+        Rule_Hrs_Gap =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN pc.ComponentCode IN
+                        (
+                            'GUARANTEED_BASE_PAY_ADD',
+                            'GUARANTEED_HOLIDAY_BASE_PAY_ADD',
+                            'GUARANTEED_SPECIAL_SAT_BASE_PAY_ADD',
+                            'GUARANTEE_RECONCILIATION_ADJUSTMENT'
+                        )
+                            THEN ISNULL(pc.ComponentHours, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rule_Hrs_ShiftAdd =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN pc.ComponentGroup IN
+                             ('SHIFT', 'SHIFT_DIFFERENTIAL')
+                          OR pc.ComponentCode IN
+                             (
+                                 'SHIFT_2_HOURS_ADD',
+                                 'SHIFT_3_HOURS_ADD'
+                             )
+                            THEN ISNULL(pc.ComponentHours, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rule_Hrs_WTL_Net =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN pc.ComponentGroup = 'WTL'
+                          OR pc.ComponentCode LIKE 'WTL%'
+                            THEN ISNULL(pc.ComponentHours, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rest_Premium_Hrs_Affected =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN pc.ComponentGroup = 'REST_PERIOD'
+                          OR pc.ComponentCode = 'REST_PERIOD_PREMIUM'
+                            THEN ISNULL(pc.ComponentHours, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rule_Amt_Gap =
+            CONVERT
+            (
+                decimal(19,4),
+                SUM
+                (
+                    CASE
+                        WHEN pc.ComponentGroup = 'GUARANTEE'
+                            THEN ISNULL(pc.ComponentAmount, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rule_Amt_ShiftAdd =
+            CONVERT
+            (
+                decimal(19,4),
+                SUM
+                (
+                    CASE
+                        WHEN pc.ComponentGroup IN
+                             ('SHIFT', 'SHIFT_DIFFERENTIAL')
+                          OR pc.ComponentCode IN
+                             (
+                                 'SHIFT_2_HOURS_ADD',
+                                 'SHIFT_3_HOURS_ADD'
+                             )
+                            THEN ISNULL(pc.ComponentAmount, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rule_Amt_WTL =
+            CONVERT
+            (
+                decimal(19,4),
+                SUM
+                (
+                    CASE
+                        WHEN pc.ComponentGroup = 'WTL'
+                          OR pc.ComponentCode LIKE 'WTL%'
+                            THEN ISNULL(pc.ComponentAmount, 0)
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rest_Premium_Amt =
+            CONVERT
+            (
+                decimal(19,4),
+                SUM
+                (
+                    CASE
+                        WHEN pc.ComponentGroup = 'REST_PERIOD'
+                          OR pc.ComponentCode = 'REST_PERIOD_PREMIUM'
+                            THEN ISNULL(pc.ComponentAmount, 0)
+                        ELSE 0
+                    END
+                )
+            )
+
+    FROM fms.Payroll_PayComponent AS pc
+
+    WHERE
+           pc.ComponentGroup IN
+              (
+                  'GUARANTEE',
+                  'SHIFT',
+                  'SHIFT_DIFFERENTIAL',
+                  'WTL',
+                  'REST_PERIOD'
+              )
+
+        OR pc.ComponentCode IN
+              (
+                  'SHIFT_2_HOURS_ADD',
+                  'SHIFT_3_HOURS_ADD',
+                  'REST_PERIOD_PREMIUM'
+              )
+
+        OR pc.ComponentCode LIKE 'WTL%'
+
+    GROUP BY
+        pc.LaborPayrollID
+),
+
+RuleBucketComponents AS
+(
+    SELECT
+        pc.LaborPayrollID,
+
+        Rule_Hrs_ST =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN
+                            COALESCE
+                            (
+                                sb.Has_SpecialSaturday_Slices,
+                                dc.IsSpecialSaturday,
+                                0
+                            ) = 0
+
+                        AND
+                            COALESCE
+                            (
+                                sb.Has_Holiday_Slices,
+                                dc.IsHoliday,
+                                0
+                            ) = 0
+
+                        THEN
+                            CASE
+                                WHEN ISNULL(pc.Hrs_ST, 0) <> 0
+                                    THEN ISNULL(pc.Hrs_ST, 0)
+
+                                WHEN pc.MultiplierUsed = 1.00
+                                    THEN ISNULL(pc.ComponentHours, 0)
+
+                                ELSE 0
+                            END
+
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rule_Hrs_OT =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN
+                            COALESCE
+                            (
+                                sb.Has_SpecialSaturday_Slices,
+                                dc.IsSpecialSaturday,
+                                0
+                            ) = 0
+
+                        AND
+                            COALESCE
+                            (
+                                sb.Has_Holiday_Slices,
+                                dc.IsHoliday,
+                                0
+                            ) = 0
+
+                        THEN
+                            CASE
+                                WHEN ISNULL(pc.Hrs_OT, 0) <> 0
+                                    THEN ISNULL(pc.Hrs_OT, 0)
+
+                                WHEN pc.MultiplierUsed = 1.50
+                                    THEN ISNULL(pc.ComponentHours, 0)
+
+                                ELSE 0
+                            END
+
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rule_Hrs_DT =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN
+                            COALESCE
+                            (
+                                sb.Has_SpecialSaturday_Slices,
+                                dc.IsSpecialSaturday,
+                                0
+                            ) = 0
+
+                        AND
+                            COALESCE
+                            (
+                                sb.Has_Holiday_Slices,
+                                dc.IsHoliday,
+                                0
+                            ) = 0
+
+                        THEN
+                            CASE
+                                WHEN ISNULL(pc.Hrs_DT, 0) <> 0
+                                    THEN ISNULL(pc.Hrs_DT, 0)
+
+                                WHEN pc.MultiplierUsed = 2.00
+                                    THEN ISNULL(pc.ComponentHours, 0)
+
+                                ELSE 0
+                            END
+
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rule_Hrs_H2x =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN
+                            COALESCE
+                            (
+                                sb.Has_SpecialSaturday_Slices,
+                                dc.IsSpecialSaturday,
+                                0
+                            ) = 1
+
+                         OR pc.ComponentCode LIKE '%SPECIAL_SAT%'
+
+                            THEN ISNULL(pc.ComponentHours, 0)
+
+                        ELSE 0
+                    END
+                )
+            ),
+
+        Rule_Hrs_H3x =
+            CONVERT
+            (
+                decimal(10,2),
+                SUM
+                (
+                    CASE
+                        WHEN
+                            COALESCE
+                            (
+                                sb.Has_Holiday_Slices,
+                                dc.IsHoliday,
+                                0
+                            ) = 1
+
+                         OR pc.ComponentCode LIKE '%HOLIDAY%'
+                         OR pc.MultiplierUsed = 3.00
+
+                            THEN ISNULL(pc.ComponentHours, 0)
+
+                        ELSE 0
+                    END
+                )
+            )
+
+    FROM fms.Payroll_PayComponent AS pc
+
+    LEFT JOIN SliceBuckets AS sb
+        ON sb.LaborPayrollID = pc.LaborPayrollID
+
+    LEFT JOIN DayClassification AS dc
+        ON dc.LaborPayrollID = pc.LaborPayrollID
+
+    WHERE
+           pc.ComponentCode IN
+              (
+                  'GUARANTEED_BASE_PAY_ADD',
+                  'GUARANTEED_HOLIDAY_BASE_PAY_ADD',
+                  'GUARANTEED_SPECIAL_SAT_BASE_PAY_ADD',
+                  'GUARANTEE_RECONCILIATION_ADJUSTMENT'
+              )
+
+        OR pc.ComponentGroup IN
+              (
+                  'SHIFT',
+                  'SHIFT_DIFFERENTIAL',
+                  'WTL'
+              )
+
+        OR pc.ComponentCode IN
+              (
+                  'SHIFT_2_HOURS_ADD',
+                  'SHIFT_3_HOURS_ADD'
+              )
+
+        OR pc.ComponentCode LIKE 'WTL%'
+
+    GROUP BY
+        pc.LaborPayrollID
+),
+
+Combined AS
+(
+    SELECT
+        pc.CalcID,
+        pc.LaborPayrollID,
+        pc.JobTicketID,
+        pc.JobCode,
+        pc.EmpID,
+        pc.Employee_Name,
+
+        WorkDate =
+            CONVERT(date, pc.WorkDate),
+
+        Has_Pricing_Slices =
+            CONVERT
+            (
+                bit,
+                CASE
+                    WHEN ISNULL(sb.Pricing_Slice_Count, 0) > 0
+                        THEN 1
+                    ELSE 0
+                END
+            ),
+
+        Pricing_Slice_Count =
+            ISNULL(sb.Pricing_Slice_Count, 0),
+
+        Pricing_Slice_Hours =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL(sb.Actual_Hrs_From_Slices, 0)
+            ),
+
+        /***************************************************************
+            Canonical source selection
+
+            Non-Union Admin Hourly / ADMIN*:
+                dedicated CA Payroll_Calculated buckets
+
+            All other populations with pricing slices:
+                payroll-effective pricing slices
+
+            No pricing slices:
+                legacy Payroll_Calculated fallback
+        ***************************************************************/
+        Bucket_Source =
+            CONVERT
+            (
+                varchar(40),
+                CASE
+                    WHEN ISNULL(nu.IsNonUnionAdminHourlyCA, 0) = 1
+                        THEN 'PAYROLL_CALCULATED_NONUNION_CA'
+
+                    WHEN ISNULL(sb.Pricing_Slice_Count, 0) > 0
+                        THEN 'PRICING_SLICES'
+
+                    ELSE 'PAYROLL_CALCULATED_FALLBACK'
+                END
+            ),
+
+        Bucket_Source_Review_Flag =
+            CONVERT
+            (
+                bit,
+                CASE
+                    WHEN ISNULL(nu.IsNonUnionAdminHourlyCA, 0) = 1
+                        THEN 0
+
+                    WHEN ISNULL(sb.Pricing_Slice_Count, 0) > 0
+                        THEN 0
+
+                    ELSE 1
+                END
+            ),
+
+        Bucket_Source_Review_Message =
+            CONVERT
+            (
+                varchar(200),
+                CASE
+                    WHEN ISNULL(nu.IsNonUnionAdminHourlyCA, 0) = 1
+                        THEN NULL
+
+                    WHEN ISNULL(sb.Pricing_Slice_Count, 0) > 0
+                        THEN NULL
+
+                    ELSE
+                        'Diagnostic pricing slices unavailable; using persisted Payroll_Calculated hour buckets.'
+                END
+            ),
+
+        Actual_Hrs =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL(pc.Act_Total_Hrs, 0)
+            ),
+
+        /***************************************************************
+            ST
+
+            Non-Union CA must use the dedicated California classifier,
+            not generic pricing-window multipliers.
+        ***************************************************************/
+        Actual_Hrs_ST =
+            CONVERT
+            (
+                decimal(10,2),
+                CASE
+                    WHEN ISNULL(nu.IsNonUnionAdminHourlyCA, 0) = 1
+                        THEN ISNULL(pc.Hrs_ST, 0)
+
+                    WHEN ISNULL(sb.Pricing_Slice_Count, 0) > 0
+                        THEN ISNULL(sb.Actual_Hrs_ST, 0)
+
+                    WHEN ISNULL(dc.IsSpecialSaturday, 0) = 1
+                      OR ISNULL(dc.IsHoliday, 0) = 1
+                        THEN 0
+
+                    ELSE ISNULL(pc.Hrs_ST, 0)
+                END
+            ),
+
+        /***************************************************************
+            OT
+        ***************************************************************/
+        Actual_Hrs_OT =
+            CONVERT
+            (
+                decimal(10,2),
+                CASE
+                    WHEN ISNULL(nu.IsNonUnionAdminHourlyCA, 0) = 1
+                        THEN ISNULL(pc.Hrs_OT, 0)
+
+                    WHEN ISNULL(sb.Pricing_Slice_Count, 0) > 0
+                        THEN ISNULL(sb.Actual_Hrs_OT, 0)
+
+                    WHEN ISNULL(dc.IsSpecialSaturday, 0) = 1
+                      OR ISNULL(dc.IsHoliday, 0) = 1
+                        THEN 0
+
+                    ELSE ISNULL(pc.Hrs_OT, 0)
+                END
+            ),
+
+        /***************************************************************
+            DT
+        ***************************************************************/
+        Actual_Hrs_DT =
+            CONVERT
+            (
+                decimal(10,2),
+                CASE
+                    WHEN ISNULL(nu.IsNonUnionAdminHourlyCA, 0) = 1
+                        THEN ISNULL(pc.Hrs_DT, 0)
+
+                    WHEN ISNULL(sb.Pricing_Slice_Count, 0) > 0
+                        THEN ISNULL(sb.Actual_Hrs_DT, 0)
+
+                    WHEN ISNULL(dc.IsSpecialSaturday, 0) = 1
+                      OR ISNULL(dc.IsHoliday, 0) = 1
+                        THEN 0
+
+                    ELSE ISNULL(pc.Hrs_DT, 0)
+                END
+            ),
+
+        /***************************************************************
+            H2x
+
+            L12 Special Saturday classification does not apply to
+            Non-Union Admin Hourly.
+        ***************************************************************/
+        Actual_Hrs_H2x =
+            CONVERT
+            (
+                decimal(10,2),
+                CASE
+                    WHEN ISNULL(nu.IsNonUnionAdminHourlyCA, 0) = 1
+                        THEN 0
+
+                    WHEN ISNULL(sb.Pricing_Slice_Count, 0) > 0
+                        THEN ISNULL(sb.Actual_Hrs_H2x, 0)
+
+                    WHEN ISNULL(dc.IsSpecialSaturday, 0) = 1
+                        THEN
+                              ISNULL(pc.Hrs_ST, 0)
+                            + ISNULL(pc.Hrs_OT, 0)
+                            + ISNULL(pc.Hrs_DT, 0)
+
+                    ELSE 0
+                END
+            ),
+
+        /***************************************************************
+            H3x
+
+            L12 Holiday 3X classification does not apply to
+            Non-Union Admin Hourly.
+        ***************************************************************/
+        Actual_Hrs_H3x =
+            CONVERT
+            (
+                decimal(10,2),
+                CASE
+                    WHEN ISNULL(nu.IsNonUnionAdminHourlyCA, 0) = 1
+                        THEN 0
+
+                    WHEN ISNULL(sb.Pricing_Slice_Count, 0) > 0
+                        THEN ISNULL(sb.Actual_Hrs_H3x, 0)
+
+                    WHEN ISNULL(dc.IsHoliday, 0) = 1
+                        THEN
+                              ISNULL(pc.Hrs_ST, 0)
+                            + ISNULL(pc.Hrs_OT, 0)
+                            + ISNULL(pc.Hrs_DT, 0)
+
+                    ELSE 0
+                END
+            ),
+
+        Rule_Hrs_ST =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL(rbc.Rule_Hrs_ST, 0)
+            ),
+
+        Rule_Hrs_OT =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL(rbc.Rule_Hrs_OT, 0)
+            ),
+
+        Rule_Hrs_DT =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL(rbc.Rule_Hrs_DT, 0)
+            ),
+
+        Rule_Hrs_H2x =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL(rbc.Rule_Hrs_H2x, 0)
+            ),
+
+        Rule_Hrs_H3x =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL(rbc.Rule_Hrs_H3x, 0)
+            ),
+
+        Expected_Payable_Hrs =
+            CONVERT
+            (
+                decimal(10,2),
+                  ISNULL(pc.Act_Total_Hrs, 0)
+                + ISNULL(pc.Gap_Hrs_Total, 0)
+                + ISNULL(rhc.Rule_Hrs_ShiftAdd, 0)
+                + ISNULL(rhc.Rule_Hrs_WTL_Net, 0)
+            ),
+
+        Rule_Hrs_Gap =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL(rhc.Rule_Hrs_Gap, 0)
+            ),
+
+        Rule_Hrs_ShiftAdd =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL(rhc.Rule_Hrs_ShiftAdd, 0)
+            ),
+
+        Rule_Hrs_WTL_Net =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL(rhc.Rule_Hrs_WTL_Net, 0)
+            ),
+
+        Rest_Premium_Hrs_Affected =
+            CONVERT
+            (
+                decimal(10,2),
+                ISNULL
+                (
+                    rhc.Rest_Premium_Hrs_Affected,
+                    ISNULL(pc.Rest_Premium_Hrs, 0)
+                )
+            ),
+
+        Gross =
+            CONVERT
+            (
+                decimal(19,4),
+                ISNULL(pc.Final_Gross_Pay, 0)
+            ),
+
+        Rule_Amt_Gap =
+            CONVERT
+            (
+                decimal(19,4),
+                ISNULL
+                (
+                    rhc.Rule_Amt_Gap,
+                    ISNULL(pc.Pay_Gap_Add, 0)
+                )
+            ),
+
+        Rule_Amt_ShiftAdd =
+            CONVERT
+            (
+                decimal(19,4),
+                ISNULL(rhc.Rule_Amt_ShiftAdd, 0)
+            ),
+
+        Rule_Amt_WTL =
+            CONVERT
+            (
+                decimal(19,4),
+                ISNULL(rhc.Rule_Amt_WTL, 0)
+            ),
+
+        Rest_Premium_Amt =
+            CONVERT
+            (
+                decimal(19,4),
+                ISNULL
+                (
+                    rhc.Rest_Premium_Amt,
+                    ISNULL(pc.Pay_Rest_Add, 0)
+                )
+            )
+
+    FROM fms.Payroll_Calculated AS pc
+
+    LEFT JOIN SliceBuckets AS sb
+        ON sb.LaborPayrollID = pc.LaborPayrollID
+
+    LEFT JOIN DayClassification AS dc
+        ON dc.LaborPayrollID = pc.LaborPayrollID
+
+    LEFT JOIN NonUnionAdminHourlyCA AS nu
+        ON nu.LaborPayrollID = pc.LaborPayrollID
+
+    LEFT JOIN RuleHourComponents AS rhc
+        ON rhc.LaborPayrollID = pc.LaborPayrollID
+
+    LEFT JOIN RuleBucketComponents AS rbc
+        ON rbc.LaborPayrollID = pc.LaborPayrollID
+)
+
+SELECT
+    c.CalcID,
+    c.LaborPayrollID,
+    c.JobTicketID,
+    c.JobCode,
+    c.EmpID,
+    c.Employee_Name,
+    c.WorkDate,
+
+    c.Actual_Hrs,
+
+    Payable_Hrs =
+        CONVERT
+        (
+            decimal(10,2),
+              c.Actual_Hrs_ST
+            + c.Actual_Hrs_OT
+            + c.Actual_Hrs_DT
+            + c.Actual_Hrs_H2x
+            + c.Actual_Hrs_H3x
+            + c.Rule_Hrs_ST
+            + c.Rule_Hrs_OT
+            + c.Rule_Hrs_DT
+            + c.Rule_Hrs_H2x
+            + c.Rule_Hrs_H3x
+        ),
+
+    c.Expected_Payable_Hrs,
+
+    Bucketed_Payable_Hrs =
+        CONVERT
+        (
+            decimal(10,2),
+              c.Actual_Hrs_ST
+            + c.Actual_Hrs_OT
+            + c.Actual_Hrs_DT
+            + c.Actual_Hrs_H2x
+            + c.Actual_Hrs_H3x
+            + c.Rule_Hrs_ST
+            + c.Rule_Hrs_OT
+            + c.Rule_Hrs_DT
+            + c.Rule_Hrs_H2x
+            + c.Rule_Hrs_H3x
+        ),
+
+    Hrs_ST =
+        CONVERT
+        (
+            decimal(10,2),
+            c.Actual_Hrs_ST + c.Rule_Hrs_ST
+        ),
+
+    Hrs_OT =
+        CONVERT
+        (
+            decimal(10,2),
+            c.Actual_Hrs_OT + c.Rule_Hrs_OT
+        ),
+
+    Hrs_DT =
+        CONVERT
+        (
+            decimal(10,2),
+            c.Actual_Hrs_DT + c.Rule_Hrs_DT
+        ),
+
+    Hrs_H2x =
+        CONVERT
+        (
+            decimal(10,2),
+            c.Actual_Hrs_H2x + c.Rule_Hrs_H2x
+        ),
+
+    Hrs_H3x =
+        CONVERT
+        (
+            decimal(10,2),
+            c.Actual_Hrs_H3x + c.Rule_Hrs_H3x
+        ),
+
+    c.Rule_Hrs_Gap,
+    c.Rule_Hrs_ShiftAdd,
+    c.Rule_Hrs_WTL_Net,
+
+    Rule_Hrs_Total =
+        CONVERT
+        (
+            decimal(10,2),
+              c.Rule_Hrs_Gap
+            + c.Rule_Hrs_ShiftAdd
+            + c.Rule_Hrs_WTL_Net
+        ),
+
+    c.Rest_Premium_Hrs_Affected,
+
+    c.Gross,
+    c.Rule_Amt_Gap,
+    c.Rule_Amt_ShiftAdd,
+    c.Rule_Amt_WTL,
+    c.Rest_Premium_Amt,
+
+    Bucket_Hrs_TieOut_Difference =
+        CONVERT
+        (
+            decimal(10,2),
+            (
+                  c.Actual_Hrs_ST
+                + c.Actual_Hrs_OT
+                + c.Actual_Hrs_DT
+                + c.Actual_Hrs_H2x
+                + c.Actual_Hrs_H3x
+                + c.Rule_Hrs_ST
+                + c.Rule_Hrs_OT
+                + c.Rule_Hrs_DT
+                + c.Rule_Hrs_H2x
+                + c.Rule_Hrs_H3x
+            )
+            - c.Expected_Payable_Hrs
+        ),
+
+    Bucket_Hrs_TieOut_Status =
+        CONVERT
+        (
+            varchar(20),
+            CASE
+                WHEN ABS
+                (
+                    (
+                          c.Actual_Hrs_ST
+                        + c.Actual_Hrs_OT
+                        + c.Actual_Hrs_DT
+                        + c.Actual_Hrs_H2x
+                        + c.Actual_Hrs_H3x
+                        + c.Rule_Hrs_ST
+                        + c.Rule_Hrs_OT
+                        + c.Rule_Hrs_DT
+                        + c.Rule_Hrs_H2x
+                        + c.Rule_Hrs_H3x
+                    )
+                    - c.Expected_Payable_Hrs
+                ) < 0.01
+                    THEN 'Balanced'
+
+                ELSE 'Out of balance'
+            END
+        ),
+
+    Has_H2x =
+        CONVERT
+        (
+            bit,
+            CASE
+                WHEN c.Actual_Hrs_H2x + c.Rule_Hrs_H2x <> 0
+                    THEN 1
+                ELSE 0
+            END
+        ),
+
+    Has_H3x =
+        CONVERT
+        (
+            bit,
+            CASE
+                WHEN c.Actual_Hrs_H3x + c.Rule_Hrs_H3x <> 0
+                    THEN 1
+                ELSE 0
+            END
+        ),
+
+    c.Bucket_Source,
+    c.Has_Pricing_Slices,
+    c.Pricing_Slice_Count,
+    c.Pricing_Slice_Hours,
+    c.Bucket_Source_Review_Flag,
+    c.Bucket_Source_Review_Message
+
+FROM Combined AS c;
+

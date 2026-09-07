@@ -13,6 +13,13 @@ part_of: payroll/INDEX.md
 
 # Legacy Payroll App — the full database extract
 
+> **Superseded in part on 2026-09-07.** Brian's 2026-09-07 backup was restored and diffed against
+> this extract: the rule procedures are unchanged, but 16 objects were added and 16 changed around
+> them (rest-slice DT buckets, non-union bucket source, salary exclusion, strict labor times,
+> whole-week recalculation). For those objects read
+> [../legacy-payroll-app-db-backup-2026-09-07/INDEX.md](../legacy-payroll-app-db-backup-2026-09-07/INDEX.md)
+> first; every other line anchor here still holds.
+
 **What this is.** On 2026-08-18 the AI tool on the client machine ran the extraction prompt
 against the live legacy database `TCG_PayrollAPP` (`localhost\SQLEXPRESS`, SQL Server 2025
 Express) and returned `PAYROLL_CALC_EXTRACT.zip`: **all 141 programmable object definitions

@@ -1,0 +1,32 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,6 +1,5 @@
+-
+ /* 61B-1 - Patch pay component labor-entry summary view */
+ 
+-CREATE VIEW api.v_UI_Payroll_PayComponent_Summary
++CREATE VIEW [api].[v_UI_Payroll_PayComponent_Summary]
+ AS
+ WITH c AS
+@@ -70,8 +69,13 @@
+ 
+ Sustenance =
+-SUM(CASE
+-WHEN p.ComponentCode LIKE 'SUSTENANCE%'
+-THEN p.ComponentAmount ELSE 0
+-END),
++SUM
++(
++CASE
++WHEN p.ComponentGroup = 'SUBSISTENCE'
++OR p.ComponentCode LIKE 'SUBSISTENCE%'
++THEN p.ComponentAmount
++ELSE 0
++END
++),
+ 
+ LedgerFinalGross =
+@@ -235,2 +239,3 @@
+ ON c.LaborPayrollID = pc.LaborPayrollID;
+ 
++

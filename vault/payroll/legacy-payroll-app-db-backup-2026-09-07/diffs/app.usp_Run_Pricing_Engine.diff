@@ -1,0 +1,133 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,4 +1,2 @@
+-
+-
+ 
+ 
+@@ -12,4 +10,5 @@
+ @WorkDateFrom date = NULL
+ , @WorkDateTo date = NULL
++, @StrictLaborTimes bit = 1
+ AS
+ BEGIN
+@@ -161,6 +160,9 @@
+ LEFT JOIN app.v_LaborPayroll_CommentTokens CT
+ ON CT.LaborPayrollID = P.LaborPayrollID
++LEFT JOIN src.FMS_EMPLOYEES_Raw EPay
++ON EPay.EmpID = P.EmpID
+ WHERE P.WorkDate >= @FromDT
+-AND P.WorkDate < @ToExDT;
++AND P.WorkDate < @ToExDT
++AND ISNULL(EPay.PayType, '') <> 'S';
+ 
+ CREATE UNIQUE CLUSTERED INDEX CX_LP ON #LP (LaborPayrollID);
+@@ -434,6 +436,12 @@
+ SELECT
+ a.LaborPayrollID,
+-Shift_Start = COALESCE(a.Timeline_Start, lt.LaborStart_Rounded, fb.FallbackStart_Rounded),
+-Shift_End = COALESCE(a.Timeline_End, lt.LaborEnd_Rounded, fb.FallbackEnd_Rounded),
++Shift_Start = COALESCE(a.Timeline_Start, lt.LaborStart_Rounded, CASE
++WHEN @StrictLaborTimes = 0
++THEN fb.FallbackStart_Rounded
++END),
++Shift_End = COALESCE(a.Timeline_End, lt.LaborEnd_Rounded, CASE
++WHEN @StrictLaborTimes = 0
++THEN fb.FallbackEnd_Rounded
++END),
+ 
+ Shift_Source_Start =
+@@ -441,5 +449,7 @@
+ WHEN a.Timeline_Start IS NOT NULL THEN 'Timeline'
+ WHEN lt.LaborStart_Rounded IS NOT NULL THEN 'LaborTimes'
+-WHEN fb.FallbackStart_Rounded IS NOT NULL THEN 'StdStart+Hours'
++WHEN @StrictLaborTimes = 0
++AND fb.FallbackStart_Rounded IS NOT NULL
++THEN 'StdStart+Hours'
+ ELSE NULL
+ END,
+@@ -448,5 +458,7 @@
+ WHEN a.Timeline_End IS NOT NULL THEN 'Timeline'
+ WHEN lt.LaborEnd_Rounded IS NOT NULL THEN 'LaborTimes'
+-WHEN fb.FallbackEnd_Rounded IS NOT NULL THEN 'StdStart+Hours'
++WHEN @StrictLaborTimes = 0
++AND fb.FallbackEnd_Rounded IS NOT NULL
++THEN 'StdStart+Hours'
+ ELSE NULL
+ END
+@@ -762,8 +774,18 @@
+ Reason =
+ CASE
+-WHEN fs.Shift_Start IS NULL THEN 'Shift_Start NULL'
+-WHEN fs.Shift_End IS NULL THEN 'Shift_End NULL'
+-WHEN fs.Shift_End <= fs.Shift_Start THEN 'Shift_End <= Shift_Start'
+-ELSE 'Unknown'
++WHEN p.TimeStart_Labor IS NULL
++OR p.TimeEnd_Labor IS NULL
++THEN 'Missing_Required_Labor_Times'
++
++WHEN TRY_CONVERT(time(0), p.TimeStart_Labor)
++= TRY_CONVERT(time(0), p.TimeEnd_Labor)
++THEN 'Invalid_Labor_Time_Interval'
++
++WHEN fs.Shift_Start IS NULL
++OR fs.Shift_End IS NULL
++OR fs.Shift_End <= fs.Shift_Start
++THEN 'Invalid_Labor_Time_Interval'
++
++ELSE 'Invalid_Labor_Time_Interval'
+ END,
+ la.LaborPayrollID,
+@@ -790,7 +812,11 @@
+ Shift_End = la.Shift_End
+ ) fs
+-WHERE fs.Shift_Start IS NULL
++WHERE ISNULL(p.HoursWorked_Raw, 0) > 0
++AND
++(
++fs.Shift_Start IS NULL
+ OR fs.Shift_End IS NULL
+-OR fs.Shift_End <= fs.Shift_Start;
++OR fs.Shift_End <= fs.Shift_Start
++);
+ 
+ DECLARE @BadCnt int = (SELECT COUNT(*) FROM #BadShift);
+@@ -1302,5 +1328,5 @@
+ INSERT INTO [fms].[Payroll_Calculated] WITH (TABLOCK)
+ (
+-LaborPayrollID, JobTicketID, JobCode, EmpID, Employee_Name,
++RunId, LaborPayrollID, JobTicketID, JobCode, EmpID, Employee_Name,
+ TicketDate, WorkDate,
+ Act_Total_Hrs, Act_Boom_Hrs,
+@@ -1312,5 +1338,5 @@
+ )
+ SELECT
+-LaborPayrollID, JobTicketID, JobCode, EmpID, Employee_Name,
++@RunId, LaborPayrollID, JobTicketID, JobCode, EmpID, Employee_Name,
+ TicketDate, WorkDate,
+ Act_Total_Hrs, Act_Boom_Hrs,
+@@ -1332,5 +1358,5 @@
+ - because fms.Payroll_CalcException allows only ONE row per
+ CalcRunAt + LaborPayrollID, we:
+-1) UPDATE existing row to prepend warning text
++1) UPDATE existing row to append warning text while preserving primary severity
+ 2) INSERT only when no row exists yet
+ ============================================================ */
+@@ -1375,5 +1401,5 @@
+ );
+ 
+-/* 1) Prepend onto existing exception row for this run/LPID */
++/* 1) Append warning to existing exception row while preserving primary severity */
+ UPDATE e
+ SET e.Reason =
+@@ -1382,5 +1408,5 @@
+ WHEN e.Reason LIKE '%Warn_Reconstruction%'
+ THEN e.Reason
+-ELSE CONCAT(ra.Reason, ' | ', e.Reason)
++ELSE CONCAT(e.Reason, ' | ', ra.Reason)
+ END,
+ 100
+@@ -1476,2 +1502,3 @@
+ END;
+ 
++

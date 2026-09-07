@@ -44,3 +44,9 @@ tags: [module/payroll, kind/rule, open-questions]
   classifying), six reason-carrying components, no union minimums, and **nine validation scenarios**.
   ERP status per test is in that file: 1–3 pass only for single-ticket days (engine is per ticket),
   4–7 fail, 8 partial, 9 passes. Verification: [client-message-findings.md#2026-09-07--non-union-hourly-rules-summary-and-nine-validation-scenarios-brian-petros](../client-message-findings.md#2026-09-07--non-union-hourly-rules-summary-and-nine-validation-scenarios-brian-petros).
+- **Verified in the 2026-09-07 backup ([legacy-payroll-app-db-backup-2026-09-07/INDEX.md](../legacy-payroll-app-db-backup-2026-09-07/INDEX.md)):** the CA procedure itself was not changed. The
+  "mixing up" was the **bucket source**: `v_UI_Payroll_LaborEntry_HourBuckets` now takes non-union
+  hourly rows' ST/OT/DT from the persisted CA classification and never from union pricing slices, so
+  they *"do not inherit L12 Special Saturday or Holiday H2x/H3x"*. Bucket source is tagged and
+  tie-out-checked. ERP equivalent: a non-union row must never pass through the L12 day-type
+  classifier at all — which `priceNonUnionHourly` already guarantees.

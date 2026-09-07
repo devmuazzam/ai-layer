@@ -31,3 +31,7 @@ tags: [module/payroll, kind/rule, open-questions]
   may rename but **must keep daily > 8, weekly > 40 and seventh-day distinguishable**. Engine today
   emits `PAY-012` "Overtime" with no reason — the taxonomy this blocking item asks for is now stated
   for one group.
+- **Rule-narrative layer (2026-09-07 backup, [legacy-payroll-app-db-backup-2026-09-07/INDEX.md](../legacy-payroll-app-db-backup-2026-09-07/INDEX.md) §6):** the legacy app now generates a
+  per-entry *Applied Payroll Rules* text and *Calculation / Review Notes* from the component ledger
+  (`v_UI_Payroll_LaborEntry_AppliedRuleDetail` and siblings) — every rule it can name is a literal
+  in that view. A ready reference for the ERP's own explain layer (`packages/payroll-engine/src/explain.ts`).

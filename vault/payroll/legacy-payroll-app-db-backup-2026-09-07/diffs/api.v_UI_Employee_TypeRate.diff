@@ -1,0 +1,379 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,13 +1,39 @@
++/*============================================================
++ALTER VIEW
++
++CHANGE:
++PayType S is already classified as Salary.
++
++Salary employees should therefore NOT receive an
++employee-type CraftCode/rate-pattern review warning.
++
++No other classification or rate behavior is changed.
++============================================================*/
+ 
+ CREATE VIEW api.v_UI_Employee_TypeRate
+ AS
++
+ SELECT
++------------------------------------------------------------
+ -- FCC employee fields
++------------------------------------------------------------
+ e.EmpID,
+ e.LName,
+ e.FName,
+ e.MName,
++
+ Employee_Name =
+-LTRIM(RTRIM(CONCAT(ISNULL(e.FName, ''), ' ', ISNULL(e.LName, '')))),
++LTRIM
++(
++RTRIM
++(
++CONCAT
++(
++ISNULL(e.FName, ''),
++' ',
++ISNULL(e.LName, '')
++)
++)
++),
+ 
+ e.CertPay,
+@@ -31,5 +57,8 @@
+ e.Supervisor,
+ e.EmpTypeId,
+-EmployeeTypeSourceDescription = et.Description,
++
++EmployeeTypeSourceDescription =
++et.Description,
++
+ e.BurdenCode,
+ e.WorkerCompCode,
+@@ -38,28 +67,51 @@
+ e.Comments,
+ 
++------------------------------------------------------------
+ -- ADP mapping
+-ADP_FileNumber = adp.ExternalIdentifierValue,
+-
++------------------------------------------------------------
++ADP_FileNumber =
++adp.ExternalIdentifierValue,
++
++------------------------------------------------------------
+ -- Employee craft description from FMS_CRAFTS
+-EmployeeCraftDescription = craft.Description,
+-
++------------------------------------------------------------
++EmployeeCraftDescription =
++craft.Description,
++
++------------------------------------------------------------
+ -- Employee craft base rate from UNION_CRAFT
+-EmployeeCraftBaseRate = uc.PayRate,
+-
++------------------------------------------------------------
++EmployeeCraftBaseRate =
++uc.PayRate,
++
++------------------------------------------------------------
+ -- Payroll App derived employee type
++------------------------------------------------------------
+ PayrollEmployeeType =
+ CASE
+-WHEN e.CraftCode LIKE 'SYS%' THEN 'System-Testing-VendorAccess'
+-
+-WHEN e.CraftCode LIKE 'L12%' AND ISNULL(e.EmpTypeId, -1) = 3
++WHEN e.CraftCode LIKE 'SYS%'
++THEN 'System-Testing-VendorAccess'
++
++WHEN e.PayType = 'S'
++AND e.CraftCode LIKE 'ADMIN%'
++THEN 'Non-Union Admin Salary'
++
++WHEN e.PayType = 'S'
++THEN 'Salary'
++
++WHEN e.CraftCode LIKE 'L12%'
++AND ISNULL(e.EmpTypeId, -1) = 3
+ THEN 'L12 Labor Union Mechanic'
+ 
+-WHEN e.CraftCode LIKE 'L12%' AND ISNULL(e.EmpTypeId, -1) <> 3
++WHEN e.CraftCode LIKE 'L12%'
++AND ISNULL(e.EmpTypeId, -1) <> 3
+ THEN 'L12 Labor Union Field'
+ 
+-WHEN e.CraftCode LIKE 'ADMIN%' AND e.PayType = 'H'
++WHEN e.CraftCode LIKE 'ADMIN%'
++AND e.PayType = 'H'
+ THEN 'Non-Union Admin Hourly'
+ 
+-WHEN e.CraftCode LIKE 'ADMIN%' AND e.PayType = 'S'
++WHEN e.CraftCode LIKE 'ADMIN%'
++AND e.PayType = 'S'
+ THEN 'Non-Union Admin Salary'
+ 
+@@ -72,18 +124,49 @@
+ PayrollEmployeeTypeSort =
+ CASE
+-WHEN e.CraftCode LIKE 'L12%' AND ISNULL(e.EmpTypeId, -1) <> 3 THEN 10
+-WHEN e.CraftCode LIKE 'L12%' AND ISNULL(e.EmpTypeId, -1) = 3 THEN 20
+-WHEN e.CraftCode LIKE 'ADMIN%' AND e.PayType = 'H' THEN 30
+-WHEN e.CraftCode LIKE 'ADMIN%' AND e.PayType = 'S' THEN 40
+-WHEN e.CraftCode LIKE 'SYS%' THEN 90
++WHEN e.CraftCode LIKE 'SYS%'
++THEN 90
++
++WHEN e.PayType = 'S'
++THEN 40
++
++WHEN e.CraftCode LIKE 'L12%'
++AND ISNULL(e.EmpTypeId, -1) <> 3
++THEN 10
++
++WHEN e.CraftCode LIKE 'L12%'
++AND ISNULL(e.EmpTypeId, -1) = 3
++THEN 20
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++AND e.PayType = 'H'
++THEN 30
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++AND e.PayType = 'S'
++THEN 40
++
++WHEN e.CraftCode LIKE 'SYS%'
++THEN 90
++
+ ELSE 99
+ END,
+ 
++------------------------------------------------------------
++-- Informational employee-level hourly rate
++-- No change in this deployment.
++------------------------------------------------------------
+ BaseHourlyRate =
+-CAST(
+-CASE
+-WHEN e.CraftCode LIKE 'L12%' THEN uc.PayRate
+-WHEN e.CraftCode LIKE 'ADMIN%' THEN e.PayRate
+-WHEN e.CraftCode LIKE 'SYS%' THEN 0.00
++CAST
++(
++CASE
++WHEN e.CraftCode LIKE 'L12%'
++THEN uc.PayRate
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++THEN e.PayRate
++
++WHEN e.CraftCode LIKE 'SYS%'
++THEN 0.00
++
+ ELSE NULL
+ END
+@@ -92,17 +175,28 @@
+ BaseHourlyRateSource =
+ CASE
+-WHEN e.CraftCode LIKE 'L12%' THEN 'Employee.CraftCode -> UNION_CRAFT.PayRate'
+-WHEN e.CraftCode LIKE 'ADMIN%' THEN 'Employee.PayRate'
+-WHEN e.CraftCode LIKE 'SYS%' THEN 'System access / non-payroll'
++WHEN e.CraftCode LIKE 'L12%'
++THEN 'Employee.CraftCode -> UNION_CRAFT.PayRate'
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++THEN 'Employee.PayRate'
++
++WHEN e.CraftCode LIKE 'SYS%'
++THEN 'System access / non-payroll'
++
+ ELSE 'Unknown / Needs Review'
+ END,
+ 
+ ApproxWeekly =
+-CAST(
+-CASE
+-WHEN e.CraftCode LIKE 'L12%' AND uc.PayRate IS NOT NULL
++CAST
++(
++CASE
++WHEN e.CraftCode LIKE 'L12%'
++AND uc.PayRate IS NOT NULL
+ THEN uc.PayRate * 40.0
+-WHEN e.CraftCode LIKE 'ADMIN%' AND e.PayRate IS NOT NULL
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++AND e.PayRate IS NOT NULL
+ THEN e.PayRate * 40.0
++
+ ELSE NULL
+ END
+@@ -110,10 +204,15 @@
+ 
+ ApproxMonthly =
+-CAST(
+-CASE
+-WHEN e.CraftCode LIKE 'L12%' AND uc.PayRate IS NOT NULL
++CAST
++(
++CASE
++WHEN e.CraftCode LIKE 'L12%'
++AND uc.PayRate IS NOT NULL
+ THEN uc.PayRate * 2080.0 / 12.0
+-WHEN e.CraftCode LIKE 'ADMIN%' AND e.PayRate IS NOT NULL
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++AND e.PayRate IS NOT NULL
+ THEN e.PayRate * 2080.0 / 12.0
++
+ ELSE NULL
+ END
+@@ -121,10 +220,15 @@
+ 
+ ApproxAnnual =
+-CAST(
+-CASE
+-WHEN e.CraftCode LIKE 'L12%' AND uc.PayRate IS NOT NULL
++CAST
++(
++CASE
++WHEN e.CraftCode LIKE 'L12%'
++AND uc.PayRate IS NOT NULL
+ THEN uc.PayRate * 2080.0
+-WHEN e.CraftCode LIKE 'ADMIN%' AND e.PayRate IS NOT NULL
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++AND e.PayRate IS NOT NULL
+ THEN e.PayRate * 2080.0
++
+ ELSE NULL
+ END
+@@ -132,15 +236,49 @@
+ 
+ IsSystemTestingVendorAccess =
+-CAST(CASE WHEN e.CraftCode LIKE 'SYS%' THEN 1 ELSE 0 END AS bit),
++CAST
++(
++CASE
++WHEN e.CraftCode LIKE 'SYS%'
++THEN 1
++ELSE 0
++END
++AS bit),
+ 
+ IsVisibleInPayrollUI =
+-CAST(CASE WHEN e.CraftCode LIKE 'SYS%' THEN 0 ELSE 1 END AS bit),
+-
++CAST
++(
++CASE
++WHEN e.CraftCode LIKE 'SYS%'
++THEN 0
++ELSE 1
++END
++AS bit),
++
++------------------------------------------------------------
++-- Employee-type review flag
++--
++-- NEW:
++-- PayType S is already authoritatively Salary.
++-- Craft/rate pattern review is not applicable.
++------------------------------------------------------------
+ EmployeeTypeReviewFlag =
+-CAST(
+-CASE
+-WHEN e.CraftCode LIKE 'SYS%' THEN 0
+-WHEN e.CraftCode LIKE 'L12%' AND uc.PayRate IS NOT NULL THEN 0
+-WHEN e.CraftCode LIKE 'ADMIN%' AND e.PayRate IS NOT NULL AND e.PayType IN ('H', 'S') THEN 0
++CAST
++(
++CASE
++WHEN e.CraftCode LIKE 'SYS%'
++THEN 0
++
++WHEN e.PayType = 'S'
++THEN 0
++
++WHEN e.CraftCode LIKE 'L12%'
++AND uc.PayRate IS NOT NULL
++THEN 0
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++AND e.PayRate IS NOT NULL
++AND e.PayType IN ('H', 'S')
++THEN 0
++
+ ELSE 1
+ END
+@@ -149,21 +287,38 @@
+ EmployeeTypeReviewMessage =
+ CASE
+-WHEN e.CraftCode LIKE 'SYS%' THEN NULL
+-
+-WHEN e.CraftCode LIKE 'L12%' AND uc.PayRate IS NULL
+-THEN 'L12 employee craft code did not resolve to UNION_CRAFT.PayRate.'
+-
+-WHEN e.CraftCode LIKE 'L12%' THEN NULL
+-
+-WHEN e.CraftCode LIKE 'ADMIN%' AND e.PayType NOT IN ('H', 'S')
+-THEN 'ADMIN employee has unknown/nonstandard PayType.'
+-
+-WHEN e.CraftCode LIKE 'ADMIN%' AND e.PayRate IS NULL
+-THEN 'ADMIN employee is missing Employee.PayRate.'
+-
+-WHEN e.CraftCode LIKE 'ADMIN%' THEN NULL
+-
+-ELSE 'Employee CraftCode does not match configured Payroll App employee-type patterns.'
+-END
++WHEN e.CraftCode LIKE 'SYS%'
++THEN NULL
++
++----------------------------------------------------
++-- NEW
++----------------------------------------------------
++WHEN e.PayType = 'S'
++THEN NULL
++
++WHEN e.CraftCode LIKE 'L12%'
++AND uc.PayRate IS NULL
++THEN
++'L12 employee craft code did not resolve to UNION_CRAFT.PayRate.'
++
++WHEN e.CraftCode LIKE 'L12%'
++THEN NULL
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++AND e.PayType NOT IN ('H', 'S')
++THEN
++'ADMIN employee has unknown/nonstandard PayType.'
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++AND e.PayRate IS NULL
++THEN
++'ADMIN employee is missing Employee.PayRate.'
++
++WHEN e.CraftCode LIKE 'ADMIN%'
++THEN NULL
++
++ELSE
++'Employee CraftCode does not match configured Payroll App employee-type patterns.'
++END
++
+ FROM src.FMS_EMPLOYEES_Raw e
+ 
+@@ -173,5 +328,6 @@
+ LEFT JOIN src.FMS_UNION_CRAFT_Raw uc
+ ON uc.CraftCode = e.CraftCode
+-AND (
++AND
++(
+ uc.UnionCode = e.UnionCode
+ OR e.UnionCode IS NULL
+@@ -188,2 +344,3 @@
+ AND adp.IsActive = 1;
+ 
++

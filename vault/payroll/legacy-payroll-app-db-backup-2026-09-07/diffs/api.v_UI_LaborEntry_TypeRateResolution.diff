@@ -1,0 +1,30 @@
+--- vault-2026-08-18
++++ db-2026-09-07
+@@ -1,4 +1,2 @@
+-
+-CREATE VIEW api.v_UI_LaborEntry_TypeRateResolution
+ AS
+ WITH Base AS
+@@ -71,4 +69,10 @@
+ OR b.Labor_CraftCode LIKE 'SYS%'
+ THEN 'System-Testing-VendorAccess'
++WHEN b.Employee_PayType = 'S'
++AND b.Labor_CraftCode LIKE 'ADMIN%'
++THEN 'Non-Union Admin Salary'
++
++WHEN b.Employee_PayType = 'S'
++THEN 'Salary'
+ 
+ WHEN b.Labor_CraftCode LIKE 'L12%' AND ISNULL(b.Employee_EmpTypeId, -1) = 3
+@@ -92,4 +96,7 @@
+ LaborEntryEmployeeTypeSort =
+ CASE
++WHEN b.Employee_CraftCode LIKE 'SYS%'
++OR b.Labor_CraftCode LIKE 'SYS%' THEN 90
++WHEN b.Employee_PayType = 'S' THEN 40
+ WHEN b.Labor_CraftCode LIKE 'L12%' AND ISNULL(b.Employee_EmpTypeId, -1) <> 3 THEN 10
+ WHEN b.Labor_CraftCode LIKE 'L12%' AND ISNULL(b.Employee_EmpTypeId, -1) = 3 THEN 20
+@@ -247,2 +254,3 @@
+ FROM Resolved r;
+ 
++

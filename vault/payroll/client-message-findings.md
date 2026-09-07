@@ -717,6 +717,20 @@ diff it against [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/I
 than re-extracting from scratch, and note in `rules/PAY-045` and `rules/PAY-012` what actually
 changed in the procedures.
 
+**Ingested 2026-09-07** — [legacy-payroll-app-db-backup-2026-09-07/INDEX.md](legacy-payroll-app-db-backup-2026-09-07/INDEX.md). Verdict on the message, now from the code: **the rule
+procedures did not change.** `usp_Apply_RestPeriod_Premium` is identical to the 2026-08-18 extract;
+`usp_Apply_CA_NonUnionAdminHourly_OT` gained only a `@ReturnResults` switch; no `cfg.*` row moved.
+What changed is around them: (1) a post-pricing **rest-slice adjustment** table and *effective*
+slice views that re-source the ST/OT/DT buckets, so forced slices count in DT — the exhibit's rows
+read *"Rest chain over 12 hrs"*, RestMultiplier 1.5 → 2.0 exactly where the chain passes 12 h, deltas
+$487.62 / $348.30 / $679.19; (2) the **bucket source** for non-union rows is now the CA classifier
+and never union day-type buckets (*"the mixing-up"*); (3) **salary excluded before pricing** with a
+regression test; (4) `@StrictLaborTimes = 1` — the assumed-06:00 shift fallback is **off**, missing
+times become exceptions; (5) interactive recalculation is an exact Sat–Fri week with a
+**fresh-prior-week guard**, RunId on every output row; (6) Excel/rule-narrative procs. Two register
+consequences worth a line: WTL now reads rest-adjusted slice pay (rest before WTL), and PAY-018's
+assumption is disabled in production.
+
 ## 2026-09-07 — non-union hourly rules summary and nine validation scenarios (Brian Petros)
 
 Following his "no rule change" reply, Brian sends a summary of the non-union rules (*"nothing
