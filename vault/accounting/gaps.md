@@ -2,7 +2,7 @@
 title: Accounting — open questions
 status: reference
 kind: gaps
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/accounting, kind/gaps, open-questions]
 ---
 
@@ -258,3 +258,56 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** the accounting module's AR scope; `SCRUM-478` (PO epic); whether the ERP's invoice
   entity requires a job FK.
 - **Owner:** Brian Petros (raised it); Melissa McNutt for the AR policy call.
+
+## Billable hours — the recordings say portal to portal, the Jira decision says boom time plus WTL
+
+- **Status:** open
+- **Asked:** 2026-09-07 — syed.haris, reviewing what the record says billable hours are, with the
+  instruction to weigh recordings and client messages over Jira. Sweep of 18 transcripts and the
+  client-supplied billing documents.
+- **Question:** what span of a labor ticket is invoiced to the customer, and how does it map to
+  invoice lines? Two TCG-stated models coexist and a third is inferred from an invoice.
+  **(i) Portal to portal, hourly** — billing starts at the yard (pre-trip / dispatch start) and ends
+  on return to the yard: Lisette Anzaldo 2026-05-21 10:46 *"the customer gets charged the second
+  they leave from here"*; Melissa McNutt 05-21 48:56 / 49:37 *"we charge portal to portal… we bill
+  from our portal to our portal for every job"*; Melissa 2026-06-04 45:56 *"their labor hours
+  should always match the billing hours to the customer"*; Brian Petros 05-21 11:50–12:40 (three
+  chunks: portal, work, portal back); Corrina Bustos and Kyle Harlow 2026-06-16 24:39–24:47 and
+  2026-09-03 47:10–47:57 (yard start); LEM ticket T&C §13 *"All charges begin and end with Pre &
+  Post trip inspections at equipment(s) dispatched location(s)"*. **(ii) Mob / crane time / demob,
+  bundled** — Brian 2026-05-05 57:37–59:13 with Joe Schacatano concurring: drive and set-up inside
+  *mobilization*, *"we bill off the total hours of the crane working"*, breakdown and drive back
+  inside *demobilization*; Ryan Adams 2026-06-16 38:59 frames (i) and (ii) as **alternatives per
+  quote**. **(iii) Travel as its own hourly line** — LADWP invoice item 57 *Portal In-Out 3.50 h* at
+  the crane rate beside crane hours and operator hours
+  ([invoice-packets-2026-04-worked-examples.md](invoice-packets-2026-04-worked-examples.md)).
+  Against all three stands the vault's own decision note
+  [../decisions/2026-08-21-scrum-877-labor-and-unit-details-oiler-crew-linking.md](../decisions/2026-08-21-scrum-877-labor-and-unit-details-oiler-crew-linking.md):
+  *net billable hours = boom time + 30 min per WTL, yard and travel excluded* — sourced from Jira
+  comments by `tcgproject12`, an account not tied to a named speaker. **No TCG person says that in
+  any recording.** Every TCG statement that defines boom / hook time (Corrina 2026-06-09 37:33,
+  Melissa 2026-05-19 44:37 and 2026-05-28 46:46, Kyle 2026-09-03 45:34) attaches it to **boom pay**,
+  the payroll premium, never to what the customer is billed. *"Net billable hours"* itself is a
+  CodingCops screen label (ehtesham.anwar 2026-06-16 34:14), and the June demo computed it as
+  yard-to-yard minus lunch — the opposite of the Jira formula.
+  Sub-questions: (a) which model is the default and who chooses per quote; (b) is the Jira
+  "boom + WTL" a real billing rule from a named person, or a boom-**pay** statement mislabelled
+  billable; (c) the customer signature: it is the evidentiary basis for the billed times (Melissa
+  05-21 37:15, Corrina 2026-05-26 17:17, signed tickets travel with LADWP invoices) but never the
+  boundary — invoiced times are deliberately back-dated to the yard and lifted to minimums
+  (Melissa 05-21 47:22–49:18: *"the employee would show 2 hours, for the invoice we would show 4"*);
+  (d) standby: Melissa 2026-07-01 25:08 avoids charging it, the LADWP ticket bills *Permit Stand By
+  1.5 h*; (e) the contract bills to a post-trip Melissa says TCG does not perform
+  ([../field-ops/gaps.md](../field-ops/gaps.md) post-trip conflict).
+- **Sources checked:** meetings/transcripts 2026-05-05, 05-14, 05-18, 05-19, 05-21, 05-26, 05-28,
+  06-04, 06-09, 06-16, 07-01, 07-28, 07-30, 09-02, 09-03; [2026-07-invoicing-adjustment-taxonomy.md](2026-07-invoicing-adjustment-taxonomy.md);
+  [../quotations/quote-terms-and-rate-card.md](../quotations/quote-terms-and-rate-card.md) §7;
+  [../field-ops/field-paper-forms.md](../field-ops/field-paper-forms.md) §13–14;
+  [../quotations/gaps.md](../quotations/gaps.md) → *Billable hour minimums and maximums* (the
+  minimums half of the same question); `payroll/rules/PAY-004` (payable ≠ billable principle).
+- **Blocked:** the ticket-to-invoice hours mapping (the reconciliation the April packets show being
+  done by hand), the Labor & Unit *net billable* figure on the field ticket, and any automatic
+  invoice from actual hours.
+- **Owner:** Melissa McNutt (billing model per quote), with Brian Petros to say whether the
+  SCRUM-877 comments were his and meant billing or boom pay; Micaela Dipane for what AR invoices.
+
