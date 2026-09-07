@@ -1749,6 +1749,44 @@ editability). Each entry below is a concrete code defect still open until fixed.
   Melissa: *"we only have one right now."* No TCG statement chooses. (a) and (b) still need Brian or
   Mohsin.
 
+## Was the New Customer Packet gate on quotation send meant to be retired, and should the toggle default on only for new customers?
+
+- **Status:** open
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (commit
+  `0010cbc5`). **Not a ticket question:** the branch carries no `SCRUM-###`, no
+  `.ai/aidlc/SCRUM-###/` folder and no `processed.log` row.
+- **Question:** the branch removes the `customerPreQuoteComplete` prop from the whole send path
+  (`send-quotation-modal.tsx`, `signature-status-panel.tsx`, `signature-status-panel.view.tsx`,
+  `detail-left-panel.tsx`) along with `QuotationCustomer.preQuoteDataCompletedAt`. The prop was
+  already inert on `main` — `formsToggleLocked` is a hardcoded `const … = false`, so the customer's
+  completion state has locked nothing for some time; the branch deletes the dead wiring, not a live
+  gate. Two things still need a person: (a) was the lock *intended* to be retired, or was
+  `formsToggleLocked = false` a temporary stub that was never wired back up and has now been made
+  unrecoverable? (b) separately, `usePreQuoteFormsSelection` defaults the "Include New Customer
+  Packet" toggle **ON for every customer**, new or existing, while the only written account of the
+  feature says it should be automatic **only when the customer is new**.
+- **Sources checked:** [INDEX.md](INDEX.md), [quotations-INDEX.md](quotations-INDEX.md) and all four
+  of its candidates; this register; [../decisions/](../decisions/) (nothing on send gating).
+  The only account of the behaviour is
+  [../meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md](../meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md)
+  L68 — `ehtesham.anwar` (**CodingCops**, describing his own build): *"If it's a new customer,
+  automatically it's going to be turned on, and it's going to include a new customer packet. And
+  also if somebody wants, they can just check job and labor compliance information request form as
+  well… **And if we don't want that, even if it's a new customer, we can just turn it off.**"*
+  `status: reference`, vendor voice, unadjudicated — but it describes a **default-on, always
+  overridable** toggle, i.e. no hard lock, which is consistent with the prop's removal and
+  inconsistent with the unconditional default. Earlier, weaker corroboration that the packet should
+  ride along with a new customer: [../meetings/transcripts/2026-03-26-tcg-cc-product-sync-demo.md](../meetings/transcripts/2026-03-26-tcg-cc-product-sync-demo.md)
+  L437 (Melissa McNutt) and [../meetings/transcripts/2026-06-25-cc-tcg-erp-system.md](../meetings/transcripts/2026-06-25-cc-tcg-erp-system.md)
+  L238–243 (Ryan Adams asks whether the packet should go out on customer create; answered by the
+  vendor, not by TCG). Jira could **not** be checked — the MCP server returns `403 Tenant is
+  restricted: suspended-payment`.
+- **Note:** (a) is low risk — the prop removal matches the only written source. (b) is a live
+  behavioural divergence from that same source and is answerable in one line.
+- **Blocked:** nothing hard; the packet's own content is open in
+  [../customers/gaps.md](../customers/gaps.md) → *Billing Information and Pre Labor Form tabs*.
+- **Owner:** Ryan Adams / Melissa McNutt (sales send behaviour and packet policy).
+
 ## Pointer — cascading resource picker completeness
 
 The quotation Resources tab is the largest consumer of the cascading resource picker, whose

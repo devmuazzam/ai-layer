@@ -2,7 +2,7 @@
 title: Customers — open questions
 status: reference
 kind: gaps
-updated: 2026-09-04
+updated: 2026-09-07
 tags: [module/customers, kind/gaps, open-questions]
 ---
 
@@ -502,3 +502,125 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   **79** in [assets/fcc-units-and-schedule-types.md](../assets/fcc-units-and-schedule-types.md) →
   *The 42 unit / equipment / storage tables*. Neither pointed-to question is answered; this pointer
   stays open until both are.
+
+## Retiring Pre-Quote Data — was removal ever asked for, and may the columns be dropped?
+
+- **Status:** open
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (commits
+  `0010cbc5`, `bfa06611`). **Not a ticket question:** the branch carries no `SCRUM-###`, no
+  `.ai/aidlc/SCRUM-###/` folder and no `processed.log` row, so there is no `spec.md` §12 to hold it.
+- **Question:** the branch deletes the customer **Pre-Quote Data** tab and drops
+  `customers.pre_quote_data` / `pre_quote_data_completed_at` with a bare
+  `ALTER TABLE ... DROP COLUMN IF EXISTS` and **no backfill into the new
+  `billing_information_data` / `pre_labor_data` columns** — every existing customer's pre-quote
+  answers are destroyed on `migrate deploy`. Three separable decisions, none written down anywhere:
+  (a) was retiring Pre-Quote Data asked for by anyone, or is the new Billing Information /
+  Pre Labor pair meant to sit *alongside* it? (b) if it is retired, is the stored data expendable,
+  or must it migrate into the replacement shape first? (c) is the retired field set (14 fields per
+  the removed `customerPreQuoteComplete` JSDoc) fully covered by the replacement?
+- **Sources checked:** [INDEX.md](INDEX.md), [customers-INDEX.md](customers-INDEX.md) and all five
+  of its candidates; this register. **Nothing anywhere asks for removal.** Every written trace
+  points the other way: `SCRUM-575` *Pre-Quote Data Form & Customer PO Form* — **Done**, reporter
+  Umair Khan, 2026-06-25 (quoted in
+  [../quotations/gaps.md](../quotations/gaps.md#customer-po-on-the-quotation-which-of-three-things-does-it-mean));
+  and [customer-and-job-sites.md](customer-and-job-sites.md) L27 — *"Need to ask TCG team to
+  provide pre quote form -- we need to assicate this data with customers"*, an **ask that was never
+  answered**, duplicated at [../meetings/2026-06-26-discussion-points-with-tcg-team.md](../meetings/2026-06-26-discussion-points-with-tcg-team.md) L15.
+  A vault file `customers/new-customer-packet.md` was cited into this review as a source — **it
+  does not exist**; there is no such file and never was. Jira could **not** be checked: the MCP
+  server returns `403 Tenant is restricted: suspended-payment`, so `SCRUM-575`'s current state and
+  any newer ticket are unverifiable from here.
+- **Blocked:** merging `bfa06611`. A destructive migration on data whose replacement mapping is
+  unspecified is not recoverable after deploy.
+- **Owner:** Melissa McNutt (customer packet / onboarding forms), with Ryan Adams on the
+  quotation-send side.
+
+## Billing Information and Pre Labor Form tabs — the names are sourced, nothing else is
+
+- **Status:** open
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (commit
+  `0010cbc5`). No ticket, no spec, no `processed.log` row.
+- **Question:** the branch adds two customer detail tabs — **Billing Information** (a composite of
+  five sub-forms: Credit Card Authorization, Credit Application, Terms & Conditions, Deposit Form,
+  Preliminary Notice) and **Pre Labor Form** — editable from the detail/edit workspace and
+  deliberately absent from the create wizard. What is sourced is only that the two paper artifacts
+  exist and were to be digitized. Unsourced: which five sub-forms belong in the composite and what
+  fields each carries; whether they are one tab or five; whether Pre Labor Form is the same artifact
+  as the "job and labor compliance information request form"; whether they belong on the customer
+  record at all rather than on the quotation or the project; and whether excluding them from
+  customer-create is intended or a gap.
+- **Sources checked:** [INDEX.md](INDEX.md), [customers-INDEX.md](customers-INDEX.md) and its five
+  candidates; [../accounting/INDEX.md](../accounting/INDEX.md); this register. The nearest sources,
+  both `status: reference` and both **CodingCops' own voice describing their own plan**, not a
+  client requirement: [../meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md](../meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md)
+  L70 — *"we have included the customer packet that Melissa and the team sent over to us and the job
+  compliance forms, both of these things… we need to also digitize them. And in the upcoming
+  sprints, we are going to digitize those as well"* — and `SCRUM-575`'s closing comment, which names
+  exactly the two artifacts *"1. new customer packet 2. job and labor compliance information request
+  form"* (quoted in [../quotations/gaps.md](../quotations/gaps.md#customer-po-on-the-quotation-which-of-three-things-does-it-mean)).
+  Client-side corroboration that the packet is a real business artifact with a defined content:
+  [../meetings/transcripts/2026-08-11-sales-process.md](../meetings/transcripts/2026-08-11-sales-process.md)
+  L213, Brian Petros — *"we would need to send the new customer packet. **There's a playbook on that
+  as well.**"* **That playbook, and Melissa's PDFs, are the missing source** — neither is in the
+  vault. Jira unavailable (`403 suspended-payment`).
+- **Note:** the field-level shape is recoverable without a product decision if someone supplies the
+  two PDFs; only the placement and the create-wizard exclusion need a person.
+- **Owner:** Melissa McNutt (owns the packet and the compliance forms).
+
+## Storing full credit card numbers and CVVs in `billing_information_data` — no source, and a compliance question
+
+- **Status:** open
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (commit
+  `0010cbc5`).
+- **Question:** `packages/shared/src/types/billing-information-data.ts` defines
+  `creditCardNumber` and `securityCode` (*"Full CVV"*, per its own comment) and they are persisted
+  **in plaintext** in the `customers.billing_information_data` JSONB column. The file's header
+  justifies this as *"stored in-app as full values for this internal tool (same approach as the
+  existing PDF workflow). No tokenization in this pass."* **That rationale appears nowhere outside
+  the source file** — no person is named as having accepted it. Two questions: (a) is TCG willing
+  to hold cardholder data in the ERP at all, versus capturing an authorization without retaining
+  the PAN; (b) if yes, at minimum, must the CVV be discarded after use and the PAN encrypted or
+  truncated?
+- **Sources checked:** the whole vault for `PCI`, `tokeniz*`, `stripe`, `authorize.net`,
+  `payment processor`, `encrypt` — **zero hits on card handling** anywhere, including all 57
+  transcripts. [../accounting/INDEX.md](../accounting/INDEX.md); [../admin/gaps.md](../admin/gaps.md);
+  [../decisions/](../decisions/) (26 notes, none on payments or data protection).
+  [../quotations/quote-terms-and-rate-card.md](../quotations/quote-terms-and-rate-card.md) L172 is
+  the only payment-terms content in the vault (*"First-time customers COD with 50% deposit, then net
+  15 on approval"*) and says nothing about how a card is captured or stored. Jira unavailable
+  (`403 suspended-payment`).
+- **Note:** this is the one item in this batch that is **not** purely a product-intent question.
+  Retaining the CVV/CAV2/CVC2 after authorization is prohibited by PCI-DSS req. 3.2 irrespective of
+  what TCG prefers, and a plaintext PAN puts the whole `customers` table in scope. It should not
+  merge on an unattributed code comment.
+- **Blocked:** merging `0010cbc5` as written.
+- **Owner:** Brian Petros (systems/compliance) — needs a named acceptance or a design change, not a
+  developer's judgement.
+
+## What makes Billing Information "Complete"? — an any-field rule, stampable from autofill alone
+
+- **Status:** open
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (commit
+  `0010cbc5`).
+- **Question:** `isBillingInformationDataComplete` (`packages/shared/src/types/billing-information-data.ts`)
+  is documented as *"Lenient completion: true when **any** of the five sub-forms has meaningful
+  progress"* — a single non-empty field in any one sub-form stamps
+  `billing_information_data_completed_at` (`customers.service.ts` L211 on create, L473 on update).
+  Compounding it, the form seeds `companyName` and `customerName` from `customer.customerName`
+  (`customer-billing-information-tab.tsx` L230/256/283/292 via `toFormValues`), so **opening the tab
+  and saving with nothing typed marks the customer Complete**. The retired predecessor used the
+  opposite rule — *"all 14 pre-quote data fields"*, per the JSDoc this branch deletes from
+  `customerPreQuoteComplete` and `preQuoteDataCompletedAt`. So an all-fields rule is being swapped
+  for an any-field rule and **neither rule has a written source**. Needed: (a) what does Complete
+  mean per sub-form, and must all five be complete for the customer to be; (b) which fields are
+  genuinely required; (c) should an autofilled value count as progress at all; (d) what consumes
+  the timestamp, now that the quotation-send gate that read its predecessor has been removed
+  (see [../quotations/gaps.md](../quotations/gaps.md)).
+- **Sources checked:** [INDEX.md](INDEX.md), [customers-INDEX.md](customers-INDEX.md) and its five
+  candidates; this register; [../decisions/](../decisions/). Nothing defines completion for the
+  packet, the compliance form, or their retired predecessor — the "14 fields" figure survives only
+  in code comments this branch removes, with no product source behind it either. Jira unavailable
+  (`403 suspended-payment`).
+- **Note:** if the timestamp has no downstream consumer, the cheapest correct move is to stop
+  stamping it until the rule is decided, rather than to pick a threshold here.
+- **Owner:** Melissa McNutt (what a returned packet must contain), with accounting on approval.
