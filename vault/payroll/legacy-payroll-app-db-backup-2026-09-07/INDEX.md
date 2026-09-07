@@ -38,7 +38,7 @@ diffs for the changed ones. Everything else compared identical (whitespace-only 
 | Backed up | 2026-09-07 02:00 server-local, 643 MB; compat 130, `SQL_Latin1_General_CP1_CI_AS` |
 | Objects | 41 tables (+3), 69 procs (+8), 75 views (+8), 10 TVFs, 3 functions, 44 synonyms (+4) |
 | Rows | `Payroll_Calculated` 90,959 · `Payroll_PayComponent` 147,473 · `Payroll_CalcException` 429,944 · **`Payroll_RestSliceAdjustment` 14,431 (new)** · `PayPeriod` 53 · `etl.RunLog` 755 (last `NightlyPayroll` 2026-09-07 08:02, five runs that morning) |
-| Sibling `TCG_RawFMS` | 1.5 GB `.bak` in the same zip, **not restored** — synonyms dangle; the ETL side is out of scope here |
+| Sibling `TCG_RawFMS` | 1.5 GB `.bak`, **restored 2026-09-07** (second pass). 48 tables (+4 since June: `stg.FMS_FILELINKS_UNIT_Raw`, `FMS_JOB_UNITS_Scheduling_Raw`, `FMS_UNIT_ACTIVITIES_Raw`, `FMS_UNIT_MEASURES_Raw`). **The pull from FCC is no longer nightly:** `etl.RunLog` shows ~289 runs a day — **every five minutes** — from 2026-08-23 (last ≤5-run day 2026-08-21), 5,756 runs total, a handful of failures per week. Data is current to the backup: last labor row modified 2026-09-07 01:24 UTC, last load 07:12 UTC; last ticket modified 2026-09-06 16:05; 91,449 labor rows, 48,400 tickets, 6,205 customers, 245 employees, 360 units. Still one-way FCC → staging, over the `FCC_NexGen` linked server; nothing writes back |
 | Code layer | `TCG.PayrollApi/Program.cs` (2,296 lines, last edited 2026-06-11) and `payroll-ui` (last edit 2026-06-11): the **same 15 endpoints and same pages** as [legacy-payroll-app-source-tree-2026-06-10.md](../legacy-payroll-app-source-tree-2026-06-10.md). The app's display changes are entirely SQL-side. The web folder carries `.env.local`, dev certificates and password hashes — **not copied** |
 
 ## What changed, by mechanism
@@ -150,6 +150,6 @@ test procs, and two `audit.*` backup tables the client now keeps for module defi
 | PAY-018 | The assumed-shift fallback is **disabled in production** — missing times are exceptions, not priced |
 | PAY-064 / PAY-002 | Run lineage on every output row; interactive recalculation is a whole Sat–Fri week with a fresh-prior-week guard — the client's own answer to the recalculation question of 2026-09-04 |
 
-Restore method: `docker run mcr.microsoft.com/mssql/server:2025-latest` (the 2022 image refuses
+Restore method (both databases): `docker run mcr.microsoft.com/mssql/server:2025-latest` (the 2022 image refuses
 database version 998), `RESTORE DATABASE … WITH MOVE`; definitions read from `sys.sql_modules`;
 diffs after whitespace normalisation. Nothing that writes was executed. Employee identifiers masked.

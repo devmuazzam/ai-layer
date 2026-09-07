@@ -2,7 +2,7 @@
 title: TCG_RawFMS — the nightly staging copy of FCC NexGen that feeds the legacy payroll app (schema, ETL, run history, code)
 source: shared-folder/Project-Repository-2026-09-04/3.7.1_MODULE-HR-LABOR-PAYROLL/PAYROLL_APP_build/PayrollAPP_0.5/TCG_SQL_backup_2026-06-23.7z → TCG_RawFMS_20260623.bak (1.35 GB), restored into SQL Server 2025 on 2026-09-04 and catalogued read-only
 migrated: 2026-09-04
-updated: 2026-09-04
+updated: 2026-09-07
 status: reference
 conflicts_with: []
 jira: []
@@ -35,6 +35,13 @@ Haris's machine outside the deleted SharePoint drop
 contains employee SSNs, driver-licence numbers, dates of birth, home addresses and pay rates
 (`stg.FMS_EMPLOYEES_Raw`) and customer federal tax IDs** — nothing from those columns is in
 the vault, and the folder must be treated as confidential.
+
+> **2026-09-07 — a newer copy exists and the cadence changed.** Brian's 2026-09-07 backup carries
+> `TCG_RawFMS_20260907.bak`, restored and compared: **48 tables (+4)** and the refresh now runs
+> **every five minutes, not nightly** — ~289 `etl.RunLog` rows a day since 2026-08-23. The
+> schedule row below (*once a night at 01:00*) describes June. Freshness, counts and the new
+> table names: [../legacy-payroll-app-db-backup-2026-09-07/INDEX.md](../legacy-payroll-app-db-backup-2026-09-07/INDEX.md)
+> → *Sibling `TCG_RawFMS`*. The four new tables' DDL is not yet in `ddl/`.
 
 ## Files in this folder
 
