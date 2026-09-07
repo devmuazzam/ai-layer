@@ -708,6 +708,15 @@ non-union; **build default stated to the client — the rest chain's 12-hour cou
 to be flipped if Corrina rules that WTL adds count**; SQL instance still requested. Nothing else
 outstanding from this thread.
 
+**(36) answered 2026-09-07:** Brian is uploading *"our most recent/updated Payroll App (web app and
+API)… and databases (data warehouse and payroll app calculation engine)"* as one zip. When it lands:
+it supersedes the 2026-08-18 extract for `usp_Apply_RestPeriod_Premium`, `cfg.RestPeriod_Rule`,
+`usp_Apply_CA_NonUnionAdminHourly_OT` and the UI; register it in [source-manifest.md](source-manifest.md),
+diff it against [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) and
+[legacy-payroll-app-source-tree-2026-06-10.md](legacy-payroll-app-source-tree-2026-06-10.md) rather
+than re-extracting from scratch, and note in `rules/PAY-045` and `rules/PAY-012` what actually
+changed in the procedures.
+
 ## 2026-09-07 — non-union hourly rules summary and nine validation scenarios (Brian Petros)
 
 Following his "no rule change" reply, Brian sends a summary of the non-union rules (*"nothing
