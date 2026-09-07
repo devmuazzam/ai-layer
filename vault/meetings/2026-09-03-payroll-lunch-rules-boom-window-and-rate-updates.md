@@ -7,8 +7,8 @@ updated: 2026-09-03
 status: unverified
 conflicts_with: []
 jira: []
-tags: [module/payroll, module/field-ops, module/dispatch, kind/meeting-notes, wtl, lunch, time-tracking, boom, craft-code, effective-dating, compliance]
-entities: [work-through-lunch, meal-period, customer-signature, boom-time, buildup, holdover, yard, time-rounding, craft-code-rate, effective-date]
+tags: [module/payroll, module/field-ops, module/dispatch, kind/meeting-notes, wtl, time-tracking, boom, craft-code, scheduling, yards, compliance]
+entities: []
 meeting_date: 2026-09-03
 ---
 

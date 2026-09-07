@@ -7,7 +7,7 @@ updated: 2026-09-03
 status: reference
 conflicts_with: []
 jira: []
-tags: [module/payroll, module/field-ops, module/dispatch, kind/transcript, wtl, lunch, time-tracking, boom, craft-code, effective-dating, compliance]
+tags: [module/payroll, module/field-ops, module/dispatch, kind/transcript, wtl, time-tracking, boom, craft-code, scheduling, yards, compliance]
 entities: []
 meeting_date: 2026-09-03
 kind: transcript
