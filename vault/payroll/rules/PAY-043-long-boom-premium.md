@@ -48,3 +48,11 @@ tags: [module/payroll, kind/rule, open-questions]
   has no build-up. **Multi-job day (Corrina 59:07):** the ST/OT/DT bucket a boom hour falls into is
   decided against the **whole day's work**, not the boom job alone — her worked examples are the
   2026-09-04 breakdowns in `client-message-findings.md`. Decision note [../../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md).
+- **On a holiday (e.g. Labor Day 2026-09-07, in `dim.LU12_Holiday`):** every boom-window slice is
+  H3x, and the adder is paid × 3 on each of them — Brian's engine, the ADP workbook's `LB 3X Rate`,
+  Corrina 2026-06-11 55:25, and `calculate.ts:157` all agree (see PAY-011's 2026-09-07 bullet). The
+  window is unchanged: build-up through breakdown incl. hook work, travel excluded. The 8-hour
+  holiday minimum's gap hours carry **no** boom (§7 of the legacy rules); the 4-hour long-boom
+  minimum still applies but never exceeds time worked. Contract note: *"No work shall be performed on
+  Labor Day, except in cases of extreme urgency"* (Art. III Holidays §3) — a Labor Day ticket is
+  itself an exception case.
