@@ -577,7 +577,15 @@ someone has confirmed otherwise.
 - **Rules:** [PAY-070](rules/PAY-070-foreman-premium.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#foreman-premium-granularity-multiplier-and-capture](gaps-2026-08-20-retired.md#foreman-premium-granularity-multiplier-and-capture)
 - Update 2026-09-04 (Project Repository ingest): three findings, none a decision. (a) **The premium has no route into ADP from the live workbook either.** `(PAY:FOREMAN)` is in the token vocabulary the sheets recognise, but `qPayrollComponents` expands only `LATT_*` and `SHIFT_*`; no foreman component reaches the export, so whatever is paid is folded into hand-typed hours or not paid ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) → *What the code reveals*, item 1). The `FRR/FRO/FRD/FRT` codes exist in ADP with nothing feeding them. (b) **"Shop Foreman" in the Truck Crane MLA is a Group 7 classification, not a premium** ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md) → Article IV) — a different thing from Brian's $3/hr company rule, and the only foreman the L12 truck-crane agreement knows. (c) The only contract language on foreman pay *treatment* in the vault is in the **SCCA Southern California MLA** §R: $2.00/hr over the highest supervised classification, *"added to the regular rate and become the base rate for the entire shift"* — i.e. into the rate, multiplied ([mcog-l12-mla-2025-2028/ocr-southern-california-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/ocr-southern-california-mla-2025-2028-full-text.md) → *R. Foreman*). Whether any TCG work falls under that agreement is unestablished, so this is a reference point, not a rule. FCC's labor row has no foreman column. Granularity, multiplier and the capture mechanism still need Brian / Jeff Kelley.
-
+- Update 2026-09-08 (ADP workbook v5.1, [adp-workbook-v5.1-engine.md](adp-workbook-v5.1-engine.md)):
+  **the multiplier and capture halves are now answered by practice, not by a decision.** `ADP
+  TempRates` configures `FOREMAN` → `FRR/FRO/FRD/FRT` at **$3.00 / 4.50 / 6.00 / 9.00** — multiplied,
+  the reading `FRT` implied; capture is a `Foreman` dropdown per sheet row (a day, or a split row),
+  which matches Brian's day-level assumption; and the premium now has a route into ADP as temp-rate
+  rows. None shipped in week 36. The client's own mapping sheet still marks foreman
+  `NOT_IMPLEMENTED` in the app's rules. **Still open:** who decides foreman assignment per job and
+  where it is recorded (Jeff Kelley), and what replaces the token in the ERP. Granularity and
+  multiplier can be built on the practice reading until a decision note says otherwise.
 ## Military Base premium — job-level scope, Davis-Bacon list, and the phone call
 
 - Question: how does a job get flagged as a military-base job site, and where does the qualifying-
@@ -607,7 +615,13 @@ someone has confirmed otherwise.
 - **Rules:** [PAY-071](rules/PAY-071-military-base-premium.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#military-base-premium-job-level-scope-davis-bacon-list-and-the-phone-call](gaps-2026-08-20-retired.md#military-base-premium-job-level-scope-davis-bacon-list-and-the-phone-call)
 - Update 2026-09-04 (Project Repository ingest): the job-level shape was restated by the client on a recording; the qualifying-location list is still nowhere. (a) [../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) §3 — Brian: military, lattice and shift adders *"need to be at the job level"*; Joe: federal wages populate only when **certified payroll / federal job is checked at the quoting stage or on the job**, not as a dispatch-time pop-up. Minutes, not a decision note. (b) The live workbook knows `(PAY:MILITARY)` as a token but exports no military component — the `ML*` codes in ADP have nothing feeding them ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) → *What the code reveals*). (c) The Davis-Bacon companion playbook added today names the **federal funders** whose presence triggers Davis-Bacon — USACE, NAVFAC, FHWA, FAA, FEMA, HUD, DOE — as a sales-side identification aid ([certified-payroll-playbook.md](certified-payroll-playbook.md) §10); it is not a list of qualifying job-site locations and does not address adjacency. The SCCA MLA's Davis-Bacon amendment (bid-time wage rate prevails on wholly federally funded jobs) is a different agreement. (d) FCC carries the concept at two levels — `UseCertifiedPayroll` per classification and `Certified Pay` Y/N per employee — while TCG's deck asks for it **per job / job site**; the three-level collision is recorded in [fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §8 and is the same identification this premium depends on. Still Corrina's: the Davis-Bacon criteria and the location list; still to be modelled: the Business Agent verification as a state with a person and a date.
-
+- Update 2026-09-08 (ADP workbook v5.1, [adp-workbook-v5.1-engine.md](adp-workbook-v5.1-engine.md);
+  `EPI4RZ36.csv`): **the premium is paid today, multiplied.** `ADP TempRates` configures `MILITARY`
+  → `MLR/MLO/MLD/MLT` at **$10 / 15 / 20 / 30**, and the week-36 export carries `MLR/MLO/MLD` rows
+  at 10 / 15 / 20 for one employee. Capture is a `Military` dropdown on the sheet row, keyed by the
+  clerk — i.e. still per employee-row, not set once on the job; the "all employees on the job"
+  fan-out is done by hand. The app marks military `NOT_IMPLEMENTED`. **Still open, unchanged:** how
+  a job is identified as a military-base site, the Davis-Bacon list, and the phone-call state.
 ## Premium stacking and no-pyramiding
 
 - Question: can a foreman on a military-base job draw both premiums — $13/hr over base?
@@ -629,7 +643,11 @@ someone has confirmed otherwise.
 - **Rules:** [PAY-027](rules/PAY-027-no-pyramiding.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#premium-stacking-and-no-pyramiding](gaps-2026-08-20-retired.md#premium-stacking-and-no-pyramiding)
 - Update 2026-09-04 (Project Repository ingest): practice and contract text are now both readable; neither answers the foreman-plus-military case. (a) **Practice:** the workbook exports lattice, shift and boom as *separate* temp-rate rows, each pre-multiplied ×1 / 1.5 / 2 / 3 (`LPR…LOT` at $1.00/$0.50, `S2R…S3T` at $3/$4, `LBH…LBT` at the bracket adder) — so today lattice, shift and boom all stack with one another and all multiply ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §3). That is new evidence against the working decision [decisions/2026-08-25-boom-adder-on-top-unmultiplied.md](../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md), which the note itself says awaits TCG payroll and counsel. Foreman and military have no component in the export, so practice shows nothing about them. (b) **Contract:** the full MLA's clause is *"There shall be no pyramiding of **overtime**"* — Art. III §1 ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md)) — a restriction on multipliers, silent on stacking flat premiums; the same article's *Payment of Wages* §5 and Art. IV §3 say a higher rate applies to all time that day; the 2025-08-15 notice and Art. III say shift and hazmat premiums *become the base rate*; the SCCA MLA §R says the same of its foreman rate. (c) [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md) §15 collision 6 proposes that **guarantees** do not stack — a different question, unadjudicated. Whether a company premium is subject to the union's pyramiding restriction is still one for labor counsel and the union rep.
-
+- Update 2026-09-08 (ADP workbook v5.1): practice now covers foreman and military too —
+  `qPayrollComponents` expands `FOREMAN` and `MILITARY` through the same temp-rate table as lattice
+  and shift, each as its own pre-multiplied row, and nothing in the validation forbids both on one
+  row. So **if a clerk keys both dropdowns, the workbook exports $13/hr × multiplier**. Whether that
+  is contract-correct is still the question; no week seen has both.
 ## ADP product, API Central entitlement and sandbox
 
 - **Product resolved 2026-08-13: ADP Workforce Now (classic).** Confirmed from a screenshot of a
