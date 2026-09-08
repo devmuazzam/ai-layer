@@ -12,7 +12,7 @@ part_of: payroll/INDEX.md
 
 # Source files — 2026-08-11 OneDrive drop
 
-**One page per file, named after the file.** 33 files. If someone names a file from that drop,
+**One page per file, named after the file.** 33 files, plus four added 2026-09-08. If someone names a file from that drop,
 it resolves here — including the ones that were deliberately not migrated, so "we don't have it" is
 never a guess.
 
@@ -66,6 +66,18 @@ This is the per-file view. The drop-level narrative is [../source-manifest.md](.
 | [`Sample ADP Export - EPI63100.CSV`](Sample%20ADP%20Export%20-%20EPI63100.CSV.md) | 28 KB | live data — not migrated |
 | [`TCG_SQL_backup_2026-06-23.7z`](TCG_SQL_backup_2026-06-23.7z.md) | 171.5 MB | binary — not migrated |
 | [`TCG - backup - 2026-06-10_L12andNU.7z`](TCG%20-%20backup%20-%202026-06-10_L12andNU.7z.md) | 98.7 MB | binary — not migrated |
+
+### Added in the 2026-09-08 re-share — `PAYROLL for ADP v5.1 - current/`
+
+The `v3.0` folder is now labelled `- old`; these four sit beside it. Drop-level note:
+[../source-manifest.md](../source-manifest.md) → *2026-09-08*.
+
+| File | Size | Status |
+| --- | ---: | --- |
+| [`PAYROLL for ADP - SOP v5.1.docx`](PAYROLL%20for%20ADP%20-%20SOP%20v5.1.docx.md) | 2.6 MB | migrated → [`adp-sop-v5.1.md`](../adp-sop-v5.1.md) |
+| [`8.22-8.28 ADP v5.1_2026-09-06_2006_ProcessedCOPY.xlsm`](8.22-8.28%20ADP%20v5.1_2026-09-06_2006_ProcessedCOPY.xlsm.md) | 4.6 MB | live data — not migrated; machinery read |
+| [`EPI4RZ36.csv`](EPI4RZ36.csv.md) | 7 KB | live data — not migrated; structure verified |
+| [`__VS_CODE_Payroll for ADP/v5.1.7z`](v5.1.7z.md) | 300 KB | migrated → [`adp-workbook-v5.1-engine.md`](../adp-workbook-v5.1-engine.md) |
 
 ## The two that matter most
 

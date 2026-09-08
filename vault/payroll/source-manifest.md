@@ -2,7 +2,7 @@
 title: Payroll source manifest - OneDrive drop 2026-08-11
 source: onedrive/OneDrive_1_8-11-2026/
 migrated: 2026-08-13
-updated: 2026-09-07
+updated: 2026-09-08
 status: reference
 conflicts_with: []
 jira: []
@@ -61,6 +61,21 @@ This exists so nobody has to re-derive whether something was missed, and so the 
 | 4 ADP Workforce Now screenshots (Manage Regular Payroll #31, ROLL / SALARY / PTO001 worksheets, company 4RZ) | 2026-08-18 | the ADP hand-off section of [legacy-payroll-app-db-extract/INDEX.md](legacy-payroll-app-db-extract/INDEX.md) |
 
 **2026-09-04 — `TCG_SQL_backup_2026-06-23.7z` restored.** The SQL backup that was listed but never opened is now processed: `TCG_PayrollAPP_20260623.bak` → [legacy-payroll-app-db-backup-2026-06-23.md](legacy-payroll-app-db-backup-2026-06-23.md) (code identical to the 2026-08-18 extract; data and run history recorded), `TCG_RawFMS_20260623.bak` → [tcg-rawfms-staging-database/INDEX.md](tcg-rawfms-staging-database/INDEX.md) (schema, ETL, reference rows). Archive and a table export are kept off-SharePoint; see those pages for the confidentiality note.
+
+**2026-09-08 — `3.7.1_MODULE-HR-LABOR-PAYROLL` re-shared with a new `PAYROLL for ADP v5.1 - current/` folder.**
+The client's message (logged in [client-message-findings.md](client-message-findings.md) → *2026-09-08*):
+the v5.1 workbook has been the production ADP process for three weeks with no known issues. Folder
+changes since the 2026-09-04 re-share: `PAYROLL for ADP v3.0 - current` is renamed **`- old`**;
+`PAYROLL_APP_build/PayrollAPP_0.5` is now `PayrollAPP_2026-06-23` (same four files) and
+`PayrollAPP_2026-09-07/` holds the backup already processed above; the rest is byte-for-byte the
+2026-08-11 set. The four new files, each with a page in [sources/](sources/INDEX.md):
+
+| Source | Became |
+| --- | --- |
+| `PAYROLL for ADP - SOP v5.1.docx` (2.6 MB) | [adp-sop-v5.1.md](adp-sop-v5.1.md) — supersedes v3.8 |
+| `__VS_CODE_Payroll for ADP/v5.1.7z` — the Power Query M (21 queries) and VBA (5 modules) as plain text | [adp-workbook-v5.1-engine.md](adp-workbook-v5.1-engine.md) — read in full, diffed against v3.8 |
+| `8.22-8.28 ADP v5.1_2026-09-06_2006_ProcessedCOPY.xlsm` (4.6 MB, 91 sheets) | live data — not migrated; hidden config sheets read for the engine page |
+| `EPI4RZ36.csv` (7 KB, 184 rows × 24 columns) | live data — not migrated; structure on its source page. **First export carrying `MLR/MLO/MLD`** |
 
 ## Not migrated, and why
 

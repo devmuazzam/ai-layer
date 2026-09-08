@@ -2,7 +2,7 @@
 title: PAYROLL for ADP workbook — the Power Query engine (v3.8)
 source: shared-folder/Project-Repository-2026-09-04/3.7.1_MODULE-HR-LABOR-PAYROLL/PAYROLL for ADP v3.0 - current/__PAYROLL for ADP v3.8 (MASTER template).xlsm — DataMashup part (customXml/item4.xml, UTF-16, 166 KB of M) plus the hidden configuration sheets; v3.7 and July 25-31 2026.xlsm carry byte-identical M
 migrated: 2026-09-04
-updated: 2026-07-31
+updated: 2026-09-08
 status: unverified
 conflicts_with: []
 jira: []
@@ -11,6 +11,12 @@ entities: []
 ---
 
 # PAYROLL for ADP workbook — the Power Query engine (v3.8)
+
+> **v5.1 (2026-09-06) changes this page in four places** — the roster now comes from the Payroll App
+> database, not FCC; Foreman and Military reach the export (`FRR–FRT`, `MLR–MLT`, 28 Hours-4 slots);
+> a `BASE_RATE_OVERRIDE` row type exists; and the workbook displays the app's recommendations. Only
+> the differences are recorded: [adp-workbook-v5.1-engine.md](adp-workbook-v5.1-engine.md). Everything
+> else below still runs unchanged.
 
 **What this is.** The calculation and export logic of TCG's live payroll workbook, read from
 its embedded Power Query (M) code on 2026-09-04. The August pass recorded the workbook as

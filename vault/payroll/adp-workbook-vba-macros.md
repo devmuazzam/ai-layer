@@ -2,7 +2,7 @@
 title: PAYROLL for ADP workbook — the VBA macros (v3.7, v3.8, and a live week)
 source: shared-folder/Project-Repository-2026-09-04/3.7.1_MODULE-HR-LABOR-PAYROLL/PAYROLL for ADP v3.0 - current/ — __PAYROLL for ADP v3.8 (MASTER template).xlsm, __PAYROLL for ADP v3.7 (MASTER template) Mac version.xlsm, July 25-31 2026.xlsm (vbaProject.bin in each, dumped with olevba 2026-09-04)
 migrated: 2026-09-04
-updated: 2026-07-31
+updated: 2026-09-08
 status: unverified
 conflicts_with: []
 jira: []
@@ -11,6 +11,11 @@ entities: []
 ---
 
 # PAYROLL for ADP workbook — the VBA macros
+
+> **v5.1 (2026-09-06):** the sheet builder is unchanged; `mod_RefreshAllDataInFile` is gone;
+> `mod_ClearSlicersAndFilters` and `mod_PayrollAppRefresh` (the Excel-triggered Payroll App
+> recalculation) are new; the exporter is now two steps with 28 Hours-4 slots and `Temp Rate` on
+> override rows. Differences: [adp-workbook-v5.1-engine.md](adp-workbook-v5.1-engine.md).
 
 **What this is.** The three macro-enabled payroll workbooks in the drop were dispositioned on
 2026-08-13 as *"live payroll data and workbook machinery — not migrated"*, on the grounds that

@@ -2,13 +2,18 @@
 title: PAYROLL for ADP - Standard Operating Procedure v3.8
 source: onedrive/OneDrive_1_8-11-2026/PAYROLL for ADP v3.0 - current/PAYROLL for ADP - SOP v3.8.docx; embedded screenshots read from shared-folder/Project-Repository-2026-09-04/3.7.1_MODULE-HR-LABOR-PAYROLL/PAYROLL for ADP v3.0 - current/PAYROLL for ADP - SOP v3.8.docx
 migrated: 2026-08-13
-updated: 2026-09-04
+updated: 2026-09-08
 status: unverified
 conflicts_with: []
 jira: []
 tags: [module/payroll, kind/reference, adp, legacy-payroll-app]
 entities: [adp-export, payroll-week, excel-workbook, power-query]
 ---
+
+> **Superseded 2026-09-06 by [adp-sop-v5.1.md](adp-sop-v5.1.md)** — the workbook now reads the
+> legacy Payroll App's calculated recommendations and carries Foreman and Military columns; what
+> goes to ADP is still the hand-keyed rows. Kept because the sheet layouts, screenshots and the
+> v3.x lineage are described here and not repeated there.
 
 > **This is the process the ERP Payroll Module is meant to replace.** It documents how payroll
 > is produced *today* — an Excel workbook driven by Power Query, SQL and VBA, pulling from

@@ -2,7 +2,7 @@
 title: Payroll module - vault index
 source: onedrive/OneDrive_1_8-11-2026/; extended 2026-09-04 from shared-folder/Project-Repository-2026-09-04/
 migrated: 2026-08-13
-updated: 2026-09-04
+updated: 2026-09-08
 status: unverified
 conflicts_with: []
 jira: []
@@ -77,18 +77,19 @@ the 2026-08-11 snapshot.
 | **which ADP codes actually exist** | [adp-api-responses/](adp-api-responses/INDEX.md) — **live responses from production ADP**, captured 2026-08-13. The real code table, the real company codes. Where this and a design document disagree, this wins |
 | **the non-union hourly rules, in the client's words, with acceptance tests** | [non-union-hourly-rules-2026-09-07.md](non-union-hourly-rules-2026-09-07.md) — Brian Petros 2026-09-07: daily/weekly/seventh-day, calculation order, component taxonomy, the unfinalized §14 list, nine validation scenarios with ERP status |
 | the Foreman and Military Base premiums | [foreman-and-military-premiums.md](foreman-and-military-premiums.md) — **in no other document**; supplied by Brian Petros 2026-08-09 |
-| how payroll is produced *today* | [adp-sop-v3.8.md](adp-sop-v3.8.md) — the Excel/Power Query/VBA process being replaced |
+| how payroll is produced *today* | [adp-sop-v5.1.md](adp-sop-v5.1.md) — **SOP v5.1, effective 2026-09-06, in production since ~week 34**: the workbook now loads the legacy Payroll App's calculated *recommendations* under each employee sheet, carries Foreman and Military columns, and still sends the hand-keyed rows to ADP. Sheet layouts and lineage stay on [adp-sop-v3.8.md](adp-sop-v3.8.md) |
+| what the **v5.1** workbook's Power Query and VBA do, and what changed since v3.8 | [adp-workbook-v5.1-engine.md](adp-workbook-v5.1-engine.md) — the 21 queries and 5 modules supplied as plain text 2026-09-08, diffed against the v3.8 pages below |
 | what the ADP workbook's macros actually do | [adp-workbook-vba-macros.md](adp-workbook-vba-macros.md) — the four VBA modules: per-employee sheet builder (`tbl___<ADPFileNo>`, File # = 1–6 alphanumerics), synchronous Power Query refresh, and the ADP paydata CSV exporter (`Co Code · Batch ID · File # · Reg Hours · O/T Hours · Temp Rate · Hours 3/4 Code+Amount` pairs, zeros blanked). Read 2026-09-04 |
 | what the ADP workbook's **Power Query** actually computes | [adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) — the FCC roster SQL, the Saturday–Friday week and Batch ID, the component ledger (ST/OT/DT/H2x/H3x/SUB/SIC + boom + lattice/shift temp rates), the ADP slot map, the 15 export checks, and the config tables. Read 2026-09-04 |
 | what Shift vs Job vs Labor Entry means | [payroll-concepts-shift-job-labor-entry.md](payroll-concepts-shift-job-labor-entry.md) — **read before any time-based rule** |
 | how worked-through-lunch actually lands | [wtl-charts.md](wtl-charts.md) — the payroll team's own lookup charts |
 | a test case for a specific rule | [rule-examples-catalog.md](rule-examples-catalog.md) — 28 real labor entries, one per rule variation |
 | a payroll term nobody has defined | [payroll-app-current-state/09-glossary.md](payroll-app-current-state/09-glossary.md) |
-| whether a source file was migrated | [source-manifest.md](source-manifest.md) — all 33 files, including the 3 that could not be read |
+| whether a source file was migrated | [source-manifest.md](source-manifest.md) — all 33 files, including the 3 that could not be read, plus the 2026-09-08 v5.1 set |
 | **a specific filename from the drop** | [sources/](sources/INDEX.md) — **one page per file, named after the file**, so any filename resolves |
 | what a column in the weekly ADP workbook means | [adp-workbook-column-rules.md](adp-workbook-column-rules.md) — the rules the workbook implements, no employee data |
 | **who says a rule, and where sources disagree** | [source-attribution-and-conflicts.md](source-attribution-and-conflicts.md) — every rule tagged by source family, plus a 21-item conflict register |
-| **a NEW payroll question (no ticket)** | [gaps.md](gaps.md) — the **live register**, 49 open entries incl. the recordings-vs-vault pairs, each cross-linked to its `PAY-###` rule |
+| **a NEW payroll question (no ticket)** | [gaps.md](gaps.md) — the **live register**, 57 open entries incl. the recordings-vs-vault pairs, each cross-linked to its `PAY-###` rule |
 | closed/resolved historical questions | [gaps-2026-08-20-retired.md](gaps-2026-08-20-retired.md) — frozen snapshot |
 | **what is still unanswered** about payroll or ADP | [gaps.md](gaps.md) — the payroll half of the open-question register, 41 entries. `grep -n '^## '` first; read only your section |
 | what a payroll SME said verbally, not yet in the rule matrix | [2026-08-20-payroll-rules-meeting-notes.md](2026-08-20-payroll-rules-meeting-notes.md) — WTL, rest period, subsistence, craft-code rate overrides. `status: unverified`, cleaned from a call transcript |

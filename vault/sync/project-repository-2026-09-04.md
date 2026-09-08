@@ -2,7 +2,7 @@
 title: Source manifest — TCG Project Repository drop, 2026-09-04
 source: shared-folder/Project-Repository-2026-09-04 (17 zip archives, SharePoint/Teams SSOT)
 migrated: 2026-09-04
-updated: 2026-09-04
+updated: 2026-09-08
 status: reference
 conflicts_with: []
 jira: []
@@ -55,6 +55,10 @@ laid out by the numbering scheme in its own `00_README_Folder_Structure_and_Rule
   migrated on 2026-08-13 and is already accounted for file-by-file in
   [payroll/source-manifest.md](../payroll/source-manifest.md) and
   [payroll/sources/](../payroll/sources/INDEX.md). Not re-migrated here.
+  **Re-shared again 2026-09-08 with one new folder, `PAYROLL for ADP v5.1 - current/`** (SOP v5.1,
+  the processed week-36 workbook, `EPI4RZ36.csv`, and the Power Query + VBA as plain text). Ingested
+  2026-09-08 — see [payroll/source-manifest.md](../payroll/source-manifest.md) → *2026-09-08* and
+  [payroll/adp-sop-v5.1.md](../payroll/adp-sop-v5.1.md).
 - **Portal credentials appear in the city-permit documents.** Usernames, passwords and security
   answers for city permitting portals are written in plain text in the per-city `.docx` files.
   They are **deliberately not copied into this vault**; the vault records the process and points

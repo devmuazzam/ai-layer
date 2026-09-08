@@ -2,7 +2,7 @@
 title: PAYROLL for ADP workbook — column rules
 source: derived from onedrive/OneDrive_1_8-11-2026/ (workbook structure + SOP v3.8), MCOG L12 MLA, and legacy-payroll-app-db-extract
 migrated: 2026-08-19
-updated: 2026-08-19
+updated: 2026-09-08
 status: reference
 conflicts_with: []
 jira: []
@@ -184,6 +184,17 @@ The engine computes boom *into* the rate; ADP receives it split in two. The two 
 (base + adder) × mult × hrs  ≡  base × mult × hrs  +  adder × mult × hrs
 └──────── the engine ───────┘    └── Reg/OT/DT ──┘   └── LBH/LBO/LBD ──┘
 ```
+
+## v5.1 additions — 2026-09-08
+
+Three columns joined the employee sheet in v5.1: **`BASE RATE OVERRIDE`** (a dollar rate that sends the
+row's base hours to ADP on their own row — purpose unstated, see [gaps.md](gaps.md)), and the
+**`Foreman`** and **`Military`** dropdowns, which map to `FRR–FRT` ($3 × 1/1.5/2/3) and `MLR–MLT`
+($10 × 1/1.5/2/3) temp-rate rows. Sheets also carry extra rows for a second craft modifier on the same
+day, and a read-only block of the legacy app's recommended figures under the typed row. The first
+bullet below is now half-answered: foreman and military have a route; **rest premium and WTL still do
+not** — the app computes both as dollars marked `SQL_READY_ADP_PENDING`. Detail:
+[adp-workbook-v5.1-engine.md](adp-workbook-v5.1-engine.md).
 
 ## Open questions {#open-questions}
 

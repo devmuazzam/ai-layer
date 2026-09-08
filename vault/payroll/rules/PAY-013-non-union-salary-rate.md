@@ -34,3 +34,4 @@ tags: [module/payroll, kind/rule, open-questions]
   it as *Salary* ahead of the L12 predicates, and `test.usp_Test_PricingEngine_SalaryExcluded`
   asserts zero calculated and zero exception rows. The rule text (no ST/OT/DT from labor) is now
   enforced at the front of the legacy pipeline; how salary *is* paid remains unspecified.
+- **How salary is paid today (client message 2026-09-08, [client-message-findings.md](../client-message-findings.md) → *2026-09-08*):** *"Corrina currently enters Salary employee payroll into ADP separately"* — outside the Excel process, by hand, the `SALARY` batch seen on 2026-08-18. Salaried people still get a workbook sheet (the roster keeps pay type `S`) and no recommendation rows. Amount, frequency and whether the ERP owns that batch: gaps → *Post-import ADP entry*, findings question 41.

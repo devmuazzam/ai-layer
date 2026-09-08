@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-07
+updated: 2026-09-08
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -768,6 +768,13 @@ someone has confirmed otherwise.
   imported through the ADP Payroll Dashboard and reviewed on screen before submission — no
   machine-readable response, as this entry already notes. Still needs the client: the explicit
   Excel-vs-API decision — the RFP's *export* wording is not it.
+- Update 2026-09-08 (ADP workbook v5.1, [adp-workbook-v5.1-engine.md](adp-workbook-v5.1-engine.md)):
+  the Excel path is **in production and evolving** — three weeks on v5, the file contract now has three
+  row types (`PRIMARY`, `BASE_RATE_OVERRIDE`, `TEMP_RATE`), 28 Hours-4 slots including `FRR–FRT` and
+  `MLR–MLT`, `Temp Rate` emitted on override rows, 22 validation codes and an explicit sort. The
+  workbook also *reads* the legacy app's calculated recommendations but sends the typed rows. And the
+  client says the CSV is **not the whole payroll**: Corrina edits and adds in ADP after import
+  (below, *Post-import ADP entry*) and keys salary separately. Still undecided by anyone.
 
 ## Employee master — who creates a worker, ERP or ADP
 
@@ -2782,7 +2789,7 @@ someone has confirmed otherwise.
 ## Non-union hourly — holidays, PTO, sick, vacation, shift differential, minimums: unspecified, by the client's own account
 
 - **Status:** open
-- **Asked:** 2026-09-07 — Brian Petros' non-union rules summary, §14 ([non-union-hourly-rules-2026-09-07.md](../non-union-hourly-rules-2026-09-07.md)); logged in [client-message-findings.md#2026-09-07--non-union-hourly-rules-summary-and-nine-validation-scenarios-brian-petros](../client-message-findings.md#2026-09-07--non-union-hourly-rules-summary-and-nine-validation-scenarios-brian-petros)
+- **Asked:** 2026-09-07 — Brian Petros' non-union rules summary, §14 ([non-union-hourly-rules-2026-09-07.md](non-union-hourly-rules-2026-09-07.md)); logged in [client-message-findings.md#2026-09-07--non-union-hourly-rules-summary-and-nine-validation-scenarios-brian-petros](client-message-findings.md#2026-09-07--non-union-hourly-rules-summary-and-nine-validation-scenarios-brian-petros)
 - **Question:** what, if anything, applies to Non-Union Admin Hourly for paid holidays, holiday
   eligibility, holiday-worked premiums, PTO, vacation, sick pay, minimum-hours rules, shift
   differential, bonuses, allowances and other administrative premiums? Brian states these are **not
@@ -2868,3 +2875,54 @@ someone has confirmed otherwise.
   wrong contract.
 - **Owner:** product team — Corrina Bustos and Brian Petros (HR onboarding and the employee master),
   with Lisette Anzaldo for the DAS temp/fill-in population.
+
+## Post-import ADP entry — what Corrina changes or adds after the CSV, and the salary batch
+
+- **Status:** open
+- **Asked:** 2026-09-08 — Brian Petros' covering message with the v5.1 workbook; logged in
+  [client-message-findings.md#2026-09-08--payroll-for-adp-v51-the-adp-workbook-now-shows-the-payroll-apps-recommendations-brian-petros-inferred--the-sops-data-engineer-and-the-sender-of-every-prior-workbook-message](client-message-findings.md#2026-09-08--payroll-for-adp-v51-the-adp-workbook-now-shows-the-payroll-apps-recommendations-brian-petros-inferred--the-sops-data-engineer-and-the-sender-of-every-prior-workbook-message)
+  (questions 39 and 41)
+- **Question:** the client states, in writing, that after `EPI4RZnn.csv` is imported there are
+  *"modifications and additional payroll data entered into ADP"* that he still needs to clarify with
+  Corrina Bustos, and that **salary employees are not in the Excel process at all** — *"Corrina
+  currently enters Salary employee payroll into ADP separately."* So the import file is a subset of
+  the payroll actually submitted. What is edited (which rows, which codes, why), what is added
+  (PTO? bonuses? the `SALARY` batch? prior-period corrections `PPD`/`PPO`?), and from what source is
+  each keyed? For salary: the amount, the frequency, where the figure lives, and whether the ERP is
+  expected to produce that batch or leave it manual.
+- **Sources checked:** [adp-sop-v5.1.md](adp-sop-v5.1.md) (ends at ADP's Worksheet review — *"note
+  any changes needed so we can update this Excel process"*); the 2026-08-18 ADP screenshots
+  ([legacy-payroll-app-db-extract/INDEX.md](legacy-payroll-app-db-extract/INDEX.md) — `ROLL` and
+  `SALARY` batches both *Manual Entry*, `PTO001` separate); `rules/PAY-013` (salary — scope open);
+  `rules/PAY-067`; [adp-hour-earning-codes.md](adp-hour-earning-codes.md) (codes such as `PTO`,
+  `PTP`, `BN`, `RET`, `PPD`/`PPO` exist in ADP and appear in no export the vault has seen);
+  `non-union-hourly-rules-2026-09-07.md` §15.
+- Blocked: any claim that the ERP's ADP output is complete; PAY-013's amount and frequency; the
+  scope of the parallel-run comparison (which ADP totals the ERP is expected to match).
+- Owner: Brian Petros to clarify with Corrina Bustos (his own action item); CodingCops asks for the
+  list, not the answer.
+
+## `BASE RATE OVERRIDE` — a per-row base-rate mechanism in the live workbook, purpose unstated
+
+- **Status:** open
+- **Asked:** 2026-09-08 — reading the v5.1 workbook code
+  ([adp-workbook-v5.1-engine.md](adp-workbook-v5.1-engine.md) §2); findings question 40
+- **Question:** the v5.1 employee sheet has a `BASE RATE OVERRIDE` column. A dollar value there sends
+  that row's ST/OT/DT/H2x/H3x hours to ADP on a separate `BASE_RATE_OVERRIDE` row with the override
+  as `Temp Rate`, guarded by seven validation codes. Week 36 shipped one such row at `72.16`, the L12
+  Group-9 FY26-27 base rate. **What is the override for?** If it is "this employee worked a higher
+  craft group that day", it is the practice answer to the open labor-entry-craft vs employee-craft
+  question (PAY-010, findings question 1) — pay the employee's own rate on the primary row and the
+  job's rate on an override row. If it is a fiscal-year or rate-change correction, it is PAY-008's
+  retro path. If it is a non-union rate keyed by hand, it is the missing upstream source for
+  non-union rates. Each implies a different ERP field.
+- **Sources checked:** the v5.1 SOP (does not mention the column); `qADPPrimaryRows`,
+  `qADPImportValidation`, `TEMPLATE` rows 29–33 (the mechanism, not the purpose);
+  `rules/PAY-010`, `rules/PAY-008`; [adp-workbook-column-rules.md](adp-workbook-column-rules.md)
+  → *Which fiscal-year rate applies is a human decision*; the 2026-09-07 exhibit's *"Base Rate
+  Override"* column on the app's recommendation row (PAY-010 / decision 2026-08-20 override — the
+  same words, possibly the same thing).
+- Blocked: the labor-entry rate-resolution design (PAY-010) if this is the practice; the ADP file
+  contract's third row type either way.
+- Owner: Brian Petros (one sentence); Corrina Bustos if it is a payroll-department convention.
+

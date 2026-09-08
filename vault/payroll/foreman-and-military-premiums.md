@@ -2,7 +2,7 @@
 title: Foreman & Military Base premiums — Brian Petros, 2026-08-09
 source: user-supplied/chat-google-chat/TCG CodingCops ERP Team · General
 migrated: 2026-08-13
-updated: 2026-08-09
+updated: 2026-09-08
 status: unverified
 conflicts_with: []
 jira: []
@@ -101,6 +101,13 @@ attaches to an **employee-day** or to a **labor entry**, and it has not been con
 > if the $10/hr were a flat adder there would be nothing to multiply. Its existence implies the
 > premium is $10 **times the applicable multiplier** — $30/hr at triple time, for every employee
 > on the job. Nobody has stated this. It remains the largest unpriced assumption in either rule.
+>
+> **Confirmed in production, 2026-09-08.** The v5.1 workbook's `ADP TempRates` configures `MILITARY`
+> → `MLR/MLO/MLD/MLT` at **10.00 / 15.00 / 20.00 / 30.00** and `FOREMAN` → `FRR/FRO/FRD/FRT` at
+> **3.00 / 4.50 / 6.00 / 9.00**, and `EPI4RZ36.csv` (week 2026-08-22 → 28) carries `MLR/MLO/MLD` rows at
+> 10 / 15 / 20. The premium *is* multiplied. Both are keyed by the clerk from sheet dropdowns; the
+> client's mapping sheet marks both `NOT_IMPLEMENTED` in the app's own rules —
+> [adp-workbook-v5.1-engine.md](adp-workbook-v5.1-engine.md) §4–5.
 >
 > Worth noting *how* this was found: nobody sent it. The request was framed as "TCG owes us an
 > export", and the answer was sitting in an API TCG already paid for.
