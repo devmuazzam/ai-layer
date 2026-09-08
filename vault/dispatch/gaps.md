@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-09-07
+updated: 2026-09-08
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -421,3 +421,18 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   hold a named default per unit (and whether `EmployeeAsset` is that record or an ownership link),
   who maintains it, and what overriding it on one job does to the default. Lisette has still not
   been asked.
+
+
+## Schedule day deactivate orphans SubJob / allocations — see projects-jobs
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit.
+- **Question:** see [projects-jobs/gaps.md — Schedule day deactivate orphans SubJob / allocations](../projects-jobs/gaps.md#schedule-day-deactivate-orphans-subjob--allocations). Dispatch owns the DAS board behaviour; product answer lives with projects-jobs.
+- **Owner:** Lisette Anzaldo.
+
+## Quote / Job yard free-text vs Yard master FK — see projects-jobs
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit.
+- **Question:** see [projects-jobs/gaps.md — Quote / Job yard free-text vs Yard master FK](../projects-jobs/gaps.md#quote--job-yard-free-text-vs-yard-master-fk). Yard Operations / Dylen loadout sits under dispatch UX; identity of `yard` on quote/job is owned by projects-jobs.
+- **Owner:** Lisette Anzaldo.

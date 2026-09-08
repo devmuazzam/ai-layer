@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-09-07
+updated: 2026-09-08
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -563,3 +563,131 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   works; what is unknown is whether it is right, and a green suite will stop anyone asking.
 - **Owner:** Lisette Anzaldo (dispatch/DAS/permits), with Liz Lopez — the same pair who own the two
   related entries above.
+
+
+## Working note — interim open-loop fixes on feat/permits-plans-project-artifacts (2026-09-08)
+
+- **Status:** open — **not a product adjudication.** Recorded so the interim code contract is visible while the entries below stay unanswered.
+- **Asked:** 2026-09-08 — branch audit on `feat/permits-plans-project-artifacts` (quote → project → job → permits/plans → DAS → Yard).
+- **Note:** Three cascades are being closed in code as an **interim contract**, not as answers to the open questions below: (1) PlanStatus ↔ TrackableStatus sync plus CANCELLED→APPROVED revive via the Upload & approve modal; (2) permit↔PO attach/detach/cancel/archive reverse rules; (3) conversion mints assignment rows and DAS/checklist falls back to non-CANCELLED `jobId`-bound artifacts. The remaining spine loops stay vault-only until owners answer.
+- **Owner:** engineering (interim); product owners unchanged on each open entry.
+
+## Artifact trackable vs legacy PlanStatus / PermitStatus drift
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit on permits/plans artifacts.
+- **Question:** which vocabulary is source of truth for plans (and permits) — `trackableStatus` (OPEN / APPLICATION_SUBMITTED / APPROVED / CANCELLED) used by project artifacts and trackers, or legacy `PlanStatus` / effective `PermitStatus` used by older plan screens and list filters — and how must they stay in sync on submit / approve / reject / cancel / re-approve?
+- **Sources checked:** `apps/api/src/usecase/plans/plans.service.ts` (`updateTrackableStatus` vs `submit` / `transitionStatus`); `apps/api/src/usecase/permits/permits.service.ts` (`updateTrackableStatus`); `packages/shared/src/constants/project-artifacts.ts` (`canAdvanceTrackableStatus`); related open entry [*Permit rules the E2E suite asserts…*](#permit-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) item (b).
+- **Note:** Interim code will sync legacy plan approve/submit into trackable and allow CANCELLED→APPROVED revive through approve endpoints; that does **not** settle which vocabulary product intends.
+- **Blocked:** tracker vs legacy plan UI divergence; E2E freezing current behaviour.
+- **Owner:** Lisette Anzaldo (dispatch/DAS/permits), with Liz Lopez.
+
+## Permit↔PO reverse cascades incomplete
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit (status change and PO attach/link/remove).
+- **Question:** when a linked purchase order is cancelled, archived, or detached — or when a permit is cancelled — what must happen to the other side (permit trackable status, `poType`, activity, approval gates)? Is one PO per permit still the rule, and does deleting/cancelling the PO release that guard?
+- **Sources checked:** `permits.service.ts` `attachPurchaseOrder` / `syncLinkedPurchaseOrders`; `purchase-orders.service.ts` `archive` / `update`; schema `PurchaseOrder.permitId` only (no `planId`); related [*Permit rules… PR #488*](#permit-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) item (e).
+- **Note:** Interim code hard-blocks cancel/archive of a PO linked to an APPROVED PO-required permit; otherwise unlinks and clears `poType`. Detach clears `poType`. Cancelled permit unlinks POs. Not a product decision.
+- **Blocked:** PO lifecycle vs approved-permit gates; PR #488 (e).
+- **Owner:** Liz Lopez (PO process), with Lisette Anzaldo.
+
+## Conversion mints artifacts without DAS assignment rows
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit on Create Project / Convert to Job.
+- **Question:** after `generateProjectArtifacts` mints Permit/Plan rows with `jobId`, should the conversion TX also create `JobAssetPermitAssignment` / `JobPlanAssignment` rows so DAS pre-checklist and `permitLinked` light up without a manual link — or is `jobId` on the artifact enough?
+- **Sources checked:** `apps/api/src/usecase/projects/generate-project-artifacts.ts`; DAS `build-pre-checklist-items.ts` (assignment tables only); `JobPermitAssignmentsService` / `JobPlanAssignmentsService`; related [*Asset on a permit…*](#asset-on-a-permit--optional-except-where-a-punch-list-says-compulsory) and SCRUM-625 auto-attach history.
+- **Note:** Interim code auto-creates assignment rows where uniqueness allows and teaches DAS to fall back to non-CANCELLED `jobId`-bound artifacts.
+- **Blocked:** DAS checklist false “unlinked” after convert; see also uniqueness entry below.
+- **Owner:** Lisette Anzaldo.
+
+## Assignment uniqueness vs Individual multi-artifact coverage
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit (Individual coverage mode).
+- **Question:** when conversion mints N Individual LIFT/SITE (or travel) artifacts for one job, how should DAS bind them given `JobPlanAssignment` is unique on `(jobId, planType)` and job-level permit assignments are unique per `(jobId, permitType)` where `asset_id IS NULL`?
+- **Sources checked:** `schema.prisma` `JobPlanAssignment` / `JobAssetPermitAssignment`; `generate-project-artifacts.ts` Individual/Combined modes; `packages/shared/src/constants/project-artifacts.ts`.
+- **Note:** Interim: first artifact wins the unique assignment slot; remaining rely on `jobId` fallback for checklist “linked”.
+- **Blocked:** Individual mode vs DAS one-slot model.
+- **Owner:** Lisette Anzaldo.
+
+## Job-level permit types never auto-sync assignments on save
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit.
+- **Question:** should saving an FAA / encroachment / sub-hauler artifact with `jobId` create/update the job-level `JobAssetPermitAssignment` (`assetId: null`) the way travel permits sync when `assetId` is set?
+- **Sources checked:** `permits.service.ts` `syncJobAssetAssignment` (explicitly skips `assetId: null`); `JobPermitAssignmentsService.linkType`.
+- **Note:** Interim code extends sync to upsert job-level type rows on save.
+- **Owner:** Lisette Anzaldo.
+
+## Available-to-link ignores trackable CANCELLED
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit.
+- **Question:** should “available permits/plans to link” on a job exclude `trackableStatus === CANCELLED` (and possibly other terminal states), or keep filtering only on legacy `status`?
+- **Sources checked:** `job-permit-assignments.service.ts` `availablePermitsForType`; `job-plan-assignments.service.ts` `availablePlans`.
+- **Note:** Interim code excludes CANCELLED trackable.
+- **Owner:** Lisette Anzaldo.
+
+## Schedule day deactivate orphans SubJob / allocations
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit (DAS).
+- **Question:** when a job schedule interval is set `isActive: false` (unchecked day), should the matching SubJob be cancelled and allocations cleared the same way as an explicit SubJob cancel — or is hiding the day from the DAS board (filter on active intervals) enough while SubJob rows linger?
+- **Sources checked:** schedule save vs `sub-jobs.service.ts` cancel day; delete interval cascades SubJob; deactivate does not; related [*Converted-quotation schedule days…*](#converted-quotation-schedule-days--checked-by-default-and-what-that-puts-on-the-das-board).
+- **Blocked:** orphaned allocations / locks on deactivated days.
+- **Owner:** Lisette Anzaldo.
+- **See also:** [dispatch/gaps.md](../dispatch/gaps.md) pointer entry.
+
+## Job CANCELLED / ON_HOLD / INVOICED transitions unwired
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit.
+- **Question:** who may move a Job to `CANCELLED`, `ON_HOLD`, or `INVOICED`, from which statuses, and what cascades (DAS SubJobs, allocations, tickets, artifacts)?
+- **Sources checked:** `JobStatus` enum; list filters; `markCompletedIfAllSubJobsDone` (COMPLETED only from loadout); `job-editable.guard.ts` leaves CANCELLED/ON_HOLD/INVOICED editable “deferred”; related [*Jobs Status Summary donut…*](#jobs-status-summary-donut--where-does-an-on_hold-job-go).
+- **Blocked:** status API / UI missing; donut bucket open.
+- **Owner:** Lisette Anzaldo / Ryan Adams.
+
+## Job COMPLETED does not close Project / quotation
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit.
+- **Question:** when all SubJobs complete and Job becomes COMPLETED, should Project or quotation gain any terminal state, or is Job COMPLETED a dead-end upward?
+- **Sources checked:** `das-loadout.service.ts` → `markCompletedIfAllSubJobsDone`; Project has no status enum (only `archivedAt`); quotation stays WON after convert.
+- **Owner:** Lisette Anzaldo / sales owners for quotation side.
+
+## Quote / Job yard free-text vs Yard master FK
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit.
+- **Question:** should quotation/job `yard` remain free text copied at convert, or become a FK to the Yard master used by assets/employees and Yard Operations (Dylen loadout)?
+- **Sources checked:** Job/Quotation `yard` string fields; `apps/api/src/usecase/yards/`; `/projects/yard-operations` → DylenDashboard; convert copies string.
+- **Blocked:** rename Yard master does not update jobs/quotes; list `yardId` filter ≠ job.yard string.
+- **Owner:** Lisette Anzaldo.
+- **See also:** [dispatch/gaps.md](../dispatch/gaps.md) pointer entry.
+
+## Ready-to-schedule / publish-without-permit gates unenforced
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit.
+- **Question:** do Ready-to-Schedule and “block job publish if permit missing” rules from project-module playbooks need hard API/UI gates, or are they process-only?
+- **Sources checked:** `projects-jobs/project-module/05-create-and-track-permits.md` (unverified); scheduling playbooks under `projects-jobs/scheduling/`; no matching enforce path found in API/web grep.
+- **Related:** [*Converted-quotation schedule days…*](#converted-quotation-schedule-days--checked-by-default-and-what-that-puts-on-the-das-board).
+- **Owner:** Lisette Anzaldo.
+
+## Plans have no PO attach path
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit.
+- **Question:** should plans ever link to purchase orders the way permits do (`PurchaseOrder.permitId`, ArtifactPoWidget), or is PO attach permit-only by design?
+- **Sources checked:** schema `PurchaseOrder.permitId` only; permit attach/generate APIs; plan artifact detail has no PO widget.
+- **Owner:** Liz Lopez / Lisette Anzaldo.
+
+## Mob / demob quoted vs actual — no close-loop
+
+- **Status:** open
+- **Asked:** 2026-09-08 — open-loop audit.
+- **Question:** how should quoted mobilization/demobilization on a quotation close against actual yard/loadout or ticket time?
+- **Sources checked:** quotation group pricing for mob/demob; Yard Operations = Dylen loadout (separate); `quotations/mobilization-and-demobilization.md` (REQ, no verification loop).
+- **Owner:** sales + dispatch. Pointer may live under quotations if that module owns the answer.
