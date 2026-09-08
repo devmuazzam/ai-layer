@@ -700,13 +700,22 @@ Types: `TRAVEL_ANNUAL_PURPLE_PERMIT`, `TRAVEL_CITY_STREET_PERMIT`,
 Statuses: `PENDING · ACTIVE · INACTIVE · DRAFT`.
 
 **Edge case — the permit→PO bridge.** On a permit detail, **"Generate PO"** appears **only** when
-the permit is *not* a travel type **and** has no linked PO yet
-(`!isTravelPermitType(permit.type) && !permit.linkedPurchaseOrder`). So:
+the permit's type requires a PO **and** it has no linked PO yet
+(`permitTypeRequiresPurchaseOrder(permit.type) && !permit.linkedPurchaseOrder`). So:
 1. Create an `ENCROACHMENT_PERMIT` → *Generate PO* is there → click it.
 2. Reload → the button is **gone** (PO now linked).
-3. Create a `TRAVEL_CITY_STREET_PERMIT` → the button **never** appears.
+3. Create a `TRAVEL_ANNUAL_PURPLE_PERMIT` → the button **never** appears.
 
 That asymmetry surprises people; show it rather than describe it.
+
+The line is **annual vs single-job**, not travel vs non-travel: an annual purple permit is paid
+once for the year and TCG absorbs the cost, so no PO is raised; a single-job city/street permit is
+bought per job with the city as the vendor, so it does get one. `PO_EXEMPT_PERMIT_TYPES` therefore
+holds `TRAVEL_ANNUAL_PURPLE_PERMIT` alone. Source:
+[`vault/decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md`](../../../vault/decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md),
+which names the older travel-wide exemption **wrong**. Before that decision was implemented the
+predicate was `isTravelPermitType()` and `TRAVEL_CITY_STREET_PERMIT` was exempt — if you are
+demoing against an older build, expect step 3 to behave differently.
 
 ### 10.2 Purchase Orders
 
