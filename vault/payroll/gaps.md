@@ -2944,3 +2944,31 @@ someone has confirmed otherwise.
   contract's third row type either way.
 - Owner: Brian Petros (one sentence); Corrina Bustos if it is a payroll-department convention.
 
+## Boom window as built — the ERP pays the adder across the whole paid shift, not build-up→breakdown
+
+- **Status:** open
+- **Asked:** 2026-09-08 — reading the engine against the verified 2026-09-03 decision while answering
+  a build question about the long-boom window
+- **Question:** this is a **defect to schedule, not a question for the client** — the answer is already
+  decided and `status: verified`. [../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)
+  says the boom window is **build-up through breakdown, all hook work inside, travel excluded**
+  (Kyle Harlow 45:31, Corrina Bustos confirming current practice). What is built gives the boom adder
+  to **every half-hour slice of the payable window**, Start Work → Review & Complete. The field app's
+  `BUILDUP_TIME` / `BOOM_TIME` / `BREAKDOWN_TIME` captures exist and are **not consumed by payroll**.
+  Consequence: boom is paid on travel and on any non-hook time inside the paid shift — money the MLA
+  explicitly excludes (Art. IV: *"Long boom pay does not apply to travel and curfew hours from yard to
+  job or job to yard"*). What needs deciding is only the **fallback**: when a ticket carries no
+  build-up or breakdown row (a holdover crane, always the case on tower-crane jobs, per the same
+  decision), is the window the `BOOM_TIME` sessions, or the whole payable window as today?
+- **Sources checked:** the decision note; `rules/PAY-043`;
+  `apps/api/src/usecase/payroll/payroll.service.ts:657-658` (window source),
+  `packages/payroll-engine/src/calculate.ts:107` (adder per slice),
+  `apps/api/src/usecase/ticket-time-entries/derive-ticket-times.ts` (captures returned, boom sessions
+  unused); `mcog-l12-mla-2025-2028/02-article-iv-classifications-and-wage-rates.md` §1;
+  [adp-workbook-column-rules.md](adp-workbook-column-rules.md) → *Boom pay — the four conditions*.
+- Blocked: nothing external. It is a build item — every long-boom figure the ERP produces is high
+  until it lands, so any parallel-run comparison against Brian's app or the manual sheet will
+  disagree on boom for reasons that are ours, not theirs.
+- Owner: CodingCops (build). Only the holdover fallback needs a client line, and it can ride the next
+  payroll meeting rather than block.
+

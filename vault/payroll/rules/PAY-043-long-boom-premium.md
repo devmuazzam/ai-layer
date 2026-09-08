@@ -56,3 +56,40 @@ tags: [module/payroll, kind/rule, open-questions]
   minimum still applies but never exceeds time worked. Contract note: *"No work shall be performed on
   Labor Day, except in cases of extreme urgency"* (Art. III Holidays §3) — a Labor Day ticket is
   itself an exception case.
+- **The four-hour minimum's gap hours — how the legacy engine buckets them (verified 2026-09-08).**
+  The rule pays the shortfall "at the multiplier of the boom slices", which only discriminates when
+  boom work straddles two buckets. `app.usp_Apply_GuaranteedHours` sets
+  `BoomMultiplierUsed = MAX(Final_Multiplier)` across slices carrying a modifier and a non-zero boom
+  rate (l.283–291, 310), and the guarantee row takes `MAX(BoomMultiplierUsed)` (l.426–427): **the
+  highest multiplier on any boom-paid slice prices the whole gap.** The 2026-09-07 backup's
+  `api.usp_Excel_PayrollRecommendations` then buckets the gap hours by that multiplier
+  (1.00 → `Guaranteed_LB_ST_Hours`, 1.50 → `_LB_OT_`, 2.00 → `_LB_DT_`, 3.00 → `_LB_3X_`, l.1331–1360)
+  and **adds them to the actual LB hours** in the same column (l.1701–1720). Worked: 1 h ST + 1 h OT
+  of boom on an 80–100 ft operator bracket → gap 2 h at adder × 1.5 → sheet shows LB ST 1.0,
+  LB OT 3.0, LB Total 4.0. The legacy worked example (entry 81827) is single-bucket and does not
+  discriminate, so this is read from the code, not from an exhibit. **Client has never confirmed it**;
+  build it as the default and flip on a decision note.
+- **Special-Saturday boom hours have no ADP slot of their own.** A special Saturday (June/December,
+  PAY-034) pays ×2 and is a distinct day type from DT, so boom on one is "Long boom H2X" at adder × 2 —
+  but ADP's long-boom family is only `LBH`/`LBO`/`LBD`/`LBT`. The live v5.1 workbook has **no LB 2X
+  column**, and every premium family collapses `DT + H2x` into one bucket
+  ([adp-workbook-power-query-engine.md](../adp-workbook-power-query-engine.md) §3), so these hours are
+  keyed into LB DT and export as **`LBD` at adder × 2** — identical money. If our review sheet keeps a
+  separate LB 2X column, it maps to `LBD` on export. Practice, not a decision; blocks nothing while
+  PAY-067 is unbuilt.
+- **ERP status, verified in code 2026-09-08 — the built boom window is WIDER than the decision.**
+  `PayrollService.buildJobDay` sets the engine's boom window to the **payable window**, Start Work →
+  Review & Complete (`apps/api/src/usecase/payroll/payroll.service.ts:657-658`), and
+  `priceL12JobDay` gives the boom adder to **every slice in it** when a bracket resolves
+  (`packages/payroll-engine/src/calculate.ts:107`). The `BUILDUP_TIME`, `BOOM_TIME` and
+  `BREAKDOWN_TIME` captures the field app records are **never read by payroll** — `deriveTicketTimes`
+  surfaces breakdown windows for the ticket views only. So the ERP currently pays boom across travel
+  inside the paid shift, which the MLA excludes (*"Long boom pay does not apply to travel and curfew
+  hours from yard to job or job to yard"*) and which the verified 2026-09-03 decision excludes.
+  **Fix:** bound the boom slices to first `BUILDUP_TIME` start → last `BREAKDOWN_TIME` end, falling
+  back to the `BOOM_TIME` sessions. Registered in [../gaps.md](../gaps.md) → *Boom window as built*.
+- **The four-hour minimum is not built in the ERP at all.** `guarantee.ts` implements PAY-040 (daily
+  minimum) only; nothing adds a boom shortfall. Spec for whoever builds it:
+  `gap = min(4, shift hours) − boom hours`, priced at adder × the highest boom-slice multiplier,
+  bucketed to that LB column, pinned to the last boom-paid entry of the shift.
+
