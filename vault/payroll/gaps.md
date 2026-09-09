@@ -3128,3 +3128,60 @@ someone has confirmed otherwise.
 - Blocked: nothing yet. It becomes blocking the first time FCC migration lands overlapping entries in
   a pay period we calculate.
 - Owner: Brian Petros — **he asked for the next meeting himself**, so it is agenda, not a message.
+
+## payroll-engine test debt — the 43770 chain case is unwritten, and three PAY-043 boom tests fail on main
+
+- **Status:** open
+- **Asked:** 2026-09-10 — verifying a claim before it went to the client, in the 2026-09-09 Brian
+  Petros thread ([client-message-findings.md](client-message-findings.md))
+- **This is build debt, not a client question.** Filed so neither half is re-derived.
+
+### 1. The 43767 → 43770 chain case has no regression test
+
+Brian's own counter-example is the sharpest test we have for PAY-023 chain accumulation, and nothing
+in the suite covers it. **It was written and run on 2026-09-10, passed, and was then reverted** — so
+it is known-good rather than speculative, and this entry exists so it can be restored without
+rebuilding the inputs. Add to `packages/payroll-engine/src/calculate.spec.ts`, using the file's
+existing `l12Employee()` / `l12JobDay()` helpers:
+
+| | Ticket 43767 | Ticket 43770 |
+| --- | --- | --- |
+| `shiftStartedAt` | `2026-04-09T10:30:00.000Z` (03:30 Pacific) | `2026-04-10T01:00:00.000Z` (18:00 Pacific) |
+| `shiftEndedAt` | `2026-04-10T00:30:00.000Z` (17:30 Pacific) | `2026-04-10T06:00:00.000Z` (23:00 Pacific) |
+| span | 14.0 h | 5.0 h |
+
+`periodStart: '2026-04-04'` (the period on Brian's screenshot is Apr 4–10; April 2026 is PDT, UTC−7).
+Distinct `jobId` per entry. Set `lunchesTaken: 0` and `wtlCount: 0` so the assertions read the hour
+buckets alone. The gap between them is **30 minutes**, under `CHAIN_GAP_HOURS`, so the two chain.
+
+Expected — 43767 is the control and matches his screenshot's pre-WTL figures, 43770 is the assertion
+that matters:
+
+- **43767** — `stHours 8`, `otHours 4`, `dtHours 2`. (03:30–06:00 OT under the pre-6AM rule, which
+  does not spend the ST bank; 06:00–14:00 ST; 14:00–15:30 OT; 15:30–17:30 DT once the chain passes 12
+  hours.)
+- **43770** — `dtHours 5`, `otHours 0`, `stHours 0`. **His Payroll App prices this as 5.0 OT**, which
+  is the issue #2 he reported: the ladder restarting at each `LaborPayrollID` instead of carrying.
+
+### 2. Three PAY-043 boom tests fail on `main`, and predate this work
+
+Verified by stashing: **44 pass / 3 fail** without the new case, 45 / 3 with it — the same three
+either way, so they are not collateral from anything in this thread.
+
+- `PAY-043: several boom sessions in one shift all count` — expected `3.5`, actual `4`
+- `PAY-043: a boom session spanning OT splits the adder across buckets` — expected `3`, actual `4`
+- `PAY-043: a slice straddling the boom edge is not boom time` — expected `1`, actual `4`
+
+All three now get **more** boom hours than they assert, and all three land on `4`. That is the
+signature of commit **`1ad99687d`** *"fix: fixed 1 hours mismatch issue"* (2026-09-08), which moved
+the boom window from the whole payable shift to the captured build-up / boom / break-down segments
+(`apps/api/src/usecase/payroll/payroll.service.ts:662-669`) — the change discussed under
+*Boom window as built*, above. **Which side is wrong is not established:** either the tests encode the
+old whole-shift window and should have been updated with the fix, or the fix widened boom hours
+somewhere it should not have. Settle that before touching either.
+
+- **Sources checked:** `pnpm nx run @tcg/payroll-engine:test --skip-nx-cache` on `main` at `b1639820`,
+  with and without the new case; `git log -S` on `payroll.service.ts`;
+  `packages/payroll-engine/src/calculate.spec.ts`.
+- Blocked: any use of a green payroll-engine suite as a merge gate, until §2 is resolved.
+- Owner: CodingCops (build).

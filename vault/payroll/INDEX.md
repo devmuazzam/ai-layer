@@ -89,7 +89,7 @@ the 2026-08-11 snapshot.
 | **a specific filename from the drop** | [sources/](sources/INDEX.md) — **one page per file, named after the file**, so any filename resolves |
 | what a column in the weekly ADP workbook means | [adp-workbook-column-rules.md](adp-workbook-column-rules.md) — the rules the workbook implements, no employee data |
 | **who says a rule, and where sources disagree** | [source-attribution-and-conflicts.md](source-attribution-and-conflicts.md) — every rule tagged by source family, plus a 21-item conflict register |
-| **a NEW payroll question (no ticket)** | [gaps.md](gaps.md) — the **live register**, 63 open entries incl. the recordings-vs-vault pairs, each cross-linked to its `PAY-###` rule |
+| **a NEW payroll question (no ticket)** | [gaps.md](gaps.md) — the **live register**, 64 open entries incl. the recordings-vs-vault pairs, each cross-linked to its `PAY-###` rule |
 | closed/resolved historical questions | [gaps-2026-08-20-retired.md](gaps-2026-08-20-retired.md) — frozen snapshot |
 | **what is still unanswered** about payroll or ADP | [gaps.md](gaps.md) — the payroll half of the open-question register, 41 entries. `grep -n '^## '` first; read only your section |
 | what a payroll SME said verbally, not yet in the rule matrix | [2026-08-20-payroll-rules-meeting-notes.md](2026-08-20-payroll-rules-meeting-notes.md) — WTL, rest period, subsistence, craft-code rate overrides. `status: unverified`, cleaned from a call transcript |
