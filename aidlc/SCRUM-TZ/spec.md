@@ -8,7 +8,7 @@
 | Intent | `.ai/aidlc/SCRUM-TZ/intent.md`, captured `2026-09-09` |
 | Elaborated on | `2026-09-09` |
 | Vault state at elaboration | 635 `.md` files; 11 `domain/` files verified; **219** entries open across `vault/*/gaps.md`; 12 open across `SCRUM-*/spec.md` |
-| Open questions raised by this spec | **11 raised; 9 resolved 2026-09-09, Q10 and Q11 open, plus 1 residual (Q7, traveling user) — all in §12** |
+| Open questions raised by this spec | **15 raised; 9 resolved 2026-09-09. Open: Q10 (zone change vs open period), Q11 (creation-path coverage), Q12/Q13 (raised by U2), Q14 (bare-abbreviation zones), Q15 (public signup) — plus 1 residual (Q7, traveling user). None blocks a unit from starting. All in §12** |
 | Already-shipped behaviour reached | **46 consumers in §11a; 5 with no source for what happens to them** |
 | Rules consulted | `CLAUDE.md`, `.ai/claude/contexts/prisma.md`, `.ai/claude/contexts/api.md`, `.ai/claude/contexts/web.md`, `.ai/claude/contexts/mobile.md` |
 
@@ -152,6 +152,19 @@ payroll). Neither has spoken to any of it.
   is, every call passes a zone explicitly. Checkable: each of the 43 sites in the §11a grep
   passes an argument, and a test proves two tenants in different zones get different
   business days from the same instant.
+- **A condition `tcg-prisma-guardian` placed on this requirement (2026-09-09), and the only
+  one it raised:** `TenantCompany` is **not** in the tenant-scoping allowlist
+  (`tenantModels`, `apps/api/src/orm/prisma.service.ts:96-217` — verified absent) and cannot
+  be: it *is* the root, with no `tenantCompanyId` to scope by. Today every non-admin read is
+  safe **by convention, not by structure** — every call site sources the id from
+  `TenantContextService` or the JWT, and `TenantCompaniesRepository.findById` says so in a
+  comment (*"Bypasses tenant middleware intentionally"*). The cross-tenant reads that exist
+  are `@Roles(Role.SUPER_ADMIN)`-gated.
+
+  **So U3 must resolve the zone through `TenantContextService.getTenantCompanyId()`, or
+  through an id taken from an already-tenant-scoped parent record — never from a bare request
+  param.** Nothing enforces this; the first call site that ignores it breaks tenant isolation
+  silently, and the extension will not catch it because this model is not in its allowlist.
 - **Notes for the executor:** `TenantContextService`
   (`apps/api/src/context/tenant-context.ts`) is an `AsyncLocalStorage` already populated on
   every authenticated request by `TenantContextInterceptor` with `tenantCompanyId`,
@@ -969,6 +982,52 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
   Cost: it also excludes valid *alias* identifiers (`Asia/Calcutta`, `US/Pacific`).
 - **Blocked:** nothing — U2 shipped accepting them.
 - **Owner:** whoever owns the tenant-timezone decision (Syed Haris relaying, per Q1)
+- **Status:** open
+
+### Q14 — Should bare-abbreviation zones like `EST` be rejected?
+
+- **Question:** `Intl` accepts `EST`, `MST`, `HST` and `PST` as valid zone ids. `EST` resolves
+  to `America/Panama`, **which observes no DST**. Should the validator require an
+  `Area/Location` identifier and reject the abbreviations?
+- **Why this is not pedantry — verified 2026-09-09:**
+
+  ```
+  EST  → ACCEPTED, resolves to America/Panama
+  2026-07-15T20:00:00Z reads  America/New_York 16:00  ·  EST 15:00
+  ```
+
+  A tenant set to `EST` is an hour wrong for half the year, on every payroll-week boundary,
+  every rate-in-force lookup and every cron trigger. **That is this ticket's original bug,
+  arriving through the validation built to prevent it.**
+- **Also found, and already fixed in U2:** §9 of this spec prescribed
+  `Intl.DateTimeFormat(undefined, {{ timeZone: v }})` as the check, and asserted separately
+  (REQ-02) that an offset is invalid. **The prescribed probe does not enforce that rule** —
+  `-08:00`, `+08:00` and `-0800` all pass it. The executor implemented the rule rather than
+  the mechanism and rejects offsets explicitly. The spec was wrong; the code is right.
+- **Blocked:** nothing. U2 accepts the abbreviations today and pins the choice in a named
+  test block, so reversing it is one edit.
+- **Owner:** product team
+- **Workaround:** in place — the current behaviour is the documented "any valid IANA zone".
+- **Status:** open
+
+### Q15 — Should public signup create a tenant at all?
+
+- **Question:** `POST /auth/signup` is `@Public()` and creates a `TenantCompany`
+  (`AuthService.signUp` → `TenantCompaniesService.create` → `tenantCompany.create`). It mints
+  tenant codes as `TENANT-${{Date.now()}}`, matching no platform convention. Is this a live
+  product surface, or legacy scaffolding that should be removed?
+- **Why it surfaced:** Q11 enumerated eight creation paths by grepping
+  `tenantCompany.create|upsert`. That grep finds the **repository line** but not the
+  repository's *callers* — signup sits two hops above it. **The compiler found the ninth path,
+  the enumeration did not.** Verified 2026-09-09: `auth.controller.ts:43-44` is `@Public()`
+  `@Post('signup')`.
+- **What U2 did:** required a `timezone` on `SignUpDto` rather than defaulting one — the
+  treatment U2's Outcome authorises ("supplies a zone or fails loudly"). **This is a fourth
+  changed API shape that §4 does not list**, and it 400s any caller that omits the field.
+  Nothing in `apps/web`, `apps/mobile` or `qa-automation/e2e` calls it.
+- **Blocked:** nothing built. It blocks §4 being an accurate list.
+- **Owner:** product team
+- **Workaround:** in place. If signup should be refused outright, that is a one-line change.
 - **Status:** open
 
 ## 13. What this spec deliberately does not specify
