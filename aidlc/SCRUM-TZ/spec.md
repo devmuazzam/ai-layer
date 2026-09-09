@@ -492,8 +492,13 @@ device-zone display plus a mismatch warning from `isDeviceOnBusinessZone()` /
 
 - `BUSINESS_TIMEZONE` changes role from "the answer" to "the fallback". Its docblock must
   stop saying *"every tenant is Local 12 / California"* once that is no longer the design.
-- No function signature in `business-time.ts` needs to change — all 11 already take
-  `timeZone`. This is the reason the ticket is wiring rather than a rewrite.
+- No function signature in `business-time.ts` needs to change. **Corrected 2026-09-09
+  (Q17):** an earlier draft said "all 11 already take `timeZone`" — verified, it is **8 of
+  13**. `calendarDateToUtc`, `addBusinessDays`, `weekdayOf`, `formatCalendarDate` and
+  `formatDateColumn` take none, deliberately: they never leave the `YYYY-MM-DD` string
+  domain, so there is no zone for them to resolve against. The point stands — nothing needs
+  re-signing, which is why this ticket is wiring rather than a rewrite — but the acceptance
+  test is "no call relies on the default", not "every call passes a zone".
 - Whether `JwtPayload` gains a field is **Q6**, and REQ-06 argues against it.
 
 ## 8. Permissions and tenancy
@@ -969,7 +974,14 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
   somewhere, this is a one-line change.
 - **Blocked:** nothing — U2 shipped with the loud-failure treatment above.
 - **Owner:** product, on whether self-service signup is a supported path at all
-- **Status:** open
+- **Answer (2026-09-09):** A signup tenant gets **the zone the caller states**, and must
+  state one. U2 made `timezone` a required, validated field on `SignUpDto` exactly as on
+  `CreateAdminTenantDto`, so there is no path that mints a tenant without a deliberate zone.
+  Combined with Q10 (set once, never edited) that value is permanent, which is the argument
+  for requiring it rather than defaulting it.
+- **Residual:** whether public signup should create a tenant *at all* is a separate product
+  question — see **Q15**, which stays open.
+- **Status:** resolved — U2 (`ebce783f`)
 
 ### Q13 — Are legacy abbreviation zone ids (`PST`, `EST`) acceptable input?
 
@@ -999,7 +1011,11 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
   Cost: it also excludes valid *alias* identifiers (`Asia/Calcutta`, `US/Pacific`).
 - **Blocked:** nothing — U2 shipped accepting them.
 - **Owner:** whoever owns the tenant-timezone decision (Syed Haris relaying, per Q1)
-- **Status:** open
+- **Answer (2026-09-09):** **Rejected.** Merged with Q14, which asks the same question —
+  two executors raised it independently and neither could see the other's entry. Implemented
+  in `apps/api/src/utility/is-iana-time-zone.validator.ts` and mirrored in web's
+  `admin-create-tenant-modal.tsx`.
+- **Status:** resolved — duplicate of Q14
 
 ### Q14 — Should bare-abbreviation zones like `EST` be rejected?
 
@@ -1025,7 +1041,19 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
   test block, so reversing it is one edit.
 - **Owner:** product team
 - **Workaround:** in place — the current behaviour is the documented "any valid IANA zone".
-- **Status:** open
+- **Answer (2026-09-09):** **Rejected.** A bare abbreviation is refused on the same ground
+  as a fixed offset: neither can express a DST rule, and the `Intl` probe accepts both, so
+  each is checked explicitly rather than left to the probe.
+- **Verified, and the reason it matters:** `EST` resolves to `America/Panama`, which observes
+  no DST. `2026-07-15T20:00:00Z` reads 16:00 in `America/New_York` and 15:00 in `EST` — a
+  tenant stored as `EST` is an hour early from March to November, on every payroll-week
+  boundary, every rate-in-force lookup and every cron trigger.
+- **`Etc/UTC` is deliberately still accepted.** A tenant that genuinely means UTC can say so
+  in `Area/Location` form. Only the **input** is tested for the bare-word shape, never the
+  resolved value — `Etc/UTC` resolves to `UTC`, so testing the resolution would reject the
+  one spelling that states the intent clearly. Caught while implementing: the first pass did
+  test the resolution and wrongly rejected it.
+- **Status:** resolved — validator + web mirror, tests flipped from accept to reject
 
 ### Q15 — Should public signup create a tenant at all?
 
@@ -1106,7 +1134,16 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
   and it makes §7 and the shared module's docblock wrong for the next reader.
 - **Owner:** whoever signs off REQ-03 (a documentation correction, not a product answer)
 - **Workaround:** n/a.
-- **Status:** open
+- **Answer (2026-09-09):** The acceptance line was **wrong and is corrected**. §7 claimed
+  "all 11 functions take a `timeZone`"; verified, it is **8 of 13**. `calendarDateToUtc`,
+  `addBusinessDays`, `weekdayOf`, `formatCalendarDate` and `formatDateColumn` take none —
+  **deliberately**, because they never leave the `YYYY-MM-DD` string domain and so have no
+  zone to resolve against. `business-time.ts`'s own module docblock repeats the same wrong
+  claim and should be corrected with it.
+- **The right acceptance test** is therefore "no business-day call relies on the default
+  parameter", not "every call passes a zone" — five call sites have no argument to pass, and
+  U3 annotated each so they do not read as skipped.
+- **Status:** resolved — documentation correction, no code
 
 ### Q18 — Should a request whose JWT names a tenant that no longer exists now fail?
 
@@ -1126,7 +1163,13 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 - **Blocked:** nothing.
 - **Owner:** whoever owns the auth surface
 - **Workaround:** n/a — no observed occurrence.
-- **Status:** open
+- **Answer (2026-09-09):** **Documented, not changed.** A request whose JWT names a tenant
+  that no longer exists now 404s where it previously proceeded. REQ-03 forbids a fallback, so
+  there is no third option — only a choice of *where* it fails, and failing loudly at the
+  interceptor is right for a value that decides money.
+- **Reachability:** near-nil. The access-token strategy already rejects a JWT whose user is
+  gone, and `User.tenantCompanyId` is a foreign key, so a live token implies a live tenant.
+- **Status:** resolved — accepted behaviour, no code
 
 ### Q19 — Should the ticket-reminder sweep gain a local trigger hour of its own?
 
@@ -1148,7 +1191,12 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 - **Blocked:** nothing — U4 shipped without it.
 - **Owner:** dispatch / product
 - **Workaround:** n/a — current behaviour is unchanged in cadence.
-- **Status:** open
+- **Answer (2026-09-09):** **No hour, and none invented.** `runTicketReminders` was already
+  `EVERY_HOUR` before U4 and has no original local trigger hour to preserve. It is a
+  24-hour-lead reminder rather than a quiet-window sweep, so an hour would be a new product
+  choice, not a migration of an existing one. It keeps its hourly cadence and gains the
+  per-tenant **day**, which is what REQ-05 actually asks of it.
+- **Status:** resolved — no change; the hourly cadence is correct for this sweep
 
 ### Q20 — Two cron jobs share advisory-lock key 4815162349. Should one change?
 
@@ -1170,7 +1218,18 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 - **Owner:** whoever owns the cron surface
 - **Workaround:** the `15 * * * *` schedule keeps the two off the same minute, as the daily
   schedules did.
-- **Status:** open
+- **Answer (2026-09-09):** **Fixed.** `price-listing-price-hike-expiry` takes `4815162351`;
+  keys `4815162342`–`4815162350` were already in use, verified by grep of every declaration
+  site.
+- **Why it mattered more after U4:** two jobs on one advisory key means whichever fires
+  second finds the lock held and **silently skips** — no error, no log line. It never bit
+  because the two ran at different times of day; U4 moved both onto hourly schedules, which
+  narrowed that accidental margin to the 15 minutes between `:00` and `:15`.
+- **The real fix is the test, not the number.** `usecase/cron-lock-keys.spec.ts` reads the
+  source and fails if any key is declared twice — verified to bite by re-introducing the
+  duplicate. The keys are hand-picked integers in files nobody reads twice; nothing else
+  stood between the next person adding a job and another collision.
+- **Status:** resolved — `4815162351` + a uniqueness test
 
 ### Q21 — `TICKET_REMINDER_TIMEZONE` is now unconsumed. Retire it?
 
@@ -1188,7 +1247,15 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 - **Blocked:** nothing.
 - **Owner:** whoever owns deployment configuration
 - **Workaround:** harmless as dead config — nothing reads it.
-- **Status:** open
+- **Answer (2026-09-09):** **Retired.** Removed from the Joi schema
+  (`config/env.validation.ts`), the notifications config, `deploy/verify-app-secrets.sh` and
+  the ECS task definition (`deploy/task-definitions/api.json`, re-validated as JSON).
+- **It was not cosmetic.** The variable sat on the **required-secrets** list while nothing
+  consumed it, so every deploy demanded a secret that had no reader — the same trap U7 found
+  with `FLEET_TIMEZONE`, and the second instance of it in this ticket. Worth noting the
+  pattern: retiring a config value means retiring its *deployment* surfaces, and the required
+  list is the one that fails a deploy rather than merely going stale.
+- **Status:** resolved — retired end to end
 
 ### Q22 — Which zone does a quotation PDF carry when it is rendered with no acting tenant?
 
@@ -1319,7 +1386,19 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
   describes; the two duration-only files are untouched, and the retirement comments keep the
   identifier. Reported rather than decided, because widening the unit to cover them would be
   scope this executor was not granted and would put the summary numbers at risk.
-- **Status:** open
+- **Answer (2026-09-09):** The acceptance line was **too broad and is corrected**; the code
+  is right. It already carves out migration history, and the same reasoning covers two more
+  categories it failed to name:
+  - **Comment prose.** Five `FLEET_TIMEZONE` mentions remain in comments recording what was
+    retired and why. Kept deliberately — someone who finds the variable still set in a
+    pipeline can grep and land on the note saying it is dead.
+  - **Duration-only dayjs.** `day-times.ts` and `route-stops.ts` sort instants and diff
+    seconds. Verified: neither calls `.tz()`, extends the `timezone`/`utc` plugins, or names
+    a zone. They are zone-independent by construction, so the day-boundary convergence
+    REQ-10 actually describes **is** complete. Converting them means writing duration
+    arithmetic `business-time.ts` does not have and re-proving `travelSeconds`/`onSiteSeconds`
+    against it — real regression risk on the summary figures, authorised by no row.
+- **Status:** resolved — acceptance wording corrected, no code
 
 
 ## 13. What this spec deliberately does not specify
