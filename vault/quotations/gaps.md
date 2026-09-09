@@ -1752,9 +1752,9 @@ editability). Each entry below is a concrete code defect still open until fixed.
 ## Was the New Customer Packet gate on quotation send meant to be retired, and should the toggle default on only for new customers?
 
 - **Status:** open
-- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (commit
-  `0010cbc5`). **Not a ticket question:** the branch carries no `SCRUM-###`, no
-  `.ai/aidlc/SCRUM-###/` folder and no `processed.log` row.
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (craneguys-platform
+  PR #490 / `dacf6dc1`). **Not a ticket question:** the branch carries no `SCRUM-###`, no
+  `.ai/aidlc/SCRUM-###/` folder (Path C `processed.log` row added 2026-09-08).
 - **Question:** the branch removes the `customerPreQuoteComplete` prop from the whole send path
   (`send-quotation-modal.tsx`, `signature-status-panel.tsx`, `signature-status-panel.view.tsx`,
   `detail-left-panel.tsx`) along with `QuotationCustomer.preQuoteDataCompletedAt`. The prop was
@@ -2036,7 +2036,8 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 
 - **Status:** **resolved** — [decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md)
 - **Asked:** 2026-09-07 — review of ad-hoc branch `feat/customer-billing-pre-labor-forms`
-  (commit `cc18e874`, no ticket, no `processed.log` entry); tcg-scrum escalation
+  (craneguys-platform PR #490 / `dacf6dc1`, no ticket; Path C `processed.log` row added 2026-09-08);
+  tcg-scrum escalation
 - **Question:** the ERP now captures the *same two documents twice*. Which is intended?
   (a) the structured web tabs **replace** the emailed PDFs; (b) they **complement** them — TCG
   still emails the PDF, and staff key the returned answers into the tabs; (c) the customer fills
@@ -2065,9 +2066,9 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
     build: *"Completed forms must be stored in the designated **system of record rather than only
     in email**."* It does not say the ERP is that system of record for either form (row 1 names
     "FCC, HubSpot, Accounting files"; row 2 names "FCC job record").
-  - `customers/erp-review-log.md` entry #3 (Melissa, Accounting, 2026-04-02) asks for **automatic
-    customer packet generation** — assembling the right documents per customer. That is a third
-    shape again (generate a PDF), and nobody has reconciled it with either of the two built.
+  - [erp-review-log.md](../erp-review-log.md) entry #3 (Melissa, Accounting, 2026-04-02) asks for
+    **automatic customer packet generation** — assembling the right documents per customer. That is
+    a third shape again (generate a PDF), and nobody has reconciled it with either of the two built.
   - This register's *"Customer PO" on the quotation* entry above — `SCRUM-575` *Pre-Quote Data
     Form & Customer PO Form* (Done, 2026-06-25) closed with the comment that it shipped under two
     names, **"1. new customer packet 2. job and labor compliance information request form"**.
@@ -2076,9 +2077,9 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   - `vault/decisions/` (31 notes on overlay `main`) — **nothing** on either form's channel.
   - Jira **not consulted — unavailable** (Atlassian MCP not mounted this session; tenant was
     `403 suspended-payment` as of 2026-08-25). `SCRUM-575` may carry more than its closing comment.
-- **Note:** the branch also drops `pre_quote_data`
-  (`20260907120000_drop_customer_pre_quote_data`), so whichever answer lands, the column that
-  `SCRUM-575` shipped is going away without a written decision.
+- **Note:** the branch initially also added `20260907120000_drop_customer_pre_quote_data`; that
+  migration was **removed from PR #490** (2026-09-08). Whether `pre_quote_data` may ever be dropped
+  remains a separate Product question.
 - **Blocked:** sign-off of `feat/customer-billing-pre-labor-forms`; whether
   `PRE_QUOTE_FORM_FILES`, `buildPreQuoteFormsEmailAppendix()` and the two committed PDFs should be
   removed, kept, or wired to the new tabs.
@@ -2100,9 +2101,42 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   deleting anything on the strength of it.
   **Applied as a consequence:** the modal's staff-facing checkbox copy now reads "Billing
   Information" / "Pre Labor Form" to match the tabs; the PDF filenames, prop names and the
-  customer-facing email body (which names the literal PDF titles) were **deliberately left
-  unchanged**. That asymmetry is intended — do not align the email text to the tab names.
-  **Still open, and not closed by this:** the `20260907120000_drop_customer_pre_quote_data`
-  migration; Melissa's automatic customer-packet-generation ask (`customers/erp-review-log.md`
-  #3), a third shape neither addressed nor dismissed; and `SCRUM-575`, still unread (Jira
-  unreachable this session).
+  **numbered PDF titles** in the customer-facing email appendix were deliberately left
+  unchanged. **Correction (2026-09-08):** the appendix **intro line**
+  (`PRE_QUOTE_FORMS_EMAIL_APPENDIX_INTRO`) was later rewritten in PR #490 `dcaa7bf0` from
+  *"our Pre-Quote documentation"* to *"our customer documentation"* — that change is **not**
+  covered by this decision (see the open entry below). Do not treat the whole email body as
+  frozen by this note.
+  **Still open, and not closed by this:** whether `pre_quote_data` may be dropped (migration
+  removed from PR #490 pending Product); Melissa's automatic customer-packet-generation ask
+  ([erp-review-log.md](../erp-review-log.md) #3), a third shape neither addressed nor dismissed;
+  and `SCRUM-575`, still unread (Jira unreachable this session).
+
+## Is "Pre-Quote" being retired in customer-facing copy, and who signs off the send-email text?
+
+- **Status:** open
+- **Asked:** 2026-09-08 — review of `feat/customer-billing-pre-labor-forms` (commit `dcaa7bf0`),
+  main-repo PR #490. **Not a ticket question:** no `SCRUM-###`, no `.ai/aidlc/SCRUM-###/`
+  folder (Path C `processed.log` row added 2026-09-08).
+- **Question:** the commit rewrites the customer-facing first line of the quotation-send email
+  appendix (`packages/shared/src/constants/pre-quote-forms.ts`,
+  `PRE_QUOTE_FORMS_EMAIL_APPENDIX_INTRO`) from *"our Pre-Quote documentation"* to *"our customer
+  documentation"*. Two things need a person: (a) is "Pre-Quote" being deliberately retired from
+  copy the customer reads, or was this an incidental tidy-up? (b) who owns the wording of this
+  email at all — `quotations/quotations.md:32` records that TCG never supplied it.
+- **Candidates:** `quotations/quotations.md:32-33` (punch list, 2026-07-14) — *"Need to
+  demand text from TCG team for email"*, and a rename request pointing at *"new customer
+  packet"*, the opposite direction from this change;
+  `quotations/sales-operating-system/05-forms-and-records-matrix.md` section 8 *Quote Sent* —
+  content requirements, explicitly **not** wording; `meetings/transcripts/2026-08-11-sales-process.md:211`
+  (Brian Petros, TCG, 2026-08-11) still says "pre-quote" in TCG's own voice. Nothing in
+  `quotations-INDEX.md`'s four candidates, `decisions/`, or `SCRUM-575` as transcribed in this
+  register addresses email copy. Jira re-checked 2026-09-08: still `403 suspended-payment`.
+- **Note:** `decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md` originally
+  said the customer-facing email body was "deliberately left unchanged"; that is true of the
+  numbered PDF titles only, not of this intro line. The decision note carries a correcting line
+  as of 2026-09-08.
+- **Blocked:** nothing hard — the string ships either way. But if "Pre-Quote" is *not* being
+  retired, the customer-facing term now diverges from the PDF titles the same email lists, and
+  from the `PRE_QUOTE_*` identifiers, filenames and DB column that keep the old name.
+- **Owner:** Ryan Adams / Joe Schacatano (quotation send), with Melissa McNutt on packet naming.

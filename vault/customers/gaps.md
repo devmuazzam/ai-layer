@@ -506,18 +506,21 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## Retiring Pre-Quote Data — was removal ever asked for, and may the columns be dropped?
 
 - **Status:** open
-- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (commits
-  `0010cbc5`, `bfa06611`). **Not a ticket question:** the branch carries no `SCRUM-###`, no
-  `.ai/aidlc/SCRUM-###/` folder and no `processed.log` row, so there is no `spec.md` §12 to hold it.
-- **Question:** the branch deletes the customer **Pre-Quote Data** tab and drops
-  `customers.pre_quote_data` / `pre_quote_data_completed_at` with a bare
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (craneguys-platform
+  PR #490; commits then later rebased — cite the PR, not the pre-rebase SHAs). **Not a ticket
+  question:** the branch carries no `SCRUM-###`, no `.ai/aidlc/SCRUM-###/` folder (a
+  `processed.log` Path C row was added retroactively at the 2026-09-08 review fix), so there is
+  no `spec.md` §12 to hold it.
+- **Question:** the branch deletes the customer **Pre-Quote Data** tab and (until the 2026-09-08
+  fix) dropped `customers.pre_quote_data` / `pre_quote_data_completed_at` with a bare
   `ALTER TABLE ... DROP COLUMN IF EXISTS` and **no backfill into the new
   `billing_information_data` / `pre_labor_data` columns** — every existing customer's pre-quote
-  answers are destroyed on `migrate deploy`. Three separable decisions, none written down anywhere:
-  (a) was retiring Pre-Quote Data asked for by anyone, or is the new Billing Information /
-  Pre Labor pair meant to sit *alongside* it? (b) if it is retired, is the stored data expendable,
-  or must it migrate into the replacement shape first? (c) is the retired field set (14 fields per
-  the removed `customerPreQuoteComplete` JSDoc) fully covered by the replacement?
+  answers would have been destroyed on `migrate deploy`. Three separable decisions, none written
+  down anywhere: (a) was retiring Pre-Quote Data asked for by anyone, or is the new Billing
+  Information / Pre Labor pair meant to sit *alongside* it? (b) if it is retired, is the stored
+  data expendable, or must it migrate into the replacement shape first? (c) is the retired field
+  set (14 fields per the removed `customerPreQuoteComplete` JSDoc) fully covered by the
+  replacement?
 - **Sources checked:** [INDEX.md](INDEX.md), [customers-INDEX.md](customers-INDEX.md) and all five
   of its candidates; this register. **Nothing anywhere asks for removal.** Every written trace
   points the other way: `SCRUM-575` *Pre-Quote Data Form & Customer PO Form* — **Done**, reporter
@@ -526,28 +529,28 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   and [customer-and-job-sites.md](customer-and-job-sites.md) L27 — *"Need to ask TCG team to
   provide pre quote form -- we need to assicate this data with customers"*, an **ask that was never
   answered**, duplicated at [../meetings/2026-06-26-discussion-points-with-tcg-team.md](../meetings/2026-06-26-discussion-points-with-tcg-team.md) L15.
-  A vault file `customers/new-customer-packet.md` was cited into this review as a source — **it
-  does not exist**; there is no such file and never was. Jira could **not** be checked: the MCP
-  server returns `403 Tenant is restricted: suspended-payment`, so `SCRUM-575`'s current state and
-  any newer ticket are unverifiable from here.
-- **Blocked:** merging `bfa06611`. A destructive migration on data whose replacement mapping is
-  unspecified is not recoverable after deploy.
+  [new-customer-packet.md](new-customer-packet.md) **does exist** on overlay main (since `4e1b3eb`,
+  2026-09-04); an earlier draft of this entry incorrectly claimed it never did. Jira could **not**
+  be checked: the MCP server returns `403 Tenant is restricted: suspended-payment`, so
+  `SCRUM-575`'s current state and any newer ticket are unverifiable from here.
+- **Blocked:** Product has still not authorised tab retirement or a column drop. Platform PR #490
+  **removed** the destructive `20260907120000_drop_customer_pre_quote_data` migration and restored
+  the columns in schema (commit `a718e097`); the UI tab remains retired without a written ask.
+  Sign-off on (a)/(b)/(c) still needs a named owner.
 - **Owner:** Melissa McNutt (customer packet / onboarding forms), with Ryan Adams on the
   quotation-send side.
-- **Update (2026-09-07):** (a) is answered by
-  [decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md)
-  — Billing Information / Pre Labor Form **replace** the retired Pre-Quote Data tab (they do not
-  sit alongside it); the PDFs that stay are the separate, already-existing quotation-send
-  attachments, not Pre-Quote Data. **(b) and (c), and the Blocked line above, are untouched by that
-  decision** — it was never put to Product, `20260907120000_drop_customer_pre_quote_data` is still
-  a bare `DROP COLUMN` with no backfill, and nobody has checked whether any tenant holds data in
-  the retiring columns. This remains the sign-off blocker on the branch.
+- **Update (2026-09-07, corrected 2026-09-08):** an earlier note claimed (a) was answered by
+  [decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md).
+  **That was wrong** — the complementary note settles PDFs-vs-tabs and never mentions retiring the
+  Pre-Quote Data tab or dropping its columns; it explicitly leaves the column drop undecided.
+  **(a), (b) and (c) all stay open.** The bare `DROP COLUMN` is no longer on PR #490; the open
+  Product questions and the unrun staging/prod occupancy check remain.
 
 ## Billing Information and Pre Labor Form tabs — the names are sourced, nothing else is
 
 - **Status:** open
-- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (commit
-  `0010cbc5`). No ticket, no spec, no `processed.log` row.
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (craneguys-platform
+  PR #490 / `dacf6dc1`). No ticket, no spec folder (Path C `processed.log` row added 2026-09-08).
 - **Question:** the branch adds two customer detail tabs — **Billing Information** (a composite of
   five sub-forms: Credit Card Authorization, Credit Application, Terms & Conditions, Deposit Form,
   Preliminary Notice) and **Pre Labor Form** — editable from the detail/edit workspace and
@@ -589,8 +592,8 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## Storing full credit card numbers and CVVs in `billing_information_data` — no source, and a compliance question
 
 - **Status:** open
-- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (commit
-  `0010cbc5`).
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (craneguys-platform
+  PR #490 / `dacf6dc1`).
 - **Question:** `packages/shared/src/types/billing-information-data.ts` defines
   `creditCardNumber` and `securityCode` (*"Full CVV"*, per its own comment) and they are persisted
   **in plaintext** in the `customers.billing_information_data` JSONB column. The file's header
@@ -612,12 +615,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Retaining the CVV/CAV2/CVC2 after authorization is prohibited by PCI-DSS req. 3.2 irrespective of
   what TCG prefers, and a plaintext PAN puts the whole `customers` table in scope. It should not
   merge on an unattributed code comment.
-- **Blocked:** merging `0010cbc5` as written.
+- **Blocked:** merging PR #490 as first written (full PAN + CVV). Softened after the harden commit
+  below — (a) remains open.
 - **Owner:** Brian Petros (systems/compliance) — needs a named acceptance or a design change, not a
   developer's judgement.
-- **Update (2026-09-07, verified against HEAD `9daa2027`):** the specific defect described above —
+- **Update (2026-09-07, verified against PR #490 harden commit `052559469`):** the specific defect
+  described above —
   full PAN and CVV persisted in plaintext — is **fixed**, in a later commit on the same branch
-  (`fad461fe`, *"harden billing card storage and completion"*), not by any decision recorded here.
+  (`052559469`, *"harden billing card storage and completion"*), not by any decision recorded here.
   `sanitizeBillingInformationDataForStorage` (`packages/shared/src/types/billing-information-data.ts`)
   is called on every create and update (`customers.service.ts`) and **masks the PAN to last-four
   digits** (`maskCreditCardNumberForStorage`) and **nulls `securityCode` unconditionally** before
@@ -630,8 +635,8 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## What makes Billing Information "Complete"? — an any-field rule, stampable from autofill alone
 
 - **Status:** open
-- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (commit
-  `0010cbc5`).
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (craneguys-platform
+  PR #490 / `dacf6dc1`).
 - **Question:** `isBillingInformationDataComplete` (`packages/shared/src/types/billing-information-data.ts`)
   is documented as *"Lenient completion: true when **any** of the five sub-forms has meaningful
   progress"* — a single non-empty field in any one sub-form stamps
@@ -654,8 +659,9 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** if the timestamp has no downstream consumer, the cheapest correct move is to stop
   stamping it until the rule is decided, rather than to pick a threshold here.
 - **Owner:** Melissa McNutt (what a returned packet must contain), with accounting on approval.
-- **Update (2026-09-07, verified against HEAD `9daa2027`):** the specific defect described above —
-  autofill alone stamping Complete — is **fixed**, in the same later commit `fad461fe` noted on the
+- **Update (2026-09-07, verified against PR #490 harden commit `052559469`):** the specific defect
+  described above —
+  autofill alone stamping Complete — is **fixed**, in the same later commit `052559469` noted on the
   CVV/PAN entry above, not by any decision recorded here.
   `packages/shared/src/types/billing-information-data.ts` now excludes `companyName`/`customerName`
   (`IDENTITY_AUTOFILL_KEYS`) and `securityCode` (`EPHEMERAL_CARD_KEYS`) from progress-checking, so
@@ -669,7 +675,8 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 - **Status:** **resolved** — [decisions/2026-09-07-pre-labor-capture-stays-customer-level.md](../decisions/2026-09-07-pre-labor-capture-stays-customer-level.md)
 - **Asked:** 2026-09-07 — review of ad-hoc branch `feat/customer-billing-pre-labor-forms`
-  (commit `cc18e874`, no ticket, no `processed.log` entry); tcg-scrum escalation
+  (craneguys-platform PR #490 / `dacf6dc1`, no ticket; Path C `processed.log` row added 2026-09-08);
+  tcg-scrum escalation
 - **Question:** the Pre-Job Labor Compliance & Payroll Information Request is captured where?
   (a) one JSON blob on `Customer`, overwritten on every save — what the branch builds; (b) one
   record per **job/quote**, with an optional customer-level *default flag* ("LAUSD is always
@@ -706,10 +713,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - Jira **not consulted — unavailable**: the Atlassian MCP is not mounted this session, and the
     tenant was returning `403 suspended-payment` as of the 2026-08-25 customers entry above.
     Check `SCRUM-575` and any labor-compliance ticket before treating this as fully unsourced.
-- **Note:** the same branch adds `20260907120000_drop_customer_pre_quote_data`, dropping the
-  `pre_quote_data` column that [fcc-legacy-customer-data-model.md](fcc-legacy-customer-data-model.md)
+- **Note:** the same branch initially added `20260907120000_drop_customer_pre_quote_data`, which
+  would have dropped the `pre_quote_data` column that
+  [fcc-legacy-customer-data-model.md](fcc-legacy-customer-data-model.md)
   (line ~485) documents as *"the JSON compliance/onboarding blob that corresponds to the paper
-  packet"*. Whether any tenant holds data in it is a separate check, and the drop is irreversible.
+  packet"*. That migration was **removed from PR #490** (2026-09-08); whether any tenant holds data
+  in the column is still a separate check.
 - **Blocked:** sign-off of `feat/customer-billing-pre-labor-forms`; the shape of
   `Customer.preLaborData`; the certified-payroll job flag the payroll report depends on
   (transcript 17:49 — *"if the job is not marked on there, that job won't even pop up on the
@@ -734,6 +743,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   saved project's compliance data) for this build.
   **Still open, and not closed by this:** the certified-payroll **job flag** the payroll
   report keys off (→ [payroll/gaps.md](../payroll/gaps.md#labor-compliance-module--no-vault-coverage));
-  Corrina's customer-level **auto-mark default**, which a singleton store is not; and the
-  `20260907120000_drop_customer_pre_quote_data` migration, which was **not** put to Product
-  and is **not** authorised by this decision.
+  Corrina's customer-level **auto-mark default**, which a singleton store is not; and whether
+  `pre_quote_data` may ever be dropped — **not** put to Product and **not** authorised by this
+  decision (the drop migration is no longer on PR #490).

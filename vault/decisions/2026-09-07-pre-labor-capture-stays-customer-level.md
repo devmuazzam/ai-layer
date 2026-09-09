@@ -76,11 +76,12 @@ build.
 - Corrina's customer-level **auto-mark default** — a flag that pre-populates per-job
   records — is neither built nor decided. This decision does not implement it; a singleton
   data store is not a default.
-- The migration `20260907120000_drop_customer_pre_quote_data` drops the `pre_quote_data`
-  column that [customers/fcc-legacy-customer-data-model.md](../customers/fcc-legacy-customer-data-model.md)
-  documents as the JSON compliance/onboarding blob matching the paper packet. **The drop
-  was not put to Product and is not authorised by this decision.** Whether any tenant holds
-  data in that column is still an unrun check, and the drop is irreversible.
+- Dropping `pre_quote_data` was **not put to Product and is not authorised by this
+  decision.** Platform PR #490 **removed** migration `20260907120000_drop_customer_pre_quote_data`
+  from the branch; the columns that
+  [customers/fcc-legacy-customer-data-model.md](../customers/fcc-legacy-customer-data-model.md)
+  documents as the JSON compliance/onboarding blob stay until Product authorises a drop or
+  backfill. Whether any tenant holds data in that column is still an unrun check.
 
 ## Effect on the vault
 

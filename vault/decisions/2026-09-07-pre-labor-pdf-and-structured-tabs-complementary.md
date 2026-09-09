@@ -70,26 +70,35 @@ on-screen copy was changed in the same session to match the Customer tab names:
   Packet" / "Job & Labor Compliance Information Request Form".
 - `send-quotation-modal.use-forms-selection.ts` — comments updated to the same terminology.
 
-Deliberately **left unchanged**, and this is the load-bearing half:
+Deliberately **left unchanged** on the PDF side (this is still the load-bearing half):
 
 - The PDF **filenames** in `packages/shared/src/constants/pre-quote-forms.ts`
   (`CUSTOMER_PACKET`, `JOB_LABOR_COMPLIANCE`).
 - The **prop and state names** (`includeJobLaborCompliance`, `onToggleJobLaborCompliance`, …).
-- The **email body text**, which still lists the literal PDF titles
-  (`pre-quote-forms.ts:58-60` — *"New Customer Packet"*, *"Job & Labor Compliance
-  Information Request Form"*), because that is what the customer receives as an attachment
-  and the email must name the file they are opening.
+- The **numbered PDF titles** in the email appendix (`pre-quote-forms.ts` — *"New Customer
+  Packet"*, *"Job & Labor Compliance Information Request Form"*), because that is what the
+  customer receives as an attachment and the email must name the file they are opening.
 
-The result is intentional asymmetry: **staff-facing copy uses the ERP tab names, customer-facing
-copy uses the PDF titles.** Do not "fix" the mismatch by aligning the email text to the tabs.
+**Correction (2026-09-08 review / PR #490 `dcaa7bf0`):** the customer-facing **intro line**
+(`PRE_QUOTE_FORMS_EMAIL_APPENDIX_INTRO`) was **not** left unchanged — it was rewritten from
+*"our Pre-Quote documentation"* to *"our customer documentation"*. That string change is
+**unsourced** (see [quotations/gaps.md](../quotations/gaps.md#is-pre-quote-being-retired-in-customer-facing-copy-and-who-signs-off-the-send-email-text));
+this note only authorised staff-facing checkbox rename and keeping the PDF titles. Do not
+treat the intro rewrite as covered by this decision.
+
+The intended asymmetry remains: **staff-facing copy uses the ERP tab names, customer-facing
+copy uses the PDF titles** (for the attachment list). Do not "fix" that list by aligning
+it to the tabs.
 
 ## What stays open
 
-- `customers/erp-review-log.md` entry #3 (Melissa McNutt, Accounting, 2026-04-02) asks for
+- [erp-review-log.md](../erp-review-log.md) entry #3 (Melissa McNutt, Accounting, 2026-04-02) asks for
   **automatic customer-packet generation** — assembling the right documents per customer.
   That is a third shape, and this decision does not address or dismiss it.
-- The migration `20260907120000_drop_customer_pre_quote_data` drops the column `SCRUM-575`
-  shipped. **Not put to Product, not authorised here.**
+- Dropping `customers.pre_quote_data` / `pre_quote_data_completed_at` was **not put to Product
+  and is not authorised here.** Platform PR #490 **removed** migration
+  `20260907120000_drop_customer_pre_quote_data` from the branch; the columns stay until a
+  named Product decision authorises a drop or backfill.
 - `SCRUM-575` was never read this session (Atlassian MCP not mounted; tenant was
   `403 suspended-payment` as of 2026-08-25). It may carry acceptance criteria that sharpen
   or contradict this; check it when Jira is reachable.
@@ -113,4 +122,4 @@ copy uses the PDF titles.** Do not "fix" the mismatch by aligning the email text
 Sign-off of `feat/customer-billing-pre-labor-forms` is unblocked **on this question only**.
 The answer to *"should `PRE_QUOTE_FORM_FILES`, `buildPreQuoteFormsEmailAppendix()` and the
 two PDFs be removed?"* is **no — keep them, unwired to the tabs, by design.** The
-`pre_quote_data` drop remains undecided.
+`pre_quote_data` drop remains undecided (and is no longer shipping on PR #490).
