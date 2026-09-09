@@ -1106,6 +1106,68 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 - **Workaround:** n/a — no observed occurrence.
 - **Status:** open
 
+### Q19 — Should the ticket-reminder sweep gain a local trigger hour of its own?
+
+- **Question:** Seven of the eight sweeps had a daily trigger hour (01:00–05:15) that U4
+  turned into a per-tenant local target. `runTicketReminders` had none — it already ran
+  `EVERY_HOUR`. Should it now acquire a stated local hour like the others, so a crew is
+  reminded once at (say) 06:00 local, or does it keep firing every hour?
+- **Why it surfaced:** the unit's slice-contents row says each body gates on "that sweep's
+  original trigger hour", and this sweep's original trigger hour is *every* hour. There is no
+  hour to preserve, and REQ-05's acceptance ("each get their sweep once per local day") reads
+  as though there should be one. Inventing a number would change how often crews are
+  reminded, which is a dispatch decision, not a timezone one.
+- **What U4 did:** kept the hourly cadence exactly as it was and gave the sweep the
+  per-tenant *day* instead — "tomorrow" is now read on each tenant's own clock rather than
+  computed once from the process zone. The `ReminderLog` key for this sweep
+  (`ticket_reminder_1d:<allocationId>`) carries no date, so however many hourly runs see a
+  row, the crew is reminded exactly once. The behaviour change is confined to *which* day is
+  called tomorrow, which is what REQ-05 asks for.
+- **Blocked:** nothing — U4 shipped without it.
+- **Owner:** dispatch / product
+- **Workaround:** n/a — current behaviour is unchanged in cadence.
+- **Status:** open
+
+### Q20 — Two cron jobs share advisory-lock key 4815162349. Should one change?
+
+- **Question:** `price-listing-price-hike-expiry`
+  (`price-listing-adjustment-expiry.service.ts`) and `ticket-reminders`
+  (`notification-scheduled-jobs.service.ts`) both call
+  `pg_try_advisory_xact_lock(4815162349)`. Two unrelated sweeps therefore exclude each other.
+  Should one of them be given a distinct key?
+- **Why it surfaced:** found while moving all eight sweeps to hourly schedules. It has never
+  bitten because the two ran at different times (05:15 daily versus hourly on the hour), and
+  U4 preserved that separation deliberately — the price-hike sweep fires on `15 * * * *`
+  rather than `EVERY_HOUR`, which keeps it off `ticket-reminders`' minute. Had both moved to
+  the hour, one would have been spuriously logged `SKIPPED` every hour with nothing
+  indicating why.
+- **What U4 did:** nothing. Changing a lock key is not traceable to any row of U4's
+  slice-contents table or to REQ-05, and the collision stays as latent as it was. Recorded
+  rather than fixed.
+- **Blocked:** nothing.
+- **Owner:** whoever owns the cron surface
+- **Workaround:** the `15 * * * *` schedule keeps the two off the same minute, as the daily
+  schedules did.
+- **Status:** open
+
+### Q21 — `TICKET_REMINDER_TIMEZONE` is now unconsumed. Retire it?
+
+- **Question:** the env var `TICKET_REMINDER_TIMEZONE` (`notifications.ticketReminderTimezone`,
+  defaulted to `America/Los_Angeles` in both `notifications.config.ts` and
+  `env.validation.ts`) was read at exactly one call site: the attachment-expiry sweep, where
+  it decided the calendar day for every tenant at once. U4 replaced it with each tenant's own
+  `TenantCompany.timezone`. Should the variable and its config entry now be deleted?
+- **Why it surfaced:** the variable is misnamed for what it did — it drove the *attachment*
+  sweep, not the ticket one — and it is a second process-wide zone of the same class as
+  `FLEET_TIMEZONE` (REQ-10 / U7), which this ticket is retiring. It is now dead config.
+- **What U4 did:** stopped reading it, and left the variable and both config entries in
+  place. Deleting an env var is a deployment change, and no source in this ticket asked for
+  one; REQ-10's scope names `FLEET_TIMEZONE`, not this.
+- **Blocked:** nothing.
+- **Owner:** whoever owns deployment configuration
+- **Workaround:** harmless as dead config — nothing reads it.
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 Rewritten 2026-09-09. Most of what was here was unspecified because nobody had answered it;
