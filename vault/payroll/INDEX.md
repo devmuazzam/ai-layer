@@ -2,7 +2,7 @@
 title: Payroll module - vault index
 source: onedrive/OneDrive_1_8-11-2026/; extended 2026-09-04 from shared-folder/Project-Repository-2026-09-04/
 migrated: 2026-08-13
-updated: 2026-09-08
+updated: 2026-09-09
 status: unverified
 conflicts_with: []
 jira: []
@@ -89,7 +89,7 @@ the 2026-08-11 snapshot.
 | **a specific filename from the drop** | [sources/](sources/INDEX.md) — **one page per file, named after the file**, so any filename resolves |
 | what a column in the weekly ADP workbook means | [adp-workbook-column-rules.md](adp-workbook-column-rules.md) — the rules the workbook implements, no employee data |
 | **who says a rule, and where sources disagree** | [source-attribution-and-conflicts.md](source-attribution-and-conflicts.md) — every rule tagged by source family, plus a 21-item conflict register |
-| **a NEW payroll question (no ticket)** | [gaps.md](gaps.md) — the **live register**, 58 open entries incl. the recordings-vs-vault pairs, each cross-linked to its `PAY-###` rule |
+| **a NEW payroll question (no ticket)** | [gaps.md](gaps.md) — the **live register**, 63 open entries incl. the recordings-vs-vault pairs, each cross-linked to its `PAY-###` rule |
 | closed/resolved historical questions | [gaps-2026-08-20-retired.md](gaps-2026-08-20-retired.md) — frozen snapshot |
 | **what is still unanswered** about payroll or ADP | [gaps.md](gaps.md) — the payroll half of the open-question register, 41 entries. `grep -n '^## '` first; read only your section |
 | what a payroll SME said verbally, not yet in the rule matrix | [2026-08-20-payroll-rules-meeting-notes.md](2026-08-20-payroll-rules-meeting-notes.md) — WTL, rest period, subsistence, craft-code rate overrides. `status: unverified`, cleaned from a call transcript |
@@ -145,7 +145,8 @@ otherwise.
 
 - [2026-09-01-subsistence-not-a-craft-attribute.md](../decisions/2026-09-01-subsistence-not-a-craft-attribute.md) — subsistence is a property of the trip, not the trade; supersedes the per-craft modifier shown on 2026-08-13
 - [2026-08-25-non-union-base-rate-per-person.md](../decisions/2026-08-25-non-union-base-rate-per-person.md) — non-union base rate comes from `Employee.hourlyRate`
-- [2026-08-25-boom-adder-on-top-unmultiplied.md](../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md) — **working** decision, not confirmed by labor counsel
+- [2026-09-09-work-chains-stitch-only-when-there-is-no-gap.md](../decisions/2026-09-09-work-chains-stitch-only-when-there-is-no-gap.md) — entries stitch only when back-to-back; Brian retracts the 30-minute tolerance as a bug, and we copied it
+- [2026-08-25-boom-adder-on-top-unmultiplied.md](../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md) — **working** decision, not confirmed by labor counsel — **and contradicted 2026-09-09** by a real Payroll App entry and by our own shipped engine; see its appendix
 - [2026-08-25-craft-locked-rate-override-scoped-to-union.md](../decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md) — **working** reading of the note below
 - [2026-08-24-payroll-time-rounding-method.md](../decisions/2026-08-24-payroll-time-rounding-method.md) — start down, end up, 30-minute increments
 - [2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) — day-level deviations locked to craft-code amounts

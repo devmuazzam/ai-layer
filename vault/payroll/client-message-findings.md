@@ -2,7 +2,7 @@
 title: Client message verification — running findings
 status: reference
 kind: reference
-updated: 2026-09-08
+updated: 2026-09-09
 tags: [module/payroll, kind/reference, payroll-rules, open-questions]
 ---
 
@@ -821,6 +821,177 @@ both codes exist in ADP and the crosswalk maps them? (43) whether the **rest-pre
 amounts** the app computes are paid today at all, and by which route, given they have no ADP code
 and no sheet column — the column-rules page's "absorbed into hand-typed hours or not paid" finding,
 now askable with his own `SQL_READY_ADP_PENDING` label as the exhibit.
+
+## 2026-09-09 — the Payroll App's own long-boom breakdown, on a real entry (Brian Petros → Ehtesham)
+
+Ehtesham asked for Corrina's two 2026-09-04 breakdowns *"in your app as well ... screenshots
+would suffice"*. Brian answered with **a real entry that is nearly the single-job example** —
+Rafael "Rafa" Garcia (2934), **Wed 2026-04-08**, job `OM58185` / ticket `43694` / LPID `82172`,
+craft `L12-G6-A` (`OP >80T-200T`) — as two exhibits: an AI-written segment table, and a screenshot
+of the Payroll App's Labor Entries row with its Boom Detail panel expanded. The two-job
+counterpart is *"looking into one that closely matches"* and has not arrived.
+
+**The entry.** Labor `3:30 AM–11:30 PM` = 20.0 actual. Boom window `7:00 AM–9:00 PM` = 14.0,
+modifier `OI-BP-05 · 161-180Ft-Oiler` at **$1.25/hr**. Segments: `3:30–6:00` 2.5 OT non-boom;
+`6:00–7:00` 1.0 ST non-boom; `7:00–2:00 PM` 7.0 ST boom; `2:00–3:30` 1.5 OT boom; `3:30–9:00 PM`
+5.5 DT boom; `9:00–11:30` 2.5 DT non-boom. Actual **8 ST / 4 OT / 8 DT**, boom add **$25.31**,
+actual gross **$2,107.61**; `Rule Adj WTL −1.5` → payable **18.5** = 7.5 / 3.5 / 7.5, WTL
+**−$158.99**, total payable **$1,948.62**. Comment: *"(NO LUNCH TAKEN - 0.5 DBL 1st WTL + 0.5 DBL
+2nd WTL + 0.5 DBL 3rd WTL) eod: transpt. counter wieght to Piazza trailer"*.
+
+**The exhibit is arithmetically closed, which is what makes it usable as a reference case.** The
+base rate is printed nowhere on it, but it is recoverable and it checks out: `($2,107.61 − $25.31)
+/ (8 + 4×1.5 + 8×2) = $69.41`, the L12 Group VI rate on
+[wage-rate-sheet-2026-07-01.md](mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md) exactly.
+Every other figure on the screenshot then falls out of that one number.
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Boom pay is priced on a **boom window narrower than the labor window** — 14.0 h inside 20.0 h — with `BOOM START` / `BOOM END` / `WINDOW` as first-class printed fields | ✅ agrees with Corrina 2026-09-04 and with the 2026-09-03 yard-to-yard decision. **First time the vault sees the incumbent's own field names for it** (`Boom actual`, `Boom gap`, `Boom add`) | PAY-043 |
+| Drive / non-boom time still **progresses the ST→OT→DT ladder** — the `3:30–6:00` drive is OT under the pre-6AM rule, the `9:00–11:30` drive is DT because the ladder had already reached it | ✅ agrees; same assertion as Corrina's, now on a real entry rather than a hand-worked one | PAY-021, PAY-022, PAY-023 |
+| The boom adder is paid **at each bucket's own multiplier**, not flat: `7.0×$1.25 + 1.5×$1.875 + 5.5×$2.50 = $25.3125` → the printed **$25.31** | ✅ agrees with our engine to the cent — `boomAdderPerHour * multiplierOf(bucket)`, `packages/payroll-engine/src/calculate.ts:299`. 🆕 as a *client-side written* statement: no vault document had shown the incumbent premiumising the adder | PAY-043 |
+| `Boom gap` is a first-class printed field, blank on this entry | ℹ️ the app models a **discontinuous** boom window (more than one session, with the gap unpaid). No vault document names the concept | PAY-043 |
+| **All three meals priced as TAKEN, not worked through** — 0.5 h off each of ST, OT and DT at their own rates, boom included, and no premium anywhere | ✅ **explained from the legacy source; not a rule difference.** `−$158.99` = `0.5 × (69.41 + 1.25) × (1.0 + 1.5 + 2.0)` = `$158.985`, the exact `TAKEN_DEDUCT` formula (`usp_Apply_WTL_MealPeriods.PROC.sql:799-800`, *"entire priced slice removed, including base, shift, boom, and multiplier"*). The comment carries **no `(WTL_n)` token** — `app.v_LaborPayroll_CommentTokens.VIEW.sql:110-163` matches only the literals `(WTL_0)`…`(WTL_4)`, `(PAY:WTL_n)` and `(WTL)`, and prose such as *"…3rd WTL)"* matches none of them — so `MissingTokenBehavior = ASSUME_WTL_0_WARN` fired and the day priced as **three lunches taken** | PAY-046, PAY-047 |
+| Had the token been present, the entry would have paid **$2,315.84**, not $1,948.62 | ℹ️ derived, and it is the size of the token's cost: the group's first slice is `3:30 AM` **OT**, so `NonSTStartMode = WTL_APPLICABLE_ADD` governs → three premiums of `0.5 × 69.41 × 2.00 = $69.41` and **no deductions at all**. The `−1.5 h` and the `−$158.99` both disappear | PAY-046, PAY-047 |
+| **Our engine's worked-through bookkeeping is not the legacy one** | ℹ️ **different bookkeeping, same answer — corrected 2026-09-10.** Legacy never deducts a worked-through meal (`Hrs_ST/OT/DT` are signed only on `TAKEN_DEDUCT`; `WORKED_THROUGH` puts `+0.5` into `Hrs_DT`, `:766-790`); ours deducts at the bucket rate then adds at `max(2.0, mult)`. Both land the half hour at **2×**, which is the rule Brian states at 34:20 on 2026-09-03. The one real difference is that we also deduct the **boom** adder on that half hour and they do not — $2.81 here. Registered in [gaps.md](gaps.md#wtl-worked-through-meals--wtl_applicable_add-pays-the-half-hour-at-triple-time-and-our-boom-handling-is-the-only-thing-wrong-on-our-side) | PAY-047 |
+| Payable buckets move to 7.5 / 3.5 / 7.5 — the 1.5 h leaves the buckets and does **not** reappear as DT | ✅ consistent with the deduction-only reading above, and ✅ agrees with the 2026-09-04 finding that WTL premium never lands in the hour buckets | PAY-046, PAY-047 |
+
+**Verified against:** [wage-rate-sheet-2026-07-01.md](mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md)
+(base rate); `packages/payroll-engine/src/calculate.ts:296-300` (adder × bucket multiplier);
+`packages/payroll-engine/src/meal-periods.ts` header (the two-leg WTL model); the 2026-09-04
+Corrina section above. The screenshot's vocabulary — `Rules / Issues guide`, `Pay guide`, `Boom
+actual`, `Boom gap`, `Rule Adj` — appears **nowhere in the ERP source**, so this is the legacy
+Payroll App, not our build.
+
+**No client question came out of this message.** Both puzzles it raised are answered by the
+2026-08-18 extract, which is why nothing was sent:
+
+- **Does the incumbent pay a worked-through-meal premium at all?** Yes, and the terms are
+  configuration, not code. `cfg.WTL_Rule` has exactly **one enabled row** — `L12_WTL_2025`, effective
+  2025-01-01, no end date ([config-values.md](legacy-payroll-app-db-extract/config-values.md) §`cfg.WTL_Rule`) —
+  carrying `AddMultiplier = 2.00`, `AddRateBasis = BASE_PLUS_SHIFT_EXCLUDE_BOOM` and
+  `DeductBasis = FULL_SELECTED_PRICED_SLICE`. **Our engine's rate basis and multiplier match it exactly.**
+- **Why does this entry show none?** The WTL count is parsed from a **literal comment token**, and this
+  comment has prose instead. `ASSUME_WTL_0_WARN` then prices every modelled meal opportunity as taken.
+  The exhibit is a **token-capture miss**, not a pricing rule — and it is a live argument for the ERP
+  capturing WTL as structured data on the ticket rather than as free text, which it now does.
+
+**What the extract settles that no vault document had recorded: there are two worked-through modes,
+and the day-type picks one.** `WTL_Mode` is resolved **once per stitched WTL group, from the group's
+first slice** (`:481-490`) — not per meal:
+
+| Group's first slice | Mode | Amount per meal | Hours |
+| --- | --- | --- | --- |
+| Weekday, bucket `ST` | `WTL_DT_FLOOR` | `0.5 × (base+shift) × max(2.00 − multiplier, 0)` — a **top-up to DT**, zero once the slice is already at DT | `+0.5` to DT |
+| Weekday, bucket `OT` or `DT` | `WTL_APPLICABLE_ADD` | `0.5 × (base+shift) × 2.00` — a **flat extra half hour at DT on top of full pay** | `+0.5` to DT |
+| `SATURDAY`, `SUNDAY`, `SPECIAL_SAT`, `HOLIDAY` | `WTL_APPLICABLE_ADD` | as above | `+0.5` to DT |
+| span outside every `cfg.WTL_MaxMealThreshold` band | `MANUAL_REVIEW` | none — routed to a human | — |
+
+The floor mode exists to stop a flat 2× overpaying an ST-start day; the add mode exists because a day
+that *starts* in premium time never had straight-time hours to top up. **Our engine models neither
+switch** — it has one path, `max(2.0, multiplier)`, and no notion of the group's first slice. That is
+the defect, and it is ours.
+
+**Still owed by Brian:** the two-job counterpart, which he said he was looking for.
+
+**Noted, not adjudicated:** this entry is the exhibit for
+[gaps.md](gaps.md#boom-window-as-built--the-erp-pays-the-adder-across-the-whole-paid-shift-not-build-upbreakdown),
+raised 2026-09-08. `apps/api/src/usecase/payroll/payroll.service.ts:662-669` now sources the window
+from the captured build-up / boom / break-down segments — landed the same day in `1ad99687d` — so
+that gap's main body reads stale and its holdover-crane fallback has **inverted**: an uncaptured
+boom now pays **zero**, not the whole shift. Left for that gap's owner rather than closed here.
+
+## 2026-09-09 — Brian retracts the 30-minute stitch and reports two bugs in his own app (Brian Petros → Ehtesham)
+
+Unprompted, after sending the 43694 exhibit and while assembling the two-job counterpart, Brian
+reported **two defects in the Payroll App** and asked us to check whether we had copied them. *"I'm
+glad you had me do this... this revealed an issue/bug with our Payroll App logic that needs to be
+fixed."* The version of the app he sent recently **still contains both**.
+
+**Issue #1 — a 30-minute stitch that was never a rule.** Adopted as a decision:
+[../decisions/2026-09-09-work-chains-stitch-only-when-there-is-no-gap.md](../decisions/2026-09-09-work-chains-stitch-only-when-there-is-no-gap.md).
+His exhibit is Thu 2026-04-09: `43767` `3:30 AM–5:30 PM` then `43770` `6:00 PM–11:00 PM`, a
+**30-minute gap**, stitched into one chain, so the 8-hour rest rule never fired and the **Rest period
+badge is missing** — while the next day's `43829` / `43828` both carry one.
+
+**Issue #2 — ST/OT/DT restarting per labor entry.** *"the core pricing engine appears to restart
+ST/OT/DT accumulation at each LaborPayrollID instead of carrying accumulated hours across all labor
+entries in that same chain."* On `43770` his app prints **5.0 OT** where the employee had already
+worked 14 hours in the chain; it should be **DT**.
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| Entries stitch into one chain **only when back-to-back**; a 30-minute tolerance *"is not itself a payroll entitlement rule"* | ✅ **named-human retraction, recorded as a decision.** He is the author of the system this parameter was copied from, so this is authoritative on it | PAY-045, PAY-023 |
+| The stitch *"has an effect on the meal/lunch break calculations"* | ⚠️ **not in the extract.** The 30 lives in `cfg.RestPeriod_Rule` only; `cfg.WTL_Rule.StitchGapMinutes` is already **0**, so all three WTL procs stitch gaplessly today. His meal path was never affected — worth telling him so he does not "fix" a path that is correct | PAY-046, PAY-047 |
+| The fix is one config value | ✅ `cfg.RestPeriod_Rule.StitchGapMinutes` `30 → 0`. Both procs compare `> @StitchGapMin`, so 0 gives exactly *"back-to-back only"* and still stitches FCC's overlapping (negative-gap) entries. 🆕 **two hard-coded fallbacks will silently restore 30** if that row is ever absent — `usp_Apply_RestPeriod_Premium.PROC.sql:77` and `usp_Prototype_RestPeriod_SliceChain.PROC.sql:65` | PAY-045 |
+| **We copied issue #1.** `REST_STITCH_MINUTES = 30` (`packages/shared/src/constants/payroll.ts:36`), consumed at `rest-period.ts:106` with the same `>` semantics | ⚠️ **our defect, and it was documented as client-confirmed.** `rest-period.ts:16-19` cites the 2026-09-07 *"no change to the way the '8-hour rest' rule should be calculated"* and calls these values *"NOT tunable guesses"*. This message supersedes that for this one field. Registered in [gaps.md](gaps.md#rest_stitch_minutes--30--we-copied-the-incumbents-stitching-bug-and-its-author-has-retracted-it) | PAY-045 |
+| **We do not have issue #2.** | ✅ `chainJobDays` groups at `CHAIN_GAP_HOURS = 8` and `startingCumulative` / `stAccrued` carry the accumulation across entries (`calculate.ts:196-201`, `456-492`). We price his `43770` at **DT** today | PAY-023 |
+| The pricing chain and the rest chain are **different groupings** | ✅ and his own exhibit proves it: the `43767 → 43770` gap is 30 minutes, under 8 hours, so the pair must price as one accumulation *whatever* the rest stitch is set to. **Setting the rest stitch to 0 must not be carried into the pricing chain** — that would restart the ladder and recreate issue #2 | PAY-023, PAY-045 |
+| 🆕 Found while checking: **our meal thresholds count per labor entry, his count per stitched group** | ⚠️ ours reads one job-day's `actualHours` (`calculate.ts:262`); legacy joins `cfg.WTL_MaxMealThreshold` on `GroupSpanHours`. Two gapless 4-hour entries owe **1** meal there and **0** here. The **split FCC labor entry** is exactly the case that breaks — one of the four reasons he gives for having added the stitch, so it exists in their data. Registered in [gaps.md](gaps.md#meal-thresholds--we-count-per-labor-entry-the-incumbent-counts-per-stitched-group) | PAY-046, PAY-047 |
+| Overlapping FCC labor entries — *"not sure if/how we will handle overlapping labor entries in ERP yet... we can discuss next meeting"* | ℹ️ **open, and he has asked for it himself.** Registered in [gaps.md](gaps.md#overlapping-fcc-labor-entries--no-rule-and-brian-has-none-either) as agenda, not a message. Note the incumbent stitches overlaps silently today — a negative `DATEDIFF` never exceeds any threshold — which is behaviour, not a decision | PAY-023 |
+
+**Verified against:** `cfg.RestPeriod_Rule` and `cfg.WTL_Rule` in
+[config-values.md](legacy-payroll-app-db-extract/config-values.md) (1 row each);
+`usp_Apply_RestPeriod_Premium.PROC.sql`, `usp_Prototype_RestPeriod_SliceChain.PROC.sql`,
+`usp_Apply_WTL_MealPeriods.PROC.sql`; `packages/payroll-engine/src/rest-period.ts`,
+`calculate.ts`, `meal-periods.ts`; `packages/shared/src/constants/payroll.ts`.
+
+**Nothing needs asking on issues #1 and #2** — both are settled, one by his retraction and one by
+our own code. **What is worth sending back** is the scope correction: the 30 never touched his meal
+calculations, and the two hard-coded `= 30` fallbacks will undo his fix if the config row is missing.
+
+**Consequence for the parallel run, and it is directional:** the app build we hold still has both
+bugs. Where our rest badge appears and his does not, **ours is right** — so rest-period and
+chain-accumulation differences must not be triaged as our defects until he ships the fix he says is
+a couple of days out.
+
+## 2026-09-09 — accuracy self-assessment, and WTL named as the biggest open item (Brian Petros → Ehtesham)
+
+Brian put numbers on his own app's accuracy, unprompted. **This is the first quantified statement
+anywhere in the vault of how far the incumbent is from correct**, and it reframes what a parallel
+run means.
+
+| Version | Accuracy | Note |
+| --- | --- | --- |
+| First version sent to CodingCops | **~90%** | the build we reconciled against first |
+| Recent version | **~94%** | still contains both 2026-09-09 bugs |
+| With issues #1 and #2 fixed | **~95%** | his estimate |
+
+He splits the remaining ~5%: **WTL ≈ 4%**, the rest *"miscellaneous things like sick time,
+anniversary pay, etc."* — and states plainly: *"The WTL (meal/lunch breaks) rules logic is clearly
+the biggest current issue that needs to be discussed/resolved."* TCG met **internally on 2026-09-09**
+to start resolving the WTL scenarios.
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| The Payroll App is ~94% accurate today, ~95% after the two fixes | 🆕 **first quantified figure.** No vault document had bounded it. Every prior comparison implicitly treated the app's output as the target | PAY-061 |
+| **WTL is ~4 of the remaining ~5 points** | ✅ corroborates the 2026-09-07 comparison run, which already named WTL as the one rule still open between the two engines — now with a magnitude | PAY-046, PAY-047 |
+| Sick time and anniversary pay are in the miscellaneous remainder | 🆕 neither is specified anywhere in the vault. `rules/PAY-013` parks salary scope; **anniversary pay appears in no vault document at all** | PAY-013 |
+
+**This changes how the parallel run must be read, and it is the most consequential line in the
+message.** *"Matches Brian's app"* is not a pass condition — by his own estimate the app is wrong on
+about one day in twenty, and **concentrated in WTL**, which is precisely where we already have three
+recorded divergences. A comparison run must therefore adjudicate each WTL difference against the
+extract and the MLA, never resolve it toward the app. The three we hold are all in that 4%:
+
+1. *Worked-through meal pricing* — **neither engine is simply wrong.** The incumbent's two modes are
+   MLA Article III *Meal Periods* **§1** (weekday: the half hour is paid at double time) and **§2**
+   (Sat/Sun/holiday: an *additional* half hour). Ours implements §1 only and has no §2 branch. An
+   earlier reading here called `WTL_APPLICABLE_ADD` a triple-time defect and was withdrawn before it
+   reached the client — see the gaps entry for what broke it.
+2. *Meal thresholds — we count per labor entry, the incumbent counts per stitched group* — **ours is
+   wrong** on split FCC entries, and *"one per five consecutive hours"* confirms the group basis.
+3. *Entry 43694's WTL token never parsed* — **his was wrong**, but Corrina already identified and
+   fixed the rule on 2026-09-03 (*"no token, then there's nothing added or deducted"*). April 2026
+   entries are pre-token-model and simply are not comparable.
+
+**Worth sending into their internal WTL discussion**, because all three come from his own extract and
+two of them are things his meeting would otherwise re-derive: the two worked-through modes and the
+first-slice switch (`WTL_DT_FLOOR` vs `WTL_APPLICABLE_ADD`), the group-span basis for meal counts, and
+the token-parse failure mode with its exception view (`v_UI_WTL_Exceptions_LatestRun`) that nothing in
+the v5.1 SOP tells anyone to check.
+
+**Not asked:** nothing. This message needs no reply beyond the WTL material above.
 
 ## Parked — 2026-08-24 (build proceeds on defaults)
 

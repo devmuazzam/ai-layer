@@ -107,3 +107,49 @@ earn 2 × (base + boom adder), or 2 × base + boom adder?"*
 - `aidlc/SCRUM-926/spec.md` §12 Q3 → resolved as a working decision (see this note); REQ-20
   keeps `[CONFLICT]`.
 - No vault file body was edited.
+
+---
+
+## 2026-09-09 — the confirmation this note demanded has arrived, and it lands the other way
+
+This note requires confirmation by TCG payroll. Two independent things now contradict point **2**
+(*"not multiplied by OT / DT / holiday multipliers"*):
+
+**1. TCG's own system of record multiplies it.** Brian Petros sent a real Payroll App entry on
+2026-09-09 — Rafael Garcia, ticket `43694`, 2026-04-08, modifier `OI-BP-05` at **$1.25/hr**, boom
+window `7:00 AM–9:00 PM` split `7.0 ST / 1.5 OT / 5.5 DT`. The printed boom add is **$25.31**.
+
+- Flat, unmultiplied, as this note decides: `14.0 × $1.25 = $17.50`.
+- Multiplied per bucket: `7.0×1.25 + 1.5×1.875 + 5.5×2.50 = $25.3125` → **$25.31**.
+
+The entry is arithmetically closed — its base rate recovers as `($2,107.61 − $25.31) / 30 = $69.41`,
+the L12 Group VI rate on the wage sheet exactly — so the $25.31 is not a rounding artefact.
+Exhibit: [../payroll/client-message-findings.md](../payroll/client-message-findings.md), 2026-09-09
+long-boom section.
+
+**2. The ERP already ships the opposite of this decision.**
+`packages/payroll-engine/src/calculate.ts:299` computes
+`input.boomAdderPerHour * multiplierOf(bucket)`. Whatever was decided here, it is not what was
+built, and what was built agrees with TCG's app to the cent.
+
+This also removes the note's central tension: it sided with a cleaned-up transcript **against**
+MLA Article IV, and the incumbent's arithmetic sides with the MLA. **Nothing here should be built on
+point 2 without re-adjudication** — that is the owner's call, not this appendix's, which is why the
+`status` line is untouched. Registered in [../payroll/gaps.md](../payroll/gaps.md).
+
+**3. The recordings say it too, repeatedly, and predate this note.** The multiplied reading is not a
+single exhibit — four named people describe boom hours as themselves falling into ST/OT/DT buckets:
+
+- Corrina Bustos, 2026-08-04 payroll process, **19:53** — *"we're going to need the long boom and
+  that'll be hourly overtime, double time, triple time."*
+- Corrina Bustos, 2026-06-11 payroll app demo, **41:40** — *"where it says 7 regular 0.5 OT, that's
+  only their long boom hours"*; and **54:51**, listing the ADP columns *"long boom regular hours, long
+  boom overtime, long boom double time."*
+- Melissa McNutt, 2026-05-28 mobile app payroll, **44:50** — *"they get a different pay rate and that
+  pay rate is either on straight time, overtime, or double time."*
+- Brian Petros, 2026-06-23, **35:43** — ADP itemises *"the boom pay for standard time and the boom pay
+  for overtime."*
+
+A flat unmultiplied adder has no ST/OT/DT split to itemise, so the ADP layout alone is inconsistent
+with point 2. **This question should not be put to the client again — it is answered in the record.**
+What remains is an internal re-adjudication of this note.
