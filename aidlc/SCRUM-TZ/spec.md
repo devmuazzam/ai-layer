@@ -910,6 +910,67 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
   would not, because nothing compiles them either.
 - **Status:** open
 
+### Q12 — What zone does a self-service signup tenant get? `POST /auth/signup` is a ninth creation path
+
+- **Question:** `POST /auth/signup` (`@Public()`, `auth.controller.ts:40`) creates a
+  `TenantCompany` — `AuthService.signUp` → `TenantCompaniesService.create` →
+  `TenantCompaniesRepository.create` → `prisma.tenantCompany.create`. Nobody has said what
+  zone a tenant created that way is in. Is self-service signup still a supported path at all,
+  and if so, who states the zone — the person signing up, or is signup refused until an
+  admin creates the tenant instead?
+- **Why Q11's enumeration missed it:** Q11 grepped `tenantCompany\.create|tenantCompany\.upsert`,
+  which finds the *repository line* (`tenant-companies.repository.ts:22`) but not the
+  repository's own callers. `TenantCompaniesService.create(name, tenantCode)` is two hops
+  above that grep hit, so the signup path never appeared in the eight-consumer table. Found
+  2026-09-09 while building U2, by the compiler, not by the grep.
+- **Why it is not academic:** the endpoint is `@Public()` and live. It also mints tenant codes
+  as `TENANT-${Date.now()}`, which follows none of the platform's tenant-code conventions —
+  so it may be legacy scaffolding rather than a supported path. Nothing in the repo calls it:
+  `grep` over `apps/web`, `apps/mobile` and `qa-automation/e2e` returns no caller. But it
+  answers on the deployed API regardless, and an external caller cannot be ruled out from here.
+- **What U2 did, pending an answer:** `SignUpDto` gained a **required** `timezone`, validated
+  with the same `IsIanaTimeZone` probe as `CreateAdminTenantDto`, threaded through
+  `signUp(email, password, timezone, …)` and `TenantCompaniesService.create(name, tenantCode,
+  timezone)`. This is the treatment the unit's own Outcome authorises — *"each either supplies
+  a zone or fails loudly at the call site"* — and it is the only option that neither invents a
+  Pacific default (rejected by Q5) nor kills a live endpoint outright. **It is still a fourth
+  changed API shape that §4 does not list**, and a caller that omits the field now gets a 400.
+  If the right answer is that signup should be refused entirely, or should inherit a zone from
+  somewhere, this is a one-line change.
+- **Blocked:** nothing — U2 shipped with the loud-failure treatment above.
+- **Owner:** product, on whether self-service signup is a supported path at all
+- **Status:** open
+
+### Q13 — Are legacy abbreviation zone ids (`PST`, `EST`) acceptable input?
+
+- **Question:** `spec.md` §9 says any valid IANA zone is acceptable and an offset is not. It
+  does not say which side of that line the legacy compatibility identifiers fall on.
+- **Why it surfaced:** the `Intl` probe §9 prescribes **does not reject an offset.** ECMA-402
+  accepts offset time zones, so `new Intl.DateTimeFormat(undefined, { timeZone: '-08:00' })`
+  does not throw — it resolves to `-08:00` and formats happily (verified on Node 22.14;
+  `+08:00` and `-0800` too). The prescribed mechanism therefore does not enforce the rule it
+  was given. U2's validator implements the **rule** — probe, then reject any value whose
+  resolved zone matches `±HH:MM` — because REQ-02 states independently that the zone is
+  "never an offset". That part needed no product answer. What it exposed is the adjacent
+  case nobody has ruled on.
+- **Why it is not academic:** `PST` and `EST` pass the probe. `PST` resolves to
+  `America/Los_Angeles`, which is harmless. **`EST` resolves to `America/Panama`, which does
+  not observe DST** — so someone typing `EST` meaning US Eastern gets a tenant whose business
+  days are an hour off for eight months of the year, and the tenant looks correctly configured
+  the whole time. That is this ticket's exact failure mode, reintroduced through the
+  validation layer. Neither identifier appears in `Intl.supportedValuesOf('timeZone')`.
+- **What U2 did, pending an answer:** accepted them. They are valid IANA identifiers and the
+  written rule is "any valid IANA zone"; narrowing on an executor's judgement would be exactly
+  the invented decision this loop is meant to prevent. Pinned by a named test block
+  (`is-iana-time-zone.validator.spec.ts` → *legacy abbreviation identifiers — accepted, pending
+  Q13*) so the decision is visible and one edit away.
+- **Candidates:** narrow to `Intl.supportedValuesOf('timeZone')` — the runtime's own canonical
+  list, which excludes both, still refreshes with the tz database, and is not a hardcoded enum.
+  Cost: it also excludes valid *alias* identifiers (`Asia/Calcutta`, `US/Pacific`).
+- **Blocked:** nothing — U2 shipped accepting them.
+- **Owner:** whoever owns the tenant-timezone decision (Syed Haris relaying, per Q1)
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 Rewritten 2026-09-09. Most of what was here was unspecified because nobody had answered it;
