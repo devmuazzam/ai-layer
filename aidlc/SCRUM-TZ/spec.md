@@ -8,7 +8,7 @@
 | Intent | `.ai/aidlc/SCRUM-TZ/intent.md`, captured `2026-09-09` |
 | Elaborated on | `2026-09-09` |
 | Vault state at elaboration | 635 `.md` files; 11 `domain/` files verified; **219** entries open across `vault/*/gaps.md`; 12 open across `SCRUM-*/spec.md` |
-| Open questions raised by this spec | **15 raised; 9 resolved 2026-09-09. Open: Q10 (zone change vs open period), Q11 (creation-path coverage), Q12/Q13 (raised by U2), Q14 (bare-abbreviation zones), Q15 (public signup) — plus 1 residual (Q7, traveling user). None blocks a unit from starting. All in §12** |
+| Open questions raised by this spec | **23 raised, 14 still open** — Q10–Q23 came from building, not from elaborating, which is the loop working. None blocks a unit from starting; several block merging. All in §12 |
 | Already-shipped behaviour reached | **46 consumers in §11a; 5 with no source for what happens to them** |
 | Rules consulted | `CLAUDE.md`, `.ai/claude/contexts/prisma.md`, `.ai/claude/contexts/api.md`, `.ai/claude/contexts/web.md`, `.ai/claude/contexts/mobile.md` |
 
@@ -1167,6 +1167,90 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 - **Owner:** whoever owns deployment configuration
 - **Workaround:** harmless as dead config — nothing reads it.
 - **Status:** open
+
+### Q22 — Which zone does a quotation PDF carry when it is rendered with no acting tenant?
+
+- **Question:** Two `@Public()` routes generate a quotation PDF outside any authenticated
+  request, so `TenantContextInterceptor` never runs and there is no acting tenant whose
+  `timezone` the document could be rendered in. Q7 answered "the tenant's business zone,
+  always labelled" for a document *with* a tenant. What does a document with none carry —
+  the quotation's own tenant's zone, a stated default, or should these routes stop being
+  public?
+- **Why it cannot be answered from what is written:** Q7 settled the display rule for a
+  session. Neither Q7 nor REQ-06 addresses a render path with no session, and U5's slice
+  row says "reusing U3's mechanism **where the PDF-generation path runs inside a request**"
+  — which names the condition without saying what happens when it does not hold.
+- **Why it is not academic:** one of the two routes is customer-facing.
+  `GET /quotation-signatures/:quoteNo/signed-document`
+  (`presentation/quotation-signatures/quotation-signatures.controller.ts:261`) is public
+  *"so the link can be opened directly from a browser tab"* — it is how a customer opens
+  their own signed quotation. That document now states a zone, and for any tenant not in
+  `BUSINESS_TIMEZONE` it states the wrong one. The other,
+  `GET /quotations/:quoteNo/pdf` (`presentation/quotations/quotation-pdf.controller.ts:18`),
+  is labelled "local testing" but is registered unconditionally in `quotations.module.ts`
+  and is live and unauthenticated in every environment.
+- **Why the obvious fix was not taken:** the quotation row carries `tenantCompanyId`, so
+  the zone *could* be read from it. But on these routes the quotation is fetched by a
+  path parameter, which makes that tenant id transitively attacker-supplied — exactly what
+  `TenantContextInterceptor`'s docblock forbids (*"Any future zone resolution must come
+  from here (or from `TenantContextService`), never from a path param, query string or body
+  field"*), and `TenantCompany` is not in the Prisma extension's `tenantModels` allowlist,
+  so nothing structurally prevents the cross-tenant read. Resolving this properly is a
+  tenancy decision, not a formatting one.
+- **Blocked:** nothing in `units.md`. U5 shipped both routes on the interim below.
+- **Candidates:** none: nothing written. `spec.md` §7 states only that `BUSINESS_TIMEZONE`
+  changes role from "the answer" to "the fallback".
+- **Owner:** product team, with whoever owns tenancy on the public-route question
+- **Interim shipped in U5:** `TenantContextService.get()?.timeZone ?? BUSINESS_TIMEZONE` at
+  both call sites, with the resulting zone **named on the document**. That is deliberately
+  the visible option rather than the quiet one: a reader of a mis-zoned PDF can now see
+  that it says `(PDT)` and say it is wrong, which an unlabelled date did not allow.
+- **Status:** open
+
+### Q23 — Does REQ-07 reach the mobile big clock and the work-segment lines, or only the record strings?
+
+- **Question:** U6 renders every string produced by `formatClockTimeWithZone` in the tenant's
+  zone, labelled. Three other mobile renders of a field time were left device-local and
+  unlabelled because no slice row names them. Are they in REQ-07 or out?
+  1. The **big clock** itself — `BoomBigClock` and `TimeRecordBody` render `displayAt`
+     through `formatTimeParts` (`steps/time-clock.tsx`), device-local, no label. This is the
+     number the operator taps `+`/`−` on and the number they read as "the time I started".
+  2. **`steps/EndWorkBody.tsx`** — the work-segment lines (`:110`, `:111`) and boom-session
+     lines (`:150`, `:151`, `:312`) render `start → end` through `formatClockTime`,
+     device-local, no label. These are summaries of persisted times.
+  3. `resume-step.ts` and `StartWorkBody.tsx` — restored to the labelled form by U6, see below.
+- **Why it cannot be answered from what is written:** REQ-07 says "mobile renders field times
+  in the tenant's business zone, labelled", and its **Ripple** narrows that to "the step
+  summaries, the resume-step line, and the validation messages". U6's slice table narrows it
+  again, to `formatClockTimeWithZone` and its call sites. A live, adjustable clock is neither
+  clearly a "field time that becomes a record" nor clearly excluded, and nothing addresses it.
+- **Why it is new, and why it is not academic:** U6's slice table was written against this
+  branch before `origin/main` was merged into it (86 commits, 60 conflicts). The merge
+  rewrote the field-ticket step files, and the call-site map in the slice table no longer
+  described the tree: it named four `formatClockTimeWithZone` call sites and only two
+  survived. The merge resolved `resume-step.ts` and `StartWorkBody.tsx` to `main`'s side,
+  which **silently dropped the zone label** commit `45934840` had added there — U6 restored
+  both. The same merge introduced the `EndWorkBody` segment lines, which never had a label
+  and which no requirement has looked at.
+  The question bites because U6 **creates a disagreement that did not exist before it**. For
+  a tenant in a zone the device is not in, the crew now see the big clock read `7:00 AM`
+  while the step summary two taps later reads `5:00 PM Asia/Karachi` — for the same instant.
+  Before U6 both were device-local and agreed; after it they agree only for a device already
+  on the tenant's zone. Whichever way this is answered, one of the two renders is wrong
+  today, and the wrong one is being read by a crew member recording paid time.
+- **Blocked:** nothing already in `units.md` — U6 shipped what its slice table names. Any
+  follow-up unit that touches the mobile big clock is blocked on this.
+- **Candidates:** none: nothing written. Q7 settled *which zone*, never *which renders*. The
+  `admin/gaps.md` → *Time display* gap is about 12h/24h format, not zone or scope.
+- **Owner:** product team — the same voice that answered Q7, since this is the boundary of
+  that answer rather than a separate rule.
+- **Workaround, and what U6 actually shipped:** the record strings are zoned and labelled;
+  the live clock and the `EndWorkBody` segment lines are untouched and remain device-local.
+  That is the smaller change and the reversible one, but it is explicitly *not* a claim that
+  the split is right — it is the split the slice table authorised, reported rather than
+  decided.
+- **Status:** open
+
 
 ## 13. What this spec deliberately does not specify
 
