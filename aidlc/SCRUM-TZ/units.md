@@ -156,7 +156,7 @@ Two things survive from the original finding and are still live:
 | Layer | Change | Notes |
 | --- | --- | --- |
 | Schema (`apps/api/prisma`) | `TenantCompany.timezone String @map("timezone") @db.VarChar(64)`, **`NOT NULL`, no default** (`spec.md` §3, Q5). The migration backfills every existing row to `America/Los_Angeles` in the same migration that adds the `NOT NULL` constraint — a two-step `ADD COLUMN` (nullable) → `UPDATE` → `ALTER COLUMN SET NOT NULL`, since Postgres cannot add a `NOT NULL` column with no default to a populated table in one step. | Migration name: something naming both halves, e.g. `add_tenant_company_timezone` — the backfill is not a separate migration; it is this one. |
-| API (`apps/api`) | `CreateAdminTenantDto` (`apps/api/src/presentation/admin/dto/create-admin-tenant.dto.ts`) gains a **required** `timezone: string` field, validated with the runtime `Intl.DateTimeFormat(undefined, { timeZone: v })` probe from `spec.md` §9 (Q2: any valid IANA zone, no restricted list). `AdminTenantsService.create()` (`admin-tenants.service.ts:87`) and `TenantCompaniesRepository.create()` (`tenant-companies.repository.ts:22`) pass the value through — both already take a `data` object, so this is a field addition, not a signature redesign. `apps/api/src/utility/seed-data.ts:800` (`prisma.tenantCompany.upsert`, the default dev-seed tenant) and `:1042` (`prisma.tenantCompany.create`, the platform SUPER_ADMIN tenant) both gain an explicit `timezone: 'America/Los_Angeles'` literal — compiler-caught, so a miss here is a build failure, not a runtime one. `apps/api/fcc-seeder/src/seed-all.ts:102` (`prisma.tenantCompany.upsert`) gains the same literal — **this site is compiler-caught too**: `apps/api/package.json`'s `build` script runs `tsc -p fcc-seeder/tsconfig.build.json` as part of `@tcg/api:build`, so a missed field here fails the build the same as the two `src/` sites, not silently at runtime (Q11's flagged uncertainty — "check the tsconfig" — resolves to **caught**, verified 2026-09-09 by reading `apps/api/package.json:8`). | `UpdateAdminTenantDto` is **not** touched here — the edit path (`PATCH /admin/tenants/:id` accepting a `timezone` change) is Q10's territory and lands in U5, not this unit. This unit only ever writes the zone once, at creation. |
+| API (`apps/api`) | `CreateAdminTenantDto` (`apps/api/src/presentation/admin/dto/create-admin-tenant.dto.ts`) gains a **required** `timezone: string` field, validated with the runtime `Intl.DateTimeFormat(undefined, { timeZone: v })` probe from `spec.md` §9 (Q2: any valid IANA zone, no restricted list). `AdminTenantsService.create()` (`admin-tenants.service.ts:87`) and `TenantCompaniesRepository.create()` (`tenant-companies.repository.ts:22`) pass the value through — both already take a `data` object, so this is a field addition, not a signature redesign. `apps/api/src/utility/seed-data.ts:800` (`prisma.tenantCompany.upsert`, the default dev-seed tenant) and `:1042` (`prisma.tenantCompany.create`, the platform SUPER_ADMIN tenant) both gain an explicit `timezone: 'America/Los_Angeles'` literal — compiler-caught, so a miss here is a build failure, not a runtime one. `apps/api/fcc-seeder/src/seed-all.ts:102` (`prisma.tenantCompany.upsert`) gains the same literal — **this site is compiler-caught too**: `apps/api/package.json`'s `build` script runs `tsc -p fcc-seeder/tsconfig.build.json` as part of `@tcg/api:build`, so a missed field here fails the build the same as the two `src/` sites, not silently at runtime (Q11's flagged uncertainty — "check the tsconfig" — resolves to **caught**, verified 2026-09-09 by reading `apps/api/package.json:8`). | `UpdateAdminTenantDto` is **not** touched here, and **now never will be**: Q10 was answered 2026-09-09 — the tenant timezone is set once at creation and never edited (`decisions/2026-09-09-tenant-timezone-is-set-once-at-creation.md`). The edit path is **cut, not deferred to U5**. Needs no code: the global `ValidationPipe` sets `forbidNonWhitelisted: true` (`apps/api/src/main.ts:69`), so a `timezone` in a PATCH body is already a 400, and web has no edit-tenant modal. |
 | Web (`apps/web`) | `apps/web/src/features/admin/types/index.ts` (`CreateTenantPayload`) and `apps/web/src/features/admin/components/admin-create-tenant-modal.tsx` gain a `timezone` field/input. **Not one of the seven `tenantCompany.create`/`upsert` grep hits** — it is an HTTP caller of `POST /admin/tenants`, not a Prisma call — but it is a genuine existing consumer of the endpoint this unit makes stricter: `CreateTenantPayload` is a hand-duplicated type (`grep -rn 'CreateAdminTenantDto' apps/web/src` → no hits; it is not carried through `@tcg/shared`), so nothing compile-checks it against the API DTO. Without this change, every tenant created from the admin UI gets a 400 the moment this unit merges. Named here rather than left as *Deliberately not in this unit*, per the ripple rule that an existing consumer this unit breaks is not deferred scope. | Small: one form field, one payload type. Does not change this unit's `Kind` — it is the same "keep the NOT NULL column from breaking an existing caller" work as the seven Prisma sites, just reached over HTTP instead of compiled Prisma types. |
 | Mobile (`apps/mobile`) | N/A — no tenant-creation path on mobile. | |
 | Shared (`packages/shared`) | N/A | |
@@ -231,12 +231,17 @@ Two things survive from the original finding and are still live:
 - Whether the accepted zone value is free-form IANA or a restricted set (Q2) — already
   answered (any valid IANA zone, runtime `Intl` probe) and is this unit's validation rule,
   not a deferral.
-- Who may **change** a tenant's zone after creation, and what happens to an open payroll
-  period when they do (Q6, Q10) — Q6 is answered (SUPER_ADMIN only, via `/me` not the JWT)
-  but the **edit path** (`PATCH /admin/tenants/:id` accepting `timezone`) is U5's unit, not
-  this one, because Q10 — what happens to an open payroll period under a zone change — is
-  still open and blocks specifically the edit path, not tenant creation. This unit only
-  ever writes the zone once, at creation, where Q10 does not apply.
+- Changing a tenant's zone after creation — **there is no such path, and there will not
+  be.** Q10 answered 2026-09-09: the zone is set once at creation and never edited
+  (`decisions/2026-09-09-tenant-timezone-is-set-once-at-creation.md`). This was previously
+  described here as deferred to U5; it is cut.
+
+  **That raises the stakes on this unit rather than lowering them.** `NOT NULL` with no
+  default was chosen because a silent Pacific default is how the original bug arose. Now
+  that creation is the *only* moment a zone is ever chosen, forcing it to be stated here is
+  the **entire safeguard** — nothing downstream catches a wrong value, and a tenant onboarded
+  with the wrong zone needs a database fix. §12 Q11's coverage of all nine creation paths is
+  therefore not a formality to wave through.
 
 ---
 
@@ -457,7 +462,7 @@ pattern here, not a novel one this unit invents.
 | Layer | Change | Notes |
 | --- | --- | --- |
 | Schema (`apps/api/prisma`) | N/A | inherits U2 |
-| API (`apps/api`) | `GET /api/v1/users/me` (`UsersController.getProfile`, `users.controller.ts:36`) — its response (`UserProfileResponse`, `usecase/users/users.service.ts:31`) gains a `timezone: string` field sourced from the acting user's `TenantCompany.timezone`. This is Q6's settled carrier: **not** `JwtPayload` (`spec.md` §7 argues explicitly against it — a stale token would keep pricing against the old zone until it expires) — the field lives only on the `/me` response, which is refetched on demand. `usecase/docusign/quotation-pdf.service.ts` (2 sites) resolves the tenant's zone (via `TenantContextService`, reusing U3's mechanism where the PDF-generation path runs inside a request) and renders every timestamp on the document labelled with the zone name — Q7's "always labelled" answer applies exactly as much to a document with no viewer as to a screen with one. | `PATCH /admin/tenants/:id` accepting `timezone` (the edit path, §4) is **not** built here — see *Deliberately not in this unit*, Q10. |
+| API (`apps/api`) | `GET /api/v1/users/me` (`UsersController.getProfile`, `users.controller.ts:36`) — its response (`UserProfileResponse`, `usecase/users/users.service.ts:31`) gains a `timezone: string` field sourced from the acting user's `TenantCompany.timezone`. This is Q6's settled carrier: **not** `JwtPayload` (`spec.md` §7 argues explicitly against it — a stale token would keep pricing against the old zone until it expires) — the field lives only on the `/me` response, which is refetched on demand. `usecase/docusign/quotation-pdf.service.ts` (2 sites) resolves the tenant's zone (via `TenantContextService`, reusing U3's mechanism where the PDF-generation path runs inside a request) and renders every timestamp on the document labelled with the zone name — Q7's "always labelled" answer applies exactly as much to a document with no viewer as to a screen with one. | `PATCH /admin/tenants/:id` accepting `timezone` is **cut permanently**, not deferred — Q10 answered 2026-09-09 (`decisions/2026-09-09-tenant-timezone-is-set-once-at-creation.md`). Note the parenthetical to its left is now obsolete as a *reason*: the stale-token argument for the `/me` carrier assumed the zone could change. The carrier decision stands on its own merits and is shipped; the reason recorded for it does not. |
 | Web (`apps/web`) | `apps/web/src/features/auth/services/auth.service.ts`'s `UserProfile` interface gains the `timezone` field returned by `/users/me` (already fetched by `authService.getProfile`, `:56`) — no new request, an existing one gains a field. `apps/web/src/features/payroll/lib/payroll-week.ts:76` and `apps/web/src/features/craft-codes/components/craft-code-format.ts:27` stop calling zone-less `businessToday()` and pass the session's tenant zone instead. Both surfaces that render the resulting date/time gain a zone label next to it (Q7: "always labelled"), matching the pattern mobile's `zone-label.ts` already established rather than inventing a new one. | Every other `toLocaleDateString`/`toLocaleTimeString` in web renders in the browser's zone today and stays that way — `spec.md` §11a is explicit that only these two call sites are currently known to be wrong (zone-less `businessToday()`), and Q7's answer does not retroactively enumerate the rest; a wider sweep of `apps/web` for zone-sensitive display is not something this spec asked for. |
 | Mobile (`apps/mobile`) | N/A — see U6 | |
 | Shared (`packages/shared`) | No change. `JwtPayload` (`packages/shared/src/types/index.ts:4`) is deliberately **not** touched — Q6's answer is the carrier REQ-06 already argued for. | |
@@ -513,16 +518,20 @@ pattern here, not a novel one this unit invents.
 ### Deliberately not in this unit
 
 - **`PATCH /admin/tenants/:id` accepting a `timezone` change (the edit path) — cut out,
-  blocked on Q10.** Q6 settles *who* may set the zone (SUPER_ADMIN, via the existing
-  `admin/tenants` surface) but not what happens to an open payroll period when an existing
-  tenant's zone changes — genuinely unanswered, and not something Q5 ever covered (Q5 was
-  the *initial* value only). The zone decides which payroll week a shift falls in
-  (PAY-001), so moving it under an open period changes money near the week boundary; Q6's
-  answer already makes the field SUPER_ADMIN-writable at any time, which makes this
-  reachable today, not hypothetical. The spec names a workaround — refuse the change while
-  any period is open, and say so in the error — as "the only option that cannot silently
-  restate money," but that is Q10's interim answer to build *if and when* the edit path is
-  built, not licence to build it here without a product decision. This unit ships `/me` and
+  **cut permanently.** Q10 was answered 2026-09-09: the tenant timezone is set once at
+  creation and is never edited (`decisions/2026-09-09-tenant-timezone-is-set-once-at-creation.md`). The
+  edit path is not deferred to a later ticket — it does not exist, and the interim
+  "refuse while a period is open" workaround this section used to describe is moot, because
+  the situation it guarded against cannot arise.
+
+  Worth keeping straight: Q10 is **moot, not decided**. Nobody answered what should happen
+  to an open payroll period under a zone change; the change was removed instead. If the
+  constraint is ever lifted, the question returns unanswered.
+
+  It also needs **no code**: `apps/api/src/main.ts:69` sets `forbidNonWhitelisted: true` on
+  the global `ValidationPipe`, so a `timezone` in a PATCH body is already a 400 rather than
+  a silent strip, and `apps/web/src/features/admin/components/` has a create-tenant modal
+  and no edit-tenant modal. Verified 2026-09-09.
   the display fixes; the edit endpoint stays exactly as it is today (it does not yet accept
   `timezone` at all, since `UpdateAdminTenantDto` was not touched by U2 either).
 - The 12h/24h time-format preference (`admin/gaps.md` → *Time display*) — a separate open

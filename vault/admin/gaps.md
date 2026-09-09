@@ -225,11 +225,28 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   question:** `CreateAdminTenantDto`
   (`apps/api/src/presentation/admin/dto/create-admin-tenant.dto.ts` — today `name`, `tenantCode`,
   `maxUsers?`, `domain?`) must gain the field or tenant creation breaks, and SUPER_ADMIN is the
-  only role that may set or change it
+  only role that may set it
   (`apps/api/src/presentation/admin/admin-tenants.controller.ts:13`). **This answers one item and
   adds it to the list; it does not touch (a) system departments and roles, (b) billing code types,
   (c) industries or (d) the payroll premium catalog**, which is what this entry was raised for.
   **Stays open.**
+- **Update 2026-09-09, later the same session — the fifth item is now the *only* chance to get it
+  right, and the line above is corrected.**
+  [../decisions/2026-09-09-tenant-timezone-is-set-once-at-creation.md](../decisions/2026-09-09-tenant-timezone-is-set-once-at-creation.md)
+  (`status: reference`; same decider, same non-ownership caveat) settles that **the tenant
+  timezone is never changed** — set once at creation, with **no product surface to edit it**.
+  `PATCH /admin/tenants/:id` is cut, not deferred; `UpdateAdminTenantDto` stays as it is
+  (verified — `name?`, `tenantCode?`, `status?`, `maxUsers?`, `domain?`, `plan?`, no zone), and
+  web has no edit-tenant surface either (`apps/web/src/features/admin/components/` holds
+  `admin-create-tenant-modal.tsx` and no edit equivalent). **Correction to the line above:**
+  SUPER_ADMIN may *set* the zone, at creation; **no role changes it afterwards**. **Why this
+  matters to this entry:** timezone is the one required item on the list with **no second
+  chance** — a tenant onboarded with the wrong zone has no in-product correction path and needs
+  a database write. Creation-time enforcement (`NOT NULL`, no default) is therefore the entire
+  safeguard, not merely good hygiene, which raises the stakes on the eight tenant-creation
+  consumers enumerated in `SCRUM-TZ` §12 Q11 — two `qa-automation` seeds and a hand-mirrored web
+  type among them, none of which a gate checks. **The entry still stays open:** (a)–(d) remain
+  unanswered, and this decision says nothing about any of them.
 
 
 

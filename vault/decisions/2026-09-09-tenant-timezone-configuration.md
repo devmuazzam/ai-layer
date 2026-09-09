@@ -135,6 +135,33 @@ value a SUPER_ADMIN already corrected. Putting the zone on the session response
 This is the one item where the cheap option and the correct option differ and the correct one
 was chosen deliberately.
 
+> **AMENDED 2026-09-09, after this note was written — item 4 is half superseded.**
+> [`2026-09-09-tenant-timezone-is-set-once-at-creation.md`](2026-09-09-tenant-timezone-is-set-once-at-creation.md)
+> (`status: reference`, same session, same decider) settles that **the tenant timezone is never
+> changed** — it is set once at tenant creation and there is no product surface to edit it.
+> `PATCH /admin/tenants/:id` accepting `timezone` is **cut, not deferred**, and
+> `UpdateAdminTenantDto` stays as it is.
+>
+> - **Superseded:** the *"editing: `SUPER_ADMIN` only, through the existing `admin/tenants`
+>   surface"* half above. There is no editing. `SUPER_ADMIN` remains the role that **sets** the
+>   zone, at creation, under the same class-level guard.
+> - **Stands:** the zone rides the **`/me` / session response and not the `JwtPayload`**. That
+>   half is unchanged and is already shipped (`dab03099`, U5; consumed by web at
+>   `apps/web/src/features/auth/services/auth.service.ts`:48 and by mobile at
+>   `apps/mobile/data/contracts/identity.contract.ts`:37, `9f7f2697`, U6).
+> - **Obsolete as a *reason*:** the stale-token argument that made the JWT half "load-bearing"
+>   above. A value that never changes cannot go stale in a token. The carrier decision now rests
+>   on its independent merits — the zone is tenant reference data, not an authorisation claim,
+>   and `JwtPayload` stays minimal — not on staleness. REQ-06's acceptance test (*`JwtPayload`
+>   gains no field*) is unchanged.
+> - **`SCRUM-TZ` §12 Q10 is moot, not answered.** The re-date / freeze / refuse question about
+>   an open payroll period cannot arise, so nothing was chosen between the three. It returns
+>   unanswered if the immutability constraint is ever lifted.
+>
+> **This note keeps `status: reference` and gains no `superseded_by:`** — items 1, 2, 3 and 5
+> are untouched and still binding, and half of item 4 survives. See the amending note's *What
+> this supersedes* for the reasoning.
+
 ### 5. What the end user sees — the tenant's business zone, always labelled
 
 - A timestamp on screen is rendered in the **tenant's business zone**. **Not** the viewer's
@@ -247,7 +274,12 @@ answered, the label from item 5 is the floor and is sufficient to ship.
   vehicle tracking.
 - **Historical re-pricing under a changed zone.** Out of scope per `SCRUM-TZ` §11: item 4
   authorises a SUPER_ADMIN to change the zone and says nothing about what happens to payroll
-  already calculated under the old one.
+  already calculated under the old one. **Amended 2026-09-09** — item 4's authorisation was
+  withdrawn later the same session by
+  [`2026-09-09-tenant-timezone-is-set-once-at-creation.md`](2026-09-09-tenant-timezone-is-set-once-at-creation.md),
+  so there is no in-product path that reaches this. It stays unsettled rather than becoming
+  irrelevant: a tenant onboarded with the wrong zone is corrected by a **database write**, and
+  the re-pricing question applies to that write exactly as it applied to the `PATCH`.
 
 ## Effect on the vault
 

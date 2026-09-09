@@ -460,7 +460,7 @@ No new endpoint. Three changed shapes, all `SUPER_ADMIN`-scoped except the sessi
 | --- | --- | --- | --- |
 | `POST /admin/tenants` | **requires** `timezone` (NOT NULL, no default) | settled | U2 |
 | `GET /users/me` | returns the tenant zone — **not** the JWT | settled | U5 |
-| `PATCH /admin/tenants/:id` | accepts `timezone` | **blocked — Q10**: nobody has said what happens to an open payroll period when the zone under it moves | U5 |
+| `PATCH /admin/tenants/:id` | **does not accept `timezone` — cut, not deferred** | settled 2026-09-09: the zone is set once at creation and never edited (Q10). `UpdateAdminTenantDto` stays as it is. | — |
 
 The internal carrier — `TenantContext` gaining a `timeZone` — is not an API surface change
 and is described in REQ-03.
@@ -876,7 +876,19 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 - **Workaround:** refuse the change while any period is open, and say so in the error. It is
   the only option that cannot silently restate money, and it is trivially reversible once a
   real answer exists.
-- **Status:** open
+- **Answer (2026-09-09), Syed Haris:** **The tenant timezone is not changed.** It is set
+  once, at tenant creation, and there is no product surface to edit it afterwards. The
+  question the spec asked — re-date, freeze, or refuse — is moot: the situation cannot arise.
+- **What this settles beyond Q10:** `PATCH /admin/tenants/:id` accepting `timezone` is **cut,
+  not deferred** (§4, and U5's *Deliberately not in this unit*). Q6's propagation half also
+  falls away — a value that never changes cannot go stale in a token, though the `/me`
+  carrier stays correct for other reasons and is already shipped.
+- **The consequence, stated rather than discovered:** a tenant onboarded with the wrong zone
+  has **no in-product correction path** and needs a database fix. That is the cost of the
+  decision, not an objection to it — and it is why REQ-08's `NOT NULL, no default` matters
+  more than it first appeared: creation is now the *only* moment the zone is ever chosen, so
+  forcing it to be stated there is the whole safeguard. Nothing else catches a wrong value.
+- **Status:** resolved — see `decisions/2026-09-09-tenant-timezone-is-set-once-at-creation.md`
 
 ### Q11 — Do the two `qa-automation` tenant seeds get a zone, and who notices if they do not?
 
@@ -921,7 +933,12 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
   project is the standing fix and is already an accepted PR #386 follow-up. Running
   `tcg-contract-tracer` on U2 would catch the web mirror; the two `qa-automation` seeds it
   would not, because nothing compiles them either.
-- **Status:** open
+- **Answer (2026-09-09):** Yes — U2 gave all nine creation paths a zone, including both
+  `qa-automation` seeds (`tenant.ts:74`, `disposable-user.ts:120`, sharing an exported
+  `E2E_TENANT_TIMEZONE`). The premise that nothing typechecks them was **wrong**:
+  `qa-automation` does have a typecheck, proven by a negative control — removing the field
+  produced `TS2322`. What it lacks is any hook or CI job that *runs* it.
+- **Status:** resolved — U2 (`ebce783f`)
 
 ### Q12 — What zone does a self-service signup tenant get? `POST /auth/signup` is a ninth creation path
 
@@ -1057,7 +1074,12 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 - **Owner:** whoever sequences U4–U7 (no product input needed — this is a scoping call
   between two units, not a question about intent)
 - **Workaround:** in place while exactly one tenant exists and it is Pacific.
-- **Status:** open
+- **Answer (2026-09-09):** They resolve the tenant zone. `units.md` U1 and U3 contradicted
+  each other about ownership; REQ-03's statement covers those sites and U1's own in-code
+  comments named U3, so it was resolved in REQ-03's favour. Fixed in `a1ef8258`, with the
+  regression test that was missing — the selection window and the engine call now share one
+  resolved zone and cannot diverge by editing one of them.
+- **Status:** resolved — `a1ef8258`
 
 ### Q17 — Is "every call passes a zone" the right acceptance test, given four business-time functions take no zone?
 
