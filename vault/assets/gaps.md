@@ -1129,3 +1129,72 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   and any later reconciliation of tracked hours against field-ticket or payroll hours, which
   cannot be compared until both agree what a day is.
 - **Owner:** product team — Brian Petros; Corrina Bustos if it must line up with payroll.
+- **Update 2026-09-09 (SCRUM-TZ decisions) — the boundary is answered for the *business* day; the
+  three-way agreement this entry asks about is not.** Two `status: reference` decisions by Syed
+  Haris (developer/owner — **not** Brian Petros or Corrina Bustos, the owners named above, neither
+  of whom has spoken to this) answer the first line of the question, for the business day only:
+  the zone is a **property of the tenant**
+  ([../decisions/2026-09-09-business-timezone-is-a-tenant-property.md](../decisions/2026-09-09-business-timezone-is-a-tenant-property.md)
+  — option **(c)** of the four listed above, under a recorded constraint that every tenant today
+  operates in exactly one zone), and the day starts at **00:00 in that zone**
+  ([../decisions/2026-09-09-business-day-starts-at-midnight-local.md](../decisions/2026-09-09-business-day-starts-at-midnight-local.md)),
+  which also closes the `WorkdayStartTime` hole this entry quotes from
+  [../payroll/payroll-rule-dependency-matrix.md](../payroll/payroll-rule-dependency-matrix.md)
+  row 14. **Why this entry nonetheless stays open:** its second line — *must the fleet day agree
+  with the job/payroll day?* — is a three-way alignment question, and nothing decided says the
+  **fleet** day adopts the business day at all. **It does not, and this is now shipped rather
+  than hypothetical: `Fetaure/samsara-integration` has merged, and `FLEET_TIMEZONE` is live on
+  `main`.** Verified on `main` 2026-09-09:
+  `apps/api/src/usecase/vehicle-tracking/fleet-day.ts:29` resolves
+  `process.env.FLEET_TIMEZONE || DEFAULT_FLEET_TIMEZONE` — `||` rather than `??` deliberately, per
+  its own comment, because *"a blank value from a secrets store or an empty Docker ARG is as good
+  as absent, and an empty zone string throws inside dayjs"*;
+  `apps/api/src/config/env.validation.ts:79` supplies the default
+  (`Joi.string().optional().empty('').default(DEFAULT_FLEET_TIMEZONE)`); and
+  `packages/shared/src/constants/vehicle-tracking.ts:27` sets `DEFAULT_FLEET_TIMEZONE =
+  'America/Los_Angeles'`. **Web carries a second copy of the same setting** —
+  `apps/web/src/features/vehicle-tracking/utils/fleet-date.ts:33` reads
+  `NEXT_PUBLIC_FLEET_TIMEZONE`, with `apps/web/.env.example:37` instructing that it *"Must match
+  the API's FLEET_TIMEZONE"*: two environment variables kept in step by hand, on two surfaces, with
+  nothing failing if they drift. So the silent-default defect this entry describes is not only
+  untouched, it has shipped and doubled. **And it contradicts the 2026-09-09 grain decision on its
+  face** — a process-wide constant promoted to an env var is precisely the shape
+  [../decisions/2026-09-09-business-timezone-is-a-tenant-property.md](../decisions/2026-09-09-business-timezone-is-a-tenant-property.md)
+  decided against; `cdc34c30` collapsed three competing definitions of *"what day is it"* onto one
+  while a **fourth** was merging into `main` in parallel. Note also that the two implementations
+  do not share a library: `fleet-day.ts` uses **dayjs** (`dayjs/plugin/timezone`) while
+  `packages/shared/src/utils/business-time.ts` uses native **`Intl`** and no dayjs — and only the
+  first is on `main`, the second existing so far only on `fix/timezone-business-day`. Closing this
+  entry would assert an alignment nobody decided.
+- **Update 2026-09-09, later the same session (SCRUM-TZ Q9) — the fleet half is now decided; the
+  entry narrows to one surviving question and stays open.**
+  [../decisions/2026-09-09-fleet-timezone-retired-onto-tenant-zone.md](../decisions/2026-09-09-fleet-timezone-retired-onto-tenant-zone.md)
+  (`status: reference`; Syed Haris, developer/owner — **not** Brian Petros, and not whoever owns
+  the Samsara integration, the two owners this question is nominated to) **retires
+  `FLEET_TIMEZONE`, `NEXT_PUBLIC_FLEET_TIMEZONE` and `DEFAULT_FLEET_TIMEZONE` in favour of
+  `TenantCompany.timezone`**, and converges `fleet-day.ts` and `fleet-date.ts` off dayjs onto
+  `packages/shared/src/utils/business-time.ts` (native `Intl`) so there is one implementation of
+  *"what day is it"*, not two. **Why that is safe, verified on `main`:** Samsara never receives a
+  timezone — `apps/api/src/service/samsara/samsara.repository.ts` passes only `startTime` /
+  `endTime` as absolute RFC 3339 at all three call sites (`:242`/`:253`, `:292`/`:309`,
+  `:346`/`:359`), and `fleet-day.ts` states it: *"It is the same instant either way; Samsara takes
+  RFC 3339 with any offset."* The zone chooses **which instants to ask for**, and tells Samsara
+  nothing, so the retirement cannot break the integration's contract.
+  **Disposition of this entry's two questions:** *"In whose timezone does a fleet day start?"* is
+  **answered** — the tenant's, at 00:00, and the fleet day now has no other source. *"Must the
+  fleet day agree with the job/payroll day?"* is **answered for two of the three**: the fleet day
+  and the payroll/business day are the same value by construction, one column and one
+  implementation. **What survives, and why this stays open:** nothing decided says the **job** day
+  is derived through `business-time.ts`. `jobDate` is a `@db.Date` calendar date, which
+  `business-time.ts` classifies as a value that *"has no timezone at all"* — a different kind of
+  question from the other two, and closing here would assert an alignment nobody stated. The
+  *Blocked* line above is otherwise discharged: the day picker, the day summary, every per-day
+  tracking figure and the fleet-vs-payroll reconciliation are unblocked.
+  **Known consequence, recorded so it is not found mid-implementation:** `business-time.ts` has
+  **no RFC 3339-with-offset formatter** — `formatInstant` (line 264) is `Intl.DateTimeFormat` for
+  human display. `fleet-day.ts` currently emits dayjs `.format()` (`2026-09-08T00:00:00-07:00`)
+  deliberately, so *"a logged window reads as the times the drivers would recognise"*. Samsara
+  accepts `Z` equally so nothing breaks functionally; converging loses that log readability until
+  a small formatter is added. **Not a blocker.**
+  **Stays open**, now needing only: **does the job day share this boundary too?** Narrow enough
+  that it deserves re-filing as its own entry — flagged, not done.

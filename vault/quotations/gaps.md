@@ -571,6 +571,22 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   client's own paper puts the default at **issue date + 30 days**, expressed in calendar days, not
   instants; whether the 30th day is inside or outside, and in whose timezone, is not stated
   anywhere. Still needs the client.
+- **Update 2026-09-09 (SCRUM-TZ decisions) — the *"in whose timezone"* half is answered; the
+  boundary half is not:** the day is defined in the **tenant's business timezone**, and that day
+  starts at **00:00 local**. See
+  [../decisions/2026-09-09-business-timezone-is-a-tenant-property.md](../decisions/2026-09-09-business-timezone-is-a-tenant-property.md)
+  (the zone is a tenant property),
+  [../decisions/2026-09-09-business-day-starts-at-midnight-local.md](../decisions/2026-09-09-business-day-starts-at-midnight-local.md)
+  (the day starts at midnight, local) and
+  [../decisions/2026-09-09-tenant-timezone-configuration.md](../decisions/2026-09-09-tenant-timezone-configuration.md)
+  (configuration and display) — all `status: reference`, decided by Syed Haris (developer/owner),
+  **not** by a TCG product owner, so all three are open to being overruled. That does resolve the
+  variability this entry flags: with the tenant's zone as the reference, a quote's lifetime no
+  longer depends on the salesperson's browser zone parsing the picker at *their* local midnight.
+  **Still unanswered, and it is the half the customer loses a day to:** whether *Valid until
+  15 Sep* is inclusive of the whole of 15 September, or expires at the instant that day begins.
+  Knowing the zone does not decide inclusivity. **Stays open.**
+
 
 ## Should editing a quotation adopt the customer's current price list?
 

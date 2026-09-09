@@ -214,6 +214,23 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Nothing in the drop touches (b) billing code types or (d) the premium catalog as day-one data.
   The client still has to say which of (a)–(d) a new tenant is provisioned with, and whether
   anything gates first sign-in.
+- **Update 2026-09-09 (SCRUM-TZ decision) — a fifth item, and this one is answered:** a new
+  tenant must also carry a **business timezone**, and it is required at creation.
+  [../decisions/2026-09-09-tenant-timezone-configuration.md](../decisions/2026-09-09-tenant-timezone-configuration.md)
+  (`status: reference`; Syed Haris, developer/owner — **not** a TCG product owner) makes
+  `TenantCompany.timezone` **NOT NULL with no default**; a Pacific default was explicitly
+  rejected because *a silent default is how the current timezone bug arose*. Existing rows are
+  backfilled to `America/Los_Angeles`. Accepted values are any valid IANA zone id, validated by a
+  runtime `Intl.DateTimeFormat` probe rather than a US-only enum. **Consequence for this entry's
+  question:** `CreateAdminTenantDto`
+  (`apps/api/src/presentation/admin/dto/create-admin-tenant.dto.ts` — today `name`, `tenantCode`,
+  `maxUsers?`, `domain?`) must gain the field or tenant creation breaks, and SUPER_ADMIN is the
+  only role that may set or change it
+  (`apps/api/src/presentation/admin/admin-tenants.controller.ts:13`). **This answers one item and
+  adds it to the list; it does not touch (a) system departments and roles, (b) billing code types,
+  (c) industries or (d) the payroll premium catalog**, which is what this entry was raised for.
+  **Stays open.**
+
 
 
 ## Departments — does archive replace delete outright, and what may an archived department still be used for
