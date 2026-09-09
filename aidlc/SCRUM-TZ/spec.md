@@ -1030,6 +1030,82 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 - **Workaround:** in place. If signup should be refused outright, that is a one-line change.
 - **Status:** open
 
+### Q16 — Do the two engine call sites in `payroll.service.ts` resolve the tenant zone in U3, or do they stay a literal?
+
+- **Question:** `payroll.service.ts:231` (`calculatePayPeriod`) and `:329`
+  (`attachPricingSlices` → `explainEmployeeJobDays`) pass `BUSINESS_TIMEZONE`, the
+  process-wide constant. Does U3 replace those two with
+  `TenantContextService.getTimeZone()`, or does some later unit own it?
+- **Why it surfaced:** the two documents disagree, and so does the code.
+  `units.md` U1 → *Deliberately not in this unit* says: *"Resolving the zone from the acting
+  tenant (reading `TenantContext.timeZone` instead of a literal at the two `apps/api` call
+  sites) — that is REQ-03, lands in **U3**."* `units.md` U3 → *Deliberately not in this unit*
+  says the opposite: *"The engine-call sites inside `payroll.service.ts` — those are U1's,
+  already shipped independently of this unit."* U1's own in-code comments name U3 by name
+  (*"Reading `TenantCompany.timezone` here is REQ-03 (SCRUM-TZ/U3)"*, *"Same literal, same
+  reason as the calculate path above — REQ-03 replaces it"*). REQ-03's **statement** — "rather
+  than falling back to the process constant" — covers them; REQ-03's **acceptance** — "every
+  call passes a zone explicitly" — does not, because they already do.
+- **What U3 did:** left them as `BUSINESS_TIMEZONE`, following the executor's brief and U3's
+  own exclusion list rather than U1's. **So today a payroll period's *selection window* is the
+  tenant's business week (U3) while the *engine run over those tickets* is still California.**
+  For the single Pacific tenant that is one consistent answer; for any second tenant it is two
+  definitions of the week inside one calculation — the precise defect class REQ-03 exists to
+  end, and it is now half-removed.
+- **Blocked:** nothing is blocked from building; U3 shipped without it. What is blocked is
+  REQ-03 being *finished*, and any second-tenant onboarding.
+- **Owner:** whoever sequences U4–U7 (no product input needed — this is a scoping call
+  between two units, not a question about intent)
+- **Workaround:** in place while exactly one tenant exists and it is Pacific.
+- **Status:** open
+
+### Q17 — Is "every call passes a zone" the right acceptance test, given four business-time functions take no zone?
+
+- **Question:** REQ-03's acceptance says *"each of the 43 sites in the §11a grep passes an
+  argument."* Four of the functions in that grep cannot: `calendarDateToUtc`,
+  `addBusinessDays`, `weekdayOf` and `formatDateColumn`/`formatCalendarDate` take **no
+  `timeZone` parameter at all**, deliberately — they operate on `YYYY-MM-DD` strings and never
+  construct a zoned instant. Should the acceptance read "every site whose function accepts a
+  zone passes one"?
+- **Why it surfaced:** §7 asserts *"No function signature in `business-time.ts` needs to change
+  — all 11 already take `timeZone`."* That is inherited from the module's own docblock (*"All
+  functions take an explicit `timeZone` defaulting to `BUSINESS_TIMEZONE`"*), and both are
+  wrong. Verified 2026-09-09 by reading `packages/shared/src/utils/business-time.ts`: eight
+  exports take a zone, four do not. The consequence is that a reviewer checking REQ-03's
+  acceptance literally will read five of U3's owned "call sites" as missed — `me.service.ts`'s
+  only site, `das-allocations.service.ts`'s only site, and two of `quotations.service.ts`'s
+  seven — when nothing was missed and nothing should change there. §11a's per-file counts
+  ("(2)", "(7)") are counts of *grep hits*, not of sites needing a zone.
+- **What U3 did:** threaded a zone at every site whose function accepts one, and left an
+  in-code note at the zone-free sites so the absence reads as deliberate rather than skipped.
+  `tenant-business-day.spec.ts` asserts the `jobDate` calendar-date filter is *identical* for
+  two tenants in different zones, for the same reason.
+- **Blocked:** nothing built. It blocks REQ-03 being signed off against a checkable statement,
+  and it makes §7 and the shared module's docblock wrong for the next reader.
+- **Owner:** whoever signs off REQ-03 (a documentation correction, not a product answer)
+- **Workaround:** n/a.
+- **Status:** open
+
+### Q18 — Should a request whose JWT names a tenant that no longer exists now fail?
+
+- **Question:** `TenantContextInterceptor` must read `TenantCompany` to resolve the zone, and
+  `TenantCompaniesService.findById` throws `NotFoundException` when the row is absent. Every
+  authenticated request therefore now 404s if its tenant row is gone, where previously it
+  proceeded with a `tenantCompanyId` on the context and no lookup. Is failing correct, or
+  should the request continue and let only the business-day call sites throw?
+- **Why it surfaced:** REQ-03 forbids a fallback zone, so there is no third option — the
+  interceptor either has the row or the request has no zone. Nothing in the spec says which
+  failure is wanted, and the two differ in *where* the error surfaces: an auth-shaped 404 for
+  the whole request, versus a 500 from whichever handler first asks what day it is.
+- **What U3 did:** took the first (fail at the interceptor). It is the loud option, and the
+  state is close to unreachable — `AccessTokenStrategy` already rejects a JWT whose *user* is
+  gone, and the user→tenant FK means a live user implies a live tenant. Recorded because it is
+  a change to an auth-adjacent failure mode that no test in this repo covers.
+- **Blocked:** nothing.
+- **Owner:** whoever owns the auth surface
+- **Workaround:** n/a — no observed occurrence.
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 Rewritten 2026-09-09. Most of what was here was unspecified because nobody had answered it;
