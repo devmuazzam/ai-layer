@@ -1252,6 +1252,54 @@ Sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
 - **Status:** open
 
 
+### Q24 — REQ-10's two acceptance greps do not go clean, and neither residue is in U7's scope
+
+- **Question:** Two things, both about whether the acceptance line means "no live reference"
+  or "no occurrence at all".
+  1. **`dayjs` is still imported by two files inside `apps/api/src/usecase/vehicle-tracking`**
+     — `day-times.ts` (11 lines) and `route-stops.ts` (1 line). Should U7 have converted
+     them, and onto what?
+  2. **`FLEET_TIMEZONE` still appears in five comment lines** across the files U7 rewired,
+     in prose recording what was retired and why. Does the grep intend to catch those?
+- **Why it cannot be answered from what is written:** REQ-10's **Acceptance** says
+  `grep -rn 'dayjs' apps/api/src/usecase/vehicle-tracking apps/web/src/features/vehicle-tracking`
+  returns nothing. But REQ-10's **What gets rewired** names three files and U7's
+  slice-contents table names six; `day-times.ts` and `route-stops.ts` appear in neither, nor
+  in the decision note, nor in §11a. The acceptance line is therefore wider than every scope
+  statement behind it, and nothing says which one governs.
+- **What those two files actually use `dayjs` for, and why it is not the fleet day:** ordering
+  instants (`sort((a, b) => dayjs(a.time).diff(b.time))`) and measuring elapsed seconds
+  between two absolute ISO timestamps (`dayjs(x).diff(y, 'second')`). Verified 2026-09-09:
+  neither file calls `.tz()`, extends `dayjs/plugin/timezone` or `utc`, or names a zone
+  anywhere. They are zone-independent by construction, so **the convergence REQ-10 asked for
+  is complete** — there is no second answer to "what day is it" left in the tree. What
+  remains is a different use of the same library, and `business-time.ts` has no duration or
+  `diff` equivalent to move it onto, so converting them would mean writing new arithmetic and
+  re-proving `travelSeconds` / `onSiteSeconds` against it. That is real regression risk on
+  the summary numbers, authorised by no row.
+- **The `FLEET_TIMEZONE` residue, concretely:** `fleet-day.ts`:13, `fleet-date.ts`:11,
+  `fleet-day.spec.ts`:58, `vehicle-history.dto.spec.ts`:74 and `fleet-date.test.mjs`:194 —
+  all prose, no code and no config. `git grep 'FLEET_TIMEZONE' -- . ':!.ai'` matches nothing
+  executable, nothing in `.env.example`, and nothing in a deploy surface. The acceptance line
+  already carves out migration history, which is the same category of thing — a historical
+  record naming a removed identifier — but it does not say so in general. Keeping the name
+  spelled out is what lets someone who finds `FLEET_TIMEZONE` still set in a pipeline grep
+  the repo and land on the note saying it was retired; that is the reason it was left.
+- **Blocked:** nothing. U7 shipped everything its slice-contents table names and REQ-10's
+  own deletion and rewiring lists name, including the two-tenant tests.
+- **Candidates:** REQ-10 **Acceptance** vs REQ-10 **What gets rewired**; `units.md` U7 slice
+  contents; `decisions/2026-09-09-fleet-timezone-retired-onto-tenant-zone.md` → *Code changes
+  authorised, and their boundary*, which says the note "does not authorise removing dayjs
+  from the web app generally".
+- **Owner:** whoever wrote REQ-10's acceptance line — the spec coordinator, not the executor.
+- **Workaround, and what U7 actually shipped:** `dayjs` is gone from **both** files that
+  decided a day boundary (`fleet-day.ts`, `fleet-date.ts`), which is the behaviour REQ-10
+  describes; the two duration-only files are untouched, and the retirement comments keep the
+  identifier. Reported rather than decided, because widening the unit to cover them would be
+  scope this executor was not granted and would put the summary numbers at risk.
+- **Status:** open
+
+
 ## 13. What this spec deliberately does not specify
 
 Rewritten 2026-09-09. Most of what was here was unspecified because nobody had answered it;
