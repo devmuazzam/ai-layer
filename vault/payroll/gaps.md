@@ -3452,8 +3452,15 @@ somewhere it should not have. Settle that before touching either.
 - **Question:** Is a craft adder (**long boom, lattice, foreman, military base**) **(a)** added to
   the base rate so that the OT/DT/holiday multiplier applies to the sum, or **(b)** paid flat on top
   of the already-multiplied rate? A single long-boom hour at double time pays the adder twice under
-  (a) and once under (b). **The ERP is built on (b) and the client has now said (a) on a recorded
-  call.**
+  (a) and once under (b). **Corrected 2026-09-11 by reading the code rather than the decision note:
+  the ERP is built on (a) — `calculate.ts:299` prices the adder at
+  `boomAdderPerHour * multiplierOf(bucket)`, and `calculate.spec.ts:578` asserts
+  `ot.rate === BOOM_ADDER * 1.5` under the comment "PAY-011: the adder rides the multiplier". It has
+  been that way since the module's first commit (`61d0fd7d`), so
+  [../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md](../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md) — which rules (b) and states
+  `SCRUM-926` was built on it — describes behaviour the engine has never had. The shipped code
+  agrees with what Brian said on the call; the outliers are the decision note and Brian's own
+  workbook.**
 - **What changed on 2026-09-10** ([../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §2).
   Brian Petros, **21:48–22:09**, explaining *no pyramiding*: *"there's only one multiplier being
   applied… the long boom is just an addition to the base rate, like the lattice pay or the foreman
@@ -3479,9 +3486,16 @@ somewhere it should not have. Settle that before touching either.
   | **Brian Petros, recorded call 2026-09-10 21:48**, with Corrina concurring at 18:49 | **(a) into the rate** |
   | **Brian Petros' own scenario workbook**, sent the same day — an OT-with-boom half-hour priced at **$62.00** = $60.00 OT base + $2.00 flat boom, not ($40 + $2) × 1.5 = $63.00 ([lunch-break-scenarios-2026-09-11.md](lunch-break-scenarios-2026-09-11.md)) | **(b) on top** |
   | **2026-08-20 payroll rules meeting notes** (`status: unverified`, cleaned from a transcript) — *"Boom-time premiums are unaffected — they add on top of whichever rate applies"* | **(b) on top** |
-  | **The ERP as built** (`SCRUM-926`, on the 2026-08-25 decision) | **(b) on top** |
+  | **The ERP as built** — `calculate.ts:299`, `calculate.spec.ts:578`, unchanged since `61d0fd7d` | **(a) into the rate** |
+  | **The 2026-08-25 decision note** — never implemented, despite claiming `SCRUM-926` was built on it | **(b) on top** |
   **Brian's spreadsheet and Brian's spoken explanation, produced the same day, disagree with each
   other.** That is the first thing to resolve, and it can be resolved by asking him one question.
+  **Worked against the workbook's own example** (05:30–17:30, base $80.00, boom $4.00, boom window
+  06:30–15:30 → 7.5 boom hours in ST and 1.5 in OT): the engine pays boom **$39.00**, the workbook
+  **$36.00**, so gross is **$1,159.00** against the workbook's **$1,156.00**. The whole $3.00 is
+  1.5 h × $4.00 × 0.5. **The meal deductions are identical** — $42.00 at 10:30 (ST + boom) and
+  $60.00 at 16:00 (OT, boom ended) — because neither meal lands in a premium bucket *while boom is
+  running*, which is exactly the untested case named below.
 - **What makes the call evidence weaker than it looks, and why this is not yet a decision note:**
   Brian was explaining *no pyramiding* in general, not answering a question about the adder, and
   nobody put the two competing readings to him side by side. Corrina's "Correct" answered
@@ -3496,6 +3510,11 @@ somewhere it should not have. Settle that before touching either.
   [source-attribution-and-conflicts.md](source-attribution-and-conflicts.md) → *Into the rate vs on top*;
   [lunch-break-scenarios-2026-09-11.md](lunch-break-scenarios-2026-09-11.md);
   [../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §2.
+  **Also now checked: the meal deduction multiplies boom too.** `meal-periods.ts:173` —
+  `deductRate = (hourly + (onBoom ? boomAdderPerHour : 0)) * multiplier` — so the engine is
+  internally consistent, into-the-rate on both the earning and the deducting side. Under reading (b)
+  it would be inconsistent: a half hour *earned* at $62.00 would be *deducted* at $63.00. Whichever
+  way this settles, both sites move together.
 - **Blocked:** `SCRUM-920` already carries the confirmation obligation. Every long-boom, lattice,
   foreman and military-base hour priced at OT or above is exposed until this is settled, and
   **re-pricing shipped payroll is the expensive path** — settle it before the parallel run is used
