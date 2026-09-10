@@ -1210,3 +1210,55 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note on the punch list:** [../quotations/quotation.md](../quotations/quotation.md):15-16 carries *"tools and rigging – total inventory"* and *"button should be renamed as **add tool**"* — JZ, 2026-06-23, `status: unverified`, two unelaborated bullets on a **cross-module** punch list. They are the only written words about a button in this picker, they do not say whether "add tool" means *add a row to the quote* or *create a tool in the catalog*, and the branch labels its new control *"Add New"* either way. Not a source; noted so it is not later read as one.
 - **Blocked:** nothing functionally. What is at risk is a catalog whose records were created three-fields-at-a-time from a sales form, by people the spec assigns to the yard.
 - **Owner:** Dylan Masterson / the yard for who may create a catalog tool (Story 1 and Story 5 are both his), with Brian Petros on the salesperson-permission question the billing-code thread parked.
+
+## Fleet tracking map — how a selected vehicle must be indicated is written nowhere
+
+- **Status:** open
+- **Asked:** 2026-09-09 — raised while reviewing branch `scrum-252` ("Implement map view in
+  DAS"), which replaces the shipped tracking map's vehicle marker with a truck icon shared with
+  the new DAS map. The branch has no `.ai/aidlc/SCRUM-252/` folder and no `processed.log` row;
+  it never ran the loop.
+- **Question:** **On the fleet tracking map, how must the vehicle the user has open be
+  distinguished from the rest of the fleet?** One line settles it: *a size increase and a
+  brand-coloured ring* (what shipped), *stacking order alone*, or *something else*.
+- **Sources checked:** **Nothing in the vault describes the tracking map's UI at all**, so
+  there is no source to weigh. `decisions/` holds no Samsara or tracking decision. `../brs.md`
+  **BRS-INT-002** (*Samsara Reconciliation*, "Needs Supporting Documentation") and **OD-010** /
+  **OD-012** are scope and GPS-enforcement placeholders, not screen behaviour.
+  `../admin/responsive-design-and-security-posture.md` → *Part 3 — Samsara integration* covers
+  credentials and usage, not the map. `../dispatch/daily-allocation-system.md` → *USER STORY :
+  Live Asset Map View* (`status: unverified`, updated 2026-04-30) specifies click-to-sidebar for
+  the **DAS** map and says nothing about a selected-marker treatment on either map. `meetings/`
+  yields nothing on marker design. This sits **inside** the larger unsourced area already
+  recorded above: [*Samsara vehicle tracking — what was committed is "vehicle locations in real
+  time", and an 11k-line module shipped around it*](#samsara-vehicle-tracking--what-was-committed-is-vehicle-locations-in-real-time-and-an-11k-line-module-shipped-around-it),
+  which establishes that **no named person with product authority appears anywhere in the record
+  for the whole module.** So the affordance being removed was never specified either — the
+  question is whether it was nonetheless the right behaviour.
+- **Note:** what changes concretely. `isSelected` now affects only z-index; the marker no longer
+  grows and no longer gains a ring
+  (`apps/web/src/features/vehicle-tracking/components/map/vehicle-marker.tsx`). `ROUTE_TOKENS.selected`
+  in `apps/web/src/features/vehicle-tracking/components/map/map-settings.ts:50` — documented in
+  place as *"the ring around the marker of whichever vehicle is open"* — is left with **no
+  consumer** (`route-polyline.tsx` reads only `ROUTE_TOKENS.line`). Because nothing is written,
+  the removal cannot be called a regression **or** an improvement from the record; it is an
+  unreviewed change to a shipped screen. Not a licence to restore it on judgement alone.
+- **Blocked:** merging `scrum-252`'s change to the **existing** tracking screen — the new DAS map
+  is not blocked by this. Also blocks deleting or keeping the now-dead `ROUTE_TOKENS.selected`
+  token.
+- **Owner:** product team — Brian Petros (named owner on the Samsara scope entry above), with
+  whoever owns the Samsara integration.
+- **Update 2026-09-10 (SCRUM-252 backfill):** **the code this entry describes has moved on; the
+  question has not.** The *Note* above was written against commit `b69d5406`. At `fbaebb9f` the
+  selection cue is back as a **size step** — `RESTING_SIZE` 46 → `SELECTED_SIZE` 58 in
+  `vehicle-marker.tsx`, animated via `transition-[width,height]` — so `isSelected` no longer
+  affects only z-index. The **ring** is still absent, and is now absent *deliberately*, with the
+  reasoning stated in place: it *"read as a second element around the body rather than as the
+  same object"*. The dead `ROUTE_TOKENS.selected` token and its comment describing a ring that no
+  longer exists were **removed** from `map-settings.ts` (nothing referenced it), which discharges
+  the second half of the *Blocked* line above.
+  **Stays open.** A developer choosing a size step over a ring is still an unreviewed change to a
+  shipped screen decided from no written source — which is what this entry exists to say. The
+  entry's own warning holds in both directions: nothing written makes the ring right, and nothing
+  written makes its removal right either. Ticket record:
+  [`../../aidlc/SCRUM-252/spec.md`](../../aidlc/SCRUM-252/spec.md) §14.
