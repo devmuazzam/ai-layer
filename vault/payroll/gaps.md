@@ -250,7 +250,13 @@ someone has confirmed otherwise.
   by the client; and the grid prices an OT-with-boom slot at $62.00, confirming
   [../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md](../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md) from the client side. **The sheet's stated
   Total pay $1,012.00 does not follow from its own method** — it deducts the first break twice; both
-  independent routes give **$1,054.00**. Raised with TCG, unanswered. Still not settled by it: the
+  independent routes give **$1,054.00**. **Confirmed as a spreadsheet defect by Brian Petros in
+  writing, 2026-09-11** — *"you are absolutely correct… that is a problem with the scenario in the
+  Excel"*, and he will correct the formula. The method is therefore client-confirmed; only the
+  printed total was wrong. **Our WTL rules were run against the example and reproduce both meal
+  deductions to the cent** ($42.00 ST+boom, $60.00 OT no-boom), so PAY-046/PAY-047 are not implicated
+  — the only engine-vs-workbook difference on this example is $3.00 of OT boom, which belongs to the
+  boom-multiplier question, not to WTL. Still not settled by it: the
   threshold numbers and three-vs-four lunches (12.0 h is a value every source agrees on), whether
   boom is multiplied *inside* the deduction (the example never puts a meal in an OT/DT slot while
   boom runs), and whether the DT-after-12 and weekly-40 clocks read the pre- or post-deduction hours.

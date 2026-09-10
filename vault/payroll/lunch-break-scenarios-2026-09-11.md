@@ -78,8 +78,14 @@ Both independent routes give the same correct figure:
 | Final buckets: ST 7.5 × 80 + OT 3.5 × 120 + boom 8.5 × 4 | **$1,054.00** |
 | Stated on the sheet | $1,012.00 — **$42.00 low** |
 
-Raised with TCG 2026-09-11; not yet answered. Until it is, the **method** in this file is usable
-and the **$1,012.00 figure is not**.
+**✅ Confirmed by the author, 2026-09-11.** Brian Petros, in writing, on being shown the
+double-deduction: *"Yes… good catch. You are absolutely correct… that is a problem with the
+scenario in the Excel… thank you."* and *"Next time I go into that Excel, I'll update the formula."*
+So the **method in this file is TCG's, and the $1,012.00 figure is a spreadsheet defect** — read
+every rule below as client-confirmed and the stated total as void until he reissues the sheet.
+**The corrected total is $1,054.00** under the workbook's own flat-boom pricing, or **$1,057.00**
+under the multiplied-boom treatment the ERP implements — see the *Boom adder* entry in
+[gaps.md](gaps.md), which is **not** settled by this confirmation.
 
 ## What this example does **not** settle
 
