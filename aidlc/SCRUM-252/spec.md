@@ -289,7 +289,11 @@ Listed once, plainly, so nobody mistakes silence for simplicity.
       removed from `map-settings.ts` (2026-09-10) — nothing referenced it. Whether a ring is the
       right cue at all stays open at [`assets/gaps.md`](../../vault/assets/gaps.md) →
       *Fleet tracking map — how a selected vehicle must be indicated is written nowhere*
-- [ ] `processed.log` row updated with the PR number
-- [ ] Overlay committed and pushed
+- [x] `processed.log` row updated with the PR number — PR **522**, appended as a second
+      SCRUM-252 row *(2026-09-10)*. The ledger is append-only, so the original row stands;
+      the new one records the PR and corrects two things that row got wrong — it called Q3
+      and Q4 still open when both have decision notes, and called the cancelled-sub-job
+      defect unfixed when `3733a11e` fixed it
+- [x] Overlay committed and pushed *(2026-09-10)*
 
 Answered by: ______________  Date: ______________
