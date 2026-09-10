@@ -42,3 +42,16 @@ tags: [module/payroll, kind/rule, open-questions]
   only **6 h ST** (00:00–06:00 OT, 06:00–12:00 ST, 12:00–14:00 DT) because the 12-hour DT cap binds
   first (21:02). Any implementation that seeds an 8-hour ST bank and decrements it will get this
   case wrong.
+- **⚠️ The shipped engine does not implement case 3, and `ad9041bc` is why.**
+  `packages/payroll-engine/src/day-type.ts` → `bucketForSlice` has no before-midnight branch, so a
+  22:00→14:00 shift prices **4 ST / 8 OT / 4 DT** against Corrina's **0 ST / 12 OT / 4 DT**. Commit
+  `ad9041bc` (2026-09-09, *"give every shift a full straight-time allowance before daily OT"*) split
+  `stHoursBeforeSlice` out of `cumulativeHoursBeforeSlice` so that premium slices no longer spend the
+  eight-hour allowance — correct for the 04:00 start it was built from (6 ST → **8 ST**, which the
+  call confirms), and it is what hands a before-midnight shift an allowance the client says it never
+  earns. Before that commit the engine returned Corrina's answer for the 22:00 case and the wrong one
+  for 04:00. **Neither reading is safe to implement from these notes**: Corrina stated a categorical
+  rule, the legacy engine ([../legacy-payroll-app-db-extract/rules-plain-language.md](../legacy-payroll-app-db-extract/rules-plain-language.md) §2)
+  implements a mechanical one, and they part company on a 23:00→13:00 shift. Full working, the
+  three-way comparison table and the question to put to Corrina: [../gaps.md](../gaps.md) → *The
+  before-midnight bucket rule was never stated to us*.

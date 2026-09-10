@@ -3566,3 +3566,66 @@ somewhere it should not have. Settle that before touching either.
 - **Owner:** TCG — Corrina Bustos for the California hourly and salaried rules; Kyle Harlow for the
   shop and yard structure; CodingCops to decide whether work-order labor runs through the same
   pricing engine.
+
+## The before-midnight bucket rule was never stated to us — and the 2026-09-09 ST-allowance fix regressed the exact case
+
+- **Status:** open
+- **Asked:** 2026-09-11 — checking whether Corrina Bustos' 2026-09-10 correction had been available
+  to us beforehand. It had not, and the check turned up a live divergence in shipped code.
+- **The rule, first stated 2026-09-10.** Corrina Bustos, 16:33: *"if they start on overtime before
+  midnight, they have to work 12 hours of OT and then everything else is doubled. **They don't, it
+  doesn't start over at 6 A.M.**"*; 17:22: *"That 6 A.M. rule is a wash and the 12 hours of overtime
+  rule hits."* A 22:00→14:00 shift is **12 OT + 4 DT**, with **no straight time at all**.
+- **It appears nowhere in the vault before that call.** `grep -rn -i "before midnight" .ai/vault/`
+  returns nothing outside the 2026-09-10 ingest. [rules/PAY-019-cross-midnight-processing.md](rules/PAY-019-cross-midnight-processing.md)
+  is a **different rule** — it governs *day type* (weekday → Saturday/Sunday/holiday) after 00:00 and
+  was settled by Corrina on 2026-09-04; it says nothing about ST/OT/DT bucket assignment.
+  [PAY-021](rules/PAY-021-l12-standard-work-window.md), [PAY-022](rules/PAY-022-daily-straight-time.md),
+  [PAY-023](rules/PAY-023-daily-overtime.md) and [PAY-024](rules/PAY-024-daily-double-time.md) carry no
+  such branch. **Nor was it clear to TCG's own people** — Brian Petros and Abdul Rehman modelled the
+  shift as 8 OT + 4 ST + 4 DT on the call, Kyle Harlow 16:13: *"that's the rule that I missed and I
+  apologize"*, Brian 16:30: *"Oh, I forgot about that."*
+- **The one prior source that would have produced the right answer** is the legacy engine's own
+  formula, [legacy-payroll-app-db-extract/rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §2: cumulative hours count
+  **from the shift's actual start**, slices 1–16 → ×1.0, 17–24 → ×1.5, 25+ → ×2.0, and *"any slice
+  starting before 06:00 or at/after 17:00 → **at least** ×1.5"*. For 22:00→14:00 that yields 12 OT +
+  4 DT — Corrina's answer, reached by a different mechanism (the first eight cumulative hours *are*
+  the ST bank, they are merely floored to ×1.5 for being outside the window). **The answer was
+  derivable; the rule was never written.** And the two mechanisms disagree elsewhere — on
+  04:00→23:30 the legacy formula gives **6 ST**, where Corrina confirmed **8 ST** (24:16–24:49).
+- **⚠️ Live divergence in shipped code.** `packages/payroll-engine/src/day-type.ts` →
+  `bucketForSlice` has **no before-midnight branch**; its ladder is holiday → Sunday → special
+  Saturday → `cumulative ≥ 12` → outside 06:00–17:00 → `stHours ≥ 8` → Saturday → ST. Run against
+  the call's own worked examples:
+  | Case | pre-`ad9041bc` | shipped today | Corrina 2026-09-10 |
+  | --- | --- | --- | --- |
+  | 22:00 → 14:00 (16 h) | **0 ST / 12 OT / 4 DT** ✅ | 4 ST / 8 OT / 4 DT ❌ | 0 ST / 12 OT / 4 DT |
+  | 00:00 → 14:00 (14 h) | 2 ST / 10 OT / 2 DT ❌ | **6 ST / 6 OT / 2 DT** ✅ | 6 ST / 6 OT / 2 DT |
+  | 04:00 → 23:30 (19.5 h) | 6 ST / 6 OT / 7.5 DT ❌ | **8 ST / 4 OT / 7.5 DT** ✅ | 8 ST / 4 OT / 7.5 DT |
+  **`ad9041bc` (2026-09-09, *"give every shift a full straight-time allowance before daily OT"*)
+  fixed two cases and regressed the third — the day before the client corrected exactly that case.**
+  Its own commit message names the driver: *"the client's worked example… a 04:00-23:30 shift"*, and
+  that example is the one Corrina confirmed. The fix is right for the cases it was built from; it
+  gave shifts that begin before midnight a straight-time allowance the client says they never earn.
+  On a $80/h base that is 4 hours moved from ST to OT — **$160 per cross-midnight shift**, in TCG's
+  favour, i.e. an **underpayment**.
+- **What still has to be asked, because the call did not settle it.** Corrina stated a categorical
+  rule (*started before midnight ⇒ no ST*), and the legacy engine implements a mechanical one
+  (*outside-window slices are floored to ×1.5 but still spend the cumulative bank*). They coincide on
+  22:00→14:00 only because 22:00 + 8 h lands exactly on 06:00. They diverge on, for instance,
+  **23:00 → 13:00**: the legacy formula gives 1 h of ST at 06:00–07:00, Corrina's rule gives none;
+  today's engine gives 5 ST. **Which of the two is the rule** determines the fix — a
+  `startedBeforeMidnight` short-circuit, or making outside-window slices spend the allowance while
+  the 04:00 case keeps its full eight. **Do not implement from this entry.** Put the 23:00→13:00
+  case to Corrina; it is the one example that separates the two readings.
+- **Sources checked:** [../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §1;
+  [rules/PAY-019](rules/PAY-019-cross-midnight-processing.md), [PAY-021](rules/PAY-021-l12-standard-work-window.md),
+  [PAY-022](rules/PAY-022-daily-straight-time.md), [PAY-023](rules/PAY-023-daily-overtime.md),
+  [PAY-024](rules/PAY-024-daily-double-time.md), [PAY-027](rules/PAY-027-no-pyramiding.md);
+  [legacy-payroll-app-db-extract/rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §2 and `cfg.Union_Master_Rules`;
+  `packages/payroll-engine/src/day-type.ts`, `calculate.ts:195-238`; commit `ad9041bc` (2026-09-09);
+  the whole `decisions/` folder — no note on ST/OT bucket assignment by start time.
+- **Blocked:** any payroll ticket that prices a shift starting before midnight, and the parallel-run
+  comparison, which will now disagree with Brian's app on exactly these shifts.
+- **Owner:** TCG — Corrina Bustos, one question (the 23:00→13:00 case). CodingCops owns the fix and
+  the regression test once she answers.
