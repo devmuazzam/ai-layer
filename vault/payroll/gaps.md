@@ -3450,11 +3450,21 @@ somewhere it should not have. Settle that before touching either.
   component); California counsel for the bonus / regular-rate question, on the same footing as the
   2026-09-03 referral.
 
-## Boom and craft adders — into the rate or on top? The working decision now has TCG saying the opposite
+## Boom and craft adders — into the rate or on top? ✅ CLOSED 2026-09-10 — into the rate
 
-- **Status:** open
+- **Status:** closed
 - **Asked:** 2026-09-11 — raised while curating the 2026-09-10 payroll call, where Brian Petros
-  stated the rule the other way round from the decision `SCRUM-926` was built on.
+  stated the rule the other way round from the decision it was believed the ERP was built on.
+- **✅ CLOSED 2026-09-10, decision note [../decisions/2026-09-10-craft-adders-are-into-the-rate-multiplied.md](../decisions/2026-09-10-craft-adders-are-into-the-rate-multiplied.md).**
+  The adder goes into the base rate and the multiplier applies to the sum — an OT half hour with
+  boom is **$63.00**. Brian Petros said so unprompted and at length on the recorded call, Corrina
+  Bustos concurred, the MLA's literal clause says the same, and the engine has always done it. Brian
+  confirmed our reading in writing on 2026-09-11 (*"you understand it correctly"*); TCG chose not to
+  re-ask, on the evidence of the recording plus that message. **No code change.** The
+  2026-08-25 note is superseded and `SCRUM-920`'s confirmation obligation is discharged. **What
+  carries forward, not as a question but as a caution:** Brian's scenario workbook still prices boom
+  flat at $62.00, and he corrected only the Final-column formula — expect scenarios #2 and #3 to
+  arrive with the same grid, and reconcile them to the decision rather than to the sheet.
 - **Question:** Is a craft adder (**long boom, lattice, foreman, military base**) **(a)** added to
   the base rate so that the OT/DT/holiday multiplier applies to the sum, or **(b)** paid flat on top
   of the already-multiplied rate? A single long-boom hour at double time pays the adder twice under
