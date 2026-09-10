@@ -57,6 +57,7 @@ pages already cover, each new page says explicitly how the two differ rather tha
 - [2026-08-31-quotation-qty-not-das-sets.md](../decisions/2026-08-31-quotation-qty-not-das-sets.md) — Quotation qty is billing only; one DAS/Yard set per root; child qty independent
 - [2026-08-28-job-schedule-weekend-empty-state.md](../decisions/2026-08-28-job-schedule-weekend-empty-state.md) — Job Schedule weekend-empty empty state — decision
 - [2026-09-08-artifact-due-date-seeded-from-first-job-day.md](../decisions/2026-09-08-artifact-due-date-seeded-from-first-job-day.md) — A permit/plan artifact's `dueDate` is seeded from the job's first scheduled day and is freely editable thereafter. Settles the seed and editability only — whether the app should compute or warn on a lead-time deadline (`Latest Permit Submission`) stays open in [gaps.md](gaps.md)
+- [2026-09-10-permit-association-scope-asset-job-vendor.md](../decisions/2026-09-10-permit-association-scope-asset-job-vendor.md) — Permit type drives association with asset, job, or vendor (exactly one FK); restores All Permits → New Permit
 
 ## Open questions
 

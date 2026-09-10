@@ -215,3 +215,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note on (b):** **Melissa McNutt @ 44:17**, [../meetings/transcripts/2026-07-07-cc-tcg-erp-system.md](../meetings/transcripts/2026-07-07-cc-tcg-erp-system.md):205 — *"for the POs, customers POs right now, they give us, it usually has a number and amount, and then like a term on it. **So if we could track that**… we would need indicators to tell us, hey, you know, **you have 30% of your PO left**, so then we can reach out to them to increase it with the change order."* Corroborated by Sammy Garrett describing the Excel he does it in today ([../meetings/transcripts/2026-07-30-invoice-processing.md](../meetings/transcripts/2026-07-30-invoice-processing.md):52, :55) and by Melissa again at [../meetings/transcripts/2026-07-28-invoicing-details-contracts-certs-trainings.md](../meetings/transcripts/2026-07-28-invoicing-details-contracts-certs-trainings.md):357. That thread is registered under **accounting**, not here — [../accounting/gaps.md](../accounting/gaps.md) → project-level accounting / contract-amounts tracker, where Melissa answers *"Yes"* to wanting it and nobody has specified it. It is a **customer**-PO balance against a contract amount, so it is Type 1 and belongs nowhere near the vendor-PO listing; recorded here only so the retired route name is not mistaken for it later.
 - **Blocked:** nothing — the flatten matches the one written nav requirement. Recorded so (a) and (b) are not lost with the route.
 - **Owner:** Melissa McNutt for the balance-tracking ask (she raised it three times); Brian Petros for what the type filter should now say, since his 2026-09-05 taxonomy replaced *Internal / Customer*.
+
+## What makes a permit PO-exempt — see projects-jobs/gaps.md
+
+- Cross-module pointer (no status of its own — the sweep counts it once, in `projects-jobs/gaps.md`).
+  `fix/quotation-permits-plans` (2026-09-10) adds the new generic `ASSET` permit type to
+  `PO_EXEMPT_PERMIT_TYPES`, replacing the **annual-vs-single** axis this module's PO record
+  states ([purchase-order.md](purchase-order.md):97-109 / :198-216, `unverified`;
+  [../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md](../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md),
+  `reference`, Brian Petros + Melissa McNutt) with an **asset-vs-job** one that no source states.
+  The PO rule is owned here; the entry sits with the other permit-artifact questions.
+  Full entry: [projects-jobs/gaps.md](../projects-jobs/gaps.md#po-exemption-swaps-the-annual-vs-single-axis-for-asset-vs-job--and-annual-stops-being-expressible).
