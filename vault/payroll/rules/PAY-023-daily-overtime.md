@@ -54,4 +54,7 @@ tags: [module/payroll, kind/rule, open-questions]
   rule, the legacy engine ([../legacy-payroll-app-db-extract/rules-plain-language.md](../legacy-payroll-app-db-extract/rules-plain-language.md) §2)
   implements a mechanical one, and they part company on a 23:00→13:00 shift. Full working, the
   three-way comparison table and the question to put to Corrina: [../gaps.md](../gaps.md) → *The
-  before-midnight bucket rule was never stated to us*.
+  before-midnight bucket rule — we were given it, we had it right, and `ad9041bc` changed away from
+  it*. **Note the direction of travel:** §2 of the legacy extract is cited as this rule's own
+  *Legacy engine* source and already stated the before-midnight behaviour; the engine matched it
+  until `ad9041bc`. This is a deviation from a cited source, not a gap in what the client told us.

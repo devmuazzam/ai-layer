@@ -3567,32 +3567,49 @@ somewhere it should not have. Settle that before touching either.
   shop and yard structure; CodingCops to decide whether work-order labor runs through the same
   pricing engine.
 
-## The before-midnight bucket rule was never stated to us — and the 2026-09-09 ST-allowance fix regressed the exact case
+## The before-midnight bucket rule — we were given it, we had it right, and `ad9041bc` changed away from it
 
 - **Status:** open
 - **Asked:** 2026-09-11 — checking whether Corrina Bustos' 2026-09-10 correction had been available
-  to us beforehand. It had not, and the check turned up a live divergence in shipped code.
+  to us beforehand. **It had been.** No TCG person ever said it out loud, but the rule was in a
+  source this register cites, the engine once implemented it correctly, and a fix on 2026-09-09
+  changed away from it.
 - **The rule, first stated 2026-09-10.** Corrina Bustos, 16:33: *"if they start on overtime before
   midnight, they have to work 12 hours of OT and then everything else is doubled. **They don't, it
   doesn't start over at 6 A.M.**"*; 17:22: *"That 6 A.M. rule is a wash and the 12 hours of overtime
   rule hits."* A 22:00→14:00 shift is **12 OT + 4 DT**, with **no straight time at all**.
-- **It appears nowhere in the vault before that call.** `grep -rn -i "before midnight" .ai/vault/`
-  returns nothing outside the 2026-09-10 ingest. [rules/PAY-019-cross-midnight-processing.md](rules/PAY-019-cross-midnight-processing.md)
-  is a **different rule** — it governs *day type* (weekday → Saturday/Sunday/holiday) after 00:00 and
-  was settled by Corrina on 2026-09-04; it says nothing about ST/OT/DT bucket assignment.
-  [PAY-021](rules/PAY-021-l12-standard-work-window.md), [PAY-022](rules/PAY-022-daily-straight-time.md),
-  [PAY-023](rules/PAY-023-daily-overtime.md) and [PAY-024](rules/PAY-024-daily-double-time.md) carry no
-  such branch. **Nor was it clear to TCG's own people** — Brian Petros and Abdul Rehman modelled the
-  shift as 8 OT + 4 ST + 4 DT on the call, Kyle Harlow 16:13: *"that's the rule that I missed and I
-  apologize"*, Brian 16:30: *"Oh, I forgot about that."*
-- **The one prior source that would have produced the right answer** is the legacy engine's own
-  formula, [legacy-payroll-app-db-extract/rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §2: cumulative hours count
-  **from the shift's actual start**, slices 1–16 → ×1.0, 17–24 → ×1.5, 25+ → ×2.0, and *"any slice
-  starting before 06:00 or at/after 17:00 → **at least** ×1.5"*. For 22:00→14:00 that yields 12 OT +
-  4 DT — Corrina's answer, reached by a different mechanism (the first eight cumulative hours *are*
-  the ST bank, they are merely floored to ×1.5 for being outside the window). **The answer was
-  derivable; the rule was never written.** And the two mechanisms disagree elsewhere — on
-  04:00→23:30 the legacy formula gives **6 ST**, where Corrina confirmed **8 ST** (24:16–24:49).
+- **Never *stated* — but given to us, in a source this rule already cites.**
+  [legacy-payroll-app-db-extract/rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §2 is listed as the **Legacy
+  engine** source on [PAY-022](rules/PAY-022-daily-straight-time.md),
+  [PAY-023](rules/PAY-023-daily-overtime.md) and [PAY-024](rules/PAY-024-daily-double-time.md), and it
+  states the rule: cumulative hours count **from the shift's actual start**, *"a shift that crosses
+  midnight keeps counting"*; slices 1–16 → ×1.0, 17–24 → ×1.5, 25+ → ×2.0; and *"any slice starting
+  before 06:00 or at/after 17:00 → **at least** ×1.5"*. For 22:00→14:00 that yields **12 OT + 4 DT**
+  — Corrina's answer. The parameters are machine-readable in the same extract:
+  `cfg.Union_Master_Rules` row 1, L12, `Standard_Start_Time 06:00 · Standard_End_Time 17:00 ·
+  Standard_Hours_Daily 8.0 · DoubleTime_Threshold_Daily 12.0 · OT 1.50 · DT 2.00`
+  ([config-values.md](legacy-payroll-app-db-extract/config-values.md)) — extracted from TCG's production engine, not
+  inferred. The MLA points the same way without settling it: *"Eight (8) consecutive hours shall
+  constitute a day's work, **between the hours of 6:00 A.M. and 5:00 P.M.**… All overtime work
+  performed outside of regular working hours shall not be less than one and one-half"*
+  ([mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) Art. III §1) — a shift beginning
+  at 22:00 never has its day's work inside that window.
+  **So the honest statement is not that we lacked the rule. We had it, we implemented it, and we
+  changed away from it** — see the table below: before `ad9041bc` the engine returned Corrina's
+  answer for the before-midnight case.
+- **What was genuinely missing was the *reconciliation*, and it still is.** The legacy formula
+  reaches 12 OT + 4 DT by a different mechanism from Corrina's words: for the engine the first eight
+  cumulative hours *are* the ST bank, merely floored to ×1.5 for falling outside the window; for
+  Corrina a before-midnight start categorically forfeits straight time. The two disagree on
+  04:00→23:30 — the legacy formula gives **6 ST** where Corrina confirmed **8 ST** (24:16–24:49) —
+  which is precisely the case `ad9041bc` was written to fix.
+- **PAY-019 is not this rule, and reading it as such is the trap.**
+  [rules/PAY-019-cross-midnight-processing.md](rules/PAY-019-cross-midnight-processing.md) governs *day type* across 00:00
+  (weekday → Saturday/Sunday/holiday), settled by Corrina 2026-09-04. It says nothing about ST/OT/DT
+  bucket assignment, and `grep -rn -i "before midnight" .ai/vault/` returns nothing outside the
+  2026-09-10 ingest. **Nor was it clear to TCG's own people** — Brian Petros and Abdul Rehman
+  modelled the shift as 8 OT + 4 ST + 4 DT on the call; Kyle Harlow 16:13: *"that's the rule that I
+  missed and I apologize"*; Brian 16:30: *"Oh, I forgot about that."*
 - **⚠️ Live divergence in shipped code.** `packages/payroll-engine/src/day-type.ts` →
   `bucketForSlice` has **no before-midnight branch**; its ladder is holiday → Sunday → special
   Saturday → `cumulative ≥ 12` → outside 06:00–17:00 → `stHours ≥ 8` → Saturday → ST. Run against
@@ -3607,6 +3624,11 @@ somewhere it should not have. Settle that before touching either.
   Its own commit message names the driver: *"the client's worked example… a 04:00-23:30 shift"*, and
   that example is the one Corrina confirmed. The fix is right for the cases it was built from; it
   gave shifts that begin before midnight a straight-time allowance the client says they never earn.
+  **The process point, not the arithmetic one:** the change deviated from a cited rule source
+  (§2 above, listed on PAY-022/023/024) on the strength of a single worked example, and shipped with
+  **no decision note, no `processed.log` row, and no reflection** — `grep -rn "ad9041bc\|stHoursBeforeSlice" .ai/`
+  returns nothing but this entry. Had the deviation been written down, the second case it moved would
+  have had to be named.
   On a $80/h base that is 4 hours moved from ST to OT — **$160 per cross-midnight shift**, in TCG's
   favour, i.e. an **underpayment**.
 - **What still has to be asked, because the call did not settle it.** Corrina stated a categorical
