@@ -139,9 +139,13 @@ neighbouring module.**
 
 ## Decisions that bind this module
 
-Seven `decisions/` notes carry `module/payroll`. None is `verified` — all are `reference`,
+Ten `decisions/` notes carry `module/payroll`. None is `verified` — all are `reference`,
 meaning a named person on the team decided them and they bind implementation until TCG says
 otherwise.
+
+*(This count read "Seven" while listing eight from 2026-09-09 until 2026-09-10; the
+2026-09-09 business-day note flagged the same drift. Corrected here along with the two
+additions below — count the list, not the sentence.)*
 
 - [2026-09-01-subsistence-not-a-craft-attribute.md](../decisions/2026-09-01-subsistence-not-a-craft-attribute.md) — subsistence is a property of the trip, not the trade; supersedes the per-craft modifier shown on 2026-08-13
 - [2026-08-25-non-union-base-rate-per-person.md](../decisions/2026-08-25-non-union-base-rate-per-person.md) — non-union base rate comes from `Employee.hourlyRate`
@@ -150,6 +154,8 @@ otherwise.
 - [2026-08-25-craft-locked-rate-override-scoped-to-union.md](../decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md) — **working** reading of the note below
 - [2026-08-24-payroll-time-rounding-method.md](../decisions/2026-08-24-payroll-time-rounding-method.md) — start down, end up, 30-minute increments
 - [2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) — day-level deviations locked to craft-code amounts
+- [2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md](../decisions/2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md) — unfinished tickets shown on the weekly payroll screen are computed at read time and never priced, persisted or exported; what they are *called*, and whether they block approval, stay open
+- [2026-09-09-business-day-starts-at-midnight-local.md](../decisions/2026-09-09-business-day-starts-at-midnight-local.md) — the business day begins at 00:00 in the tenant's own zone; companion to the tenant-timezone note
 - [2026-06-30-adp-erp-employee-data-ownership.md](../decisions/2026-06-30-adp-erp-employee-data-ownership.md) — which employee field is owned by ADP, the ERP, or QuickBooks
 
 ## Where payroll meets the rest of the vault
