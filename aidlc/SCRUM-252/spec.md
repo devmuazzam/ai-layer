@@ -24,7 +24,7 @@
 | Review | `my-docs/scrum-252-map-view-review.md`, 2026-09-09 — verdict *do not ship yet*: one defect, one regression, and five product questions gating merge |
 | Vault state | Only source: `dispatch/daily-allocation-system.md` → *USER STORY : Live Asset Map View*, `status: unverified`, updated 2026-04-30 |
 | Open questions raised | 5 in §12 plus 2 sub-questions — **all 7 resolved by decision notes**; 1 defect, fixed. Nothing left open that this ticket raised |
-| Rules consulted | `CLAUDE.md` → *Vehicle tracking (Samsara)*, `contexts/api.md`, `contexts/web.md`, `contexts/prisma.md` |
+| Rules consulted | `contexts/api.md`, `contexts/web.md`, `contexts/prisma.md` |
 
 ## 1. What shipped
 
@@ -267,7 +267,7 @@ Listed once, plainly, so nobody mistakes silence for simplicity.
 - **Whether a cancelled job is drawn on the map at all** — [`dispatch/gaps.md`](../../vault/dispatch/gaps.md) → *Cancelled sub-jobs on the DAS map*.
 - **Overnight shifts on the board** — [`dispatch/gaps.md`](../../vault/dispatch/gaps.md) → *Overnight DAS shifts*.
 - **Selected-marker treatment on the fleet tracking map**, changed as a side effect of this branch — [`assets/gaps.md`](../../vault/assets/gaps.md) → *Fleet tracking map*.
-- **Who may see the map / GPS at all.** No permission layer exists on either map. `brs.md` **OD-012** *GPS enforcement behavior* is `❓ Decision Needed`, and `CLAUDE.md` → *Vehicle tracking* already flags "who may see the Tracking menu" as unowned. Not raised by this branch, not fixed by it.
+- **Who may see the map / GPS at all.** No permission layer exists on either map. `brs.md` **OD-012** *GPS enforcement behavior* is `❓ Decision Needed`, and nothing anywhere assigns an owner to who may see the Tracking menu. Not raised by this branch, not fixed by it.
 
 ## 14. Sign-off before merge
 
