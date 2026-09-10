@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-09-08
+updated: 2026-09-09
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -436,3 +436,246 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Asked:** 2026-09-08 — open-loop audit.
 - **Question:** see [projects-jobs/gaps.md — Quote / Job yard free-text vs Yard master FK](../projects-jobs/gaps.md#quote--job-yard-free-text-vs-yard-master-fk). Yard Operations / Dylen loadout sits under dispatch UX; identity of `yard` on quote/job is owned by projects-jobs.
 - **Owner:** Lisette Anzaldo.
+
+## DAS map job status buckets — nine SubJob stages collapsed to four, and LOADOUT counted as pending
+
+- **Status:** open
+- **Asked:** 2026-09-09 — raised while reviewing branch `scrum-252` ("Implement map view in DAS").
+  The branch has no `.ai/aidlc/SCRUM-252/` folder and no `processed.log` row; it never ran the
+  loop, so nothing about it has been elaborated or sourced.
+- **Question:** **Does the DAS map / Yard Operations board collapse the nine `SubJobStage`
+  values into exactly these four display statuses — and specifically, does a job in the
+  `LOADOUT` stage read as *Pending Loadout* or as *In Progress*?** One line settles it: name
+  which stages fall in each bucket, or confirm the four buckets are wrong and give the right set.
+  The shipped grouping is OPEN + ALLOCATION_COMPLETED + LOADOUT → `PENDING_LOADOUT`;
+  TICKET_SENT + EMPLOYEE_LEFT_YARD + WORK_IN_PROGRESS → `IN_PROGRESS`; COMPLETED +
+  TICKET_SUBMITTED → `COMPLETED`; CANCELLED → `CANCELLED`
+  (`apps/api/src/usecase/das/das-map.service.ts:21`, mirroring
+  `apps/web/src/features/dylen-dashboard/utils/map-das-job-to-dylen-card.ts:5`).
+- **Sources checked:** **The nine-stage sequence is written; the four-bucket collapse is not,
+  anywhere.** [daily-allocation-system.md:60](daily-allocation-system.md) (`status: unverified`)
+  gives the progression *"Open → Allocation Completed → Ticket Sent → Load-out → Employees Left
+  Yard → Work in Progress → Completed → Ticket Submitted"* and its *USER STORY : Live Asset Map
+  View* says nothing about status buckets on the map. [daily-allocation-INDEX.md](daily-allocation-INDEX.md)
+  (the DAS conflict stub) does not raise the question. `../assets/tool-and-rigging.md` → *Story 5:
+  Dylan's Yard Dashboard* describes that board without a status taxonomy. `crane-configurations.md:87`
+  carries the only status→display mapping in the vault — Lisette's **colour** legend, seven
+  colours, not four buckets, and not these stages. The string *"pending loadout"* appears
+  **nowhere** in the vault outside meeting transcripts. `decisions/` holds **no** decision on DAS
+  job statuses. `README.md` → *What this vault does not contain* does not exclude it, so this is
+  a gap, not policy.
+- **Note — the only two transcript statements that touch it point the other way, and neither is
+  a decision.** Both are CodingCops' own narration, not a TCG ruling:
+  [../meetings/transcripts/2026-05-07-loading-and-project-module-overview.md](../meetings/transcripts/2026-05-07-loading-and-project-module-overview.md)
+  269 — *"once it is available for loadout, it goes to **pending loadout** state and once… people
+  change this tab to pending load out, then they can start loading them out"*; and
+  [../meetings/transcripts/2026-05-12-loading-figma-demo.md](../meetings/transcripts/2026-05-12-loading-figma-demo.md)
+  106 — *"he able to check all the items and hit on the loadout. So now everything is load out and
+  … this job status change into **in progress**"*, with 311 — *"that's why we have pending
+  loadout. Once Dylan… says mark available for loadout. Once it is marked, then it is pending
+  loadout."* Read together those describe *pending loadout* as the state **before** loading
+  begins and *in progress* as the state **after** it finishes, which is not obviously the same
+  as bucketing the `LOADOUT` stage itself into `PENDING_LOADOUT`. **Recorded as evidence, not as
+  an answer — nobody has ruled, and this register does not rule.** `meetings/` files are
+  retrospective records, never commitments.
+- **Blocked:** the DAS map's status filter, its marker colours and its KPI counters; the Yard
+  Operations / Dylen board's status chip and its per-status action labels ("Mark Available for
+  Loadout" / "Start Loadout" vs "Off-load"), which are keyed off the same bucket. A wrong bucket
+  puts the wrong button on Dylan's card.
+- **Owner:** product team — Lisette Anzaldo (DAS board) with Dylan Masterson (yard/loadout, the
+  playbook owner in [daily-loading-value-engine.md](daily-loading-value-engine.md)).
+
+
+- **Update 2026-09-10 (SCRUM-252 backfill):** **the code cited above is superseded, and the DAS
+  half of this question is answered.** The four-bucket collapse described here existed at commit
+  `b69d5406`; at `fbaebb9f` the DAS map no longer buckets at all — it renders the sub-job's own
+  `dasStage`, all nine values, reusing the DAS jobs board's `JOB_STAGE_LABELS` /
+  `JOB_STAGE_BADGE_STYLES`. So `das-map.service.ts:21` is no longer the site of a four-bucket
+  map. Decided by the developer and recorded at
+  [`../decisions/2026-09-10-das-map-shows-all-nine-job-stages.md`](../decisions/2026-09-10-das-map-shows-all-nine-job-stages.md)
+  (`status: reference` — binding on implementation, open to being overruled by Lisette), on the
+  ground this entry already records: the four buckets were written **for Dylan**, because he has
+  no action to take, and that reasoning does not carry to a Dispatch Manager who does.
+  **This entry stays open for the Yard Operations / Dylen half** — which stages fall in which
+  bucket there, and whether `LOADOUT` reads as *Pending Loadout* or *In Progress*, is still
+  unruled, and that is where the wrong button on Dylan's card comes from.
+  **The `CANCELLED` defect under it is fixed (2026-09-10), and the fix adds a fifth bucket.**
+  `map-das-job-to-dylen-card.ts` had no `CANCELLED` case and fell through to
+  `default: return 'pending-loadout'`, so a cancelled sub-job was badged *Pending Loadout*,
+  counted in that filter, and unfilterable. `DylenJobDisplayStatus` and `DylenJobFilter` now
+  carry a `cancelled` member. **Worth recording precisely, because the first reading overstated
+  it:** the loadout *actions* were never available — `isDasStageLoadoutLocked` has always held
+  `CANCELLED`, mirroring the API's `LOCKED_STAGES` — so this was a labelling, counting and
+  filtering defect, not one that could send the yard to load a cancelled crane.
+  **This does not answer the question above.** Dylan's board now has five display statuses
+  rather than four, because leaving `CANCELLED` inside `pending-loadout` is untenable whichever
+  way the rest are decided; **which stages fill the other four, and whether `LOADOUT` reads as
+  *Pending Loadout* or *In Progress*, is still unruled and still owned by Lisette Anzaldo with
+  Dylan Masterson.** Detail at [`../../aidlc/SCRUM-252/spec.md`](../../aidlc/SCRUM-252/spec.md) §12 Q5a.
+
+## DAS map panel is also mounted on the Yard Operations / Dylen dashboard — written for DAS only
+
+- **Status:** resolved 2026-09-10 — **yes, the toggle ships, and it is the same panel.** Developer decision, not a named product owner’s; see the resolution note at the end of this entry
+- **Asked:** 2026-09-10 — raised while reviewing branch `scrum-252` ("Implement map view in DAS").
+  As with the *DAS map job status buckets* entry above, the branch has no `.ai/aidlc/SCRUM-252/`
+  folder and no `processed.log` row; it never ran the loop.
+- **Question:** **Does the Yard Operations / Dylen dashboard get a Map View toggle, and if so is
+  it the same map as the DAS board's — same assets, same date scope, same detail sidebar — or a
+  yard-scoped view of its own?** One line settles it: "same map on both boards", "yard-scoped map
+  on Dylen", or "no map on Dylen". The shipped branch takes the first reading — the Dylen view
+  imports and renders the identical `DasMapPanel` unchanged
+  (`apps/web/src/features/dylen-dashboard/views/dylen-dashboard-view.tsx`:12, :40–42, :116–117,
+  commented *"Same toggle as the DAS board, same panel"*).
+- **Sources checked:** **The map story is written for DAS only, and the Dylen dashboard story
+  has no map in it.** [daily-allocation-system.md](daily-allocation-system.md) → *USER STORY :
+  Live Asset Map View* (`status: unverified`) is voiced *"As a Dispatch Manager"* and its first
+  acceptance criterion places the toggle *"in the DAS header"*; none of its seven criteria
+  mention the yard, Dylan, or a second host surface. [`../assets/tool-and-rigging.md`](../assets/tool-and-rigging.md)
+  → *EPIC 2 / Story 5 : Dylan's Yard Dashboard* (`status: unverified`, updated 2026-05-26) is the
+  only written specification of that dashboard — nine acceptance criteria, a left jobs panel and
+  a right tools/rigging panel, a date picker, live tool counters — and **not one of them mentions
+  a map, a location, or an asset position**. [yard-operations-jz.md](yard-operations-jz.md)
+  (`status: unverified`) is a loadout punch list with no map item.
+  [daily-allocation-INDEX.md](daily-allocation-INDEX.md) (the DAS conflict stub) does not raise
+  it. `decisions/` holds nothing on either board's surface set. `../README.md` → *What this vault
+  does not contain* does not exclude it, so this is a gap, not policy.
+- **Note:** the two stories have different actors and different jobs-to-be-done — a Dispatch
+  Manager monitoring field equipment for any date, versus a Yard Manager running a loading
+  operation from one screen. That they might want the same map is plausible and is exactly the
+  kind of inference this register does not make.
+- **Blocked:** whether the Dylen map ships at all, and if it does whether it must be scoped to
+  the yard rather than the whole fleet.
+- **Owner:** product team — Lisette Anzaldo (DAS board) with Dylan Masterson (yard dashboard).
+
+
+- **Resolution 2026-09-10 — yes, the toggle ships, and it is the same panel.** See
+  [`../decisions/2026-09-10-map-view-ships-on-the-yard-operations-dashboard.md`](../decisions/2026-09-10-map-view-ships-on-the-yard-operations-dashboard.md)
+  (`status: reference`). Ground given: the two screens are one workflow — same sub-jobs, same
+  day's allocations, same `dasStage` — so a yard-scoped variant would mean maintaining two
+  answers to "where is unit 104", the same divergence this ticket already had to fix once in the
+  job-stage badge. **Resolved by the developer, not by a named product owner, and decided against
+  everything catalogued above** — `../assets/tool-and-rigging.md` → *Story 5* still specifies
+  Dylan's dashboard with no map in any of its nine criteria, and the two user stories still have
+  different actors. **It is recorded so Dylan Masterson can be shown it and say no**; until he
+  has seen it this is a developer's call standing in for his. Reversing it is one import and one
+  switch. Ticket record: [`../../aidlc/SCRUM-252/spec.md`](../../aidlc/SCRUM-252/spec.md) §12 Q4.
+
+## Cancelled sub-jobs on the DAS map — drawn with a Cancelled badge, or removed?
+
+- **Status:** open
+- **Asked:** 2026-09-10 — raised while reviewing branch `scrum-252`.
+- **Question:** **Should a sub-job at `dasStage: CANCELLED` still be drawn on the DAS / Yard
+  Operations map?** One line settles it: "cancelled work stays on the map, badged" or "cancelled
+  work is removed from the map". The shipped branch takes the first — the map query
+  (`getSamsaraLinkedAllocationsByDate`, `apps/api/src/service/das/das.repository.ts`) applies no
+  `dasStage` filter, so a cancelled job's units are drawn and badged *Cancelled*.
+- **Sources checked:** **Nothing written rules on it.** [daily-allocation-system.md](daily-allocation-system.md)
+  → *USER STORY : Live Asset Map View* names no exclusion of any kind — the word *cancel* does
+  not appear anywhere in that file, nor in [`../projects-jobs/job-project-das.md`](../projects-jobs/job-project-das.md),
+  the other DAS candidate. The *DAS map job status buckets* entry above records that `CANCELLED`
+  maps to its own display bucket, but bucketing a status is not a ruling on whether the row is
+  drawn, and that entry is itself open. `decisions/2026-08-20-archive-instead-of-delete-app-wide.md`
+  (`status: reference`) settles that removal is soft app-wide, which is why the row survives to be
+  queried at all — it says nothing about map visibility.
+  [`../projects-jobs/gaps.md`](../projects-jobs/gaps.md) → *Job CANCELLED / ON_HOLD / INVOICED
+  transitions unwired* (open) asks who may cancel and what cascades, and is unanswered.
+- **Blocked:** map contents; the answer also decides whether the `CANCELLED` display bucket in
+  the entry above is reachable on the map at all.
+- **Owner:** product team — Lisette Anzaldo.
+
+## `isActive` on a job schedule interval — what it means, and what it should hide — see projects-jobs
+
+- **Status:** open
+- **Asked:** 2026-09-10 — raised while reviewing branch `scrum-252`. Recorded here because the
+  branch adds a **second, divergent** reading of the same flag on the same board.
+- **Question:** the product question is
+  [projects-jobs/gaps.md — Schedule day deactivate orphans SubJob / allocations](../projects-jobs/gaps.md#schedule-day-deactivate-orphans-subjob--allocations)
+  (open, owner Lisette Anzaldo), which already asks whether *"hiding the day from the DAS board
+  (filter on active intervals) is enough while SubJob rows linger"*. **What is new:** the two DAS
+  surfaces now disagree with each other. The jobs board filters
+  `jobScheduleInterval: { isActive: true }` (`apps/api/src/service/das/das.repository.ts`:664);
+  the new map query (`getSamsaraLinkedAllocationsByDate`, same file) does not — so a day hidden
+  from the jobs board still draws its units on the map. One line settles the practical half:
+  "the map applies the same `isActive` filter as the jobs board", or "the map deliberately shows
+  deactivated days".
+- **Sources checked:** **`isActive` is not defined in the product record at all** — no vault file
+  states what deactivating a schedule day means to the user or what it should hide; the flag
+  appears in the vault only inside `gaps.md` registers and unrelated integration field maps
+  (`../accounting/nexgen-quickbooks-integration/01-fcc-connector-field-mapping.md`,
+  `../payroll/fcc-union-code-configuration.md`), never as a DAS rule.
+  [daily-allocation-system.md](daily-allocation-system.md) does not mention active or inactive
+  days. `decisions/` holds nothing on it. Related:
+  [projects-jobs/gaps.md — Converted-quotation schedule days](../projects-jobs/gaps.md#converted-quotation-schedule-days--checked-by-default-and-what-that-puts-on-the-das-board) (open).
+- **Blocked:** map contents on deactivated days; consistency between the two DAS surfaces.
+- **Owner:** product team — Lisette Anzaldo.
+
+## Overnight DAS shifts — may a shift cross midnight, and what does the board show when it does?
+
+- **Status:** open
+- **Asked:** 2026-09-10 — raised while reviewing branch `scrum-252` ("Implement map view in
+  DAS"). As with the three entries above, the branch has no `.ai/aidlc/SCRUM-252/` folder and
+  no `processed.log` row; it never ran the loop.
+- **Question:** **May a DAS shift's end time fall on the calendar day after its start time
+  (18:00 → 02:00), and if so what must the board's shift clock show while it is running?**
+  One line settles it: "a DAS shift may cross midnight — the board must carry it into the next
+  day", or "a DAS shift never crosses midnight; an end time earlier than the start is a data
+  error". The shipped branch takes the second reading **implicitly and without saying so** —
+  `apps/web/src/features/das/map-section/utils/shift-time.ts` builds both ends of the shift
+  from the same `date` (`shiftInstant(date, startTime)` / `shiftInstant(date, endTime)`), so an
+  18:00 → 02:00 shift resolves its end to 02:00 **that morning**, `describeRemainingTime`
+  finds `end - now <= 0` and the unit reads **`Completed`** for the entire time it is actually
+  being worked. `isToday` additionally gates the clock to the start date, so the shift also
+  goes dark the moment real midnight passes.
+- **Sources checked:** **Nothing written rules on a DAS shift crossing midnight.**
+  [daily-allocation-system.md](daily-allocation-system.md) (`status: unverified`) →
+  *USER STORY : Live Asset Map View* names no shift clock, no remaining-time display and no
+  day boundary; its multi-shift language elsewhere is about *"multiple shifts within a day"*,
+  which does not say whether one of them may end on the next. [`../projects-jobs/job-project-das.md`](../projects-jobs/job-project-das.md)
+  (the other DAS candidate, a punch list) says nothing. `decisions/` holds no DAS shift
+  decision. `../README.md` → *What this vault does not contain* does not exclude it, so this is
+  a gap, not policy.
+- **Note — the record leans the other way, and the codebase already disagrees with the
+  branch.** Cross-midnight work is treated as ordinary everywhere it has been examined:
+  [`../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md`](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md)
+  (`status: verified`, Corrina Bustos in writing) adjudicates how a shift that crosses midnight
+  is *paid*, which presumes such shifts exist; Brian Petros, twice, asks for the date to be
+  visible because *"a lot of the jobs go past midnight"*
+  ([`../admin/gaps.md`](../admin/gaps.md) → *Time display*, [`../assets/gaps.md`](../assets/gaps.md)
+  → *The fleet day*). Two shipped modules already treat `end < start` as a legitimate overnight
+  rather than an error — `apps/web/src/features/projects/jobs/job-details/schedule/utils/schedule-date-utils.ts`
+  and `apps/api/src/service/employee/shift-hours.util.ts`. **None of that is a ruling on what
+  the DAS board displays**, and this register does not infer one: the pay question and the
+  display question are different questions, and the second has never been asked.
+- **Blocked:** the map sidebar's shift clock and its `Completed` / `running` / `Not started
+  yet` states; the card's `activeShift` selection, which uses the same instants; and any KPI
+  counter keyed off whether a unit is currently working.
+- **Owner:** product team — Lisette Anzaldo (DAS board), with Corrina Bustos where the answer
+  has to agree with the payroll day.
+
+## DAS map detail sidebar — what a unit's "resources" must list is unwritten
+
+- **Status:** open
+- **Asked:** 2026-09-10 — raised while reviewing branch `scrum-252`.
+- **Question:** **What must the DAS map's detail sidebar show for a unit — which fields, and
+  is "every allocation in the same set" the right resource list?** One line settles the second
+  half: "the sidebar lists the set's crew and equipment" or "the sidebar lists only <X>".
+  **The set-membership rule itself is NOT part of this gap — it is decided**; see *Sources
+  checked*. What is open is only what the sidebar renders. The shipped branch groups every
+  allocation sharing `(subJobId, shiftNumber, setResourceId)` under the asset and lists them as
+  its crew and equipment (`apps/api/src/usecase/das/das-map.service.ts`:19, :94, :112).
+- **Sources checked:** **The grouping key is sourced and verified; the sidebar contents are
+  not.** [`../decisions/2026-08-21-scrum-877-labor-and-unit-details-oiler-crew-linking.md`](../decisions/2026-08-21-scrum-877-labor-and-unit-details-oiler-crew-linking.md)
+  (`status: verified`, product owner on Jira `SCRUM-877` comment `23066`) → *Q2 — Set-resolution
+  mechanism* states the rule directly: *"A per-day job can contain multiple sets per shift, and
+  each shift will have either exactly one crane or no crane, along with an oiler and other
+  resources such as operators, loads, and employees"*, and authorises resolution on
+  `setResourceId` with no new table. That covers `(subJobId, shiftNumber, setResourceId)`
+  including the shift term. **But it is a decision about labor-data linking on tickets, not
+  about a map sidebar** — it says what a set *is*, never what a screen shows for one.
+  [daily-allocation-system.md](daily-allocation-system.md) (`status: unverified`) →
+  *USER STORY : Live Asset Map View* offers only *"Clicking an icon opens a detail sidebar with
+  full job and asset information"* — "full information" names no field and does not say crew or
+  equipment appear at all. No other vault file describes this sidebar.
+- **Blocked:** the sidebar's field list; whether a set with no crane, or an allocation with a
+  null `setResourceId`, gets a card of its own.
+- **Owner:** product team — Lisette Anzaldo.
