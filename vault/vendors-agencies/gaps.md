@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-09-09
+updated: 2026-09-11
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -124,6 +124,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   **Type 1 Customer (inbound) / Type 2 Vendor (outbound)** — Melissa's direction-based split, not
   `purchase-order.md`'s who-owns-the-process split, and not the undefined `Internal / Customer` pair
   in `meetings/2026-06-22-sprint-4-additional.md:81`.
+
+- Update 2026-09-11 (**Syed Haris** after **Umer Islam**, CodingCops —
+  [decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md](../decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md)):
+  **outbound subtype + modal fields + OPEN|CLOSED status locked** (`status: reference`). Outbound
+  `PurchaseOrder.poType` is **`PERMIT` | `VENDOR` | `ASSET`**. Modal fields: PO type, PO number,
+  PO items, **Agency** (not Vendor), invoice attachment. Statuses in the permit attach flow:
+  **`OPEN` | `CLOSED`**. Does **not** settle Joe’s standalone level, the audit trail, or Ryan’s
+  quote-lost → PO-closed rule — those remain open above. Orthogonal to Brian’s inbound/outbound
+  direction taxonomy.
 
 ## PO and vendor/agency rules the E2E suite asserts with no written source — PR #488
 

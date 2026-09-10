@@ -2,9 +2,11 @@
 title: Two PO types and the quote-to-invoice workflow — Brian Petros
 source: Brian Petros (TCG), written message + workflow diagram, 2026-09-05
 migrated: 2026-09-05
-updated: 2026-09-05
+updated: 2026-09-11
 status: reference
 conflicts_with: []
+related_decisions:
+  - 2026-09-11-outbound-po-subtypes-and-modal-fields.md
 jira: [SCRUM-478]
 tags: [module/quotations, module/projects-jobs, module/dispatch, module/vendors-agencies, module/accounting, kind/decision, permits, purchase-orders, invoicing]
 entities: [PurchaseOrder, Permit, Quotation, Job, Project, Vendor, Customer, Invoice]
@@ -116,21 +118,34 @@ after the job exists — and when a permit is required, the permit comes **first
 
 ## What this does NOT settle
 
-- **PO status values.** The 7 steps are lifecycle stages, not necessarily stored statuses.
-  `Pending / Confirmed / Paid` (`meetings/2026-06-22-sprint-4-additional.md:88`) and Ryan
-  Adams' *"open PO until it's closed out"* (`meetings/transcripts/2026-03-12-sales-pricing-in-fcc.md`
-  @ 1:16:59) both remain unreconciled.
+- **PO status values (partially settled 2026-09-11).** Outbound `PurchaseOrder` statuses used
+  in the permit attach/create flow are now locked as **`OPEN` | `CLOSED`** — see
+  [2026-09-11-outbound-po-subtypes-and-modal-fields.md](2026-09-11-outbound-po-subtypes-and-modal-fields.md).
+  Older vocabularies (`Pending / Confirmed / Paid` in
+  `meetings/2026-06-22-sprint-4-additional.md:88`; Ryan Adams' *"open PO until it's closed out"*
+  at `meetings/transcripts/2026-03-12-sales-pricing-in-fcc.md` @ 1:16:59) are not fully
+  reconciled to a seven-step procurement model, but the shipped two-status set is product-locked
+  for the current modal.
 - **Whether permit *approval* requires a linked PO.** (Which permit types need a PO at all is
   answered by the 2026-06-18 decision — annual vs single.) The diagram
   has **no permit-approval step at all** — it goes *Attach permit → Issue vendor PO* and moves
   on. So the built gate (approval blocked until a PO is linked) is neither confirmed nor
   contradicted by it. *"Permit must precede vendor PO"* is about the permit record existing
   before the PO is raised from it — which the build already does — not about approval.
+  Ehtesham’s 2026-09-11 Loom walkthrough treats PO as **optional** on the current permit form —
+  see [2026-09-11-quote-to-project-permits-plans-flow.md](2026-09-11-quote-to-project-permits-plans-flow.md).
 - **The `area`, `city`, `PO fee`, `discount %` and `invoice #` fields** now built and mocked
-  up. Still unspecified.
+  up. Still unspecified as a full field dictionary. The **locked modal field set** for outbound
+  create/attach is PO type, PO number, PO items, Agency (not Vendor), invoice attachment —
+  [2026-09-11-outbound-po-subtypes-and-modal-fields.md](2026-09-11-outbound-po-subtypes-and-modal-fields.md).
 - **Joe Schacatano's quotation-level / job-level / standalone PO split** and his audit-trail
   requirement (`vendors-agencies/gaps.md`) — the diagram shows quote-stage and job-stage
   vendor POs, which is consistent, but standalone POs and the audit trail are untouched.
+- ~~**The vendor-PO sub-type**~~ — **settled 2026-09-11** as outbound `PERMIT` | `VENDOR` |
+  `ASSET` in
+  [2026-09-11-outbound-po-subtypes-and-modal-fields.md](2026-09-11-outbound-po-subtypes-and-modal-fields.md).
+  That is a subtype of Brian’s Type 2 (outbound document), not a replacement for Type 1 vs
+  Type 2 direction.
 
 ## Conflicts with what is currently built
 
@@ -149,14 +164,14 @@ after the job exists — and when a permit is required, the permit comes **first
    praise for rule-gated drag-and-drop in general, not a decision on this rule. The 2026-09-05
    UI mockup carries the same gate verbatim: *"Attach or create a PO before approving this
    permit."* Mockup, build and demo agree; the diagram is silent. **Still needs Brian.**
-2. **The vendor-PO sub-type is unspecified.** Brian's Type 1 / Type 2 are two different
-   *objects* — a customer-supplied number (`Job.poNumber`, a text field) versus a document we
-   issue (`PurchaseOrder`) — and the build already separates them that way. It is **not** a
-   dropdown. What remains without any client source is the sub-type dropdown *within* vendor
-   POs: the build has `PoType = GENERAL | CONTRACT`; the 2026-09-05 mockup shows
-   `General / Permit / Asset / Service` on create and `General / Blanket / Service / Rental` on
-   edit; `meetings/2026-06-22-sprint-4-additional.md:81` says *"Internal or Customer"* without
-   defining either. Brian's message does not mention a sub-type at all.
+2. **The vendor-PO sub-type — settled 2026-09-11 for the outbound document.** Brian's Type 1 /
+   Type 2 remain two different *objects* (customer-supplied number vs document we issue). The
+   subtype dropdown *within* outbound POs is now locked as `PERMIT` | `VENDOR` | `ASSET` —
+   [2026-09-11-outbound-po-subtypes-and-modal-fields.md](2026-09-11-outbound-po-subtypes-and-modal-fields.md).
+   Older mockup lists (`General / Permit / Asset / Service`, `General / Blanket / Service /
+   Rental`) and `meetings/2026-06-22-sprint-4-additional.md:81` *"Internal or Customer"* are
+   superseded for that dropdown. Brian's message itself still does not name subtypes; the lock
+   is CodingCops PM/designer-directed (`status: reference`).
 3. **The travel-permit PO exemption is over-broad.** Its client source is the 2026-06-18
    recording — see
    [2026-06-18-annual-permits-no-po-single-permits-need-po.md](2026-06-18-annual-permits-no-po-single-permits-need-po.md):

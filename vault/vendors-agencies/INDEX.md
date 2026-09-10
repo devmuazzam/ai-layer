@@ -49,6 +49,8 @@ today.** Both are unverified and they disagree about PO types.
 
 - [2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md) — Archive replaces delete, app-wide — decision
 - [2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) — Create **and** edit both land on the entity's detail page, app-wide; supersedes the create half of 2026-08-20
+- [2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md) — Brian Petros: Customer (inbound) vs Vendor (outbound) PO direction taxonomy
+- [2026-09-11-outbound-po-subtypes-and-modal-fields.md](../decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md) — Outbound PO subtypes Permit|Vendor|Asset; modal fields (Agency not Vendor); OPEN|CLOSED
 
 ## Open questions
 
