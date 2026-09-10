@@ -24,3 +24,10 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Confirm non-union calculation
+- **Confirmed 2026-09-10 by Corrina Bustos** ([../../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §1): double time is a **flat 12-hours-of-paid-time
+  trigger** in every start case — after 06:00, before 06:00, or before midnight — and Brian Petros
+  10:04 contrasts it with the overtime logic for exactly that reason: *"it's much simpler with the
+  double time, because double time will always kick in at 12 hours."* **Nothing sits above DT except
+  a holiday** — Corrina 30:44: *"The only time it would ever convert is if they worked into a
+  holiday."* Note the interaction that catches implementations out: the 12-hour cap can **cut the
+  straight-time bank short** (midnight→14:00 pays only 6 h ST, not 8).

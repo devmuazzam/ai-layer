@@ -46,3 +46,15 @@ tags: [module/payroll, kind/rule, open-questions]
   30 minutes is **double time, triple on a holiday**. Self-signed WTL only with a stated reason
   (Corrina 12:59). Union clarification (Brian's questions) and labor-law counsel (Wes) are pending
   on TCG's side; nothing here changes until they land.
+- **Client-authored worked example for a *taken* meal (2026-09-11, `___LUNCH-BREAK_SCENARIOS.xlsx`
+  sheet *#1 example (2)* — [../lunch-break-scenarios-2026-09-11.md](../lunch-break-scenarios-2026-09-11.md)):** TCG prices the deduct
+  **at the bucket the meal falls in** and **at the whole priced slice including boom** — $42.00 for a
+  10:30 AM meal in ST with boom running, $60.00 for a 4:00 PM meal in OT after boom ended, on an
+  $80.00 base / $4.00 boom shift. That is `WTL_MEAL_DEDUCT`'s `FULL_SELECTED_PRICED_SLICE` basis,
+  now asserted by the client rather than only read out of the legacy engine. **Two things it does
+  not answer:** whether boom is *multiplied* inside the deduct — the legacy formula is
+  `(base + shift + boom) × multiplier`, which would price an OT-with-boom meal at $63.00, while the
+  sheet's own grid prices an OT-with-boom *worked* slot at $62.00 (flat adder, per
+  [../../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md](../../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md)); the example places meal 2 thirty minutes
+  after boom ends, so it never tests the case. And the sheet's stated total ($1,012.00) deducts the
+  first break twice — the method gives $1,054.00. Both raised with TCG 2026-09-11, unanswered.
