@@ -3947,12 +3947,35 @@ somewhere it should not have. Settle that before touching either.
   combination can be rejected outright).
 - **Owner:** Corrina Bustos / Brian Petros (confirmation); CodingCops (build — done).
 
-## Holiday shift-start continuation and the 8-total-vs-8-additional minimum — two questions for the union rep
+## Holiday shift-start continuation and the 8-total-vs-8-additional minimum — ✅ both answered by the union BA 2026-09-12; a third finding opened
 
-- **Status:** open
+- **Status:** open — Questions 1 and 2 closed, Question 3 open
 - **Asked:** 2026-09-11 — the first by Corrina Bustos herself on the 2026-09-10 call (34:02, 34:10:
   *"I'll double check with our rep"*); the second raised by Brian Petros in writing the same day as
   *"a bit controversial"*.
+- **✅ Answered 2026-09-12 by the union business agent, relayed in writing by Corrina — decision note
+  [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md).** Worked breakdown for holiday 22:00 → 06:00: *"10pm-12am- 8 hours Triple / 12am-4am-
+  4 Overtime / 4am-6am- Dbl time… it follows the same 12 hours working then double time pay rule.
+  Because they started on a prior date so after midnight would start at the applicable rate."*
+  **Q1 — reverts at midnight**, continuous shift preserved; no holiday shift-start rule. Brian's
+  structure confirmed, reading (a). **Q2 — 8 hours total**: 2 worked → 8 TRI. Brian's flag answered
+  his way.
+- **⚠️ Question 3, opened by the same breakdown — the guaranteed holiday hours count toward the
+  12-hour double-time mark.** DT at 04:00 on six actual hours is only reachable as 8 guaranteed +
+  4 OT = 12. That contradicts Brian's written concept of 2026-09-11 (*"That guarantee is not worked
+  time. It should not advance OT/DT thresholds"*), his app (8 TRI + 10 OT on a 22:00→10:00), the
+  legacy `Gap_*` design, and the ERP. **Money:** $240.00 per 22:00→10:00 shift at $80 (6 h DT vs
+  OT). **Scope the BA did not rule on:** whether the guarantee hours also advance the 8-hour rest
+  trigger (client has twice said no), weekly OT, or meal spans — leave those on Brian's reading
+  until asked. **Owner:** Brian Petros needs to see the ruling and reconcile his app; CodingCops
+  owns the engine change.
+- **⚠️ Engine defect surfaced by running her example against `015136f79`:** yesterday's A4 fix
+  (`bucketForSliceAnchored` = `max(anchor day type, slice day type)`) floors a holiday-start shift
+  at ×3 for every post-midnight slice — the exact rule the BA ruled out — and then adds the 6-hour
+  top-up on top. **22:00→06:00 pays 14 TRI = $3,360.00 against the BA's $2,720.00; 22:00→10:00
+  pays 18 TRI = $4,320.00 against $3,360.00.** Overpays. The never-downgrade principle applies to
+  the cumulative-hours bucket, not the anchor day's premium; post-midnight slices must price as
+  `max(cumulative bucket, own calendar day type)`. Audit A4 reopened.
 - **Question 1 — does a shift that starts on a holiday stay at the holiday rate after midnight?**
   Worked case sent to Corrina: Wed Nov 11 (Veterans' Day) 22:00 → Thu Nov 12 10:00, one job, full
   rest before. Two readings: **(a) 8 TRI + 10 OT** — the 2 holiday hours top up to 8 TRI, the

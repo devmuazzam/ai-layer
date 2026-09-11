@@ -217,3 +217,17 @@ higher-rate-for-the-day (PAY-015).
 ---
 
 *Sources read for this audit: `meetings/2026-08-05` → `2026-09-10` summaries, `payroll/2026-08-20-payroll-rules-meeting-notes.md`, `non-union-hourly-rules-2026-09-07.md`, `lunch-break-scenarios-2026-09-11.md`, `client-message-findings.md` (by section), all `decisions/` notes tagged payroll; `legacy-payroll-app-db-extract/{rules-plain-language,config-values,worked-examples,open-questions}.md`, `calculations.md` (by section), `legacy-payroll-app-db-backup-2026-09-07/INDEX.md`; `erp-payroll-module-frd/`, `codingcops-rule-matrix.md`, `rules/PAY-###.md`, `payroll-rule-dependency-matrix.md`, `wtl-charts.md`, `adp-workbook-column-rules.md`, `source-attribution-and-conflicts.md`, `mcog-l12-mla-2025-2028/01,02,03`.*
+
+
+---
+
+## Post-audit note, 2026-09-12 — A4 reopened
+
+The A4 fix in `015136f79` (`bucketForSliceAnchored` = `max(anchor day type, slice day type)`)
+implements a **holiday shift-start floor** the union BA has now ruled does not exist
+([../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md)). Run against the BA's own example after the fix: holiday 22:00 → 06:00 prices
+**14 TRI = $3,360.00** against the union's **8 TRI · 4 OT · 2 DT = $2,720.00**; 22:00 → 10:00
+prices **18 TRI** against **8 TRI · 4 OT · 6 DT**. Post-midnight slices must take
+`max(cumulative-hours bucket, own calendar day type)`, not the anchor day's type. A second change
+is new, not a regression: the holiday top-up hours must advance the 12-hour DT counter. Both in
+`day-type.ts` / `guarantee.ts`; regression rows in the decision note.

@@ -108,3 +108,12 @@ tags: [module/payroll, kind/rule, open-questions]
   continuous shift (the CalendarDay policy, PAY-019); long-boom pay attaches only to the
   build-up/work/breakdown portion and *"should not determine whether the hours are ST/OT/TRI"*
   (PAY-043).
+- **✅ Union ruling, 2026-09-12, via Corrina Bustos — decision note [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md).** Holiday
+  22:00 → non-holiday 06:00 = **8 TRI · 4 OT · 2 DT**. (a) The minimum is **8 hours total** — 2
+  worked → 8 TRI; (b) **no holiday shift-start rule** — after midnight *"would start at the
+  applicable rate"*, continuous shift preserved; (c) **the guaranteed hours count toward the
+  12-hour DT mark** — DT at 04:00 = 8 guaranteed + 4 OT. (c) contradicts Brian's 2026-09-11
+  *"should not advance OT/DT thresholds"*, his app, the legacy engine and the ERP, and is the
+  union's reading. **The ERP currently overpays both holiday-start cases** (14 TRI and 18 TRI
+  instead of 8/4/2 and 8/4/6) because the A4 fix floors post-midnight slices at the anchor day's
+  ×3. Rest trigger, weekly OT and meal spans were not ruled on.

@@ -45,6 +45,12 @@ as dead config.
 > meant. Until she answers, ruling (b) below settles *that the minimum fires* on a spill-over —
 > not *how many hours it adds*. See PAY-033 and payroll/gaps.md → *Holiday shift-start
 > continuation and the 8-total-vs-8-additional minimum*.
+>
+> **Answered 2026-09-12 — total.** The union BA's breakdown via Corrina: 2 worked → 8 TRI. And a
+> narrowing of ruling (a): *never a downgrade* applies to the **cumulative-hours bucket** (DT
+> earned by hours does not drop to Saturday ×1.5), **not** to the anchor day's premium — a
+> holiday-start shift reverts to the applicable rate at midnight. See
+> [2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md).
 
 ## (b) Spilling into a holiday is holiday work
 
