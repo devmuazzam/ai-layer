@@ -127,6 +127,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   owner level: the *paid straight through* variant (all lunches marked taken, no times, no
   signature, no penalty) is **not to be built** — Wes Staley, [../decisions/2026-09-03-paid-straight-through-not-in-erp.md](../decisions/2026-09-03-paid-straight-through-not-in-erp.md). The threshold
   values and three-vs-four lunches remain open as above.
+- Update 2026-09-10 (Brian Petros, Teams message + screenshot of TCG's internal agenda, relayed 2026-09-11): TCG met
+  **internally** on **2026-09-09** on the meal/break scenarios and got about halfway down a four-item
+  list — `#0` *Employee break Start/End times?*, `#1` *Employee takes all available breaks*, `#2`
+  *Employee works all available breaks*, `#3` *Employee takes only some available breaks*. `#0` is
+  answered on the screenshot — **"yes need to know"** — so capture must carry the **start and end time
+  of each break**, not a taken/worked flag alone; the *end* time is not asked for by any earlier source
+  (`fr-fop-014`, the FCC *Time Stamps* four-slot checklist, or the Atom page, which all record a single
+  lunch time). Brian reports *"decisive instructions"* now exist for every `#1` scenario but **did not
+  send them**, so nothing about `#1` is specified here yet; `#2` and `#3` are unreached and resume
+  Monday **2026-09-14**. None of this touches the threshold values or three-vs-four lunches, which stay
+  open as above.
 ## On-site scope-of-work form — the recording is the only source, and a Done ticket looks like coverage
 
 - Question: is there a **mobile, operator-filled on-site scope-of-work form** — separate from the
@@ -607,3 +618,118 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** nothing in field-ops directly. Recorded here so that whoever answers #9 knows a
   module has already been built against it.
 - **Owner:** product team — Mashood, who owns #9.
+
+## Paper Job Tickets — will they remain an option, and how does the ERP price and pay one?
+
+- **Status:** open
+- **Asked:** 2026-09-10 — Brian Petros, Teams message ahead of that day's call (relayed 2026-09-11). Re-raises a
+  question **Ryan Adams asked on 2026-06-04 and the room deferred**, never to return to it.
+- **Question:** TCG is *"still (sometimes) processing paper Job Tickets from field employees."*
+  Brian asks two things: **(a) will paper tickets still be an option once the ERP is live**, and
+  **(b) how will the ERP handle a paper ticket for billing and for payroll?** Every field-ops
+  document in this vault assumes the answer to (a) is no — [field-paper-forms.md](field-paper-forms.md) is titled
+  *"The paper the field app replaces"* and both FRDs open on removing *"manual paperwork"*. That
+  assumption has never been adjudicated by anyone at TCG, and Brian's message is the first written
+  statement that the paper path is still live in production today. If the answer to (a) is yes,
+  (b) is a build question nobody has scoped: a paper ticket produces no `data-testid`-addressable
+  capture, no structured lunch times, no in-app customer signature and no Samsara corroboration —
+  so either someone keys it into the ERP after the fact (and the ERP needs an entry path, an
+  attribution for who keyed it, and a rule for which fields may be blank), or billing and payroll
+  run on two systems for the same job-day.
+- **Sources checked:**
+  - [field-paper-forms.md](field-paper-forms.md) — the TCG paper ticket (serial pad, two signature
+    panels, a time grid, and a single crew row of `EMPLOYEE / Start Time / End Time / Lunch ☐Yes ☐No
+    / Comments`) and its LADWP variant. Documents the form in detail; says nothing about whether it
+    survives. The `Lunch ☐Yes ☐No` checkbox is worth naming here: it is a **taken/not-taken flag
+    with no times**, which is exactly the input the 2026-09-03 call ruled insufficient
+    ([../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md](../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) §1, Brian at 19:03 and 40:38) and
+    what Brian's own 2026-09-10 list answers `#0` on — *"yes need to know"* the start/end times.
+    **A paper ticket structurally cannot supply what the ERP has just been told it must have.**
+  - [../meetings/transcripts/2026-06-04-mobile-app-job-lem-tickets.md](../meetings/transcripts/2026-06-04-mobile-app-job-lem-tickets.md) — **Ryan Adams at 13:27**:
+    *"when I was running, I had paper tickets and when we moved to an ERP, it became electronic and
+    we had to do a workaround for dual… Is that something that's going to have to be done here?"*
+    **Kyle Harlow at 13:47**: *"we're gonna run into problems with our with how much we use the guys
+    and hours and all that stuff if we if we keep track of it like that and we use it for our
+    recording."* — a stated concern, not an answer. Ryan at 13:59: *"I'll leave that up to you guys,
+    or we could have a conversation later."* The conversation is not in any later transcript in
+    this vault.
+  - [../accounting/invoice-packets-2026-04-worked-examples.md](../accounting/invoice-packets-2026-04-worked-examples.md) — a **completed** LADWP-variant paper
+    ticket (serial `TCG 298`, crane `9001`) sits in a real April 2026 invoice packet as the backing
+    page. So a paper ticket is already a billing artefact in production, not a fallback in theory.
+  - [e-ticket-worked-example-44944.md](e-ticket-worked-example-44944.md) and [field-app-demo-2026-06.md](field-app-demo-2026-06.md) — the electronic path, for
+    contrast. Nothing in either contemplates a paper original.
+  - No ticket: `grep -rn -i 'paper' .ai/aidlc/SCRUM-*/spec.md` returns nothing on this.
+- **Blocked:** nothing today. It will block the first ticket that defines how a job-day reaches
+  billing or payroll without a mobile capture — and it bears directly on the meal/break work now in
+  flight, because a paper ticket cannot carry break start/end times.
+- **Update 2026-09-11 — the 2026-09-10 call reached it, and the causes are now on record**
+  ([../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §6,
+  52:11–55:34). Brian Petros put the question to the room; **the answers addressed why paper is used,
+  not whether it survives**, and the backup question he actually asked — *"can we get rid of this
+  whole paper ticket or do we need it as a backup?"* — **was never answered.** So (a) of this entry
+  is still open. What is now answered is *why*, and only one of the three reasons is a training
+  problem:
+  1. **Unfamiliarity.** Corrina Bustos 52:40: an operator sent out as a third man does the paperwork
+     the oiler normally does for them, *"and they just don't want to do it because they're not used
+     to it"*; Kyle Harlow 53:07: *"or don't even know how and haven't tried to do it."* Both treat
+     this as manageable by instruction.
+  2. **Non-billable labor with nowhere to record it — the real driver.** Corrina 53:09: after a job
+     they *"come back… and they do something in the shop or something, wash their crane, whatever,
+     that is not billable to that customer — they need to be able to add that labor onto their hours
+     without it being attached to that ticket. **Because that's a lot of reason why there's a lot of
+     papers right now too, because we don't have that function right now.**"* Drug testing and
+     accidents likewise.
+  3. **Work-order / job-ticket crossover.** Kyle 49:20: *"right now it's a problem and we have to do
+     paper tickets for those things"* — an HDR mechanic who goes third man on a job can only be on
+     one of the two systems, so the other becomes paper (Corrina 49:07: *"right now it's one or the
+     other"*).
+  **What TCG asked for instead of paper** — Kyle 54:23: *"giving them the ability to just do a basic
+  time ticket with a very open — they could just write in what they're doing. It would be very vague
+  — and who approved it. And it could be pretty simple. I don't think it has to be very
+  complicated."* With **a billing code**, a free-text description, an approver, and **not originating
+  from Dispatch**. That is a concrete, small feature request and it is the answer to (b) for reasons
+  2 and 3 — it removes the need rather than importing the paper. **It has no ticket.**
+  **Offline capture, committed on the call:** Kyle 54:23 raised remote sites with no cell reception;
+  Ehtesham Anwar 55:07/55:15 committed that the app will detect loss of service, save on the device
+  and upload on reconnect. Kyle: *"that will solve some of those problems, too."* **No ticket, no
+  written scope** — registered as its own question below.
+  **Unchanged by the call:** whether paper stays as a declared fallback, and how a paper original
+  reaches billing and payroll if it does — including the `Lunch ☐Yes ☐No` problem, which nobody
+  raised.
+- **Owner:** TCG — Melissa McNutt and Kyle Harlow own the field-side practice (per
+  [../decisions/2026-09-03-paid-straight-through-not-in-erp.md](../decisions/2026-09-03-paid-straight-through-not-in-erp.md) → *What this decision does NOT decide* §1);
+  Corrina Bustos and Brian Petros own what payroll can accept; accounting owns the billing side.
+
+## Offline capture — committed on a recorded call, with no ticket and no written scope
+
+- **Status:** open
+- **Asked:** 2026-09-11 — raised while curating the 2026-09-10 payroll call.
+- **Question:** What exactly does "works offline" mean for the field app — which screens capture
+  offline, how long may a device hold unsynced work, what happens to a customer signature or a
+  photo taken offline, how are conflicts resolved when two devices sync the same ticket, and what
+  does the crew see while offline? **A commitment was made on a recorded call and nothing is
+  written down.**
+- **What was said** ([../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §6,
+  54:23–55:34). Kyle Harlow: *"When we don't have cell phone reception — we work in a lot of remote
+  areas — will the ERP be able to work offline and be able to fill out the… and then when you gain
+  service, it would just automatically upload?"* Ehtesham Anwar: *"Yeah, that's the idea… it's going
+  to detect that we don't have service. Everything is going to get saved on the device, but the
+  device needs to get back on internet to get the data back to the ERP."* Kyle: *"Great, that will
+  solve some of those problems, too. Thank you."* — and he had **not heard of it before**: *"Sorry, I
+  haven't heard anything about that, so that's why I wanted to ask."*
+- **Why it is registered rather than assumed:** Kyle is now expecting offline capture as a
+  **solution to the paper-ticket problem** (see the paper-tickets entry above), which raises the
+  stakes from a nice-to-have to a stated cause of removal. Offline capture also collides with things
+  the vault already treats as load-bearing: the customer **signature and live photo** on a WTL
+  authorization, Samsara corroboration of Arrive/Leave times, and — since the 2026-09-09 timezone
+  decisions — timestamps captured on a device whose clock the server cannot vouch for. None of that
+  is addressed anywhere.
+- **Sources checked:** [field-ops-frd/](field-ops-frd/INDEX.md) and
+  [frd-new-format-draft/](frd-new-format-draft/05-functional-requirements/INDEX.md) — **no offline
+  requirement in either**, and `07-non-functional-requirements.md` does not mention connectivity;
+  [field-app-demo-2026-06.md](field-app-demo-2026-06.md) — the demo build is online-only;
+  `grep -rn -i 'offline' .ai/aidlc/SCRUM-*/spec.md` — no ticket.
+- **Blocked:** nothing today. It will block the first field-ops ticket whose acceptance depends on
+  capture succeeding without a network, and it is now on the client's expectation list either way.
+- **Owner:** CodingCops — Ehtesham Anwar made the commitment; scope needs writing before it is
+  demonstrated to field testers next week.

@@ -311,3 +311,19 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Melissa McNutt (billing model per quote), with Brian Petros to say whether the
   SCRUM-877 comments were his and meant billing or boom pay; Micaela Dipane for what AR invoices.
 
+
+## Paper Job Tickets — pointer, owned by field-ops
+
+- **Status:** open
+- **Asked:** 2026-09-10 — Brian Petros, Teams message ahead of that day's call (relayed 2026-09-11).
+- **Question:** **Pointer only — the question lives in
+  [../field-ops/gaps.md](../field-ops/gaps.md) → *Paper Job Tickets — will they remain an option,
+  and how does the ERP price and pay one?*** Registered here because Brian names **billing** as
+  one of the two consequences, and because a completed paper ticket is already a production
+  billing artefact: the LADWP-variant original, serial `TCG 298`, is a backing page in a real
+  April 2026 invoice packet ([invoice-packets-2026-04-worked-examples.md](invoice-packets-2026-04-worked-examples.md)). If paper survives, the
+  ERP needs a stated path from a paper original to an invoice line; if it does not, someone has
+  to say so.
+- **Sources checked:** see the field-ops entry — it carries the full source list.
+- **Blocked:** nothing today.
+- **Owner:** TCG accounting for the billing side; field-ops owns the question.

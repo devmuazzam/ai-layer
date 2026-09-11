@@ -31,7 +31,9 @@ looking for the wrong problem. Validation now distinguishes the two cases:
 - has cents → `Rate must be a whole number (no cents)`
 
 Implemented in `getResourceRateError` in
-`apps/web/src/features/quotations/views/create-quotation.helpers.ts`.
+`apps/web/src/features/quotations/utils/resource-rate.ts`. The path was corrected 2026-09-11,
+confirmed with `git grep` on branch `fix/das-fixes`. The function has moved out of
+`apps/web/src/features/quotations/views/create-quotation.helpers.ts`, which no longer defines it.
 
 ## Still open
 

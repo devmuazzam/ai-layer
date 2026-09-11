@@ -2,7 +2,7 @@
 title: Fresh-tenant demo walkthrough — quotation to calculated payroll
 status: reference
 kind: reference
-updated: 2026-08-28
+updated: 2026-09-11
 ---
 
 # Fresh-tenant demo walkthrough — quotation to calculated payroll
@@ -148,8 +148,8 @@ seed also creates the `TCG-DEFAULT` demo tenant — leave that one alone; your f
   doesn't involve typing them in.
 
 > 🔴 **The single biggest fresh-tenant gotcha.** `seedTenantDefaults()` in
-> `apps/api/src/utility/seed-data.ts` — which seeds system departments, billing-code types,
-> industries and **payroll premiums** — has **no callers anywhere in the codebase**. And
+> `apps/api/src/utility/seed-data.ts` — which seeds system departments, industries and **payroll
+> premiums** — has **no callers anywhere in the codebase**. And
 > `GET /seed/run` / `pnpm db:seed` is hardcoded to the `TCG-DEFAULT` tenant. So a tenant created
 > through this screen starts with **literally nothing**, including no payroll premium rows — and
 > the Payroll Premiums screen can only *edit* premiums, never create them (see 3.3).
@@ -194,8 +194,8 @@ Payroll Management ▸ (Weekly Payroll, Craft Codes, Craft Code Modifiers, Payro
 Reporting
 --- bottom block ---
 Notification
-Settings ▸ (Loss Reasons, Union Codes, Work Comp Codes, Billing Code Types,
-            Certificates, Expense GL Accounts, Industry Codes)               ← only if can('settings','view')
+Settings ▸ (Loss Reasons, Union Codes, Work Comp Codes, Certificates,
+            Expense GL Accounts, Industry Codes)                             ← only if can('settings','view')
 <user avatar> ▸ Preferences, Change Password, Sign out
 ```
 
@@ -215,8 +215,9 @@ Settings ▸ (Loss Reasons, Union Codes, Work Comp Codes, Billing Code Types,
 
 ## 2. Reference data — Settings
 
-**Sidebar:** Settings ▸ (bottom of sidebar). Each of these is the same table + create/edit modal
-component (`reference-code-manager.tsx`), so once you have done one you have done all seven.
+**Sidebar:** Settings ▸ (bottom of sidebar). There are six screens. Five of them are the same
+table + create/edit modal component (`reference-code-manager.tsx`), and Loss Reasons is its own
+copy of that editor (`loss-reasons-tab.tsx`), so once you have done one you have done all six.
 
 Do these **in this order** — later screens depend on them.
 
@@ -224,7 +225,7 @@ Do these **in this order** — later screens depend on them.
 | --- | --- | --- | --- |
 | 2.1 | **Union Codes** | `/settings/union-codes` | Craft Codes (required FK) |
 | 2.2 | **Work Comp Codes** | `/settings/work-comp-codes` | Employee form |
-| 2.3 | **Billing Code Types** | `/settings/billing-code-types` | Billing codes |
+| 2.3 | *nothing to do.* Billing Code Types was removed on 2026-09-11, and `/settings/billing-code-types` no longer exists | — | Billing codes no longer need a type from Settings: a code's type is its resource classification, picked on the billing-code form (6.1) |
 | 2.4 | **Industry Codes** | `/settings/industry-codes` | Customers |
 | 2.5 | **Loss Reasons** | `/settings/loss-reasons` | Quotation → Mark Lost |
 | 2.6 | **Certificates** | `/settings/certificates` | Employee certificates |
@@ -519,8 +520,14 @@ measure**, **Default rate** (≥ 0). Then, conditionally:
 | `EMPLOYEES` | an **Employee Type** |
 | `CUSTOM` | a **Custom Type** (create inline) |
 
-Optional: Billing Code Type, GL account, and the four flags — **Auto-allocate**, **Taxable**,
+Optional: GL account, and the four flags — **Auto-allocate**, **Taxable**,
 **Percent applied**, **Apply surcharge**.
+
+The **Type** picker's accessible name is *Billing code type* (its `aria-label`; the visible label
+is *Type*, and the quick-create modal's error reads *Billing code type is missing*). It is the
+resource classifier above, not the separate optional master list of billing code types (`MOB`,
+`OT`, …), which was removed on 2026-09-11. That list's record and restore recipe are in
+`.ai/vault/quotations/billing-code-types-dropped-2026-09-11.md`.
 
 Create at minimum:
 - `ASSETS` → Hydraulic Truck Crane — hourly, e.g. $250/hr
@@ -1101,7 +1108,7 @@ Tick every box before you start the demo narrative. Anything unticked fails **la
 
 **Reference data (Settings)**
 - [ ] Union codes — at least one `UNION` and one `NON_UNION`
-- [ ] Work comp codes · Billing code types · Industry codes · Loss reasons · Certificates · Expense GL accounts
+- [ ] Work comp codes · Industry codes · Loss reasons · Certificates · Expense GL accounts
 
 **Payroll foundations**
 - [ ] Craft codes with `CraftCodeRate` rows (Operator + Oiler minimum)

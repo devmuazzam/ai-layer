@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-09-07
+updated: 2026-09-11
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -125,6 +125,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `purchase-order.md`'s who-owns-the-process split, and not the undefined `Internal / Customer` pair
   in `meetings/2026-06-22-sprint-4-additional.md:81`.
 
+- Update 2026-09-11 (**Syed Haris** after **Umer Islam**, CodingCops —
+  [decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md](../decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md)):
+  **outbound subtype + modal fields + OPEN|CLOSED status locked** (`status: reference`). Outbound
+  `PurchaseOrder.poType` is **`PERMIT` | `VENDOR` | `ASSET`**. Modal fields: PO type, PO number,
+  PO items, **Agency** (not Vendor), invoice attachment. Statuses in the permit attach flow:
+  **`OPEN` | `CLOSED`**. Does **not** settle Joe’s standalone level, the audit trail, or Ryan’s
+  quote-lost → PO-closed rule — those remain open above. Orthogonal to Brian’s inbound/outbound
+  direction taxonomy.
+
 ## PO and vendor/agency rules the E2E suite asserts with no written source — PR #488
 
 - **Status:** open
@@ -205,3 +214,54 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** product team — Joe Schacatano and Ryan Adams for the PO lifecycle (they own the related
   entry above), Liz Lopez for the permit-driven PO path, Melissa McNutt for the vendor type and
   billing terms she raised on 2026-06-17.
+
+## The PO sidebar flattens to one leaf — and the two things "tracking" could have meant are both unbuilt
+
+- **Status:** open
+- **Asked:** 2026-09-09 — PR review of `fix/quotation-permits-plans`, commit `92bc9ea3d` (no ticket, no `processed.log` row, no ticket folder).
+- **Question:** the branch collapses the sidebar's expandable **"PO's"** group — children *"All PO's"* (`/pos/all-pos`) and *"Track PO's"* (`/pos/track-pos`) — into a single leaf at `/pos`, hosts the listing there, and redirects `track-pos`. **Nothing in the vault ever asked for a "Track PO's" page**, so removing it matches the record. Two things do not: **(a)** the epic's global-list AC requires the list *"can be filtered by type Internal or Customer"*, which is unbuilt and whose two type names the 2026-09-05 decision supersedes anyway — what is the filter now, `GENERAL`/`CONTRACT`, Brian's Type 1/Type 2, or nothing? **(b)** the one real "PO tracking" ask on tape is **customer-PO balance burn-down**, and it has no home at all. Does it belong on this page, on the project, or in accounting?
+- **Sources checked:** [../meetings/2026-06-22-sprint-4-additional.md](../meetings/2026-06-22-sprint-4-additional.md):100-103 — the **only** written PO navigation requirement, and it asks for **one** list: *"A global PO list in the main sidebar shows all POs across all projects and jobs"* / *"The list can be filtered by type Internal or Customer"*. The word *"Tracking"* does head :95-98 in the same AC, but its two bullets are the three PO **statuses** (`Pending, Confirmed, Paid`) and the **in-project** list — not a second page. `SCRUM-473` is titled *"Add PO to main side **navigation**"* (singular) and `SCRUM-518` *"PO Implementation on projects and global level"* — both **Done**, both quoted in the entry above; `SCRUM-478`, the epic, is still **To Do** with `description: null`. [../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md):46 — the build survey calls the shipped module *"global POs"*, one module, a peer of *"global permits"*. [../erp-review-log.md](../erp-review-log.md):322 — the client's own module list has **no PO module at all**. Every *tracker* in the vault is the Permit Tracker or the Planning Tracker; the PO's only relationship to one is the reverse direction — a *Create PO* button **on** the permit tracker ([../meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md](../meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md):82).
+- **Note on (b):** **Melissa McNutt @ 44:17**, [../meetings/transcripts/2026-07-07-cc-tcg-erp-system.md](../meetings/transcripts/2026-07-07-cc-tcg-erp-system.md):205 — *"for the POs, customers POs right now, they give us, it usually has a number and amount, and then like a term on it. **So if we could track that**… we would need indicators to tell us, hey, you know, **you have 30% of your PO left**, so then we can reach out to them to increase it with the change order."* Corroborated by Sammy Garrett describing the Excel he does it in today ([../meetings/transcripts/2026-07-30-invoice-processing.md](../meetings/transcripts/2026-07-30-invoice-processing.md):52, :55) and by Melissa again at [../meetings/transcripts/2026-07-28-invoicing-details-contracts-certs-trainings.md](../meetings/transcripts/2026-07-28-invoicing-details-contracts-certs-trainings.md):357. That thread is registered under **accounting**, not here — [../accounting/gaps.md](../accounting/gaps.md) → project-level accounting / contract-amounts tracker, where Melissa answers *"Yes"* to wanting it and nobody has specified it. It is a **customer**-PO balance against a contract amount, so it is Type 1 and belongs nowhere near the vendor-PO listing; recorded here only so the retired route name is not mistaken for it later.
+- **Blocked:** nothing — the flatten matches the one written nav requirement. Recorded so (a) and (b) are not lost with the route.
+- **Owner:** Melissa McNutt for the balance-tracking ask (she raised it three times); Brian Petros for what the type filter should now say, since his 2026-09-05 taxonomy replaced *Internal / Customer*.
+
+## What makes a permit PO-exempt — see projects-jobs/gaps.md
+
+- Cross-module pointer (no status of its own — the sweep counts it once, in `projects-jobs/gaps.md`).
+  `fix/quotation-permits-plans` (2026-09-10) adds the new generic `ASSET` permit type to
+  `PO_EXEMPT_PERMIT_TYPES`, replacing the **annual-vs-single** axis this module's PO record
+  states ([purchase-order.md](purchase-order.md):97-109 / :198-216, `unverified`;
+  [../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md](../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md),
+  `reference`, Brian Petros + Melissa McNutt) with an **asset-vs-job** one that no source states.
+  The PO rule is owned here; the entry sits with the other permit-artifact questions.
+  Full entry: [projects-jobs/gaps.md](../projects-jobs/gaps.md#po-exemption-swaps-the-annual-vs-single-axis-for-asset-vs-job--and-annual-stops-being-expressible).
+
+## Branch fix/das-fixes — one CLOSED status for invoiced and cancelled POs, and the legacy remap
+
+- **Status:** open, for the second half of (c), (e), (f) and (g) only. (a), (b), the first half of (c), and (d) were resolved 2026-09-11; see the next bullet.
+- **Resolved in part 2026-09-11, by Fouzan Shakil (CodingCops, `reference`, not a TCG sign-off):**
+  - **(a), (b), first half of (c).** Settled by [../decisions/2026-09-11-po-closed-means-closed-out-not-cancelled.md](../decisions/2026-09-11-po-closed-means-closed-out-not-cancelled.md):
+    - `CLOSED` means closed-out, not cancelled. A closed PO keeps its permit links and its type, and stays visible on the permit tracker.
+    - It auto-closes **only** when an attachment in an Invoice category is uploaded. Archiving never closes it, and an invoice number alone does not.
+    - There is an explicit Close/Reopen control. The PO auto-reopens when its last Invoice-category attachment is removed.
+    - Archive is the path that unlinks permits.
+  - **(d).** Settled by [../decisions/2026-09-11-legacy-po-and-permit-type-remap.md](../decisions/2026-09-11-legacy-po-and-permit-type-remap.md). Rows are remapped by legacy status, not by invoice number:
+    - `PURCHASED`, `ACTIVE`, `CANCELLED`, `INACTIVE` → `CLOSED`; `PENDING`, `DRAFT` → `OPEN`.
+    - `GENERAL`, `CONTRACT` → `VENDOR`.
+    - The migration is edited in place, since only local dev databases had applied it.
+  - **Still open:**
+    - Second half of (c): may a `CLOSED` PO be **newly** attached to a permit?
+    - (e) and (f).
+    - **(g), new 2026-09-11 (yes/no).** Should an **FCC-imported** PO whose FCC status is `ACTIVE` import as `CLOSED`? Background:
+      - The decision maps the ERP's legacy `ACTIVE` → `CLOSED` and gives the FCC seeder's `mapPoStatus` as its basis.
+      - The seeder committed on the branch mapped `ACTIVE` → `OPEN` (`apps/api/fcc-seeder/src/lib/seed-helpers.ts`:112-123).
+      - A same-day change, uncommitted when this was written, moves the seeder's `ACTIVE` to `CLOSED` so that the two agree.
+      - They read different vocabularies. The ERP's legacy `ACTIVE` was reached only by auto-promotion once an invoice number and an attachment both existed (see (a) of the PR #488 entry below). FCC's `ACTIVE` is FCC's own status text, and nothing recorded says it means closed-out.
+
+      The ERP half is decided; the FCC-import half is not. Owner: Fouzan Shakil. Blocks: the next FCC import run with the changed seeder.
+- **Asked:** 2026-09-11 — PR review of branch `fix/das-fixes` (no ticket, no `.ai/aidlc/` folder); tcg-scrum escalation. Commits `da4551792` (enums, migration `20260910180000_po_permit_type_status_correction`, create/update rules) and `48d93f9f6` (permit-tracker PO filter).
+- **Question:** the 2026-09-11 lock fixes the *vocabulary* (`OPEN | CLOSED`, `PERMIT | VENDOR | ASSET`) but not what moves a PO between the two statuses, nor what `CLOSED` means. The branch gives `CLOSED` two meanings. Six parts, each answerable in a line. **(a)** Does `CLOSED` mean *invoiced / fulfilled* or *cancelled*, and if both occur, is a third status needed? The branch closes a PO when an attachment is uploaded (`purchase-orders.service.ts` `activateIfReady`: *"invoice attachment closes the PO"*). But a `CLOSED` set through the edit form is treated as a cancellation: it unlinks the PO's permits, clears `permitId`, reclassifies `poType` to `VENDOR` and logs the permit's PO as `'cancelled'`. The permit tracker filters `CLOSED` out with the comment *"CLOSED is the cancelled state"* (`apps/api/src/service/permits/permits.repository.ts`). So a permit's PO drops off its tracker card as soon as an invoice is attached. **(b)** Does uploading **any** attachment close the PO, only an invoice, or only an explicit user action? An invoice number on its own no longer changes status. **(c)** When a permit-linked PO closes, does the permit keep it? May a `CLOSED` PO be attached to a permit? The branch removes the guard that used to refuse this. **(d)** Legacy rows: should `CANCELLED`, `INACTIVE`, `DRAFT` and `PENDING` POs with no invoice number become `OPEN` (so cancelled POs re-open), and should every `GENERAL` / `CONTRACT` PO become `VENDOR`? The migration closes a PO when `invoice_number` is non-empty, which is the opposite of the runtime rule in (b). **(e)** On create, may status and valid-till be left out (status defaulting to `OPEN`), and should PO fee default to the line-item total? **(f)** What is an `ASSET` PO for, given the branch forbids linking one to a vendor asset and strips asset links from its lines?
+- **Sources checked:** [../decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md](../decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md) (`status: reference`; Syed Haris after Umer Islam, not a TCG sign-off) locks the two vocabularies and the modal fields (type, number, items, Agency, invoice attachment). It states no transition, gives `CLOSED` no meaning, and says nothing about `ASSET` POs beyond the name. [../decisions/2026-09-11-quote-to-project-permits-plans-flow.md](../decisions/2026-09-11-quote-to-project-permits-plans-flow.md) point 16 says only *"PO statuses in this flow: Open and Closed"*. [../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md) records PO fee as *"Still unspecified"*, and its 7-step vendor cycle closes through goods receipt and three-way match, not an upload. [../meetings/2026-06-22-sprint-4-additional.md](../meetings/2026-06-22-sprint-4-additional.md) (`unverified`): :84 lists *"valid till date"* among the create fields without saying whether it is required; :87 *"An invoice or receipt can be attached directly to the PO"* attaches no consequence; :97 gives *Pending, Confirmed, Paid*. FCC practice, not an ERP rule: [fcc-nexgen-purchasing-guide.md](fcc-nexgen-purchasing-guide.md):44 (`unverified`), *"Vouchers are vendor invoices, used to close out purchase orders"*. On tape (`reference`): Ryan Adams, `../meetings/transcripts/2026-03-12-sales-pricing-in-fcc.md`:384, says a lost quote *"closes out the PO"* (closing as cancellation). Brian Petros, `../meetings/transcripts/2026-06-18-dispatch-permits.md`:194: *"we would not be able to cancel a PO"*; Melissa McNutt, :195: *"maybe we can cancel the job and not the not the PO"*. **Nothing written on remapping legacy PO statuses or types.** Jira not checked (no Jira MCP in this session).
+- **Related, already open — do not duplicate:** [*PO and vendor/agency rules the E2E suite asserts… PR #488*](#po-and-vendoragency-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) (a) covers the old `PENDING → ACTIVE` promotion this branch replaces, (b) PO fee in the total, (c) `belongsToAsset`. [*Purchase orders at three levels*](#purchase-orders-at-three-levels--joe-and-ryan-on-tape-nothing-written) covers quote-lost → PO closed. [projects-jobs/gaps.md → *Permit↔PO reverse cascades incomplete*](../projects-jobs/gaps.md#permitpo-reverse-cascades-incomplete) asks what the permit side does when a PO is cancelled; this entry asks the question before it, whether `CLOSED` *is* cancelled.
+- **Blocked:** merging `fix/das-fixes`' migration and how the permit tracker displays POs were blocked on (a)–(d), settled 2026-09-11 (above). The status remap is lossy: the six legacy statuses collapse to `OPEN | CLOSED` (`PURCHASED`/`ACTIVE`/`CANCELLED`/`INACTIVE` → `CLOSED`, `PENDING`/`DRAFT`/`NULL` → `OPEN`), and the original value is not kept. (g) blocks the next FCC import run with the changed seeder.
+- **Owner:** Brian Petros and Liz Lopez (the PO process); Syed Haris and Umer Islam for what their 2026-09-11 `OPEN | CLOSED` lock meant.
