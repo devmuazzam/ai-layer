@@ -91,6 +91,11 @@ the 12-hour ladder. The ruling is complete.
 
 # Effect on the ERP
 
+**Implemented 2026-09-12, app `main` `6491b6db8`** — both changes below, plus the per-ticket
+hours-add (audit N2), with the two breakdowns above as regression tests. What follows is the
+design as written before the change; it describes what was built.
+
+
 Two changes, both in `packages/payroll-engine/src/`:
 
 - **`day-type.ts` → `bucketForSliceAnchored`** currently takes `max(anchor day type, slice day

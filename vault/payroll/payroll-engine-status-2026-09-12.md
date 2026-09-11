@@ -50,13 +50,13 @@ Decision note: [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-gu
 | **Self-signed WTL only with a stated reason** | Corrina 2026-09-03 (12:59) | 🟡 capture-side rule, mobile | — |
 | **Holiday: all work at ×3, 8-hour minimum, fires on any contact incl. spill-in, per calendar date** | Corrina 2026-06-11, 2026-09-04 (`verified`), 2026-09-10 (34:34) | ✅ | Ran Tue 16:00→Hol 02:00 = 1 ST / 7 OT / 2 H3X + 6 h top-up |
 | **Holiday minimum = 8 total (top-up), not 8 additional** | Union BA via Corrina 2026-09-12 | ✅ | Same run — 6 h top-up on 2 h worked |
-| **Holiday-start shift reverts at midnight; continuous shift preserved** | Union BA via Corrina 2026-09-12 | ❌ **N1** — engine keeps ×3 through and adds the top-up | Ran Hol 22:00→10:00 = **18 TRI $4,320** vs ruling $3,360 |
-| **Guaranteed holiday hours advance the 12-hour DT mark** | Union BA via Corrina 2026-09-12, confirmed on 22:00→10:00 | ❌ **new** — top-up is a standalone component, advances nothing | Ruling: 8 TRI / 4 OT / 6 DT |
+| **Holiday-start shift reverts at midnight; continuous shift preserved** | Union BA via Corrina 2026-09-12 | ✅ fixed `6491b6db8` (was N1) | Ran Hol 22:00→10:00 = 8 TRI / 4 OT / 6 DT, $3,360 |
+| **Guaranteed holiday hours advance the 12-hour DT mark** | Union BA via Corrina 2026-09-12, confirmed on 22:00→10:00 | ✅ fixed `6491b6db8` — `premiumDayTopUpHours`, bumped once on leaving the premium date, boundary-in-gap included | Ran 22:00→06:00 = 8/4/2 $2,720; 22:00→10:00 = 8/4/6 $3,360 |
 | **Cross-midnight into Sat/Sun/holiday — higher rate governs, never a downgrade** (DT earned by hours does not drop to Sat ×1.5) | Corrina 2026-09-04, `verified` | ✅ upward | Ran Fri 22:00→Sat 14:00 = 12 OT / 4 DT |
 | **Daily 4-h minimum at the rate the shift ended on**, per calendar day | Corrina 2026-06-11; Brian/Corrina 2026-09-10 (36:07) | ✅ | Audit re-run A5, A6 |
 | **Special Saturday** = first Saturday after the first Friday, June & December, ×2, 8-h minimum | MLA; Brian 2026-08-24 | ✅ | Audit re-run B2, B6 |
 | **Holiday observance shifting** (Sun → Mon; Christmas/New Year on Sat → Fri) | MLA | ✅ | Audit re-run B5 |
-| **Shift differential $3 / $4, into the rate; 7 → 8 and 6½ → 8 hours-add** | MLA Art. III Shifts; Brian 2026-08-24 | ✅ rates · ❌ **N2** hours-add fires per ticket, not per shift | Audit re-run |
+| **Shift differential $3 / $4, into the rate; 7 → 8 and 6½ → 8 hours-add** | MLA Art. III Shifts; Brian 2026-08-24 | ✅ rates · ✅ hours-add once per chain, on the last 2nd/3rd-shift entry — fixed `6491b6db8` (was N2) | Test: two back-to-back 2nd-shift tickets → one add |
 | **Non-union hourly: daily 8/12 → 7th day → weekly 40, in that order, reasons preserved** | Brian 2026-09-07, written, 9 scenarios | ✅ | Audit re-run A9 |
 | **Non-union is admin/yard only; every dispatched job is L12; no non-union mechanics** | Corrina 2026-09-10 (38:20, 50:43) | 🟡 scope statement — work-order and salaried populations not modelled | — |
 | **Subsistence $85 (45–77.5 mi) / $200 (>77.5 mi), per job not per craft** | 2026-08-20 SME call; decision 2026-09-01 | 🟡 built, **unreachable** — no DTO/UI sets the job fields (B4) | — |
@@ -82,14 +82,16 @@ Decision note: [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-gu
 
 ## Engine defects open today
 
+Fixed in app `main` `6491b6db8` (2026-09-12, 92/92 engine tests, `@tcg/api` builds): **N1**
+holiday-start ×3 carry + top-up double-pay; **the 12-hour bump** for guarantee hours; **N2**
+hours-add per ticket; and Sunday-start ×2 carry, by the same principle. **Not yet pushed** —
+the repo's pre-push hook refuses direct pushes of `main`.
+
 | # | Defect | Per occurrence | Fix |
 | --- | --- | --- | --- |
-| **N1** | Holiday-start shift keeps ×3 past midnight **and** adds the 6-h top-up | **+$960** overpay on 22:00→10:00 (engine $4,320 vs ruling $3,360); +$640 on 22:00→06:00 | `day-type.ts` `sliceDayType`: post-midnight slices take `max(cumulative bucket, own calendar day)`, not the anchor day's premium |
-| **new** | Holiday top-up hours don't advance the 12-hour DT counter | Part of the same $ — 6 h priced OT that should be DT on 22:00→10:00 | `guarantee.ts` / `calculate.ts`: feed the top-up hours into the cumulative counter at the point the holiday ends |
-| **N2** | 2nd/3rd-shift hours-add fires per ticket | +$104 per extra ticket on a night shift | Fire once per calendar day / gapless group, on the last entry |
-| — | Sunday-start keeps ×2 past midnight | +$400 on Sun 22:00→Mon 10:00 | Same fix as N1, once Corrina confirms the principle extends |
 | **B4** | Subsistence unreachable — no UI for `subsistenceDistanceMiles` / `subsistenceHoldover` | –$85 to –$200 per eligible day | Job form fields + DTO |
 | — | Before-midnight built on the categorical reading | ±1 h on 23:00-type starts if Corrina says mechanical | Await her answer; no change until then |
+| — | Sunday-start now reverts at midnight (2 DT + 10 OT, was 12 DT) | $400 per such shift, now *less* | Applied by principle from the holiday ruling — one line to Corrina to confirm, easy to reverse |
 
 **Regression rows for the N1 fix, all with confirmed answers:** Hol 22:00→06:00 = 8 TRI / 4 OT /
 2 DT ($2,720) · Hol 22:00→10:00 = 8 TRI / 4 OT / 6 DT ($3,360) · Tue 16:00→Hol 02:00 = 1 ST /

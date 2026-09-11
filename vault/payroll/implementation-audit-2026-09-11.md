@@ -231,3 +231,12 @@ prices **18 TRI** against **8 TRI · 4 OT · 6 DT**. Post-midnight slices must t
 `max(cumulative-hours bucket, own calendar day type)`, not the anchor day's type. A second change
 is new, not a regression: the holiday top-up hours must advance the 12-hour DT counter. Both in
 `day-type.ts` / `guarantee.ts`; regression rows in the decision note.
+
+## Post-audit note, 2026-09-12 (later) — N1, N2 and the 12-hour bump fixed
+
+App `main` `6491b6db8`. Each slice prices under its own calendar day (`sliceDayType` removed);
+`premiumDayTopUpHours` feeds the holiday / special-Saturday top-up into the cumulative counter
+once on leaving the premium date, including a boundary that falls between two chained tickets;
+`applyShiftHoursAdd` fires once per chain on the last 2nd/3rd-shift entry. Regression tests
+carry the union's two breakdowns verbatim. 92/92; `@tcg/api` builds. Sunday-start reverts by
+the same principle and is tested as such.
