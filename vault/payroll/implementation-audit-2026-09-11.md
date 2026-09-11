@@ -2,7 +2,7 @@
 title: Payroll implementation audit — engine vs client rules, 2026-09-11
 source: audit of packages/payroll-engine + apps/api payroll usecase against meeting notes/decisions (tier 1), legacy Payroll App db extract (tier 2), FRD/matrix/MLA (tier 3)
 migrated: 2026-09-11
-updated: 2026-09-11
+updated: 2026-09-12
 status: reference
 conflicts_with: []
 jira: []
@@ -10,7 +10,7 @@ tags: [module/payroll, kind/reference, payroll-rules, audit, as-built]
 part_of: payroll/INDEX.md
 ---
 
-# Payroll implementation audit — 2026-09-11
+# Payroll implementation audit — 2026-09-11, re-audited 2026-09-12
 
 **What this is.** A rule-by-rule comparison of the shipped payroll engine against what the
 client has said the rules are. **Describes as-built code on `fix/timezone-business-day` at
@@ -31,6 +31,75 @@ engine (`dist/day-type.js`) on the client's three worked examples — A and C pa
 Everything else is read, not executed.
 
 ---
+
+## Re-audit 2026-09-12 — after `56091e98f` and PR #531 (`015136f79`)
+
+**Method.** Same source precedence. Every item below was re-read in the current code on app
+`main` `e11e8cd60`, and the money-affecting ones were **executed** against a fresh build of
+`packages/payroll-engine` (86/86 engine tests pass; scenario script kept in the session
+scratchpad, results quoted here). "VERIFIED" = ran; "READ" = code inspected, not executed.
+
+**Net position.** Of the 18 items in sections A and B, **14 are now fixed, 2 remain by design
+(decision pending), 1 is built but unreachable, and 1 was a question**. The fix pass also
+introduced **two new defects** (N1, N2) — both overpayments, both on the shift hours-add /
+holiday-minimum code that was new. Non-union, foreman/military/lattice, the pre-midnight ladder,
+cross-midnight upgrade, holiday and Special-Saturday minimums, calendar-day grouping, meal
+grouping and holiday observance all verify.
+
+| # | Rule | Status 2026-09-12 | Evidence |
+| --- | --- | --- | --- |
+| A1 | Pre-midnight start earns no ST | **Fixed — VERIFIED.** 22:00→14:00 = `{ST:0, OT:12, DT:4}`; 04:00→23:30 and 00:00→14:00 still match Corrina | `day-type.ts:190` `afterStartDate` rung ("Cross-midnight OT carryover"), wired at `calculate.ts:200` |
+| A2 | Foreman / military / lattice multiplied | **Fixed — VERIFIED.** Foreman on 8 ST + 4 OT = 8×3.00 + 4×4.50 = $42.00 | `calculate.ts:288-297` (foreman), `:325-338` (HOURLY catalog premiums). DAILY premiums stay flat — no client statement |
+| A3 | Seeded shift differential $3 / $4 | **Fixed — READ.** `SHIFT_2 amount: 3`, `SHIFT_3 amount: 4` | `apps/api/src/utility/seed-data.ts:566, :580` |
+| A4 | Cross-midnight upgrade; spill into holiday | **Fixed (upward) — VERIFIED.** Tue 22:00→Wed(holiday) 04:00 = 2 OT + 4 H3X + 4 h holiday minimum. **Downward** (Sunday/holiday start running into a weekday) deliberately keeps the start day's type — see N1 and §D | `day-type.ts:137 sliceDayType` (rank, never downgrades), `calculate.ts:198` |
+| A5 | Daily 4-h minimum at the ending multiplier | **Fixed — VERIFIED.** 2-h Sunday job → 2 DT + 2 h minimum @ $132.06 (2×) | `guarantee.ts:99-101` `multiplierOf(endingBucket)` |
+| A6 | Minimums per calendar day | **Fixed — VERIFIED.** 2 h at 06:00 + 4 h at 17:00 same date (two chains) → no PAY-040 | `calculate.ts:729 applyCalendarDayMinimums` groups by `day.workDate` across chains |
+| A7 | Rest stitch 30 → 0 | **Unchanged by design.** Still `REST_STITCH_MINUTES = 30`; the 2026-09-09 decision note parks it. Decision still owed | `shared/constants/payroll.ts:36` |
+| A8 | Rest trigger ignores H3X/H2X; rate excludes shift + boom | **Unchanged — downgraded to Low.** Executing the scenario shows the trigger gap is practically unreachable: any return inside 8 h is already one *pricing* chain, so the ladder carries cumulative hours and pays ≥ the rest floor (holiday 9 h then 00:30→08:30 priced 3 OT + 5 DT with no rest line needed). Only the rate basis (`baseRate` alone) is a real, small drift | `rest-period.ts:83, :182` |
+| A9 | Non-union weekly OT, 7th day, order, reasons | **Fixed — VERIFIED.** 6×8 h = 40 ST + 8 Weekly OT @ 1.5×; 7th day 10 h = 8 Seventh-day OT + 2 Seventh-day DT. Reasons survive in the component label; rule id stays `PAY-012` for all six | `non-union.ts` (Brian's §7 order), `calculate.ts:438` |
+| A10 | Meals across a continuous span | **Fixed — VERIFIED.** 3 h + 3 h back-to-back with a taken lunch at 11:30 → one PAY-046 deduct | `calculate.ts:803 groupGaplessEntries` (gap 0), `:830 applyContinuousMealPeriods` |
+| A11 | Paid span = dispatch start time vs punch-in | **Unchanged — still a question.** Paid window is still `WORK_TIME` punch-in; the schedule field is still named `leaveYardTime` (`schema.prisma:3604`) which Joe asked to rename to *start time* | `derive-ticket-times.ts` |
+| B1 | Holiday 8-h minimum at 3× | **Built — VERIFIED.** 0.5 h on Veterans' Day → 0.5 H3X + 7.5 h minimum = $1,584.73. Implements **8 total** (top-up to 8), which is Brian's reading and the legacy app's; Corrina's "additional 8" sentence is registered as contested in `gaps.md` | `guarantee.ts:183 applyPremiumDayMinimums` |
+| B2 | Special Saturday 8-h minimum at 2× | **Built — READ.** Same function, `H2X` multiplier | `guarantee.ts:183` |
+| B3 | Shift hours-add +1.0 / +1.5 h | **Built — VERIFIED, with a new defect (N2).** 18:00→02:00 2nd shift → +1 h @ (66.03+3)×1.5 = $103.55 | `calculate.ts:274-284` |
+| B4 | Subsistence $85 / $200 | **Built but unreachable — VERIFIED in the engine, not in the product.** 60 mi + holdover, two tickets same job/day → one $85; not holdover → none. But `Job.subsistenceDistanceMiles` / `subsistenceHoldover` have **no DTO and no UI** — nothing in `apps/web` or `apps/api/src/presentation` sets them, so every job prices $0 until a screen exists. PAY-049's "every day of the holdover, worked or not" deliberately not built (`gaps.md`) | `subsistence.ts`, `calculate.ts:893`, `schema.prisma:3376-3377` |
+| B5 | Holiday observance shifting | **Fixed — VERIFIED.** 2027: `07-05` (Mon for Sun Jul 4), `12-24` (Fri for Sat Dec 25); 2028 New Year → `2027-12-31`, and `holidaysForPeriod` unions year+1 so a late-December period sees it | `day-type.ts:46 observedDate`, `:80 holidaysForPeriod` |
+| B6 | Special Saturday = first Saturday after the first Friday | **Fixed — VERIFIED.** `2029-12-08` true, `2029-12-01` false, `2026-06-06` true | `day-type.ts:102` (`d >= 2 && d <= 8`) |
+| B7 | Rounding-adjustment component | **Closed as inapplicable** — the engine computes a day's total one way only, so the tie-out line could never be non-zero. Documented in `gaps.md` (overlay `9a5c5a1`) | — |
+
+### New findings from the re-audit
+
+| # | Defect | Evidence | Severity |
+| --- | --- | --- | --- |
+| **N1** | **Holiday-start shift running past midnight is paid twice.** 22:00 (Veterans' Day) → 10:00 next day, 12 h worked: the engine prices **all 12 h at H3X** (start-day type kept, `sliceDayType`) **and then adds a 6-h holiday minimum**, because `hoursByDate` credits only the 2 h before midnight to the holiday date. Result **18 h paid at 3× = $3,565.62 for 12 h worked**; a plain 12-h holiday day pays $2,377.08. Neither reading of the rule produces this: keep-holiday-type → 12 H3X and no minimum (12 ≥ 8); Brian's 2026-09-11 reading (day type flips at midnight, accumulation continues) → 8 TRI + 10 OT = $2,575.17. The minimum must measure hours *priced as holiday*, not hours on the calendar date — or the day type must flip, which is the open §D question. **Introduced by PR #531**; overpays **$1,188.54** per occurrence | VERIFIED — scenario "OPEN holiday start 22:00 → 10:00": `PAY-033 Holiday 3x: 12h` + `PAY-033 Holiday 8-hour minimum: 6h`. Code: `calculate.ts:198` vs `:224-227` vs `guarantee.ts:190-200` | **High** (rare shape, large amount, overpay) |
+| **N2** | **Shift hours-add fires per ticket, not per shift.** A 2nd-shift day split over two back-to-back tickets (18:00–22:00, 22:00–02:00) pays **two** `Second shift hours add` lines = +2 h, $207.10. The MLA's 7-worked/8-paid is per shift; the legacy app fires per entry too but its entries are one per day, whereas in the ERP every job is its own ticket. Should fire once per calendar day / gapless group, on the last entry | VERIFIED — scenario "B3 risk"; code `calculate.ts:274-284` runs inside `priceL12JobDay` | **Medium** (overpay, every multi-job night shift) |
+| N3 | Comment drift only: `day-type.ts:41` says "MLK" for the third-Monday-of-February holiday; the code and the MLA both mean Presidents' Day. No money effect | READ | Cosmetic |
+
+### Still open with the client (unchanged from §D, plus)
+
+- **Holiday-start continuation** — Brian 2026-09-11: day type flips at midnight, accumulation
+  continues (8 TRI + 10 OT); wants the rep to confirm whether a *holiday shift-start* exception
+  exists. Corrina has not answered. **N1 sits on exactly this case** — whichever way it lands,
+  the double-pay has to go.
+- **Holiday minimum: 8 total vs 8 additional** — Brian says total (engine, legacy and his app
+  agree); Corrina's one sentence says additional. Worth $480 at an $80 base per occurrence.
+- **Rest stitch** (A7), **paid-span start** (A11) — as before.
+
+### Updated per-occurrence table (2026-09-12)
+
+| Defect | Per occurrence | Status |
+| --- | --- | --- |
+| Holiday-start past midnight double-paid (N1) | **+$1,189** overpay | open |
+| Shift hours-add per ticket (N2) | **+$104** overpay per extra ticket on a 2nd shift | open |
+| Subsistence unreachable (B4) | –$85 to –$200 per eligible day | open (needs UI) |
+| Everything in the 2026-09-11 table below | — | fixed, verified |
+
+**Suggested order now:** N1 and N2 (both new, both overpay, both small code changes), then the
+subsistence job fields UI, then put the three §D questions to Corrina in one message.
+
+---
+
+# Baseline audit — 2026-09-11 (kept as written; statuses superseded by the table above)
 
 ## 0. How wrong are we — the short version
 
