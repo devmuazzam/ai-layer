@@ -135,6 +135,12 @@ these as well."*
 *"Before we consider the ERP implementation complete, CodingCops should be able to demonstrate at
 least the following tests."* ERP status verified 2026-09-07 against `packages/payroll-engine/src/calculate.ts`.
 
+> **Update 2026-09-11 — all nine now pass,** as does the split-day caveat and the §8 reason
+> requirement (six reason-labelled PAY-012 components). Built in
+> `packages/payroll-engine/src/non-union.ts`, pinned by tests in `calculate.spec.ts`; see
+> [gaps.md → *Payroll engine verification 2026-09-11*](gaps.md). The *ERP today* column below is
+> the 2026-09-07 state, kept as the record of what was missing.
+
 | # | Scenario | Expected | ERP today |
 | --- | --- | --- | --- |
 | 1 | Normal day, 8 h | 8 ST | ✅ `priceNonUnionHourly` (:241-253) — **per ticket**; two tickets on one day each get a fresh 8 h of ST, so a split day fails |

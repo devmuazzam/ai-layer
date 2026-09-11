@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-09
+updated: 2026-09-11
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -3178,6 +3178,9 @@ someone has confirmed otherwise.
 
 ### 1. The 43767 → 43770 chain case has no regression test
 
+> **Restored 2026-09-11** as `PAY-023: Brian Petros 43767 → 43770 carries the ladder across a
+> 30-minute gap` in `calculate.spec.ts`, passing (8 / 4 / 2 then 0 / 0 / 5). §1 is closed; §2 stands.
+
 Brian's own counter-example is the sharpest test we have for PAY-023 chain accumulation, and nothing
 in the suite covers it. **It was written and run on 2026-09-10, passed, and was then reverted** — so
 it is known-good rather than speculative, and this entry exists so it can be restored without
@@ -3686,3 +3689,260 @@ somewhere it should not have. Settle that before touching either.
   comparison, which will now disagree with Brian's app on exactly these shifts.
 - **Owner:** TCG — Corrina Bustos, one question (the 23:00→13:00 case). CodingCops owns the fix and
   the regression test once she answers.
+
+## Cross-midnight OT carryover — the incumbent pays no ST after midnight, and the ERP now does the same
+
+- **Status:** open — **built to the incumbent 2026-09-11, awaiting one human confirmation.**
+- **Asked:** 2026-09-11 — a developer's question on a 22:00 → 14:00 shift; the rule was found in the
+  incumbent's pricer while answering it. **Rules:** PAY-019, PAY-021, PAY-023, PAY-027.
+- **Question:** a weekday shift runs past midnight and back into 06:00–17:00 on the next calendar
+  date. Are those in-window hours straight time, or do they stay overtime? Confirm the incumbent's
+  answer (**overtime**) is the rule and not an artefact.
+- **What the incumbent does:** `Is_PrevDay_ST_Reentry_Block` in `usp_Run_Pricing_Engine` (extract
+  `sql/app/usp_Run_Pricing_Engine.PROC.sql:1001-1011`, precedence `:1163`; still present in the
+  2026-09-07 backup at `:1037`, `:1189`) forces ×1.5 on any slice of a weekday entry that falls inside
+  06:00–17:00 on a later date than the entry's start, ranked below the 12-hour DT rung. Separately,
+  all three `OT_Daily` branches require the slice to sit on the start date, so the 8-hour rung never
+  fires after midnight either. The 2026-09-07 backup's payroll-facing narrative names it
+  (`sql/api/v_UI_Payroll_LaborEntry_AppliedRuleDetail.VIEW.sql:140-160, 557-562`): *"Cross-midnight
+  OT carryover: …h remained OT after re-entering the regular work window"*, with the comment
+  *"UX-RULE-7 validated this against all 5,691 current pricing slices with zero multiplier
+  mismatches."* Payroll has been reviewing and approving it — it is not dead code.
+- **What the vault was missing:** the rule is in no `rules/PAY-###` file, not in
+  [rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §2 (which lists
+  only > 8 h, > 12 h and outside-window), in [calculations.md](legacy-payroll-app-db-extract/calculations.md)
+  only as a four-word mention (`:259`, *"prev-day ST re-entry block"*), and in no client message.
+  The ERP engine did not implement it.
+- **Worked example — 22:00 Tue → 14:00 Wed, 16.0 h, L12-G7 $69.66:**
+
+  | | 22:00–06:00 | 06:00–10:00 | 10:00–14:00 | ST / OT / DT | hour-equivalents |
+  | --- | --- | --- | --- | --- | --- |
+  | ERP before 2026-09-11 | OT (outside window) | **ST** (fresh 8-h bank) | DT (> 12 h) | 4 / 8 / 4 | 24 |
+  | Incumbent, and the ERP now | OT | **OT** (carryover) | DT | **0 / 12 / 4** | 26 |
+
+  4 h × 0.5 × $69.66 = **$139.32 per shift**, which the ERP underpaid before the change.
+- **ERP change (2026-09-11, not yet merged):** a carryover rung in `bucketForSlice` and
+  `reasonForSlice` (`packages/payroll-engine/src/day-type.ts`), fed `afterStartDate` by
+  `priceL12JobDay` and `explainSlices`; the review-panel reason reads *"Cross-midnight OT
+  carryover"*. Regression tests in `calculate.spec.ts` / `explain.spec.ts`. Scoped as the incumbent
+  scopes it: **weekday-start entries only, judged against the entry's own start date, never the
+  chain's.** One consequence worth knowing: a chained second ticket that *starts* after midnight
+  (e.g. 00:30) still earns ST from 06:00. In the incumbent that case is caught by the rest premium
+  (PAY-045), not by this rule. Unchanged by design: the client's 04:00–23:30 example (8 / 4 / 7.5) and
+  incumbent entry 80274, 07:30 → 06:30 (8 / 4 / 11). Non-union hourly is untouched, because it has no
+  time-of-day window (PAY-012).
+- **Recommended ask (Corrina Bustos, one line):** *"On a weekday night shift, 10 PM to 2 PM the next
+  day, your Payroll App pays 6 AM–10 AM as overtime rather than straight time ('Cross-midnight OT
+  carryover'). Is that the rule?"* A *no* reverts one line in `bucketForSlice`.
+- **Sources checked:** both `usp_Run_Pricing_Engine` snapshots;
+  `sql/calc/v_Calc_Pricing_Slices_API_Legacy_Pre51K.VIEW.sql:146, 231`;
+  `v_UI_Payroll_LaborEntry_AppliedRuleDetail.VIEW.sql` (2026-09-07 backup);
+  [rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §2, §3;
+  [calculations.md](legacy-payroll-app-db-extract/calculations.md) STEP D–E;
+  [worked-examples.md](legacy-payroll-app-db-extract/worked-examples.md) D12;
+  [client-message-findings.md](client-message-findings.md), the 2026-08-24 and 2026-09-04
+  cross-midnight rows (none reaches the re-entry case); `grep -rn "re-entry\|reentry"` across `.ai/`.
+- **Owner:** Corrina Bustos (confirmation); CodingCops (build).
+
+## Cross-midnight day type — the 2026-09-04 decision assumes a per-slice flip that neither engine performs
+
+- **Status:** open — **upward direction and the holiday minimum built 2026-09-11; only the downgrade
+  direction remains.** See *ERP change* below.
+- **Asked:** 2026-09-11 — found while checking the carryover entry above against both pricers.
+  **Rules:** PAY-019, PAY-032, PAY-033, PAY-034.
+- **Question:** the [2026-09-04 decision](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md)
+  settles the *rule*: after midnight the higher rate governs, and spilling into a holiday pays ×3
+  plus the 8-hour minimum. It then concludes *"No config flip is required and no engine change is
+  needed"*, on the reading that `CalendarDay` rates each slice by its own calendar day. **That reading
+  holds for the test harness only.** Should the ERP rate day type per slice, as the decision assumes?
+  And does "never a downgrade" also cover the opposite direction (Sunday or holiday into a weekday)?
+- **Finding — the incumbent:** `usp_Run_Pricing_Engine` sets `Week_Day`, `Holiday_Name` and
+  `Is_Special_Saturday` once per entry from `P.WorkDateDate` (extract `:915`, `:930-936`), and the
+  slice `Day_Type` reads those (`:1116-1122`). That is one day type per entry, the start date's.
+  `cfg.CrossMidnightDayTypePolicy` is read by exactly two objects,
+  `test.v_CrossMidnight_DayType_Actual` and `test.usp_Test_CrossMidnight_DayTypePolicy`. Neither
+  is the pricer. The view computes minutes from a ten-row case table
+  (`test.Case_CrossMidnight_DayType`), never from pricing slices, so its passing cases say nothing
+  about production. [calculations.md](legacy-payroll-app-db-extract/calculations.md) → *Cross-midnight
+  day-type policy* states per-slice, but the proc does not implement it.
+- **Finding — the ERP:** the same. `classifyDay(slices[0].workDate)` is computed once per entry
+  (`packages/payroll-engine/src/calculate.ts:163`, `explain.ts:92-93`).
+- **What prices differently from the decision today:**
+
+  | Crossing | Per slice (the decision) | Both engines (per entry, start date) |
+  | --- | --- | --- |
+  | Friday → Saturday | ×1.5, higher if already OT/DT | OT, then DT at 12 h — **coincides**, and only because of the carryover rung above |
+  | Friday → special Saturday (first Sat of June/Dec) | ×2 | weekday ladder, OT until 12 h — **underpaid** |
+  | Saturday → Sunday | ×2 | ×1.5 until 12 h — **underpaid** |
+  | Weekday or Sunday → holiday | ×3, plus the 8-h minimum | start day's rates, no minimum — **underpaid** |
+  | Sunday or holiday → weekday | weekday ladder after midnight | start day's premium all shift — **above** per slice; the decision does not say whether that downgrade is intended |
+
+- **Also not built:** the PAY-033 8-hour holiday minimum does not exist in the ERP engine at all.
+  `calculate.ts` prices the ×3 bucket (`:295`); `guarantee.ts` exports only
+  `applyDailyMinimumGuarantee` and `applyLongBoomMinimum`. The decision's calendar-date grouping has
+  nothing to attach to yet.
+- **Sources checked:** extract `sql/app/usp_Run_Pricing_Engine.PROC.sql:905-936, 1116-1122,
+  1152-1167`; `sql/test/v_CrossMidnight_DayType_Actual.VIEW.sql`;
+  `sql/test/usp_Test_CrossMidnight_DayTypePolicy.PROC.sql`;
+  [data/test-results.md](legacy-payroll-app-db-extract/data/test-results.md) cases 1–8;
+  `grep -rln CrossMidnightDayTypePolicy` over both SQL snapshots;
+  `packages/payroll-engine/src/{calculate,explain,day-type,guarantee}.ts`.
+- **ERP change (2026-09-11, not yet merged):** each slice is now priced under the **higher** of its
+  start day's type and its own calendar day's type (`sliceDayType`,
+  `packages/payroll-engine/src/day-type.ts`). That settles every *underpaid* row of the table
+  above — Friday → special Saturday, Saturday → Sunday, weekday or Sunday → holiday — exactly as the
+  decision rules. The PAY-033 / PAY-034 eight-hour minimum is built (`applyPremiumDayMinimums`,
+  `guarantee.ts`): per employee per calendar date, summed across every entry and chain, at base +
+  shift × the day's multiplier, on the entry holding the date's last slice. The *overpaid* row —
+  Sunday or holiday → weekday — is **deliberately unchanged**: it keeps the start day's premium, as
+  the incumbent pays today. Moving it to `CalendarDay` would cut pay against current practice on the
+  strength of a premise (per-slice production pricing) that turned out false.
+- **Still open — ask Corrina Bustos, one line:** *"A Sunday or holiday shift that runs past midnight
+  into a weekday — do the hours after midnight keep the Sunday / holiday rate, or drop to the weekday
+  rate?"*
+- **Owner:** Corrina Bustos (the downgrade direction only); CodingCops (build) — done for the rest.
+
+## Payroll engine verification 2026-09-11 — what was wrong, what changed, and two deliberate departures from the incumbent
+
+- **Status:** open — **two confirmations owed** (items A and B below); everything else is built.
+- **Asked:** 2026-09-11 — a verification pass of `packages/payroll-engine` against every quantified,
+  reproducible case in the vault. **Rules:** PAY-019, PAY-023, PAY-025, PAY-026, PAY-032, PAY-033,
+  PAY-034, PAY-040, PAY-012.
+- **Baseline — 46 cases**, each run through `calculatePayPeriod` from source:
+  16 `test.Case_CorePayrollScenario` rows and the D1–D9 traces
+  ([worked-examples.md](legacy-payroll-app-db-extract/worked-examples.md)), the catalog rows with
+  enough times to reproduce ([rule-examples-catalog.md](rule-examples-catalog.md)), Corrina Bustos'
+  two 2026-09-04 long-boom days, Brian Petros' 43767 → 43770, the Garcia 43694 screenshot
+  (client-message-findings 2026-09-09), the [2026-09-04 cross-midnight decision](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md),
+  and Brian's nine non-union scenarios ([non-union-hourly-rules-2026-09-07.md](non-union-hourly-rules-2026-09-07.md)).
+  **`main` passed 30 / 46; the change passes 46 / 46.** The engine suite is 60 / 63 — the three
+  failures are the PAY-043 boom tests in *payroll-engine test debt* §2, identical on `main`.
+- **What was wrong on `main`, and the fix — every one traced to a written, human-settled rule:**
+
+  | Defect on `main` | Source that settles it | Fix |
+  | --- | --- | --- |
+  | No holiday or special-Saturday 8-hour minimum at all; a 3.5 h holiday paid a PAY-040 half hour instead | Decision 2026-09-04 (Corrina); MLA Holidays §1, §4 | `applyPremiumDayMinimums` — per employee per calendar date |
+  | Hours after midnight into a Saturday, Sunday, special Saturday or holiday priced at the start day's rate | Decision 2026-09-04 (a), (b) | `sliceDayType` — the higher of the two days |
+  | A shift split over two tickets lost ST: 04:00–10:00 + 10:00–18:00 paid 6 / 6 / 2 instead of 8 / 4 / 2 | Corrina 2026-09-04: pre-06:00 OT keeps the 8 h bank, and the ladder runs across jobs | ST allowance carried across the chain as its own figure |
+  | Weekday shift re-entering 06:00–17:00 after midnight paid ST | Incumbent `Is_PrevDay_ST_Reentry_Block` — see *Cross-midnight OT carryover* above | carryover rung |
+  | New Year's Day missed whenever it falls mid-period (2027-01-01 is a Friday in the 2026-12-26 period) | PAY-032 calendar | `holidaysForPeriod` — start year and the next |
+  | Non-union: daily 8 / 12 per **ticket**, no weekly OT, no seventh day, no reason on the component | Brian 2026-09-07 §4–§8, confirmed as source of truth the same day | `classifyNonUnionWeek` — workday, seventh day, then weekly; six reason-labelled PAY-012 components |
+
+- **A — the holiday minimum and the 4-hour daily minimum do not stack.** On a holiday the
+  incumbent runs `DAILY_MIN_4` and `HOLIDAY_MIN_8` independently (`usp_Apply_GuaranteedHours`,
+  no exclusion between them), so 3.5 h on Thanksgiving pays 3.5 + 0.5 + 4.5 = **8.5** hours. The
+  ERP counts the holiday top-up toward the four, paying **8.0**. Basis: both of Corrina's statements
+  describe hours paid — *"Put 8 hours per day guaranteed on a holiday"*, *"a four-hour minimum per
+  day or their true time"* (2026-06-11 demo, 19:11 and 19:16) — and the MLA's "minimum of eight"
+  is a total. Only a holiday shift under 4 hours is affected. **Confirm with Corrina:** *"On a
+  holiday worked for under 4 hours, is the pay 8 hours at triple time, or 8 at triple plus the
+  4-hour-minimum top-up on top?"*
+- **B — the special Saturday is the MLA's day, not the incumbent's.** MLA Holidays §4: *"the first
+  (1st) Saturday following the first (1st) Friday"* — the 2nd–8th of June / December. The incumbent
+  tests `DAY <= 7`. They differ only when the month opens on a Saturday — next **December 2029**
+  and **June 2030** — where the contract's day is the 8th. Low urgency; confirm when convenient.
+- **Seen and deliberately not touched:**
+  - *PAY-043 boom tests* — test-debt §2 above says settle which side is wrong first.
+  - *Boom adder multiplied per bucket* — matches the MLA and the incumbent (Garcia 43694 ties to
+    the cent at $25.31); the flat reading is [a reference-only working decision](../decisions/2026-08-25-boom-adder-on-top-unmultiplied.md).
+  - *WTL* — Brian's update is pending; *meal thresholds per entry vs per stitched group* — open above.
+  - *Guarantee hours have no ADP workbook column* (PAY-040's already, now PAY-033 / PAY-034's too) —
+    [adp-workbook-column-rules.md](adp-workbook-column-rules.md) open questions.
+  - *A holiday that falls on a period's first day (a Saturday)*: a Friday-night shift priced in the
+    previous period that spills into it, plus a shift on the day itself, each earn a minimum —
+    each period sees only its own entries. Rare; not modelled.
+- **Not reproducible:** the Albergo week (2026-08-22 → 08-28) — the vault holds every bucket and
+  premium but no entry times. `rest-period.spec.ts`'s Albergo-shaped fixture uses invented times and
+  asserts a $522.45 day where the client's figure is $487.62; the gap is plausibly the invented first
+  hour (the client row prices it at a normal ×1.0–1.5), but that cannot be judged without the times,
+  which live in the restored `TCG_PayrollAPP_20260907` database.
+- **Sources checked:** as listed in the baseline; `usp_Apply_GuaranteedHours.PROC.sql:175-215,
+  330-372, 443-533, 600-700`; `usp_Run_Pricing_Engine.PROC.sql:905-1167`; MLA Article III Holidays
+  §1, §4; `packages/payroll-engine/src/*`.
+- **Owner:** Corrina Bustos (A, B); CodingCops (build — done).
+
+## Mis-set payroll setup calculates and warns — the 2026-09-11 build instruction, unconfirmed by TCG
+
+- **Status:** open — **built 2026-09-11 on a CodingCops instruction; TCG payroll has not confirmed it.**
+- **Asked:** 2026-09-11 — instruction in the payroll build session: setup applied in the wrong place
+  (the example given: a non-union craft on a union employee) must **warn on the frontend while it is
+  entered**, and **payroll must calculate it and warn, not error**. **Rules:** PAY-009, PAY-014,
+  PAY-029, PAY-060.
+- **What was built (not yet merged):**
+  - **One rule set,** `payrollSetupWarnings` / `craftSetupWarnings` in `@tcg/shared`
+    (`packages/shared/src/utils/payroll-setup-warnings.ts`), used by the forms and the engine so the
+    screen that sets a value and the week that pays it say the same thing: union craft on a
+    non-union group, non-union craft on a union group, mechanic craft on the field group and the
+    reverse, a craft that disagrees with the employee's Union Status, a non-union craft with no
+    hourly rate, an inactive craft; and for a craft itself, the MLA classifications (Groups 1–2
+    oiler, 3–8 operator, 9 operator or HDR), a union craft with no wage group, a non-union craft
+    with one.
+  - **Frontend, warn-never-block:** the employee form (Payroll & Rates), the employee's Manage
+    Craft Code card (current primary, and the craft being assigned), and the craft-code form. The
+    `WarningList` molecule is the amber sibling of `ErrorAlert`.
+  - **Payroll:** the rate resolver no longer blocks two mismatch cases — a craft the employee is
+    not assigned (was `SECONDARY_NOT_ASSIGNED`, priced $0) and an inactive craft (was
+    `CRAFT_INACTIVE`, priced $0). Both now price at the craft's own rate and raise
+    `CRAFT_NOT_ASSIGNED` / `CRAFT_INACTIVE` as warnings. The engine raises the group/craft
+    mismatches as warnings on the week. `OVERLAPPING_LABOR` displays as a warning. A flagged week is
+    still approvable — none of these blocks anything.
+  - **Still errors, deliberately — there is nothing to price with:** `NO_PRIMARY_CRAFT`,
+    `CRAFT_NOT_FOUND`, `NO_RATE_IN_FORCE`, `NO_EMPLOYEE_RATE`, `NO_ACTIVE_MODIFIER_SCALE`.
+- **The tension:** [PAY-014](rules/PAY-014-rate-comparison-and-validation.md) (conflicted) holds that a
+  blocked resolution *"prices at a flat $0 … instead of quietly substituting"* a plausible rate. Pricing
+  at the dispatched craft's own configured rate is not a guessed rate — but it does pay an employee a
+  craft they are not assigned, or a craft someone deactivated.
+- **Question for Corrina Bustos / Brian Petros:** *"When a job is worked on a craft the employee is not
+  assigned, or on an inactive craft, should payroll pay it at that craft's rate and flag the week for
+  review — or hold it at $0 until someone corrects it?"* A *hold* reverses two branches in
+  `craft-rate-resolver.service.ts`.
+- **Sources checked:** `apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts`
+  (before/after), `usp_Run_Pricing_Engine` (no equivalent rule — the incumbent prices the craft on the
+  labor row), [non-union-hourly-rules-2026-09-07.md](non-union-hourly-rules-2026-09-07.md) §11 (*flag,
+  don't silently produce*), *The union-classified employee who must not be paid on union rules* above.
+- **Owner:** Corrina Bustos / Brian Petros (confirm); CodingCops (build — done).
+
+## Mis-set payroll setup calculates and warns — no longer an error or a $0 entry
+
+- **Status:** open — **built 2026-09-11 on a build-session instruction; needs TCG payroll to confirm**
+  the two pricing changes (items 1–2), because they change what an unassigned-craft day pays.
+- **Asked:** 2026-09-11 — instruction in the payroll build session: *"payroll should not give error
+  if he is apply then just calculate them instead of giving error, just give warnings"*, and warn in
+  the UI whenever something is applied in the wrong place (*"like applying non-union craft code to
+  union employee"*). **Rules:** PAY-009, PAY-014, PAY-029.
+- **What changed:**
+  1. **A craft the employee is not assigned** (was `SECONDARY_NOT_ASSIGNED`: entry priced $0 + error)
+     is now priced at **that craft's own rate** with warning `CRAFT_NOT_ASSIGNED`.
+  2. **An inactive craft** (was `CRAFT_INACTIVE`: $0 + error) is priced at its rate with warning
+     `CRAFT_INACTIVE`.
+  3. **Group-versus-craft mismatches** — union craft on a non-union group, non-union craft on a union
+     group, mechanic craft on the field group and the reverse — price as the group says and raise a
+     warning on the week. One definition, `payrollSetupWarnings` in `@tcg/shared`, drives the
+     warning on the employee form, the employee's craft card, the craft picker dispatch uses, and the
+     payroll week. The craft-code form warns on MLA-classification mismatches (`craftSetupWarnings`:
+     Groups 1–2 oiler, 3–8 operator, 9 operator/HDR; union craft without a group).
+  4. **Overlapping labor** shows as a warning, not an error — both entries were always priced.
+  5. **Only an entry priced at $0 flags a week** (a rate that could not resolve, `RATE_*`). Every
+     other issue — including a missing ADP file number — leaves the week `NEEDS_REVIEW` with the
+     warning listed, and the calculate summary reads *"N warning(s) to review"*, errors counted
+     separately.
+- **Still errors, deliberately** — each is missing data, not a mis-set value, and there is nothing
+  to calculate with: no rate in force for the craft on the date, a non-union craft on an employee
+  with no hourly rate, no primary craft and no job craft, a craft or employee that no longer exists,
+  no boom-modifier scale for the tenant, and a missing ADP file number (export cannot run).
+- **Why items 1–2 are consistent with the record:** the [2026-08-20 craft-locked rate
+  decision](../decisions/2026-08-20-craft-locked-rate-override.md) locks a day's rate to a
+  **craft-code amount chosen by the superintendent or payroll**, never a free-text override. Pricing
+  the craft dispatch actually put on the allocation keeps that; requiring it to be pre-listed as an
+  employee secondary was stricter than the decision. PAY-014's *"prices at a flat $0 … instead of
+  quietly substituting … any other plausible-looking guessed amount"* is not engaged: nothing is
+  guessed, the rate is the dispatched craft's own.
+- **Ask (Corrina Bustos / Brian Petros, one line):** *"When a job is dispatched on a craft the
+  employee isn't set up for, or on an inactive craft, should payroll pay that craft's rate and flag
+  it for review, or hold the entry at $0 until someone corrects it?"*
+- **Sources checked:** `apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts`
+  (before and after); `rules/PAY-014-rate-comparison-and-validation.md` (`status: conflicted`);
+  the 2026-08-20 decision above and its 2026-08-25 union-scope reading;
+  `gaps.md` → *The union-classified employee who must not be paid on union rules* (why no
+  combination can be rejected outright).
+- **Owner:** Corrina Bustos / Brian Petros (confirmation); CodingCops (build — done).
