@@ -56,3 +56,21 @@ tags: [module/payroll, kind/rule, open-questions]
   **Rest now runs before WTL:** `usp_Apply_WTL_MealPeriods` reads the rest-adjusted slices, so a WTL
   deduct on a forced slice is priced at the rest-adjusted rate. ERP: present forced hours in DT,
   keep the premium as its own component, evaluate rest before WTL.
+- **The chain rules, stated by the Payroll Manager on a recorded call, 2026-09-10**
+  ([../../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §3, 24:52–30:14). When the prior gap is under 8 hours, **the new shift starts in the
+  bucket the previous shift ended in and fills to the 12-hour mark before double time**:
+  previous ended on DT → *"this entire job would be double time"* (25:21); previous was 10 h, ended
+  on OT → the first 2 h of the new job are OT, *"because it fills up the 12-hour bucket and then
+  everything else would be doubled"* (27:33); previous was 6 h, ended on ST → fill ST to 8, then
+  4 h OT, then DT (28:12). **The 06:00 rule still outranks the carry-forward** — a 04:00 start after
+  a short rest begins on OT regardless (29:20). **The length of the short rest is irrelevant**:
+  Ehtesham Anwar 28:43 — *"doesn't matter if they got 7, 6, 4, three, two, one… the exact rest time
+  does not matter, right?"* — Corrina Bustos: **"Correct, correct."** Only the binary *did they get
+  eight* matters, which retires any need for a graduated premium by gap length.
+- **⚠️ Unreconciled on the same call — how deep the chain goes.** Brian Petros (25:45, 26:10)
+  describes walking **backwards until an 8-hour gap is found** and grouping every entry in between
+  *"as if it was one shift"*. Ehtesham Anwar (27:06) proposed checking **only the immediately
+  previous entry** and Corrina agreed — *"Right, it would just be the previous day."* The two agree
+  on a two-day chain and diverge on three or more consecutive short rests. Nobody noticed the
+  divergence. This is the same `REST_STITCH_MINUTES` / chain-depth question this register already
+  carries under *Rest chain — is a job-to-job gap a "rest period" at all?*.

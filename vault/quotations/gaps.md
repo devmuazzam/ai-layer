@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-09-07
+updated: 2026-09-09
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -176,6 +176,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   **Still open:** what JZ's 2026-06-23 punch-list bullet asked for, and whether the vestigial
   `poNumber` in `quotation-api.ts` should be deleted.
 - **From (frozen original):** [gaps.md#customer-po-on-the-quotation-which-of-three-things-does-it-mean](../gaps.md#customer-po-on-the-quotation-which-of-three-things-does-it-mean)
+- **Update 2026-09-09 (PR review of `fix/quotation-permits-plans`, no ticket):** the branch **re-adds a customer PO field to the quotation** — a new `Quotation.customerPo` column (migration `20260909120000_add_quotation_customer_po`, `VARCHAR(100)`, schema comment *"Type 1 Customer PO captured on the quotation; copied to Job.poNumber on convert"*), a **Customer PO** input on the quotation Main tab (`apps/web/src/features/quotations/components/molecules/customer-po-field.tsx`), carried by quotation duplicate, and copied to `Job.poNumber` at convert (`projects.service.ts`). That is the field `SCRUM-149` removed and the field the 2026-09-05 decision calls **not a quotation field** — four days after the decision. It is **not** the vestigial `poNumber` this entry left open: that web-only type still exists untouched, and the new column is a separate, real one. The branch's implicit reasoning is timing rather than location, and that question is now its own entry — see *The customer PO arrives before the job exists — may the quotation capture it?* below. **Nothing here is adjudicated;** the decision stands as written until Brian Petros says otherwise.
 
 ## Billing-rate effective dating for pricing sheets — raised by the client, no design yet
 
@@ -1895,3 +1896,13 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   a deterministic seeder; (f) blocks any price-list rename being safe.
 - **Owner:** product team — Melissa McNutt and Joe Schacatano (they set the surcharge and price-list
   rules on 2026-05-05 and 2026-03-12); Ryan Adams for price-list administration.
+
+## The customer PO arrives before the job exists — may the quotation capture it?
+
+- **Status:** open
+- **Asked:** 2026-09-09 — PR review of `fix/quotation-permits-plans` (no ticket, no `processed.log` row, no ticket folder). Split out of *"Customer PO" on the quotation — which of three things does it mean?* above, whose location half is answered.
+- **Question:** one line answers it. Brian Petros's own diagram sequences the customer PO as **`Customer approved? → Log customer PO # → Convert to job`** — the number arrives **before the job record exists** — while the same decision says it **lives on the job / schedule tab and is not a quotation field**. So: should the ERP **capture** the number on the quotation at approval and copy it to `Job.poNumber` on convert (the branch's answer), or should capture wait until the job exists, with the quote-approval moment being only when the customer *hands it over*, not when the system stores it?
+- **Sources checked:** [../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md) — the flow diagram at §*Where each PO sits in the flow* (`Log customer PO # (record on job / schedule tab)` sits **above** `Convert to job`), against :59 and :111 (*"It is **not** a quotation field"*, *"Where the customer PO lives | **Job / schedule tab**"*); its :168-170 records the field as unbuilt on both sides. [../vendors-agencies/purchase-orders-fcc/commissioning-email-thread.md](../vendors-agencies/purchase-orders-fcc/commissioning-email-thread.md):69-71 — Melissa McNutt, 4 Dec 2025, same placement, no timing statement. [quote-lifecycle-permits-and-purchase-orders.md](quote-lifecycle-permits-and-purchase-orders.md):181 — the entity-hierarchy diagram's `PO Number` pill **on the Quote**, and :116, :132 — the DB-schema diagram's `CUSTOMER_PO.job_id`, i.e. TCG's own two March 2026 diagrams disagree on exactly this. [fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §6 — FCC does carry a `PO No` field on the **quote Main tab**, annotated by TCG *"This is the 'Customer PO number' — the PO Number that Customer give us"*, so the incumbent captures at quote stage **and** on the job. [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) §8 — the printed quote's acceptance block is *"Date · Print · Sign · PO Number"*, i.e. the customer writes the number **on the quote** when accepting.
+- **Note:** the two readings are not equivalent for reporting. Capture-on-quote makes the number available on a **lost** quote and on a quote that never converts; capture-on-job does not. Nothing addresses which is wanted. Note also that the branch writes only `Job.poNumber` — `Project.poNumber` stays unwritten, so the project level of the same decision is still unbuilt whichever way this goes.
+- **Blocked:** whether `fix/quotation-permits-plans` ships its `Quotation.customerPo` column as-is. Nothing else — `Job.poNumber` capture is correct on either reading.
+- **Owner:** Brian Petros — he drew the diagram and made the 2026-09-05 call; this is the one ambiguity inside it.

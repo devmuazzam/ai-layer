@@ -51,3 +51,22 @@ tags: [module/payroll, kind/rule, open-questions]
   where the holiday date is in dispute. Deliberate in the code (each group emits its own named
   `ScopeBasis`), but easy to flatten by accident in a rewrite.
   Detail: [gaps.md](../gaps.md#holiday-8-hour-minimum-on-a-shift-that-only-spills-past-midnight-into-the-holiday).
+- **Re-confirmed on a recorded call, 2026-09-10, by the same person who decided it in writing**
+  ([../../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §4). Corrina Bustos 31:43: a holiday shift is *"all of it… on triple time"* with an
+  **8-hour minimum**; 34:34: *"**no matter how much time, even if they only work half an hour on the
+  holiday**, that has to get converted to 8 hour minimum"*; 34:49 — and it fires at the back end too,
+  a non-holiday shift running to 00:30 into a holiday converts those 30 minutes to the 8-hour
+  minimum. This corroborates [../../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md) (b) on
+  the record.
+- **⚠️ Explicitly deferred by Corrina on the same call — the holiday-start continuation.** For a
+  shift **starting** on a holiday at 22:00 and running to 10:00 the next, non-holiday day, she could
+  not say whether the post-midnight hours stay at triple or revert (33:46: *"this is very rare that
+  it happens, so my brain is not like…"*), and undertook to **check with the union rep**: *"I'll
+  double check with him how it would work on the holiday… whether they stay on triple time or they
+  revert back."* (34:02, 34:10). **Owed by Corrina Bustos; the union rep is the source. Do not
+  infer it from the cross-midnight decision** — that note answers spilling *into* a holiday, not
+  running *out of* one.
+- **Guaranteed minimums are per calendar day, not per labor entry** — Brian Petros 36:07, confirmed
+  by Corrina: the holiday 8-hour minimum, the 4-hour shift minimum and the 4-hour boom minimum are
+  *"based on the calendar work day"*, so **more than one labor entry can be in scope**. Every
+  worked example on the call assumed a single entry, which is not the general case.

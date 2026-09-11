@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-09-04
+updated: 2026-09-09
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -1198,3 +1198,67 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   a small formatter is added. **Not a blocker.**
   **Stays open**, now needing only: **does the job day share this boundary too?** Narrow enough
   that it deserves re-filing as its own entry — flagged, not done.
+
+## Quick-create a Tool & Rigging item from the quotation picker — who may, and what does its quantity mean?
+
+- **Status:** open
+- **Asked:** 2026-09-09 — PR review of `fix/quotation-permits-plans`, commit `2f7b0a1a0` (no ticket, no `processed.log` row, no ticket folder).
+- **Question:** the branch adds an *"Add New"* footer to the Tool/Rigging picker **inside a quotation**, opening a slim modal (**name**, **quantity**, **needs spotter**) that creates a real catalog Tool record without leaving the quotation form (`apps/web/src/features/assets/tools-riggings/components/quick-create-tool-modal.tsx`). Three answers needed. **(a)** May a salesperson create a catalog tool at all, or is catalog creation the yard's? **(b)** If yes, is a three-field record acceptable, given the full form's *"mandatory information before saving"*? **(c)** What is the **quantity** the modal collects — total inventory owned, or the quantity wanted on this quote?
+- **Sources checked:** [tool-and-rigging.md](tool-and-rigging.md) — the 3.7 KB spec, `status: unverified`, and the file the migration deliberately kept over a 38-character newer stub ([../README.md](../README.md):210-211). **Story 1** makes creation the **yards manager's**: *"As a **yards manager**, I want to create and configure tools and rigging items…"*, *"Tools & Rigging exists as **a separate section under Asset Management**"*, *"**Tool creation requires mandatory information before saving**"*, and it is where **Needs Spotter** is specified — *"Every tool record has a Needs Spotter checkbox that can be turned on or off during creation or editing"*. **Story 3, the quotation story, is selection only** — *"I want to **add** tools and rigging during quotation creation"*, *"Quotation workflow supports tools and rigging **selection**"* — it contains no create affordance. **Story 5 is the one place a creation pop-up is authorised, and it is Dylan's yard dashboard**: *"Dylan can add tools and rigging from this dashboard, a creation pop up will be displayed"*. The three modal fields do match what the catalog is known to carry — ehtesham.anwar @ 45:18, [../meetings/transcripts/2026-05-12-loading-figma-demo.md](../meetings/transcripts/2026-05-12-loading-figma-demo.md):222: *"the information that we have is the tool and rigging name, the tool name itself, and then the quantity that we have in the inventory"* — and Needs Spotter is Brian Petros's own ask, [../meetings/transcripts/2026-05-07-loading-and-project-module-overview.md](../meetings/transcripts/2026-05-07-loading-and-project-module-overview.md):135-136.
+- **Note — the nearest precedent went the other way, on permissions.** The one recorded conversation about creating a catalog record inline from a quotation line is the **billing-code** thread: Melissa McNutt asks for a quick-add (*"could it auto-populate as a billing code where we don't have to go back and create a billing code? It'll create it here"*), mohsin.ali proposes an *"add new billing code"* button, and ehtesham.anwar closes it down — *"**the problem with that is we don't know if the person has the right access** and most probably sales people won't have access… let's add this to the approval system instead of creating new functionality"* ([../meetings/transcripts/2026-05-05-tcg-erp-system.md](../meetings/transcripts/2026-05-05-tcg-erp-system.md):460, :486, :487; already summarised at [*Billing-code create form prefill*](../quotations/gaps.md#billing-code-create-form-prefill-six-query-params-no-producer-no-source)). That is a **meeting record, not a commitment**, and a tool is not a rate — but it is the same shape of question and it was answered against. Pulling the other way: FCC puts a **`New` button beside every lookup on the quote Main tab** (Customer, Job Site, Report To, Quoted To) — but **not** on its Tools/Rigging tab, whose Category list is maintained separately under `Maintain → Tools` ([../quotations/fcc-nexgen-quote-entry.md](../quotations/fcc-nexgen-quote-entry.md):202-215). The open twin of this question is [*Can a Report To contact be created inline from the quotation form?*](../quotations/gaps.md#can-a-report-to-contact-be-created-inline-from-the-quotation-form) — same branch-review shape, still unanswered.
+- **Note on (c) — the quantity is the field this register already says is undefined.** The modal requires a finite integer ≥ 0. [*Loading list — quantity, sets, and sizes are underspecified for a schema*](#loading-list--quantity-sets-and-sizes-are-underspecified-for-a-schema) records that **`Boscaro Bar` carries quantity `N/A`** where all 25 other real catalog rows carry an integer, and that *"a required-integer quantity column cannot store this row"*; that set-granularity rows (`Container Hooks (Set of 4)`, `Jensen Lifter Sets`) leave the tracked unit undecided; and that **no `decisions/` note touches tool quantity**. A create path that makes an integer quantity mandatory settles that open question by default, in a modal, without anyone deciding it. Note too that the quotation-line quantity is a *request against a finite pool* that Dylan reconciles ([../meetings/transcripts/2026-04-30-dispatch-scheduling-figma-demo.md](../meetings/transcripts/2026-04-30-dispatch-scheduling-figma-demo.md):45), i.e. a **different number** from inventory-owned — so (c) is not cosmetic.
+- **Note on the punch list:** [../quotations/quotation.md](../quotations/quotation.md):15-16 carries *"tools and rigging – total inventory"* and *"button should be renamed as **add tool**"* — JZ, 2026-06-23, `status: unverified`, two unelaborated bullets on a **cross-module** punch list. They are the only written words about a button in this picker, they do not say whether "add tool" means *add a row to the quote* or *create a tool in the catalog*, and the branch labels its new control *"Add New"* either way. Not a source; noted so it is not later read as one.
+- **Blocked:** nothing functionally. What is at risk is a catalog whose records were created three-fields-at-a-time from a sales form, by people the spec assigns to the yard.
+- **Owner:** Dylan Masterson / the yard for who may create a catalog tool (Story 1 and Story 5 are both his), with Brian Petros on the salesperson-permission question the billing-code thread parked.
+
+## Fleet tracking map — how a selected vehicle must be indicated is written nowhere
+
+- **Status:** open
+- **Asked:** 2026-09-09 — raised while reviewing branch `scrum-252` ("Implement map view in
+  DAS"), which replaces the shipped tracking map's vehicle marker with a truck icon shared with
+  the new DAS map. The branch has no `.ai/aidlc/SCRUM-252/` folder and no `processed.log` row;
+  it never ran the loop.
+- **Question:** **On the fleet tracking map, how must the vehicle the user has open be
+  distinguished from the rest of the fleet?** One line settles it: *a size increase and a
+  brand-coloured ring* (what shipped), *stacking order alone*, or *something else*.
+- **Sources checked:** **Nothing in the vault describes the tracking map's UI at all**, so
+  there is no source to weigh. `decisions/` holds no Samsara or tracking decision. `../brs.md`
+  **BRS-INT-002** (*Samsara Reconciliation*, "Needs Supporting Documentation") and **OD-010** /
+  **OD-012** are scope and GPS-enforcement placeholders, not screen behaviour.
+  `../admin/responsive-design-and-security-posture.md` → *Part 3 — Samsara integration* covers
+  credentials and usage, not the map. `../dispatch/daily-allocation-system.md` → *USER STORY :
+  Live Asset Map View* (`status: unverified`, updated 2026-04-30) specifies click-to-sidebar for
+  the **DAS** map and says nothing about a selected-marker treatment on either map. `meetings/`
+  yields nothing on marker design. This sits **inside** the larger unsourced area already
+  recorded above: [*Samsara vehicle tracking — what was committed is "vehicle locations in real
+  time", and an 11k-line module shipped around it*](#samsara-vehicle-tracking--what-was-committed-is-vehicle-locations-in-real-time-and-an-11k-line-module-shipped-around-it),
+  which establishes that **no named person with product authority appears anywhere in the record
+  for the whole module.** So the affordance being removed was never specified either — the
+  question is whether it was nonetheless the right behaviour.
+- **Note:** what changes concretely. `isSelected` now affects only z-index; the marker no longer
+  grows and no longer gains a ring
+  (`apps/web/src/features/vehicle-tracking/components/map/vehicle-marker.tsx`). `ROUTE_TOKENS.selected`
+  in `apps/web/src/features/vehicle-tracking/components/map/map-settings.ts:50` — documented in
+  place as *"the ring around the marker of whichever vehicle is open"* — is left with **no
+  consumer** (`route-polyline.tsx` reads only `ROUTE_TOKENS.line`). Because nothing is written,
+  the removal cannot be called a regression **or** an improvement from the record; it is an
+  unreviewed change to a shipped screen. Not a licence to restore it on judgement alone.
+- **Blocked:** merging `scrum-252`'s change to the **existing** tracking screen — the new DAS map
+  is not blocked by this. Also blocks deleting or keeping the now-dead `ROUTE_TOKENS.selected`
+  token.
+- **Owner:** product team — Brian Petros (named owner on the Samsara scope entry above), with
+  whoever owns the Samsara integration.
+- **Update 2026-09-10 (SCRUM-252 backfill):** **the code this entry describes has moved on; the
+  question has not.** The *Note* above was written against commit `b69d5406`. At `fbaebb9f` the
+  selection cue is back as a **size step** — `RESTING_SIZE` 46 → `SELECTED_SIZE` 58 in
+  `vehicle-marker.tsx`, animated via `transition-[width,height]` — so `isSelected` no longer
+  affects only z-index. The **ring** is still absent, and is now absent *deliberately*, with the
+  reasoning stated in place: it *"read as a second element around the body rather than as the
+  same object"*. The dead `ROUTE_TOKENS.selected` token and its comment describing a ring that no
+  longer exists were **removed** from `map-settings.ts` (nothing referenced it), which discharges
+  the second half of the *Blocked* line above.
+  **Stays open.** A developer choosing a size step over a ring is still an unreviewed change to a
+  shipped screen decided from no written source — which is what this entry exists to say. The
+  entry's own warning holds in both directions: nothing written makes the ring right, and nothing
+  written makes its removal right either. Ticket record:
+  [`../../aidlc/SCRUM-252/spec.md`](../../aidlc/SCRUM-252/spec.md) §14.

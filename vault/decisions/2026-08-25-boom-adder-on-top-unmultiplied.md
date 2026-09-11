@@ -3,7 +3,8 @@ title: Boom adder is paid ON TOP, flat $/h × boom hours, unmultiplied — WORKI
 source: decision/acting-product-owner, relayed via the SCRUM-926 coordinator
 decided: 2026-08-25
 decided_by: Syed Haris (CodingCops, acting product owner), 2026-08-25, relayed via the SCRUM-926 coordinator and recorded in aidlc/SCRUM-926/spec.md §12 Q3. NOT confirmed by TCG payroll (Corrina Bustos / Brian Petros) and NOT reviewed by labor counsel, both of which this decision itself requires.
-status: reference
+status: superseded
+superseded_by: decisions/2026-09-10-craft-adders-are-into-the-rate-multiplied.md
 resolves: aidlc/SCRUM-926/spec.md#q3
 conflicts_with: [payroll/mcog-l12-mla-2025-2028/02-article-iv-classifications-and-wage-rates.md]
 jira: [SCRUM-926, SCRUM-920]
@@ -11,6 +12,20 @@ tags: [module/payroll, kind/decision, boom, craft-modifier, overtime, union-agre
 ---
 
 # Boom adder is paid on top of the multiplied rate — and this is a working decision
+
+> ## ⛔ SUPERSEDED 2026-09-10 — do not build from this note.
+>
+> The confirmation this note demanded arrived and landed the other way. Brian Petros, on the
+> recorded 2026-09-10 call at 21:48–22:09, with Corrina Bustos concurring at 18:49: the adder
+> **is** added to the base rate and the multiplier applies to the sum — the literal MLA clause this
+> note chose to override. See
+> [2026-09-10-craft-adders-are-into-the-rate-multiplied.md](2026-09-10-craft-adders-are-into-the-rate-multiplied.md).
+>
+> Also corrected for the record: this note states `SCRUM-926` was built on it. It was not. The
+> engine has priced the adder at `boomAdderPerHour * multiplierOf(bucket)` since its first commit
+> (`61d0fd7d`), so the behaviour described below has never shipped. Kept in place because the
+> reasoning — and its own warning about overriding a collective bargaining agreement — is why the
+> question stayed open long enough to be asked properly.
 
 > **Read the status line before you build on this.** `status: reference`, not `verified`.
 > A named human decided it and `SCRUM-926` was built on it, but it **sides with a
