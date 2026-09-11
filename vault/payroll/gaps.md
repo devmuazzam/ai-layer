@@ -3947,7 +3947,6 @@ somewhere it should not have. Settle that before touching either.
   combination can be rejected outright).
 - **Owner:** Corrina Bustos / Brian Petros (confirmation); CodingCops (build — done).
 
-
 ## Holiday shift-start continuation and the 8-total-vs-8-additional minimum — two questions for the union rep
 
 - **Status:** open
@@ -4017,3 +4016,33 @@ somewhere it should not have. Settle that before touching either.
   `+8`. Both are small; both are money.
 - **Owner:** Corrina Bustos, via the union rep for Question 1; Corrina alone for Question 2 — it
   is her sentence.
+
+## PAY-069's rounding-adjustment component — architecturally inapplicable to this engine
+
+- **Status:** resolved 2026-09-11 — answered from the record, no client question needed.
+- **Asked:** 2026-09-11 — the implementation-audit's B7 item (`payroll/implementation-
+  audit-2026-09-11.md`), reprising `rules/PAY-069-money-rounding-and-rounding-adjustment-
+  components.md` (`status: open`).
+- **Question:** should this engine insert a `PAY_COMPONENT_ROUNDING_ADJUSTMENT` ledger line
+  the way the legacy `usp_Normalize_PayComponentLedger_Rounding` /
+  `usp_Finalize_PayComponentLedger_Reconciliation` do?
+- **Why it does not apply here:** the legacy line exists because the incumbent computes a
+  day's total TWO independent ways — an aggregate `Pay_Actual_Gross`/`Final_Gross_Pay`
+  formula, and the sum of individually-`ROUND(x,2)`'d ledger rows — and the two can disagree
+  by a cent or more, so a reconciling row forces them to agree
+  (`legacy-payroll-app-db-extract/rules-plain-language.md` §14). This engine only computes a
+  day's total ONE way: `addComponent` (`money.ts`) rounds every component to cents at the
+  moment it is created, and `CalculatedJobDay.totalAmount` (`calculate.ts`, the final
+  "restate every touched day's total from its ledger" pass) is always exactly
+  `round2(components.reduce(sum amount))` — the same already-rounded numbers the caller
+  sees. There is no second, independently-computed figure to disagree with, so a rounding
+  adjustment can never be non-zero, and `addComponent`'s own zero-amount filter would drop
+  it every time. Adding the component would be dead code standing in for a bug this
+  architecture cannot have.
+- **Sources checked:** `packages/payroll-engine/src/money.ts` (`addComponent`, `round2`);
+  `calculate.ts` (`priceL12JobDay`'s `totalAmount`, and the per-employee loop's final
+  totals-restate pass); `rules/PAY-069-...md`; `legacy-payroll-app-db-extract/
+  rules-plain-language.md` §14 and `calculations.md:2774-2943` (`usp_Normalize_
+  PayComponentLedger_Rounding`, `usp_Finalize_PayComponentLedger_Reconciliation`).
+- **Owner:** none — closed by inspection, not awaiting a client answer. Revisit only if the
+  engine is ever changed to compute a day's total by a second, independent formula.
