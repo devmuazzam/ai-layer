@@ -938,6 +938,25 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
   answer does not say which.
 - **Status:** resolved — see decisions/2026-09-11-progress-tracking-status-precedence-step-states-and-boom-hours.md
 
+### Q7 — A date with several schedule intervals: one rail row, and which stage pill?
+
+- **Question:** REQ-02 says one rail row per `JobScheduleInterval`, but a job can schedule several intervals on
+  one date (`sortOrder`), each with its own `SubJob.dasStage`. On 2026-09-12 the developer asked, against
+  screenshots, for one row per date with every ticket under it. The duplicate rows also highlighted together,
+  because selection is keyed by date. When a merged date's intervals disagree, which single pill should it show?
+- **Why it cannot be answered from what is written:** REQ-02 assumes one interval per date, and the design's
+  `ptSidebar()` mocks one status per date. No source covers several intervals on one date.
+- **Blocked:** nothing — shipped with the workaround below.
+- **Candidates:** REQ-02 (one row per interval, `[UNVERIFIED]`); `design-extract.js` `ptSidebar()` (one row per
+  date, keyed by date); the `SubJobStage` enum order in `schema.prisma`.
+- **Owner:** product team — Lisette Anzaldo, per `decisions/2026-09-11-progress-tracking-ticket-status-rules.md`.
+- **Workaround, if any:** web only, in `progress-tracking/group-progress-days.ts`; the API response is unchanged.
+  Same-date intervals merge into one row, and their tickets sort by shift, then name, then code. The pill is the
+  least advanced `SubJobStage` among the date's live intervals, in DAS order, so `OPEN` beats
+  `TICKET_SUBMITTED`. Cancelled intervals, and ones DAS has not picked up, count only when nothing else that
+  date is live.
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - Labels/tones for the 6 real `SubJobStage` values the design doesn't mock (`LOADOUT`, `EMPLOYEE_LEFT_YARD`,
