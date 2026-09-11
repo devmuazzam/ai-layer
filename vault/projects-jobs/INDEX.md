@@ -57,7 +57,11 @@ pages already cover, each new page says explicitly how the two differ rather tha
 - [2026-08-31-quotation-qty-not-das-sets.md](../decisions/2026-08-31-quotation-qty-not-das-sets.md) — Quotation qty is billing only; one DAS/Yard set per root; child qty independent
 - [2026-08-28-job-schedule-weekend-empty-state.md](../decisions/2026-08-28-job-schedule-weekend-empty-state.md) — Job Schedule weekend-empty empty state — decision
 - [2026-09-08-artifact-due-date-seeded-from-first-job-day.md](../decisions/2026-09-08-artifact-due-date-seeded-from-first-job-day.md) — A permit/plan artifact's `dueDate` is seeded from the job's first scheduled day and is freely editable thereafter. Settles the seed and editability only — whether the app should compute or warn on a lead-time deadline (`Latest Permit Submission`) stays open in [gaps.md](gaps.md)
-- [2026-09-10-permit-association-scope-asset-job-vendor.md](../decisions/2026-09-10-permit-association-scope-asset-job-vendor.md) — Permit type drives association with asset, job, or vendor (exactly one FK); restores All Permits → New Permit
+- [2026-09-10-permit-create-types-mockup-document-types.md](../decisions/2026-09-10-permit-create-types-mockup-document-types.md) — Permit document kinds = Travel | FAA | Encroachment | Sub Hauler (mockup); global-create claim superseded 2026-09-11
+- [2026-09-10-permit-association-scope-asset-job-vendor.md](../decisions/2026-09-10-permit-association-scope-asset-job-vendor.md) — **Superseded** — was Asset|Permit|Vendor create types; association exclusivity still applies via the superseding decision
+- [2026-09-11-permit-classes-job-only-until-sept-15.md](../decisions/2026-09-11-permit-classes-job-only-until-sept-15.md) — Permit classes general|job; hide Create Permit until after 15 Sep; only job-class via quote→project
+- [2026-09-11-outbound-po-subtypes-and-modal-fields.md](../decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md) — Outbound PO subtypes Permit|Vendor|Asset; modal fields; OPEN|CLOSED
+- [2026-09-11-quote-to-project-permits-plans-flow.md](../decisions/2026-09-11-quote-to-project-permits-plans-flow.md) — Quote→project permits/plans/PO flow locks from Ehtesham Looms
 
 ## Open questions
 

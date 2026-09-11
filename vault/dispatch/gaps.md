@@ -243,6 +243,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   no `mainBoomLength`"* (`ticket-labor-entries.repository.ts:327`), so the ticket side
   already treats an OL as allocating like an asset while being priced as its own code.
   Do not answer this question from the "nothing is built" premise.
+- **Update 2026-09-11: the `seed-data.ts` evidence above is gone on branch `fix/das-fixes`.**
+  Fouzan Shakil (CodingCops, `reference`) dropped the billing code type master, in migration
+  `20260911040000_drop_billing_code_types`. The `CWT` / `OPL` / `SUPP` type seeds were removed with
+  it (`git grep` on the branch finds none in `seed-data.ts`). See
+  [../decisions/2026-09-11-billing-code-type-master-dropped.md](../decisions/2026-09-11-billing-code-type-master-dropped.md).
+  Their values are preserved in
+  [../quotations/billing-code-types-dropped-2026-09-11.md](../quotations/billing-code-types-dropped-2026-09-11.md).
+  The `ticket-labor-entries` evidence is unaffected. The question itself stays open.
 - **Sources checked:** `ASSETS_DISPATCH_(Lisette-approved).xlsx`, `Dispatch PDF Blank
   Master.pdf` annotations, `crane-configurations.md`, `schema.prisma`
   (`Asset`, `SubCategoryAssociatedResource`, `SubJobLoadoutItem`, `UnitTypeResource`);
@@ -679,3 +687,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** the sidebar's field list; whether a set with no crane, or an allocation with a
   null `setResourceId`, gets a card of its own.
 - **Owner:** product team — Lisette Anzaldo.
+## Branch fix/das-fixes — pre-checklist plan / permit / PO links open in a new browser tab
+
+- **Status:** open
+- **Asked:** 2026-09-11 — PR review of branch `fix/das-fixes` (no ticket, no `.ai/aidlc/` folder); tcg-scrum escalation. Commit `712921dfb`.
+- **Question:** should a plan, permit or PO link on the DAS job card leave the board in place and open in a **new browser tab**? The branch intercepts the left-click and routes it through `window.open(href, '_blank')` (`apps/web/src/features/das/middle-section/jobs/utils/open-checklist-href.ts`), applied to the pre-checklist dropdown row, the slot badge and the All Permits modal. Answerable in a line, and it is the first place in the app where a link is forced off the SPA router.
+- **Sources checked:** **nothing written, anywhere.** Grep of all vault files for *"new tab"*, *"window.open"*, *"opens in a new"* returns three hits, none about DAS: two transcript turns about adding a **navigation** tab to the sidebar, and one `fcc-nexgen-quote-entry.md` line about an FCC window. [daily-allocation-system.md](daily-allocation-system.md):84-95 (`unverified`) — the only DAS specification, and the source of the pre-checklist story — says the card *"shows a pre-checklist with items: Assets Assigned, Resources Assigned, Lift Plan, Site Plan, Travel Plan green if complete, red if missing"* and that it *"recalculates in real time"*. It never says the items are links, let alone where a click lands. The conflict stub [daily-allocation-INDEX.md](daily-allocation-INDEX.md) adds nothing on navigation. `../decisions/` — the two post-save navigation notes ([2026-09-01](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md), [2026-08-20](../decisions/2026-08-20-post-save-navigation-convention.md), both `reference`, Fouzan Shakil) decide where **Save** lands and say nothing about link targets or tabs. Jira not checked (no Jira MCP in this session).
+- **Note:** the rationale in the commit message — *"leave the DAS board intact"* — is real (the board holds date, filters and drag state that a route change discards), and Lisette is the user who would lose it. That is an argument, not a source, and it applies to every link out of the board, not only these three.
+- **Blocked:** nothing — reversible. Recorded so that "DAS links open a new tab" does not become an app-wide convention by merge, and because it is the one behaviour on this branch a user notices immediately.
+- **Owner:** Lisette Anzaldo, as the DAS user whose board state this protects.

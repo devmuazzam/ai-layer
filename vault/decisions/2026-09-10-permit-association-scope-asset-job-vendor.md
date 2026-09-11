@@ -9,9 +9,11 @@ decided_by: >-
   owner sign-off. Recorded `status: reference` rather than `verified` for that
   reason — binding on implementation now, open to being overruled by TCG. Same
   basis as `2026-09-08-artifact-due-date-seeded-from-first-job-day.md`.
-status: reference
-conflicts_with: []
+status: superseded
+conflicts_with:
+  - 2026-09-10-permit-create-types-mockup-document-types.md
 resolves: projects-jobs/gaps.md#permits-can-no-longer-be-created-outside-the-artifact-flow--and-the-vault-says-they-can
+superseded_by: 2026-09-10-permit-create-types-mockup-document-types.md
 jira: []
 tags: [module/projects-jobs, module/assets, module/vendors-agencies, kind/decision, permits]
 entities: [Permit, Asset, Job, Vendor]

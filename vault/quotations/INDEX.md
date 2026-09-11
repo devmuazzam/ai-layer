@@ -24,6 +24,7 @@ Quotations, pricing, billing codes, mob/demob. Backend usecases: `quotations, qu
 | [billing-code-and-price-list.md](billing-code-and-price-list.md) | Billing code and price list punch list — **its yard question now answered** | 3.4 |
 | [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) | **The customer-facing rate card and T&Cs** — surcharge arithmetic, minimums, long-boom billing, special equipment, holiday schedule; **plus the second quote OM-36229, the 27 numbered contract terms and the Damage Waiver** | 26 |
 | [fcc-estimate-templates-by-job-type.md](fcc-estimate-templates-by-job-type.md) | **Where FCC keeps estimate defaults** — the `FMS_UNIT_TYPE_JOBTYPE_YARD` table map, the 100 Ton crane's `Hourly` and `Hourly w/ Mob` templates transcribed, sub-item vs parent semantics, what TCG has instead, what the seeder already threw away, and the delivered `…ResourceTypes_20260902.xlsx` extract — counts, confirmed FCC behaviours, and the four flagged anomalies | 37.1 |
+| [billing-code-types-dropped-2026-09-11.md](billing-code-types-dropped-2026-09-11.md) | **The billing code type master picklist, dropped 2026-09-11, and how to restore it**: the DDL and Prisma model, the 35 default seed types, the demo and FCC code → type links (the FCC values were in none of the three local sources checked; extraction steps given), every removed code path, and the restore recipe. Not the `typeCategory` **Type** field (accessible name "Billing code type"), which stays | 39.9 |
 
 ### Added by the 2026-09-04 Project Repository drop
 

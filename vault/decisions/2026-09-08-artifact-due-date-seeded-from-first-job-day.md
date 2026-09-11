@@ -13,6 +13,8 @@ decided_by: >-
 status: reference
 conflicts_with: []
 resolves: projects-jobs/gaps.md#artifact-due-date--the-jobs-first-scheduled-day-with-no-permit-lead-time
+related_decisions:
+  - 2026-09-11-quote-to-project-permits-plans-flow.md
 jira: []
 tags: [module/projects-jobs, module/dispatch, kind/decision, permits, lift-plans, scheduling]
 ---
@@ -96,6 +98,11 @@ Clause 2 is also already built: `dueDate` is optional and nullable on both updat
 The decision fixes the **seed** and confirms **editability**. It does not touch the
 lead-time question the gap also raised, and that residue is now tracked as its own open entry:
 [`../projects-jobs/gaps.md#latest-permit-submission--should-the-app-compute-or-warn-on-a-lead-time-deadline-and-from-which-dataset`](../projects-jobs/gaps.md#latest-permit-submission--should-the-app-compute-or-warn-on-a-lead-time-deadline-and-from-which-dataset).
+
+**UI helper copy (added 2026-09-11, does not change the seed rule):** Ehtesham’s Loom
+walkthrough requires that when a job schedule exists, due date on **all plans and permits**
+shows that the job schedule starts from that date — see
+[2026-09-11-quote-to-project-permits-plans-flow.md](2026-09-11-quote-to-project-permits-plans-flow.md).
 
 Specifically **still open**:
 
