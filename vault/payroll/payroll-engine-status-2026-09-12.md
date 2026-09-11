@@ -1,84 +1,111 @@
 ---
-title: Payroll engine — what is done and what is not, 2026-09-12
-source: implementation-audit-2026-09-11.md re-audit, executed against app main e11e8cd60
+title: Payroll engine status — rules written vs rules built, 2026-09-12
+source: consolidation of decisions/, rules/PAY-*, implementation-audit-2026-09-11.md (re-audit 2026-09-12), and the engine executed on app main e11e8cd60
 migrated: 2026-09-12
 updated: 2026-09-12
 status: reference
 conflicts_with: []
 jira: []
-tags: [module/payroll, kind/reference, payroll-rules, as-built, status]
+tags: [module/payroll, kind/reference, payroll-rules, audit, as-built, status]
 part_of: payroll/INDEX.md
 ---
 
-# Payroll engine — done / not done
+# Payroll engine status — 2026-09-12
 
-**As of app `main` `e11e8cd60` (2026-09-12).** Plain checklist for the dev. The evidence,
-line numbers and client citations are in
-[implementation-audit-2026-09-11.md](implementation-audit-2026-09-11.md); this page only says
-which side of the line each rule is on. ✅ = built and executed against the client's worked
-example · ☑️ = built, read but not executed · ❌ = not built or wrong · ❓ = waiting on the client.
+**What this is.** One page answering *"are the rules written, and does the engine do them?"* as
+of today. Every row points at the source that settles the rule and the code that implements it.
+Money is at an **$80.00 base** unless stated. **Describes code; never a source for a spec.**
 
-## Done ✅
+**Engine:** `packages/payroll-engine` on app `main` `e11e8cd60` (PR #531 merged), rebuilt and
+executed; 86/86 tests pass. The detailed rule-by-rule comparison is
+[implementation-audit-2026-09-11.md](implementation-audit-2026-09-11.md) (re-audited this
+morning); this page applies **today's three client rulings** on top of it.
 
-| Rule | What the engine does |
-| --- | --- |
-| Pay week | Saturday–Friday |
-| Rounding | Start down, end up, 30-min; half-hour slices; one multiplier per slice |
-| 06:00–17:00 window | Pre-06:00 is OT and does not eat the 8-h ST bank; 12-h DT on elapsed hours |
-| Shift starting before midnight | No ST after midnight — 22:00→14:00 = 12 OT + 4 DT |
-| Saturday / Sunday | Saturday all OT then DT after 12 h; Sunday DT |
-| Holidays | 9 L12 holidays at 3×; Sunday → Monday observed; Christmas/New Year on Saturday → Friday |
-| Holiday 8-h minimum | Top-up to 8 h at 3×, per calendar date, across entries |
-| Special Saturday | First Saturday after the first Friday of June/December, 2×, 8-h minimum |
-| Cross-midnight upgrade | Hours after midnight take the higher day type; spill into a holiday is holiday work + minimum |
-| Cumulative OT/DT across tickets | Entries < 8 h apart continue the ladder (Corrina's "starts in the bucket the previous shift ended in") |
-| Boom / long boom | Adder into the rate, multiplied; build-up + boom + break-down windows only; slice fully inside; 4-h boom minimum, adder only |
-| Foreman / military / lattice | Into the rate, multiplied per bucket; lattice Group 6+, operator/oiler split; military all employees |
-| Shift differential | $3 / $4 into the rate, multiplied; +1.0 h / +1.5 h hours-add at the last slice's multiplier |
-| Daily 4-h minimum | Per calendar day; pays at the multiplier the shift ended on; admin exempt |
-| Rest period | 8 h required; 1.5× floor, 2× once the chain reaches 12 h; only the delta paid; guarantee hours never trigger it |
-| Meals / WTL | Grouped across gapless tickets; taken meal deducts the priced slice incl. boom; worked-through adds 0.5 h at a 2× floor on base + shift (3× on a holiday); no lunch token → nothing added or deducted |
-| Non-union hourly | Daily 8/12 → 7th day → weekly > 40, in Brian's order, six reasons preserved; no union components |
-| Salary | Excluded from labor pricing |
-| Rate resolution | Blocked rate → $0 + issue, never a guess; craft-locked secondary override; L12 mechanic priced as field with a warning |
-| SYS employees | Excluded |
+## What changed today
 
-## Built but not usable ☑️
-
-| Rule | Why it pays nothing today |
-| --- | --- |
-| Subsistence $85 / $200 | Engine is right, but `Job.subsistenceDistanceMiles` and `subsistenceHoldover` have **no DTO and no UI** — every job prices $0 until a screen sets them |
-| Subsistence on unticketed holdover days | Deliberately not built — needs a capture mechanism for which employee / which days |
-
-## Wrong ❌ (new, introduced by the 2026-09-11 fix pass)
-
-| # | Defect | Money |
+| Ruling | Who | Effect |
 | --- | --- | --- |
-| N1 | Shift **starting on a holiday and running past midnight** is priced 12 h at 3× **and** given a 6-h holiday minimum — 18 h paid for 12 worked. The minimum measures calendar-date hours while the pricing keeps the holiday type past midnight | **+$1,189** overpay per occurrence |
-| N2 | 2nd/3rd-shift **hours-add fires once per ticket**, not once per shift — a night split over two tickets gets +2 h | **+$104** overpay per extra ticket |
+| Holiday minimum is **8 hours total** — 2 worked → 6-hour top-up | Union BA via Corrina Bustos, in writing | Brian's "controversial" flag answered his way. Engine already does this. |
+| A holiday-start shift **reverts at midnight** to the applicable rate; the shift stays continuous | Union BA via Corrina | No holiday shift-start rule. **Engine does the opposite** (keeps ×3 through) — N1. |
+| **Guaranteed holiday hours count toward the 12-hour DT mark** — 22:00→10:00 = 8 TRI / 4 OT / 6 DT | Union BA via Corrina; Corrina confirmed the 10am version: *"yes your example is correct"* | Contradicts Brian's app, the legacy engine and ours. New engine change. |
 
-## Not built — never asked for by the client, MLA/FRD only
+Decision note: [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md).
 
-2-h reporting pay (PAY-039) · crane-remains-on-job 4/6/8 tree (PAY-041) · first-day
-travel/assembly exception (PAY-042) · hazmat $2 (PAY-038) · injury-day pay (PAY-056) ·
-higher-rate-for-the-day (PAY-015). Leave until asked.
+## Rules written — settled by a named human, with the engine's status
 
-## Waiting on the client ❓ — do not build either way
+| Rule | Settled by | Engine | Verified |
+| --- | --- | --- | --- |
+| **ST/OT/DT ladder, after-06:00 start** — 8 ST, OT, DT after 12 | Corrina 2026-09-10 (24:14–24:49) | ✅ | Ran 04:00→23:30 = 8/4/7.5 |
+| **Pre-06:00 start** — pre-window hours are OT and do not spend the ST bank | Corrina 2026-09-10; Brian 8:42 | ✅ | Ran 00:00→14:00 = 6/6/2 |
+| **Before-midnight start** — no ST at all; 12 OT then DT | Corrina 2026-09-10 (15:18–17:22) | ✅ on 22:00→14:00 = 0/12/4 | Ran. Built on the **categorical** reading (`afterStartDate` rung): 23:00→13:00 = 0/12/2. The legacy mechanical reading gives 1 ST. **Corrina has not ruled on 23:00→13:00** — see open items |
+| **Nothing above DT except a holiday** | Corrina 2026-09-10 (30:44) | ✅ | — |
+| **Rest chain** — under 8 h off, the new shift starts in the bucket the previous ended in, fills to 12, then DT; gap length irrelevant | Corrina 2026-09-10 (25:21–29:20) | ✅ | Ran 3-entry chains, matches |
+| **Rest premium = ×1.5 floor, ×2.0 past 12 chain hours, increase only** | Legacy config; Brian 2026-09-07 withdrew the DT-first reading | ✅ | Rest-forced DT slice pays $0 premium, as intended |
+| **Work chains stitch only back-to-back** (meal grouping); the 30-min stitch was a bug | Brian 2026-09-09, `verified` | ✅ meals (`groupGaplessEntries`, gap 0) · ⏸ rest stitch still 30 — parked in the decision note (A7) | Ran 3 h + 3 h back-to-back → one meal |
+| **Craft adders (boom, lattice, foreman, military) go into the rate and ride the multiplier** | Brian 2026-09-10 (21:48), Corrina concurring; confirmed in writing 2026-09-11 | ✅ | Ran foreman 8 ST + 4 OT = $42.00; boom OT half-hour = $63.00 |
+| **Boom pay only on captured build-up/work/breakdown**; travel is not boom time | Kyle Harlow 2026-09-03 | ✅ | `boomWindows` / `sliceIsOnBoom` |
+| **Taken meal deducts the whole priced half-hour, in its bucket, boom included** | Brian's scenario #1 workbook, method confirmed 2026-09-11 | ✅ | Ran: $42.00 ST+boom, $60.00 OT — to the cent |
+| **Worked-through meal** — deduct, then +0.5 h at ≥ ×2 on base+shift, boom excluded | MLA Meal Periods §1; four-source resolution in PAY-047 | ✅ | `meal-periods.ts` |
+| **"Paid straight through" is not built, in any verbiage** | Wes Staley 2026-09-03, `verified` | ✅ (absent by design) | — |
+| **Self-signed WTL only with a stated reason** | Corrina 2026-09-03 (12:59) | 🟡 capture-side rule, mobile | — |
+| **Holiday: all work at ×3, 8-hour minimum, fires on any contact incl. spill-in, per calendar date** | Corrina 2026-06-11, 2026-09-04 (`verified`), 2026-09-10 (34:34) | ✅ | Ran Tue 16:00→Hol 02:00 = 1 ST / 7 OT / 2 H3X + 6 h top-up |
+| **Holiday minimum = 8 total (top-up), not 8 additional** | Union BA via Corrina 2026-09-12 | ✅ | Same run — 6 h top-up on 2 h worked |
+| **Holiday-start shift reverts at midnight; continuous shift preserved** | Union BA via Corrina 2026-09-12 | ❌ **N1** — engine keeps ×3 through and adds the top-up | Ran Hol 22:00→10:00 = **18 TRI $4,320** vs ruling $3,360 |
+| **Guaranteed holiday hours advance the 12-hour DT mark** | Union BA via Corrina 2026-09-12, confirmed on 22:00→10:00 | ❌ **new** — top-up is a standalone component, advances nothing | Ruling: 8 TRI / 4 OT / 6 DT |
+| **Cross-midnight into Sat/Sun/holiday — higher rate governs, never a downgrade** (DT earned by hours does not drop to Sat ×1.5) | Corrina 2026-09-04, `verified` | ✅ upward | Ran Fri 22:00→Sat 14:00 = 12 OT / 4 DT |
+| **Daily 4-h minimum at the rate the shift ended on**, per calendar day | Corrina 2026-06-11; Brian/Corrina 2026-09-10 (36:07) | ✅ | Audit re-run A5, A6 |
+| **Special Saturday** = first Saturday after the first Friday, June & December, ×2, 8-h minimum | MLA; Brian 2026-08-24 | ✅ | Audit re-run B2, B6 |
+| **Holiday observance shifting** (Sun → Mon; Christmas/New Year on Sat → Fri) | MLA | ✅ | Audit re-run B5 |
+| **Shift differential $3 / $4, into the rate; 7 → 8 and 6½ → 8 hours-add** | MLA Art. III Shifts; Brian 2026-08-24 | ✅ rates · ❌ **N2** hours-add fires per ticket, not per shift | Audit re-run |
+| **Non-union hourly: daily 8/12 → 7th day → weekly 40, in that order, reasons preserved** | Brian 2026-09-07, written, 9 scenarios | ✅ | Audit re-run A9 |
+| **Non-union is admin/yard only; every dispatched job is L12; no non-union mechanics** | Corrina 2026-09-10 (38:20, 50:43) | 🟡 scope statement — work-order and salaried populations not modelled | — |
+| **Subsistence $85 (45–77.5 mi) / $200 (>77.5 mi), per job not per craft** | 2026-08-20 SME call; decision 2026-09-01 | 🟡 built, **unreachable** — no DTO/UI sets the job fields (B4) | — |
+| **Anniversary check: L12 vacation payout, 40 h at regular rate, 1 yr + 1200 h; preserved as entered, exempt from every rule; special-earning policy, not a labor row** | MLA Vacation §1; Brian's spec + as-built app 2026-09-11; FCC pattern ruled out for the ERP | ❌ not built — special-earnings model undecided (flag / entity / ledger) | — |
+| **SICK is a special earning** (falls through to NORMAL_WORK in Brian's app today; being fixed) | Brian 2026-09-11 | ❌ not built | — |
 
-| Question | Who owes it |
-| --- | --- |
-| Holiday-start shift past midnight — stays 3×, or flips to weekday with continuous accumulation (Brian: 8 TRI + 10 OT)? **N1 sits on this case** | Corrina → union rep |
-| Holiday minimum: 8 hours **total** (engine, legacy, Brian) or 8 **additional** (Corrina's one sentence)? | Corrina |
-| Rest-chain stitch: back-to-back only (Brian, 2026-09-09) vs the 30-min tolerance the engine copied | CodingCops to ask; decision note parks it |
-| Paid time starts at the **scheduled dispatch start** (Kyle/Joe) vs the crew's punch-in the engine uses; schedule field still named `leaveYardTime` | Kyle / Joe |
-| Rest-chain depth — previous entry only (Corrina) vs walk back to an 8-h gap (Brian) | unreconciled |
-| Do WTL added hours count toward the 12-h DT escalation? | Corrina |
-| Lunch thresholds 16/21.5 vs 16.5/22; first missed lunch absorbed vs added | Brian owes an update |
-| 2nd shift "paid as if daytime" — does the 06:00–17:00 window apply on a declared night shift? | not yet asked |
-| Non-union holidays, PTO, sick, shift differential | Brian: "no finalized rules" |
+## Rules open — no named human has settled them
 
-## Next steps, in order
+| Question | Owner | Why it matters | Where |
+| --- | --- | --- | --- |
+| **23:00 → 13:00** — categorical (0 ST) or mechanical (1 ST at 06:00–07:00)? The engine chose categorical | Corrina | One hour per such shift; decides the `afterStartDate` rung's correctness | gaps → *The before-midnight bucket rule* |
+| **Do guaranteed hours also advance the rest trigger, weekly OT, or meal spans?** BA ruled on the daily ladder only; client has twice said added hours don't touch the rest rule | Corrina / Brian | Scope of today's engine change | decision note 2026-09-12 |
+| **Sunday-start → Monday**: does Sunday ×2 carry past midnight? Same principle as the holiday ruling says no (2 DT + 10 OT); engine pays 12 DT | Corrina — one line | $400 per such shift | this page (ran it) |
+| **Rest-chain stitch: 30 min or 0** in the ERP, where every job is its own ticket | CodingCops proposal → Brian | Two jobs a minute apart would rest-force each other at 0 | A7; decision 2026-09-09 |
+| **Rest-chain depth** — walk back to an 8-h gap (Brian) vs previous entry only (Corrina agreed on the call) | Brian | Three or more consecutive short rests | PAY-045 |
+| **Paid time starts at dispatch start time, not punch-in?** | Kyle / Joe | Early taps pay from the rounded punch | A11; decision 2026-09-03 |
+| **Meal thresholds** 16.0/21.5 vs 16.5/22; three or four lunches | Corrina | Third/fourth meal is DT money | field-ops + payroll gaps |
+| **Scenario `#1` written instructions; break start+end pair; meal in OT while boom runs; do taken meals reduce the 12/40 clocks** | Brian | Unblocks `#2`/`#3` | payroll gaps |
+| **Special-earnings model, member list (policy table), approval levels, CA bonus regular-rate** | Brian (table), Corrina (approvals), counsel (bonus) | Anniversary, sick, PTO, commissions, bonuses | gaps → *Special earnings* |
+| **Anniversary: which craft rate is "regular rate"; ERP proposes eligibility or manual; prorated layoff path; "separate check" = separate ADP payment?** | Corrina / Brian | $ per check | gaps → *Anniversary Checks* |
+| **Work-order and salaried payroll** — the two populations the ERP has not modelled | Corrina / Kyle | Bounds the parallel run | gaps → *three populations* |
+| **Paper tickets as a declared fallback; offline capture scope** | Kyle / Melissa; CodingCops | Capture side | field-ops gaps |
 
-1. Fix N1 and N2 (small, both overpay).
-2. Add the subsistence fields to the job DTO/UI so PAY-048 can pay.
-3. Send Corrina the first four ❓ questions in one message.
+## Engine defects open today
+
+| # | Defect | Per occurrence | Fix |
+| --- | --- | --- | --- |
+| **N1** | Holiday-start shift keeps ×3 past midnight **and** adds the 6-h top-up | **+$960** overpay on 22:00→10:00 (engine $4,320 vs ruling $3,360); +$640 on 22:00→06:00 | `day-type.ts` `sliceDayType`: post-midnight slices take `max(cumulative bucket, own calendar day)`, not the anchor day's premium |
+| **new** | Holiday top-up hours don't advance the 12-hour DT counter | Part of the same $ — 6 h priced OT that should be DT on 22:00→10:00 | `guarantee.ts` / `calculate.ts`: feed the top-up hours into the cumulative counter at the point the holiday ends |
+| **N2** | 2nd/3rd-shift hours-add fires per ticket | +$104 per extra ticket on a night shift | Fire once per calendar day / gapless group, on the last entry |
+| — | Sunday-start keeps ×2 past midnight | +$400 on Sun 22:00→Mon 10:00 | Same fix as N1, once Corrina confirms the principle extends |
+| **B4** | Subsistence unreachable — no UI for `subsistenceDistanceMiles` / `subsistenceHoldover` | –$85 to –$200 per eligible day | Job form fields + DTO |
+| — | Before-midnight built on the categorical reading | ±1 h on 23:00-type starts if Corrina says mechanical | Await her answer; no change until then |
+
+**Regression rows for the N1 fix, all with confirmed answers:** Hol 22:00→06:00 = 8 TRI / 4 OT /
+2 DT ($2,720) · Hol 22:00→10:00 = 8 TRI / 4 OT / 6 DT ($3,360) · Tue 16:00→Hol 02:00 = 1 ST /
+7 OT / 8 TRI (unchanged) · Hol 04:00→23:30 = 19.5 TRI (unchanged) · Fri 22:00→Sat 14:00 = 12 OT /
+4 DT (unchanged).
+
+## Not on any list — never spoken by the client, not in the legacy app
+
+2-h reporting pay (PAY-039) · crane-remains-on-job 4/6/8 (PAY-041) · first-day travel/assembly
+exception (PAY-042) · hazmat $2 (PAY-038) · injury-day pay (PAY-056) · higher-rate-for-the-day
+(PAY-015). Leave until asked.
+
+## Where the rules live
+
+- Settled: [../decisions/](../decisions/) — one note per ruling, `status: verified` where a named
+  human decided it on record.
+- Per rule: [rules/](rules/INDEX.md) `PAY-001`–`PAY-073`, each with its sources and open items.
+- Open: [gaps.md](gaps.md) — `grep -n '^- \*\*Status:\*\* open' gaps.md`.
+- Engine vs rules, line by line: [implementation-audit-2026-09-11.md](implementation-audit-2026-09-11.md).
