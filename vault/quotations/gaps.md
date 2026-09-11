@@ -1949,3 +1949,47 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Related, do not answer separately:** whether a visible *"Coming Soon"* tab is acceptable at all is (b) of [../accounting/gaps.md → *Project detail Accounting tab — what it shows, and what it shows before the module exists*](../accounting/gaps.md#project-detail-accounting-tab--what-it-shows-and-what-it-shows-before-the-module-exists) — app-wide, open, owner Fouzan Shakil. This change is one more instance of it.
 - **Blocked:** whether this change ships the view tab and the edit-only step; the data model of any job-walk build (quote-owned, or a separate record linked to customer / job site / quote).
 - **Owner:** Ryan Adams (author of the Job Walk Sheet; described sheet → quote on 2026-06-25), with Melissa McNutt (said on tape it should be part of the quote). The placeholder half: Fouzan Shakil, per the accounting entry.
+
+## Branch feat/quotation-manual-mark-won — manual Won from Draft, auto-void on Won, Void renamed Cancel
+
+- **Status:** open
+- **Asked:** 2026-09-12. Raised in the PR review of branch `feat/quotation-manual-mark-won` and escalated by tcg-scrum. No ticket, no `.ai/aidlc/` folder.
+  - The asks came from the implementing developer (git `devmohsinakram`, overlay `abdulrehmanbcsf11`) in his own Claude Code session. He cites no client or PM as their origin.
+  - The engagement directory gives neither identity a product role. So **no decision note was written**: the instructions are the change under review, not an answer to it.
+- **Question:** four parts, each answerable in a line.
+  - **(a) Won from Draft.** May a salesperson mark a **`DRAFT`** quote Won, meaning one never approved or sent in the system? If yes, is the manager-approval gate enough (`assertSendable`, the $50,000 threshold), or must the quote reach `INTERNAL_APPROVED` first? As built, a Draft under the threshold goes to Won with **no approval at all**.
+  - **(b) Live envelope.** If a quote is marked Won while a DocuSign envelope is still live, which of these should happen?
+    1. Void the envelope automatically.
+    2. Refuse until the salesperson voids it.
+    3. Leave the envelope live.
+
+    If (1): may the customer see the void reason *"Quotation marked as Won manually"*? The branch does (1), with that text.
+  - **(c) Visibility.** Should **Mark as Won** remain available after a DocuSign send, and on `DRAFT` / `CHANGES_REQUESTED`? Web previously showed it only on `INTERNAL_APPROVED` quotes never sent. Mobile (`WON_ELIGIBLE_STATUSES`) keeps the old list, so the two surfaces now disagree.
+  - **(d) Label.** Should the envelope action read **Cancel** instead of **Void**? It still voids.
+- **Sources checked:** **nothing written describes a manual Mark as Won, from any status.**
+  - [quotation-flow-process.md](quotation-flow-process.md) (`unverified`; one of four candidates in the [quotations-INDEX.md](quotations-INDEX.md) conflict), Steps 16–27: Draft → internal approval → send → *"Customer approves and signs"* → Project. This is the happy path; it neither permits nor forbids a manual Won.
+  - For (a), two approval rules disagree:
+    - [tcg-creating-quotes-sop.md](tcg-creating-quotes-sop.md) §7 (`unverified`): supervisor approval before a quote reaches the customer is *"unconditional"*.
+    - [../erp-review-log.md](../erp-review-log.md) → *Quote approval* (`unverified`, AI-extracted): approval is needed only below price-list rates, plus a $50,000 flag.
+  - Signing and conversion:
+    - [../projects-jobs/project-module/01-create-and-track-projects.md](../projects-jobs/project-module/01-create-and-track-projects.md):29 (`unverified`): Create Project is visible *"when qoutation is signed"*. It does not say what happens for a Won quote with no signature.
+    - [../projects-jobs/project-module/06-client-reviews-and-signs-quotation.md](../projects-jobs/project-module/06-client-reviews-and-signs-quotation.md) (`unverified`): nothing about the sender withdrawing an envelope.
+  - Legacy practice, not a rule:
+    - FCC has a manual `WON` status code ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md), `unverified`).
+    - HubSpot requires *"Closed Won"* once the outcome is known ([hubspot-sales-playbook.md](hubspot-sales-playbook.md), `unverified`).
+    - Neither says from which states. FCC's void path is undocumented (fcc-nexgen-quote-entry.md §4).
+  - For (d): [quotations.md](quotations.md):44 says *"`Envelope voided` - it should be user friendly"*, and [quotation.md](quotation.md):20–21 asks for void component and page changes. Both are `unverified`, both are conflicting punch lists, and neither names the button or "Cancel".
+  - `decisions/`: nothing on mark-won or voiding.
+  - Transcripts: no hit for a manual Won.
+  - Jira was not checked (no MCP).
+  - `qa-automation/docs/testinyCases/quotations.md` QUOT-011 step 3 (*mark-won on DRAFT → 409*) records the old code, not a spec. The branch breaks it.
+- **Related, already open. Do not answer separately:**
+  - [Q-10](#q-10--status-is-writable-on-create-and-update): transitions only via action endpoints.
+  - [Q-11](#q-11--archive-unarchive-upload-and-signature-routes-lack-permission-checks): who may void.
+  - [Q-13](#q-13--syncfromsigningreturn-can-resurrect-a-locally-voided-envelope): *"should local void always void the remote envelope too?"*, the same call as (b).
+  - [Q-16](#q-16--markassigned-accepts-declined-and-changes_requested): Won without customer acceptance.
+- **Blocked:** whether `feat/quotation-manual-mark-won` merges as-is. Parts differ in weight:
+  - (b) is visible to the customer.
+  - (a) loosens an approval control.
+  - (c) and (d) are reversible UI.
+- **Owner:** product team. Ryan Adams (Sales Manager) for (a)–(d); Brian Petros for the approval half of (a).
