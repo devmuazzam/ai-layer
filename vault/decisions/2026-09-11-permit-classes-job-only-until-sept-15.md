@@ -73,6 +73,11 @@ general|job is the top-level class.
   for job artifacts.
 - **Related:** quote→project flow detail in
   [2026-09-11-quote-to-project-permits-plans-flow.md](2026-09-11-quote-to-project-permits-plans-flow.md).
+- **Extended 2026-09-11 to tracking:**
+  [2026-09-11-track-permits-job-only-until-sept-15.md](2026-09-11-track-permits-job-only-until-sept-15.md)
+  (Fouzan Shakil). Track Permits lists job-linked permits only until after 15 Sep. Existing
+  asset- and vendor-linked permits get no status actions until then, which is a known, accepted
+  gap.
 
 ## What this does not settle
 

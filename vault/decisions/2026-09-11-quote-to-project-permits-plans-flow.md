@@ -11,6 +11,7 @@ decided_by: >-
   meetings/2026-09-11-ehtesham-quote-to-project-permits-plans-looms.md.
 status: reference
 conflicts_with: []
+partially_superseded_by: decisions/2026-09-11-permit-approval-requires-linked-po.md  # point 14, approval only
 resolves:
   - projects-jobs/gaps.md#artifact-coverage-model--individual-vs-combined-and-whether-the-choice-is-permanent
   - projects-jobs/gaps.md#open-as-the-starting-trackable-status-and-the-retirement-of-approved_by_others
@@ -78,8 +79,12 @@ Confirms and extends
 12. **Upload application** (required) → status becomes application submitted.
 13. Then **Upload approved permit** / final approved permit: permit cost,
     application number, date received (auto current date, editable).
-14. Purchase Order on the permit form is **not required** in the current flow
-    (two paths: search/attach an existing PO, or create-and-attach). Removing a
+14. ~~Purchase Order on the permit form is **not required** in the current flow~~
+    — **superseded for approval 2026-09-11** by
+    [2026-09-11-permit-approval-requires-linked-po.md](2026-09-11-permit-approval-requires-linked-po.md)
+    (Fouzan Shakil): approving a permit **requires a linked PO**, except
+    `TRAVEL_ANNUAL_PURPLE_PERMIT`. **Still stands:** the permit form's two PO
+    paths (search/attach an existing PO, or create-and-attach), and removing a
     linked PO restores the create option.
 
 ### PO create/attach (from permit)
@@ -112,5 +117,8 @@ Confirms and extends
 - Whether Individual/Combined applies identically to Travel/FAA (demo focused
   on lift plans; checklist still configures those permit kinds).
 - Whether coverage mode is editable after conversion.
-- Whether PO becomes required again for approval after 15 Sep / general work.
+- ~~Whether PO becomes required again for approval after 15 Sep / general work.~~
+  **Settled 2026-09-11:** approval **keeps** requiring a linked PO, except
+  `TRAVEL_ANNUAL_PURPLE_PERMIT`. See
+  [2026-09-11-permit-approval-requires-linked-po.md](2026-09-11-permit-approval-requires-linked-po.md).
 - Lead-time / `Latest Permit Submission` computation (still open).

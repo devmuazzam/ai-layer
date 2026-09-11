@@ -243,6 +243,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   no `mainBoomLength`"* (`ticket-labor-entries.repository.ts:327`), so the ticket side
   already treats an OL as allocating like an asset while being priced as its own code.
   Do not answer this question from the "nothing is built" premise.
+- **Update 2026-09-11: the `seed-data.ts` evidence above is gone on branch `fix/das-fixes`.**
+  Fouzan Shakil (CodingCops, `reference`) dropped the billing code type master, in migration
+  `20260911040000_drop_billing_code_types`. The `CWT` / `OPL` / `SUPP` type seeds were removed with
+  it (`git grep` on the branch finds none in `seed-data.ts`). See
+  [../decisions/2026-09-11-billing-code-type-master-dropped.md](../decisions/2026-09-11-billing-code-type-master-dropped.md).
+  Their values are preserved in
+  [../quotations/billing-code-types-dropped-2026-09-11.md](../quotations/billing-code-types-dropped-2026-09-11.md).
+  The `ticket-labor-entries` evidence is unaffected. The question itself stays open.
 - **Sources checked:** `ASSETS_DISPATCH_(Lisette-approved).xlsx`, `Dispatch PDF Blank
   Master.pdf` annotations, `crane-configurations.md`, `schema.prisma`
   (`Asset`, `SubCategoryAssociatedResource`, `SubJobLoadoutItem`, `UnitTypeResource`);

@@ -247,6 +247,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   consumers enumerated in `SCRUM-TZ` §12 Q11 — two `qa-automation` seeds and a hand-mirrored web
   type among them, none of which a gate checks. **The entry still stays open:** (a)–(d) remain
   unanswered, and this decision says nothing about any of them.
+- **Update 2026-09-11: item (b) no longer has an object in the current build.** Fouzan Shakil
+  (CodingCops, `reference`) dropped the `billing_code_types` table, the `BillingCodeTypeStatus`
+  enum and `billing_codes.billing_code_type_id`, in migration `20260911040000_drop_billing_code_types`
+  on branch `fix/das-fixes`. See
+  [../decisions/2026-09-11-billing-code-type-master-dropped.md](../decisions/2026-09-11-billing-code-type-master-dropped.md).
+  The default seeds `seedTenantDefaults` provisioned for it are recorded for re-seeding in
+  [../quotations/billing-code-types-dropped-2026-09-11.md](../quotations/billing-code-types-dropped-2026-09-11.md).
+  Whether TCG needs the lookup at all is a CodingCops call, not a TCG one, so (b) comes back if
+  TCG overrules it. **(a), (c) and (d) are unaffected. The entry stays open.**
 
 
 
@@ -1076,3 +1085,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   sign-off on the public endpoint shipping at all.
 - **Owner:** product team — Corrina Bustos and Brian Petros, in the same session that owes the
   department/role/capability list.
+
+## Branch fix/das-fixes — State beside City, Save with no changes, Back in multi-step forms
+
+- **Status:** open
+- **Asked:** 2026-09-11 — PR review of branch `fix/das-fixes` (no ticket, no `.ai/aidlc/` folder); tcg-scrum escalation. Filed here as app-wide form conventions, alongside [*Must an entity picker search the server, or only offer a search box?*](#must-an-entity-picker-search-the-server-or-only-offer-a-search-box). Commits `c8259de19`, `405fac65c`, `e88fc7115`.
+- **Question:** three parts, each answerable in a line. **(a)** Should a **State** select sit beside City wherever City stands alone? The branch adds one to the permit create/edit forms (global, project and asset routes) and adds a State filter next to City on the DAS and Dylen-dashboard job lists. It does not change the shared address forms. **(b)** When Save is pressed on an edit form with **nothing changed**, what should happen: close as if saved, stay open with a "no changes" notice, or not be pressable at all? The branch closes the form in the admin edit-user modal, the customer job-site form, and the Settings loss-reasons and reference-code editors. **(c)** Should multi-step forms have a **Back** (previous-step) button? The branch adds one to the quotation wizard, customer wizard, asset create/edit, employee create, vendor form and yard form.
+- **Sources checked:** **(a)** [*Which countries, states and cities may an address name?*](#which-countries-states-and-cities-may-an-address-name) and [customers/gaps.md → *Changing State clears City…*](../customers/gaps.md#changing-state-clears-city--and-a-saved-out-of-state-city-is-now-kept-rather-than-cleared) cover the value sets and the State→City dependency on the shared address molecule. Neither covers adding State where City stands alone. The permit form's fields in [../projects-jobs/project-module/05-create-and-track-permits.md](../projects-jobs/project-module/05-create-and-track-permits.md):34 (`unverified`) are *"auto-generated ID, asset, job link, type, agency, fees, and status"*. [../decisions/2026-09-11-quote-to-project-permits-plans-flow.md](../decisions/2026-09-11-quote-to-project-permits-plans-flow.md) point 7 says *"Agency and city/area auto-populate"*. Neither mentions State. FCC screens have City · State · Zip blocks, but that is the legacy system, not a requirement. **(b)** [../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) (:29, :71) and [../decisions/2026-08-20-post-save-navigation-convention.md](../decisions/2026-08-20-post-save-navigation-convention.md) (:56-58), both `reference` and both by Fouzan Shakil, decide the success path only and leave cancel and the modal/wizard carve-outs undecided. Neither mentions saving with no changes. Adjacent: [assets/gaps.md → *Save and Cancel hidden until a section is dirty…*](../assets/gaps.md#save-and-cancel-hidden-until-a-section-is-dirty--intended-or-an-affordance-nobody-finds) asks whether Save should be visible at all before a change. **(c)** [../erp-review-log.md](../erp-review-log.md):109 (`unverified`; Melissa McNutt, 2026-05-02, Employees item 3): *"There is no back button to return to the previous page"*. That covers Employees only, and "previous page" is not necessarily "previous step". [../customers/customer.md](../customers/customer.md):117, :123 and [../vendors-agencies/vendors.md](../vendors-agencies/vendors.md):38 mention Next and *Save & Next*, never Back. Nothing covers the quotation or customer wizards. Jira not checked (no Jira MCP in this session).
+- **Blocked:** nothing hard, since all three are reversible UI changes. Recorded so that merging them does not quietly turn them into convention.
+- **Owner:** product team: Fouzan Shakil for (b), as owner of the post-save convention; Melissa McNutt for (c), since she raised the back button; Lisette Anzaldo for the DAS-filter half of (a).

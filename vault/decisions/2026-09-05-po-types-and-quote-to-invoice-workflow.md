@@ -134,6 +134,11 @@ after the job exists — and when a permit is required, the permit comes **first
   before the PO is raised from it — which the build already does — not about approval.
   Ehtesham’s 2026-09-11 Loom walkthrough treats PO as **optional** on the current permit form —
   see [2026-09-11-quote-to-project-permits-plans-flow.md](2026-09-11-quote-to-project-permits-plans-flow.md).
+  **Update 2026-09-11:** that Loom point is superseded for approval. Fouzan Shakil (CodingCops,
+  `reference`) keeps the gate: approval requires a linked PO, except
+  `TRAVEL_ANNUAL_PURPLE_PERMIT`. See
+  [2026-09-11-permit-approval-requires-linked-po.md](2026-09-11-permit-approval-requires-linked-po.md).
+  That is still a CodingCops call, so Brian's confirmation remains the open item.
 - **The `area`, `city`, `PO fee`, `discount %` and `invoice #` fields** now built and mocked
   up. Still unspecified as a full field dictionary. The **locked modal field set** for outbound
   create/attach is PO type, PO number, PO items, Agency (not Vendor), invoice attachment —
@@ -164,6 +169,9 @@ after the job exists — and when a permit is required, the permit comes **first
    praise for rule-gated drag-and-drop in general, not a decision on this rule. The 2026-09-05
    UI mockup carries the same gate verbatim: *"Attach or create a PO before approving this
    permit."* Mockup, build and demo agree; the diagram is silent. **Still needs Brian.**
+   (Since 2026-09-11 the build keeps the gate on Fouzan Shakil's call, recorded in
+   [2026-09-11-permit-approval-requires-linked-po.md](2026-09-11-permit-approval-requires-linked-po.md).
+   That note is CodingCops' decision, not Brian's.)
 2. **The vendor-PO sub-type — settled 2026-09-11 for the outbound document.** Brian's Type 1 /
    Type 2 remain two different *objects* (customer-supplied number vs document we issue). The
    subtype dropdown *within* outbound POs is now locked as `PERMIT` | `VENDOR` | `ASSET` —

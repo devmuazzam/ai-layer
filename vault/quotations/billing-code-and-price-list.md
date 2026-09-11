@@ -5,6 +5,14 @@ migrated: 2026-08-10
 updated: 2026-09-04
 status: unverified
 conflicts_with: [meetings/2026-06-26-discussion-points-with-tcg-team.md]
+provenance_note: >-
+  The ask "Add billing code type CRUD" (under **Billing code**, line 23) is superseded by
+  decisions/2026-09-11-billing-code-type-master-dropped.md. Fouzan Shakil (CodingCops,
+  status reference, not a TCG sign-off) dropped the billing_code_types master on 2026-09-11,
+  in migration 20260911040000_drop_billing_code_types. That decides, for the CodingCops build,
+  the conflict between this line and the drop. What was dropped is recorded for re-seeding in
+  quotations/billing-code-types-dropped-2026-09-11.md. TCG's slide 12 shows the FCC lookup
+  without rejecting it (quotations/fcc-billing-data-and-price-lists.md). Body unchanged.
 jira: []
 tags: [module/assets, module/quotations, kind/reference, pricing, yards]
 entities: [billing-code, yard, price-list, category, fcc]
