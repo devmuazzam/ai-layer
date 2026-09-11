@@ -3947,9 +3947,14 @@ somewhere it should not have. Settle that before touching either.
   combination can be rejected outright).
 - **Owner:** Corrina Bustos / Brian Petros (confirmation); CodingCops (build — done).
 
-## Holiday shift-start continuation and the 8-total-vs-8-additional minimum — ✅ both answered by the union BA 2026-09-12; a third finding opened
+## Holiday shift-start continuation and the 8-total-vs-8-additional minimum — ✅ CLOSED 2026-09-12; guarantee hours count toward the 12-hour mark
 
-- **Status:** open — Questions 1 and 2 closed, Question 3 open
+- **Status:** closed — all three questions answered; the engine change is the open item, tracked
+  under the audit's A4 and the decision note
+- **✅ Question 3 confirmed 2026-09-12.** Corrina Bustos, on the 10pm–10am version (8 TRI / 4 OT /
+  6 DT): *"hello, yes your example is correct."* The guaranteed holiday hours advance the 12-hour
+  double-time mark. **Brian Petros was on the message** and has the ruling; his app's 8 TRI + 10 OT
+  is now the one that needs to move.
 - **Asked:** 2026-09-11 — the first by Corrina Bustos herself on the 2026-09-10 call (34:02, 34:10:
   *"I'll double check with our rep"*); the second raised by Brian Petros in writing the same day as
   *"a bit controversial"*.

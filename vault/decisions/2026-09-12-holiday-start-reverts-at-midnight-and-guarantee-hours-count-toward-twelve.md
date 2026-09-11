@@ -72,6 +72,14 @@ added hours *"would not affect the 8-hour rest rule"*), **weekly overtime**, or 
 spans** (PAY-046) was not asked and is not decided here. Treat those as still following Brian's
 "not worked time" reading until someone asks.
 
+## Confirmed on the longer example, 2026-09-12
+
+Put back to Corrina in writing, to fix the reason rather than the one case: *"Same start, running to
+10am: 10pm to 12am: 8 hours triple / 12am to 4am: 4 overtime / 4am to 10am: 6 double time."*
+Corrina Bustos: **"hello, yes your example is correct."** So (c) is not a slip in the relay — six
+hours of double time on a 12-hour shift is only reachable if the guaranteed holiday hours sit on
+the 12-hour ladder. The ruling is complete.
+
 # Worked outcomes, at an $80.00 base
 
 | Shift | Union BA | Brian's app | ERP as of `015136f79` |
