@@ -37,6 +37,15 @@ rates straight through. The `AnchorFloor` branch and its 10-case test harness
 (`test.Case_CrossMidnight_DayType`, `usp_Test_CrossMidnight_DayTypePolicy`) can remain in place
 as dead config.
 
+> **⚠️ Wording flagged 2026-09-11 — "an additional 8 hours".** Brian Petros has marked this phrase
+> as *"a bit controversial… it can be interpreted differently"*: read literally it pays 2 worked +
+> 8 additional = 10 TRI; read as the app, the legacy engine and the ERP all implement it, the
+> minimum is **8 hours total** and the top-up is 8 − worked. Corrina's same sentence says *"a
+> minimum of 8 hours"*, which supports the second reading, but she has not been asked which she
+> meant. Until she answers, ruling (b) below settles *that the minimum fires* on a spill-over —
+> not *how many hours it adds*. See PAY-033 and payroll/gaps.md → *Holiday shift-start
+> continuation and the 8-total-vs-8-additional minimum*.
+
 ## (b) Spilling into a holiday is holiday work
 
 Post-midnight slices price at x3, and the MLA's 8-hour holiday minimum fires.

@@ -3946,3 +3946,52 @@ somewhere it should not have. Settle that before touching either.
   `gaps.md` → *The union-classified employee who must not be paid on union rules* (why no
   combination can be rejected outright).
 - **Owner:** Corrina Bustos / Brian Petros (confirmation); CodingCops (build — done).
+
+
+## Holiday shift-start continuation and the 8-total-vs-8-additional minimum — two questions for the union rep
+
+- **Status:** open
+- **Asked:** 2026-09-11 — the first by Corrina Bustos herself on the 2026-09-10 call (34:02, 34:10:
+  *"I'll double check with our rep"*); the second raised by Brian Petros in writing the same day as
+  *"a bit controversial"*.
+- **Question 1 — does a shift that starts on a holiday stay at the holiday rate after midnight?**
+  Worked case sent to Corrina: Wed Nov 11 (Veterans' Day) 22:00 → Thu Nov 12 10:00, one job, full
+  rest before. Two readings: **(a) 8 TRI + 10 OT** — the 2 holiday hours top up to 8 TRI, the
+  Thursday hours price as a weekday, and because the shift started before midnight there is no ST
+  and OT runs to the 12-hour mark, which lands exactly at 10:00; **(b) 12 TRI** — a *holiday
+  shift-start* rule keeps the whole continuous shift at the holiday rate. **Brian Petros, in
+  writing, chooses (a)** as what his app does and what the ERP should do — *"split the worked
+  timeline at midnight for day-type pricing while preserving the continuous shift for OT/DT
+  accumulation"* — and names (b) as the one thing the rep must rule in or out: *"whether the
+  agreement contains a special rule stating that a shift that begins on a holiday remains at the
+  holiday rate for the entire continuous shift even after midnight."* Corrina has not answered.
+  **Money:** at an $80 base, (a) pays $3,120.00 and (b) $2,880.00 — (a) is the *higher* figure,
+  because the six phantom guarantee hours sit on top of ten real OT hours.
+- **Question 2 — is the holiday minimum 8 hours *total* or 8 hours *additional*?** Brian: *"8
+  hours total, not 8 additional hours. If 2 hours were actually worked on the holiday, PayrollAPP
+  adds a 6-hour guarantee/top-up."* Corrina, 2026-09-04, verbatim: *"owed an **additional** 8 hours
+  at triple time as the rule is that the ee is owed a minimum of 8 hours"* — the two halves of her
+  own sentence point different ways. **Every engine implements "total"**: the ERP
+  (`packages/payroll-engine/src/guarantee.ts` → `applyPremiumDayMinimums`, top-up = 8 − hours
+  worked that date), the legacy `HOLIDAY_MIN_8`, and Brian's app. **Money:** $480.00 per
+  spill-over at an $80 base (2 TRI hours), and it also changes Question 1's (a) from 8 TRI to
+  10 TRI. Corrina to confirm which she meant; the MLA's *"a minimum of eight (8) hours at triple
+  (3) time… shall be paid for all work performed… on the following holidays"* reads as a floor,
+  i.e. total.
+- **Settled on the way, by Brian in writing and consistent with the vault:** the guarantee hours
+  are **not worked time** and do not advance OT/DT, rest or WTL (why (a) is 10 OT and not
+  4 OT + 6 DT); midnight changes day type without breaking the continuous shift; long-boom pay
+  never decides the bucket. All three scenarios sent to Corrina — whole shift on the holiday
+  (19.5 TRI), 2-hour spill-in (1 ST / 7 OT / 8 TRI), and the holiday start — *"look correct"* to
+  him against the app.
+- **Sources checked:** [../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §4;
+  [../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md) (now carries a
+  wording caveat); [rules/PAY-033-holiday-pay.md](rules/PAY-033-holiday-pay.md), [PAY-019](rules/PAY-019-cross-midnight-processing.md),
+  [PAY-040](rules/PAY-040-work-provided-minimum.md); [mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) → *Holidays* §1;
+  [legacy-payroll-app-db-extract/rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §7; `guarantee.ts`, `rest-period.ts:79`.
+- **Blocked:** nothing today — the ERP already implements reading (a) and "total". If the rep
+  confirms a holiday shift-start rule, `bucketForSliceAnchored` needs a HOLIDAY-carries-forward
+  branch; if Corrina meant "additional", `applyPremiumDayMinimums` changes from `8 − worked` to
+  `+8`. Both are small; both are money.
+- **Owner:** Corrina Bustos, via the union rep for Question 1; Corrina alone for Question 2 — it
+  is her sentence.
