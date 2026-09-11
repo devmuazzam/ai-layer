@@ -3984,6 +3984,28 @@ somewhere it should not have. Settle that before touching either.
   never decides the bucket. All three scenarios sent to Corrina — whole shift on the holiday
   (19.5 TRI), 2-hour spill-in (1 ST / 7 OT / 8 TRI), and the holiday start — *"look correct"* to
   him against the app.
+- **Update 2026-09-11 — Brian's structural recommendation for the ERP, and where the engine already
+  has it.** In writing: *"I recommend keeping these as separate concepts: (1) actual worked-hour
+  timeline and continuous-shift accumulation; (2) calendar day type for each worked segment
+  (weekday, Saturday, Sunday, holiday, etc.); (3) ST/OT/DT/TRI controlling multiplier for each
+  worked segment; (4) holiday 8-hour minimum as a separate guarantee/top-up component; (5) long-boom
+  and other applicable rate modifiers on only the qualifying work segments. That structure is
+  consistent with how our current Payroll App is designed and prevents the holiday guarantee from
+  accidentally affecting worked-hour calculations."* **The ERP engine is already built on exactly
+  these five separations** — `packages/payroll-engine/src/`: (1) `slices.ts` builds the half-hour
+  timeline; `calculate.ts` carries `cumulative` / `startingCumulative` across a chain, with the
+  8-hour chain break in `explain.ts` (`CHAIN_GAP_MS`); (2) `day-type.ts` classifies each slice by its
+  own calendar day, and `bucketForSliceAnchored` (branch `fix/timezone-business-day`) applies the
+  anchor-floor so a day-type change never downgrades; (3) `bucketForSlice` + `multiplierOf` give one
+  controlling bucket per slice — PAY-027 no-pyramiding; (4) `guarantee.ts` →
+  `applyPremiumDayMinimums` emits the holiday/special-Saturday minimum as its own `PayComponent`,
+  measured per calendar date, never as worked hours, and `rest-period.ts:79` explicitly keeps
+  guarantee hours out of the rest trigger; (5) `boomWindows` / `sliceIsOnBoom` in `calculate.ts`
+  attach the adder only to slices fully inside a captured build-up/work/breakdown window (PAY-043).
+  So this is **confirmation of the architecture, not a change request**. The one place the engine
+  and his description diverge is inside (1)+(3): the before-midnight ST-allowance regression
+  (`ad9041bc`) — see *The before-midnight bucket rule* entry above — which is a bucket-assignment
+  defect, not a structural one.
 - **Sources checked:** [../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §4;
   [../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md) (now carries a
   wording caveat); [rules/PAY-033-holiday-pay.md](rules/PAY-033-holiday-pay.md), [PAY-019](rules/PAY-019-cross-midnight-processing.md),
