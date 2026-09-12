@@ -2243,3 +2243,13 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   whether the no-address case should be visible rather than silent.
 - **Owner:** Melissa McNutt (asked for the adjustable figure, 2026-03-06) with Ryan Adams
   (truck routing) and Brian Petros (map provider, per `admin/gaps.md`).
+
+## Branch fix/12-sep-uat — after DocuSign COMPLETED, branded SES to customer with signed PDF attached
+
+- **Status:** open
+- **Asked:** 2026-09-12 — PR review Path C branch `fix/12-sep-uat` (no ticket, no `.ai/aidlc/` folder); tcg-scrum escalation.
+- **Question:** when a DocuSign envelope reaches **COMPLETED** (webhook or sync), should the system (a) send the **customer** a **branded SES email with the signed PDF attached**, (b) **not** use the separate email-sign / `sendViaEmail` path or manual **mark-as-signed** for that completion, and (c) leave the **salesperson acceptance / internal notify** path unchanged? One line per part.
+- **Sources checked:** [quotation-flow-process.md](quotation-flow-process.md) Steps 16–27 (`unverified`, [quotations-INDEX.md](quotations-INDEX.md) conflict) — send and customer sign, silent on post-completion delivery. [fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §4 (`unverified`) — DocuSign post/download, not a customer SES copy. [*The signing email should come from the salesperson, not from DocuSign*](#the-signing-email-should-come-from-the-salesperson-not-from-docusign) — **sender/voice at send time**, not post-sign PDF delivery. [Q-18](#q-18--docusign-send-reports-success-when-branded-email-fails) — branded SES on **send**, failures logged. [Q-02](#q-02--public-signed-document-endpoint-has-no-authentication) — public signed-PDF download, not email. `decisions/` — no note on COMPLETED → customer email. Jira unavailable (403 suspended-payment).
+- **Note:** embedded DocuSign suppresses DocuSign's invite ([Q-18](#q-18--docusign-send-reports-success-when-branded-email-fails)); if (a) is yes, SES becomes the customer's only signed-artifact delivery unless they use an in-app link.
+- **Blocked:** Path C `fix/12-sep-uat` quotation-signature completion UX; reconciling with Joe Schacatano's salesperson-sender ask if the COMPLETED email is platform-branded.
+- **Owner:** Joe Schacatano / Ryan Adams (customer correspondence); Patrick if Outlook per-user sending is required instead.
