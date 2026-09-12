@@ -2156,3 +2156,90 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   retired, the customer-facing term now diverges from the PDF titles the same email lists, and
   from the `PRE_QUOTE_*` identifiers, filenames and DB column that keep the old name.
 - **Owner:** Ryan Adams / Joe Schacatano (quotation send), with Melissa McNutt on packet naming.
+
+## "Max travel time" on the quotation detail — meaning, traffic model, origin yard, and degraded state
+
+- **Status:** open
+- **Asked:** 2026-09-12 — review of main-repo PR #530 (branch
+  `feat/quotation-yard-jobsite-duration`), which replaces the *"Coming soon"* placeholder
+  labelled **Max travel time** on the quotation detail Main tab (Job Site Information card,
+  `apps/web/src/features/quotations/workspace/detail/detail-info-cards.tsx`) with a live Google
+  Routes API driving duration. **Not a ticket question:** no `SCRUM-###`; Path C, logged in
+  `aidlc/processed.log` via overlay PR #71. The placeholder itself arrived in main-repo commit
+  `1242f593e` (*"iPad and Mobile responsiveness Web 1.0"*, 2026-08-19, mohsinakram) with no
+  ticket reference and no source for the label. tcg-scrum escalation.
+- **Question:** four parts, each answerable in a line.
+  (a) **What is the figure?** One-way yard → job-site drive time, round trip, the worst case
+  across the tenant's yards, or a padded/rounded figure meant to feed the Travel In / Travel
+  Out billing lines? The label says *Max*; nothing written says max of what.
+  (b) **Static or live?** Should it be a traffic-unaware estimate (what PR #530 ships:
+  `routingPreference: TRAFFIC_UNAWARE`), or traffic-aware for the quoted schedule window — and
+  should it be routed as a **truck**, with a per-asset speed adjustment, or as a car?
+  (c) **Origin.** Is the quotation's single `yard` field the right origin? It is a free
+  `String? @db.VarChar(100)` on `Quotation` (`apps/api/prisma/schema.prisma:1739`, no foreign
+  key), so PR #530 resolves it by *name* to a `Yard` row's physical address. If a quote can
+  draw equipment from more than one yard, which yard is the origin?
+  (d) **Degraded state.** When the yard has no street address, should the row be **hidden**
+  (PR #530), or shown with an em dash so the salesperson sees the figure is missing?
+- **Candidates:**
+  - `meetings/transcripts/2026-03-06-sales-quoting-figma-demo.md:208-225` (107.9 KB,
+    2026-03-06, `reference`) — **the only written origin of the row, and it is a demo
+    transcript, not a spec.** ehtesham.anwar (42:01) proposes it on the quotation creation
+    view: *"This system automatically checks with the Google Maps and calculates the travel
+    time from your yard location to the actual job site"* — singular yard, one direction
+    implied, no "max". Melissa McNutt (43:32) asks for it to be adjusted per crane size /
+    speed, and (44:31) whether it follows time of day like Google does; ehtesham.anwar (44:44,
+    44:53) answers *"based on the schedule"* and defers the exact leave-yard-time figure to a
+    later flow. Ryan Adams (45:17): semi trucks, scale stops, max speed 55 — *"something that
+    would normally be 45 minutes away is going to take us an hour, hour and 15 minutes compared
+    to what Google is"*; ehtesham.anwar (45:43) says Google can route as a truck. None of this
+    was recorded as a decision; §6 of the scrum procedure applies — a record, not a commitment.
+  - `meetings/summaries/2026-03-06-ai-generated-meeting-action-items.md:126` (13.7 KB,
+    `reference`, **auto-generated, not human-reviewed**) — High-priority Dev Team item:
+    *"Integrate Google Maps API for automated travel time calculation from yard to job site.
+    Apply vehicle-type speed adjustments (truck vs. car). Factor in time-of-day traffic. Store
+    average speed per asset in asset management."* — three of those four are **not** in PR #530.
+  - `meetings/transcripts/2026-05-07-loading-and-project-module-overview.md:181` (79.2 KB,
+    2026-05-07, `reference`) — Brian Petros, on job leave-time: *"we can't rely on Google Maps
+    because they have special routes"*; wants a guess from basic data first, then Samsara
+    history. Job context, but the same objection applies to a raw Routes API number.
+  - `quotations/mobilization-and-demobilization.md:57-63,117-121` (12.3 KB, 2026-09-04,
+    `unverified`) — FR-3 scopes Mobilization to *"drive time from the yard"*; the T&C names the
+    return origin as **the dispatch location, not "the yard"**, which bears on (c).
+  - `quotations/tcg-creating-quotes-sop.md:127-135` (15.1 KB, 2026-05-11, `unverified`) — the
+    five quoted-hour components include *"Travel to the jobsite (portal to portal)"* and
+    *"Travel back to the yard"* — i.e. quoted travel is **two legs**, which bears on (a).
+  - `quotations/quote-terms-and-rate-card.md:105` (26.7 KB, 2026-09-04, `unverified`) —
+    subsistence is priced on **yard-to-job distance** (miles), the only other yard→site figure
+    a quote uses; no time figure on the printed quote's Job Site Information panel (:218-220).
+  - `quotations/fcc-nexgen-quote-entry.md:323-327` (64.1 KB, 2026-09-04, `unverified`) — in
+    FCC, *"travel time adjustments"* live on the **job**, not the quote.
+  - `projects-jobs/project-module/07-create-and-manage-jobs-excluded.md:31,46` (2.7 KB,
+    2026-04-30, `unverified`, **excluded scope**) — *"If equipment comes from different yards,
+    Dispatcher selects the yard per asset and system calculates travel time"* — per-asset
+    yard, at the job, which is the multi-yard case (c) asks about.
+  - `admin/gaps.md#map-provider-no-key-fallback-and-which-table-owns-address-coordinates`
+    (open since 2026-08-25) — no vault file names TCG's map/routing provider; PR #530 commits
+    to Google Routes with that question still open.
+  - `decisions/2026-09-10-das-map-transit-path-and-eta-deferred.md` (`reference`) — deferred
+    a routing-provider dependency out of SCRUM-252 for want of any source naming one, and
+    warns that a wrong ETA *"looks authoritative"*; a quotation figure has the same exposure.
+  - **Searched, nothing:** vault-wide grep for `max travel|max_travel|maxTravel` — zero hits;
+    `INDEX.md`, `quotations/INDEX.md`, `quotations/quotations-INDEX.md`, this register,
+    `dispatch/gaps.md:220` (Joe Schacatano 2026-09-03 yard-arrival ETA — dispatch, not
+    quotes), `customers/quickbooks-customer-table-audit.md` (per-customer *Travel Time* free
+    text, inactive), `meetings/transcripts/2026-05-18-quotation-and-job-lifecycle.md`,
+    `2026-03-26-tcg-cc-product-sync-demo.md`, `2026-05-05-tcg-erp-system.md` (Job Site
+    Information → map, :205-212; no travel figure), `aidlc/SCRUM-877`, `aidlc/SCRUM-PROGRESS`,
+    `decisions/`. Jira not reachable (Atlassian MCP unauthenticated this session).
+- **Note:** the 2026-03-06 transcript is the closest thing to an ask and it points the *other*
+  way on two of the four parts — the client asked for truck routing with a per-asset speed
+  factor and for time-of-day sensitivity; PR #530 ships car routing, traffic-unaware. That is
+  not a defect finding (nothing was decided), but it means "matches what was discussed" cannot
+  be claimed for the PR either. The word *Max* has no written source at all.
+- **Blocked:** nothing hard — the row renders a number either way. Soft: whether the figure
+  may be quoted to a customer or used to seed Travel In / Travel Out; whether the origin
+  resolution by yard *name* is acceptable given `Quotation.yard` is unconstrained text; and
+  whether the no-address case should be visible rather than silent.
+- **Owner:** Melissa McNutt (asked for the adjustable figure, 2026-03-06) with Ryan Adams
+  (truck routing) and Brian Petros (map provider, per `admin/gaps.md`).
