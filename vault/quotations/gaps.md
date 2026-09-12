@@ -1749,6 +1749,60 @@ editability). Each entry below is a concrete code defect still open until fixed.
   Melissa: *"we only have one right now."* No TCG statement chooses. (a) and (b) still need Brian or
   Mohsin.
 
+## Was the New Customer Packet gate on quotation send meant to be retired, and should the toggle default on only for new customers?
+
+- **Status:** open
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (craneguys-platform
+  PR #490 / `dacf6dc1`). **Not a ticket question:** the branch carries no `SCRUM-###`, no
+  `.ai/aidlc/SCRUM-###/` folder (Path C `processed.log` row added 2026-09-08).
+- **Question:** the branch removes the `customerPreQuoteComplete` prop from the whole send path
+  (`send-quotation-modal.tsx`, `signature-status-panel.tsx`, `signature-status-panel.view.tsx`,
+  `detail-left-panel.tsx`) along with `QuotationCustomer.preQuoteDataCompletedAt`. The prop was
+  already inert on `main` — `formsToggleLocked` is a hardcoded `const … = false`, so the customer's
+  completion state has locked nothing for some time; the branch deletes the dead wiring, not a live
+  gate. Two things still need a person: (a) was the lock *intended* to be retired, or was
+  `formsToggleLocked = false` a temporary stub that was never wired back up and has now been made
+  unrecoverable? (b) separately, `usePreQuoteFormsSelection` defaults the "Include New Customer
+  Packet" toggle **ON for every customer**, new or existing, while the only written account of the
+  feature says it should be automatic **only when the customer is new**.
+- **Sources checked:** [INDEX.md](INDEX.md), [quotations-INDEX.md](quotations-INDEX.md) and all four
+  of its candidates; this register; [../decisions/](../decisions/) (nothing on send gating).
+  The only account of the behaviour is
+  [../meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md](../meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md)
+  L68 — `ehtesham.anwar` (**CodingCops**, describing his own build): *"If it's a new customer,
+  automatically it's going to be turned on, and it's going to include a new customer packet. And
+  also if somebody wants, they can just check job and labor compliance information request form as
+  well… **And if we don't want that, even if it's a new customer, we can just turn it off.**"*
+  `status: reference`, vendor voice, unadjudicated — but it describes a **default-on, always
+  overridable** toggle, i.e. no hard lock, which is consistent with the prop's removal and
+  inconsistent with the unconditional default. Earlier, weaker corroboration that the packet should
+  ride along with a new customer: [../meetings/transcripts/2026-03-26-tcg-cc-product-sync-demo.md](../meetings/transcripts/2026-03-26-tcg-cc-product-sync-demo.md)
+  L437 (Melissa McNutt) and [../meetings/transcripts/2026-06-25-cc-tcg-erp-system.md](../meetings/transcripts/2026-06-25-cc-tcg-erp-system.md)
+  L238–243 (Ryan Adams asks whether the packet should go out on customer create; answered by the
+  vendor, not by TCG). Jira could **not** be checked — the MCP server returns `403 Tenant is
+  restricted: suspended-payment`.
+- **Note:** (a) is low risk — the prop removal matches the only written source. (b) is a live
+  behavioural divergence from that same source and is answerable in one line.
+- **Blocked:** nothing hard; the packet's own content is open in
+  [../customers/gaps.md](../customers/gaps.md) → *Billing Information and Pre Labor Form tabs*.
+- **Owner:** Ryan Adams / Melissa McNutt (sales send behaviour and packet policy).
+- **Update (2026-09-12, tcg-scrum re-sweep for the PR review of the same branch):** the section is
+  now a **master "Include Customer Forms" toggle** gating a **Pre Labor Form** checkbox
+  (`send-quotation-modal.use-forms-selection.ts`, `send-quotation-modal.parts.tsx`
+  `PreQuoteFormsSection`), not two independent checkboxes. Three separable points, and only one is
+  still (b):
+  - **Pre Labor Form defaults OFF** — **sourced**, weakly, by the same 2026-07-29 transcript L68
+    this entry already cites: *"if somebody wants, they can just **check** job and labor compliance
+    information request form as well"*, i.e. opt-in. Vendor voice, `status: reference`. Not a new
+    question.
+  - **The master toggle defaults ON unconditionally** — this is **(b), unchanged**. The rename from
+    "Include New Customer Packet" to "Include Customer Forms" does not alter the divergence: the
+    only written account still says automatic **only when the customer is new**.
+  - **The section-title rename itself** follows the staff-facing/customer-facing asymmetry set by
+    [../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md)
+    → *Consequence already applied*, which authorised the two **checkbox labels**. Extending it to
+    the section heading is consistent with that note and is not treated here as a new question.
+
 ## Pointer — cascading resource picker completeness
 
 The quotation Resources tab is the largest consumer of the cascading resource picker, whose
@@ -1937,3 +1991,168 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Related, already open — do not duplicate:** [*Per-row surcharge now has no UI on create/edit, and "Final Amount" means two different numbers*](#per-row-surcharge-now-has-no-ui-on-createedit-and-final-amount-means-two-different-numbers) concerns the same footer, one row over. [*Billing-code and price-list rules… PR #488*](#billing-code-and-price-list-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) (e) asks whether discount and hike are mutually exclusive, which decides whether both rows can be non-zero at once.
 - **Blocked:** nothing hard, since each is a small reversible guard or UI change. (a) is the one with data consequences: an archived quotation's project and non-active jobs keep pointing at it.
 - **Owner:** Fouzan Shakil (the archive convention) with Ryan Adams / Joe Schacatano for (a); Jahanzaib Nadeem, author of the rate decision, for (b); Ryan Adams / Joe Schacatano for (c).
+
+## Is the job walk part of the quotation record, and if so, is it on create as well as edit?
+
+- **Status:** open
+- **Asked:** 2026-09-12 — PR review of uncommitted `apps/web` changes (overlay handle `abdulrehmanbcsf11`, git user `devmohsinakram`; no ticket, no `processed.log` row, no ticket folder; author and motive unknown, no client or PM cited). tcg-scrum escalation.
+- **Question:** two parts, each answerable in a line. **(a)** Should a job walk be a section **of the quotation** (a tab on its view and edit screens), or a separate record that feeds the quote — filling in what it can, as Ryan Adams described on 2026-06-25 — or both? **(b)** If it is on the quote, does the **create** wizard carry it too? The change adds a **Job Walk** tab to the view page and a sixth **Job Walk** step to the edit wizard, both between Additional Information and Attachments, and leaves create at five steps (`apps/web/src/features/quotations/views/create-quotation-wizard-nav.tsx` `CREATE_WIZARD_STEPS` vs `EDIT_WIZARD_STEPS`; `view-quotation.tsx`:157; `utils/activity-tab.ts`:18; `create-quotation-save.ts`:138). Both render only `EmptyState title="Coming Soon!!"`.
+- **Sources checked:** **Nothing written puts a job walk on the quotation record — as a tab or otherwise — or leaves it off create.** [quotations-INDEX.md](quotations-INDEX.md) — four unverified, conflicting candidates; the stub records that *"nothing here defines quotation data structure"*. [quotation-flow-process.md](quotation-flow-process.md) (`unverified`, `conflicts_with` non-empty) — the job walk is Step 4, **before** Step 5 *"Create a new quotation"*, and is not among the quote inputs of Steps 6–12. [sales-intake-and-job-walk.md](sales-intake-and-job-walk.md) §2 (`unverified`) — the Job Walk Sheet is its own form that *"pulls key intake answers"*. [sales-operating-system/02-master-process-map.md](sales-operating-system/02-master-process-map.md):53, :79 (`unverified`) — stage 3, *"Job walk scheduled, completed and **attached**"* (to what is not stated), ahead of stage 4 Quote Development and *"before final crane selection or quote release"*. [sales-operating-system/01-operating-system-architecture.md](sales-operating-system/01-operating-system-architecture.md):194 (`unverified`) — *"job walk information"* is a **Company File Storage** record, not an FCC quote record. [hubspot-sales-playbook.md](hubspot-sales-playbook.md):54 (`unverified`) — job-walk photos *"uploaded into HubSpot"*. FCC's quote screen has no job-walk tab ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §2: Main, Unit/People, Estimate, Tools/Rigging, Lift Info, Line Item) — and FCC is never a requirement source. `decisions/`: no hit. `aidlc/`: no hit. Jira not checked (no Jira MCP in this session).
+- **Nearest talk (`status: reference`, unadjudicated):** [../meetings/transcripts/2026-06-23-mobile-app-payroll-adp-and-draft-workflows.md](../meetings/transcripts/2026-06-23-mobile-app-payroll-adp-and-draft-workflows.md):88–90 — Wes Staley wants a salesman button that opens a job-walk form, *"so they could attach a job walk form to the quote"*. [../meetings/transcripts/2026-06-25-cc-tcg-erp-system.md](../meetings/transcripts/2026-06-25-cc-tcg-erp-system.md):123–127 — asked whether the job walk is attached to the quotation, Melissa McNutt: *"the job box should be part of the quote"* ("job box" is the auto-transcription of "job walk"; the question at :123 says so); Ryan Adams: the sheet *"should automatically flow over to the quote and fill in whatever it can… but the job walk sheet itself should not be seen by the customer"*. Same file :172–175 — Joe Schacatano: the job-walk process is *"all being built out. This is new"*; Melissa McNutt: *"we'll have to add that on after"*. These are wants and a deferral, not a spec; **none names a tab, a screen, or create vs edit.**
+- **Note:** the build already has the job walk hanging off something else — the mobile sales app starts one from a **customer** (`apps/mobile/app/(sales)/customers/[id].tsx`:347–357, `job-walk.tsx`), and its `save()` only toasts, resets the draft and navigates back. There is no job-walk model in `apps/api`, so the web tab has no record it could ever show. Existing code is not a source; this is recorded only because the two surfaces already disagree on what a job walk belongs to.
+- **Related, do not answer separately:** whether a visible *"Coming Soon"* tab is acceptable at all is (b) of [../accounting/gaps.md → *Project detail Accounting tab — what it shows, and what it shows before the module exists*](../accounting/gaps.md#project-detail-accounting-tab--what-it-shows-and-what-it-shows-before-the-module-exists) — app-wide, open, owner Fouzan Shakil. This change is one more instance of it.
+- **Blocked:** whether this change ships the view tab and the edit-only step; the data model of any job-walk build (quote-owned, or a separate record linked to customer / job site / quote).
+- **Owner:** Ryan Adams (author of the Job Walk Sheet; described sheet → quote on 2026-06-25), with Melissa McNutt (said on tape it should be part of the quote). The placeholder half: Fouzan Shakil, per the accounting entry.
+
+## Branch feat/quotation-manual-mark-won — manual Won from Draft, auto-void on Won, Void renamed Cancel
+
+- **Status:** open
+- **Asked:** 2026-09-12. Raised in the PR review of branch `feat/quotation-manual-mark-won` and escalated by tcg-scrum. No ticket, no `.ai/aidlc/` folder.
+  - The asks came from the implementing developer (git `devmohsinakram`, overlay `abdulrehmanbcsf11`) in his own Claude Code session. He cites no client or PM as their origin.
+  - The engagement directory gives neither identity a product role. So **no decision note was written**: the instructions are the change under review, not an answer to it.
+- **Question:** four parts, each answerable in a line.
+  - **(a) Won from Draft.** May a salesperson mark a **`DRAFT`** quote Won, meaning one never approved or sent in the system? If yes, is the manager-approval gate enough (`assertSendable`, the $50,000 threshold), or must the quote reach `INTERNAL_APPROVED` first? As built, a Draft under the threshold goes to Won with **no approval at all**.
+  - **(b) Live envelope.** If a quote is marked Won while a DocuSign envelope is still live, which of these should happen?
+    1. Void the envelope automatically.
+    2. Refuse until the salesperson voids it.
+    3. Leave the envelope live.
+
+    If (1): may the customer see the void reason *"Quotation marked as Won manually"*? The branch does (1), with that text.
+  - **(c) Visibility.** Should **Mark as Won** remain available after a DocuSign send, and on `DRAFT` / `CHANGES_REQUESTED`? Web previously showed it only on `INTERNAL_APPROVED` quotes never sent. Mobile (`WON_ELIGIBLE_STATUSES`) keeps the old list, so the two surfaces now disagree.
+  - **(d) Label.** Should the envelope action read **Cancel** instead of **Void**? It still voids.
+- **Sources checked:** **nothing written describes a manual Mark as Won, from any status.**
+  - [quotation-flow-process.md](quotation-flow-process.md) (`unverified`; one of four candidates in the [quotations-INDEX.md](quotations-INDEX.md) conflict), Steps 16–27: Draft → internal approval → send → *"Customer approves and signs"* → Project. This is the happy path; it neither permits nor forbids a manual Won.
+  - For (a), two approval rules disagree:
+    - [tcg-creating-quotes-sop.md](tcg-creating-quotes-sop.md) §7 (`unverified`): supervisor approval before a quote reaches the customer is *"unconditional"*.
+    - [../erp-review-log.md](../erp-review-log.md) → *Quote approval* (`unverified`, AI-extracted): approval is needed only below price-list rates, plus a $50,000 flag.
+  - Signing and conversion:
+    - [../projects-jobs/project-module/01-create-and-track-projects.md](../projects-jobs/project-module/01-create-and-track-projects.md):29 (`unverified`): Create Project is visible *"when qoutation is signed"*. It does not say what happens for a Won quote with no signature.
+    - [../projects-jobs/project-module/06-client-reviews-and-signs-quotation.md](../projects-jobs/project-module/06-client-reviews-and-signs-quotation.md) (`unverified`): nothing about the sender withdrawing an envelope.
+  - Legacy practice, not a rule:
+    - FCC has a manual `WON` status code ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md), `unverified`).
+    - HubSpot requires *"Closed Won"* once the outcome is known ([hubspot-sales-playbook.md](hubspot-sales-playbook.md), `unverified`).
+    - Neither says from which states. FCC's void path is undocumented (fcc-nexgen-quote-entry.md §4).
+  - For (d): [quotations.md](quotations.md):44 says *"`Envelope voided` - it should be user friendly"*, and [quotation.md](quotation.md):20–21 asks for void component and page changes. Both are `unverified`, both are conflicting punch lists, and neither names the button or "Cancel".
+  - `decisions/`: nothing on mark-won or voiding.
+  - Transcripts: no hit for a manual Won.
+  - Jira was not checked (no MCP).
+  - `qa-automation/docs/testinyCases/quotations.md` QUOT-011 step 3 (*mark-won on DRAFT → 409*) records the old code, not a spec. The branch breaks it.
+- **Related, already open. Do not answer separately:**
+  - [Q-10](#q-10--status-is-writable-on-create-and-update): transitions only via action endpoints.
+  - [Q-11](#q-11--archive-unarchive-upload-and-signature-routes-lack-permission-checks): who may void.
+  - [Q-13](#q-13--syncfromsigningreturn-can-resurrect-a-locally-voided-envelope): *"should local void always void the remote envelope too?"*, the same call as (b).
+  - [Q-16](#q-16--markassigned-accepts-declined-and-changes_requested): Won without customer acceptance.
+- **Blocked:** whether `feat/quotation-manual-mark-won` merges as-is. Parts differ in weight:
+  - (b) is visible to the customer.
+  - (a) loosens an approval control.
+  - (c) and (d) are reversible UI.
+- **Owner:** product team. Ryan Adams (Sales Manager) for (a)–(d); Brian Petros for the approval half of (a).
+
+## Structured Billing / Pre-Labor tabs vs the static-PDF quotation-send flow
+
+- **Status:** **resolved** — [decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md)
+- **Asked:** 2026-09-07 — review of ad-hoc branch `feat/customer-billing-pre-labor-forms`
+  (craneguys-platform PR #490 / `dacf6dc1`, no ticket; Path C `processed.log` row added 2026-09-08);
+  tcg-scrum escalation
+- **Question:** the ERP now captures the *same two documents twice*. Which is intended?
+  (a) the structured web tabs **replace** the emailed PDFs; (b) they **complement** them — TCG
+  still emails the PDF, and staff key the returned answers into the tabs; (c) the customer fills
+  the structured form themselves (self-service), and the PDFs are retired; or (d) this is an
+  uncoordinated duplicate build. One line settles it, and it decides whether
+  `PRE_QUOTE_FORM_FILES` and the send-email appendix get deleted.
+- **The duplication, concretely:** `packages/shared/src/constants/pre-quote-forms.ts` attaches two
+  static PDFs to a quotation send — `CUSTOMER_PACKET: 'New Customer Packet.pdf'` and
+  `JOB_LABOR_COMPLIANCE: 'Pre Job Labor Compliance Information Request Form final polished.pdf'` —
+  with `buildPreQuoteFormsEmailAppendix()` asking the customer to *"review and complete this
+  form, then reply to this email"*. The branch's two new Customer tabs capture the **same two
+  documents as structured fields**: Billing Information (Credit Card Authorization, Credit
+  Application, Deposit, Preliminary Notice) and Pre Labor Form. Neither side references the other
+  in code or in the commit message, which cites only *"the Pre-Quote Data pattern and Figma
+  layouts"*.
+- **Sources checked — nothing addresses the relationship:**
+  - [customers/new-customer-packet.md](../customers/new-customer-packet.md) — the packet itself,
+    `status: unverified`, migrated 2026-09-04, source dated **2025-10-23**. Its own framing is
+    decisive about what is *not* written: **"The packet is a paper/PDF process. Nothing in it says
+    any of this should be, or is being, built into the ERP."** It lists the four forms that match
+    the new Billing Information tab and notes the ERP *"already has a `preQuoteData` JSON blob on
+    `Customer` waiting to hold something of this shape"* — while stating the correspondence is
+    **unverified** and the packet is **not cited** as the blob's source.
+  - [sales-operating-system/05-forms-and-records-matrix.md](sales-operating-system/05-forms-and-records-matrix.md)
+    §1 — the nearest thing to a rule, and it argues for structured capture without naming this
+    build: *"Completed forms must be stored in the designated **system of record rather than only
+    in email**."* It does not say the ERP is that system of record for either form (row 1 names
+    "FCC, HubSpot, Accounting files"; row 2 names "FCC job record").
+  - [erp-review-log.md](../erp-review-log.md) entry #3 (Melissa, Accounting, 2026-04-02) asks for
+    **automatic customer packet generation** — assembling the right documents per customer. That is
+    a third shape again (generate a PDF), and nobody has reconciled it with either of the two built.
+  - This register's *"Customer PO" on the quotation* entry above — `SCRUM-575` *Pre-Quote Data
+    Form & Customer PO Form* (Done, 2026-06-25) closed with the comment that it shipped under two
+    names, **"1. new customer packet 2. job and labor compliance information request form"**.
+    That is the *only* written link between the two names and the ERP, it is a closing comment
+    rather than a requirement, and the entry it sits in is open for unrelated reasons.
+  - `vault/decisions/` (31 notes on overlay `main`) — **nothing** on either form's channel.
+  - Jira **not consulted — unavailable** (Atlassian MCP not mounted this session; tenant was
+    `403 suspended-payment` as of 2026-08-25). `SCRUM-575` may carry more than its closing comment.
+- **Note:** the branch initially also added `20260907120000_drop_customer_pre_quote_data`; that
+  migration was **removed from PR #490** (2026-09-08). Whether `pre_quote_data` may ever be dropped
+  remains a separate Product question.
+- **Blocked:** sign-off of `feat/customer-billing-pre-labor-forms`; whether
+  `PRE_QUOTE_FORM_FILES`, `buildPreQuoteFormsEmailAppendix()` and the two committed PDFs should be
+  removed, kept, or wired to the new tabs.
+- **Owner:** Ryan Adams / Joe Schacatano (sales & quotation) for the send flow; Melissa McNutt
+  (Accounting) for the packet, since the automatic-generation ask is hers.
+- **Cross-link:** [customers/gaps.md → *Pre-Labor / labor-compliance capture — one customer-level
+  blob, or one record per job/quote?*](../customers/gaps.md#pre-labor--labor-compliance-capture--one-customer-level-blob-or-one-record-per-jobquote)
+- **Resolution (2026-09-07):** answer (b) — the two mechanisms are **intentionally
+  complementary**, joined by a **manual, sequential workflow**: TCG emails the static PDFs
+  from the Send-to-Customer modal → the customer fills the PDF by hand and emails it back →
+  a TCG staff member **transcribes** the answers into the customer's Billing Information and
+  Pre Labor Form tabs. **No OCR/automatic extraction is planned; no customer self-service;
+  the PDF flow is not being replaced.** So `PRE_QUOTE_FORM_FILES`,
+  `buildPreQuoteFormsEmailAppendix()` and the two committed PDFs **stay, unwired to the
+  tabs, by design** — the PDF is the collection instrument, the tabs are the system of
+  record. Product decided this **verbally**, relayed by Jahanzaib Nadeem; **no individual
+  Product person is named** (Ryan Adams / Joe Schacatano own the send flow, Melissa McNutt
+  the packet — none is recorded as having said it), so re-confirm with a named owner before
+  deleting anything on the strength of it.
+  **Applied as a consequence:** the modal's staff-facing checkbox copy now reads "Billing
+  Information" / "Pre Labor Form" to match the tabs; the PDF filenames, prop names and the
+  **numbered PDF titles** in the customer-facing email appendix were deliberately left
+  unchanged. **Correction (2026-09-08):** the appendix **intro line**
+  (`PRE_QUOTE_FORMS_EMAIL_APPENDIX_INTRO`) was later rewritten in PR #490 `dcaa7bf0` from
+  *"our Pre-Quote documentation"* to *"our customer documentation"* — that change is **not**
+  covered by this decision (see the open entry below). Do not treat the whole email body as
+  frozen by this note.
+  **Still open, and not closed by this:** whether `pre_quote_data` may be dropped (migration
+  removed from PR #490 pending Product); Melissa's automatic customer-packet-generation ask
+  ([erp-review-log.md](../erp-review-log.md) #3), a third shape neither addressed nor dismissed;
+  and `SCRUM-575`, still unread (Jira unreachable this session).
+
+## Is "Pre-Quote" being retired in customer-facing copy, and who signs off the send-email text?
+
+- **Status:** open
+- **Asked:** 2026-09-08 — review of `feat/customer-billing-pre-labor-forms` (commit `dcaa7bf0`),
+  main-repo PR #490. **Not a ticket question:** no `SCRUM-###`, no `.ai/aidlc/SCRUM-###/`
+  folder (Path C `processed.log` row added 2026-09-08).
+- **Question:** the commit rewrites the customer-facing first line of the quotation-send email
+  appendix (`packages/shared/src/constants/pre-quote-forms.ts`,
+  `PRE_QUOTE_FORMS_EMAIL_APPENDIX_INTRO`) from *"our Pre-Quote documentation"* to *"our customer
+  documentation"*. Two things need a person: (a) is "Pre-Quote" being deliberately retired from
+  copy the customer reads, or was this an incidental tidy-up? (b) who owns the wording of this
+  email at all — `quotations/quotations.md:32` records that TCG never supplied it.
+- **Candidates:** `quotations/quotations.md:32-33` (punch list, 2026-07-14) — *"Need to
+  demand text from TCG team for email"*, and a rename request pointing at *"new customer
+  packet"*, the opposite direction from this change;
+  `quotations/sales-operating-system/05-forms-and-records-matrix.md` section 8 *Quote Sent* —
+  content requirements, explicitly **not** wording; `meetings/transcripts/2026-08-11-sales-process.md:211`
+  (Brian Petros, TCG, 2026-08-11) still says "pre-quote" in TCG's own voice. Nothing in
+  `quotations-INDEX.md`'s four candidates, `decisions/`, or `SCRUM-575` as transcribed in this
+  register addresses email copy. Jira re-checked 2026-09-08: still `403 suspended-payment`.
+- **Note:** `decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md` originally
+  said the customer-facing email body was "deliberately left unchanged"; that is true of the
+  numbered PDF titles only, not of this intro line. The decision note carries a correcting line
+  as of 2026-09-08.
+- **Blocked:** nothing hard — the string ships either way. But if "Pre-Quote" is *not* being
+  retired, the customer-facing term now diverges from the PDF titles the same email lists, and
+  from the `PRE_QUOTE_*` identifiers, filenames and DB column that keep the old name.
+- **Owner:** Ryan Adams / Joe Schacatano (quotation send), with Melissa McNutt on packet naming.
