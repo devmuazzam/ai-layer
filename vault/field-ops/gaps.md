@@ -295,6 +295,22 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   ticket) and is not a TCG decision for the ERP.** `model JobTicket` is unchanged as of 2026-09-04
   (`allocationId` plus one of `employeeId` / `vendorEmployeeId`). Still needs the client: keep FCC's
   primary-plus-oiler ticket, or `SCRUM-249`'s one-per-allocation; open question 11 remains.
+- Update 2026-09-12 (main-repo branch `feat/crew-ticket-read-only-copy`, Syed Haris): **built
+  provisionally for the demo, not decided.** The client has not answered; this is what will be
+  shown to get the verdict. Shape chosen: two rows stay (payroll prices per employee ticket, DAS
+  lists one row per person) and the Operator's ticket becomes a **read-only copy** of the
+  Oiler's — `JobTicket.primaryTicketId` (self-FK), linked by `linkCrewTickets` after every
+  ticket-creating path within one set + shift, **Oiler + Operator only** (drivers / third man keep
+  their own, an Operator with no Oiler is their own primary, matching Lisette 9:07). Time entries,
+  step completions and status are mirrored from the primary on every write; any write on the copy
+  is refused ("the Oiler completes it"); the phone shows a crew line, a *View ticket* CTA and a
+  crew banner in place of punch-in. This is the "no active Operator step" reading of open question
+  11. **Left open by the build:** whether the Operator should acknowledge/accept anything; vendor
+  crews; whether signatures/checklists should be visible on the copy (only step status is today);
+  and the send-notification wording for the copy. The migration's backfill links live tickets only
+  (PENDING/SENT/IN_PROGRESS) — COMPLETE tickets are untouched. If the client chooses one physical
+  ticket instead, this is a migration away, not a rewrite: the link column and the mirrors are the
+  parts to retire.
 - **Status:** open
 - **From (frozen original):** [gaps.md#who-fills-the-ticket-the-schema-has-already-picked-a-side-against-the-only-reviewed-document](../gaps.md#who-fills-the-ticket-the-schema-has-already-picked-a-side-against-the-only-reviewed-document)
 
