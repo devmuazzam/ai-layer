@@ -3946,3 +3946,131 @@ somewhere it should not have. Settle that before touching either.
   `gaps.md` → *The union-classified employee who must not be paid on union rules* (why no
   combination can be rejected outright).
 - **Owner:** Corrina Bustos / Brian Petros (confirmation); CodingCops (build — done).
+
+## Holiday shift-start continuation and the 8-total-vs-8-additional minimum — ✅ CLOSED 2026-09-12; guarantee hours count toward the 12-hour mark
+
+- **Status:** closed — all three questions answered; the engine change is the open item, tracked
+  under the audit's A4 and the decision note
+- **✅ Question 3 confirmed 2026-09-12.** Corrina Bustos, on the 10pm–10am version (8 TRI / 4 OT /
+  6 DT): *"hello, yes your example is correct."* The guaranteed holiday hours advance the 12-hour
+  double-time mark. **Brian Petros was on the message** and has the ruling; his app's 8 TRI + 10 OT
+  is now the one that needs to move.
+- **Asked:** 2026-09-11 — the first by Corrina Bustos herself on the 2026-09-10 call (34:02, 34:10:
+  *"I'll double check with our rep"*); the second raised by Brian Petros in writing the same day as
+  *"a bit controversial"*.
+- **✅ Answered 2026-09-12 by the union business agent, relayed in writing by Corrina — decision note
+  [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md).** Worked breakdown for holiday 22:00 → 06:00: *"10pm-12am- 8 hours Triple / 12am-4am-
+  4 Overtime / 4am-6am- Dbl time… it follows the same 12 hours working then double time pay rule.
+  Because they started on a prior date so after midnight would start at the applicable rate."*
+  **Q1 — reverts at midnight**, continuous shift preserved; no holiday shift-start rule. Brian's
+  structure confirmed, reading (a). **Q2 — 8 hours total**: 2 worked → 8 TRI. Brian's flag answered
+  his way.
+- **⚠️ Question 3, opened by the same breakdown — the guaranteed holiday hours count toward the
+  12-hour double-time mark.** DT at 04:00 on six actual hours is only reachable as 8 guaranteed +
+  4 OT = 12. That contradicts Brian's written concept of 2026-09-11 (*"That guarantee is not worked
+  time. It should not advance OT/DT thresholds"*), his app (8 TRI + 10 OT on a 22:00→10:00), the
+  legacy `Gap_*` design, and the ERP. **Money:** $240.00 per 22:00→10:00 shift at $80 (6 h DT vs
+  OT). **Scope the BA did not rule on:** whether the guarantee hours also advance the 8-hour rest
+  trigger (client has twice said no), weekly OT, or meal spans — leave those on Brian's reading
+  until asked. **Owner:** Brian Petros needs to see the ruling and reconcile his app; CodingCops
+  owns the engine change.
+- **⚠️ Engine defect surfaced by running her example against `015136f79`:** yesterday's A4 fix
+  (`bucketForSliceAnchored` = `max(anchor day type, slice day type)`) floors a holiday-start shift
+  at ×3 for every post-midnight slice — the exact rule the BA ruled out — and then adds the 6-hour
+  top-up on top. **22:00→06:00 pays 14 TRI = $3,360.00 against the BA's $2,720.00; 22:00→10:00
+  pays 18 TRI = $4,320.00 against $3,360.00.** Overpays. The never-downgrade principle applies to
+  the cumulative-hours bucket, not the anchor day's premium; post-midnight slices must price as
+  `max(cumulative bucket, own calendar day type)`. Audit A4 reopened.
+- **Question 1 — does a shift that starts on a holiday stay at the holiday rate after midnight?**
+  Worked case sent to Corrina: Wed Nov 11 (Veterans' Day) 22:00 → Thu Nov 12 10:00, one job, full
+  rest before. Two readings: **(a) 8 TRI + 10 OT** — the 2 holiday hours top up to 8 TRI, the
+  Thursday hours price as a weekday, and because the shift started before midnight there is no ST
+  and OT runs to the 12-hour mark, which lands exactly at 10:00; **(b) 12 TRI** — a *holiday
+  shift-start* rule keeps the whole continuous shift at the holiday rate. **Brian Petros, in
+  writing, chooses (a)** as what his app does and what the ERP should do — *"split the worked
+  timeline at midnight for day-type pricing while preserving the continuous shift for OT/DT
+  accumulation"* — and names (b) as the one thing the rep must rule in or out: *"whether the
+  agreement contains a special rule stating that a shift that begins on a holiday remains at the
+  holiday rate for the entire continuous shift even after midnight."* Corrina has not answered.
+  **Money:** at an $80 base, (a) pays $3,120.00 and (b) $2,880.00 — (a) is the *higher* figure,
+  because the six phantom guarantee hours sit on top of ten real OT hours.
+- **Question 2 — is the holiday minimum 8 hours *total* or 8 hours *additional*?** Brian: *"8
+  hours total, not 8 additional hours. If 2 hours were actually worked on the holiday, PayrollAPP
+  adds a 6-hour guarantee/top-up."* Corrina, 2026-09-04, verbatim: *"owed an **additional** 8 hours
+  at triple time as the rule is that the ee is owed a minimum of 8 hours"* — the two halves of her
+  own sentence point different ways. **Every engine implements "total"**: the ERP
+  (`packages/payroll-engine/src/guarantee.ts` → `applyPremiumDayMinimums`, top-up = 8 − hours
+  worked that date), the legacy `HOLIDAY_MIN_8`, and Brian's app. **Money:** $480.00 per
+  spill-over at an $80 base (2 TRI hours), and it also changes Question 1's (a) from 8 TRI to
+  10 TRI. Corrina to confirm which she meant; the MLA's *"a minimum of eight (8) hours at triple
+  (3) time… shall be paid for all work performed… on the following holidays"* reads as a floor,
+  i.e. total.
+- **Settled on the way, by Brian in writing and consistent with the vault:** the guarantee hours
+  are **not worked time** and do not advance OT/DT, rest or WTL (why (a) is 10 OT and not
+  4 OT + 6 DT); midnight changes day type without breaking the continuous shift; long-boom pay
+  never decides the bucket. All three scenarios sent to Corrina — whole shift on the holiday
+  (19.5 TRI), 2-hour spill-in (1 ST / 7 OT / 8 TRI), and the holiday start — *"look correct"* to
+  him against the app.
+- **Update 2026-09-11 — Brian's structural recommendation for the ERP, and where the engine already
+  has it.** In writing: *"I recommend keeping these as separate concepts: (1) actual worked-hour
+  timeline and continuous-shift accumulation; (2) calendar day type for each worked segment
+  (weekday, Saturday, Sunday, holiday, etc.); (3) ST/OT/DT/TRI controlling multiplier for each
+  worked segment; (4) holiday 8-hour minimum as a separate guarantee/top-up component; (5) long-boom
+  and other applicable rate modifiers on only the qualifying work segments. That structure is
+  consistent with how our current Payroll App is designed and prevents the holiday guarantee from
+  accidentally affecting worked-hour calculations."* **The ERP engine is already built on exactly
+  these five separations** — `packages/payroll-engine/src/`: (1) `slices.ts` builds the half-hour
+  timeline; `calculate.ts` carries `cumulative` / `startingCumulative` across a chain, with the
+  8-hour chain break in `explain.ts` (`CHAIN_GAP_MS`); (2) `day-type.ts` classifies each slice by its
+  own calendar day, and `bucketForSliceAnchored` (branch `fix/timezone-business-day`) applies the
+  anchor-floor so a day-type change never downgrades; (3) `bucketForSlice` + `multiplierOf` give one
+  controlling bucket per slice — PAY-027 no-pyramiding; (4) `guarantee.ts` →
+  `applyPremiumDayMinimums` emits the holiday/special-Saturday minimum as its own `PayComponent`,
+  measured per calendar date, never as worked hours, and `rest-period.ts:79` explicitly keeps
+  guarantee hours out of the rest trigger; (5) `boomWindows` / `sliceIsOnBoom` in `calculate.ts`
+  attach the adder only to slices fully inside a captured build-up/work/breakdown window (PAY-043).
+  So this is **confirmation of the architecture, not a change request**. The one place the engine
+  and his description diverge is inside (1)+(3): the before-midnight ST-allowance regression
+  (`ad9041bc`) — see *The before-midnight bucket rule* entry above — which is a bucket-assignment
+  defect, not a structural one.
+- **Sources checked:** [../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §4;
+  [../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md) (now carries a
+  wording caveat); [rules/PAY-033-holiday-pay.md](rules/PAY-033-holiday-pay.md), [PAY-019](rules/PAY-019-cross-midnight-processing.md),
+  [PAY-040](rules/PAY-040-work-provided-minimum.md); [mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) → *Holidays* §1;
+  [legacy-payroll-app-db-extract/rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §7; `guarantee.ts`, `rest-period.ts:79`.
+- **Blocked:** nothing today — the ERP already implements reading (a) and "total". If the rep
+  confirms a holiday shift-start rule, `bucketForSliceAnchored` needs a HOLIDAY-carries-forward
+  branch; if Corrina meant "additional", `applyPremiumDayMinimums` changes from `8 − worked` to
+  `+8`. Both are small; both are money.
+- **Owner:** Corrina Bustos, via the union rep for Question 1; Corrina alone for Question 2 — it
+  is her sentence.
+
+## PAY-069's rounding-adjustment component — architecturally inapplicable to this engine
+
+- **Status:** resolved 2026-09-11 — answered from the record, no client question needed.
+- **Asked:** 2026-09-11 — the implementation-audit's B7 item (`payroll/implementation-
+  audit-2026-09-11.md`), reprising `rules/PAY-069-money-rounding-and-rounding-adjustment-
+  components.md` (`status: open`).
+- **Question:** should this engine insert a `PAY_COMPONENT_ROUNDING_ADJUSTMENT` ledger line
+  the way the legacy `usp_Normalize_PayComponentLedger_Rounding` /
+  `usp_Finalize_PayComponentLedger_Reconciliation` do?
+- **Why it does not apply here:** the legacy line exists because the incumbent computes a
+  day's total TWO independent ways — an aggregate `Pay_Actual_Gross`/`Final_Gross_Pay`
+  formula, and the sum of individually-`ROUND(x,2)`'d ledger rows — and the two can disagree
+  by a cent or more, so a reconciling row forces them to agree
+  (`legacy-payroll-app-db-extract/rules-plain-language.md` §14). This engine only computes a
+  day's total ONE way: `addComponent` (`money.ts`) rounds every component to cents at the
+  moment it is created, and `CalculatedJobDay.totalAmount` (`calculate.ts`, the final
+  "restate every touched day's total from its ledger" pass) is always exactly
+  `round2(components.reduce(sum amount))` — the same already-rounded numbers the caller
+  sees. There is no second, independently-computed figure to disagree with, so a rounding
+  adjustment can never be non-zero, and `addComponent`'s own zero-amount filter would drop
+  it every time. Adding the component would be dead code standing in for a bug this
+  architecture cannot have.
+- **Sources checked:** `packages/payroll-engine/src/money.ts` (`addComponent`, `round2`);
+  `calculate.ts` (`priceL12JobDay`'s `totalAmount`, and the per-employee loop's final
+  totals-restate pass); `rules/PAY-069-...md`; `legacy-payroll-app-db-extract/
+  rules-plain-language.md` §14 and `calculations.md:2774-2943` (`usp_Normalize_
+  PayComponentLedger_Rounding`, `usp_Finalize_PayComponentLedger_Reconciliation`).
+- **Owner:** none — closed by inspection, not awaiting a client answer. Revisit only if the
+  engine is ever changed to compute a day's total by a second, independent formula.
