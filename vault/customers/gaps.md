@@ -588,6 +588,43 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   that note. **Still unsourced:** which fields belong in the five-sub-form composite (nobody has
   supplied the two source PDFs), whether it should be one tab or five, and whether excluding both
   from the create wizard is intended.
+- **Update (2026-09-12, tcg-scrum re-sweep for the PR review of the same branch):** the *"nobody
+  has supplied the two source PDFs"* line above is **out of date — both PDFs were transcribed into
+  the vault on 2026-09-04, three days before this entry was written, and the field shape of both
+  tabs traces to them almost one-to-one.** This is a retrieval correction, not a decision; both
+  sources stay `status: unverified`.
+  - **Billing Information** → [new-customer-packet.md](new-customer-packet.md) → *What each form
+    collects*. Credit Card Authorization, Credit Application, Deposit Form and Preliminary Notice
+    are each transcribed field by field from `New Customer Packet 10-23-2025_1[70].pdf`, and
+    `packages/shared/src/types/billing-information-data.ts` matches them (company composition
+    enum, union affiliation, principals, bank block, trade references; deposit = customer / date
+    of job / quote # / sales rep / job address / prevailing wage / method of payment; preliminary
+    notice = customer / job # / P.O. # / prevailing wage plus the four job-information / owner /
+    original-contractor / sub-contractor party blocks). The fifth sub-form, **Terms & Conditions**,
+    is the credit application's own T&C block in the packet, surfaced as a separate signature-only
+    object in code. **So the composite is sourced; only its division into five UI sub-forms is
+    not.** Divergences the packet does not account for, and which nobody has signed off:
+    `DepositFormData.typeOfAccount` / `accountNumber`, `PreliminaryNoticeData.expirationDate`,
+    and the `signatureHtml` e-signature capture on three sub-forms.
+  - **Pre Labor Form** → [../payroll/certified-payroll-playbook.md](../payroll/certified-payroll-playbook.md)
+    §11, *The fields, which are the data model for a certified-payroll job* — the transcription of
+    `Pre-Job_Labor_Compliance_Information_Request_Form_final_polished[48].pdf`. All six sections of
+    `packages/shared/src/types/pre-labor-data.ts` map onto it (Customer & Project; certified
+    payroll / prevailing wage; DAS 140 and apprenticeship; LA-131 and LAUSD/LACMTA; PLA with LPC
+    Tracker / DIR platform style; OCCIP/CCIP with administrator, email and enrolment deadline).
+    **`REQUIRED_STRING_FIELDS` is sourced too:** the playbook marks the *Customer & Project* row
+    **"(all required)"** and lists exactly the nine fields the constant carries (`projectId` =
+    *Customer Job or Quote Number*, `projectValue` = *Total Contract Amount*).
+  - **What genuinely remains open in this entry:** one tab or five; the create-wizard exclusion;
+    the four unsourced fields listed above. **Placement is settled** by the 2026-09-07
+    customer-level decision, and **naming** by the complementary decision. Neither packet source
+    says any of this should be built into the ERP — [new-customer-packet.md](new-customer-packet.md)
+    says the opposite in its own voice — so these are sources for *field shape*, not authority to
+    build the tabs.
+  - **The packet is not a source for storing card data.** Its transcription deliberately records
+    that card number, expiry and security code *"are collected by the source form — deliberately
+    not represented as fields to be stored anywhere"*. The masked-PAN question in the next entry
+    is untouched by this correction.
 
 ## Storing full credit card numbers and CVVs in `billing_information_data` — no source, and a compliance question
 

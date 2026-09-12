@@ -1786,6 +1786,22 @@ editability). Each entry below is a concrete code defect still open until fixed.
 - **Blocked:** nothing hard; the packet's own content is open in
   [../customers/gaps.md](../customers/gaps.md) → *Billing Information and Pre Labor Form tabs*.
 - **Owner:** Ryan Adams / Melissa McNutt (sales send behaviour and packet policy).
+- **Update (2026-09-12, tcg-scrum re-sweep for the PR review of the same branch):** the section is
+  now a **master "Include Customer Forms" toggle** gating a **Pre Labor Form** checkbox
+  (`send-quotation-modal.use-forms-selection.ts`, `send-quotation-modal.parts.tsx`
+  `PreQuoteFormsSection`), not two independent checkboxes. Three separable points, and only one is
+  still (b):
+  - **Pre Labor Form defaults OFF** — **sourced**, weakly, by the same 2026-07-29 transcript L68
+    this entry already cites: *"if somebody wants, they can just **check** job and labor compliance
+    information request form as well"*, i.e. opt-in. Vendor voice, `status: reference`. Not a new
+    question.
+  - **The master toggle defaults ON unconditionally** — this is **(b), unchanged**. The rename from
+    "Include New Customer Packet" to "Include Customer Forms" does not alter the divergence: the
+    only written account still says automatic **only when the customer is new**.
+  - **The section-title rename itself** follows the staff-facing/customer-facing asymmetry set by
+    [../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md)
+    → *Consequence already applied*, which authorised the two **checkbox labels**. Extending it to
+    the section heading is consistent with that note and is not treated here as a new question.
 
 ## Pointer — cascading resource picker completeness
 
