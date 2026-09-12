@@ -29,6 +29,7 @@ to be read whole.
 | anything about dispatch / DAS | [dispatch/daily-allocation-INDEX.md](dispatch/daily-allocation-INDEX.md) first |
 | quantity on a quote vs DAS/Yard sets | [decisions/2026-08-31-quotation-qty-not-das-sets.md](decisions/2026-08-31-quotation-qty-not-das-sets.md) — qty is billing only, one set per root; supersedes 2026-08-20 |
 | where a Save button leaves the user | [decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md](decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) — create **and** edit both land on the entity's detail page, app-wide; supersedes the create half of 2026-08-20 |
+| dirty leave / unsaved-changes modal buttons | [decisions/2026-09-12-edit-leave-confirmation-offers-save.md](decisions/2026-09-12-edit-leave-confirmation-offers-save.md) — edit = Cancel/Leave/Save; create = Leave/Cancel (or Save Draft); failed Save keeps the dialog open |
 | when a Project Job becomes Completed after DAS/Yard | [decisions/2026-08-20-job-completed-on-last-day-offload.md](decisions/2026-08-20-job-completed-on-last-day-offload.md) — named decision, SCRUM-903 |
 | SCRUM-903 vendor/backfill scope (none in that ticket) | [decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md](decisions/2026-08-20-job-completion-scope-no-vendor-no-backfill.md) — named decision |
 | Completed Project Jobs editable? | [decisions/2026-08-25-completed-job-view-only.md](decisions/2026-08-25-completed-job-view-only.md) — hard view-only, SCRUM-903 Q5 |
