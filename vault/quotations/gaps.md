@@ -1749,6 +1749,60 @@ editability). Each entry below is a concrete code defect still open until fixed.
   Melissa: *"we only have one right now."* No TCG statement chooses. (a) and (b) still need Brian or
   Mohsin.
 
+## Was the New Customer Packet gate on quotation send meant to be retired, and should the toggle default on only for new customers?
+
+- **Status:** open
+- **Asked:** 2026-09-07 — review of branch `feat/customer-billing-pre-labor-forms` (craneguys-platform
+  PR #490 / `dacf6dc1`). **Not a ticket question:** the branch carries no `SCRUM-###`, no
+  `.ai/aidlc/SCRUM-###/` folder (Path C `processed.log` row added 2026-09-08).
+- **Question:** the branch removes the `customerPreQuoteComplete` prop from the whole send path
+  (`send-quotation-modal.tsx`, `signature-status-panel.tsx`, `signature-status-panel.view.tsx`,
+  `detail-left-panel.tsx`) along with `QuotationCustomer.preQuoteDataCompletedAt`. The prop was
+  already inert on `main` — `formsToggleLocked` is a hardcoded `const … = false`, so the customer's
+  completion state has locked nothing for some time; the branch deletes the dead wiring, not a live
+  gate. Two things still need a person: (a) was the lock *intended* to be retired, or was
+  `formsToggleLocked = false` a temporary stub that was never wired back up and has now been made
+  unrecoverable? (b) separately, `usePreQuoteFormsSelection` defaults the "Include New Customer
+  Packet" toggle **ON for every customer**, new or existing, while the only written account of the
+  feature says it should be automatic **only when the customer is new**.
+- **Sources checked:** [INDEX.md](INDEX.md), [quotations-INDEX.md](quotations-INDEX.md) and all four
+  of its candidates; this register; [../decisions/](../decisions/) (nothing on send gating).
+  The only account of the behaviour is
+  [../meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md](../meetings/transcripts/2026-07-29-erp-review-dispatch-das-update.md)
+  L68 — `ehtesham.anwar` (**CodingCops**, describing his own build): *"If it's a new customer,
+  automatically it's going to be turned on, and it's going to include a new customer packet. And
+  also if somebody wants, they can just check job and labor compliance information request form as
+  well… **And if we don't want that, even if it's a new customer, we can just turn it off.**"*
+  `status: reference`, vendor voice, unadjudicated — but it describes a **default-on, always
+  overridable** toggle, i.e. no hard lock, which is consistent with the prop's removal and
+  inconsistent with the unconditional default. Earlier, weaker corroboration that the packet should
+  ride along with a new customer: [../meetings/transcripts/2026-03-26-tcg-cc-product-sync-demo.md](../meetings/transcripts/2026-03-26-tcg-cc-product-sync-demo.md)
+  L437 (Melissa McNutt) and [../meetings/transcripts/2026-06-25-cc-tcg-erp-system.md](../meetings/transcripts/2026-06-25-cc-tcg-erp-system.md)
+  L238–243 (Ryan Adams asks whether the packet should go out on customer create; answered by the
+  vendor, not by TCG). Jira could **not** be checked — the MCP server returns `403 Tenant is
+  restricted: suspended-payment`.
+- **Note:** (a) is low risk — the prop removal matches the only written source. (b) is a live
+  behavioural divergence from that same source and is answerable in one line.
+- **Blocked:** nothing hard; the packet's own content is open in
+  [../customers/gaps.md](../customers/gaps.md) → *Billing Information and Pre Labor Form tabs*.
+- **Owner:** Ryan Adams / Melissa McNutt (sales send behaviour and packet policy).
+- **Update (2026-09-12, tcg-scrum re-sweep for the PR review of the same branch):** the section is
+  now a **master "Include Customer Forms" toggle** gating a **Pre Labor Form** checkbox
+  (`send-quotation-modal.use-forms-selection.ts`, `send-quotation-modal.parts.tsx`
+  `PreQuoteFormsSection`), not two independent checkboxes. Three separable points, and only one is
+  still (b):
+  - **Pre Labor Form defaults OFF** — **sourced**, weakly, by the same 2026-07-29 transcript L68
+    this entry already cites: *"if somebody wants, they can just **check** job and labor compliance
+    information request form as well"*, i.e. opt-in. Vendor voice, `status: reference`. Not a new
+    question.
+  - **The master toggle defaults ON unconditionally** — this is **(b), unchanged**. The rename from
+    "Include New Customer Packet" to "Include Customer Forms" does not alter the divergence: the
+    only written account still says automatic **only when the customer is new**.
+  - **The section-title rename itself** follows the staff-facing/customer-facing asymmetry set by
+    [../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md)
+    → *Consequence already applied*, which authorised the two **checkbox labels**. Extending it to
+    the section heading is consistent with that note and is not treated here as a new question.
+
 ## Pointer — cascading resource picker completeness
 
 The quotation Resources tab is the largest consumer of the cascading resource picker, whose
@@ -1993,3 +2047,112 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   - (a) loosens an approval control.
   - (c) and (d) are reversible UI.
 - **Owner:** product team. Ryan Adams (Sales Manager) for (a)–(d); Brian Petros for the approval half of (a).
+
+## Structured Billing / Pre-Labor tabs vs the static-PDF quotation-send flow
+
+- **Status:** **resolved** — [decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md](../decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md)
+- **Asked:** 2026-09-07 — review of ad-hoc branch `feat/customer-billing-pre-labor-forms`
+  (craneguys-platform PR #490 / `dacf6dc1`, no ticket; Path C `processed.log` row added 2026-09-08);
+  tcg-scrum escalation
+- **Question:** the ERP now captures the *same two documents twice*. Which is intended?
+  (a) the structured web tabs **replace** the emailed PDFs; (b) they **complement** them — TCG
+  still emails the PDF, and staff key the returned answers into the tabs; (c) the customer fills
+  the structured form themselves (self-service), and the PDFs are retired; or (d) this is an
+  uncoordinated duplicate build. One line settles it, and it decides whether
+  `PRE_QUOTE_FORM_FILES` and the send-email appendix get deleted.
+- **The duplication, concretely:** `packages/shared/src/constants/pre-quote-forms.ts` attaches two
+  static PDFs to a quotation send — `CUSTOMER_PACKET: 'New Customer Packet.pdf'` and
+  `JOB_LABOR_COMPLIANCE: 'Pre Job Labor Compliance Information Request Form final polished.pdf'` —
+  with `buildPreQuoteFormsEmailAppendix()` asking the customer to *"review and complete this
+  form, then reply to this email"*. The branch's two new Customer tabs capture the **same two
+  documents as structured fields**: Billing Information (Credit Card Authorization, Credit
+  Application, Deposit, Preliminary Notice) and Pre Labor Form. Neither side references the other
+  in code or in the commit message, which cites only *"the Pre-Quote Data pattern and Figma
+  layouts"*.
+- **Sources checked — nothing addresses the relationship:**
+  - [customers/new-customer-packet.md](../customers/new-customer-packet.md) — the packet itself,
+    `status: unverified`, migrated 2026-09-04, source dated **2025-10-23**. Its own framing is
+    decisive about what is *not* written: **"The packet is a paper/PDF process. Nothing in it says
+    any of this should be, or is being, built into the ERP."** It lists the four forms that match
+    the new Billing Information tab and notes the ERP *"already has a `preQuoteData` JSON blob on
+    `Customer` waiting to hold something of this shape"* — while stating the correspondence is
+    **unverified** and the packet is **not cited** as the blob's source.
+  - [sales-operating-system/05-forms-and-records-matrix.md](sales-operating-system/05-forms-and-records-matrix.md)
+    §1 — the nearest thing to a rule, and it argues for structured capture without naming this
+    build: *"Completed forms must be stored in the designated **system of record rather than only
+    in email**."* It does not say the ERP is that system of record for either form (row 1 names
+    "FCC, HubSpot, Accounting files"; row 2 names "FCC job record").
+  - [erp-review-log.md](../erp-review-log.md) entry #3 (Melissa, Accounting, 2026-04-02) asks for
+    **automatic customer packet generation** — assembling the right documents per customer. That is
+    a third shape again (generate a PDF), and nobody has reconciled it with either of the two built.
+  - This register's *"Customer PO" on the quotation* entry above — `SCRUM-575` *Pre-Quote Data
+    Form & Customer PO Form* (Done, 2026-06-25) closed with the comment that it shipped under two
+    names, **"1. new customer packet 2. job and labor compliance information request form"**.
+    That is the *only* written link between the two names and the ERP, it is a closing comment
+    rather than a requirement, and the entry it sits in is open for unrelated reasons.
+  - `vault/decisions/` (31 notes on overlay `main`) — **nothing** on either form's channel.
+  - Jira **not consulted — unavailable** (Atlassian MCP not mounted this session; tenant was
+    `403 suspended-payment` as of 2026-08-25). `SCRUM-575` may carry more than its closing comment.
+- **Note:** the branch initially also added `20260907120000_drop_customer_pre_quote_data`; that
+  migration was **removed from PR #490** (2026-09-08). Whether `pre_quote_data` may ever be dropped
+  remains a separate Product question.
+- **Blocked:** sign-off of `feat/customer-billing-pre-labor-forms`; whether
+  `PRE_QUOTE_FORM_FILES`, `buildPreQuoteFormsEmailAppendix()` and the two committed PDFs should be
+  removed, kept, or wired to the new tabs.
+- **Owner:** Ryan Adams / Joe Schacatano (sales & quotation) for the send flow; Melissa McNutt
+  (Accounting) for the packet, since the automatic-generation ask is hers.
+- **Cross-link:** [customers/gaps.md → *Pre-Labor / labor-compliance capture — one customer-level
+  blob, or one record per job/quote?*](../customers/gaps.md#pre-labor--labor-compliance-capture--one-customer-level-blob-or-one-record-per-jobquote)
+- **Resolution (2026-09-07):** answer (b) — the two mechanisms are **intentionally
+  complementary**, joined by a **manual, sequential workflow**: TCG emails the static PDFs
+  from the Send-to-Customer modal → the customer fills the PDF by hand and emails it back →
+  a TCG staff member **transcribes** the answers into the customer's Billing Information and
+  Pre Labor Form tabs. **No OCR/automatic extraction is planned; no customer self-service;
+  the PDF flow is not being replaced.** So `PRE_QUOTE_FORM_FILES`,
+  `buildPreQuoteFormsEmailAppendix()` and the two committed PDFs **stay, unwired to the
+  tabs, by design** — the PDF is the collection instrument, the tabs are the system of
+  record. Product decided this **verbally**, relayed by Jahanzaib Nadeem; **no individual
+  Product person is named** (Ryan Adams / Joe Schacatano own the send flow, Melissa McNutt
+  the packet — none is recorded as having said it), so re-confirm with a named owner before
+  deleting anything on the strength of it.
+  **Applied as a consequence:** the modal's staff-facing checkbox copy now reads "Billing
+  Information" / "Pre Labor Form" to match the tabs; the PDF filenames, prop names and the
+  **numbered PDF titles** in the customer-facing email appendix were deliberately left
+  unchanged. **Correction (2026-09-08):** the appendix **intro line**
+  (`PRE_QUOTE_FORMS_EMAIL_APPENDIX_INTRO`) was later rewritten in PR #490 `dcaa7bf0` from
+  *"our Pre-Quote documentation"* to *"our customer documentation"* — that change is **not**
+  covered by this decision (see the open entry below). Do not treat the whole email body as
+  frozen by this note.
+  **Still open, and not closed by this:** whether `pre_quote_data` may be dropped (migration
+  removed from PR #490 pending Product); Melissa's automatic customer-packet-generation ask
+  ([erp-review-log.md](../erp-review-log.md) #3), a third shape neither addressed nor dismissed;
+  and `SCRUM-575`, still unread (Jira unreachable this session).
+
+## Is "Pre-Quote" being retired in customer-facing copy, and who signs off the send-email text?
+
+- **Status:** open
+- **Asked:** 2026-09-08 — review of `feat/customer-billing-pre-labor-forms` (commit `dcaa7bf0`),
+  main-repo PR #490. **Not a ticket question:** no `SCRUM-###`, no `.ai/aidlc/SCRUM-###/`
+  folder (Path C `processed.log` row added 2026-09-08).
+- **Question:** the commit rewrites the customer-facing first line of the quotation-send email
+  appendix (`packages/shared/src/constants/pre-quote-forms.ts`,
+  `PRE_QUOTE_FORMS_EMAIL_APPENDIX_INTRO`) from *"our Pre-Quote documentation"* to *"our customer
+  documentation"*. Two things need a person: (a) is "Pre-Quote" being deliberately retired from
+  copy the customer reads, or was this an incidental tidy-up? (b) who owns the wording of this
+  email at all — `quotations/quotations.md:32` records that TCG never supplied it.
+- **Candidates:** `quotations/quotations.md:32-33` (punch list, 2026-07-14) — *"Need to
+  demand text from TCG team for email"*, and a rename request pointing at *"new customer
+  packet"*, the opposite direction from this change;
+  `quotations/sales-operating-system/05-forms-and-records-matrix.md` section 8 *Quote Sent* —
+  content requirements, explicitly **not** wording; `meetings/transcripts/2026-08-11-sales-process.md:211`
+  (Brian Petros, TCG, 2026-08-11) still says "pre-quote" in TCG's own voice. Nothing in
+  `quotations-INDEX.md`'s four candidates, `decisions/`, or `SCRUM-575` as transcribed in this
+  register addresses email copy. Jira re-checked 2026-09-08: still `403 suspended-payment`.
+- **Note:** `decisions/2026-09-07-pre-labor-pdf-and-structured-tabs-complementary.md` originally
+  said the customer-facing email body was "deliberately left unchanged"; that is true of the
+  numbered PDF titles only, not of this intro line. The decision note carries a correcting line
+  as of 2026-09-08.
+- **Blocked:** nothing hard — the string ships either way. But if "Pre-Quote" is *not* being
+  retired, the customer-facing term now diverges from the PDF titles the same email lists, and
+  from the `PRE_QUOTE_*` identifiers, filenames and DB column that keep the old name.
+- **Owner:** Ryan Adams / Joe Schacatano (quotation send), with Melissa McNutt on packet naming.
