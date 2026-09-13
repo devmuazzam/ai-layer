@@ -31,6 +31,22 @@ messages are `<person>, Teams, <date>`, quoted verbatim in the linked note; the 
 `MLA Art. <n> <heading> §<n>`; legacy config is the table and row. Every source below resolves
 to a file in this vault.
 
+> ## Changing a rule? Add the source first.
+>
+> This file is only worth something while every row can be traced. **Nobody edits a rule here —
+> or in `rules/PAY-*`, or in the engine — without adding the source that authorises the change**:
+> who said it, in which channel, on which date, at which timestamp or clause, with a link to the
+> file that holds the verbatim quote. A change with no source is not a rule change; it is a guess
+> with a commit hash. If the source is a call, curate the note and cite the timestamp. If it is a
+> Teams message, quote it verbatim in the decision note or the register entry and cite that. If it
+> is your own reading of the contract, cite the clause and mark the row *Contract*, not
+> *Confirmed*. And if you are changing a *Confirmed* row against its source, the new source must
+> outrank the old one (see the table at the end) — otherwise open a *Contested* row and leave both.
+>
+> The same applies in reverse: when a client message or call settles something, the row here
+> changes **in the same commit** as the decision note or rule file. A rule the engine implements
+> that this register cannot trace is a defect, whichever way the money falls.
+
 **Read with:** [payroll-engine-status-2026-09-12.md](payroll-engine-status-2026-09-12.md) for
 whether the engine *does* each rule; [rules/](rules/INDEX.md) for the full history per rule;
 [gaps.md](gaps.md) for the open questions.
