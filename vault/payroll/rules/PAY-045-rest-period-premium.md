@@ -99,3 +99,7 @@ tags: [module/payroll, kind/rule, open-questions]
   Rest reads actual slices only, by construction. **Expect a further backup after his fix and a
   changed set of rest badges on chains like Albergo's Mon 24 Aug** — same money on that one, but
   other weeks may move where the floor reached ×2.0.
+- **Stitch confirmed by Corrina via Brian, 2026-09-13:** rest chains form only on back-to-back or
+  overlapping entries; Brian is removing his app's 30-minute tolerance. ERP: `REST_STITCH_MINUTES`
+  is still 30 and the gap is measured on raw times — change to 0 on the PAY-020 rounded window.
+  See the 2026-09-09 decision note's update for why that removes the parked objection.

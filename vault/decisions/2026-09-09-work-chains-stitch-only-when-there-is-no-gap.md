@@ -91,6 +91,24 @@ already has it open — *"Confirm both thresholds are intended for the ERP."* Tw
    Floor and bucket coincide: the premium is **$0**, and what the fix restores is the badge, not pay.
    His exhibit therefore does not demonstrate the value of the change, and cannot be used to size it.
 
+**Update 2026-09-13 — Corrina has now confirmed it, and Brian is removing the code.** Brian, in
+writing: *"I vaguely remember Corrina mentioning something about that in the past... but recently
+confirmed with her that we should not be doing that. Labor entries should only be 'stitched'
+together if they are 'back-to-back'... or in some strange cases where they overlap."* So the rule
+is no longer only his self-correction — it carries the Payroll Manager — and it gains a clause:
+**overlapping entries stitch too.**
+
+**This resolves hold-reason 1 above, once one detail is fixed with it.** The ERP's rest chain
+measures the gap on the *raw* `shiftStartedAt` / `shiftEndedAt` (`calculate.ts:737`), while pay
+is priced on the PAY-020 rounded window (start down, end up, 30 min). Measured on the rounded
+window, "back-to-back" means what the priced slices say: a raw 11:29→11:31 handover rounds to
+11:30→11:30 and touches; a raw 11:31→11:59 gap rounds to 12:00→11:30 and *overlaps*. Only a gap
+that leaves a whole empty half-hour slice splits the chain — which is a real break, not a
+job-to-job handover. The "two jobs a minute apart get rest-forced" objection was an artefact of
+measuring raw minutes against a rounded ladder. **Recommended ERP change:** `REST_STITCH_MINUTES`
+30 → 0 **and** `toWorkChains` compares rounded boundaries (overlap or touch ⇒ one chain).
+Audit item A7 closes with it. Not yet built.
+
 The live question is not *30 or 0* but **what the rest chain is for**: a fatigue rule about genuinely
 going home and returning, or a literal reading of "eight hours off" that fires between two jobs on one
 continuous day. Registered in [../payroll/gaps.md](../payroll/gaps.md).
