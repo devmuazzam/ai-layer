@@ -89,6 +89,7 @@ the directory; **on other tools they do not — open them by path.**
 | `apps/api/prisma/` | `.ai/claude/contexts/prisma.md` |
 | `apps/web/` | `.ai/claude/contexts/web.md` |
 | `apps/mobile/` | `.ai/claude/contexts/mobile.md` |
+| `packages/payroll-engine/` | `.ai/claude/contexts/payroll-engine.md` — **no pay-rule change without its source in `vault/payroll/payroll-rules-provenance.md`, same commit** |
 
 ## Stack
 
