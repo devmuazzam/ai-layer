@@ -4123,6 +4123,10 @@ somewhere it should not have. Settle that before touching either.
   The legacy app folds them in: holiday gap hours *"reported as DT hours"*, daily-minimum gap
   added to `Pay_Total_Hrs`. **For the meeting:** the ERP can report added hours under separate
   codes if ADP has them; Corrina's answer on D-002/3/4 is the same answer as Brian's question.
+  **Asked of Corrina, 2026-09-13 (Haris → Brian, Teams):** bring a real ADP week with a
+  guaranteed-hours entry in it, so the meeting can see which columns those hours land in today.
+  The ERP-side rows (3 h + 1 h minimum → export `ST 3`; holiday 22:00→10:00 → export
+  `OT 4 · DT 6 · 3X 2`, six top-up hours in no column) are on record here for the comparison.
 - **The distinction that matters, which neither side has stated:** *counting toward a threshold*
   and *being reported as worked* are different things, and the ERP already separates them.
   Every phantom hour is its own pay component; `actualHours`, the timesheet, certified payroll and
