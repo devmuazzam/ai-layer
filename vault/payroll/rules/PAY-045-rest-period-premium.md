@@ -103,3 +103,15 @@ tags: [module/payroll, kind/rule, open-questions]
   overlapping entries; Brian is removing his app's 30-minute tolerance. ERP: `REST_STITCH_MINUTES`
   is still 30 and the gap is measured on raw times — change to 0 on the PAY-020 rounded window.
   See the 2026-09-09 decision note's update for why that removes the parked objection.
+- **⚠️ Brian, 2026-09-13, while fixing the order-of-operations bug, proposes removing the OT/DT
+  gate:** *"it is qualifying if there is less than 8 hours gap AND if the previous labor entry has
+  OT/DT!!! Not sure why I did that… should only be qualifying if there is less than 8 hours gap…
+  I'm removing the condition."* **The condition is the contract.** MLA Art. III *Rest Periods* §1:
+  *"a rest period of not less than eight (8) hours **between the end of any overtime period** and
+  the beginning of another straight-time shift."* His own `cfg.RestPeriod_Rule` encodes it —
+  `TriggerMode = 'HrsOTDTPositive'`, changed from the DDL default `ActHoursOver8`, last updated
+  2026-02-23 — and Corrina's 2026-09-10 example at 28:12 (6 h ST, short rest, *"fill up the
+  straight time until the 8 hours"*) pays no premium on the return. Removing the gate floors those
+  ST hours at ×1.5: $40 at $80 per such return. **Raised with Brian 2026-09-13 with the clause
+  quoted. The ERP keeps `hasActualOtDt`.** Not a rule change until Corrina says otherwise against
+  the contract text.
