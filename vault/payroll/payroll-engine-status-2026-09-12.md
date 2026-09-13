@@ -50,13 +50,13 @@ Decision note: [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-gu
 | **Self-signed WTL only with a stated reason** | Corrina 2026-09-03 (12:59) | 🟡 capture-side rule, mobile | — |
 | **Holiday: all work at ×3, 8-hour minimum, fires on any contact incl. spill-in, per calendar date** | Corrina 2026-06-11, 2026-09-04 (`verified`), 2026-09-10 (34:34) | ✅ | Ran Tue 16:00→Hol 02:00 = 1 ST / 7 OT / 2 H3X + 6 h top-up |
 | **Holiday minimum = 8 total (top-up), not 8 additional** | Union BA via Corrina 2026-09-12 | ✅ | Same run — 6 h top-up on 2 h worked |
-| **Holiday-start shift reverts at midnight; continuous shift preserved** | Union BA via Corrina 2026-09-12 | ✅ fixed `6491b6db8` (was N1) | Ran Hol 22:00→10:00 = 8 TRI / 4 OT / 6 DT, $3,360 |
-| **Guaranteed holiday hours advance the 12-hour DT mark** | Union BA via Corrina 2026-09-12, confirmed on 22:00→10:00 — **⚠️ contested by Brian Petros 2026-09-11, before Corrina's confirmation**; see gaps → *Added hours* | ✅ fixed `6491b6db8` — `premiumDayTopUpHours`, bumped once on leaving the premium date, boundary-in-gap included | Ran 22:00→06:00 = 8/4/2 $2,720; 22:00→10:00 = 8/4/6 $3,360 |
+| **Holiday-start shift reverts at midnight; continuous shift preserved** | Union BA via Corrina 2026-09-12 | ✅ fixed — PR #565 (was N1) | Ran Hol 22:00→10:00 = 8 TRI / 4 OT / 6 DT, $3,360 |
+| **Guaranteed holiday hours advance the 12-hour DT mark** | Union BA via Corrina 2026-09-12, confirmed on 22:00→10:00 — **⚠️ contested by Brian Petros 2026-09-11, before Corrina's confirmation**; see gaps → *Added hours* | ✅ fixed — PR #565, `premiumDayTopUpHours`, bumped once on leaving the premium date, boundary-in-gap included | Ran 22:00→06:00 = 8/4/2 $2,720; 22:00→10:00 = 8/4/6 $3,360 |
 | **Cross-midnight into Sat/Sun/holiday — higher rate governs, never a downgrade** (DT earned by hours does not drop to Sat ×1.5) | Corrina 2026-09-04, `verified` | ✅ upward | Ran Fri 22:00→Sat 14:00 = 12 OT / 4 DT |
 | **Daily 4-h minimum at the rate the shift ended on**, per calendar day | Corrina 2026-06-11; Brian/Corrina 2026-09-10 (36:07) | ✅ | Audit re-run A5, A6 |
 | **Special Saturday** = first Saturday after the first Friday, June & December, ×2, 8-h minimum | MLA; Brian 2026-08-24 | ✅ | Audit re-run B2, B6 |
 | **Holiday observance shifting** (Sun → Mon; Christmas/New Year on Sat → Fri) | MLA | ✅ | Audit re-run B5 |
-| **Shift differential $3 / $4, into the rate; 7 → 8 and 6½ → 8 hours-add** | MLA Art. III Shifts; Brian 2026-08-24 | ✅ rates · ✅ hours-add once per chain, on the last 2nd/3rd-shift entry — fixed `6491b6db8` (was N2) | Test: two back-to-back 2nd-shift tickets → one add |
+| **Shift differential $3 / $4, into the rate; 7 → 8 and 6½ → 8 hours-add** | MLA Art. III Shifts; Brian 2026-08-24 | ✅ rates · ✅ hours-add once per chain, on the last 2nd/3rd-shift entry — fixed, PR #565 (was N2) | Test: two back-to-back 2nd-shift tickets → one add |
 | **Non-union hourly: daily 8/12 → 7th day → weekly 40, in that order, reasons preserved** | Brian 2026-09-07, written, 9 scenarios | ✅ | Audit re-run A9 |
 | **Non-union is admin/yard only; every dispatched job is L12; no non-union mechanics** | Corrina 2026-09-10 (38:20, 50:43) | 🟡 scope statement — work-order and salaried populations not modelled | — |
 | **Subsistence $85 (45–77.5 mi) / $200 (>77.5 mi), per job not per craft** | 2026-08-20 SME call; decision 2026-09-01 | 🟡 built, **unreachable** — no DTO/UI sets the job fields (B4) | — |
@@ -82,10 +82,11 @@ Decision note: [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-gu
 
 ## Engine defects open today
 
-Fixed in app `main` `6491b6db8` (2026-09-12, 92/92 engine tests, `@tcg/api` builds): **N1**
+Fixed and **merged to app `main` as PR #565 (`e9d45ecbf`, 2026-09-13)** — 92/92 engine tests, `@tcg/api` builds: **N1**
 holiday-start ×3 carry + top-up double-pay; **the 12-hour bump** for guarantee hours; **N2**
-hours-add per ticket; and Sunday-start ×2 carry, by the same principle. **Not yet pushed** —
-the repo's pre-push hook refuses direct pushes of `main`.
+hours-add per ticket; and Sunday-start ×2 carry, by the same principle. **Note:** repo CI
+(Affected CI, CodeQL, Snyk) has failed on every `main` run since at least `5372e0a29` with zero
+steps executed — a runner/config failure, not a code result; merged on the local gates.
 
 | # | Defect | Per occurrence | Fix |
 | --- | --- | --- | --- |

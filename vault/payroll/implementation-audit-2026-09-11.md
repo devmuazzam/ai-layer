@@ -234,7 +234,7 @@ is new, not a regression: the holiday top-up hours must advance the 12-hour DT c
 
 ## Post-audit note, 2026-09-12 (later) — N1, N2 and the 12-hour bump fixed
 
-App `main` `6491b6db8`. Each slice prices under its own calendar day (`sliceDayType` removed);
+Merged to app `main` 2026-09-13 as PR #565 (`e9d45ecbf`). Each slice prices under its own calendar day (`sliceDayType` removed);
 `premiumDayTopUpHours` feeds the holiday / special-Saturday top-up into the cumulative counter
 once on leaving the premium date, including a boundary that falls between two chained tickets;
 `applyShiftHoursAdd` fires once per chain on the last 2nd/3rd-shift entry. Regression tests
