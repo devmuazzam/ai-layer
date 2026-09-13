@@ -51,7 +51,7 @@ Decision note: [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-gu
 | **Holiday: all work at ×3, 8-hour minimum, fires on any contact incl. spill-in, per calendar date** | Corrina 2026-06-11, 2026-09-04 (`verified`), 2026-09-10 (34:34) | ✅ | Ran Tue 16:00→Hol 02:00 = 1 ST / 7 OT / 2 H3X + 6 h top-up |
 | **Holiday minimum = 8 total (top-up), not 8 additional** | Union BA via Corrina 2026-09-12 | ✅ | Same run — 6 h top-up on 2 h worked |
 | **Holiday-start shift reverts at midnight; continuous shift preserved** | Union BA via Corrina 2026-09-12 | ✅ fixed `6491b6db8` (was N1) | Ran Hol 22:00→10:00 = 8 TRI / 4 OT / 6 DT, $3,360 |
-| **Guaranteed holiday hours advance the 12-hour DT mark** | Union BA via Corrina 2026-09-12, confirmed on 22:00→10:00 | ✅ fixed `6491b6db8` — `premiumDayTopUpHours`, bumped once on leaving the premium date, boundary-in-gap included | Ran 22:00→06:00 = 8/4/2 $2,720; 22:00→10:00 = 8/4/6 $3,360 |
+| **Guaranteed holiday hours advance the 12-hour DT mark** | Union BA via Corrina 2026-09-12, confirmed on 22:00→10:00 — **⚠️ contested by Brian Petros 2026-09-13**; see gaps → *Added hours* | ✅ fixed `6491b6db8` — `premiumDayTopUpHours`, bumped once on leaving the premium date, boundary-in-gap included | Ran 22:00→06:00 = 8/4/2 $2,720; 22:00→10:00 = 8/4/6 $3,360 |
 | **Cross-midnight into Sat/Sun/holiday — higher rate governs, never a downgrade** (DT earned by hours does not drop to Sat ×1.5) | Corrina 2026-09-04, `verified` | ✅ upward | Ran Fri 22:00→Sat 14:00 = 12 OT / 4 DT |
 | **Daily 4-h minimum at the rate the shift ended on**, per calendar day | Corrina 2026-06-11; Brian/Corrina 2026-09-10 (36:07) | ✅ | Audit re-run A5, A6 |
 | **Special Saturday** = first Saturday after the first Friday, June & December, ×2, 8-h minimum | MLA; Brian 2026-08-24 | ✅ | Audit re-run B2, B6 |
@@ -68,7 +68,7 @@ Decision note: [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-gu
 | Question | Owner | Why it matters | Where |
 | --- | --- | --- | --- |
 | **23:00 → 13:00** — categorical (0 ST) or mechanical (1 ST at 06:00–07:00)? The engine chose categorical | Corrina | One hour per such shift; decides the `afterStartDate` rung's correctness | gaps → *The before-midnight bucket rule* |
-| **Do guaranteed hours also advance the rest trigger, weekly OT, or meal spans?** BA ruled on the daily ladder only; client has twice said added hours don't touch the rest rule | Corrina / Brian | Scope of today's engine change | decision note 2026-09-12 |
+| **Which rules' added hours reach which thresholds?** Brian 2026-09-13: none, ever — contesting the one decided cell (holiday top-up → 12-h rung). Grid of 5 rules × 4 thresholds, one cell decided | Corrina, with the BA; Brian to align or argue | Parallel run diverges from Brian's app on every holiday-start shift until settled | gaps → *Added hours* |
 | **Sunday-start → Monday**: does Sunday ×2 carry past midnight? Same principle as the holiday ruling says no (2 DT + 10 OT); engine pays 12 DT | Corrina — one line | $400 per such shift | this page (ran it) |
 | **Rest-chain stitch: 30 min or 0** in the ERP, where every job is its own ticket | CodingCops proposal → Brian | Two jobs a minute apart would rest-force each other at 0 | A7; decision 2026-09-09 |
 | **Rest-chain depth** — walk back to an 8-h gap (Brian) vs previous entry only (Corrina agreed on the call) | Brian | Three or more consecutive short rests | PAY-045 |

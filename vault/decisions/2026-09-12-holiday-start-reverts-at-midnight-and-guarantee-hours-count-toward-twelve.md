@@ -80,6 +80,61 @@ Corrina Bustos: **"hello, yes your example is correct."** So (c) is not a slip i
 hours of double time on a 12-hour shift is only reachable if the guaranteed holiday hours sit on
 the 12-hour ladder. The ruling is complete.
 
+## ⚠️ Contested by Brian Petros, 2026-09-13 — ruling (c) only
+
+Brian, in writing, the day after Corrina's confirmation:
+
+> That guarantee is not worked time. It should not advance OT/DT thresholds, rest calculations,
+> WTL, etc. It is effectively a separate pay component. I currently/still believe it should not be
+> reported/handled in the system/rules as hours "actually" worked… if the employee did not
+> "actually" work the hours added (for any payroll rule).
+>
+> My last conversations with Corrina… I remember her explaining that we might need to consider
+> those "added" hours as time "actually" worked by the employee… but that doesn't make sense to
+> me, because the employee did not "actually" work during those hours added.
+>
+> If we are to treat those non-working hours added as "actually" worked… then that makes things
+> much more difficult for the system to handle all of the other payroll rules that could interact
+> with it… not to mention the legal issues that arise when claiming that the employee was working
+> (when the employee was actually not working).
+>
+> I don't think we have received confirmation from Corrina regarding this.
+
+He names **three rules that add hours not actually worked**: the guaranteed-hours rules (daily
+4-h, holiday 8-h, special-Saturday 8-h, long-boom 4-h); the WTL rules that add a penalty
+half-hour (the *second and later* missed meals — PAY-047's "each additional missed lunch adds a
+new half-hour at DT on top"); and the shift-differential hours-add (+1.0 / +1.5 h). His position
+is one rule for all three: **added hours are never "actually worked" — they never advance a
+threshold, never feed rest or WTL, and are a separate component.**
+
+**Where this stands against the record.** Corrina *has* confirmed it — on the 10am case, in
+writing, the previous day: 8 TRI · 4 OT · 6 DT is only reachable if the six phantom hours sit on
+the ladder. But it is not clear Brian has seen that arithmetic, and Corrina may not have either:
+she confirmed a breakdown, not the principle behind it. **Rulings (a) and (b) are not in
+dispute. Ruling (c) is now contested by TCG's payroll consultant and app author**, against TCG's
+Payroll Manager relaying the union's business agent. The union outranks the consultant on
+contract interpretation; the consultant is the one who has to make his app agree with ours.
+Both need to see the same number.
+
+**The point that may reconcile them — and how the ERP already does it.** Brian's objection has
+two halves. The *legal/reporting* half — the system must never *claim* the employee was working
+when they were not — is satisfied by the build as shipped: `actualHours`, the timesheet, certified
+payroll and the ADP export all carry 12 worked hours; the 6-hour top-up is its own `PAY-033`
+component; **only the ladder's 12-hour counter is advanced**, and nothing else reads the phantom
+hours (rest trigger, weekly OT, meal spans all count actual time). The *rule* half — whether the
+ladder counter should move — is the union's call, and the BA's own breakdown moves it. So the
+question to put back is narrow: not "are guarantee hours worked time" (no — and the ERP does not
+say so anywhere) but "**does the 8-hour holiday guarantee reach the 12-hour double-time mark**".
+Brian's own `NORMAL_WORK` / special-earning policy design draws exactly this line elsewhere.
+
+**Scope Brian widens that the BA did not rule on:** the daily 4-h and long-boom 4-h guarantees,
+the WTL penalty adds, and the shift hours-add — and, for each, the rest trigger, weekly OT and
+meal spans. None of those was in the BA's example. The engine treats **all of them as Brian
+says** today; only the holiday / special-Saturday top-up, and only on the 12-hour rung, follows
+the BA. Registered as an open question with the three categories and four thresholds laid out:
+[../payroll/gaps.md](../payroll/gaps.md) → *Added hours — which rules' phantom hours reach which
+thresholds*.
+
 # Worked outcomes, at an $80.00 base
 
 | Shift | Union BA | Brian's app | ERP as of `015136f79` |

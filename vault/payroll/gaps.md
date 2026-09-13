@@ -4074,3 +4074,49 @@ somewhere it should not have. Settle that before touching either.
   PayComponentLedger_Rounding`, `usp_Finalize_PayComponentLedger_Reconciliation`).
 - **Owner:** none — closed by inspection, not awaiting a client answer. Revisit only if the
   engine is ever changed to compute a day's total by a second, independent formula.
+
+
+## Added hours — which rules' phantom hours reach which thresholds? Brian vs the union BA
+
+- **Status:** open
+- **Asked:** 2026-09-13 — Brian Petros, in writing, contesting ruling (c) of
+  [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md)
+  and widening it: *"it depends on if the employee 'actually' worked those hours."*
+- **Question:** For each payroll rule that **adds hours the employee did not work**, do those hours
+  advance any threshold? Brian's answer is a flat no for all of them: *"That guarantee is not
+  worked time. It should not advance OT/DT thresholds, rest calculations, WTL, etc. It is
+  effectively a separate pay component."* The union BA's breakdown, confirmed by Corrina, says
+  yes for one cell of the grid. Nobody has filled in the rest.
+- **The grid — what is decided (✅), what the engine does today, and what is open (?):**
+  | Added hours from… | 12-hour DT rung | 8-hour rest trigger | Weekly 40 | Meal spans |
+  | --- | --- | --- | --- | --- |
+  | **Holiday / Special-Saturday 8-h minimum** | ✅ **yes** — union BA via Corrina 2026-09-12, confirmed on 22:00→10:00; **contested by Brian 2026-09-13**. Engine: yes (`premiumDayTopUpHours`) | ? — client has twice said added hours don't touch rest (PAY-045). Engine: no | ? Engine: no | ? Engine: no |
+  | **Daily 4-h minimum** (PAY-040) | ? — never asked. Engine: no | ? Engine: no | ? | ? |
+  | **Long-boom 4-h minimum** (PAY-043) | ? Engine: no | ? Engine: no | — | — |
+  | **WTL penalty half-hours** — 2nd+ missed meals (PAY-047) | ? — already registered: *do WTL added hours count toward the rest chain's 12-hour threshold*. Engine: no | ? Engine: no | ? | n/a |
+  | **Shift hours-add** +1.0 / +1.5 (PAY-036/037) | placed at shift end, so moot within the shift. Engine: no | ? Engine: no | ? | — |
+- **The distinction that matters, which neither side has stated:** *counting toward a threshold*
+  and *being reported as worked* are different things, and the ERP already separates them.
+  Every phantom hour is its own pay component; `actualHours`, the timesheet, certified payroll and
+  ADP carry worked time only; the holiday top-up touches exactly one thing — the ladder's 12-hour
+  counter — because the BA's 8 + 4 = 12 arithmetic requires it. Brian's legal concern (*"claiming
+  that the employee was working when the employee was actually not"*) is therefore already met.
+  What is left is purely which cells of the grid above are "yes", and that is the union's and
+  Corrina's to say, not a modelling choice.
+- **Money:** the one decided cell is worth $240 per 22:00→10:00 holiday start at $80 (6 h DT vs
+  OT). The undecided cells are mostly moot within a shift (adds land at the end) and bite only on
+  weekly OT and rest — small per occurrence, but they decide whether the parallel run against
+  Brian's app can ever match on those weeks.
+- **Sources checked:** the decision note; [rules/PAY-033](rules/PAY-033-holiday-pay.md),
+  [PAY-040](rules/PAY-040-work-provided-minimum.md), [PAY-043](rules/PAY-043-long-boom-premium.md),
+  [PAY-045](rules/PAY-045-rest-period-premium.md) (the "added hours would not affect the 8-hour
+  rest rule" client statements), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md),
+  [PAY-036](rules/PAY-036-second-shift.md); `packages/payroll-engine/src/{guarantee,rest-period,
+  calculate}.ts` as of `6491b6db8`; the existing entry *Do WTL added hours count toward the rest
+  chain's 12-hour double-time threshold*.
+- **Blocked:** the engine change for the decided cell is built and tested. Nothing else should be
+  built from this entry. **The parallel run will diverge from Brian's app on every holiday-start
+  shift until he adopts the ruling or Corrina reverses it.**
+- **Owner:** Corrina Bustos — to re-confirm (c) with the arithmetic in front of her and Brian's
+  objection on the table, and to fill the rest of the grid with the BA if he will; Brian Petros
+  to align his app or to make the case to Corrina, not to us.
