@@ -4106,6 +4106,23 @@ somewhere it should not have. Settle that before touching either.
   is measured from the 3-hour mark, so rest is *not* forced. The same holds for WTL penalty adds
   and the shift hours-add. **The BA's ruling did not touch this column and the engine change did
   not generalise it** — one cell moved, and it is not this one.
+- **Brian, 2026-09-13, after being told the ERP keeps added hours out of worked time everywhere but
+  the 12-hour rung:** *"You also bring up a good point about ADP reported hours. I don't think I
+  have discussed this enough with Corrina. That would be a good one to discuss in our next
+  meeting."* So the practical question is now **agenda'd for the next payroll call**, and it is
+  the right one: not whether phantom hours are "worked" inside the engine, but **how they reach
+  ADP** — folded into the REG/OT/DT/TRI hours columns (which is what "claims the employee was
+  working" in the record that matters), or as their own earning codes. **What the engine does
+  today:** the export ([`xlsx-rows.ts`](../../packages/payroll-engine/src/xlsx-rows.ts)) sends
+  `totalHrs = actualHours` and the five worked-hour buckets plus boom hours; **the guarantee
+  top-ups, rest premium, WTL adds and the shift hours-add have no hours column at all** — their
+  money is in `totalAmount` via components, but no hours ride with it. So the ERP already does
+  not report phantom hours as worked to ADP, by omission rather than by design, and the dollars
+  currently have nowhere to land. That is gaps **D-002 (guaranteed hours), D-003 (rest premium),
+  D-004 (WTL/meal premium)** — the ADP codes TCG has owed since August — seen from the other end.
+  The legacy app folds them in: holiday gap hours *"reported as DT hours"*, daily-minimum gap
+  added to `Pay_Total_Hrs`. **For the meeting:** the ERP can report added hours under separate
+  codes if ADP has them; Corrina's answer on D-002/3/4 is the same answer as Brian's question.
 - **The distinction that matters, which neither side has stated:** *counting toward a threshold*
   and *being reported as worked* are different things, and the ERP already separates them.
   Every phantom hour is its own pay component; `actualHours`, the timesheet, certified payroll and
