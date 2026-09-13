@@ -1,0 +1,149 @@
+---
+title: Payroll rules — provenance register: every rule, its status, and the source that confirms it
+source: consolidation of rules/PAY-*, decisions/, meetings/, client-message-findings.md, the MLA and the legacy config, as of 2026-09-13
+migrated: 2026-09-13
+updated: 2026-09-13
+status: reference
+conflicts_with: []
+jira: []
+tags: [module/payroll, kind/reference, payroll-rules, provenance, sources, union-agreement]
+part_of: payroll/INDEX.md
+---
+
+# Payroll rules — provenance register
+
+**What this is.** One row per payroll rule: what we are building, whether it is confirmed, and
+**the exact source that confirms it** — who said it, where, when, and at what timestamp or
+clause — so that "are we right?" is answered by pointing, not by remembering. Rules are grouped
+the way payroll people think about them, not by `PAY-` number.
+
+**Status vocabulary.**
+- **Confirmed** — a named human at TCG (or the union) settled it on the record. The source is
+  cited. Build from it.
+- **Contract** — stated in the Local 12 agreement; no TCG ruling needed unless practice differs.
+- **Legacy** — read out of Brian's Payroll App (the 2026-08-18 extract / 2026-09-07 backup);
+  nobody at TCG has said it out loud. Usually right, never a ruling.
+- **Pending** — asked, no answer yet. The owner is named.
+- **Contested** — two TCG-side sources disagree. Both are cited.
+
+**How to cite a source.** Calls are `meetings/<date>` with the transcript timestamp; Teams
+messages are `<person>, Teams, <date>`, quoted verbatim in the linked note; the agreement is
+`MLA Art. <n> <heading> §<n>`; legacy config is the table and row. Every source below resolves
+to a file in this vault.
+
+**Read with:** [payroll-engine-status-2026-09-12.md](payroll-engine-status-2026-09-12.md) for
+whether the engine *does* each rule; [rules/](rules/INDEX.md) for the full history per rule;
+[gaps.md](gaps.md) for the open questions.
+
+---
+
+## 1. Time, and the ST / OT / DT ladder
+
+| Rule | What we build | Status | Source of confirmation | Still open |
+| --- | --- | --- | --- | --- |
+| **Rounding** (PAY-020) | Start rounds **down**, end rounds **up**, to 30 minutes, all employees | **Confirmed** | Brian Petros in writing, 2026-08-24 → [decisions/2026-08-24-payroll-time-rounding-method.md](../decisions/2026-08-24-payroll-time-rounding-method.md); re-confirmed by Kyle/Joe on the call [meetings/2026-09-03](../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) §3 (46:28–54:29: *"12:05 → 12:30… even if it's 12:31, it would be considered one"*); legacy `usp_Prepare_Continuous_Labor` | — |
+| **Paid time — start and end** (PAY-017/021) | Starts at the dispatch start time at the yard (pre-trip is paid); ends back at the yard, fuelled and parked, paperwork done | **Confirmed** | Kyle Harlow, Joe Schacatano, [meetings/2026-09-03](../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) §3 → [decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md) | Whether the ERP's paid window is the dispatch start or the mobile punch-in (audit A11) |
+| **Standard window** (PAY-021) | 06:00–17:00; hours outside it are at least OT | **Contract** | MLA Art. III *Working Rules* §1: *"Eight (8) consecutive hours shall constitute a day's work, between the hours of 6:00 A.M. and 5:00 P.M."*; legacy `cfg.Union_Master_Rules` row 1 (06:00 / 17:00 / 8.0 / 12.0 / 1.50 / 2.00) | — |
+| **After-06:00 start** — 8 ST, then OT, DT after 12 (PAY-022/023/024) | Worked example 04:00→23:30 = 2 OT · 8 ST · 2 OT · DT from 16:00 | **Confirmed** | Corrina Bustos, [meetings/2026-09-10](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §1, **24:14–24:49**, confirming Ehtesham slice by slice | — |
+| **Pre-06:00 start** — pre-window hours are OT and **do not spend** the 8-hour ST bank | 04:00→23:30 pays the full 8 ST from 06:00 | **Confirmed** | Brian Petros 2026-09-10 **8:42** (*"the accrual of the hours for standard time starts at actually 6 A.M."*); Corrina 24:14–24:49 | — |
+| **Before-midnight start** — no ST at all; 12 OT then DT | 22:00→14:00 = 12 OT · 4 DT | **Confirmed** | Corrina Bustos 2026-09-10 **15:18** (*"12 hours of overtime and four hours of double time because they are starting on overtime before midnight"*), **16:33** (*"it doesn't start over at 6 A.M."*), **17:22** (*"That 6 A.M. rule is a wash"*). Kyle 16:13 and Brian 16:30 accepted the correction | **Pending — Corrina:** 23:00→13:00, categorical (no ST) vs the legacy mechanical reading (1 h ST at 06:00–07:00). Engine built on categorical |
+| **Midnight start** | 00:00→14:00 = 6 OT · 6 ST · 2 DT — the ST bank is cut by the 12-hour cap | **Confirmed** | Corrina Bustos 2026-09-10 **20:40–21:02** | — |
+| **Double time after 12 hours**, nothing above DT except a holiday (PAY-024) | Flat 12-hour trigger in every start case | **Confirmed** + **Contract** | Corrina 2026-09-10 **30:44** (*"The only time it would ever convert is if they worked into a holiday"*); Brian 10:04; MLA Art. III §1 *"double (2) time shall apply on all hours worked after twelve (12) hours"* | — |
+| **No pyramiding** (PAY-027) | One multiplier per half-hour slice, the highest that applies | **Contract** + **Confirmed** | MLA Art. III §1 *"There shall be no pyramiding of overtime"*; Brian 2026-09-10 **21:48** | — |
+| **Cross-midnight — day type** (PAY-019) | Each slice prices under its **own** calendar day; DT earned by hours never drops to Saturday ×1.5; spilling into a holiday is holiday work; a holiday-start shift **reverts** at midnight | **Confirmed** | Corrina Bustos, Teams, 2026-09-04 → [decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md) (`verified`); union BA via Corrina, Teams, 2026-09-12 → [decisions/2026-09-12-…](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md) (`verified`) | Sunday-start → Monday applied by the same principle; one line from Corrina would make it explicit |
+
+## 2. Weekend, holiday and shift rates
+
+| Rule | What we build | Status | Source of confirmation | Still open |
+| --- | --- | --- | --- | --- |
+| **Saturday ×1.5, Sunday ×2** (PAY-030/031) | | **Contract** | MLA Art. III §1; Brian's 2026-08-24 summary (*"Sat OT / Sun DT"*), [client-message-findings.md](client-message-findings.md) | — |
+| **Holiday ×3, 8-hour minimum, fires on any contact, per calendar date** (PAY-032/033) | Even half an hour on a holiday converts to 8 h at triple; measured across every entry on the date | **Confirmed** + **Contract** | MLA Art. III *Holidays* §1 (*"A minimum of eight (8) hours at triple (3) time"*); Corrina 2026-06-11 19:11; Corrina 2026-09-10 **31:29–34:49** (*"even if they only work half an hour on the holiday, that has to get converted to 8 hour minimum"*); decision 2026-09-04 (b) | — |
+| **Holiday minimum is 8 hours total** — 2 worked → 6-hour top-up, not 8 more | | **Confirmed** | Union BA via Corrina Bustos, Teams, 2026-09-12 (*"10pm-12am- 8 hours Triple"* for 2 worked); settles Brian's 2026-09-11 flag | — |
+| **Guaranteed holiday hours count toward the 12-hour DT mark** | Holiday 22:00→10:00 = 8 TRI · 4 OT · 6 DT | **Confirmed — contested** | Union BA via Corrina, Teams, 2026-09-12 (DT from 04:00 = 8 guaranteed + 4); **Corrina confirmed the 10am version in writing 2026-09-12** (*"yes your example is correct"*). **Contested by Brian Petros, Teams, 2026-09-11** (*"That guarantee is not worked time. It should not advance OT/DT thresholds"*) — put back to Corrina 2026-09-13 with the arithmetic | Corrina's answer with Brian's objection in view; whether the same applies to rest / weekly OT / meals (BA ruled on the daily ladder only) |
+| **Holiday list and observance** (PAY-032) | Nine holidays; Sunday → Monday observed; Christmas/New Year on Saturday → Friday | **Contract** | MLA Art. III *Holidays* §1 list, §2, §5 | Annual maintenance owner |
+| **Special Saturday** (PAY-034) | First Saturday after the first Friday of June and December; ×2; 8-hour minimum | **Contract** | MLA Art. III *Holidays* §4; Brian 2026-08-24 summary | — |
+| **Shift differential** (PAY-035/036/037) | 2nd shift +$3.00/h, 3rd +$4.00/h, **into the rate** (*"will become the base rate for the entire shift"*); 7 worked → 8 paid, 6½ → 8 | **Contract** + **Confirmed** | MLA Art. III *Shifts* §1; Corrina 2026-08-04 1:00:19 (*"$4 extra an hour"*); Brian 2026-08-24 (*"pay+time adds"*); legacy `cfg.Union_Shift_Rules` | Multiple-shift election requires union notice (MLA §2) — no ERP capture of that yet |
+
+## 3. Adders, guarantees and premiums
+
+| Rule | What we build | Status | Source of confirmation | Still open |
+| --- | --- | --- | --- | --- |
+| **Craft adders go into the rate and ride the multiplier** — long boom, lattice, foreman, military (PAY-011/043/044/070/071) | An OT half-hour with a $4 boom on $80 base = ($40 + $2) × 1.5 = $63.00 | **Confirmed** + **Contract** | Brian Petros, [meetings/2026-09-10](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) **21:48–22:09** (*"it gets added to the base rate… the multiplier that's applied gets applied to the whole thing"*), Corrina 18:49/19:14; Brian in writing 2026-09-11 (*"you understand it correctly"*); MLA Art. IV (*"The additional rate added to the regular rate shall be the base rate when computing overtime pay"*) → [decisions/2026-09-10-craft-adders-are-into-the-rate-multiplied.md](../decisions/2026-09-10-craft-adders-are-into-the-rate-multiplied.md) (`verified`, supersedes 2026-08-25) | Brian's scenario workbook still prices boom flat ($62.00) — reconcile `#2`/`#3` to the decision, not the sheet |
+| **Boom pay window** (PAY-043) | From build-up through breakdown incl. all hook work; travel and walking the job are not boom time; every crane is built up on arrival unless a holdover / tower | **Confirmed** | Kyle Harlow, [meetings/2026-09-03](../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) §2 (43:30–46:28), Corrina confirming current practice; Corrina's 2026-09-04 breakdowns | — |
+| **Long-boom 4-hour minimum** (PAY-043) | Boom adder guaranteed for 4 h when the boom was worked at all, per calendar day | **Confirmed** | Brian 2026-09-10 **35:46–36:07** (*"it's guaranteed 4 hours of boom"*, per calendar day), Corrina *"Yes"*; legacy `LONG_BOOM_MIN_4` | Which multiplier prices the shortfall — engine uses the highest boom bucket seen |
+| **Daily 4-hour minimum** (PAY-040) | Shortfall to 4 h paid at the rate the shift **ended** on, grouped per calendar day | **Confirmed** | Corrina Bustos, [transcripts/2026-06-11](../meetings/transcripts/2026-06-11-payroll-app-demo-02.md) 21:55 (*"whatever they finished, whether that's overtime or double time, and it would be a four-hour minimum"*); Melissa 23:19; per calendar day — Brian/Corrina 2026-09-10 **36:07–36:28** | — |
+| **Foreman premium** (PAY-070) | $3.00/h company rule; into the rate | **Legacy / Brian** | Brian 2026-08-09 chat (codes `FRR/FRO/FRD/FRT`); multiplier per the 2026-09-10 adders decision | Granularity and capture mechanism — Brian / Jeff Kelley |
+| **Military-base premium** (PAY-071) | Into the rate | **Legacy / Brian** | v5.1 workbook MILITARY 10/15/20/30 ([foreman-and-military-premiums.md](foreman-and-military-premiums.md)); 2026-09-10 adders decision | No ADP codes; which bases qualify |
+| **Guaranteed hours are not worked time** — separate components; never advance the rest trigger | | **Confirmed (Brian)** | Brian Petros, Teams, 2026-09-11 (*"It is effectively a separate pay component"*) and his added-hours doctrine logged 2026-08-24; MLA *Rest Periods* §1 conditions rest on an *overtime period*, not on paid hours | **The one exception**, above: holiday guarantee → 12-hour mark (union). Whether any added hours reach weekly OT or meal spans — never asked |
+
+## 4. Rest and meals
+
+| Rule | What we build | Status | Source of confirmation | Still open |
+| --- | --- | --- | --- | --- |
+| **8-hour rest — trigger** (PAY-045) | Fires when the prior chain **contained OT or DT** and the gap is under 8 h; the length of the short gap is irrelevant | **Contract** + **Confirmed** | MLA Art. III *Rest Periods* §1 (*"between the end of any overtime period and the beginning of another straight-time shift"*); legacy `cfg.RestPeriod_Rule.TriggerMode = HrsOTDTPositive` (deliberately set, not the DDL default); Brian, Teams, 2026-09-13 (*"You're right about the OT/DT condition… now I remember that in the Union contract"*); gap length — Ehtesham/Corrina 2026-09-10 **28:43–29:01** (*"the exact rest time does not matter, right?"* / *"Correct, correct"*) | — |
+| **8-hour rest — effect** | New shift starts in the bucket the previous ended in, fills to 12, then DT; premium = ×1.5 floor, ×2.0 once the chain passes 12 h, **increase only** | **Confirmed** + **Legacy** | Corrina Bustos 2026-09-10 **25:21–29:20** (ended on DT → *"entire job would be double time"*; 10 h/ended OT → 2 h OT then DT; 6 h/ended ST → fill ST to 8); legacy `OTFloorMultiplier 1.50`; Brian 2026-09-07 withdrew a DT-from-first-hour reading (*"no change to the way the '8-hour rest' rule should be calculated"*) | Chain depth — Brian (walk back to an 8-h gap) vs Corrina on the call (*"just the previous day"*) diverge on 3+ short rests |
+| **Rest chain stitching** (PAY-045) | Entries form one chain only when **back-to-back or overlapping**; the 30-minute tolerance was a bug | **Confirmed** | Brian Petros, Teams, 2026-09-09 → [decisions/2026-09-09-work-chains-stitch-only-when-there-is-no-gap.md](../decisions/2026-09-09-work-chains-stitch-only-when-there-is-no-gap.md) (`verified`); **Corrina confirmed via Brian, Teams, 2026-09-13** (*"recently confirmed with her… only 'stitched' together if they are 'back-to-back'… or… overlap"*) | ERP still at 30 — change to 0 on the PAY-020 rounded window (A7) |
+| **Meal opportunities — count** (PAY-046) | Legacy brackets: ≤5.0 h → 0, 5.5–10.5 → 1, 11.0–16.0 → 2, 16.5–21.5 → 3, 22.0–27.0 → 4; placed at 5.0 / 10.5 / 16.0 / 21.5 h | **Legacy — contested** | `cfg.WTL_MaxMealThreshold`; [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md) §11; **vs** the Atom app / SCRUM-864 at 5 / 10.5 / **16.5** / **22** and BRS-LUNCH-002's *three* lunches | **Pending — Corrina:** 16.0 vs 16.5, 21.5 vs 22; three or four lunches |
+| **Meal grouping** | Continuous span across **gapless** entries; any gap breaks the group | **Legacy** + **Confirmed (Brian)** | `cfg.WTL_Rule.StitchGapMinutes = 0`; Brian's confirmation table, Teams, 2026-09-13 (*"WTL / meal grouping — 0 minutes, back-to-back/overlap only"*) | One-line yes from Corrina |
+| **Lunch signals** | Two signals — *taken* and *worked through*; **no signal means nothing is added or deducted** | **Confirmed** | Corrina Bustos, [meetings/2026-09-03](../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) §1 **6:46**; Brian 3:55–5:16 | — |
+| **Break start and end times must be captured** | The *when* prices the half-hour (ST/OT/DT/holiday) | **Confirmed** | Brian 2026-09-03 **19:03, 40:38** (*"essential"*); TCG internal list 2026-09-09 `#0` *"yes need to know"*; Corrina 2026-09-01 §5 | Start **and** end, or one time — Brian, pending |
+| **Taken meal — deduction** (PAY-047) | Deduct the whole priced half-hour, in the bucket it fell in, boom included | **Confirmed** | Brian's scenario `#1` workbook, method confirmed in writing 2026-09-11 (*"you understand it correctly"*); legacy `WTL_MEAL_DEDUCT` → [lunch-break-scenarios-2026-09-11.md](lunch-break-scenarios-2026-09-11.md) | Scenarios `#2` (all worked) and `#3` (some taken) — TCG internal 2026-09-14; a meal in OT while boom runs — untested |
+| **Worked-through meal — penalty** (PAY-047) | Deduct, then +0.5 h at **≥ ×2** on base + shift, boom excluded; first missed meal's half-hour absorbed, each further missed meal adds a half-hour at DT | **Contract** + **Confirmed** | MLA Art. III *Meal Periods* §1 (*"paid at double (2) time the straight hourly rate"*), §2 (additional ½ h per missed meal on Sat/Sun/holiday); SME call 2026-08-20 (Aldridge/Garrett examples); WTL charts; Brian 2026-09-03 34:20 (*"double time, unless it's a holiday, then it's triple"*) | ×3 on holidays — practice supports it, engine floors at ≥×2 (stays ×3 if already ×3) |
+| **"Paid straight through" — not built, in any verbiage** | | **Confirmed** | Wes Staley (TCG Owner), [meetings/2026-09-03](../meetings/2026-09-03-payroll-lunch-rules-boom-window-and-rate-updates.md) **13:54, 14:11, 35:28–36:01** → [decisions/2026-09-03-paid-straight-through-not-in-erp.md](../decisions/2026-09-03-paid-straight-through-not-in-erp.md) (`verified`) | Field practice — Melissa McNutt / Kyle Harlow, off-call; union and counsel questions pending on TCG's side |
+| **Self-signed WTL only with a stated reason** | Customer not on site, or driving during the meal window | **Confirmed** | Corrina Bustos 2026-09-03 **12:59** | — |
+
+## 5. Rates, groups and populations
+
+| Rule | What we build | Status | Source of confirmation | Still open |
+| --- | --- | --- | --- | --- |
+| **Payroll week** (PAY-001) | Saturday → Friday | **Confirmed** | Brian 2026-08-24 batch (*"weekly Sat–Fri payroll, both groups"*); legacy nightly run window | — |
+| **Every dispatched job is L12; non-union is admin/yard on California law; no non-union mechanics** (PAY-009/012) | | **Confirmed** | Corrina Bustos 2026-09-10 **38:20** (*"any job that's quoted is going to be L12"*), **40:52** (California payroll = *"all the salary and then there's a few hourly employees"*), **50:23, 50:43** (*"Mechanics are always Local 12 and yard is always California… we don't have non-union mechanic"*) | Work-order and salaried populations not modelled |
+| **Craft code lives on the employee, effective-dated, overridable on the entry; never union → non-union** (PAY-008/010) | | **Confirmed** | Brian 2026-09-10 **39:23, 40:07, 50:58**; Corrina **40:36** (*"No, that doesn't happen"*) | — |
+| **L12 base rate** (PAY-010) | From the wage-rate sheet by craft group, effective-dated | **Contract** | [mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md](mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md); decisions 2026-08-25 / 2026-09-03 on overrides and bulk updates | Apprentice step source (PAY-016) |
+| **Non-union hourly: daily 8/12 → 7th day → weekly 40, in that order, reasons preserved** (PAY-012/025/026) | | **Confirmed** | Brian Petros, Teams, 2026-09-07, with nine acceptance scenarios → [non-union-hourly-rules-2026-09-07.md](non-union-hourly-rules-2026-09-07.md) | Salaried — scope open (PAY-013) |
+| **Craft-locked rate override, scoped to union** | | **Confirmed** | [decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md), [2026-08-25-…scoped-to-union.md](../decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md) | — |
+
+## 6. Subsistence, vacation and other pay
+
+| Rule | What we build | Status | Source of confirmation | Still open |
+| --- | --- | --- | --- | --- |
+| **Subsistence** (PAY-048/049) | $85/day at 45–77.5 mi yard→site, days worked; $200/day beyond 77.5 mi, every day of the holdover; a property of the job/trip, not the craft | **Confirmed** | SME call [2026-08-20-payroll-rules-meeting-notes.md](2026-08-20-payroll-rules-meeting-notes.md) §subsistence; [decisions/2026-09-01-subsistence-not-a-craft-attribute.md](../decisions/2026-09-01-subsistence-not-a-craft-attribute.md) | The employer-election workflow; capture of holdover rest days |
+| **Anniversary check** (PAY-057) | 40 h at the regular rate after 1 year and ≥1200 h; a special earning preserved as entered, exempt from every rule, **not** entered as labor | **Contract** + **Confirmed (Brian)** | MLA *Vacation* §1–§2; Brian's FCC screenshot, processing spec and as-built PayrollAPP, Teams, 2026-09-11; *"definitely not the way it should be implemented in our ERP"* (FCC pattern ruled out), 2026-09-11 | **Pending:** which craft rate is "regular rate"; eligibility computed or manual; prorated layoff path; "separate check" = separate ADP payment? — Corrina / Brian |
+| **Special earnings generally** — SICK, PTO, bonuses, commissions | Per-classification policy, `NORMAL_WORK` default; SICK confirmed a member | **Confirmed (Brian)** | Brian, Teams, 2026-09-11 (*"SICK currently has no policy configuration… falls through to NORMAL_WORK"*) | Member list = Brian's policy table once SICK is done; approval levels (PAY-063); CA regular-rate on non-discretionary bonuses — counsel |
+| **Sick / PTO / on-call** (PAY-073) | | **Pending** | Only on the ADP sheet today; SICK now known to be mishandled in the legacy app | In/out decision, folded into special earnings |
+| **Fringe, pension, reimbursements** (PAY-050–055) | | **Contract / Legacy** | MLA Arts. VI–XV; ADP workbook | Not yet examined in the ERP |
+| **Reporting pay, crane-remains-on-job, first-day travel, hazmat, injury day, higher-rate-for-day** (PAY-015/038/039/041/042/056) | | **Contract only** | MLA text; never spoken by the client, not in the legacy app | Leave until asked |
+
+## 7. Foundation, audit and export — design rules, not pay rules
+
+These are how the module is built rather than what it pays. Their sources are the rule matrix,
+the FRD and the legacy extract; where a client statement exists it is noted.
+
+| Rule | Status | Source | Blocking |
+| --- | --- | --- | --- |
+| Labor-entry import, 23.5-h cap, split convention (PAY-004) | **Confirmed** | Brian 2026-06-09 (*"≤ 23.5 hours per labor entry… split into back-to-back entries"*); `LABOR_PAYROLL` as source, 2026-08-24 batch | — |
+| Time-source selection, assumed shift (PAY-017/018) | **Legacy** | Brian 2026-06-09 (*"can't trust the date/time values in FCC"*); 2026-09-07 backup turns strict times on by default | ERP: mobile stamps replace reconstruction |
+| Duplicate / overlapping labor (PAY-028/029) | **Legacy** + **Confirmed** | 25,179 `Warn_Overlap` rows in the extract; Brian 2026-09-09 (*"not sure if/how we will handle overlapping labor entries in ERP yet"*); added hours never become time windows — Brian, twice, 2026-08-24 batch | How overlapping labor is *paid* |
+| Pay-component ledger, missing-data issues, worklist, run log, snapshot (PAY-059–062/064/066) | **Design** | Matrix; FRD; legacy `fms.Payroll_CalcException` | — |
+| Manual adjustment (PAY-063) | **Pending** | Brian 2026-09-11 (*"the need for our payroll department to be able to manually enter and/or modify"*) | Approval levels |
+| Payroll approval (PAY-065) | **Pending** | FCC Pending/Approved status — Brian 2026-09-13 FYI | Approval levels |
+| ADP export, earning codes (PAY-067) | **Contested** | [adp-hour-earning-codes.md](adp-hour-earning-codes.md); codes for guaranteed hours / rest / WTL (D-002/3/4) owed since August; **how added hours reach ADP — Brian 2026-09-13, on Tuesday's agenda** | D-002 / D-003 / D-004 |
+| Retroactive correction (PAY-068) | **Pending** | Matrix; closed-payroll immutability proposal in the dependency matrix | — |
+| Rounding-adjustment component (PAY-069) | **Closed — inapplicable** | Engine computes totals one way only (overlay `9a5c5a1`) | — |
+| Certified payroll (PAY-072) | **Legacy** | FCC per-classification `UseCertifiedPayroll`; [certified-payroll-playbook.md](certified-payroll-playbook.md) | — |
+
+---
+
+## Sources this register draws on
+
+| Source | Where | What it is |
+| --- | --- | --- |
+| **Local 12 agreement** | [mcog-l12-mla-2025-2028/](mcog-l12-mla-2025-2028/INDEX.md) | MCOG / OE Local 12 Truck Crane MLA 2025–2028 — Brian's payroll-specific summary (OneDrive, 2026-08-11) and the full scanned PDFs from the project repository (OCR'd 2026-09-04). The contract TCG pays under; Wes Staley signs it. |
+| **Union business agent** | via Corrina Bustos, Teams, 2026-09-12 | The union's own interpreter. Outranks every other source on contract meaning. |
+| **Corrina Bustos** — TCG Payroll Manager | calls 2026-06-11, 2026-08-04, 2026-09-03, 2026-09-10; Teams 2026-09-04, 2026-09-12 | The person whose department pays. Her rulings are `verified` decisions. |
+| **Wes Staley** — TCG Owner | call 2026-09-03 | The PST ruling. |
+| **Kyle Harlow, Joe Schacatano, Melissa McNutt** — field / operations | calls 2026-06-04, 2026-06-11, 2026-09-03, 2026-09-10 | Boom window, paid-time boundaries, field practice. |
+| **Brian Petros** — payroll consultant, author of the legacy Payroll App | Teams throughout; calls; the extract and backups | Rules as his app implements them, and his design intent. Confirmation of a rule; not the last word on the contract. |
+| **Legacy Payroll App** | [legacy-payroll-app-db-extract/](legacy-payroll-app-db-extract/INDEX.md) (2026-08-18), […backup-2026-09-07/](legacy-payroll-app-db-backup-2026-09-07/INDEX.md) | Code-verified behaviour and config. Evidence of practice; wrong on SICK and anniversary as of the backup. |
+| **Decision notes** | [../decisions/](../decisions/) | One file per ruling, verbatim quotes, `status: verified` where a named human decided on record. |
+| **Meeting notes and transcripts** | [../meetings/](../meetings/) | Curated notes with timestamps; raw transcripts for the quote. |
