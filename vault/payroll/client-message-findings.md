@@ -231,6 +231,14 @@ deliberately changed from its default — folded into question 7.
 **Note for question 14:** all local backups predate the July-1 rollover. A **post-July pull**
 of `UNION_CRAFT` (or the new rate sheet) is the artifact that answers the FY2026-27 rates.
 
+> **Reading the "2026-08-24 batch" headings (added 2026-09-13).** 2026-08-24 is the date these
+> messages were *verified into this log*, not the date Brian sent them — the batch includes an item
+> from ≈2026-06-30 — and the log records verdicts, not the message text or the recipient. Do not
+> cite "Brian's 24 August message" to the client; the send dates are not recorded here, and at
+> least one reader could not find them in their own Teams history. For the added-hours position,
+> cite his verbatim 2026-09-11 message instead (*"It is effectively a separate pay component"*),
+> quoted in `decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md`.
+
 ## 2026-08-24 batch — added-hours doctrine (Brian Petros)
 
 | Claim | Verdict | Register |
