@@ -86,3 +86,16 @@ tags: [module/payroll, kind/rule, open-questions]
   either way. Brian's app shows a *Rest floor hrs* badge whenever the rule is armed; ours reports
   `restForcedHours` only for slices the floor actually raised, so his badge will appear where ours
   reads 0 with identical money. Not a defect on either side.
+- **Brian, 2026-09-13, follow-up:** the non-fire *"appears to be an 'order of operations' issue…
+  where our Payroll App needs to change the order in which the payroll rules are applied."* So his
+  app's rest trigger was reading slices after some later rule had already rewritten them (the
+  2026-09-07 backup already showed WTL reading rest-adjusted slices, i.e. rest before WTL; the
+  trigger itself evidently sat in the wrong place). **The ERP's order, for the record and for the
+  parallel run** (`calculate.ts`, per employee-week): (1) slice pricing per chain — ST/OT/DT ladder
+  with the premium-day top-up bump; (2) holiday / special-Saturday minimums, per calendar date;
+  (3) **rest premium, per chain, reading the priced slices** — before any phantom hours exist;
+  (4) shift hours-add, per chain; (5) daily 4-h and long-boom 4-h minimums, per calendar day;
+  (6) meals, per gapless group; (7) subsistence; then every day's total restated from its ledger.
+  Rest reads actual slices only, by construction. **Expect a further backup after his fix and a
+  changed set of rest badges on chains like Albergo's Mon 24 Aug** — same money on that one, but
+  other weeks may move where the floor reached ×2.0.
