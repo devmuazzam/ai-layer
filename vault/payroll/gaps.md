@@ -4076,6 +4076,22 @@ somewhere it should not have. Settle that before touching either.
   engine is ever changed to compute a day's total by a second, independent formula.
 
 
+## WTL scenarios `#2` and `#3` — TCG resumes internally Monday 2026-09-14; the app's WTL messages are provisional
+
+- **Status:** open — pointer; the substantive questions live under *Field-ops lunch capture vs
+  payroll WTL* and the `#1` workbook entry above.
+- **Asked:** 2026-09-13 — Brian Petros, FYI with screenshots of his app's *Lunch / WTL Review* and
+  *WTL Code Review* warnings: *"that screenshot above shows some wild notes about WTL... but that
+  is because we are still in discussions about how to properly handle all the various types of WTL
+  scenarios. We have an internal scheduled meeting on Monday to continue our discussions on this."*
+- **What it means:** anything his app currently says about WTL — the `WTL_0` fallback warnings,
+  the *"multiple or conflicting WTL tokens"* review flags, the `WTL ±0.5` rule adjustments visible
+  on the labor rows — is **not yet a rule** and must not be read as one from a screenshot or from
+  the 2026-09-07 backup. The `#1` (all breaks taken) method is client-confirmed; `#2` (all breaks
+  worked) and `#3` (some taken) are what Monday is for. The written `#1` instructions are still
+  owed. Expect a further app copy after Monday.
+- **Owner:** Brian Petros / Corrina Bustos, internal, 2026-09-14.
+
 ## Added hours — which rules' phantom hours reach which thresholds? Brian vs the union BA
 
 - **Status:** open

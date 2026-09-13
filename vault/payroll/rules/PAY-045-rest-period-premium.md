@@ -74,3 +74,15 @@ tags: [module/payroll, kind/rule, open-questions]
   on a two-day chain and diverge on three or more consecutive short rests. Nobody noticed the
   divergence. This is the same `REST_STITCH_MINUTES` / chain-depth question this register already
   carries under *Rest chain — is a job-to-job gap a "rest period" at all?*.
+- **Trigger confirmed as "any OT/DT in the prior chain" — Brian Petros, 2026-09-13, by calling the
+  opposite a bug.** Screenshot (Albergo, Mon 2026-08-24): 05:30–11:30 priced 5.5 ST / 0.5 OT
+  (+0.5 WTL at DT), then 17:30–22:30 six hours later — *"This should be triggering the '8-hour rest'
+  rule... but is not for some reason."* He is fixing his app. The morning entry **contained** OT
+  (the pre-06:00 half hour) but **ended** on ST — exactly the case this file logged on 2026-09-07 as
+  a possible "prior chain *ended* in OT/DT" reading. That reading is now the defect, not the rule:
+  `HrsOTDTPositive` stands. **The ERP already does this** (`rest-period.ts` `hasActualOtDt` — any
+  OT/DT slice in the prior chain arms it; gap 6 h < 8 → forced). **Parallel-run note:** on this
+  entry the evening hours are all OT and the floor is ×1.5 (chain 11 h < 12), so the uplift is $0
+  either way. Brian's app shows a *Rest floor hrs* badge whenever the rule is armed; ours reports
+  `restForcedHours` only for slices the floor actually raised, so his badge will appear where ours
+  reads 0 with identical money. Not a defect on either side.

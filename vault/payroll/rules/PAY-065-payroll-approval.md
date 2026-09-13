@@ -23,3 +23,10 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Open
 
 - **Blocking (matrix):** Management confirmation
+- **FCC approval status now surfaces as a warning in Brian's app (2026-09-13, FYI).** FCC labor
+  entries start *Pending* and are approved by checkbox; his app still calculates unapproved
+  entries but flags *"FCC Not Approved… Review the FCC approval status before payroll is
+  finalized"* on the web view and in the Excel recommendations. His own framing: *"not really
+  something you need to worry about… in case it is relevant."* ERP equivalent is the ticket's
+  completion/review state feeding the payroll worklist — this rule's own blocking item (approval
+  levels) is unchanged. No action.
