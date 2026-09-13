@@ -116,7 +116,7 @@ that leaves a whole empty half-hour slice splits the chain — which is a real b
 job-to-job handover. The "two jobs a minute apart get rest-forced" objection was an artefact of
 measuring raw minutes against a rounded ladder. **Recommended ERP change:** `REST_STITCH_MINUTES`
 30 → 0 **and** `toWorkChains` compares rounded boundaries (overlap or touch ⇒ one chain).
-Audit item A7 closes with it. Not yet built.
+Audit item A7 closes with it. Not yet built. **Brian confirmed the same day** on his app's state table: meal grouping 0 (kept), rest stitch 30 (struck, removing), rest OT/DT trigger (kept — his own table's "incorrectly" struck through after the MLA clause was put to him).
 
 The live question is not *30 or 0* but **what the rest chain is for**: a fatigue rule about genuinely
 going home and returning, or a literal reading of "eight hours off" that fires between two jobs on one

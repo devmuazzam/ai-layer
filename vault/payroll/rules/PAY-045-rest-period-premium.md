@@ -115,3 +115,13 @@ tags: [module/payroll, kind/rule, open-questions]
   ST hours at ×1.5: $40 at $80 per such return. **Raised with Brian 2026-09-13 with the clause
   quoted. The ERP keeps `hasActualOtDt`.** Not a rule change until Corrina says otherwise against
   the contract text.
+- **✅ Settled with Brian, 2026-09-13 (late), on his own confirmation table of the app's current
+  state:** *WTL / meal grouping — 0 minutes, back-to-back/overlap only* (kept); *8-hour rest rule —
+  30 minutes, incorrectly stitches gaps up through 30 minutes* (struck through: being removed);
+  *Rest trigger — ~~incorrectly~~ requires previous chain to have OT/DT* (the word "incorrectly"
+  struck through: **the OT/DT gate stays**). In his words: *"Yes… I agree with what you're
+  saying… all good… you just saved me from messing it up."* So the rule as both engines will run
+  it: rest chains form on back-to-back or overlapping entries only; the premium arms only when the
+  prior chain contained OT/DT and the gap was under 8 hours; meals group gaplessly. **ERP work
+  left: `REST_STITCH_MINUTES` 30 → 0 measured on the PAY-020 rounded window (A7).** The OT/DT gate
+  and gapless meals are already as built.
