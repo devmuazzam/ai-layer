@@ -4117,6 +4117,12 @@ somewhere it should not have. Settle that before touching either.
 - **Blocked:** the engine change for the decided cell is built and tested. Nothing else should be
   built from this entry. **The parallel run will diverge from Brian's app on every holiday-start
   shift until he adopts the ruling or Corrina reverses it.**
+- **Put to both, 2026-09-13 (Haris, Teams):** the arithmetic stated plainly — *"Double time
+  starting at 4am is only reachable if the 8 guaranteed hours count toward the 12 — at 4am the
+  employee has actually worked 6. That's the only place we treat added hours as reaching a
+  threshold. Everywhere else the engine does what you describe."* — and one question to Corrina:
+  *"the 8-hour holiday minimum reaches the 12-hour double-time mark, but is not otherwise treated
+  as time worked?"* Awaiting her answer.
 - **Owner:** Corrina Bustos — to re-confirm (c) with the arithmetic in front of her and Brian's
   objection on the table, and to fill the rest of the grid with the BA if he will; Brian Petros
   to align his app or to make the case to Corrina, not to us.
