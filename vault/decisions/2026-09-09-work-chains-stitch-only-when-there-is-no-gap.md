@@ -51,6 +51,15 @@ Two hard-coded fallbacks will silently reintroduce it if that row is ever missin
 `usp_Apply_RestPeriod_Premium.PROC.sql:77` and `usp_Prototype_RestPeriod_SliceChain.PROC.sql:65`,
 both `IF @StitchGapMin IS NULL SET @StitchGapMin = 30`.
 
+**2026-09-13 — Brian now wonders whether the 30 belongs to the meal rule instead:** *"When
+implementing the logic for the meal/break rules… I think that is when I added that logic to
+allow 30-gap to still be a continuous labor… I am still unsure if that 30-minute gap logic
+should apply to the meal/lunch rule."* The table above answers it from his own database: the
+meal chain (`cfg.WTL_Rule.StitchGapMinutes = 0`) has been gapless since the 2026-08-18 extract;
+the 30 sits only on the rest chain. Told him so, with the two config rows, the same day. What
+remains for Corrina is a one-line confirmation that gapless is intended for meals — not a
+change on either side.
+
 ## The comparison is `>`, so 0 is exactly right
 
 Both procs break a chain on `DATEDIFF(MINUTE, prevEnd, start) > @StitchGapMin`. At **0**: a
