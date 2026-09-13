@@ -4079,7 +4079,7 @@ somewhere it should not have. Settle that before touching either.
 ## Added hours — which rules' phantom hours reach which thresholds? Brian vs the union BA
 
 - **Status:** open
-- **Asked:** 2026-09-13 — Brian Petros, in writing, contesting ruling (c) of
+- **Asked:** 2026-09-11 (Friday), Brian Petros in writing — the same message as his five-concept list, so the objection predates Corrina's 12 September confirmation; logged here 2026-09-13 — contesting ruling (c) of
   [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md)
   and widening it: *"it depends on if the employee 'actually' worked those hours."*
 - **Question:** For each payroll rule that **adds hours the employee did not work**, do those hours
@@ -4090,7 +4090,7 @@ somewhere it should not have. Settle that before touching either.
 - **The grid — what is decided (✅), what the engine does today, and what is open (?):**
   | Added hours from… | 12-hour DT rung | 8-hour rest trigger | Weekly 40 | Meal spans |
   | --- | --- | --- | --- | --- |
-  | **Holiday / Special-Saturday 8-h minimum** | ✅ **yes** — union BA via Corrina 2026-09-12, confirmed on 22:00→10:00; **contested by Brian 2026-09-13**. Engine: yes (`premiumDayTopUpHours`) | ✅ **no** — Brian, verified into the log 2026-08-24 (send date unrecorded; *"added hours would not affect the 8-hour rest rule"*) and restated verbatim 2026-09-11 (*"a separate pay component"*), unopposed; engine: gap measured from the actual end, trigger reads actual OT/DT slices only (`rest-period.ts:79-85`, `:137`) | ? Engine: no | ? Engine: no |
+  | **Holiday / Special-Saturday 8-h minimum** | ✅ **yes** — union BA via Corrina 2026-09-12, confirmed on 22:00→10:00; **contested by Brian 2026-09-11, before that confirmation**. Engine: yes (`premiumDayTopUpHours`) | ✅ **no** — Brian, verified into the log 2026-08-24 (send date unrecorded; *"added hours would not affect the 8-hour rest rule"*) and restated verbatim 2026-09-11 (*"a separate pay component"*), unopposed; engine: gap measured from the actual end, trigger reads actual OT/DT slices only (`rest-period.ts:79-85`, `:137`) | ? Engine: no | ? Engine: no |
   | **Daily 4-h minimum** (PAY-040) | ? — never asked. Engine: no | ✅ **no** — same statement; **Brian's 2026-09-13 scenario** (3 h worked + 1 h minimum, then exactly 8 h off → rest *not* forced) is exactly this cell, and the engine already does it his way | ? | ? |
   | **Long-boom 4-h minimum** (PAY-043) | ? Engine: no | ? Engine: no | — | — |
   | **WTL penalty half-hours** — 2nd+ missed meals (PAY-047) | ? — already registered: *do WTL added hours count toward the rest chain's 12-hour threshold*. Engine: no | ? Engine: no | ? | n/a |

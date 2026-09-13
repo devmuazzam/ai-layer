@@ -80,9 +80,11 @@ Corrina Bustos: **"hello, yes your example is correct."** So (c) is not a slip i
 hours of double time on a 12-hour shift is only reachable if the guaranteed holiday hours sit on
 the 12-hour ladder. The ruling is complete.
 
-## ⚠️ Contested by Brian Petros, 2026-09-13 — ruling (c) only
+## ⚠️ Contested by Brian Petros, 2026-09-11 — ruling (c) only
 
-Brian, in writing, the day after Corrina's confirmation:
+Brian, in writing, on **Friday 11 September** — in the same message as his five-concept list,
+i.e. **before** Corrina's 12 September confirmation, not after it (corrected 2026-09-13; an
+earlier draft of this section dated the passage the 13th, having seen the message only in part):
 
 > That guarantee is not worked time. It should not advance OT/DT thresholds, rest calculations,
 > WTL, etc. It is effectively a separate pay component. I currently/still believe it should not be
@@ -107,10 +109,11 @@ new half-hour at DT on top"); and the shift-differential hours-add (+1.0 / +1.5 
 is one rule for all three: **added hours are never "actually worked" — they never advance a
 threshold, never feed rest or WTL, and are a separate component.**
 
-**Where this stands against the record.** Corrina *has* confirmed it — on the 10am case, in
-writing, the previous day: 8 TRI · 4 OT · 6 DT is only reachable if the six phantom hours sit on
-the ladder. But it is not clear Brian has seen that arithmetic, and Corrina may not have either:
-she confirmed a breakdown, not the principle behind it. **Rulings (a) and (b) are not in
+**Where this stands against the record.** Corrina confirmed the 10am case in writing on the
+12th — 8 TRI · 4 OT · 6 DT, only reachable if the six phantom hours sit on the ladder — **with
+Brian's objection already in the thread from the day before.** Whether she read the two together
+is not known: she confirmed a breakdown, not the principle behind it, and Brian may not have done
+the 8 + 4 = 12 arithmetic on the BA's example. **Rulings (a) and (b) are not in
 dispute. Ruling (c) is now contested by TCG's payroll consultant and app author**, against TCG's
 Payroll Manager relaying the union's business agent. The union outranks the consultant on
 contract interpretation; the consultant is the one who has to make his app agree with ours.
