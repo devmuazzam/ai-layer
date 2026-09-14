@@ -2033,7 +2033,7 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
     - HubSpot requires *"Closed Won"* once the outcome is known ([hubspot-sales-playbook.md](hubspot-sales-playbook.md), `unverified`).
     - Neither says from which states. FCC's void path is undocumented (fcc-nexgen-quote-entry.md §4).
   - For (d): [quotations.md](quotations.md):44 says *"`Envelope voided` - it should be user friendly"*, and [quotation.md](quotation.md):20–21 asks for void component and page changes. Both are `unverified`, both are conflicting punch lists, and neither names the button or "Cancel".
-  - `decisions/`: nothing on mark-won or voiding.
+  - `decisions/`: [2026-09-14-quotation-mark-won-requires-comment-or-attachment.md](../decisions/2026-09-14-quotation-mark-won-requires-comment-or-attachment.md) covers the comment-or-`WON_EVIDENCE` OR gate (`status: reference` only — TCG ratification still open below). Nothing on voiding / Cancel label.
   - Transcripts: no hit for a manual Won.
   - Jira was not checked (no MCP).
   - `qa-automation/docs/testinyCases/quotations.md` QUOT-011 step 3 (*mark-won on DRAFT → 409*) records the old code, not a spec. The branch breaks it.
