@@ -36,3 +36,10 @@ tags: [module/payroll, kind/rule, open-questions]
 - **Live trap documented in the pull:** `LPR` = "LATT OP REG" as an *earning* but "Life Post" as a *deduction* — sending it in `deductionInputs` deducts life insurance instead of paying lattice premium. Export code must be array-aware, not code-aware.
 - **The interim path has its generator (message 21):** the v3.x "PAYROLL for ADP" workbook family was updated for the new codes and **auto-generates the ADP import file** — the bridge for the manual-CSV-upload interim (message 5) is this workbook. Live sample `EPI4RZ32.csv` verified: `4RZ` throughout, Temp-Rate/Hours-4 row architecture in production, new codes correctly absent (event-driven). Stale-631 residual narrows to the v3.7-Mac internals and any crosswalk rows.
 - **v5.1 workbook in production (client message 2026-09-08; [adp-workbook-v5.1-engine.md](../adp-workbook-v5.1-engine.md)):** the interim file contract moved — three row types (`PRIMARY`, `BASE_RATE_OVERRIDE`, `TEMP_RATE`), 28 Hours-4 slots incl. `FRR–FRT` and `MLR–MLT` (Military shipped in week 36), `Temp Rate` on override rows, SIC as the trailing Hours-3 pair, 22 validation codes, alphabetical order. The workbook now displays the legacy app's recommendations but exports the typed rows. **The CSV is not the whole payroll:** Corrina edits/adds in ADP after import and keys salary separately — gaps → *Post-import ADP entry*.
+- **Added hours have no hours column in the export (2026-09-13).** `xlsx-rows.ts` sends
+  `actualHours` and the worked ST/OT/DT/H2X/H3X and boom buckets; guarantee top-ups, rest premium,
+  WTL adds and the shift hours-add carry dollars only. Brian Petros has put *"ADP reported hours"*
+  on the next meeting's agenda — whether added hours ride the worked-hour codes (legacy: holiday
+  gap "reported as DT hours") or their own earning codes (gaps D-002/D-003/D-004, still owed by
+  TCG). See [../gaps.md](../gaps.md) → *Added hours — which rules' phantom hours reach which
+  thresholds*.

@@ -74,3 +74,54 @@ tags: [module/payroll, kind/rule, open-questions]
   on a two-day chain and diverge on three or more consecutive short rests. Nobody noticed the
   divergence. This is the same `REST_STITCH_MINUTES` / chain-depth question this register already
   carries under *Rest chain — is a job-to-job gap a "rest period" at all?*.
+- **Trigger confirmed as "any OT/DT in the prior chain" — Brian Petros, 2026-09-13, by calling the
+  opposite a bug.** Screenshot (Albergo, Mon 2026-08-24): 05:30–11:30 priced 5.5 ST / 0.5 OT
+  (+0.5 WTL at DT), then 17:30–22:30 six hours later — *"This should be triggering the '8-hour rest'
+  rule... but is not for some reason."* He is fixing his app. The morning entry **contained** OT
+  (the pre-06:00 half hour) but **ended** on ST — exactly the case this file logged on 2026-09-07 as
+  a possible "prior chain *ended* in OT/DT" reading. That reading is now the defect, not the rule:
+  `HrsOTDTPositive` stands. **The ERP already does this** (`rest-period.ts` `hasActualOtDt` — any
+  OT/DT slice in the prior chain arms it; gap 6 h < 8 → forced). **Parallel-run note:** on this
+  entry the evening hours are all OT and the floor is ×1.5 (chain 11 h < 12), so the uplift is $0
+  either way. Brian's app shows a *Rest floor hrs* badge whenever the rule is armed; ours reports
+  `restForcedHours` only for slices the floor actually raised, so his badge will appear where ours
+  reads 0 with identical money. Not a defect on either side.
+- **Brian, 2026-09-13, follow-up:** the non-fire *"appears to be an 'order of operations' issue…
+  where our Payroll App needs to change the order in which the payroll rules are applied."* So his
+  app's rest trigger was reading slices after some later rule had already rewritten them (the
+  2026-09-07 backup already showed WTL reading rest-adjusted slices, i.e. rest before WTL; the
+  trigger itself evidently sat in the wrong place). **The ERP's order, for the record and for the
+  parallel run** (`calculate.ts`, per employee-week): (1) slice pricing per chain — ST/OT/DT ladder
+  with the premium-day top-up bump; (2) holiday / special-Saturday minimums, per calendar date;
+  (3) **rest premium, per chain, reading the priced slices** — before any phantom hours exist;
+  (4) shift hours-add, per chain; (5) daily 4-h and long-boom 4-h minimums, per calendar day;
+  (6) meals, per gapless group; (7) subsistence; then every day's total restated from its ledger.
+  Rest reads actual slices only, by construction. **Expect a further backup after his fix and a
+  changed set of rest badges on chains like Albergo's Mon 24 Aug** — same money on that one, but
+  other weeks may move where the floor reached ×2.0.
+- **Stitch confirmed by Corrina via Brian, 2026-09-13:** rest chains form only on back-to-back or
+  overlapping entries; Brian is removing his app's 30-minute tolerance. ERP: `REST_STITCH_MINUTES`
+  is still 30 and the gap is measured on raw times — change to 0 on the PAY-020 rounded window.
+  See the 2026-09-09 decision note's update for why that removes the parked objection.
+- **⚠️ Brian, 2026-09-13, while fixing the order-of-operations bug, proposes removing the OT/DT
+  gate:** *"it is qualifying if there is less than 8 hours gap AND if the previous labor entry has
+  OT/DT!!! Not sure why I did that… should only be qualifying if there is less than 8 hours gap…
+  I'm removing the condition."* **The condition is the contract.** MLA Art. III *Rest Periods* §1:
+  *"a rest period of not less than eight (8) hours **between the end of any overtime period** and
+  the beginning of another straight-time shift."* His own `cfg.RestPeriod_Rule` encodes it —
+  `TriggerMode = 'HrsOTDTPositive'`, changed from the DDL default `ActHoursOver8`, last updated
+  2026-02-23 — and Corrina's 2026-09-10 example at 28:12 (6 h ST, short rest, *"fill up the
+  straight time until the 8 hours"*) pays no premium on the return. Removing the gate floors those
+  ST hours at ×1.5: $40 at $80 per such return. **Raised with Brian 2026-09-13 with the clause
+  quoted. The ERP keeps `hasActualOtDt`.** Not a rule change until Corrina says otherwise against
+  the contract text.
+- **✅ Settled with Brian, 2026-09-13 (late), on his own confirmation table of the app's current
+  state:** *WTL / meal grouping — 0 minutes, back-to-back/overlap only* (kept); *8-hour rest rule —
+  30 minutes, incorrectly stitches gaps up through 30 minutes* (struck through: being removed);
+  *Rest trigger — ~~incorrectly~~ requires previous chain to have OT/DT* (the word "incorrectly"
+  struck through: **the OT/DT gate stays**). In his words: *"Yes… I agree with what you're
+  saying… all good… you just saved me from messing it up."* So the rule as both engines will run
+  it: rest chains form on back-to-back or overlapping entries only; the premium arms only when the
+  prior chain contained OT/DT and the gap was under 8 hours; meals group gaplessly. **ERP work
+  left: `REST_STITCH_MINUTES` 30 → 0 measured on the PAY-020 rounded window (A7).** The OT/DT gate
+  and gapless meals are already as built.

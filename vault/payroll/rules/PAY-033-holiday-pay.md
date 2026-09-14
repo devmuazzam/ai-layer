@@ -70,3 +70,50 @@ tags: [module/payroll, kind/rule, open-questions]
   by Corrina: the holiday 8-hour minimum, the 4-hour shift minimum and the 4-hour boom minimum are
   *"based on the calendar work day"*, so **more than one labor entry can be in scope**. Every
   worked example on the call assumed a single entry, which is not the general case.
+- **Brian Petros, 2026-09-11, in writing, on the three holiday scenarios sent to Corrina (Veterans'
+  Day Wed Nov 11; whole-shift, 2-hour spill-in, holiday start running past midnight):** *"Corrina
+  is the best one to answer. Based on my knowledge and our internal Payroll App logic… all 3
+  examples look correct to me."* On the deferred case he gives the reasoning the app uses:
+  *"midnight changes the applicable day type, but midnight by itself should not reset the
+  employee's continuous shift or worked-hour accumulation… Thursday is no longer a holiday, so the
+  Thursday hours should not automatically remain TRI. However, the employee also does not suddenly
+  receive a new block of straight-time hours at midnight… At 10am the employee has reached exactly
+  12 actual worked hours; any applicable DT treatment would begin only after that threshold."* So
+  the app's answer is **8 TRI + 10 OT**, not 12 TRI — *"we believe the ERP should split the worked
+  timeline at midnight for day-type pricing while preserving the continuous shift for OT/DT
+  accumulation."* **What he still wants the rep to confirm:** *"whether the agreement contains a
+  special rule stating that a shift that begins on a holiday remains at the holiday rate for the
+  entire continuous shift even after midnight"* — if such a *holiday shift-start* rule exists, #3
+  becomes a specific exception and the whole 12 hours stay TRI. **Status:** Brian's reading and the
+  app's; Corrina has not yet answered; the rep is the source for the exception question.
+- **⚠️ Brian flags the minimum itself as contested — "8 hours total" vs "8 additional hours".**
+  Same day, listing five concepts and marking this one as *"a bit controversial… it can be
+  interpreted differently"*: *"Holiday minimum is **8 hours total, not 8 additional hours**. If 2
+  hours were actually worked on the holiday, PayrollAPP adds a 6-hour guarantee/top-up, so the
+  employee ends up paid for 8 holiday hours."* Corrina's own written words on 2026-09-04 were
+  *"owed an **additional** 8 hours at triple time as the rule is that the ee is owed a minimum of
+  8 hours"* — literally read, 2 worked + 8 additional = 10 TRI. **The ERP, the legacy engine and
+  Brian's app all implement top-up-to-8** (`guarantee.ts` → `applyPremiumDayMinimums`: *"a
+  0.5-hour spillover plus a later 6-hour holiday shift is one day at 6.5 hours, owed 1.5"*; legacy
+  `HOLIDAY_MIN_8`). So three engines agree with Brian and the only source for "additional 8" is one
+  sentence of Corrina's, which her own *"minimum of 8 hours"* in the same sentence contradicts.
+  Needs her explicit confirmation — and it is worth **$480.00** per occurrence at an $80 base
+  (2 extra TRI hours). Registered in [../gaps.md](../gaps.md) → *Holiday shift-start continuation
+  and the 8-total-vs-8-additional minimum*.
+- **The other three concepts in the same message, all consistent with the vault as it stands:**
+  holiday worked time is 3.00× (PAY-033); **the guarantee is not worked time** — *"It should not
+  advance OT/DT thresholds, rest calculations, WTL, etc. It is effectively a separate pay
+  component"* (matches `rest-period.ts:79` and the legacy `Gap_*` columns, and is what makes #3
+  come out at 10 OT rather than 4 OT + 6 DT); midnight changes day type without breaking the
+  continuous shift (the CalendarDay policy, PAY-019); long-boom pay attaches only to the
+  build-up/work/breakdown portion and *"should not determine whether the hours are ST/OT/TRI"*
+  (PAY-043).
+- **✅ Union ruling, 2026-09-12, via Corrina Bustos — decision note [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md).** Holiday
+  22:00 → non-holiday 06:00 = **8 TRI · 4 OT · 2 DT**. (a) The minimum is **8 hours total** — 2
+  worked → 8 TRI; (b) **no holiday shift-start rule** — after midnight *"would start at the
+  applicable rate"*, continuous shift preserved; (c) **the guaranteed hours count toward the
+  12-hour DT mark** — DT at 04:00 = 8 guaranteed + 4 OT. (c) contradicts Brian's 2026-09-11
+  *"should not advance OT/DT thresholds"*, his app, the legacy engine and the ERP, and is the
+  union's reading. **The ERP currently overpays both holiday-start cases** (14 TRI and 18 TRI
+  instead of 8/4/2 and 8/4/6) because the A4 fix floors post-midnight slices at the anchor day's
+  ×3. Rest trigger, weekly OT and meal spans were not ruled on.

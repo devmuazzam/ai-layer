@@ -886,6 +886,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Fouzan Shakil for (a) and (b) as internal conventions; (c) needs whoever owns the
   Job-details document to say whether that line was meant app-wide — route to TCG via Brian
   Petros if it is read as product intent rather than a developer's note.
+## Edit-form leave confirmation offers Save — pointer, owned by admin
+
+- **Status:** resolved 2026-09-12 — answer in
+  [decisions/2026-09-12-edit-leave-confirmation-offers-save.md](../decisions/2026-09-12-edit-leave-confirmation-offers-save.md);
+  owning gap [admin/gaps.md → *Edit-form leave confirmation offers Save…*](../admin/gaps.md#edit-form-leave-confirmation-offers-save-create-stays-leavecancel--app-wide-unwritten).
+  Adjacent [*One tab, one PATCH…*](#one-tab-one-patch--and-what-the-leave-guards-save-means-when-several-tabs-are-dirty) (multi-tab leave-Save) remains open.
+- **Asked:** 2026-09-12 — same PR-review escalation as the owning entry.
+- **Pointer:** [admin/gaps.md → *Edit-form leave confirmation offers Save…*](../admin/gaps.md#edit-form-leave-confirmation-offers-save-create-stays-leavecancel--app-wide-unwritten). Adjacent here: [*One tab, one PATCH…*](#one-tab-one-patch--and-what-the-leave-guards-save-means-when-several-tabs-are-dirty) asks what leave-Save means on multi-tab asset editors; this pointer is the app-wide create/edit modal-button question.
+
 ## Job Type as a dimension of a resource type — pointer, owned by quotations
 
 - **Status:** open — **answer owned by quotations**, per [STRUCTURE.md](../STRUCTURE.md) →

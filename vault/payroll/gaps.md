@@ -3946,3 +3946,231 @@ somewhere it should not have. Settle that before touching either.
   `gaps.md` → *The union-classified employee who must not be paid on union rules* (why no
   combination can be rejected outright).
 - **Owner:** Corrina Bustos / Brian Petros (confirmation); CodingCops (build — done).
+
+## Holiday shift-start continuation and the 8-total-vs-8-additional minimum — ✅ CLOSED 2026-09-12; guarantee hours count toward the 12-hour mark
+
+- **Status:** closed — all three questions answered; the engine change is the open item, tracked
+  under the audit's A4 and the decision note
+- **✅ Question 3 confirmed 2026-09-12.** Corrina Bustos, on the 10pm–10am version (8 TRI / 4 OT /
+  6 DT): *"hello, yes your example is correct."* The guaranteed holiday hours advance the 12-hour
+  double-time mark. **Brian Petros was on the message** and has the ruling; his app's 8 TRI + 10 OT
+  is now the one that needs to move.
+- **Asked:** 2026-09-11 — the first by Corrina Bustos herself on the 2026-09-10 call (34:02, 34:10:
+  *"I'll double check with our rep"*); the second raised by Brian Petros in writing the same day as
+  *"a bit controversial"*.
+- **✅ Answered 2026-09-12 by the union business agent, relayed in writing by Corrina — decision note
+  [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md).** Worked breakdown for holiday 22:00 → 06:00: *"10pm-12am- 8 hours Triple / 12am-4am-
+  4 Overtime / 4am-6am- Dbl time… it follows the same 12 hours working then double time pay rule.
+  Because they started on a prior date so after midnight would start at the applicable rate."*
+  **Q1 — reverts at midnight**, continuous shift preserved; no holiday shift-start rule. Brian's
+  structure confirmed, reading (a). **Q2 — 8 hours total**: 2 worked → 8 TRI. Brian's flag answered
+  his way.
+- **⚠️ Question 3, opened by the same breakdown — the guaranteed holiday hours count toward the
+  12-hour double-time mark.** DT at 04:00 on six actual hours is only reachable as 8 guaranteed +
+  4 OT = 12. That contradicts Brian's written concept of 2026-09-11 (*"That guarantee is not worked
+  time. It should not advance OT/DT thresholds"*), his app (8 TRI + 10 OT on a 22:00→10:00), the
+  legacy `Gap_*` design, and the ERP. **Money:** $240.00 per 22:00→10:00 shift at $80 (6 h DT vs
+  OT). **Scope the BA did not rule on:** whether the guarantee hours also advance the 8-hour rest
+  trigger (client has twice said no), weekly OT, or meal spans — leave those on Brian's reading
+  until asked. **Owner:** Brian Petros needs to see the ruling and reconcile his app; CodingCops
+  owns the engine change.
+- **⚠️ Engine defect surfaced by running her example against `015136f79`:** yesterday's A4 fix
+  (`bucketForSliceAnchored` = `max(anchor day type, slice day type)`) floors a holiday-start shift
+  at ×3 for every post-midnight slice — the exact rule the BA ruled out — and then adds the 6-hour
+  top-up on top. **22:00→06:00 pays 14 TRI = $3,360.00 against the BA's $2,720.00; 22:00→10:00
+  pays 18 TRI = $4,320.00 against $3,360.00.** Overpays. The never-downgrade principle applies to
+  the cumulative-hours bucket, not the anchor day's premium; post-midnight slices must price as
+  `max(cumulative bucket, own calendar day type)`. Audit A4 reopened.
+- **Question 1 — does a shift that starts on a holiday stay at the holiday rate after midnight?**
+  Worked case sent to Corrina: Wed Nov 11 (Veterans' Day) 22:00 → Thu Nov 12 10:00, one job, full
+  rest before. Two readings: **(a) 8 TRI + 10 OT** — the 2 holiday hours top up to 8 TRI, the
+  Thursday hours price as a weekday, and because the shift started before midnight there is no ST
+  and OT runs to the 12-hour mark, which lands exactly at 10:00; **(b) 12 TRI** — a *holiday
+  shift-start* rule keeps the whole continuous shift at the holiday rate. **Brian Petros, in
+  writing, chooses (a)** as what his app does and what the ERP should do — *"split the worked
+  timeline at midnight for day-type pricing while preserving the continuous shift for OT/DT
+  accumulation"* — and names (b) as the one thing the rep must rule in or out: *"whether the
+  agreement contains a special rule stating that a shift that begins on a holiday remains at the
+  holiday rate for the entire continuous shift even after midnight."* Corrina has not answered.
+  **Money:** at an $80 base, (a) pays $3,120.00 and (b) $2,880.00 — (a) is the *higher* figure,
+  because the six phantom guarantee hours sit on top of ten real OT hours.
+- **Question 2 — is the holiday minimum 8 hours *total* or 8 hours *additional*?** Brian: *"8
+  hours total, not 8 additional hours. If 2 hours were actually worked on the holiday, PayrollAPP
+  adds a 6-hour guarantee/top-up."* Corrina, 2026-09-04, verbatim: *"owed an **additional** 8 hours
+  at triple time as the rule is that the ee is owed a minimum of 8 hours"* — the two halves of her
+  own sentence point different ways. **Every engine implements "total"**: the ERP
+  (`packages/payroll-engine/src/guarantee.ts` → `applyPremiumDayMinimums`, top-up = 8 − hours
+  worked that date), the legacy `HOLIDAY_MIN_8`, and Brian's app. **Money:** $480.00 per
+  spill-over at an $80 base (2 TRI hours), and it also changes Question 1's (a) from 8 TRI to
+  10 TRI. Corrina to confirm which she meant; the MLA's *"a minimum of eight (8) hours at triple
+  (3) time… shall be paid for all work performed… on the following holidays"* reads as a floor,
+  i.e. total.
+- **Settled on the way, by Brian in writing and consistent with the vault:** the guarantee hours
+  are **not worked time** and do not advance OT/DT, rest or WTL (why (a) is 10 OT and not
+  4 OT + 6 DT); midnight changes day type without breaking the continuous shift; long-boom pay
+  never decides the bucket. All three scenarios sent to Corrina — whole shift on the holiday
+  (19.5 TRI), 2-hour spill-in (1 ST / 7 OT / 8 TRI), and the holiday start — *"look correct"* to
+  him against the app.
+- **Update 2026-09-11 — Brian's structural recommendation for the ERP, and where the engine already
+  has it.** In writing: *"I recommend keeping these as separate concepts: (1) actual worked-hour
+  timeline and continuous-shift accumulation; (2) calendar day type for each worked segment
+  (weekday, Saturday, Sunday, holiday, etc.); (3) ST/OT/DT/TRI controlling multiplier for each
+  worked segment; (4) holiday 8-hour minimum as a separate guarantee/top-up component; (5) long-boom
+  and other applicable rate modifiers on only the qualifying work segments. That structure is
+  consistent with how our current Payroll App is designed and prevents the holiday guarantee from
+  accidentally affecting worked-hour calculations."* **The ERP engine is already built on exactly
+  these five separations** — `packages/payroll-engine/src/`: (1) `slices.ts` builds the half-hour
+  timeline; `calculate.ts` carries `cumulative` / `startingCumulative` across a chain, with the
+  8-hour chain break in `explain.ts` (`CHAIN_GAP_MS`); (2) `day-type.ts` classifies each slice by its
+  own calendar day, and `bucketForSliceAnchored` (branch `fix/timezone-business-day`) applies the
+  anchor-floor so a day-type change never downgrades; (3) `bucketForSlice` + `multiplierOf` give one
+  controlling bucket per slice — PAY-027 no-pyramiding; (4) `guarantee.ts` →
+  `applyPremiumDayMinimums` emits the holiday/special-Saturday minimum as its own `PayComponent`,
+  measured per calendar date, never as worked hours, and `rest-period.ts:79` explicitly keeps
+  guarantee hours out of the rest trigger; (5) `boomWindows` / `sliceIsOnBoom` in `calculate.ts`
+  attach the adder only to slices fully inside a captured build-up/work/breakdown window (PAY-043).
+  So this is **confirmation of the architecture, not a change request**. The one place the engine
+  and his description diverge is inside (1)+(3): the before-midnight ST-allowance regression
+  (`ad9041bc`) — see *The before-midnight bucket rule* entry above — which is a bucket-assignment
+  defect, not a structural one.
+- **Sources checked:** [../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §4;
+  [../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md) (now carries a
+  wording caveat); [rules/PAY-033-holiday-pay.md](rules/PAY-033-holiday-pay.md), [PAY-019](rules/PAY-019-cross-midnight-processing.md),
+  [PAY-040](rules/PAY-040-work-provided-minimum.md); [mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) → *Holidays* §1;
+  [legacy-payroll-app-db-extract/rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §7; `guarantee.ts`, `rest-period.ts:79`.
+- **Blocked:** nothing today — the ERP already implements reading (a) and "total". If the rep
+  confirms a holiday shift-start rule, `bucketForSliceAnchored` needs a HOLIDAY-carries-forward
+  branch; if Corrina meant "additional", `applyPremiumDayMinimums` changes from `8 − worked` to
+  `+8`. Both are small; both are money.
+- **Owner:** Corrina Bustos, via the union rep for Question 1; Corrina alone for Question 2 — it
+  is her sentence.
+
+## PAY-069's rounding-adjustment component — architecturally inapplicable to this engine
+
+- **Status:** resolved 2026-09-11 — answered from the record, no client question needed.
+- **Asked:** 2026-09-11 — the implementation-audit's B7 item (`payroll/implementation-
+  audit-2026-09-11.md`), reprising `rules/PAY-069-money-rounding-and-rounding-adjustment-
+  components.md` (`status: open`).
+- **Question:** should this engine insert a `PAY_COMPONENT_ROUNDING_ADJUSTMENT` ledger line
+  the way the legacy `usp_Normalize_PayComponentLedger_Rounding` /
+  `usp_Finalize_PayComponentLedger_Reconciliation` do?
+- **Why it does not apply here:** the legacy line exists because the incumbent computes a
+  day's total TWO independent ways — an aggregate `Pay_Actual_Gross`/`Final_Gross_Pay`
+  formula, and the sum of individually-`ROUND(x,2)`'d ledger rows — and the two can disagree
+  by a cent or more, so a reconciling row forces them to agree
+  (`legacy-payroll-app-db-extract/rules-plain-language.md` §14). This engine only computes a
+  day's total ONE way: `addComponent` (`money.ts`) rounds every component to cents at the
+  moment it is created, and `CalculatedJobDay.totalAmount` (`calculate.ts`, the final
+  "restate every touched day's total from its ledger" pass) is always exactly
+  `round2(components.reduce(sum amount))` — the same already-rounded numbers the caller
+  sees. There is no second, independently-computed figure to disagree with, so a rounding
+  adjustment can never be non-zero, and `addComponent`'s own zero-amount filter would drop
+  it every time. Adding the component would be dead code standing in for a bug this
+  architecture cannot have.
+- **Sources checked:** `packages/payroll-engine/src/money.ts` (`addComponent`, `round2`);
+  `calculate.ts` (`priceL12JobDay`'s `totalAmount`, and the per-employee loop's final
+  totals-restate pass); `rules/PAY-069-...md`; `legacy-payroll-app-db-extract/
+  rules-plain-language.md` §14 and `calculations.md:2774-2943` (`usp_Normalize_
+  PayComponentLedger_Rounding`, `usp_Finalize_PayComponentLedger_Reconciliation`).
+- **Owner:** none — closed by inspection, not awaiting a client answer. Revisit only if the
+  engine is ever changed to compute a day's total by a second, independent formula.
+
+
+## WTL scenarios `#2` and `#3` — TCG resumes internally Monday 2026-09-14; the app's WTL messages are provisional
+
+- **Status:** open — pointer; the substantive questions live under *Field-ops lunch capture vs
+  payroll WTL* and the `#1` workbook entry above.
+- **Asked:** 2026-09-13 — Brian Petros, FYI with screenshots of his app's *Lunch / WTL Review* and
+  *WTL Code Review* warnings: *"that screenshot above shows some wild notes about WTL... but that
+  is because we are still in discussions about how to properly handle all the various types of WTL
+  scenarios. We have an internal scheduled meeting on Monday to continue our discussions on this."*
+- **What it means:** anything his app currently says about WTL — the `WTL_0` fallback warnings,
+  the *"multiple or conflicting WTL tokens"* review flags, the `WTL ±0.5` rule adjustments visible
+  on the labor rows — is **not yet a rule** and must not be read as one from a screenshot or from
+  the 2026-09-07 backup. The `#1` (all breaks taken) method is client-confirmed; `#2` (all breaks
+  worked) and `#3` (some taken) are what Monday is for. The written `#1` instructions are still
+  owed. Expect a further app copy after Monday.
+- **Owner:** Brian Petros / Corrina Bustos, internal, 2026-09-14.
+
+## Added hours — which rules' phantom hours reach which thresholds? Brian vs the union BA
+
+- **Status:** open
+- **Asked:** 2026-09-11 (Friday), Brian Petros in writing — the same message as his five-concept list, so the objection predates Corrina's 12 September confirmation; logged here 2026-09-13 — contesting ruling (c) of
+  [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md)
+  and widening it: *"it depends on if the employee 'actually' worked those hours."*
+- **Question:** For each payroll rule that **adds hours the employee did not work**, do those hours
+  advance any threshold? Brian's answer is a flat no for all of them: *"That guarantee is not
+  worked time. It should not advance OT/DT thresholds, rest calculations, WTL, etc. It is
+  effectively a separate pay component."* The union BA's breakdown, confirmed by Corrina, says
+  yes for one cell of the grid. Nobody has filled in the rest.
+- **The grid — what is decided (✅), what the engine does today, and what is open (?):**
+  | Added hours from… | 12-hour DT rung | 8-hour rest trigger | Weekly 40 | Meal spans |
+  | --- | --- | --- | --- | --- |
+  | **Holiday / Special-Saturday 8-h minimum** | ✅ **yes** — union BA via Corrina 2026-09-12, confirmed on 22:00→10:00; **contested by Brian 2026-09-11, before that confirmation**. Engine: yes (`premiumDayTopUpHours`) | ✅ **no** — Brian, verified into the log 2026-08-24 (send date unrecorded; *"added hours would not affect the 8-hour rest rule"*) and restated verbatim 2026-09-11 (*"a separate pay component"*), unopposed; engine: gap measured from the actual end, trigger reads actual OT/DT slices only (`rest-period.ts:79-85`, `:137`) | ? Engine: no | ? Engine: no |
+  | **Daily 4-h minimum** (PAY-040) | ? — never asked. Engine: no | ✅ **no** — same statement; **Brian's 2026-09-13 scenario** (3 h worked + 1 h minimum, then exactly 8 h off → rest *not* forced) is exactly this cell, and the engine already does it his way | ? | ? |
+  | **Long-boom 4-h minimum** (PAY-043) | ? Engine: no | ? Engine: no | — | — |
+  | **WTL penalty half-hours** — 2nd+ missed meals (PAY-047) | ? — already registered: *do WTL added hours count toward the rest chain's 12-hour threshold*. Engine: no | ? Engine: no | ? | n/a |
+  | **Shift hours-add** +1.0 / +1.5 (PAY-036/037) | placed at shift end, so moot within the shift. Engine: no | ? Engine: no | ? | — |
+- **Brian's 2026-09-13 worked scenario, and where it lands:** *"Employee works for 3 hours. That
+  labor entry gets the 4-hour minimum applied… Now, let's say that there is an 8-hour gap between
+  labor entry #1 and the next labor entry… So the next labor entry does not have the '8-hour
+  rest' rule applied???… or should it?… even though the employee did not work that extra hour."*
+  That is the **rest-trigger column**, not the 12-hour rung — and it is **already settled his
+  way, by him**: his statement (logged 2026-08-24, restated 2026-09-11) that added hours do not affect the rest rule, built
+  into `rest-period.ts` (gap from the actual end of the last slice; trigger reads actual OT/DT
+  slices; guarantee hours are components and cannot reach either). The 8-hour gap in his example
+  is measured from the 3-hour mark, so rest is *not* forced. The same holds for WTL penalty adds
+  and the shift hours-add. **The BA's ruling did not touch this column and the engine change did
+  not generalise it** — one cell moved, and it is not this one.
+- **Brian, 2026-09-13, after being told the ERP keeps added hours out of worked time everywhere but
+  the 12-hour rung:** *"You also bring up a good point about ADP reported hours. I don't think I
+  have discussed this enough with Corrina. That would be a good one to discuss in our next
+  meeting."* So the practical question is now **agenda'd for the next payroll call**, and it is
+  the right one: not whether phantom hours are "worked" inside the engine, but **how they reach
+  ADP** — folded into the REG/OT/DT/TRI hours columns (which is what "claims the employee was
+  working" in the record that matters), or as their own earning codes. **What the engine does
+  today:** the export ([`xlsx-rows.ts`](../../packages/payroll-engine/src/xlsx-rows.ts)) sends
+  `totalHrs = actualHours` and the five worked-hour buckets plus boom hours; **the guarantee
+  top-ups, rest premium, WTL adds and the shift hours-add have no hours column at all** — their
+  money is in `totalAmount` via components, but no hours ride with it. So the ERP already does
+  not report phantom hours as worked to ADP, by omission rather than by design, and the dollars
+  currently have nowhere to land. That is gaps **D-002 (guaranteed hours), D-003 (rest premium),
+  D-004 (WTL/meal premium)** — the ADP codes TCG has owed since August — seen from the other end.
+  The legacy app folds them in: holiday gap hours *"reported as DT hours"*, daily-minimum gap
+  added to `Pay_Total_Hrs`. **For the meeting:** the ERP can report added hours under separate
+  codes if ADP has them; Corrina's answer on D-002/3/4 is the same answer as Brian's question.
+  **Asked of Corrina, 2026-09-13 (Haris → Brian, Teams):** bring a real ADP week with a
+  guaranteed-hours entry in it, so the meeting can see which columns those hours land in today.
+  The ERP-side rows (3 h + 1 h minimum → export `ST 3`; holiday 22:00→10:00 → export
+  `OT 4 · DT 6 · 3X 2`, six top-up hours in no column) are on record here for the comparison.
+- **The distinction that matters, which neither side has stated:** *counting toward a threshold*
+  and *being reported as worked* are different things, and the ERP already separates them.
+  Every phantom hour is its own pay component; `actualHours`, the timesheet, certified payroll and
+  ADP carry worked time only; the holiday top-up touches exactly one thing — the ladder's 12-hour
+  counter — because the BA's 8 + 4 = 12 arithmetic requires it. Brian's legal concern (*"claiming
+  that the employee was working when the employee was actually not"*) is therefore already met.
+  What is left is purely which cells of the grid above are "yes", and that is the union's and
+  Corrina's to say, not a modelling choice.
+- **Money:** the one decided cell is worth $240 per 22:00→10:00 holiday start at $80 (6 h DT vs
+  OT). The undecided cells are mostly moot within a shift (adds land at the end) and bite only on
+  weekly OT and rest — small per occurrence, but they decide whether the parallel run against
+  Brian's app can ever match on those weeks.
+- **Sources checked:** the decision note; [rules/PAY-033](rules/PAY-033-holiday-pay.md),
+  [PAY-040](rules/PAY-040-work-provided-minimum.md), [PAY-043](rules/PAY-043-long-boom-premium.md),
+  [PAY-045](rules/PAY-045-rest-period-premium.md) (the "added hours would not affect the 8-hour
+  rest rule" client statements), [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md),
+  [PAY-036](rules/PAY-036-second-shift.md); `packages/payroll-engine/src/{guarantee,rest-period,
+  calculate}.ts` as of `6491b6db8`; the existing entry *Do WTL added hours count toward the rest
+  chain's 12-hour double-time threshold*.
+- **Blocked:** the engine change for the decided cell is built and tested. Nothing else should be
+  built from this entry. **The parallel run will diverge from Brian's app on every holiday-start
+  shift until he adopts the ruling or Corrina reverses it.**
+- **Put to both, 2026-09-13 (Haris, Teams):** the arithmetic stated plainly — *"Double time
+  starting at 4am is only reachable if the 8 guaranteed hours count toward the 12 — at 4am the
+  employee has actually worked 6. That's the only place we treat added hours as reaching a
+  threshold. Everywhere else the engine does what you describe."* — and one question to Corrina:
+  *"the 8-hour holiday minimum reaches the 12-hour double-time mark, but is not otherwise treated
+  as time worked?"* Awaiting her answer.
+- **Owner:** Corrina Bustos — to re-confirm (c) with the arithmetic in front of her and Brian's
+  objection on the table, and to fill the rest of the grid with the BA if he will; Brian Petros
+  to align his app or to make the case to Corrina, not to us.

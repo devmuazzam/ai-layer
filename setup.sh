@@ -284,7 +284,7 @@ fi
 # "what we link" and "what we hide" lists cannot drift apart — a link that is not
 # excluded shows up as an untracked file in the client repo, which is the one failure
 # that breaks the stealth model.
-CONTEXT_MAP="apps/api:api.md apps/api/prisma:prisma.md apps/web:web.md apps/mobile:mobile.md"
+CONTEXT_MAP="apps/api:api.md apps/api/prisma:prisma.md apps/web:web.md apps/mobile:mobile.md packages/payroll-engine:payroll-engine.md"
 
 for pair in $CONTEXT_MAP; do
   link_context "${pair%%:*}" "${pair##*:}"
