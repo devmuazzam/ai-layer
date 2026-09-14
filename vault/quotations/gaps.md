@@ -2033,7 +2033,7 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
     - HubSpot requires *"Closed Won"* once the outcome is known ([hubspot-sales-playbook.md](hubspot-sales-playbook.md), `unverified`).
     - Neither says from which states. FCC's void path is undocumented (fcc-nexgen-quote-entry.md §4).
   - For (d): [quotations.md](quotations.md):44 says *"`Envelope voided` - it should be user friendly"*, and [quotation.md](quotation.md):20–21 asks for void component and page changes. Both are `unverified`, both are conflicting punch lists, and neither names the button or "Cancel".
-  - `decisions/`: nothing on mark-won or voiding.
+  - `decisions/`: [2026-09-14-quotation-mark-won-requires-comment-or-attachment.md](../decisions/2026-09-14-quotation-mark-won-requires-comment-or-attachment.md) covers the comment-or-`WON_EVIDENCE` OR gate (`status: reference` only — TCG ratification still open below). Nothing on voiding / Cancel label.
   - Transcripts: no hit for a manual Won.
   - Jira was not checked (no MCP).
   - `qa-automation/docs/testinyCases/quotations.md` QUOT-011 step 3 (*mark-won on DRAFT → 409*) records the old code, not a spec. The branch breaks it.
@@ -2253,3 +2253,22 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** embedded DocuSign suppresses DocuSign's invite ([Q-18](#q-18--docusign-send-reports-success-when-branded-email-fails)); if (a) is yes, SES becomes the customer's only signed-artifact delivery unless they use an in-app link.
 - **Blocked:** Path C `fix/12-sep-uat` quotation-signature completion UX; reconciling with Joe Schacatano's salesperson-sender ask if the COMPLETED email is platform-branded.
 - **Owner:** Joe Schacatano / Ryan Adams (customer correspondence); Patrick if Outlook per-user sending is required instead.
+
+## Manual Mark as Won — must comment or dialog attachment satisfy the gate?
+
+- **Status:** open
+- **Asked:** 2026-09-14 — PR review of merged branch `feat/won-quotation-comments-attachments` (TCG PR #567 / overlay PR #82; Path C, no ticket); tcg-scrum escalation.
+- **Question:** for manual **Mark as Won** (web dialog + `POST …/mark-won`), must the user supply **at least one of** (1) a non-empty free-text comment persisted on the quotation, or (2) a file uploaded **in that dialog** stored as a quotation attachment with category **`WON_EVIDENCE`** (existing quotation attachments do **not** count)? If yes, is the intent symmetric to Mark as Lost (reason + comments), or is either field optional for Won?
+- **Sources checked:** [quotations-INDEX.md](quotations-INDEX.md) — four unverified candidates; none defines manual Mark as Won evidence. [quotation-flow-process.md](quotation-flow-process.md) Step 26 — Lost Reason and comments on **customer rejection**, not manual Won. [gaps.md → Branch feat/quotation-manual-mark-won](#branch-featquotation-manual-mark-won--manual-won-from-draft-auto-void-on-won-void-renamed-cancel) — open on Draft Won, envelope void, visibility, Cancel label; **silent on comment/attachment**. `decisions/2026-09-14-quotation-mark-won-requires-comment-or-attachment.md` — documents the OR gate as **`status: reference`**, **`decided_by`** names no TCG or CodingCops product owner (Cursor implementation session only); explicitly not client PO sign-off. Not `verified`.
+- **Note:** merged code implements the OR gate; this entry asks whether TCG ratifies it.
+- **Blocked:** treating PR #567 behaviour as settled product spec; mobile Mark Won parity (out of scope in the reference note).
+- **Owner:** product team (Ryan Adams / Brian Petros).
+
+## After manual Mark as Won — show comment and WON_EVIDENCE on the green Quick Actions banner?
+
+- **Status:** open
+- **Asked:** 2026-09-14 — same PR review as above; tcg-scrum escalation.
+- **Question:** when a quotation is **`WON`** via manual mark-won, should the **Quick Actions** panel show a **green** banner with the persisted won comment and/or links to **`WON_EVIDENCE`** attachments (as shipped in PR #567), or should won evidence live elsewhere (Attachments tab only, activity log, or not at all)?
+- **Sources checked:** same quotation sources as above — **nothing written** on displaying manual-won evidence. `decisions/2026-09-14-quotation-mark-won-requires-comment-or-attachment.md` § *What this does not settle* — explicitly leaves detail-page display open. [quotations.md](quotations.md) — *decline reason should be shown on UI* (`unverified` punch list); no parallel line for Won evidence.
+- **Blocked:** whether the Quick Actions banner UX is correct or should be removed/reduced pending TCG answer.
+- **Owner:** product team.
