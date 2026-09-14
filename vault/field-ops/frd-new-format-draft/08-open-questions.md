@@ -4,6 +4,7 @@ source: confluence/TCG/FRD - [New Format - Draft]
 migrated: 2026-08-10
 updated: 2026-06-09
 status: unverified
+provenance_note: Open question 11 (Operator active step in the shared Operator/Oiler ticket flow) is answered by decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md — no active Operator step; the Oiler fills, signs and submits the shared ticket. Question 10 (boom pay modifier) is answered by decisions/2026-08-21-scrum-877-labor-and-unit-details-boom-pay-rate-table.md. The table rows still read Open because tcg-scrum does not edit bodies. Body unchanged.
 conflicts_with: [field-ops/field-ops-frd/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md]
 jira: []
 tags: [module/customers, module/field-ops, module/payroll, kind/frd, wtl, signatures, inspections, safety, certifications]
