@@ -355,6 +355,26 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Workaround, if any:** as built.
 - **Status:** open — built to the default above 2026-09-14 (U2).
 
+### Q7 — U3 copy and chip presentation (REQ-01 / REQ-02 / REQ-03)
+
+- **Question:** Are these U3 defaults right? (a) Disabled Mark Available tooltip: **"Nothing assigned to load out — assign assets, employees or tools first"**. (b) Needs-review row in the Mark Available confirm modal: **"<slot label>: Unassigned — no asset or employee is allocated to this slot."**, rendered in the same bulleted list as the quantity warnings (no separate heading — the modal's existing "The following item(s) need review before continuing." line is the heading; its singular/plural now counts unassigned slots too). (c) Chip tooltip lists slot labels grouped with a count, e.g. **"Operator ×2, Load Trailer"**, first-seen order, **no length cap** (§9 left it `NOT SPECIFIED`); an employee slot with no DAS label falls back to "Employee". (d) Chip placement: the card header's badge row (next to the status pill) and, when expanded, the shift row's "Assets & Employees" heading; hidden while allocations are loading, at zero, and once the shift is DAS-stage-locked or workflow-complete. (e) The header chip is **shift-scoped to the card's `shiftNumber`** (the Shift filter; shift 1 under "All"), the same scope the header's "Shift ended" / "Riggings locked" badges already use — a multi-shift job under "All" therefore shows shift 1's count collapsed and each shift's own count expanded.
+- **Why it cannot be answered from what is written:** REQ-01/02/03 and §5 *Copy* mark every string `NOT SPECIFIED`; REQ-01 leaves the attachment point to the executor; §9 gives no tooltip cap. (a)–(c) were relayed by the reporter's orchestrator at build time, not by a vault or ticket document.
+- **Blocked:** nothing — built to the defaults; each is one string or one render site: `components/jobs/dylen-primary-action-button.tsx` (`NOTHING_LOADABLE_MESSAGE`), `components/loadout/dylen-loadout-confirm-modal.tsx` (row copy), `utils/shift-unassigned-summary.ts` (`formatUnassignedTooltip` / `formatUnassignedGroupLabel`), `components/jobs/dylen-job-card-header-parts.tsx` + `dylen-job-shift-section.tsx` (placement), `hooks/use-dylen-shift-unassigned-summary.ts` (`showChip`).
+- **Candidates:** none beyond `intent.md` §3 points 1–2.
+- **Owner:** Syed Haris (reporter)
+- **Workaround, if any:** as built. Test IDs: `dylen-job-card-unassigned-chip`, `dylen-job-shift-unassigned-chip`, `dylen-job-card-primary-action` / `dylen-job-shift-primary-action` (always on the legacy CTA) with the `-nothing-loadable` suffix on the wrapper only when REQ-03 is the reason it is disabled, `dylen-loadout-review-unassigned` on each needs-review row.
+- **Status:** open — built to the defaults above 2026-09-14 (U3); one-line confirmation or correction per item resolves it.
+
+### Q8 — Scope of the REQ-03 disable rule beyond the literal Mark Available state
+
+- **Question:** REQ-03 names *Mark Available for Loadout* only, so U3 applies the "no assigned asset/employee slot AND no tool with quantity > 0" condition **only while the legacy CTA reads "Mark Available for Loadout"** — it does not disable the same button once it reads "Start Loadout" / "Off-load" / "Completed" (those keep their existing rules; the Phase-1 modal's own "Nothing assigned to load out." footer from U2 covers the all-unassigned case after Mark Available). Two edge defaults inside that: while the job-resources / allocations queries are **still loading** the rule does not fire (the button stays pressable rather than flickering disabled); if the `/jobs/:jobCode` read **fails**, the card sees zero slots and the rule *does* fire for a shift with no tool quantity. Confirm both, or say whether a failed read should leave the button pressable.
+- **Why it cannot be answered from what is written:** REQ-03's statement and Acceptance describe the Mark Available state only; nothing in `intent.md` covers the later states, the loading window or a failed read.
+- **Blocked:** nothing — one predicate in `utils/shift-unassigned-summary.ts` (`resolvePrimaryActionDisabled`, covered by `shift-unassigned-summary.test.mjs`) and the `isLoading` gate in `hooks/use-dylen-shift-unassigned-summary.ts`.
+- **Candidates:** none.
+- **Owner:** Syed Haris (reporter)
+- **Workaround, if any:** as built.
+- **Status:** open — built to the default above 2026-09-14 (U3).
+
 ## 13. What this spec deliberately does not specify
 
 > 2026-09-14, reporter's call on the two ripple findings below: **card chip only** (print block and read-only allocation view unchanged this ticket) and **no server-side Mark Available guard** (REQ-03 stays web-only). Both remain candidates for a follow-up ticket.
