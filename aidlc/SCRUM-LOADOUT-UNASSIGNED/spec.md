@@ -303,7 +303,7 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** `dispatch/yard-operations-jz.md` (952 bytes, updated 2026-07-15) — silent on this; `assets/tool-and-rigging.md` (4.2 KB, updated 2026-05-26) Story 4/5 — describes the loading checklist screen generally, not row-visibility rules for unassigned slots; `2026-05-12-loading-figma-demo.md` transcript, lines 90-175 — describes the *Mark Available* → *Continue Anyway* quantity-warning flow and Dylan's "no equipment required" idea, neither of which addresses unassigned-row visibility.
 - **Owner:** Syed Haris (reporter; `hariscops`) — the person who agreed the four-point behaviour in-session.
 - **Workaround, if any:** build to the default from `intent.md` §12: **greyed, still shown** — reversible in one file (the Phase-1 row-render component).
-- **Status:** resolved 2026-09-14 — Syed Haris (reporter, in-session): **greyed, still shown**. Not a product-owner decision; Dylan/Lisette may reverse it — reversible in one file (Phase-1 row-render).
+- **Status:** resolved — see decisions/2026-09-14-yard-unassigned-slots-not-loadable.md — 2026-09-14, Syed Haris (reporter, in-session): **greyed, still shown**. Not a product-owner decision; Dylan/Lisette may reverse it — reversible in one file (Phase-1 row-render).
 
 ### Q2 — Override for unassigned rows
 
@@ -313,7 +313,7 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** `dispatch/yard-operations-jz.md:16` (952 bytes, 2026-07-15) — the only vault statement, reads as "never," not adjudicated; no Jira ticket to check further this session (Jira MCP unavailable, see §0).
 - **Owner:** Syed Haris (reporter)
 - **Workaround, if any:** build to the default from `intent.md` §12: **never selectable, no override** — reversible in one file (same Phase-1 row-render component as Q1).
-- **Status:** resolved 2026-09-14 — Syed Haris (reporter, in-session): **never selectable, no override**. Consistent with `dispatch/yard-operations-jz.md:16`. REQ-06 therefore hard-rejects; no override flag on the API.
+- **Status:** resolved — see decisions/2026-09-14-yard-unassigned-slots-not-loadable.md — 2026-09-14, Syed Haris (reporter, in-session): **never selectable, no override**. Consistent with `dispatch/yard-operations-jz.md:16`. REQ-06 therefore hard-rejects; no override flag on the API.
 
 ### Q3 — Do tool/rigging rows count toward "assigned"?
 
@@ -323,7 +323,7 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** `assets/tool-and-rigging.md` (4.2 KB, 2026-05-26) Story 1 ("System warns if requested tool already exists on assigned crane", "System alerts if required lift component is missing" — neither is an assigned/unassigned state for the tool itself) and Story 4/5 (loading checklist, live In-Use/Total/Available counters — inventory-level, not slot-level); `dispatch/yard-operations-jz.md` — silent on tools specifically.
 - **Owner:** Syed Haris (reporter)
 - **Workaround, if any:** build to the default from `intent.md` §12: **tools always count as assigned** (i.e., excluded from the unassigned check entirely) — reversible in one file per surface (the chip's rollup, `applyPhase1InitialState`'s tool branch, and `buildCatalogItems`'s tool loop).
-- **Status:** resolved 2026-09-14 — Syed Haris (reporter, in-session) accepted the recommendation: **tool/rigging rows are excluded from the unassigned check** (chip, Phase-1 pre-selection, REQ-06 guard apply to asset/employee slots only — a tool row has nothing to assign; its failure mode is stock, already covered by the existing "exceeds available stock" warning). **But tools count as "something to load"**: REQ-03's disable rule is *no assigned asset/employee slot **and** no tool row with quantity > 0*, so rigging-only / trucking-only jobs (Dylan, `2026-05-12-loading-figma-demo.md:161-172`) remain markable.
+- **Status:** resolved — see decisions/2026-09-14-yard-unassigned-slots-not-loadable.md — 2026-09-14, Syed Haris (reporter, in-session) accepted the recommendation: **tool/rigging rows are excluded from the unassigned check** (chip, Phase-1 pre-selection, REQ-06 guard apply to asset/employee slots only — a tool row has nothing to assign; its failure mode is stock, already covered by the existing "exceeds available stock" warning). **But tools count as "something to load"**: REQ-03's disable rule is *no assigned asset/employee slot **and** no tool row with quantity > 0*, so rigging-only / trucking-only jobs (Dylan, `2026-05-12-loading-figma-demo.md:161-172`) remain markable.
 
 ### Q4 — Placement and trigger of "Nothing assigned to load out." (REQ-05)
 
@@ -333,7 +333,7 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** none beyond `intent.md` §3 point 3.
 - **Owner:** Syed Haris (reporter)
 - **Workaround, if any:** as built; `data-testid="dylen-loadout-nothing-assigned"` marks the region so a change of placement is a one-line E2E update.
-- **Status:** open — built to the default above 2026-09-14 (U2); one-line confirmation or correction resolves it.
+- **Status:** resolved — see decisions/2026-09-14-yard-unassigned-slots-not-loadable.md — built to the default above 2026-09-14 (U2); one-line confirmation or correction resolves it.
 
 ### Q5 — Camera button on an unassigned Phase-1 row
 
@@ -343,7 +343,7 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** `dispatch/yard-operations-jz.md:18` (952 bytes, 2026-07-15).
 - **Owner:** Syed Haris (reporter)
 - **Workaround, if any:** as built.
-- **Status:** open — built to the default above 2026-09-14 (U2).
+- **Status:** resolved — see decisions/2026-09-14-yard-unassigned-slots-not-loadable.md — built to the default above 2026-09-14 (U2).
 
 ### Q6 — Fallback copy for the `completeLoadout` error toast (REQ-05 addendum)
 
@@ -353,7 +353,7 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** none.
 - **Owner:** Syed Haris (reporter)
 - **Workaround, if any:** as built.
-- **Status:** open — built to the default above 2026-09-14 (U2).
+- **Status:** resolved — see decisions/2026-09-14-yard-unassigned-slots-not-loadable.md — built to the default above 2026-09-14 (U2).
 
 ### Q7 — U3 copy and chip presentation (REQ-01 / REQ-02 / REQ-03)
 
@@ -363,7 +363,7 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** none beyond `intent.md` §3 points 1–2.
 - **Owner:** Syed Haris (reporter)
 - **Workaround, if any:** as built. Test IDs: `dylen-job-card-unassigned-chip`, `dylen-job-shift-unassigned-chip`, `dylen-job-card-primary-action` / `dylen-job-shift-primary-action` (always on the legacy CTA) with the `-nothing-loadable` suffix on the wrapper only when REQ-03 is the reason it is disabled, `dylen-loadout-review-unassigned` on each needs-review row.
-- **Status:** open — built to the defaults above 2026-09-14 (U3); one-line confirmation or correction per item resolves it.
+- **Status:** resolved — see decisions/2026-09-14-yard-unassigned-slots-not-loadable.md — built to the defaults above 2026-09-14 (U3); one-line confirmation or correction per item resolves it.
 
 ### Q8 — Scope of the REQ-03 disable rule beyond the literal Mark Available state
 
@@ -373,7 +373,15 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** none.
 - **Owner:** Syed Haris (reporter)
 - **Workaround, if any:** as built.
-- **Status:** open — built to the default above 2026-09-14 (U3).
+- **Status:** resolved — see decisions/2026-09-14-yard-unassigned-slots-not-loadable.md — built to the default above 2026-09-14 (U3).
+
+### Q9 — Undefined terms: `loadout`, `assigned` / `allocated`, `slot`
+
+- **Question:** The vault has no glossary. This spec uses *assigned* and *allocated* as synonyms for "a DAS `JobResourceAllocation` row exists for the slot on that shift", *slot* for a `JobResource` row the quotation minted, and *loadout* for the Yard Operations phase chain (Mark Available → Start Loadout → Off-load). Are those the product's definitions? `loadout` is one of the nine terms `intent.md` §10 lists as known-undefined.
+- **Why it cannot be answered from what is written:** no vault file defines any of the three; `dispatch/yard-operations-jz.md` and the 2026-05-12 transcript use "assigned" and "allocated" interchangeably without saying so.
+- **Blocked:** nothing — the code definitions above are what shipped (U1–U3). A different product definition would change REQ-01/06's counting rule.
+- **Owner:** Lisette Anzaldo (vault glossary), with Dylan Masterson for "loadout".
+- **Status:** open
 
 ## 13. What this spec deliberately does not specify
 

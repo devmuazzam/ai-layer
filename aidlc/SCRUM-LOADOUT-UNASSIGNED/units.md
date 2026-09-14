@@ -227,3 +227,11 @@ U3 (web) ─ independent of U1 and U2
   UI dependency and the smallest blast radius of the three units. U2 and U3's web-side rules reuse
   the same underlying "is this slot assigned" concept; if the key-matching assumption is wrong,
   proving it server-side first, against real data shapes, is the cheapest place to catch it.
+
+---
+
+**Close note, 2026-09-14:** the coverage claim above ("9 in spec, 9 covered") went stale mid-build —
+REQ-10 (*Partial Loadout* label) was added to `spec.md` during U2 UAT and shipped inside PR #571
+without a unit row; two further commits on that PR (attachments JOB-id 404 fix, `das:sub-job-updated`
+on allocation change) map to no requirement at all. Recorded as ED-1 / ED-2 in `reflection.md`; not
+re-decomposed after the fact.
