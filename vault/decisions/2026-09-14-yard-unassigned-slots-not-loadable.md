@@ -10,6 +10,13 @@ decided_by: >-
   reversible in one file, and pending product confirmation (see *Who should confirm*).
 status: reference
 conflicts_with: []
+provenance_note: >
+  2026-09-15: Ehtesham Anwar approved branch `fix/15-sep`, which supersedes
+  Q3 (employees as something to load), Q7(a) copy (drop "employees"), and
+  REQ-04 assigned-row pre-tick. See
+  decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md. Unassigned
+  *assets* still not loadable; chip, REQ-10 Partial Loadout, and Q1/Q2/Q4–Q6/Q8
+  stand.
 resolves: aidlc/SCRUM-LOADOUT-UNASSIGNED/spec.md#12-open-questions--the-stop-and-ask-list (Q1–Q8) and #req-10 (the two reporter decisions)
 jira: []
 tags: [module/dispatch, module/assets, kind/decision, yards, loadout]
