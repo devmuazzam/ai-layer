@@ -36,9 +36,9 @@ vendor ([2026-06-18 transcript](../meetings/transcripts/2026-06-18-dispatch-perm
 | 2 | Agency Type | yes | City / Municipality · County · State · Federal · Special District · Utility · Other |
 | 3 | Jurisdiction Type | yes | City · County · Township · Borough · Village · State · Federal · Special District · Other |
 | 4 | Permit Lead Time | yes | counter, whole days (Ben's sheet: 1–20 dropdown, values 0–14 in use) |
-| 5 | State | yes | dropdown, 50 states + DC |
+| 5 | State | yes | dropdown, 50 states + DC — **built as Country / State / City picklists** (Syed Haris, 2026-09-15: the app-wide address pattern; city picked from the list so job-site ↔ agency matching is exact) |
 | 6 | County / Area | yes | text |
-| 7 | City / Community | yes | text |
+| 7 | City / Community | yes | dropdown, cities of the chosen state (see 5) |
 | 8 | Coverage Area | yes | text area |
 | 9 | Website | no | URL |
 | 10 | TCP Requirements | no | Required · Not Required · Depends on Project · Agency Review |
