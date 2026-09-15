@@ -34,7 +34,7 @@ vendor ([2026-06-18 transcript](../meetings/transcripts/2026-06-18-dispatch-perm
 | --- | --- | --- | --- |
 | 1 | Agency Name | yes | text |
 | 2 | Agency Type | yes | City / Municipality · County · State · Federal · Special District · Utility · Other |
-| 3 | Jurisdiction Type | yes | City · County · Township · Borough · Village · State · Federal · Special District · Other |
+| 3 | Jurisdiction Type | yes | City · **Unincorporated / CDP** (added by Syed Haris 2026-09-15 — 243 of Ben's 500 rows) · County · Township · Borough · Village · State · Federal · Special District · Other |
 | 4 | Permit Lead Time | yes | counter, whole days (Ben's sheet: 1–20 dropdown, values 0–14 in use) |
 | 5 | State | yes | dropdown, 50 states + DC — **built as Country / State / City picklists** (Syed Haris, 2026-09-15: the app-wide address pattern; city picked from the list so job-site ↔ agency matching is exact) |
 | 6 | County / Area | yes | text |
@@ -76,6 +76,9 @@ sheet values have no dropdown entry — recorded in
   validates with `@IsIn` against the same lists.
 - Additional Notes is kept (optional) — it is in `agencies.md`'s user flow and on Ben's
   sheet, even though Ehtesham's list omits it.
+- The agencies list table carries Ben's sheet columns after Agency Code and Name: City /
+  Community · Permit Lead Time · County / Area · State · Jurisdiction Type · Notes ·
+  Coverage Note (Syed Haris, 2026-09-15).
 
 ## What this does not settle
 

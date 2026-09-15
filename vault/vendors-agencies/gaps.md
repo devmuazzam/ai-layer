@@ -267,7 +267,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Brian Petros and Liz Lopez (the PO process); Syed Haris and Umer Islam for what their 2026-09-11 `OPEN | CLOSED` lock meant.
 
 ## Agency form 2026-09-15 — jurisdiction values on Ben's sheet that the dropdown cannot hold
-- **Status:** open
+- **Status:** partly resolved 2026-09-15 — Syed Haris added **Unincorporated / CDP** to the dropdown (PR `feat/agency-form-rework`). Still open for `Town` (3 rows) and `Community / Jurupa Valley Area` (3 rows).
 - **Asked:** 2026-09-15 — building the final agency form ([../decisions/2026-09-15-agency-creation-form-final-fields.md](../decisions/2026-09-15-agency-creation-form-final-fields.md)) against `City List turn around - Ben.xlsx`
 - **Question:** Ben's 500-row sheet uses five jurisdiction values — `City` (239), `Unincorporated / CDP` (243), `Unincorporated Community` (12), `Town` (3), `Community / Jurupa Valley Area` (3). Ehtesham's dropdown is City · County · Township · Borough · Village · State · Federal · Special District · Other. Half the sheet is *Unincorporated / CDP*, which has no entry; `Town` has none either. Should the dropdown gain **Unincorporated / CDP** and **Town**, or do those rows import as `County` (the permit authority for unincorporated areas) / `Other`? The build ships Ehtesham's list unchanged.
 - **Sources checked:** the sheet (all three tabs); `agencies.md`, `agencies-module.md`, `agency-and-vendor.md`; transcripts 2026-03-26 and 2026-06-18; decisions 2026-09-11 (permit flow, PO modal).
