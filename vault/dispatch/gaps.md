@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-09-14
+updated: 2026-09-15
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -805,9 +805,9 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## DAS substituted-asset Pre-checklist — Required should open create-and-link Travel Permit
 
-- **Status:** open (implementation shipped as a carve-out; product confirmation still wanted)
+- **Status:** open for (b)–(d). **(a) resolved — see [decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md)** — 2026-09-15, Ehtesham Anwar: do **not** mint from Required; **link the conversion travel permit onto the allocated asset**. Required opens Permits/Plans when that travel is cancelled or missing. `AssetPermitModal` is gone.
 - **Asked:** 2026-09-14 — DAS substituted-asset Pre-checklist; engineer report that Travel Permit shows amber **Required** with no create flow
 - **Question:** four related points. **(a)** Confirm the DAS slot Pre-checklist carve-out against [decisions/2026-09-11-permit-classes-job-only-until-sept-15.md](../decisions/2026-09-11-permit-classes-job-only-until-sept-15.md) item 4 (*do not ship working direct-create or permit↔asset linking before 15 Sep 2026*) — the board now opens Create & Link from **Required** on a filled asset slot (job-scoped `TRAVEL_CITY_STREET_PERMIT`, then `POST …/permit-assignments`). Is that allowed as a DAS-only carve-out on/after the deadline, or should the affordance stay hidden until General-class / asset-link work is signed off? **(b)** Which sub-category's `permitRequired` governs badge visibility — requested slot, substituted asset, or either (current build: **either**)? **(c)** Must a missing travel permit **block** allocation on a permit-required slot, or only chase via the checklist (same *chase vs show* question as the PO row below)? **(d)** When an annual / blanket / fleet permit already covers the substituted unit, should **Required** suppress?
 - **Sources checked:** this build's `PermitChecklistBadge` / `AssetPermitModal` (mirrors vendor `PoChecklistBadge`); [confirmations-playbook.md](confirmations-playbook.md) §6 and [travel-permits-playbook.md](travel-permits-playbook.md) (substitution re-opens the permit / per-crane application); [../projects-jobs/gaps.md](../projects-jobs/gaps.md) *Asset on a permit…* (265-for-90); [decisions/2026-09-11-permit-classes-job-only-until-sept-15.md](../decisions/2026-09-11-permit-classes-job-only-until-sept-15.md); [decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md](../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md); adjacent [*Branch fix/permits-pos — the DAS pre-checklist "PO#" row…*](#branch-fixpermits-pos--the-das-pre-checklist-po-row-stops-watching-vendor-allocations-and-can-no-longer-flag-anything).
-- **Blocked:** (a) Ehtesham Anwar (decision owner on the 15 Sep freeze). (b)–(d) Brian Petros / Liz Lopez / Lisette Anzaldo — product.
+- **Blocked:** (a) settled. (b)–(d) Brian Petros / Liz Lopez / Lisette Anzaldo — product.
 - **Owner:** Lisette Anzaldo (DAS dispatcher); carve-out (a) → Ehtesham Anwar.

@@ -43,6 +43,8 @@ DAS, scheduling, yard operations. Backend usecases: `das, das-allocations, das-l
 - [2026-08-25-completed-job-view-only.md](../decisions/2026-08-25-completed-job-view-only.md) — Completed Project Jobs are hard view-only — decision
 - [2026-08-31-quotation-qty-not-das-sets.md](../decisions/2026-08-31-quotation-qty-not-das-sets.md) — Quotation qty is billing only; one DAS/Yard set per root; child qty independent
 - [2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) — Create **and** edit both land on the entity's detail page, app-wide; supersedes the create half of 2026-08-20
+- [2026-09-14-yard-unassigned-slots-not-loadable.md](../decisions/2026-09-14-yard-unassigned-slots-not-loadable.md) — Unassigned slots not loadable; Partial Loadout label. **Employees-as-loadable / pre-tick superseded** 2026-09-15
+- [2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md) — `fix/15-sep` as built (Ehtesham Anwar): employees not loaded; handover unchecked; steal of plain allocations; yard lock; Cancel Allocations
 
 ## Open questions
 
