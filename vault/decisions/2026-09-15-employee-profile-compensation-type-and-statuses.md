@@ -179,6 +179,13 @@ craft-based temp needs a primary craft (`SCRUM-926` REQ-27).
 (the document's own §H); the employee carries only the ADP file number. The two "earning
 code / export mapping" bullets in §6–7 of the document are dropped from the profile.
 
+## Q15 — Who assigned a secondary craft (raised 2026-09-16 while building U7)
+
+**The assigner's name is part of the row.** REQ-15 makes the SECONDARY assignment row the
+approval record (Q7 above), so the read select joins `assignedBy { id, name, email }` and the
+profile shows *"Assigned <date> by <name>"*. Answered by Syed Haris in-branch, same standing as
+the answers above.
+
 ## Effect on the build
 
 - `employees` gains `compensation_type` (required after backfill), `payroll_status`,
