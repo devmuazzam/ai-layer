@@ -1430,7 +1430,11 @@ answer and the search that produced it are read together. Sweep:
 - **Owner:** whoever owns the craft-assignment API surface next (U4's author or later).
 - **Workaround shipped:** `apps/web/.../form/payroll/secondary-craft-rows.tsx`'s edit-mode
   rows show the assigning date only ("Assigned <date>"), no name.
-- **Status:** open.
+- **Status:** resolved — 2026-09-16, Syed Haris (developer, same branch): yes, join it. REQ-15
+  already states the row *is* the approval record (DEC-0915 Q7), so the assigner's name is
+  part of that record. `CRAFT_ASSIGNMENT_SELECT` gains `assignedBy { id, name, email }`; the
+  web `CraftAssignment` type carries it and the row reads "Assigned <date> by <name>". No
+  decision note — a select-shape consequence of an existing requirement, not a new rule.
 
 ## 13. What this spec deliberately does not specify
 
