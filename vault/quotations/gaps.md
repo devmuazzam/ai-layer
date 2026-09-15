@@ -2033,7 +2033,7 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
     - HubSpot requires *"Closed Won"* once the outcome is known ([hubspot-sales-playbook.md](hubspot-sales-playbook.md), `unverified`).
     - Neither says from which states. FCC's void path is undocumented (fcc-nexgen-quote-entry.md §4).
   - For (d): [quotations.md](quotations.md):44 says *"`Envelope voided` - it should be user friendly"*, and [quotation.md](quotation.md):20–21 asks for void component and page changes. Both are `unverified`, both are conflicting punch lists, and neither names the button or "Cancel".
-  - `decisions/`: nothing on mark-won or voiding.
+  - `decisions/`: [2026-09-14-quotation-mark-won-requires-comment-or-attachment.md](../decisions/2026-09-14-quotation-mark-won-requires-comment-or-attachment.md) covers the comment-or-`WON_EVIDENCE` OR gate (`status: reference` only — TCG ratification still open below). Nothing on voiding / Cancel label.
   - Transcripts: no hit for a manual Won.
   - Jira was not checked (no MCP).
   - `qa-automation/docs/testinyCases/quotations.md` QUOT-011 step 3 (*mark-won on DRAFT → 409*) records the old code, not a spec. The branch breaks it.
@@ -2253,3 +2253,62 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** embedded DocuSign suppresses DocuSign's invite ([Q-18](#q-18--docusign-send-reports-success-when-branded-email-fails)); if (a) is yes, SES becomes the customer's only signed-artifact delivery unless they use an in-app link.
 - **Blocked:** Path C `fix/12-sep-uat` quotation-signature completion UX; reconciling with Joe Schacatano's salesperson-sender ask if the COMPLETED email is platform-branded.
 - **Owner:** Joe Schacatano / Ryan Adams (customer correspondence); Patrick if Outlook per-user sending is required instead.
+
+## Manual Mark as Won — must comment or dialog attachment satisfy the gate?
+
+- **Status:** open
+- **Asked:** 2026-09-14 — PR review of merged branch `feat/won-quotation-comments-attachments` (TCG PR #567 / overlay PR #82; Path C, no ticket); tcg-scrum escalation.
+- **Question:** for manual **Mark as Won** (web dialog + `POST …/mark-won`), must the user supply **at least one of** (1) a non-empty free-text comment persisted on the quotation, or (2) a file uploaded **in that dialog** stored as a quotation attachment with category **`WON_EVIDENCE`** (existing quotation attachments do **not** count)? If yes, is the intent symmetric to Mark as Lost (reason + comments), or is either field optional for Won?
+- **Sources checked:** [quotations-INDEX.md](quotations-INDEX.md) — four unverified candidates; none defines manual Mark as Won evidence. [quotation-flow-process.md](quotation-flow-process.md) Step 26 — Lost Reason and comments on **customer rejection**, not manual Won. [gaps.md → Branch feat/quotation-manual-mark-won](#branch-featquotation-manual-mark-won--manual-won-from-draft-auto-void-on-won-void-renamed-cancel) — open on Draft Won, envelope void, visibility, Cancel label; **silent on comment/attachment**. `decisions/2026-09-14-quotation-mark-won-requires-comment-or-attachment.md` — documents the OR gate as **`status: reference`**, **`decided_by`** names no TCG or CodingCops product owner (Cursor implementation session only); explicitly not client PO sign-off. Not `verified`.
+- **Note:** merged code implements the OR gate; this entry asks whether TCG ratifies it.
+- **Blocked:** treating PR #567 behaviour as settled product spec; mobile Mark Won parity (out of scope in the reference note).
+- **Owner:** product team (Ryan Adams / Brian Petros).
+
+## After manual Mark as Won — show comment and WON_EVIDENCE on the green Quick Actions banner?
+
+- **Status:** open
+- **Asked:** 2026-09-14 — same PR review as above; tcg-scrum escalation.
+- **Question:** when a quotation is **`WON`** via manual mark-won, should the **Quick Actions** panel show a **green** banner with the persisted won comment and/or links to **`WON_EVIDENCE`** attachments (as shipped in PR #567), or should won evidence live elsewhere (Attachments tab only, activity log, or not at all)?
+- **Sources checked:** same quotation sources as above — **nothing written** on displaying manual-won evidence. `decisions/2026-09-14-quotation-mark-won-requires-comment-or-attachment.md` § *What this does not settle* — explicitly leaves detail-page display open. [quotations.md](quotations.md) — *decline reason should be shown on UI* (`unverified` punch list); no parallel line for Won evidence.
+- **Blocked:** whether the Quick Actions banner UX is correct or should be removed/reduced pending TCG answer.
+- **Owner:** product team.
+
+## Branch fix/quotation-signed-copy-and-customer-po — DocuSign return page and signed-copy download
+
+- **Status:** open
+- **Asked:** 2026-09-15 — PR review of uncommitted `apps/api` + `apps/web` changes for branch `fix/quotation-signed-copy-and-customer-po` (Path C, no ticket, no ticket folder; overlay handle `abdulrehmanbcsf11`, git user `devmohsinakram`). Its `processed.log` row is filed under `fix/quotation-signed-copy-download` and covers this entry only, not the next one. tcg-scrum escalation.
+- **Question:** three parts, each answerable in a line. **(a)** When the customer returns from embedded signing (`GET /quotations/:quoteNo/signature/sign-complete`), should the page report the synced signature status? As built: **COMPLETED** shows *"Quotation X is signed"* plus a **Download signed quotation (PDF)** button. **DECLINED / CHANGES_REQUESTED** shows *"Your response has been recorded"*. **VOIDED** shows *"no longer available"*. Anything else shows *"Not signed yet — use the link in your email"*. Before, the page always said *"Your response … has been recorded"*. **(b)** Should the customer be able to download the signed PDF themselves from that page, through a public route gated by the **signing-link token** (`…/signature/signed-copy?token=…`, resolved by the token's envelope)? At the same time the internal `GET …/signature/signed-document` becomes **login-only**. **(c)** When the local signature is not yet COMPLETED, may a *download* request on either route pull the envelope status from DocuSign, and so, as a side effect, move the quotation to **WON** and send the signed-copy email?
+- **Sources checked:** **Nothing written specifies the return page's per-status wording, a customer self-download of the signed PDF, or a status pull triggered by a download.**
+  - [../projects-jobs/project-module/06-client-reviews-and-signs-quotation.md](../projects-jobs/project-module/06-client-reviews-and-signs-quotation.md) (`unverified`) covers sign or decline, *"notified to Sales person"* and *"Once signed or declined: Further actions are disabled"*. It has no return page and no customer copy.
+  - [quotation-flow-process.md](quotation-flow-process.md) Steps 21–25 and [../assets/user-story-and-tasks.md](../assets/user-story-and-tasks.md) US2 are silent after signing. Both are `unverified` and both are in the [quotations-INDEX.md](quotations-INDEX.md) conflict. The second comes from a personal space.
+  - [quotations.md](quotations.md) (*"docusign page should ne good"*, *"`Envelope voided` - it should be user friendly"*) and [quotation.md](quotation.md) (*"Void docusign page customization"*) are `unverified` punch lists that ask for better page copy. They give no wording and no status set.
+  - [fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §4 (`unverified`): in FCC the **salesperson** downloads the completed PDF (the *Signed Document* row). Nothing is customer-side.
+  - [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md) preamble (`unverified`): a *"signed copy of the estimate"* confirms a job. It says nothing about the customer getting a copy back.
+  - [../decisions/2026-09-14-quotation-mark-won-requires-comment-or-attachment.md](../decisions/2026-09-14-quotation-mark-won-requires-comment-or-attachment.md) (`reference`) puts DocuSign WON paths explicitly out of scope.
+  - `.ai/aidlc/SCRUM-TZ/spec.md` §12 Q22 (open, ticket-scoped) asks whether the public signed-document route should stop being public. It is unanswered.
+  - Jira was not checked (no Jira MCP in this session).
+- **Related, do not answer separately:**
+  - [*After embedded signing returns, should the app pull DocuSign status…*](#after-embedded-signing-returns-should-the-app-pull-docusign-status-immediately-or-wait-for-the-webhook): (a) displays what that pull produces, and (c) extends the same pull to the two download routes.
+  - [Q-02](#q-02--public-signed-document-endpoint-has-no-authentication): (b) is one answer to its question.
+  - [Q-09](#q-09--signing-link-tokens-never-expire-and-are-not-single-use): the signing-link token now also unlocks the signed PDF, so the token's missing expiry becomes that PDF's exposure window.
+  - [Q-13](#q-13--syncfromsigningreturn-can-resurrect-a-locally-voided-envelope) and [Q-14](#q-14--webhook-and-sync-can-downgrade-a-completed-signature): the same sync has unguarded status transitions.
+  - [*Branch fix/12-sep-uat — …*](#branch-fix12-sep-uat--after-docusign-completed-branded-ses-to-customer-with-signed-pdf-attached): the email in (c) is that entry's (a). The email and (b) are two customer delivery paths for the same signed PDF.
+- **Blocked:** treating the return-page wording, customer self-download and download-triggered WON as settled spec.
+- **Owner:** Joe Schacatano / Ryan Adams (customer-facing signing experience); whoever owns tenancy, for the public-route shape in (b).
+
+## Branch fix/quotation-signed-copy-and-customer-po — acceptance block Customer Name and Customer PO, and PO write-back on completion
+
+- **Status:** open
+- **Asked:** 2026-09-15 — same review as the entry above (branch `fix/quotation-signed-copy-and-customer-po`, Path C, no ticket). The branch's `processed.log` row does not mention it. tcg-scrum escalation.
+- **Question:** four parts, each answerable in a line. **(a)** Should the quotation PDF's acceptance block replace **Printed Name** and **Title (Contractor's Representative)** with **Customer Name** and **Customer PO No.**? TCG's own printed quote reads *Date · Print · Sign · PO Number*, so this also asks whether the signer's own printed name is dropped in favour of the customer company's name. **(b)** Should Customer Name be printed from the customer record and be **not editable** in DocuSign? **(c)** Should Customer PO No. be printed and **locked** when the quotation already holds `customerPo`, and be an **optional, editable** DocuSign text field when it is empty? **(d)** On DocuSign completion (webhook or status sync), should a PO the customer typed be written to `quotation.customerPo`, and only when that is still empty? The reviewer proposed (d); no one has confirmed it.
+- **Sources checked:**
+  - [quote-terms-and-rate-card.md](quote-terms-and-rate-card.md):177-178 and :346-349 (`unverified`; it calls itself *"client artifacts describing what is charged today"*, not ERP requirements) gives *"Company Representative Acceptance: Date · Print · Sign · PO Number"*. That supports a PO line captured at acceptance. It includes **Print** (the signer's name), which (a) removes, and has **no** customer-name line and **no** title line. No vault source covers the removed *"Title (Contractor's Representative)"* label either.
+  - [../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md) (`reference`, Brian Petros, TCG): the customer PO *"shows up at the moment the customer approves the quote"* (:27-28), which is consistent with capture at signing. But it *"is **not** a quotation field"* and is logged *"on the job / schedule tab"* (:60-61, :113). That is in tension with (c) reading `quotation.customerPo` and (d) writing it.
+  - [quote-lifecycle-permits-and-purchase-orders.md](quote-lifecycle-permits-and-purchase-orders.md):49 (`unverified`): *"Log customer PO # — record on job / schedule tab"*.
+  - **(b), (c) and (d) have no written source.** The developer working under git identity `devmohsinakram` stated (b) and (c) in the implementing session on 2026-09-15. [../decisions/2026-09-11-progress-tracking-chat-and-reminders-shown-disabled.md](../decisions/2026-09-11-progress-tracking-chat-and-reminders-shown-disabled.md):8 records that identity as this machine's shared identity. His words: *"customer name from customer and that should not be editable on docusign"*; *"on docusign po number will only editable if it is empty not if anyone write it on quotation"*; *"optional if not already entered, disabled if anything is already entered in quotation portal"*. That is implementer direction, not a product decision. It also builds on a quotation field that a TCG decision says is not one. So **no decision note was written**.
+  - `decisions/` has nothing on the acceptance block, DocuSign field locking or PO write-back. `.ai/aidlc/` has no ticket. Jira was not checked.
+- **Related, do not answer separately:**
+  - [*The customer PO arrives before the job exists — may the quotation capture it?*](#the-customer-po-arrives-before-the-job-exists--may-the-quotation-capture-it): (c) and (d) both assume `Quotation.customerPo` is a legitimate home for the PO. That is exactly what that entry asks Brian Petros, and his answer settles the location half of (c) and (d). Its *Note* also applies to (d): capturing the PO on the quote keeps the number on a quote that never converts.
+  - [*"Customer PO" on the quotation — which of three things does it mean?*](#customer-po-on-the-quotation--which-of-three-things-does-it-mean): its 2026-09-05 answer and 2026-09-09 update.
+- **Blocked:** treating the relabelled acceptance block, the DocuSign field locking and the write-back as settled spec.
+- **Owner:** Brian Petros for the location in (c) and (d) (his 2026-09-05 call); Ryan Adams / Joe Schacatano for the printed acceptance block in (a) and (b).

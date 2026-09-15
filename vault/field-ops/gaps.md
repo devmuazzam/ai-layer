@@ -2,7 +2,7 @@
 title: Field Ops — open questions
 status: reference
 kind: gaps
-updated: 2026-09-07
+updated: 2026-09-14
 tags: [module/field-ops, kind/gaps, open-questions]
 ---
 
@@ -311,7 +311,31 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (PENDING/SENT/IN_PROGRESS) — COMPLETE tickets are untouched. If the client chooses one physical
   ticket instead, this is a migration away, not a rewrite: the link column and the mirrors are the
   parts to retire.
-- **Status:** open
+- **Resolution 2026-09-14 — one job ticket per asset group per day; the Oiler is primary and fills
+  it, the Operator is a second employee on the same ticket with a separate labor record the Oiler
+  enters, and no fill/complete/sign/submit step; an Operator with no Oiler seat is primary; every
+  support / counterweight load is its own asset group with its own ticket filled by the 3rd man or
+  rigger.** Recorded in
+  [decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md](../decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md)
+  from the TCG statements already in the candidates above — Lisette Anzaldo (05-14 dispatch
+  practice; approver of `ASSETS_DISPATCH_(Lisette-approved).xlsx`, tab `ASSETS_DISPATCH_May21`, whose
+  *Job Ticket (for each asset group) / Fills In-Completes Ticket / Has Separate Labor Hours* columns
+  put the Oiler and the Operator on ticket #1 and each support load on its own ticket), Melissa
+  McNutt (05-19 42:09, 06-04 15:00–15:55), Brian Petros (05-19 24:20, 05-21 8:27–9:27) — plus
+  FR-TCG-FOP-001 §4.1. Adjudicated 2026-09-14 by Syed Haris in-session; no TCG person answered the
+  2026-09-12 demo question in so many words, but nothing on the record contradicts it except the
+  9:41 slip (withdrawn at 9:56) and `SCRUM-249` AC 2 (unrequested, predates every TCG statement).
+  **Open question 11 in FR-TCG-FOP-001 is answered: no active Operator step.** The 2026-09-12
+  read-only-copy shape (`JobTicket.primaryTicketId`, `linkCrewTickets`) is superseded; the target is
+  one ticket row per asset group with a ticket-employees join (primary flag, per-employee labor) —
+  FCC's `FMS_JOB_TICKET` + `FMS_JOB_TICKET_EMP_UNIT` shape — built under `.ai/aidlc/SCRUM-CREW-TICKET/`.
+  **Deliberately not decided, still open:** customer-signature steps on 3rd-man tickets (Melissa
+  05-19 42:09, 06-04 15:22); the dispatcher option for two people in one truck / a separate ticket
+  when one reports to site (05-14 10:12, 12:17, 14:47); the Oiler adding fill-in / temp crew to
+  their ticket (06-04 1:00:53, 1:02:28). `04-role-responsibility-model.md` and `08-open-questions.md`
+  carry a `provenance_note:` pointing at the decision; their `status:` is unchanged (one section of
+  a split FRD, not the FRD-versus-FRD conflict).
+- **Status:** resolved 2026-09-14 — see [decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md](../decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md)
 - **From (frozen original):** [gaps.md#who-fills-the-ticket-the-schema-has-already-picked-a-side-against-the-only-reviewed-document](../gaps.md#who-fills-the-ticket-the-schema-has-already-picked-a-side-against-the-only-reviewed-document)
 
 ## SOS — Dispatch was asked for and agreed on the call, and is in neither the docs nor the code

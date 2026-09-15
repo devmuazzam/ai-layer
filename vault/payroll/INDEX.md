@@ -143,7 +143,7 @@ neighbouring module.**
 
 ## Decisions that bind this module
 
-Ten `decisions/` notes carry `module/payroll`. None is `verified` — all are `reference`,
+Eleven `decisions/` notes carry `module/payroll`. None is `verified` — all are `reference`,
 meaning a named person on the team decided them and they bind implementation until TCG says
 otherwise.
 
@@ -161,6 +161,7 @@ additions below — count the list, not the sentence.)*
 - [2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md](../decisions/2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md) — unfinished tickets shown on the weekly payroll screen are computed at read time and never priced, persisted or exported; what they are *called*, and whether they block approval, stay open
 - [2026-09-09-business-day-starts-at-midnight-local.md](../decisions/2026-09-09-business-day-starts-at-midnight-local.md) — the business day begins at 00:00 in the tenant's own zone; companion to the tenant-timezone note
 - [2026-06-30-adp-erp-employee-data-ownership.md](../decisions/2026-06-30-adp-erp-employee-data-ownership.md) — which employee field is owned by ADP, the ERP, or QuickBooks
+- [2026-09-15-employee-profile-compensation-type-and-statuses.md](../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md) — the Employee Profile's Compensation Type (craft-based hourly / hourly non-craft / salaried) drives pay type and payroll group; employee status gains On Leave and Pending Onboarding; payroll status Eligible / Hold gates the worklist; over-scale, salary amount and subsistence overrides are **stored, not priced** — developer answers to `SCRUM-EMPLOYEE-PROFILE` §12, each naming who at TCG can overrule it
 
 ## Where payroll meets the rest of the vault
 
