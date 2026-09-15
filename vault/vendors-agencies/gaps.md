@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-09-11
+updated: 2026-09-15
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -265,3 +265,33 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Related, already open — do not duplicate:** [*PO and vendor/agency rules the E2E suite asserts… PR #488*](#po-and-vendoragency-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) (a) covers the old `PENDING → ACTIVE` promotion this branch replaces, (b) PO fee in the total, (c) `belongsToAsset`. [*Purchase orders at three levels*](#purchase-orders-at-three-levels--joe-and-ryan-on-tape-nothing-written) covers quote-lost → PO closed. [projects-jobs/gaps.md → *Permit↔PO reverse cascades incomplete*](../projects-jobs/gaps.md#permitpo-reverse-cascades-incomplete) asks what the permit side does when a PO is cancelled; this entry asks the question before it, whether `CLOSED` *is* cancelled.
 - **Blocked:** merging `fix/das-fixes`' migration and how the permit tracker displays POs were blocked on (a)–(d), settled 2026-09-11 (above). The status remap is lossy: the six legacy statuses collapse to `OPEN | CLOSED` (`PURCHASED`/`ACTIVE`/`CANCELLED`/`INACTIVE` → `CLOSED`, `PENDING`/`DRAFT`/`NULL` → `OPEN`), and the original value is not kept. (g) blocks the next FCC import run with the changed seeder.
 - **Owner:** Brian Petros and Liz Lopez (the PO process); Syed Haris and Umer Islam for what their 2026-09-11 `OPEN | CLOSED` lock meant.
+
+## Agency form 2026-09-15 — jurisdiction values on Ben's sheet that the dropdown cannot hold
+- **Status:** open
+- **Asked:** 2026-09-15 — building the final agency form ([../decisions/2026-09-15-agency-creation-form-final-fields.md](../decisions/2026-09-15-agency-creation-form-final-fields.md)) against `City List turn around - Ben.xlsx`
+- **Question:** Ben's 500-row sheet uses five jurisdiction values — `City` (239), `Unincorporated / CDP` (243), `Unincorporated Community` (12), `Town` (3), `Community / Jurupa Valley Area` (3). Ehtesham's dropdown is City · County · Township · Borough · Village · State · Federal · Special District · Other. Half the sheet is *Unincorporated / CDP*, which has no entry; `Town` has none either. Should the dropdown gain **Unincorporated / CDP** and **Town**, or do those rows import as `County` (the permit authority for unincorporated areas) / `Other`? The build ships Ehtesham's list unchanged.
+- **Sources checked:** the sheet (all three tabs); `agencies.md`, `agencies-module.md`, `agency-and-vendor.md`; transcripts 2026-03-26 and 2026-06-18; decisions 2026-09-11 (permit flow, PO modal).
+
+## Agency form 2026-09-15 — the sheet's "Estimated TCG Planning Lead Time" has no field
+- **Status:** open
+- **Asked:** 2026-09-15 — same work as above
+- **Question:** Ben's sheet carries two lead times per city: the agency's *Permit Lead Time* (on the form) and an *Estimated TCG Planning Lead Time (Days)* (5 for 431 rows, 3/4 for Orange-County-style overrides), with the note that the latter is "a planning estimate for internal scheduling, not an official agency commitment". The form has only the first. Is the planning estimate a second agency field, a tenant-level default, or not stored at all? Not built.
+- **Sources checked:** as above; `vault/quotations/` and `projects-jobs/` for any planning-lead-time requirement (none).
+
+## Agency form 2026-09-15 — Submission Type and Avg Permit Cost: required or not?
+- **Status:** open
+- **Asked:** 2026-09-15 — same work
+- **Question:** Every field on Ehtesham's list carries a Required / Not Required marker except the last two, *Submission Type* and *Avg Permit Cost*. The build treats both as optional (vendor name required once *3rd Party Vendor* is picked; portal URL required once *Portal* is picked). Confirm, or make Submission Type required.
+- **Sources checked:** the request text; `agencies.md` (silent); 2026-06-18 recording (describes Quality Permits and portal accounts, says nothing about a required field).
+
+## Agency form 2026-09-15 — portal credentials are stored in clear text
+- **Status:** open
+- **Asked:** 2026-09-15 — same work
+- **Question:** "Portal (Credentials)" is built as a username + password pair on the agency row, returned to any user who can read agencies and shown masked-with-reveal on the detail page. Nothing else in the platform stores a third-party login. Is that acceptable for an internal directory, or should the password be encrypted at rest / restricted to a permission level / replaced by a "credentials are in the password manager" note? Excluded from the activity log diff either way.
+- **Sources checked:** the request text; `apps/api` for any existing secret-at-rest pattern (none besides bcrypt user passwords and hashed refresh tokens).
+
+## Agency form 2026-09-15 — is a bulk import of Ben's city list wanted?
+- **Status:** open
+- **Asked:** 2026-09-15 — same work
+- **Question:** The sheet is 500 rows in exactly the form's shape (city, lead time, county, state, jurisdiction, coverage note). Typing them by hand through the form is a week of data entry. Should there be a one-off seed / CSV import for it, and if so which tenant, and what fills the fields the sheet lacks (agency name — presumably "City of X" —, agency type, coverage area, the mandatory time restriction and attachment)? Not built; the form's required rules make a mechanical import impossible without answers.
+- **Sources checked:** the sheet; `apps/api/prisma/seed.ts` (no agency seed); `sync/project-repository-2026-09-04.md` (the 894-file city-permit library was dispositioned, never imported).
