@@ -396,14 +396,30 @@ milestones are conceptually anchored here.
 
 - **Sidebar:** Employees ▸ All Employees · **URL:** `/employees` → `/employees/create`
 
-Create **two**, an Operator and an Oiler. Required fields (`create-employee-form.ts`):
+Create **two**, an Operator and an Oiler. Since PR #596 (2026-09-15, `SCRUM-EMPLOYEE-PROFILE`)
+the create page is **one scrolling form of eight sections** — Basic Information · Department &
+Role · Employee Status · Employment Details · **Payroll Profile** · Managed Assets · Emergency
+Contact · Attachments & Certifications — no tab stepper. Required fields
+(`create-employee-form.ts` + the API's per-type checks):
 
 - First name, last name, **email** (required — no email, no portal invite later)
 - Work cell phone
-- **Payroll craft** (`primaryCraftCodeId`) — **required**, this is why craft codes came first
-- Employee Type, Union Code, Work Comp Code, Yard, Department + role
-- Hourly / Salary Rate — **only used for `NON_UNION` crafts**; union crafts ignore it and read
-  `CraftCodeRate`
+- **Compensation Type** (Payroll Profile, first field) — *Craft-Based Hourly · Hourly Non-Craft ·
+  Salaried*. Picking an Operator/Oiler Employee Type pre-selects **Craft-Based Hourly**; leave it.
+- **Payroll craft** (`primaryCraftCodeId`) — **required for Craft-Based Hourly**, this is why craft
+  codes came first. The picker is filtered to the Employee Type's craft role (an Oiler cannot
+  take an Operator craft — the API 400s a mismatch).
+- Employee Type, Work Comp Code, Yard, Department + role (Department & Role / Employment Details)
+- **Union Code is no longer entered for craft-based employees** — it is derived from the craft
+  and shown read-only in Payroll Profile. Only Salaried / Hourly Non-Craft employees pick one.
+- Hourly rate — shown **only when the craft is `NON_UNION`**; union crafts read `CraftCodeRate`
+- Payroll Status defaults to *Eligible*; set **Hold** to demo an employee being skipped by the
+  weekly run with a visible issue (§13.2). Employee Status defaults to *Active* (`On Leave`,
+  `Pending Onboarding` and `Terminated` are new; none of them is assignable in DAS).
+- *Advanced* (collapsed, in Payroll Profile) holds the FCC rate columns you can ignore.
+
+Everything else — over-scale, subsistence overrides, salary amount — is **stored, not priced**:
+the payroll numbers in §13 do not change when you fill them.
 
 > ⚠️ **Employee Type drives the mobile persona, and it is matched by *name*.**
 > `PERSONA_BY_EMPLOYEE_TYPE` in `apps/mobile/data/contracts/identity.contract.ts`:
@@ -939,6 +955,11 @@ Press **Calculate** — this ingests completed tickets and prices the whole peri
 **Verify in the worklist:** employee rows with total hours, ST/OT/DT split, gross, and a status
 (`FLAGGED` when the run raised issues).
 
+An employee on **Payroll Status = Hold**, or in any status other than Active / On Leave, is
+**not** in the worklist even with tickets that week — the run raises `EMPLOYEE_ON_PAYROLL_HOLD`
+/ `EMPLOYEE_STATUS_EXCLUDED` (calculate-time toast counts) so the hours are visible, not lost.
+Flip them back to Eligible / Active and recalculate to demo the round trip (PR #596).
+
 ### 13.3 Employee timesheet — where the numbers become explainable
 
 Click an employee → `/payroll/<employeeId>?periodId=…`. Panels: hero, stats, daily rows, pay
@@ -1116,7 +1137,7 @@ Tick every box before you start the demo narrative. Anything unticked fails **la
 
 **Org**
 - [ ] Departments (Dispatch, HR, Operations) · Yard
-- [ ] Employees with **Employee Type = Operator / Oiler** (persona mapping) and a **primary payroll craft**
+- [ ] Employees with **Employee Type = Operator / Oiler** (persona mapping), **Compensation Type = Craft-Based Hourly** and a **primary payroll craft**; Payroll Status *Eligible*, Employee Status *Active*
 - [ ] At least one employee **invited and able to log in on mobile**
 - [ ] Optional: one "Driver" employee to demo the not-provisioned screen
 
