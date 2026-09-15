@@ -1410,6 +1410,28 @@ answer and the search that produced it are read together. Sweep:
 - **Owner:** Corrina Bustos.
 - **Status:** resolved — see DEC-0915 §Q14 (not on the employee; belongs to export configuration).
 
+### Q15 — Secondary craft rows: no "who assigned it" in the read select (found building U7)
+
+- **Question:** REQ-15 says each secondary-craft row shows who assigned it and when. The
+  craft-assignment read select
+  (`apps/api/src/service/employee-craft-assignments/employee-craft-assignments.repository.ts`
+  `CRAFT_ASSIGNMENT_SELECT`) returns `createdAt` (now surfaced in
+  `apps/web/src/features/craft-codes/services/craft-assignments.service.ts`'s `CraftAssignment`
+  type, U7) but never joins `assignedBy`, even though `EmployeeCraftAssignment.assignedById`
+  is a real column the assign endpoint writes. Should the select gain
+  `assignedBy: { select: { id, name } }` so the web can show a name, or is "when" (already
+  shown) enough for this ticket?
+- **Why it cannot be answered from what is written:** REQ-15's own source citations
+  (`EPF §9`, `SCRUM-926/spec.md` REQ-08, DEC-0915 Q7) describe the requirement but not the
+  select shape; nothing in the vault says the name was deliberately left out.
+- **Blocked:** REQ-15's "who assigned it" half only — "when" ships in this unit.
+- **Candidates:** none found; a straightforward select-clause addition once someone confirms
+  it's wanted.
+- **Owner:** whoever owns the craft-assignment API surface next (U4's author or later).
+- **Workaround shipped:** `apps/web/.../form/payroll/secondary-craft-rows.tsx`'s edit-mode
+  rows show the assigning date only ("Assigned <date>"), no name.
+- **Status:** open.
+
 ## 13. What this spec deliberately does not specify
 
 - **Pricing** with over-scale, salary amount, hourly-rate effective dates or the subsistence
