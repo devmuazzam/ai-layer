@@ -128,6 +128,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   one-line confirmation of the two-record rule.
 - **See also (2026-09-12):** [decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md](../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md) — an *Optional* catalog association the quotation never priced is no longer materialised as a job resource or DAS slot (Syed Haris, CodingCops, `reference`). It narrows the child case; it does **not** settle this entry or the two-record rule.
 - **See also (2026-09-15/16):** Joe Schacatano separates *quoted line items* from *dispatch resources* altogether — principle decided 2026-09-16 ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)); the model is open in [../quotations/gaps.md](../quotations/gaps.md) → *Quote line items vs dispatch resources…*. The "requested resources" record this entry asks about is therefore no longer the quotation's resource list. Does not settle this entry.
+- **See also (2026-09-17):** Brian's FCC deep dive ([../quotations/fcc-billing-resource-configuration-deep-dive-2026-09-16.md](../quotations/fcc-billing-resource-configuration-deep-dive-2026-09-16.md) §12, §17, §32). FCC job OM60788 shows requirement → assignment in practice:
+  - type-level placeholders on the quote;
+  - real crane and tractors, plus an Operator, an Oiler and four 3rd Men, on the job;
+  - `FMS_JOB_RESOURCES` pairing units with employees;
+  - a **40 Ton unit (4003) with an operator and no billing line** on the same job.
+
+  The document recommends that Dispatch can add operational-only requirements. A recommendation, not a decision.
 
 ## Schedule fields — the build already agrees, and the new fields are written nowhere
 
