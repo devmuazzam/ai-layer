@@ -4178,6 +4178,7 @@ somewhere it should not have. Settle that before touching either.
   threshold. Everywhere else the engine does what you describe."* — and one question to Corrina:
   *"the 8-hour holiday minimum reaches the 12-hour double-time mark, but is not otherwise treated
   as time worked?"* Awaiting her answer.
+- **See also (2026-09-14):** Brian's holiday-guarantee workbook — [*Holiday-start guarantee — Brian's 2026-09-14 workbook…*](#holiday-start-guarantee--brians-2026-09-14-workbook-calls-the-union-reading-a-1440-overpayment-and-prices-the-post-midnight-hours-at-triple). It widens his objection beyond ruling (c) to ruling (b), and does not settle this entry.
 - **Owner:** Corrina Bustos — to re-confirm (c) with the arithmetic in front of her and Brian's
   objection on the table, and to fill the rest of the grid with the BA if he will; Brian Petros
   to align his app or to make the case to Corrina, not to us.
@@ -4257,3 +4258,62 @@ somewhere it should not have. Settle that before touching either.
   a mismatch).
 - **Owner:** Brian Petros and Corrina Bustos. If the reply goes out as drafted, their answer
   settles this; until then, don't describe the floor as built.
+
+## Holiday-start guarantee — Brian's 2026-09-14 workbook calls the union reading a $1,440 overpayment, and prices the post-midnight hours at triple
+
+- **Status:** open
+- **Asked:** 2026-09-14 — Brian Petros, two Teams messages (05:02 and 05:11 PKT) with
+  `___holidayGuaranteeScenario.xlsx`: *"I definitely do not want to 'fix' our Payroll App
+  calculations/logic with that interpretation. It conflicts with what the Labor Union contract
+  language specifically/clearly explains/requires. Needs to be reviewed."* He proposed discussing
+  it at the next meeting. No outcome is on record. Logged 2026-09-17; the workbook is transcribed
+  and its arithmetic checked in [holiday-guarantee-scenario-2026-09-14.md](holiday-guarantee-scenario-2026-09-14.md).
+- **Question:** The pink column is labelled *"Union Rep wrong interpretation"*. It pays
+  00:00–06:00 at triple **and** adds a 6-hour TRI top-up. That is not the BA breakdown recorded in
+  [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md), where the post-midnight hours are 4 OT then DT, and 8 TRI is reached as 2 worked
+  hours plus 6 top-up hours. So three questions, each answerable in a line:
+  - **(a)** Brian: which union-rep explanation does the pink column model — the 2026-09-12 relay,
+    or something the rep said later that the vault does not have?
+  - **(b)** Brian: does the "contract" row replace your 2026-09-11 reading (a)? That reading was
+    2 worked + 6 top-up = 8 TRI, then 10 OT, and it is what your app does. The new row instead
+    meets the 8-hour minimum by paying worked Tuesday hours (00:00–06:00) at triple, which also
+    reverses ruling (b), "reverts at midnight", a ruling nobody had disputed.
+  - **(c)** Corrina / the BA: with both sheets in front of you, is the 2026-09-12 breakdown
+    (8 TRI · 4 OT · 6 DT on 22:00→10:00) still the ruling?
+- **Money at $80, one 22:00→10:00 Labor Day shift, before meal deductions:**
+
+  | Reading | Pay |
+  | --- | --- |
+  | BA via Corrina | **$3,360** |
+  | Brian's app (2026-09-11) | $3,120 |
+  | Brian's "contract" row | **$2,400** |
+  | Brian's "union rep" column | $3,840 |
+
+  The $1,440 per employee is the 6-hour top-up alone. It is measured against a reading no named
+  person has stated. Against the ruling on record, Brian's new row **underpays by $960** per
+  employee ($3,840 for his four-person example).
+- **Sheet arithmetic, for whoever replies:**
+  - The 05:02 version's "Final" ($1,500) starts from the *without-guarantee* total.
+  - The 05:11 version and the downloaded file deduct the two breaks twice in the union column
+    (`SUM(26:26)` already excludes the lunch cells). Priced consistently, that column is $3,660,
+    not $3,480.
+  - The downloaded file's own column is consistent: 7.5 TRI + 3.5 OT = $2,220.
+
+  Details in [holiday-guarantee-scenario-2026-09-14.md](holiday-guarantee-scenario-2026-09-14.md).
+- **Sources checked:**
+  - [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md): rulings (a) total, (b) reverts at midnight, (c) guarantee hours reach the
+    12-hour mark, including its *Contested by Brian Petros, 2026-09-11* section.
+  - *Holiday shift-start continuation…* (closed) above, which holds Brian's 2026-09-11 reading
+    (a) and his five-concept list.
+  - *Added hours — which rules' phantom hours reach which thresholds?* above.
+  - [rules/PAY-033-holiday-pay.md](rules/PAY-033-holiday-pay.md).
+  - MLA Art. III *Holidays* §1 ([mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md)):
+    *"…shall be paid for all work performed… on the following holidays"*. It says nothing about
+    post-midnight hours on a non-holiday.
+  - The 2026-09-15 and 2026-09-16 transcripts: neither mentions a holiday.
+- **Blocked:** nothing new in the ERP. Per the decision note, the engine follows the BA
+  breakdown (PR #565). The parallel run against Brian's app now diverges on every holiday-start
+  shift **in the opposite direction** from before if his app adopts the workbook row: the app
+  would pay less than the ERP, not more.
+- **Owner:** Brian Petros for (a) and (b); Corrina Bustos, with the BA, for (c). Agenda item for
+  the next payroll call alongside WTL.
