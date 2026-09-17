@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-11
+updated: 2026-09-17
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -2353,6 +2353,13 @@ someone has confirmed otherwise.
   written client ask — but the ask is about unions generally: **no source says a second local's
   boom schedule must differ, and no decision scopes `CraftModifier` to a union.** Still needs
   product to accept the `unionCodeId` (or equivalent) shape.
+- **Update 2026-09-17 (Brian Petros, written note after the 2026-09-15 demo):** Brian asked
+  whether craft codes and craft modifier codes are tied to a union, and said they should be,
+  *"for when/if there is more than one Union"*. Craft codes already are (`CraftCode.unionCodeId`
+  is required); craft modifiers are not. CodingCops' drafted reply (Syed Haris, 2026-09-17) says
+  *"we will add the union link on the modifiers"*. That is a commitment in a reply, not a
+  decision note: once Brian confirms in writing, `tcg-scrum` records the decision and this entry
+  closes. The note itself is not stored in the vault.
 
 ## A labor-entry edit can reprice an approved week — and the ERP has no path for it
 
@@ -4174,3 +4181,79 @@ somewhere it should not have. Settle that before touching either.
 - **Owner:** Corrina Bustos — to re-confirm (c) with the arithmetic in front of her and Brian's
   objection on the table, and to fill the rest of the grid with the BA if he will; Brian Petros
   to align his app or to make the case to Corrina, not to us.
+
+## Higher rate for the day (MLA Art. IV-C) — never walked through with TCG
+
+- **Status:** open
+- **Asked:** 2026-09-17 — raised by Brian Petros in his written note after the 2026-09-15 demo
+  (point 5, with a proposed 5-step order); logged by Syed Haris while drafting the reply.
+- **Question:** Article IV-C says that when an employee works at a higher rate than the minimum at
+  any point in a calendar day, *"the higher rate of pay shall apply on all time worked during that
+  day"*, except the long-boom increment (IV-B-2), which stays on boom hours with the 4-hour
+  minimum; Art. III-I.5 says something similar per job. Which rates propagate (base craft rate
+  only, a secondary craft picked on an allocation, lattice or other adders)? Does it propagate to
+  the whole day or only to hours on that job? Brian's proposed order: classify each segment →
+  premiums/overrides → highest rate reached that day → apply the higher-day rule → ST/OT/DT.
+- **Sources checked:** [rules/PAY-015](rules/PAY-015-higher-rate-for-day-job.md) (`open`,
+  "union/legal interpretation required"); [codingcops-rule-matrix.md](codingcops-rule-matrix.md)
+  `PR-015` ("new ERP requirement"); the FRD decision list item #12 in the first entry of this file
+  (contract text only); [payroll-engine-status-2026-09-12.md](payroll-engine-status-2026-09-12.md),
+  which parks PAY-015. No meeting note, transcript, client message or decision discusses it. The
+  engine has no day-level true-up.
+- **Owner:** Corrina Bustos (interpretation), with Brian Petros. Proposed for the next payroll call.
+
+## Relief employee paid at the relieved employee's rate (MLA Art. III-H.1(a)) — not modelled
+
+- **Status:** open
+- **Asked:** 2026-09-17 — raised by Brian Petros in his written note after the 2026-09-15 demo
+  (point 3); logged by Syed Haris.
+- **Question:** when an employee has worked over 16 hours without an 8-hour break and the employer
+  calls in a replacement for safety, the replacement *"shall be paid at the same rate of pay as the
+  relieved employees at the time of relief for all hours worked on the job"*
+  ([mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md)).
+  It applies to any employee, not only Oilers. How often does this happen, and how does payroll
+  handle it today? Does "rate" include the relieved employee's premiums (long boom, lattice)?
+  Under the craft-locked model ([decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md))
+  a relief allocation that inherits the relieved allocation's craft is the likely shape, but
+  nothing is designed.
+- **Sources checked:** the MLA text above and
+  [mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md](mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md);
+  no PAY rule, no gap entry, no meeting, transcript or decision mentions it. No schema field.
+- **Owner:** Corrina Bustos, with Brian Petros.
+
+## Same pay as the craft worked with (MLA Art. III-C) — not modelled
+
+- **Status:** open
+- **Asked:** 2026-09-17 — raised by Brian Petros in his written note after the 2026-09-15 demo
+  (point 4); logged by Syed Haris.
+- **Question:** Art. III-C says covered employees get the same pay as the craft they work with
+  when that craft's agreement is more advantageous. Brian reads it as work alongside another
+  building-trades union, not the Operator/Oiler pairing, and suggests a separate craft-rate
+  override. This is different from a secondary craft: the rate comes from another trade's
+  agreement, not from any L12 craft the employee holds, so the current resolver cannot express it.
+  Does this happen at TCG, and where would the other trade's rate come from?
+- **Sources checked:** MLA text in `mcog-l12-mla-2025-2028/`; no PAY rule, gap entry, meeting,
+  transcript or decision mentions it.
+- **Owner:** Corrina Bustos, with Brian Petros.
+
+## Is a secondary craft paid only when it is higher than the primary?
+
+- **Status:** open
+- **Asked:** 2026-09-17 — Syed Haris, while replying to Brian Petros's post-demo note on the
+  Oiler's Operator craft code.
+- **Question:** the reply drafted for Brian says an employee on a secondary-craft allocation is paid
+  the secondary rate when it is higher than the primary, otherwise the primary (a floor at the
+  employee's own rate). That is Brian's proposal from the 2026-08-13 call, which Kyle Harlow agreed
+  with (entry *Pay rate follows the employee, not the role worked*, above). But
+  [decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md)
+  calls that floor unnecessary under controlled assignment and says that if TCG still wants it,
+  *"it is a validation warning, not a rate rule"*. The code follows the decision:
+  `CraftRateResolverService` pays whichever craft is on the allocation and never compares rates
+  (`apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts:328-353`,
+  `apps/api/src/usecase/payroll/payroll-secondary-craft.ts`). Should the floor be enforced as a
+  rate rule, shown as a warning, or left out?
+- **Sources checked:** the two entries and the decision above; `PAY-010`; the resolver and
+  `das-allocations.service.ts:1120-1183` (dispatch must pick a SECONDARY craft of the seat's role on
+  a mismatch).
+- **Owner:** Brian Petros and Corrina Bustos. If the reply goes out as drafted, their answer
+  settles this; until then, don't describe the floor as built.
