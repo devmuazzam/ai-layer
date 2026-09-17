@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-09-15
+updated: 2026-09-17
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -127,6 +127,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Resources tab (as built, and as `02-view-manage-job-details.md:50` contradicts), and Melissa's
   one-line confirmation of the two-record rule.
 - **See also (2026-09-12):** [decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md](../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md) — an *Optional* catalog association the quotation never priced is no longer materialised as a job resource or DAS slot (Syed Haris, CodingCops, `reference`). It narrows the child case; it does **not** settle this entry or the two-record rule.
+- **See also (2026-09-15/16):** Joe Schacatano separates *quoted line items* from *dispatch resources* altogether — principle decided 2026-09-16 ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)); the model is open in [../quotations/gaps.md](../quotations/gaps.md) → *Quote line items vs dispatch resources…*. The "requested resources" record this entry asks about is therefore no longer the quotation's resource list. Does not settle this entry.
 
 ## Schedule fields — the build already agrees, and the new fields are written nowhere
 
@@ -811,3 +812,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** this build's `PermitChecklistBadge` / `AssetPermitModal` (mirrors vendor `PoChecklistBadge`); [confirmations-playbook.md](confirmations-playbook.md) §6 and [travel-permits-playbook.md](travel-permits-playbook.md) (substitution re-opens the permit / per-crane application); [../projects-jobs/gaps.md](../projects-jobs/gaps.md) *Asset on a permit…* (265-for-90); [decisions/2026-09-11-permit-classes-job-only-until-sept-15.md](../decisions/2026-09-11-permit-classes-job-only-until-sept-15.md); [decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md](../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md); adjacent [*Branch fix/permits-pos — the DAS pre-checklist "PO#" row…*](#branch-fixpermits-pos--the-das-pre-checklist-po-row-stops-watching-vendor-allocations-and-can-no-longer-flag-anything).
 - **Blocked:** (a) settled. (b)–(d) Brian Petros / Liz Lopez / Lisette Anzaldo — product.
 - **Owner:** Lisette Anzaldo (DAS dispatcher); carve-out (a) → Ehtesham Anwar.
+
+## Dispatch resources vs quote lines — pointer, owned by quotations
+
+- **Status:** open — answer in [../quotations/gaps.md](../quotations/gaps.md) → *Quote line items vs dispatch resources — the associated set auto-fills the quote, and the sales owner says dispatch resources must not be quoted*. Principle decided 2026-09-16 ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)).
+- **Asked:** 2026-09-15 — Joe Schacatano, ERP live demo 01 ([../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §2): oiler, operator and semi are *"the resources to tie to the assets when it's dispatched"* and are never charged. Bears on where DAS slots come from if they stop being quotation rows (today: [../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md](../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md)). Pointer only.
+
+## One asset standing for several resource types (derating, configurations) — pointer, owned by assets
+
+- **Status:** open — **answer owned by assets**, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Asked:** 2026-09-17 — ingest of the 2026-09-16 call.
+- **Why it lands here too:** which assets may fill a DAS slot for a quoted resource type depends on the answer. Joe Schacatano (4:59): a crane may be *"derated to cover other equipment sizes in the same type"*. He also said one crane can be dispatched in two configurations (27:33).
+- **Read:** [../assets/gaps.md → *One asset, one type…*](../assets/gaps.md#one-asset-one-type--but-one-crane-in-several-configurations-how-does-an-asset-stand-for-more-than-one-resource-type)

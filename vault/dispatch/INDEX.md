@@ -45,6 +45,7 @@ DAS, scheduling, yard operations. Backend usecases: `das, das-allocations, das-l
 - [2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) — Create **and** edit both land on the entity's detail page, app-wide; supersedes the create half of 2026-08-20
 - [2026-09-14-yard-unassigned-slots-not-loadable.md](../decisions/2026-09-14-yard-unassigned-slots-not-loadable.md) — Unassigned slots not loadable; Partial Loadout label. **Employees-as-loadable / pre-tick superseded** 2026-09-15
 - [2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md) — `fix/15-sep` as built (Ehtesham Anwar): employees not loaded; handover unchecked; steal of plain allocations; yard lock; Cancel Allocations
+- [2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md) — Resources (tractor, trailer, crew) are a dispatch-side requirement carried by the quote's billing codes, not quote lines (Joe Schacatano, `verified`)
 
 ## Open questions
 

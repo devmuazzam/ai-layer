@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-09-11
+updated: 2026-09-17
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -829,6 +829,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Related, already open — do not duplicate:** [*Permit↔PO reverse cascades incomplete*](#permitpo-reverse-cascades-incomplete) (PO cardinality and lifecycle) and [*Permit rules the E2E suite asserts with no written source — PR #488*](#permit-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) items (a), (d) and (e). This entry is a **different** question from all of them: not *how many* POs or *when* they cascade, but **what makes a permit exempt at all**. Same pattern as the 2026-09-08 update on the reverse-cascades entry — code citing `2026-06-18-annual-permits-no-po-single-permits-need-po.md` for something that decision does not say.
 - **Blocked:** **(b)** only — whether Asset Management → New Permit may offer only `ASSET` without an annual/single distinction, and the already-open correction of `TRAVEL_CITY_STREET_PERMIT`'s wrong exemption.
 - **Owner:** **Brian Petros** — he stated the annual-vs-single rule on 2026-06-18, raises the permit POs, and authored the 2026-09-05 PO workflow — with **Liz Lopez** (PO process) and **Lisette Anzaldo** (dispatch/permits) on (b).
+
+- **Update 2026-09-16 (Joe Schacatano, VP of Sales — a second TCG voice besides Brian).**
+  - *"there should be a PO for anything or where there's associated costs that are tied to a job"* (20:57), and *"we should be able to do a PO for anything within a job"* (21:10).
+  - A permit PO exists to tie the vendor's or the city's invoice to the job (18:24, 18:40).
+  - A city paid directly is handled per permit, not as a standing account (20:33). The yearly case is *"if we're getting annual permits"* (20:38).
+  - Through a third party, the third party invoices us quoting our PO. Paid directly, the city invoices us (21:38, 22:11).
+  - **This fits (a)'s annual-vs-single axis:** a single permit tied to a job needs a PO. Joe did **not** say whether an annual permit, which is not tied to a job, gets one.
+  - Ehtesham told him the PO *"becomes required when you upload the final permit"* (21:22), and Joe said *"Perfect"*. But the recorded rule puts the PO requirement at **approval** ([../decisions/2026-09-11-permit-approval-requires-linked-po.md](../decisions/2026-09-11-permit-approval-requires-linked-po.md)), and nobody checked which trigger the build uses.
+  - (b) is unchanged.
+
+  Source: [../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §6, §8.
 
 ## Branch fix/das-fixes — permit-type remap, job-only Track Permits, projects list as a table
 

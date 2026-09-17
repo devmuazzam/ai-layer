@@ -59,6 +59,7 @@ answered).
 - [2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) — Create **and** edit both land on the entity's detail page, app-wide; supersedes the create half of 2026-08-20. A quote created from a project (`?projectId=`) still returns to that project
 - [2026-09-14-quotation-mark-won-requires-comment-or-attachment.md](../decisions/2026-09-14-quotation-mark-won-requires-comment-or-attachment.md) — Manual Mark as Won requires comment or dialog `WON_EVIDENCE` (`status: reference`; TCG ratification open in gaps.md)
 - [2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md) — Print/PDF letterhead is the Lovable seal + Portal Dr fallbacks (Ehtesham Anwar). Does **not** adjudicate [quotations-INDEX.md](quotations-INDEX.md)
+- [2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md) — Quote = billing codes only; Unit/People not on the quote; pick the machine directly (Joe Schacatano, `verified`). Conflicts with the 2026-09-04 Always Included note; model open in gaps.md
 
 ## Open questions
 

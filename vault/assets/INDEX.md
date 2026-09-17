@@ -40,6 +40,7 @@ Assets, yards-as-records, tools & rigging, categories. Backend usecases: `asset-
 
 - [2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md) — Archive replaces delete, app-wide — decision
 - [2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) — Create **and** edit both land on the entity's detail page, app-wide; supersedes the create half of 2026-08-20
+- [2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md) — The resource type's Unit/People set is for dispatch, not the quote; the salesperson picks the resource type directly (Joe Schacatano, `verified`)
 
 ## Open questions
 

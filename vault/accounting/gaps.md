@@ -2,7 +2,7 @@
 title: Accounting — open questions
 status: reference
 kind: gaps
-updated: 2026-09-07
+updated: 2026-09-17
 tags: [module/accounting, kind/gaps, open-questions]
 ---
 
@@ -310,6 +310,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   invoice from actual hours.
 - **Owner:** Melissa McNutt (billing model per quote), with Brian Petros to say whether the
   SCRUM-877 comments were his and meant billing or boom pay; Micaela Dipane for what AR invoices.
+- **Update 2026-09-16 (Joe Schacatano).**
+  - The customer sees only the **estimate** lines on the invoice, never the dispatch resources: *"customers only gonna get the estimate"* (17:20).
+  - The invoice goes out with *"a packet with the final tickets for each individual resource"* (17:46). That widens (c) beyond LADWP: tickets travel with every invoice, one per resource.
+  - It does not say how ticket hours map onto estimate lines, which stays this entry's open core.
+  - Ehtesham (16:19) said creating an invoice from the job is affected by separating quote lines from resources ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)). Joe: *"Correct."*
+
+  Source: [../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §5.
 
 
 ## Paper Job Tickets — pointer, owned by field-ops
