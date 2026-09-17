@@ -627,6 +627,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §6, slide 6) — silent on re-pricing. So
   the legacy default is "keep the list it was written against"; whether the ERP should re-price on
   edit still needs the client.
+- **See also (2026-09-17):** Brian's FCC deep dive ([fcc-billing-resource-configuration-deep-dive-2026-09-16.md](fcc-billing-resource-configuration-deep-dive-2026-09-16.md) §7–§9, recommendation) reports these FCC numbers:
+  - of historical quote lines, 11,284 took the price-list rate and kept it, and 458 took it and were then edited;
+  - `OriginalRate` stores the resolved rate and `Rate` the final one.
+
+  It recommends freezing the resolved rate, its source and the final rate on the line, so that *"changing the PREFERRED Price List next month must not alter this historical Quote"*. That supports keeping a saved quotation's rates. It does not say what an edit should do to the quotation's price-list **selection**. Not a ruling.
 
 ## Should a quotation with a past job date or valid-until still be editable?
 
@@ -2371,3 +2376,10 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   - The 09-15 price-list-at-scheduling question (part (c) above) was not raised on 09-16 and stays open.
 
   Ehtesham (15:35) is designing the change against the build. The mob/demob session with Joe is the week of 2026-09-28.
+- **Update 2026-09-17: Brian's FCC deep dive** ([fcc-billing-resource-configuration-deep-dive-2026-09-16.md](fcc-billing-resource-configuration-deep-dive-2026-09-16.md); his and TCG's AI model, a recommendation, not a decision). On (a) it recommends **both**: requirements may come from a billing-code rule (Operator Load → tractor, trailer, crew), a service-profile rule (the 350 package), a profile variant (Hourly w/ Mob adds a tractor), or a manual Dispatch add. It models this as a *Dispatch Requirement Template* beside a *Billing Bundle Template*, both hung off a *Service Profile*. FCC evidence it adds:
+  - quote OM-40439 stored type-level Unit/People placeholders only, with every `UnitCode` NULL;
+  - job OM60788 resolved them to real units and employees;
+  - job OM60788 also ran a 40 Ton (4003) with **no billing line**;
+  - FCC's 350 configuration has no usable personnel template.
+
+  (a) stays Joe's to confirm. The document's own §34 lists it as open too.
