@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-09-07
+updated: 2026-09-17
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -1128,3 +1128,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** **nothing written settles this.** [../INDEX.md](../INDEX.md) — no leave-confirmation / unsaved-changes route. [../decisions/2026-08-20-post-save-navigation-convention.md](../decisions/2026-08-20-post-save-navigation-convention.md) and [../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md) (`reference`, Fouzan Shakil) decide **post-save success navigation only**; both explicitly leave **Cancel and error paths** undecided. [../claude/contexts/web.md](../../claude/contexts/web.md) / `apps/web` Forms — silent on leave guards. No `.ai/aidlc/SCRUM-###` for this work; `processed.log` has no leave/unsaved ticket. **Adjacent open gaps (different verbs, do not answer this):** this register (d) — whether *Leave* **discards** a create draft; [assets/gaps.md → *Save and Cancel hidden until a section is dirty…*](../assets/gaps.md#save-and-cancel-hidden-until-a-section-is-dirty--intended-or-an-affordance-nobody-finds) — when Save/Cancel appear on inline editors; [assets/gaps.md → *One tab, one PATCH…*](../assets/gaps.md#one-tab-one-patch--and-what-the-leave-guards-save-means-when-several-tabs-are-dirty) (b) — what leave-Save means when **several tabs** are dirty / partial commit; [assets/gaps.md → *Create-form prefill…*](../assets/gaps.md#create-form-prefill-from-url-query-params--the-whole-contract-is-unwritten) Q3 — whether prefill should trip the guard. **Jira:** MCP returns `403 Tenant is restricted: suspended-payment` — not checked.
 - **Blocked:** merging the staged leave-Save-on-edit convention without a named product call — otherwise every FeatureWorkspace / RHF edit form copies it and it hardens by repetition the same way post-save navigation almost did before Fouzan wrote it down.
 - **Owner:** Fouzan Shakil — internal UI / form conventions (same class as post-save navigation and the adjacent leave/discard and dirty-affordance gaps). Escalate to TCG via Brian Petros only if treated as client-facing product intent rather than an engineering convention.
+
+## Sign-in identity — Microsoft 365 (Entra) credentials, or phone number and SMS code, and for whom?
+
+- **Status:** open
+- **Asked:** 2026-09-15 — ERP live demo 01: Brian Petros (1:14:00) and Patrick ("IT Support", 1:14:15) ([../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §7). No ticket.
+- **Question:** three parts. **(a)** Do **office** users sign in to the web portal and the mobile app with **Entra / Office 365** credentials — Patrick: *"You always be using your Entra or Office 365 set of credentials"*, with the work-email domain already joined to Apple ID — and is that Microsoft SSO in CodingCops' scope? **(b)** Do **field** employees, who have no Microsoft mailbox, sign in by **mobile phone number and SMS code** (as stated on 2026-09-10), making a work cell phone mandatory for every field employee? **(c)** If AWS SNS production access is delayed, is the **email-invite** fallback Ehtesham offered (1:12:22) acceptable, and which address would it use for employees with no mailbox?
+- **Sources checked:**
+  - [../meetings/transcripts/2026-09-10-payroll-rate-buckets-work-orders-paper-tickets.md](../meetings/transcripts/2026-09-10-payroll-rate-buckets-work-orders-paper-tickets.md) 58:08–58:22 — Brian: *"the field employees don't have Microsoft e-mail address"*; Ehtesham: *"Mobile… phone number"*; Brian and Corrina agree.
+  - [../meetings/transcripts/2026-09-15-erp-live-demo-01.md](../meetings/transcripts/2026-09-15-erp-live-demo-01.md) 1:12:22–1:15:40 — mobile SMS runs on AWS SNS, still in sandbox (test number only); TestFlight invites sent; Patrick's Entra statement. Nobody said which population each method is for.
+  - [*Integrations — HubSpot, Microsoft 365, Dialpad, Mapsly*](#integrations--hubspot-microsoft-365-dialpad-mapsly) above — TCG's RFP makes **Microsoft 365 SSO via Azure AD** a High-priority integration; the SOW names no third-party integration; in FCC, NexGen user IDs come from Active Directory *"for all users, including field employees"*.
+  - [../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md](../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md) — an SMS opt-in beside the work cell phone on Basic Information.
+  - `decisions/` has no note on authentication method.
+- **Blocked:** onboarding TCG users onto the mobile app; any SSO work; whether the employee profile must require a work cell phone.
+- **Owner:** Patrick McKiernan (TCG IT) for (a); Brian Petros / Kyle Harlow for (b) and (c); CodingCops for scope.

@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-09-09
+updated: 2026-09-17
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -1290,3 +1290,32 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Related, already open — do not duplicate:** [*Unit / asset certifications — registrations, insurance, loan, maintenance, permits*](#unit--asset-certifications--registrations-insurance-loan-maintenance-permits) already cites the same `FMS_UNIT_CHECK_LIST` no-TCG-home line as a candidate; that entry is about the **certification/expiry** family, this one about the **checklist type** list and its Settings screen. [../admin/gaps.md → *Settings picklist rules the E2E suite asserts with no written source — PR #488*](../admin/gaps.md#settings-picklist-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) is the same failure mode one module over: Settings reference-data behaviour frozen from the running build rather than from intent.
 - **Blocked:** signing the Settings → Checklists tab off as intended behaviour, and treating `AssetChecklistType` (three values, on both `assets` and the checklist table) as a contract — the assets form dropdown consumes the same enum, so widening it later is a data migration, not a UI change. Answering A12 is the prerequisite for (a) and (b).
 - **Owner:** TCG — Brian Petros (A12's owner is *"TCG"*; he owns the equivalent list questions in this register), with Dylan Masterson for which equipment families the yard inspects.
+
+## Associated field assets are dispatch resources, not quote lines — pointer, owned by quotations
+
+- **Status:** open — answer in [../quotations/gaps.md](../quotations/gaps.md) → *Quote line items vs dispatch resources — the associated set auto-fills the quote, and the sales owner says dispatch resources must not be quoted*. Principle decided 2026-09-16 ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)); the model is open there.
+- **Asked:** 2026-09-15 — Joe Schacatano, ERP live demo 01 ([../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §2). The sub-category's associated-field-asset set (crane → oiler + operator load; operator load → operator + truck) is, per Joe, the **dispatch** requirement and must not populate a quotation with charges. Ehtesham proposed a resources tab or flag on the sub-category to separate field assets from quoted items (44:36). Pointer only.
+
+## One asset, one type — but one crane in several configurations: how does an asset stand for more than one resource type?
+
+- **Status:** open
+- **Asked:** 2026-09-17 — ingest of the 2026-09-16 "Resource types and billing codes" call ([../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §3). Ehtesham Anwar asked Joe Schacatano twice on that call. No ticket.
+- **Question:** Joe said two things that have to be read together.
+  - **"Whatever the asset is, it can only have one type… Derated to cover other equipment sizes in the same type, absolutely, but you're never going to change the type"** (4:59). A 90 ton hydraulic truck crane and a 90 ton RT *"can never be the same"* (5:44).
+  - Of the 360 ton with and without luffer: **"Same cranes, different configurations"** (27:13). Asked whether that means one asset with two configurations: **"Yes."** (27:33).
+
+  Read together, "type" means the schedule type (Brian's word, 4:41), and one asset can stand for several resource types within it. Three parts, each answerable in a line:
+  - **(a)** Is that reading right: one schedule type per asset, and several resource types (smaller sizes by derating; configurations such as *w/Luffer* and *w/Mega Wing*)?
+  - **(b)** Where is the many-to-one held? Per asset (FCC's `FMS_UNIT_TYPE_DETAILS`, a primary type plus secondaries), per sub-category pair (`SubCategorySubstitution`, as built), or is a configuration an attribute of the asset rather than its own resource type?
+  - **(c)** Is derating always downward within one schedule type? FCC unit `4005` has a *45 Ton* secondary on a *40 Ton* primary (explained by counterweight, [crane-fleet-reference.md](crane-fleet-reference.md) §7). It also has a *22 Ton Boom Truck* secondary, and the vault does not say which schedule type that belongs to.
+- **Sources checked:**
+  - [fcc-units-and-schedule-types.md](fcc-units-and-schedule-types.md) §5: 565 type rows over 358 units, 48 units with more than one type, and TCG's slide note *"all the types of jobs this asset/vehicle can be Dispatched as"*.
+  - The same file, §6: resource types 76 *360 Ton All Terrain w/Luffer*, 83 *550 w/Mega Wing* and 84 *550 w/Luffer*, all new since July. Joe, 26:31: *"after this job, we made separate ones for the different configurations"*.
+  - [crane-selection-and-load-chart-model.md](crane-selection-and-load-chart-model.md) §4: Mega Wing as its own configuration.
+  - [../dispatch/crane-configuration-rules.md](../dispatch/crane-configuration-rules.md): the 4005/4006 `3300`/`7300`/`full` options, where a configuration is a picked option, not a resource type.
+  - Built state: `Asset.subCategoryId` is a single nullable FK (`apps/api/prisma/schema.prisma`, `model Asset`), and `SubCategorySubstitution` pairs one sub-category with another. No vault file states the ERP rule.
+- **Related, do not duplicate:**
+  - [*Nomenclature for the template level — "Resource Type", not "Unit"*](#nomenclature-for-the-template-level--resource-type-not-unit): what the level is called.
+  - [../dispatch/gaps.md → *Requested vs dispatched resources*](../dispatch/gaps.md#requested-vs-dispatched-resources--melissa-stated-it-the-vault-still-says-the-opposite): substitution on a job, not the catalog shape.
+- **Blocked:** migrating the `FMS_UNIT_TYPE_DETAILS` secondaries; modelling *w/Luffer*-style resource types against one physical crane; any DAS rule on which assets may fill a slot.
+- **Owner:** Joe Schacatano (sales: what a quote may name), with Lisette Anzaldo (dispatch: what may fill it) and Dylan Masterson (fleet).

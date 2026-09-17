@@ -2,7 +2,7 @@
 title: Field Ops — open questions
 status: reference
 kind: gaps
-updated: 2026-09-14
+updated: 2026-09-17
 tags: [module/field-ops, kind/gaps, open-questions]
 ---
 
@@ -773,3 +773,8 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   capture succeeding without a network, and it is now on the client's expectation list either way.
 - **Owner:** CodingCops — Ehtesham Anwar made the commitment; scope needs writing before it is
   demonstrated to field testers next week.
+
+## Mobile sign-in identity — pointer, owned by admin
+
+- **Status:** open — answer in [../admin/gaps.md](../admin/gaps.md) → *Sign-in identity — Microsoft 365 (Entra) credentials, or phone number and SMS code, and for whom?*
+- **Asked:** 2026-09-15 — field employees have no Microsoft mailbox (Brian Petros, 2026-09-10), while Patrick said sign-in uses Entra / Office 365 credentials (2026-09-15, 1:14:15); the mobile app's SMS sign-in awaits AWS SNS production approval ([../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §7). Pointer only.

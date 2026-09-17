@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-09-11
+updated: 2026-09-17
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -1166,6 +1166,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   still Joe's; (h) the NULL-configuration behaviour; (i) what `M` means. All of this is FCC as held,
   not a TCG decision on what the ERP adopts.
 
+- **Update 2026-09-16 (Joe Schacatano, dedicated call).** The owner narrowed what the template seeds on the **quote**: its **estimate billing codes only**. The *Unit/People* half is a dispatch requirement and must not populate the quote ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)). So the main question splits: estimate lines seed the quotation, and the Unit/People set seeds the job and dispatch side. (b) now matters for dispatch, not for quoting.
+  - **(d) moves.** Joe (24:27) wants the mob/demob roll-up *"so that we're not showing 50 billing codes"*. He also wants (24:46) *"something on our billing codes to have the option of adding it all up to where it totals into our mob and demobs"*. That is a billing-code-level option, like FCC's *Default as Sub-Item* (§8.2 of the source doc), which TCG does not have.
+  - The customer quote shows only the mob line, the demob line and the lines after demob. This confirms FR-1/2/6/7 of [mobilization-and-demobilization.md](mobilization-and-demobilization.md).
+  - The lines after demob come from the template. Crew OT/DT and traffic control on quote OM-29537 were added by hand (26:03).
+  - **Configurations are separate resource types.** Joe: *"after this job, we made separate ones for the different configurations"* (26:31; FCC ID 76 *360 Ton All Terrain w/Luffer*).
+  - Ryan has built a spreadsheet mob/demob tool, and Joe offered to show it on a separate call. The mob/demob walkthrough is deferred to the week of 2026-09-28.
+
+  Source: [../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §1, §3, §4.
+
 ## FCC estimate templates were already extracted — and the seeder flattened them to one FK
 
 - **Status:** open
@@ -1867,6 +1876,25 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   §1). Nothing in the drop says per-user Microsoft 365 sending vs a from-name / reply-to change, or
   whether DocuSign stays underneath. Still Joe's and CodingCops'.
 
+- **Update 2026-09-17 (2026-09-15 ERP live demo 01, [../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §4–§5):**
+  Joe raised it again (57:16), now as **retiring DocuSign altogether** — *"I would like to get away
+  from DocuSign completely… I want it to be personal"*; *"We can get rid of DocuSign. We're not paying
+  a subscription on it"* — **self-labelled "just my opinion from the salesperson"**, so not a
+  decision. Ryan Adams: *"I think you nailed it"* (58:52). As built on 2026-09-15, *send quotation to
+  customer* offers **send via DocuSign** or **send via e-mail**, and the e-mail path has **no
+  electronic signature** (Ehtesham 57:47). Brian suggested a later *send through the portal* option
+  (57:59). Ehtesham (59:04–59:22): *"we are going to get rid of DocuSign. We have already discussed
+  and finalized"* a **customer portal** with electronic signature or email reply and **one-time
+  customer credentials** — no decision note, ticket or scope in the vault records that finalisation.
+  Ryan (59:39) wants to show CodingCops a platform he uses as a model (the name did not transcribe);
+  Joe will schedule a separate call. **New, same surface — redlines** (Ryan 54:21–57:14): when a
+  customer redlines the DocuSign contract and terms are agreed by email, where does the revised
+  contract go so **Accounting can see the governing terms**? Answered only with attachments /
+  internal change request; nothing marks a redlined agreement as superseding the signed quote. The
+  entry now asks: **(i)** is DocuSign retired for in-house portal signing, and when; **(ii)** until
+  then, does *send via e-mail* need a signing path; **(iii)** where does a redlined, email-agreed
+  contract live, and how does accounting know it governs? Owner unchanged, plus Ryan Adams for (iii).
+
 ## Billing-code and price-list rules the E2E suite asserts with no written source — PR #488
 
 - **Status:** open
@@ -2312,3 +2340,34 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   - [*"Customer PO" on the quotation — which of three things does it mean?*](#customer-po-on-the-quotation--which-of-three-things-does-it-mean): its 2026-09-05 answer and 2026-09-09 update.
 - **Blocked:** treating the relabelled acceptance block, the DocuSign field locking and the write-back as settled spec.
 - **Owner:** Brian Petros for the location in (c) and (d) (his 2026-09-05 call); Ryan Adams / Joe Schacatano for the printed acceptance block in (a) and (b).
+
+## Quote line items vs dispatch resources — the associated set auto-fills the quote, and the sales owner says dispatch resources must not be quoted
+
+- **Status:** open — **principle decided 2026-09-16** ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)): the quote carries billing codes, resources are dispatch-side. The model — (a)–(d) in the 2026-09-16 update below — is still open
+- **Asked:** 2026-09-15 — Joe Schacatano (VP of Sales), ERP live demo 01, while the *100 Ton* sub-category's associated set auto-filled a quotation's Resources ([../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §2; transcript 39:38–45:27). Ehtesham Anwar called it *"a critical thing that we have missed a while in the discovery"* (45:10) and, at close, *the* missing configuration step — *"assets configurations for the field versus asset configuration for the quotation"* (1:16:04). No ticket.
+- **Question:** three parts. **(a)** Confirm the principle Joe stated: a quotation carries only **charged line items** — for a 100-ton job *"100 ton operator load, travel permit, and a surcharge. That's it."* (40:17) — while **dispatch resources** (*"Oiler, operator, semi, those things don't get charged. Those are the resources utilized in dispatching"*, 39:45) are never quote rows: *"you don't want the 10 resources populating with it, with charges for it"* (42:33). If so, associated-field-asset sets stop auto-populating quotations. **(b)** What is the relationship between **billing codes, resources and field assets** — which charged line implies which dispatch resources, and where is that configured? (Ehtesham's proposal, 44:36: a resources tab or flag on the sub-category; Joe, 42:33: it *"could be a subcategory… we have to just keep them separate when it's quoted"*.) **(c)** Joe (43:28) says a customer's price list applies *"when you're quoting for that customer **or scheduling** that customer"* — what does a price list do at scheduling time?
+- **Sources checked:**
+  - [../decisions/2026-09-04-always-included-associated-children-cannot-be-removed.md](../decisions/2026-09-04-always-included-associated-children-cannot-be-removed.md) (`reference`, CodingCops design, acknowledged once by Ryan Adams) — associated children auto-populate **onto the quotation** and *Always Included* ones cannot be removed. (a) contradicts this for dispatch-only resources such as the oiler and operator.
+  - [../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md](../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md) (`reference`, Syed Haris) — job resources and DAS slots are materialised from the quotation's priced lines plus *Always Included* children. If dispatch resources leave the quote, the DAS needs another source for those slots.
+  - [../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) item 2 — Joe: quotes populate from resource types; *"the additional items like the riggers… We don't want that to populate."* Same direction, two weeks earlier.
+  - [*Estimate defaults per resource type / job type / yard*](#estimate-defaults-per-resource-type--job-type--yard--fcc-has-them-tcg-has-no-job-type-at-all) above — FCC's template model; its (g) (a 110 Ton requiring Operator + Oiler) is already Joe's to answer.
+  - Adjacent, not the same question: [../dispatch/gaps.md](../dispatch/gaps.md) → *Requested vs dispatched resources*; [../assets/gaps.md](../assets/gaps.md) → *Nomenclature for the template level*.
+  - Joe (41:07) says he already showed Brian the difference; Brian (41:38) says he sent it to CodingCops. That material is not in the vault.
+- **Blocked:** quotation Resources auto-fill from the sub-category; the sub-category associated-field-asset configuration; conversion → job resources → DAS slots.
+- **Owner:** Joe Schacatano with Ryan Adams (the billing-code / resource / field-asset relationship), relayed by Brian Petros; CodingCops for the model.
+- **Update 2026-09-16 — the principle is decided; the model is not.** On a dedicated follow-up call ([../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §1–2) Joe Schacatano explained the relationship Ehtesham asked for on 09-15 (44:43), and confirmed it when asked directly:
+  - The estimate carries **billing codes only**. Unit/People resources do not populate the quote (6:11 *"Correct."*).
+  - *"the billing codes should dictate the resources and the assets for dispatch to assign"* (7:09).
+  - A load's tractor, trailer and driver have **no billing code** of their own: *"their costs are built into that code"* (10:48–11:10).
+  - The salesperson picks the machine from one drop-down, with **no unit-type step** (15:00).
+
+  Recorded as [../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md) (`verified`; conflicts with the 2026-09-04 Always Included note). Part (a) above is answered; (b) and (c) continue as the open items below.
+
+  **Still open, each answerable in a line:**
+  - **(a)** Is the dispatch requirement held on the resource type × job type configuration (FCC's Unit/People; `SubCategoryAssociatedResource` today), or on the billing code (Joe 6:43: *"the codes should generate the resources"*)?
+  - **(b)** What happens to the Unit/People rows already on quotations, and to the Always Included no-delete rule on the quotation screen?
+  - **(c)** With the category step gone, how does the one drop-down reach non-machine lines (tools and rigging, employee types, permits, lift plans)?
+  - **(d)** Who keeps billing-code amounts right? Joe answered *"Right"* to *"the stakeholder team"* (11:21), probably an ASR error for *sales team*.
+  - The 09-15 price-list-at-scheduling question (part (c) above) was not raised on 09-16 and stays open.
+
+  Ehtesham (15:35) is designing the change against the build. The mob/demob session with Joe is the week of 2026-09-28.
