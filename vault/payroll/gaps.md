@@ -4317,3 +4317,32 @@ somewhere it should not have. Settle that before touching either.
   would pay less than the ERP, not more.
 - **Owner:** Brian Petros for (a) and (b); Corrina Bustos, with the BA, for (c). Agenda item for
   the next payroll call alongside WTL.
+
+## The payroll rules sheet promised to Brian for Monday 2026-09-21 — a CodingCops commitment with no ticket
+
+- **Status:** open — a deliverable, not a question
+- **Asked:** 2026-09-19 — Syed Haris told Brian Petros in Teams that CodingCops is preparing *"a
+  list of the payroll rules we've implemented and the ones that have been decided"*, to be shared
+  **Monday 2026-09-21**, to serve as the single source of truth and to be expanded from there.
+  Brian accepted: *"Oh... that is going to be great... Love it."* No ticket, no owner recorded
+  anywhere else.
+- **What was promised, in the same message:** the two systems may implement a rule differently —
+  his app follows FCC's constraints, the ERP does not carry them — but *"the underlying rules
+  should be identical"*. Brian was asked to update the sheet whenever something is settled,
+  **including after his calls with Corrina Bustos**, and to say what changed.
+- **What it has to be built from, and the trap in it:** the vault already holds the content —
+  [rules/INDEX.md](rules/INDEX.md) (73 `PAY-###` rules), [payroll-rules-provenance.md](payroll-rules-provenance.md)
+  (each rule's status and source), [payroll-engine-status-2026-09-12.md](payroll-engine-status-2026-09-12.md)
+  and [implementation-audit-2026-09-11.md](implementation-audit-2026-09-11.md) (what the engine
+  actually does). **"Implemented" and "decided" are not the same column**: a rule the engine runs
+  is not necessarily one a named TCG person has confirmed, and this register exists because of
+  that difference. A sheet that collapses the two would launder unverified rules into a "source of
+  truth" the client then edits.
+- **Two open points the sheet itself raises:** where it lives (a shared-folder file Brian edits in
+  place, or a copy that comes back as messages — the second recreates the scatter it is meant to
+  fix), and how its updates get back into the vault, which is the actual memory.
+- **Live disagreements it must not paper over:** the holiday-guarantee dispute
+  ([holiday-guarantee-scenario-2026-09-14.md](holiday-guarantee-scenario-2026-09-14.md)) and the
+  added-hours grid — both are cases where his app and the ERP deliberately differ today.
+- **Owner:** CodingCops — Syed Haris made the commitment; Brian Petros to maintain it once
+  delivered.
