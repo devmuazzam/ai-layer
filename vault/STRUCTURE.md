@@ -78,7 +78,8 @@ meta-entries (sprint-7 dates, punch-list scoping, phased rollout) were left reti
 
 **Cross-cutting folders stay flat, tags route into them:**
 `meetings/` (chronological — a meeting spans modules), `decisions/` (written by tcg-scrum;
-one home even for cross-module decisions), `domain/` (process SOPs), `sync/` (infrastructure).
+one home even for cross-module decisions), `domain/` (process SOPs), `sync/` (infrastructure),
+`uat/` (UAT sessions and their request register — a record of asks, not a spec source).
 
 ## Tags — Obsidian-native
 
