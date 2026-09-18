@@ -41,6 +41,7 @@ to be read whole.
 | how the team runs sprints / Jira / reviews | the six SOP files in `domain/` — the only `verified` content in the vault |
 | what `FCC` or `NexGen` means | [domain/fcc-nexgen-fms.md](domain/fcc-nexgen-fms.md) — the only glossary entry. Every other domain term is still undefined; see "Undefined terms" below |
 | what the client themselves asked for, across every module | [erp-review-log.md](erp-review-log.md) — TCG's own feedback register: 14 dated entries by named staff + 69 AI-extracted items. **Nothing in it is adjudicated** |
+| what was raised in UAT, and whether it was built | [uat/INDEX.md](uat/INDEX.md) — six sessions (9–17 Sep 2026) and the 252-row register checked against `origin/main` at `f800a3972`. **A record of requests and their build status, never a source for a spec** |
 | the name of *any* file that was in the 2026-09-04 SharePoint drop (now deleted locally) | [sync/project-repository-2026-09-04-file-inventory.md](sync/project-repository-2026-09-04-file-inventory.md) — all 1,446 paths with sizes and duplicate groups; `grep` it |
 | where a file from the 2026-09-04 SharePoint drop went | [sync/project-repository-2026-09-04.md](sync/project-repository-2026-09-04.md) — every source file, including the ones deliberately not migrated |
 | why something is missing | [README.md](README.md) → *What this vault does not contain* |
