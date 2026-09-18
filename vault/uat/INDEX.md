@@ -27,6 +27,7 @@ TCG on 2026-09-19.
 | --- | --- | --- |
 | [register-2026-09-18.md](register-2026-09-18.md) | **Every UAT request across sessions 1–6, with what the code actually does.** 252 rows, two tables, verified against `origin/main` at `f800a3972`. Fouzan Shakil, 2026-09-18 | 105 |
 | [sessions/](sessions/) | The six raw session sheets, verbatim — the register's sources | 25 |
+| [done-verification-2026-09-19.md](done-verification-2026-09-19.md) | **Do the 100 DONE rows actually hold?** Re-checked against platform main at `72d6cc4c9` on 2026-09-19: 94 verified, 2 partial (#4 push server-side, #66 Oiler warning), **2 wrong (#36 shift-1 employees toggle defaults off; #62 cross-job double-booking silently reassigns, never refuses)**, 1 unverifiable. Every caveat from 09-18 still open. Six citation defects listed | 22.2 |
 
 ## The sessions
 
