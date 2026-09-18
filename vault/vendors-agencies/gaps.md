@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-09-15
+updated: 2026-09-19
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -266,6 +266,18 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** merging `fix/das-fixes`' migration and how the permit tracker displays POs were blocked on (a)–(d), settled 2026-09-11 (above). The status remap is lossy: the six legacy statuses collapse to `OPEN | CLOSED` (`PURCHASED`/`ACTIVE`/`CANCELLED`/`INACTIVE` → `CLOSED`, `PENDING`/`DRAFT`/`NULL` → `OPEN`), and the original value is not kept. (g) blocks the next FCC import run with the changed seeder.
 - **Owner:** Brian Petros and Liz Lopez (the PO process); Syed Haris and Umer Islam for what their 2026-09-11 `OPEN | CLOSED` lock meant.
 
+- **Conflict logged 2026-09-19 (UAT register vs this decision) — the "only" in rule 3.**
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) carries a NOT DONE row from **UAT 3**,
+  *"PO state will be changed based on Vendor state"*, which asks for a **second automatic PO transition**
+  driven by the vendor. [../decisions/2026-09-11-po-closed-means-closed-out-not-cancelled.md](../decisions/2026-09-11-po-closed-means-closed-out-not-cancelled.md)
+  rule 3 says a PO closes automatically **"only when an attachment in an Invoice category is uploaded to it"**,
+  and rule 4 gives the only automatic reopen. The register never cites the decision; the decision never
+  mentions the vendor. **Neither side is wrong on its own terms** — the decision is `status: reference`
+  (CodingCops, *"open to being overruled by TCG"*), so a TCG-side ask is a legitimate input, not a regression —
+  but they cannot both be built as written. The register's own finding is that no vendor→PO link exists in code,
+  so nothing has been built on the UAT reading yet. Recorded, not adjudicated. Full entry with the
+  "which vendor state" ambiguity: [*PO state following Vendor state…*](#po-state-following-vendor-state--and-vendor-state-means-two-different-things).
+
 ## Agency form 2026-09-15 — jurisdiction values on Ben's sheet that the dropdown cannot hold
 - **Status:** resolved 2026-09-15 — Syed Haris added **Unincorporated / CDP** and **Town** to the dropdown (PR `feat/agency-form-rework`). The three `Community / Jurupa Valley Area` rows are annexed into the City of Jurupa Valley and enter as City.
 - **Asked:** 2026-09-15 — building the final agency form ([../decisions/2026-09-15-agency-creation-form-final-fields.md](../decisions/2026-09-15-agency-creation-form-final-fields.md)) against `City List turn around - Ben.xlsx`
@@ -295,3 +307,25 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Asked:** 2026-09-15 — same work
 - **Question:** The sheet is 500 rows in exactly the form's shape (city, lead time, county, state, jurisdiction, coverage note). Typing them by hand through the form is a week of data entry. Should there be a one-off seed / CSV import for it, and if so which tenant, and what fills the fields the sheet lacks (agency name — presumably "City of X" —, agency type, coverage area, the mandatory time restriction and attachment)? Not built; the form's required rules make a mechanical import impossible without answers.
 - **Sources checked:** the sheet; `apps/api/prisma/seed.ts` (no agency seed); `sync/project-repository-2026-09-04.md` (the 894-file city-permit library was dispositioned, never imported).
+
+## PO state following Vendor state — and "vendor state" means two different things
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Not a ticket question: no ticket carries it; the register found no such link in code.
+- **Question:** should a purchase order's state be **driven by the vendor's state**, and if so (a) **which** vendor state is meant — the vendor record's active/inactive flag, or the vendor's step in the 7-step vendor cycle — and (b) **which transitions** it drives, given that `CLOSED` already has exactly one automatic trigger and that trigger is written as *"only"*?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *PO state should follow the Vendor state*, [UAT 3]. The session sheet's words: *"PO state will be changed based on Vendor state."* The register's finding, in full: *"No link found between vendor state and PO state."*
+  - [../decisions/2026-09-11-po-closed-means-closed-out-not-cancelled.md](../decisions/2026-09-11-po-closed-means-closed-out-not-cancelled.md) (Fouzan Shakil, `status: reference`) — rule 3: *"A PO closes automatically **only** when an attachment in an **Invoice** category is uploaded to it. An invoice number on its own does not close it. Archiving never closes it."* Rule 4 gives the only automatic reopen. **A vendor-driven transition would be a second automatic trigger, which that "only" excludes** — see the conflict recorded on [*Branch fix/das-fixes — one CLOSED status for invoiced and cancelled POs, and the legacy remap*](#branch-fixdas-fixes--one-closed-status-for-invoiced-and-cancelled-pos-and-the-legacy-remap).
+  - [../decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md](../decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md) locks the `OPEN | CLOSED` vocabulary and says nothing about the vendor.
+  - **The ambiguity in "vendor state" is real and this register cannot resolve it.** The vendor record carries an active/inactive status; separately, Brian Petros's **7-step vendor cycle** gives a vendor a position in a process. The UAT sheet says only *"Vendor state"*. Nothing in [../decisions/](../decisions/) or this register maps either onto a PO status.
+  - Adjacent, already open: [*Purchase orders at three levels — Joe and Ryan on tape, nothing written*](#purchase-orders-at-three-levels--joe-and-ryan-on-tape-nothing-written) carries **Ryan Adams**'s *"if it's lost it closes out the PO"* — the only other stated automatic close in the record, and it keys on the **quotation**, not the vendor. Whatever answers this row should answer that one in the same breath.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). Do not build from the sheet's one sentence; it does not name a state, a direction or a transition.
+- **Blocked:** any vendor→PO status wiring; the `OPEN | CLOSED` transition set, which two named sources now want to extend in two different directions (vendor state, quote-lost).
+- **Owner:** Brian Petros and Liz Lopez (the PO process); whoever raised the UAT 3 row, to say which "vendor state" they meant.
+
+## Permit Cost vs PO Fee — pointer, owned by projects-jobs
+
+- **Status:** open — **answer owned by projects-jobs**, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
+- **Why it lands here too:** the figure in question is the **PO Fee**, which this module owns and which this register already records as built-but-unspecified — [*PO and vendor/agency rules the E2E suite asserts with no written source — PR #488*](#po-and-vendoragency-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) (b): *"The `area`, `city`, `PO fee`, `discount %` and `invoice #` fields now built and mocked up. Still unspecified."* Approving a permit currently overwrites the linked PO's fee.
+- **Read:** [../projects-jobs/gaps.md → *Permit Cost vs PO Fee…*](../projects-jobs/gaps.md#permit-cost-vs-po-fee--uat-says-keep-them-separate-an-untraced-row-says-auto-populate-and-approval-already-overwrites-the-fee)

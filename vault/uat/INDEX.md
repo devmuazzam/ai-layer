@@ -80,6 +80,42 @@ finding, usually naming the file that proves it), **Owner** (blank on purpose). 
 only if the thing complained about no longer happens; anything half-built sits in NOT DONE
 with the remaining gap spelled out.
 
+## Where this register contradicts the vault — six conflicts, logged 2026-09-19
+
+Found while routing the register's rows into the module `gaps.md` registers. **None of them is
+adjudicated here**, and no row on the register was changed — it is a migrated snapshot. Each is
+recorded as an update on the vault entry a reader would actually meet, and this list is the index
+to them. Two general points first, because they apply to all six:
+
+- **The register never cites a decision note.** It was checked against `origin/main @ f800a3972`,
+  so a DONE row means *the build does this now*, never *this is what the product should do*.
+- **Five of the seven decision notes named below are `status: reference`** — decided by CodingCops
+  and explicitly open to being overruled by TCG. **A UAT row contradicting a `reference` note is a
+  legitimate product input; a UAT row contradicting a `verified` one is a regression against a
+  client statement.** Only conflict 1 and the wording hazard at the end touch `verified` notes
+  (2026-09-16 and 2026-09-03); 2, 3, 4, 5 and 6 are all against `reference` notes.
+
+| # | The conflict | One line | Detail lives at |
+| --- | --- | --- | --- |
+| 1 | **The whole Resources screen vs the only `verified` quotation decision** | 20+ register rows treat quotation resources as priced lines; [decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md) (`verified`, Joe Schacatano) says a quotation carries **billing codes only** and resources are dispatch-side. The register, written two days later, never mentions it. **The largest of the six.** | [quotations/gaps.md → *Quote line items vs dispatch resources…*](../quotations/gaps.md#quote-line-items-vs-dispatch-resources--the-associated-set-auto-fills-the-quote-and-the-sales-owner-says-dispatch-resources-must-not-be-quoted) |
+| 2 | **Rigger at $0 — a DONE row's caveat is one commit out of date** | The DONE row cites `c6716980d` (the PR #537 display-only half) and calls the dispatch-slot question open; `765fffc8c` / PR #541 and [decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md](../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md) settled it for the Optional case. Only the **Always Included** late-added / unpersisted-depth case is still open. | [dispatch/gaps.md → *Branch fix/uat4-schedule-copy-allocation…*](../dispatch/gaps.md#branch-fixuat4-schedule-copy-allocation--a-das-slot-the-quotation-never-priced-the-job-resources-tab-now-hides-materialised-0-rows-the-board-still-allocates-against-them) |
+| 3 | **Double-booking — two rows pulling opposite ways, both behind one decision** | UAT 5's DONE *One person cannot be assigned to two jobs* and UAT 4 #31's NOT DONE *People still available under an 11:30 shift* are both scoped by [decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md) → *DAS allocation (new)* item 5, which neither row cites. **Employee case — not the crane one.** | [dispatch/gaps.md → *Schedule fields…*](../dispatch/gaps.md#schedule-fields--the-build-already-agrees-and-the-new-fields-are-written-nowhere) |
+| 4 | **Archive marked DONE with 56 hard deletes surviving** | The UAT 1 row is DONE with the caveat that *"56 delete routes remain hard deletes, including removing a role from a department"*, against [decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)'s *"archive is the entity-removal action **across the app**"*. That note leaves the `DELETE` endpoints' fate open, so the 56 are **undecided, not non-compliant**. | [admin/gaps.md → *Departments — does archive replace delete outright…*](../admin/gaps.md#departments--does-archive-replace-delete-outright-and-what-may-an-archived-department-still-be-used-for) |
+| 5 | **PO state following Vendor state vs an auto-close rule written as "only"** | UAT 3 asks for a second automatic PO transition; [decisions/2026-09-11-po-closed-means-closed-out-not-cancelled.md](../decisions/2026-09-11-po-closed-means-closed-out-not-cancelled.md) rule 3 closes a PO *"**only** when an attachment in an Invoice category is uploaded"*. Also opened as its own question, because *"vendor state"* means two different things. | [vendors-agencies/gaps.md → *Branch fix/das-fixes — one CLOSED status…*](../vendors-agencies/gaps.md#branch-fixdas-fixes--one-closed-status-for-invoiced-and-cancelled-pos-and-the-legacy-remap) |
+| 6 | **Per-row "Final Amount" on hover vs adjustment money in the footer** — ⚠️ **weakest of the six** | A *Final Amount* still appears on a resource row's hover when a discount or price hike is present, against [decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md](../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md) rules 2–3, which put adjustment money in the footer rows. **Flagged as weak:** the decision governs the Amount **column**, and a tooltip is not the column; the UAT row also mis-names what it wants removed. | [quotations/gaps.md → *Per-row surcharge now has no UI on create/edit…*](../quotations/gaps.md#per-row-surcharge-now-has-no-ui-on-createedit-and-final-amount-means-two-different-numbers) |
+
+**One wording hazard, recorded with them.** UAT 2's *"From Build-Up to **Break Time**, everything
+should be considered Boom"* was built as build-up + boom + **breakdown**, which matches
+[decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)
+(`verified`). Read literally, *"Break Time"* would make a **paid meal break** part of the boom
+premium window. Nothing needs changing; cite the decision, never the row, for what counts as boom —
+[payroll/gaps.md → *Boom window as built…*](../payroll/gaps.md#boom-window-as-built--the-erp-pays-the-adder-across-the-whole-paid-shift-not-build-upbreakdown).
+
+**Fifteen register rows that assert a product rule nothing else covers** were opened as new
+questions in the module registers on the same day, and one existing entry was updated rather than
+duplicated. The all-modules sweep finds them with the rest:
+`grep -rn '^- \*\*Status:\*\* open' vault/*/gaps.md`.
+
 ## Related
 
 - [../erp-review-log.md](../erp-review-log.md) — the client's **own** feedback register, kept

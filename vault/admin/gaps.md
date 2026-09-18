@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-09-17
+updated: 2026-09-19
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -90,7 +90,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   page names no third-party integration at all
   ([codingcops-sow-and-engagement-terms.md](codingcops-sow-and-engagement-terms.md)).
 
-
 ## Map provider, no-key fallback, and which table owns address coordinates
 
 - **Status:** open
@@ -125,7 +124,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `SCRUM-414` (Blocked); any move of coordinates onto `addresses`.
 - **Owner:** Brian Petros (data and integrations — the only recorded voice on address
   coordinates), with Patrick for the Mapsly half.
-
 
 ## What a newly created tenant must contain — provisioned defaults, or an empty portal
 
@@ -257,8 +255,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Whether TCG needs the lookup at all is a CodingCops call, not a TCG one, so (b) comes back if
   TCG overrules it. **(a), (c) and (d) are unaffected. The entry stays open.**
 
-
-
 ## Departments — does archive replace delete outright, and what may an archived department still be used for
 
 - **Status:** open
@@ -325,6 +321,24 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (`meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:68, :72).
 - **Cross-link:** payroll/gaps.md → *Pointers — departments archive* (STRUCTURE.md:40 routes the
   `departments` usecase to payroll, and (b) turns on employee assignments)
+
+- **Conflict logged 2026-09-19 (UAT register vs the app-wide archive decision) — 56 hard deletes survive, and the row that covers them is marked DONE.**
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → **DONE** *Departments editable, roles under departments, soft
+  delete, checklist type enum*, [UAT 1] — *"Four separate UAT 1 asks, all verified… 19 models carry an archive field with
+  archive/unarchive endpoints… **Caveat on soft delete: 56 delete routes remain hard deletes, including removing a role from a
+  department.**"*
+  Against [../decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  (Fouzan Shakil, `status: reference`): *"**Archive is the entity-removal action across the app, not delete.** Where a user today
+  removes a record, the action becomes archive"* — and that note states its scope explicitly: *"the claim 'across the app we are
+  replacing delete functionality with archive' is **app-wide, not plan-only**."*
+  **The named example is this entry's own (a).** *"Removing a role from a department"* is a hard delete, and (a) above asks exactly
+  whether `DELETE /departments/:code` goes away or stays. So the register's caveat is not a new question — it is a **count** on the
+  open one: **56 routes**, app-wide, one of them the role-removal this entry names.
+  **This does not make the DONE status wrong.** The four UAT 1 asks were about departments being editable, roles nesting, a soft-delete
+  field existing and the checklist enum, and all four shipped. And the decision itself leaves *"Whether the `DELETE` endpoints stay"*
+  under *What this does NOT settle*, so 56 surviving routes are **undecided, not non-compliant**. What is worth carrying forward is
+  that anyone reading the DONE row as *"soft delete is finished app-wide"* will be wrong on 56 routes. Nothing adjudicated; no status
+  changed. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
 
 ## System departments and roles are now fully editable — was `isSystem` ever meant to protect anything?
 
@@ -977,7 +991,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [responsive-design-and-security-posture.md](responsive-design-and-security-posture.md)). All
   of this is background; still needed from TCG: the department list, the role list, and each
   role's capabilities.
-
 
 ## Must a new nav entry be permission-gated, and who may see live vehicle locations?
 
