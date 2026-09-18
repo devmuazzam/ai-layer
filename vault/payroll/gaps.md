@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-17
+updated: 2026-09-19
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -2359,7 +2359,7 @@ someone has confirmed otherwise.
   is required); craft modifiers are not. CodingCops' drafted reply (Syed Haris, 2026-09-17) says
   *"we will add the union link on the modifiers"*. That is a commitment in a reply, not a
   decision note: once Brian confirms in writing, `tcg-scrum` records the decision and this entry
-  closes. The note itself is not stored in the vault.
+  closes. The note itself is stored at [crew-assignment-and-rate-derivation-brian-2026-09-16.md](crew-assignment-and-rate-derivation-brian-2026-09-16.md).
 
 ## A labor-entry edit can reprice an approved week — and the ERP has no path for it
 
@@ -4186,7 +4186,7 @@ somewhere it should not have. Settle that before touching either.
 ## Higher rate for the day (MLA Art. IV-C) — never walked through with TCG
 
 - **Status:** open
-- **Asked:** 2026-09-17 — raised by Brian Petros in his written note after the 2026-09-15 demo
+- **Asked:** 2026-09-17 — raised by Brian Petros in his [written note after the 2026-09-15 demo](crew-assignment-and-rate-derivation-brian-2026-09-16.md)
   (point 5, with a proposed 5-step order); logged by Syed Haris while drafting the reply.
 - **Question:** Article IV-C says that when an employee works at a higher rate than the minimum at
   any point in a calendar day, *"the higher rate of pay shall apply on all time worked during that
@@ -4206,7 +4206,7 @@ somewhere it should not have. Settle that before touching either.
 ## Relief employee paid at the relieved employee's rate (MLA Art. III-H.1(a)) — not modelled
 
 - **Status:** open
-- **Asked:** 2026-09-17 — raised by Brian Petros in his written note after the 2026-09-15 demo
+- **Asked:** 2026-09-17 — raised by Brian Petros in his [written note after the 2026-09-15 demo](crew-assignment-and-rate-derivation-brian-2026-09-16.md)
   (point 3); logged by Syed Haris.
 - **Question:** when an employee has worked over 16 hours without an 8-hour break and the employer
   calls in a replacement for safety, the replacement *"shall be paid at the same rate of pay as the
@@ -4225,7 +4225,7 @@ somewhere it should not have. Settle that before touching either.
 ## Same pay as the craft worked with (MLA Art. III-C) — not modelled
 
 - **Status:** open
-- **Asked:** 2026-09-17 — raised by Brian Petros in his written note after the 2026-09-15 demo
+- **Asked:** 2026-09-17 — raised by Brian Petros in his [written note after the 2026-09-15 demo](crew-assignment-and-rate-derivation-brian-2026-09-16.md)
   (point 4); logged by Syed Haris.
 - **Question:** Art. III-C says covered employees get the same pay as the craft they work with
   when that craft's agreement is more advantageous. Brian reads it as work alongside another
