@@ -95,6 +95,60 @@ Whether a top-of-form error summary should render is **contradicted between the 
 documents** and unresolved. `FormErrorSummary` exists in `organisms/` with zero consumers.
 Follow the surrounding module; do not introduce a new pattern either way.
 
+## Browser autofill — two systems, two answers
+
+Chrome ignores `autocomplete="off"`, and it runs **two** suggestion systems that need
+different answers. Getting this wrong is why the fix was attempted three times.
+
+| | What it offers | Beaten by |
+| --- | --- | --- |
+| Profile Autofill | saved addresses, emails, phones | an `autocomplete` token Chrome has never seen |
+| Typed-history | values the user typed into that field before | a DOM `name` Chrome has never seen |
+
+So every control needs a meaningless token **and**, if it is a text input, a decoy `name`.
+
+| You are writing | Call |
+| --- | --- |
+| A raw `<input>` | `useBrowserAutofillDomAttrs()` → spread `{...autofillAttrs}` |
+| A `<select>`, `<textarea>` or `type="number"` that must keep its real `name` | `useBrowserAutofillToken()` → `autoComplete={autofillToken}` |
+| Anything built on shared `Input` / `Textarea` | nothing — they already do it |
+| A file, checkbox, radio or hidden input | nothing — no suggestion UI exists |
+
+Both live in `components/ui/use-browser-autofill-dom-attrs`.
+
+**The decoy must change on every page load, not just between fields.** An earlier build
+derived it from `useId()`, which is deterministic by design — server and client have to
+agree during hydration — so the decoy renamed each field exactly once and typed-history
+accumulated under the new name instead. The hook mixes in a client-only salt regenerated
+per load; `useId()` stays in the key only so two fields never collide.
+
+**A react-hook-form control needs the bridge.** RHF handlers read `event.target.name`, so a
+decoy name breaks them. `callWithLogicalFieldName` restores the real key for the duration of
+each handler — `features/admin/components/admin-form-input.tsx` is the worked example.
+
+### Three things you must not do
+
+- **No string literal.** `autoComplete="off"` is what Chrome ignores, and any fixed token is
+  the same on every load — it becomes the new history key rather than avoiding one.
+- **Never rewrite DOM `id`, `placeholder` or label text.** `qa-automation` selects on all
+  three. An earlier attempt did, and invalidated ~72 selectors in a suite no CI job runs. The
+  U+200C label disguise is gone for the same reason plus a stronger one: it is what a screen
+  reader announces.
+- **No read-only-until-focus lock.** It suppressed the caret, raised an open accessibility
+  question, and broke Playwright's `fill()`. Removed 2026-09-22; do not reintroduce it.
+
+The E2E handle is **`data-tcg-field`**, carrying the real field name. A `data-*` attribute is
+not an autofill signal, so tests get a stable hook without giving Chrome one. `support/labels.ts`
+→ `fieldByName()` matches either that or a real `name`.
+
+`lib/browser-autofill-coverage.test.mjs` enforces all of the above at build time and fails with
+the fix spelled out. An exemption means editing its `ALLOWED` or `EXPECTED_AUTOFILL_TOKENS`,
+which is meant to cost a reviewer's attention.
+
+**Scope, the login exemption, and the two limits this does not cover** (third-party password
+managers are not suppressed; non-login password fields cannot be saved by one):
+`vault/decisions/2026-09-22-browser-autofill-suppression-scope-and-mechanism.md`.
+
 ## Dropdowns — a server entity list is never preloaded
 
 **If the options come from an entity table, the picker searches the API. It does not fetch a
