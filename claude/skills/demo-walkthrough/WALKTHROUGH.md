@@ -889,11 +889,27 @@ Six of these write real time-tracking milestones (`PATCH /field/tickets/:id/step
 the milestones (`LOADOUT → EMPLOYEE_LEFT_YARD → WORK_IN_PROGRESS`). Two screens, one flow: this is
 the best moment in the whole demo.
 
+**One ticket per crane crew (SCRUM-CREW-TICKET, TCG-25).** A crane set with an Oiler and an
+Operator produces **one** job ticket, not two. The **Oiler is the primary** and fills it in; the
+**Operator is a second employee on the same ticket** (a `ticket_employees` row), not a copy. The
+Operator's mobile ticket card shows only an **"On <Oiler>'s ticket"** status — there is no separate
+Operator ticket to walk, no crew banner and no read-only mirror of the Oiler's. (Older tenants:
+the migration cancelled the Operator's former ticket; it stays as inert history.) Ticket-level
+times — left yard, arrived, lunch, WTL, the boom sessions — are **shared** and captured once.
+
 ### 12.3 Step 14 — Labor & Unit (the one that matters)
 
-The crew card list shows the caller plus every boom-working Operator-type teammate in the same set.
+The crew card list shows every member of the ticket's roster — the Oiler first, then the Operator.
 Per person: hours (auto-computed from the boom window), **lunches taken**, **work-through-lunch
-(WTL) count**, and the **Craft Modifier / boom bracket**.
+(WTL) count**, and the **Craft Modifier / boom bracket**. Labor is **per employee**: each card has its
+own bracket, payroll comment and work window. The Oiler picks which employee he is entering for.
+
+**Per-employee work window (TCG-25).** Start/stop is the one time that is unique per employee: an
+Oiler-entered window for the Operator is stored on the **Operator's** roster row, never on the shared
+ticket times, so it never moves the Oiler's hours. It survives every later write (another lunch,
+a bracket change, propagation). An employee with no window of their own follows the ticket's.
+**Verify:** enter a shorter Operator window than the Oiler's, run payroll, and confirm the Operator
+is priced off their window and the Oiler off the ticket's — two rows, one per employee.
 
 **Verify:** the app pre-fills the suggested bracket from the crane's boom length — with a 197 ft
 crane it should read **`181–200 ft (+$4.50/hr)`**. If it says **"No boom pay"** or the crew card

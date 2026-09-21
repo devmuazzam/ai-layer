@@ -70,11 +70,11 @@ unit's own surface.
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | One `JobTicket` per crew set instead of two; Oiler's mobile ticket shows both crew members; live pairs migrated, COMPLETE pairs backfilled, `primaryTicketId`/`linkCrewTickets` retired | REQ-01, REQ-02, REQ-03, REQ-05 (display only), REQ-09, REQ-10, REQ-12, REQ-13, REQ-14 (schema), REQ-15, REQ-17 | schema, api, mobile, shared | — | L | not started |
-| U2 | Oiler enters Labor & Unit / time for each crew member on the one ticket; payroll prices each employee's own line | REQ-04, REQ-05 (entry), REQ-11, REQ-14 (api) | api, schema, mobile, shared | U1 | L | not started |
-| U3 | Operator's mobile Jobs/Home shows "On \<Oiler\>'s ticket" with step status only — the PR #561 crew-copy banner and hand-off flow are gone | REQ-06, REQ-16 | mobile, api | U1 | M | not started |
-| U4 | Web Job/Progress Tracking shows one card per ticket with every employee listed and the primary marked — no copy rows | REQ-07 | web, shared | U1 | M | not started |
-| U5 | DAS/dispatch ticket-listing views (Confirm & Send Tickets, etc.) show one row per asset group with the ticket's employees listed | REQ-08 | web, api | U1 | S | not started |
+| U1 | One `JobTicket` per crew set instead of two; Oiler's mobile ticket shows both crew members; live pairs migrated, COMPLETE pairs backfilled, `primaryTicketId`/`linkCrewTickets` retired | REQ-01, REQ-02, REQ-03, REQ-05 (display only), REQ-09, REQ-10, REQ-12, REQ-13, REQ-14 (schema), REQ-15, REQ-17 | schema, api, mobile, shared | — | L | built, unmerged — feat/SCRUM-CREW-TICKET-one-ticket-per-crew |
+| U2 | Oiler enters Labor & Unit / time for each crew member on the one ticket; payroll prices each employee's own line | REQ-04, REQ-05 (entry), REQ-11, REQ-14 (api) | api, schema, mobile, shared | U1 | L | built, unmerged — feat/SCRUM-CREW-TICKET-one-ticket-per-crew |
+| U3 | Operator's mobile Jobs/Home shows "On \<Oiler\>'s ticket" with step status only — the PR #561 crew-copy banner and hand-off flow are gone | REQ-06, REQ-16 | mobile, api | U1 | M | built, unmerged — feat/SCRUM-CREW-TICKET-one-ticket-per-crew |
+| U4 | Web Job/Progress Tracking shows one card per ticket with every employee listed and the primary marked — no copy rows | REQ-07 | web, shared | U1 | M | built, unmerged — feat/SCRUM-CREW-TICKET-one-ticket-per-crew |
+| U5 | DAS/dispatch ticket-listing views (Confirm & Send Tickets, etc.) show one row per asset group with the ticket's employees listed | REQ-08 | web, api | U1 | S | built, unmerged — feat/SCRUM-CREW-TICKET-one-ticket-per-crew |
 
 - Requirements not covered by any unit: **none** — all 17 requirements are placed. (REQ-05 and
   REQ-14 are each split across two units; see their unit entries for which part goes where.)
