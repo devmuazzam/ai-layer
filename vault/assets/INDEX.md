@@ -2,7 +2,7 @@
 title: Assets — module index
 status: reference
 kind: index
-updated: 2026-09-04
+updated: 2026-09-22
 tags: [module/assets, kind/reference]
 ---
 
@@ -25,6 +25,7 @@ Assets, yards-as-records, tools & rigging, categories. Backend usecases: `asset-
 | [fcc-atom-iti-integration.md](fcc-atom-iti-integration.md) | FCC ↔ ITI Learning Hub certificate sync, and the Atom Display Menu. *Subject is certifications — filed here by drop group* | 6.9 |
 | [equipment-onboarding.md](equipment-onboarding.md) | How a new machine becomes dispatchable — the on-boarding value engine and the (stub) FCC creation playbook | 5.8 |
 | [trailer-inspection-form.md](trailer-inspection-form.md) | The paper trailer inspection checklist, version 1 — 24 side-by-side checks plus 8 conditional ones | 4.1 |
+| [fcc-samsara-reconciliation-2026-09-21.md](fcc-samsara-reconciliation-2026-09-21.md) | **The FCC ↔ Samsara comparison, re-measured** — FCC has no VIN column, the `LowerGPSID` Samsara link it already carries on 45 units (4 of them shared by two units), which dispatchable cranes are untracked, eight silent gateways, and a per-unit adjudication of every VIN conflict | 11.0 |
 | [categories-and-sub-categories.md](categories-and-sub-categories.md) | Category/sub-category questions (2 tags — thin) | 0.6 |
 
 ## Also relevant

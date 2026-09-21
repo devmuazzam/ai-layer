@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-09-19
+updated: 2026-09-22
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -920,3 +920,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
 - **Why it lands here too:** the DAS half of the pair is a **dispatch affordance** — UAT 6 asks for *"an option to change craft code in DAS"*, i.e. the dispatcher overriding a rate-bearing attribute on the board. The rate rule it collides with is payroll's: [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) (`verified`) gives the day's craft to *"the crane superintendent or payroll — **never the employee**"*, and says nothing about a dispatcher.
 - **Read:** [../payroll/gaps.md → *Primary craft code constrained to the employee type, and changing a craft code in DAS*](../payroll/gaps.md#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das)
+
+## Support vehicle for an untracked crane — pointer, owned by assets
+
+- **Status:** open — **answer owned by assets**, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Asked:** 2026-09-22 — measuring the client's 2026-09-21 FCC ↔ Samsara comparison.
+- **Why it lands here too:** the *mapping* is dispatch knowledge, not master data. Which support
+  vehicle travels with `6002`, `RT9001`, `27501` and `CC330.01`, whether it is the same vehicle
+  every time or picked per job, and whether one truck can cover more than one crane, are things
+  a dispatcher knows and no cleanup of FCC or Samsara will produce. It is registered under
+  `assets/` because the schema consequence lands on the Asset ↔ Samsara link.
+- **Read:** [../assets/gaps.md → *Which dispatchable cranes are untracked, and what stands in for them*](../assets/gaps.md#which-dispatchable-cranes-are-untracked-and-what-stands-in-for-them--asked-twice-unanswered-twice)

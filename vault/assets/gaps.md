@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-09-19
+updated: 2026-09-22
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -1084,6 +1084,26 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   §Step 11 attributes the tracking rule to *"three things the owner asked for after seeing the
   feature run"*, on technical grounds — trailers and equipment have no position feed — not a
   product one.
+- **Update 2026-09-22 (FCC ↔ Samsara reconciliation — the data side of (a) and (b)):** the
+  client's own comparison workbook settles two of the three lines *as FCC data*, though not as
+  product intent. Measured from `FMS_UNITS` (2026-07-02 extract) in
+  [fcc-samsara-reconciliation-2026-09-21.md](fcc-samsara-reconciliation-2026-09-21.md):
+  **(b) is corroborated** — `UpperGPS` and `UpperGPSID` are populated on **0 of 358** units
+  while `LowerGPS` (`SA` only) and `LowerGPSID` carry 46 and 49, the first data-side
+  confirmation of the deck's *"Samsara is not in upper engines"*. **(a) has four live
+  counter-examples** — the 49 ids are only **45 distinct**, with `10004`+`AT07`,
+  `ST12`+`2202`, `SL03`+`AT03` and `SL04`+`AT05` each sharing one Samsara id. So the source
+  system the ERP migrates from **does** let two units point at one device, which
+  `@@unique([tenantCompanyId, samsaraAssetId])` forbids. Every collision pairs one active with
+  one inactive unit, which reads as a moved gateway never cleared off the old record — if that
+  is the explanation, the unique index survives (clear the inactive side) and the workbook's
+  top-severity `10004` finding dissolves with it. **That reading is inference; nobody has
+  confirmed it**, and it does not answer the Brian Petros case the entry was opened on, where
+  the crane and its support tractor are *both* current. **(c) remains untouched** — the
+  extract's provider column holds only `SA`, so the registry question is still open on the
+  record, not in the data. Also relevant to *Blocked*: the seeder does not map `LowerGPSID`
+  into `samsaraAssetId` at all (`apps/api/fcc-seeder/src/extract-seed-files.ts`), so the 45
+  links FCC already holds are being dropped on import.
 - **Note:** the per-tenant unique index also contradicts the module it serves. The tracking
   controller's own header says *"Nothing here is tenant-scoped, because the Samsara account is
   not per-tenant: every tenant sees the same fleet"* — so one Samsara asset is visible to every
@@ -1336,3 +1356,83 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** any tool & rigging allocation work; the quotation→job carry-over for tools; the yard loadout list for tools, which has nothing upstream of it today.
 - **Owner:** **Lisette Anzaldo** — the UAT row names her as the person who would do it, so she is the one who can define (a)–(c). Joe Schacatano for whether anything about tools belongs on a quotation at all.
 - **Pointer:** [../quotations/gaps.md](../quotations/gaps.md) → *Tool and Rigging allocation from the quotation — pointer, owned by assets*.
+
+## Which dispatchable cranes are untracked, and what stands in for them — asked twice, unanswered twice
+
+- **Status:** open
+- **Asked:** 2026-09-19 to Brian Petros (Teams), re-asked 2026-09-22 after measuring his
+  comparison workbook. Raised by the tracking work, not by a ticket.
+- **Question:** four lines, and only the first is partly settled by data. **(a)** which cranes
+  that can be dispatched carry no Samsara device — measurement says the owned, travelling set
+  is **`6002`, `RT9001`, `27501`, `CC330.01`** (plus two re-rents and `TWC001`, which does not
+  travel); does TCG confirm that list? **(b)** which support vehicle travels with each of them?
+  **(c)** is it always the same vehicle for that crane, or does it change job to job?
+  **(d)** can one support truck carry more than one crane, or is it one crane per truck?
+  (b)–(d) decide whether the ERP models the stand-in as a durable per-asset relation, a
+  per-allocation one, or not at all.
+- **Sources checked:**
+  - [fcc-samsara-reconciliation-2026-09-21.md](fcc-samsara-reconciliation-2026-09-21.md) —
+    measured coverage against the 34-crane dispatchable list Brian supplied (Teams, 2026-09-21,
+    qualified by him as *"very close to 100%"*): **27 of 34 present in Samsara, 7 absent.** His
+    working heuristic *"I think only 40 ton and above get the Samsara tracking"* **fails both
+    ways** — `2204` (22 T) and `SL01`–`SL03` (30 T) are tracked and under it; `6002` (60 T),
+    `RT9001`, `27501` (275 T) and `CC330.01` (330 T) are over it and absent. He closed with
+    *"Still trying to verify"*, so this is not his answer either.
+  - **The why is on the record; the mapping is not.** Brian Petros: *"there's a couple cranes
+    that the GPS device cannot be put on the crane itself … There's a support vehicle for those
+    two cranes that is like assigned to the crane … So the GPS device is on that tractor, not on
+    the crane itself, because … it messes with the electrical and then the crane starts
+    malfunctioning"*
+    ([../meetings/transcripts/2026-08-26-erp-sprint-review.md](../meetings/transcripts/2026-08-26-erp-sprint-review.md)
+    18:11–18:49, `status: reference`). *"A couple"* and *"like assigned to"* are the whole
+    record — no unit codes, and no statement of whether the assignment is fixed.
+  - **Nothing structured holds a pairing.** Samsara's `Tags` column is empty on 78 of 79 rows;
+    FCC's unit table has no crane→support-vehicle column among its 86; `decisions/` holds none.
+    The only trace found anywhere is a **Samsara record named `ST09 (AT for SL03)`** — a pairing
+    typed into a display name, which is evidence the pairings are known and kept nowhere
+    readable.
+  - Related, already open — do not duplicate:
+    [*One Asset ↔ one Samsara asset*](#one-asset--one-samsara-asset--the-record-says-a-cranes-gps-box-is-on-a-different-asset-and-reads-only-one-of-its-two-engines)
+    is the *cardinality* question (may both units point at one device); this entry is the
+    *mapping* (which vehicle, for which crane, under what rule). Answering this one constrains
+    that one.
+- **Blocked:** any ERP display of a position for an untracked crane; whether a stand-in link is
+  a schema relation or a dispatch-time association; and the honest labelling of a crane the map
+  cannot locate.
+- **Owner:** Brian Petros to route — he has said the Fleet Manager owns the underlying data, and
+  TCG has offered to wait for that rather than press (2026-09-22). (b)–(d) are dispatch
+  knowledge, not master data, so a cleanup will not produce them.
+
+## A Samsara link that has gone silent — three 200-ton-plus cranes have not reported in 8–13 months
+
+- **Status:** open
+- **Asked:** 2026-09-22 — measuring the `Last Connected` column of the 2026-09-21 Samsara
+  export. Nobody has been asked this yet.
+- **Question:** **what should the ERP show for an asset that is linked to Samsara but whose
+  feed is months stale?** Three candidates and nobody has chosen: (a) the last known position,
+  undated, as a live position — what a naive read of the feed gives; (b) the last known
+  position with its age shown; (c) treated as untracked until it reports again. A second line:
+  is a silence threshold a product rule (and what is it), or is any last-known position
+  acceptable?
+- **Sources checked:**
+  - [fcc-samsara-reconciliation-2026-09-21.md](fcc-samsara-reconciliation-2026-09-21.md)
+    → *Samsara side — presence is not tracking*. **61 of 79** vehicles reported on the day of
+    the export; eight had not reported in over 250 days, including **`35001` (411 days),
+    `20001` (339)** and **`55001` (249)** — all 200-ton-plus cranes, all `Installed = true`,
+    all still linked. Whether each is a dead gateway, an unpowered machine in the yard or a unit
+    out of service is unestablished.
+  - **The vault has no staleness rule.** No source in `assets/`, `dispatch/` or `field-ops/`
+    states a freshness bound on a position, and `decisions/` holds no Samsara decision at all
+    (see the *Samsara vehicle tracking* entry above, which records that absence). The one stated
+    limit on GPS use is unrelated — *display and accountability, not the pay-time source*
+    ([../dispatch/gaps.md](../dispatch/gaps.md), 2026-06-16 field-app demo).
+  - **It compounds an existing ask.** Wes, Ehtesham and Kyle agreed a Samsara vicinity check
+    could flag the wrong unit leaving the yard (2026-07-07, recorded in
+    [../dispatch/gaps.md](../dispatch/gaps.md)); a vicinity check against a 411-day-old position
+    would pass silently. That is the concrete failure mode, and it is why this needs a line
+    rather than a default.
+- **Blocked:** the fleet map's treatment of a linked-but-silent asset; any rule that reads a
+  position as corroboration of a time or a location.
+- **Owner:** product team, with Brian Petros on the operational half — three of the eight are
+  main cranes, so whether they are genuinely untracked today is a fleet question before it is a
+  display question.
