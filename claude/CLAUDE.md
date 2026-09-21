@@ -123,9 +123,11 @@ pnpm nx run @tcg/api:build --skip-nx-cache   # force a real run when a cached re
 ```
 
 `pnpm lint` still fails on pre-existing errors in `apps/web` (37 as of 2026-08-19). Check
-whether a failure is yours before chasing it — `lint-triage` skill. **The pre-push hook and PR
-CI run `nx affected -t lint --exclude=@tcg/web`**, so web lint never blocks a push; the only
-place it runs is `pnpm lint` / `pnpm web:lint` by hand.
+whether a failure is yours before chasing it — `lint-triage` skill. **Nothing runs lint, test
+or build automatically right now** — `.husky/pre-push` keeps only the branch guard (the
+`nx affected` gates are commented out in the file, not deleted), and `.github/workflows/`
+contains only `deploy.yml`, which deploys and checks nothing. Every gate in this file is a
+command you run by hand until those are restored. Verified 2026-09-22.
 
 ## Architecture invariants
 
@@ -186,9 +188,9 @@ projects. JSDoc on public APIs.
 `node_modules` refuses to commit — `pnpm install` there first). `pre-commit`: `lint-staged`
 (ESLint `--fix` + Prettier on staged files — it can rewrite what you staged; re-read
 `git diff --staged`) only — no build, so commits stay cheap and Nx cache restore cannot
-stomp a live `web:dev` / `api:dev`. `pre-push`: refuses a direct push of `main`,
-then `nx affected` lint (web excluded), typecheck (mobile excluded), build. `SKIP_GATES=1 git
-push` skips the gates, never the branch guard.
+stomp a live `web:dev` / `api:dev`. `pre-push`: **refuses a direct push of `main`, and
+nothing else** — the `nx affected` lint/typecheck/build block is commented out in the hook.
+`SKIP_GATES=1` is therefore a no-op today; the branch guard was never skippable.
 
 **`data-testid` in `apps/web` is a contract.** `qa-automation/` addresses the UI through
 it, and that suite is **outside the pnpm workspace and not yet an Nx project** — so no hook
@@ -197,6 +199,18 @@ report. (Registering it as an Nx project is an accepted PR #386 follow-up; until
 the grep below is the only signal there is.)
 New screens ship with IDs; before renaming one, `grep -rn '<the-id>' qa-automation/e2e`.
 Scheme and the shared-component rule: `contexts/web.md` → *Test IDs*.
+
+**Browser autofill is suppressed on every `apps/web` form control except login.** Chrome
+runs two systems: profile Autofill, beaten by an `autocomplete` token it has never seen, and
+the typed-history dropdown, keyed on the DOM `name` and beaten only by a decoy one. So a raw
+control takes `useBrowserAutofillDomAttrs()` spread whole; a `<select>`, `<textarea>` or
+`type="number"` that must keep its real `name` takes `useBrowserAutofillToken()` instead.
+**Never a string literal** — Chrome ignores `"off"`, and any fixed token is identical on every
+page load, so it just becomes the new key history accumulates under. Never rewrite DOM `id`,
+`placeholder` or label text: `qa-automation` selects on all three, and the ZWNJ label disguise
+was removed because a screen reader announces it. `browser-autofill-coverage.test.mjs` fails
+the build on a control that breaks any of this. Scope, exemptions and the two things it does
+*not* cover: `vault/decisions/2026-09-22-browser-autofill-suppression-scope-and-mechanism.md`.
 
 **Lint does not enforce most of the conventions in this file.** There is no rule for
 module boundaries, duplication, or hardcoded colours. Passing lint is not evidence a
