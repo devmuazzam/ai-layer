@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-09-15
+updated: 2026-09-19
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -127,6 +127,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Resources tab (as built, and as `02-view-manage-job-details.md:50` contradicts), and Melissa's
   one-line confirmation of the two-record rule.
 - **See also (2026-09-12):** [decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md](../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md) — an *Optional* catalog association the quotation never priced is no longer materialised as a job resource or DAS slot (Syed Haris, CodingCops, `reference`). It narrows the child case; it does **not** settle this entry or the two-record rule.
+- **See also (2026-09-15/16):** Joe Schacatano separates *quoted line items* from *dispatch resources* altogether — principle decided 2026-09-16 ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)); the model is open in [../quotations/gaps.md](../quotations/gaps.md) → *Quote line items vs dispatch resources…*. The "requested resources" record this entry asks about is therefore no longer the quotation's resource list. Does not settle this entry.
+- **See also (2026-09-17):** Brian's FCC deep dive ([../quotations/fcc-billing-resource-configuration-deep-dive-2026-09-16.md](../quotations/fcc-billing-resource-configuration-deep-dive-2026-09-16.md) §12, §17, §32). FCC job OM60788 shows requirement → assignment in practice:
+  - type-level placeholders on the quote;
+  - real crane and tractors, plus an Operator, an Oiler and four 3rd Men, on the job;
+  - `FMS_JOB_RESOURCES` pairing units with employees;
+  - a **40 Ton unit (4003) with an operator and no billing line** on the same job.
+
+  The document recommends that Dispatch can add operational-only requirements. A recommendation, not a decision.
 
 ## Schedule fields — the build already agrees, and the new fields are written nowhere
 
@@ -219,6 +227,28 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   from the same exchange (Joe 53:03):** an **estimated yard-arrival time**, ideally predicted from
   the actual travel time to the job, *"so we have an idea of when their hours are going to end"* and
   how that affects the next day's hours of service. Not in any spec or ticket; owner Joe Schacatano.
+
+- **Conflict logged 2026-09-19 — two UAT rows pull opposite ways on double-booking a *person*, and both sit behind a decision neither cites. Do not fold this into the asset-side question above.**
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) carries the pair, and says so itself:
+  **DONE** *One person cannot be assigned to two jobs*, [UAT 5] — *"Overlaps are refused server-side, backed by window SQL.
+  **Read alongside the UAT 4 #31 row under Not done** — the two requests pull in opposite directions."* `das-allocations.service.ts:290-299`.
+  **NOT DONE** *People still available under an 11:30 shift*, [UAT 4 #31] — *"**Two readings, opposite answers.**… If the ask was
+  '_other_ people stay available when someone is on an 11:30 shift', it is done. If it was '_the same_ person stays available for a
+  later non-overlapping shift', it is not — and that reading **directly contradicts UAT 5's 'one person cannot be assigned to two
+  jobs'**, which is done. Needs the person who raised it."* The register's own resolution is to carry it as NOT DONE *"so the sheet
+  has only two statuses"*, which it states **does not resolve the ambiguity**.
+  **Both rows are behind [../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md)
+  → *DAS allocation (new)* item 5**, which already draws the line the two rows are arguing over:
+  *"**Same non-vendor resource cannot fill two slots in one shift** on the same sub-job. Drop and upsert both block. Shift 1→2
+  copies … still allowed. **Cross-job non-overlapping double-book** … **is unchanged.** Vendors are out of this rule."*
+  On that reading UAT 5 is satisfied (same shift, same sub-job: blocked) **and** the second reading of UAT 4 #31 is satisfied
+  (cross-job, non-overlapping: still allowed) — they only look contradictory because neither row states its scope.
+  **This is not an adjudication.** The decision is `status: reference` (Ehtesham Anwar, CodingCops, *"open to being overruled by
+  TCG"*), no TCG person has confirmed it, and the register was written three days later without citing it. Whoever raised UAT 4 #31
+  still has to say which reading they meant — the register is right about that. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
+  **Scope note:** this is the **employee** case. This entry's own double-booking material (Brian Petros, *"we could double book"*,
+  `daily-allocation-system.md`:48) is about the same **crane** on two non-overlapping jobs. Same words, different object.
+
 ## Crane configuration — is a support load an Asset, or a line on the crane?
 
 - **Status:** resolved 2026-09-03 — **an Asset.** See the resolution note below
@@ -430,7 +460,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   hold a named default per unit (and whether `EmployeeAsset` is that record or an ownership link),
   who maintains it, and what overriding it on one job does to the default. Lisette has still not
   been asked.
-
 
 ## Schedule day deactivate orphans SubJob / allocations — see projects-jobs
 
@@ -722,6 +751,23 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Lisette Anzaldo (whose allocation panel it is) with Melissa McNutt (who owns the *"we don't re-quote"* rule the parent entry records). Product team.
 - **Residual, open 2026-09-12:** **(a)** for an association **added to the catalog after the quote was built**, or **at a depth the quotation never persists** — both still materialise as $0 *Always Included* rows (`materializeAssociatedJobResources` skips only `isRequired = false`), so for those the board shows a slot the tab hides. And **post-conversion resync** between quotation and job — nothing changes an existing job when the quote or catalog changes afterwards; belongs with [*Requested vs dispatched resources*](#requested-vs-dispatched-resources--melissa-stated-it-the-vault-still-says-the-opposite). **Owner:** unchanged — Lisette Anzaldo with Melissa McNutt. Product team.
 
+- **Conflict logged 2026-09-19 — the UAT register's DONE row for this is stale, and it re-opens a question that was settled the next day.**
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → **DONE** *Removed rigger no longer shows as $0 on the project*,
+  [UAT 3]: *"Unpriced orphan rows are dropped from the view. **Caveat: the fix is display-only — DAS still creates the unpriced
+  slot, and whether dispatch should see it is left open in the commit.**"* sha **`c6716980d`**.
+  That caveat was true of `c6716980d` alone. `c6716980d` is the **PR #537 display-only half** — the job Resources tab showing
+  only the quotation's priced lines — and it was **followed by `765fffc8c` in PR #541**, which stopped conversion materialising
+  the row at all (`if (!association.isRequired) continue;`). Both are recorded in
+  [../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md](../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md)
+  (Syed Haris, `status: reference`), which names this entry under `resolves:`. **So the register's "whether dispatch should see
+  it is left open" is answered for the Optional case:** an Optional association the quotation never priced *"is not a job resource
+  and not a DAS allocation slot"*. The register cites the earlier commit and not the later one, and never cites the decision.
+  **What genuinely remains open is narrower than the register implies** and is already stated in *Residual, open 2026-09-12*
+  above: only the **Always Included** cases — an association added to the catalog after the quote was built, or at a depth the
+  quotation never persists — still materialise as $0 rows, because `materializeAssociatedJobResources` skips only
+  `isRequired = false`. Nothing here is adjudicated and no status on the register is changed; this records that a DONE row's
+  caveat is one commit out of date. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
+
 ## Branch fix/12-sep-uat — ticket assignment/reschedule/reminder emails: field set, deep link shape, entity id
 
 - **Status:** open
@@ -811,3 +857,66 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** this build's `PermitChecklistBadge` / `AssetPermitModal` (mirrors vendor `PoChecklistBadge`); [confirmations-playbook.md](confirmations-playbook.md) §6 and [travel-permits-playbook.md](travel-permits-playbook.md) (substitution re-opens the permit / per-crane application); [../projects-jobs/gaps.md](../projects-jobs/gaps.md) *Asset on a permit…* (265-for-90); [decisions/2026-09-11-permit-classes-job-only-until-sept-15.md](../decisions/2026-09-11-permit-classes-job-only-until-sept-15.md); [decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md](../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md); adjacent [*Branch fix/permits-pos — the DAS pre-checklist "PO#" row…*](#branch-fixpermits-pos--the-das-pre-checklist-po-row-stops-watching-vendor-allocations-and-can-no-longer-flag-anything).
 - **Blocked:** (a) settled. (b)–(d) Brian Petros / Liz Lopez / Lisette Anzaldo — product.
 - **Owner:** Lisette Anzaldo (DAS dispatcher); carve-out (a) → Ehtesham Anwar.
+
+## Dispatch resources vs quote lines — pointer, owned by quotations
+
+- **Status:** open — answer in [../quotations/gaps.md](../quotations/gaps.md) → *Quote line items vs dispatch resources — the associated set auto-fills the quote, and the sales owner says dispatch resources must not be quoted*. Principle decided 2026-09-16 ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)).
+- **Asked:** 2026-09-15 — Joe Schacatano, ERP live demo 01 ([../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §2): oiler, operator and semi are *"the resources to tie to the assets when it's dispatched"* and are never charged. Bears on where DAS slots come from if they stop being quotation rows (today: [../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md](../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md)). Pointer only.
+
+## One asset standing for several resource types (derating, configurations) — pointer, owned by assets
+
+- **Status:** open — **answer owned by assets**, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Asked:** 2026-09-17 — ingest of the 2026-09-16 call.
+- **Why it lands here too:** which assets may fill a DAS slot for a quoted resource type depends on the answer. Joe Schacatano (4:59): a crane may be *"derated to cover other equipment sizes in the same type"*. He also said one crane can be dispatched in two configurations (27:33).
+- **Read:** [../assets/gaps.md → *One asset, one type…*](../assets/gaps.md#one-asset-one-type--but-one-crane-in-several-configurations-how-does-an-asset-stand-for-more-than-one-resource-type)
+
+## Removing an allocation after its time has passed — UAT 5 asks for a clock guard the delete path does not have
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Not a ticket question: no ticket asks for a time-based delete guard.
+- **Question:** may a dispatcher **remove an allocation whose time has already passed**? If not: passed relative to **what** — the shift start, the shift end, the business day, the ticket's own step times — and **who**, if anyone, may override it?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE ***Do not allow removal when the time is gone***, [UAT 5]. This is one of the register's **three headline defects**, quoted in its own *Read this first*: *"Allocations can still be removed after the time has passed. The delete check looks at payroll locks and whether tickets were sent — **it never looks at the clock**."* Its row adds: *"There is no date or time comparison anywhere in the method. Past-time blocks exist only for Start Loadout and Mark Available, not for removing an allocation."* `das-allocations.service.ts:487-543`.
+  - [../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md) → *DAS allocation (new)* — the most recent and most detailed statement of when an allocation may be removed or stolen, and **it names only two gates plus yard state**: item 3, the yard lock (*"marked available for loadout, or already loaded out… cannot be reassigned"*); item 4, *"the prior row is deleted, including when the **source** sub-job is `TICKET_SENT` or `ticketsLocked`. **Payroll-locked tickets still refuse.**"* **No clause anywhere keys on wall-clock time.** So the UAT ask is not contradicted by the decision — it is simply a condition the decision never contemplated.
+  - `grep` across [../decisions/](../decisions/) and every `*/gaps.md` for a time-passed delete rule: nothing. The nearest written time gates are on **different actions** — Start Loadout and Mark Available — which is what makes the absence look like an oversight rather than a choice.
+  - Related, already open — do not duplicate: [*Items assigned but never loaded out vanish silently at offload*](#items-assigned-but-never-loaded-out-vanish-silently-at-offload) and [*Manual vs automatic offload…*](#manual-vs-automatic-offload--dylan-asked-for-manual-dev-said-automatic-dylan-also-asked-for-geo-auto-offload-built--manual) are about what happens to a row at end of day, not about who may delete one.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). Two things are tangled in this one row and should be untangled before anyone builds: **the defect** (the register's finding that no clock check exists, which is a fact about the code) and **the rule** (whether there should be one, and keyed to what — which nobody has decided). The defect can be scheduled; the rule cannot, because a guard with the wrong boundary will block legitimate same-day corrections.
+- **Blocked:** any fix for the *Read this first* defect — it cannot be written without the boundary; payroll's reliance on allocation rows surviving the day they describe.
+- **Owner:** Lisette Anzaldo (whose board it is) with Brian Petros / Corrina Bustos for the payroll-side consequence of a deletion after the fact.
+
+## Sales Persons in the DAS Employees tab — dispatchability is an employee-type attribute we do not have
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Raised in **UAT 1**, still not done.
+- **Question:** which employees appear in the DAS **Employees** tab? The UAT ask is narrow (*"Sales Persons should not be displayed"*) but the rule behind it is not: is **dispatchability** a property of the employee, of their **employee type**, or of a portal role — and where is it stored?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *DAS Employees must not list Sales Persons*, [UAT 1]. The session sheet: *"In DAS, Sales Persons should not be displayed in the Employees tab."* The register's finding: *"The employee query filters only on terminated and permanent status — **there is no role or employee-type exclusion anywhere in the DAS employees path**, and the panel groups by type without filtering."* `das.repository.ts:773`.
+  - **The shape of the answer already exists upstream, in FCC, and the ERP has nowhere to put it:** [../payroll/fcc-employee-master-reference-data.md](../payroll/fcc-employee-master-reference-data.md) §2 — the vendor's own import rule is that *"Each employee type can either be selected to be **dispatched on jobs/quotes, on work orders, on both, or for neither** (for example, office employees)"*, the field being `Dispatchable on: Jobs/Quotes (J), Work Orders (W), Both (B), or None (N)`. That page states the consequence plainly: *"**`Dispatchable on` is an attribute of the employee *type*** — a field the ERP has nowhere."* All 15 FCC rows currently carry `B`.
+  - Related, already open — answer these together or the fix will be built twice: [../payroll/gaps.md → *Employee types — FCC holds several per employee; we store one*](../payroll/gaps.md#employee-types--fcc-holds-several-per-employee-we-store-one) (an employee has several types with one primary; we collapse to one) and [../payroll/gaps.md → *Field role vs portal role — one list in FCC, three representations in TCG*](../payroll/gaps.md#field-role-vs-portal-role--one-list-in-fcc-three-representations-in-tcg) (`DepartmentRole` vs `EmployeeType` vs `CraftRoleType`). **A per-employee-type `Dispatchable on` is the natural home for this UAT row, and neither of those entries is settled.**
+  - [../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md](../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md) *Q2 — employee status vocabulary* gates assignability by **status** (`ON_LEAVE` → *"visible, not assignable"*; `PENDING_ONBOARDING` / `INACTIVE` / `TERMINATED` → not assignable) — a different axis from role, and the only assignability rule the vault holds.
+  - [../decisions/](../decisions/) — nothing excludes a role or type from DAS.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). Hard-coding a *Sales Person* exclusion in `das.repository.ts` would satisfy the row and leave the rule unwritten, and the next non-dispatchable type (office, accounting, safety) repeats it. Say what the attribute is before filtering on it.
+- **Blocked:** the UAT 1 row itself; anything that needs to know which employees are dispatchable — DAS employee panel, allocation search, the dispatch packet.
+- **Owner:** Lisette Anzaldo (who should see whom on the board) with Brian Petros for where the attribute lives on the employee record.
+- **Pointer:** [../payroll/gaps.md](../payroll/gaps.md) → *DAS dispatchability is an employee-type attribute — pointer, owned by dispatch*.
+
+## Job ticket code format — UAT 3 asks for the FCC pattern, and no FCC pattern is written anywhere
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Raised in **UAT 3**, still not done.
+- **Question:** what should a **job ticket code** look like? The ask names *"the FCC pattern"* and nobody has written down what that pattern is — the prefix, the width, whether it is per tenant, per job, per year, and what it must stay unique against.
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Ticket codes in the FCC pattern*, [UAT 3]. The session sheet: *"Update ticket code to reflect FCC pattern."* The register's finding: *"Still the LEM prefix with a five-digit sequence. **No FCC pattern exists anywhere.**"* `job-tickets.service.ts:53`.
+  - [../decisions/](../decisions/) — nothing on ticket code format. [../decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md](../decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md) and [../decisions/2026-09-14-crew-ticket-shape-primary-allocation-and-ticket-employees.md](../decisions/2026-09-14-crew-ticket-shape-primary-allocation-and-ticket-employees.md) settle **how many** tickets exist and **who fills them**, never what they are called.
+  - The platform's identity convention is written and unambiguous: business codes are minted from `entity_sequences` and are unique **per tenant**, never globally. Whatever pattern is chosen has to live inside that.
+  - **The reason this cannot be answered by looking at FCC:** the vault forbids citing FCC behaviour as a requirement source. FCC material in the vault is recorded as *evidence of what the incumbent does*, not as an ERP rule — the same caution [../payroll/gaps.md → *Employee types…*](../payroll/gaps.md#employee-types--fcc-holds-several-per-employee-we-store-one) applies to its own FCC findings (*"evidence of what FCC holds and what TCG asked for; **no TCG decision**"*). So *"reflect the FCC pattern"* is not a specification even if someone finds the pattern; it needs a TCG person to state the pattern they want.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). Answerable in one line by whoever raised it: *what does an FCC job ticket number look like, and do you want exactly that?* Until then `LEM` + five digits is not wrong, it is just unconfirmed.
+- **Blocked:** the UAT 3 row; any migration that has to match legacy ticket numbers; anything printed or emailed that quotes a ticket number to a customer.
+- **Owner:** Brian Petros or Corrina Bustos (they read FCC ticket numbers daily); whoever raised the UAT 3 row.
+
+## Changing an employee's craft code in DAS — pointer, owned by payroll
+
+- **Status:** open — **answer owned by payroll**, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
+- **Why it lands here too:** the DAS half of the pair is a **dispatch affordance** — UAT 6 asks for *"an option to change craft code in DAS"*, i.e. the dispatcher overriding a rate-bearing attribute on the board. The rate rule it collides with is payroll's: [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) (`verified`) gives the day's craft to *"the crane superintendent or payroll — **never the employee**"*, and says nothing about a dispatcher.
+- **Read:** [../payroll/gaps.md → *Primary craft code constrained to the employee type, and changing a craft code in DAS*](../payroll/gaps.md#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das)

@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-09-11
+updated: 2026-09-19
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -241,7 +241,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   forms do), and how a blanket/fleet permit is represented when `assetId` is optional —
   `SCRUM-788` versus the shipped `assetId?` stays unreconciled.
 
-
 ## Job-level "Boom Configuration" field — schema ask from payroll (Kyle)
 
 - **Status:** open
@@ -324,7 +323,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `project-module/01-create-and-track-projects.md:33`, but the answer is owned by the accounting
   module — it is gated on that module's scope and ~Oct–Nov 2026 kickoff. Raised by `SCRUM-897`.
   Full entry: [accounting/gaps.md](../accounting/gaps.md#project-detail-accounting-tab--what-it-shows-and-what-it-shows-before-the-module-exists).
-
 
 ## Jobs Status Summary donut — where does an `ON_HOLD` job go?
 
@@ -564,7 +562,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   works; what is unknown is whether it is right, and a green suite will stop anyone asking.
 - **Owner:** Lisette Anzaldo (dispatch/DAS/permits), with Liz Lopez — the same pair who own the two
   related entries above.
-
 
 ## Working note — interim open-loop fixes on feat/permits-plans-project-artifacts (2026-09-08)
 
@@ -830,6 +827,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** **(b)** only — whether Asset Management → New Permit may offer only `ASSET` without an annual/single distinction, and the already-open correction of `TRAVEL_CITY_STREET_PERMIT`'s wrong exemption.
 - **Owner:** **Brian Petros** — he stated the annual-vs-single rule on 2026-06-18, raises the permit POs, and authored the 2026-09-05 PO workflow — with **Liz Lopez** (PO process) and **Lisette Anzaldo** (dispatch/permits) on (b).
 
+- **Update 2026-09-16 (Joe Schacatano, VP of Sales — a second TCG voice besides Brian).**
+  - *"there should be a PO for anything or where there's associated costs that are tied to a job"* (20:57), and *"we should be able to do a PO for anything within a job"* (21:10).
+  - A permit PO exists to tie the vendor's or the city's invoice to the job (18:24, 18:40).
+  - A city paid directly is handled per permit, not as a standing account (20:33). The yearly case is *"if we're getting annual permits"* (20:38).
+  - Through a third party, the third party invoices us quoting our PO. Paid directly, the city invoices us (21:38, 22:11).
+  - **This fits (a)'s annual-vs-single axis:** a single permit tied to a job needs a PO. Joe did **not** say whether an annual permit, which is not tied to a job, gets one.
+  - Ehtesham told him the PO *"becomes required when you upload the final permit"* (21:22), and Joe said *"Perfect"*. But the recorded rule puts the PO requirement at **approval** ([../decisions/2026-09-11-permit-approval-requires-linked-po.md](../decisions/2026-09-11-permit-approval-requires-linked-po.md)), and nobody checked which trigger the build uses.
+  - (b) is unchanged.
+
+  Source: [../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §6, §8.
+
 ## Branch fix/das-fixes — permit-type remap, job-only Track Permits, projects list as a table
 
 - **Status:** open, for (c) and one residual of (a) only. (a) and (b) were resolved 2026-09-11; see the next bullet.
@@ -915,3 +923,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Related, already open — do not duplicate:** the 12-sep-uat Cancel/Save entry above is the same chrome class on artifact detail (z-order vs portals), not Schedule stickiness — keep them separate.
 - **Blocked:** nothing hard — CSS-only and reversible. Recorded so sticky schedule chrome does not become convention without product ack.
 - **Owner:** Lisette Anzaldo (the dispatcher whose schedule it is) / Ryan Adams.
+
+## Permit Cost vs PO Fee — UAT says keep them separate, an untraced row says auto-populate, and approval already overwrites the fee
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Not a ticket question: no SCRUM ticket carries it, and the register's own row records the ask as *"To be discussed"*.
+- **Question:** is **Permit Cost** on a permit the same figure as the **PO Fee** on its linked PO — one amount shown in two places — or two independent amounts? If they are coupled, which direction is authoritative: does approving a permit write the PO's fee, or does the linked PO populate the permit's cost?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Permit Cost should equal the PO Fee*, [UAT 4 #30]. The session sheet's words: *"Permit Cost should be the same as the PO Fee. For now, leave it as a separate field."* The register's comment: *"Decide whether approving a permit should write the PO fee at all before anything more is built here."*
+  - **Pulling the other way, same register:** NOT DONE *Auto-populate permit cost from the linked PO* — **no Src.** It is one of the **27 rows the register could not trace to any session**, and the register says nobody should act on one *"until its origin is confirmed"*. Its own comment: *"Both cannot be built — product decision needed."*
+  - **And already coupled in one direction, in shipped code:** the register's audit finding, listed under Not Done, that **approving a permit overwrites the linked PO's fee**. So the two are separate fields on the form and joined in the approval path.
+  - [../decisions/](../decisions/) — **nothing relates the two figures.** Nearest fragments: [2026-09-11-quote-to-project-permits-plans-flow.md](../decisions/2026-09-11-quote-to-project-permits-plans-flow.md) *Permit status path* item 13 (*"Upload approved permit … permit cost, application number, date received"*) and [2026-09-15-agency-creation-form-final-fields.md](../decisions/2026-09-15-agency-creation-form-final-fields.md) row 17 *Avg Permit Cost*. [2026-09-11-permit-approval-requires-linked-po.md](../decisions/2026-09-11-permit-approval-requires-linked-po.md) makes a linked PO a **precondition** of approval but says nothing about money moving between them.
+  - `PO fee` appears **once** in the whole vault, and as unspecified: [../vendors-agencies/gaps.md → *PO and vendor/agency rules the E2E suite asserts with no written source — PR #488*](../vendors-agencies/gaps.md#po-and-vendoragency-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) — *"The `area`, `city`, `PO fee`, `discount %` and `invoice #` fields now built and mocked up. **Still unspecified.**"*
+  - [../dispatch/travel-permits-playbook.md](../dispatch/travel-permits-playbook.md):202 files *"Whether the permit PO is what bills the permit cost to the customer"* under its own open-questions list — i.e. the closest written thing to this question is itself recorded as open.
+- **Note:** a UAT row is an ask, not product intent — [../uat/INDEX.md](../uat/INDEX.md). Three artefacts point three ways (keep separate / auto-populate / already overwritten on approval) and one of the three has no traceable author, so recency and count both mislead here.
+- **Blocked:** any further permit-cost or PO-fee work; whether the approval-time overwrite is a defect or the intended behaviour.
+- **Owner:** Liz Lopez (the permit-driven PO process) with Brian Petros. Whoever raised UAT 4 #30 needs to say which of the two rows they meant.
+- **Pointer:** [../vendors-agencies/gaps.md](../vendors-agencies/gaps.md) → *Permit Cost vs PO Fee — pointer, owned by projects-jobs*.

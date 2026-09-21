@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-11
+updated: 2026-09-19
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -2120,6 +2120,15 @@ someone has confirmed otherwise.
   many-types-with-primary, and nothing addresses the second half — whether `EmployeeType` becomes
   the source of truth that `CraftRoleType` derives from. Still needs the client.
 
+- **Cross-reference 2026-09-19 (UAT register):** two UAT 6 rows — *"Primary craft code should match the employee type"* and
+  *"Option to change craft code in DAS"* — depend on the second half of this entry (whether `EmployeeType` is the source of truth
+  a craft code derives from), but ask a **behaviour** question rather than a data-model one. Logged separately at
+  [*Primary craft code constrained to the employee type, and changing a craft code in DAS*](#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das)
+  so the DAS half is not lost inside this one. **Answer this entry first** — there is no employee-type→craft-code relation to
+  constrain a picker by until it is answered. Also downstream of this entry:
+  [../dispatch/gaps.md → *Sales Persons in the DAS Employees tab…*](../dispatch/gaps.md#sales-persons-in-the-das-employees-tab--dispatchability-is-an-employee-type-attribute-we-do-not-have),
+  which needs the per-type `Dispatchable on` attribute this entry's 2026-09-04 update describes.
+
 ## Field role vs portal role — one list in FCC, three representations in TCG
 
 - **Status:** open
@@ -2353,6 +2362,28 @@ someone has confirmed otherwise.
   written client ask — but the ask is about unions generally: **no source says a second local's
   boom schedule must differ, and no decision scopes `CraftModifier` to a union.** Still needs
   product to accept the `unionCodeId` (or equivalent) shape.
+- **Update 2026-09-17 (Brian Petros, written note after the 2026-09-15 demo):** Brian asked
+  whether craft codes and craft modifier codes are tied to a union, and said they should be,
+  *"for when/if there is more than one Union"*. Craft codes already are (`CraftCode.unionCodeId`
+  is required); craft modifiers are not. CodingCops' drafted reply (Syed Haris, 2026-09-17) says
+  *"we will add the union link on the modifiers"*. That is a commitment in a reply, not a
+  decision note: once Brian confirms in writing, `tcg-scrum` records the decision and this entry
+  closes. The note itself is stored at [crew-assignment-and-rate-derivation-brian-2026-09-16.md](crew-assignment-and-rate-derivation-brian-2026-09-16.md).
+
+- **Update 2026-09-19 (UAT register) — UAT 6 raised the same thing independently, two days before Brian's note was logged here.**
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Craft modifiers need a union attached*, from the
+  **17 Sep internal UAT** session: *"No way to associate a union with a craft modifier."*
+  That is this entry, reached from a different direction — Brian Petros asked for it in writing after the 2026-09-15 demo
+  (*"for when/if there is more than one Union"*), and the 17 Sep session surfaced it again from the screen.
+  **No new entry opened; this one covers it.** What the second raising adds is corroboration, not a new question: the ask is now
+  on record from **two independent sources**, one of them a named TCG person. It does not change the status. The commitment in
+  CodingCops' drafted reply (*"we will add the union link on the modifiers"*) is still a reply, not a decision note, and this entry
+  still closes only when Brian confirms in writing and `tcg-scrum` records it.
+  **⚠️ Register caveat:** this is one of the **38 UAT 6 rows**, which the register entered as NOT DONE *without checking the code* —
+  their status is **assumed**. So the row is evidence that it was **asked**, not evidence that it is still **unbuilt**; the modelling
+  answer above is what actually settles that. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
+  Adjacent row from the same session, deliberately **not** folded in: *Remove the add-row control from the top* on the craft-modifier
+  screen is UI chrome on the same page, not this question.
 
 ## A labor-entry edit can reprice an approved week — and the ERP has no path for it
 
@@ -3011,6 +3042,22 @@ someone has confirmed otherwise.
   disagree on boom for reasons that are ours, not theirs.
 - Owner: CodingCops (build). Only the holdover fallback needs a client line, and it can ride the next
   payroll meeting rather than block.
+
+- **Wording hazard logged 2026-09-19 — the UAT row that set this behaviour says "Break Time", and read literally it means the opposite of the rule.**
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → **DONE** *Build-Up to Break Time counts as Boom*, [UAT 2]:
+  *"Build-up, boom and breakdown are summed as boom duration, with the client instruction recorded in the code comment."* sha `a7961b6b9`.
+  The session sheet's exact words: *"**From Build-Up to Break Time, everything should be considered Boom.**"*
+  **"Break Time" here must mean *breakdown*, and the code read it that way** — it sums build-up + boom + breakdown, which is exactly
+  the window in [../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)
+  (`status: verified`): *"**Boom window = first moment of build-up → last moment of breakdown, all hook work inside.**"* Kyle Harlow at
+  45:31: *"building the machine up and hook work is a boom time. **So build up and break down.**"*
+  **Read literally, "Break Time" means a meal or rest break** — and that reading would put a **paid meal break inside the boom
+  premium window**, which the same decision excludes by construction (boom is *"a premium window inside the paid day"*, and the
+  contract excludes travel and curfew hours). It would also collide with the WTL rules (PAY-046, PAY-047), which exist precisely
+  because break time is a separate, differently-treated interval.
+  **Nothing needs changing — the build already follows the decision, not the literal wording.** This is recorded so the ambiguity
+  does not resurface the next time someone re-derives the window from the UAT sheet rather than from the decision. **Cite the
+  decision, never the UAT row, for what counts as boom.** A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
 
 ## WTL worked-through meals — the incumbent's two modes are MLA §1 and §2; ours implements only §1
 
@@ -4075,7 +4122,6 @@ somewhere it should not have. Settle that before touching either.
 - **Owner:** none — closed by inspection, not awaiting a client answer. Revisit only if the
   engine is ever changed to compute a day's total by a second, independent formula.
 
-
 ## WTL scenarios `#2` and `#3` — TCG resumes internally Monday 2026-09-14; the app's WTL messages are provisional
 
 - **Status:** open — pointer; the substantive questions live under *Field-ops lunch capture vs
@@ -4171,6 +4217,237 @@ somewhere it should not have. Settle that before touching either.
   threshold. Everywhere else the engine does what you describe."* — and one question to Corrina:
   *"the 8-hour holiday minimum reaches the 12-hour double-time mark, but is not otherwise treated
   as time worked?"* Awaiting her answer.
+- **See also (2026-09-14):** Brian's holiday-guarantee workbook — [*Holiday-start guarantee — Brian's 2026-09-14 workbook…*](#holiday-start-guarantee--brians-2026-09-14-workbook-calls-the-union-reading-a-1440-overpayment-and-prices-the-post-midnight-hours-at-triple). It widens his objection beyond ruling (c) to ruling (b), and does not settle this entry.
 - **Owner:** Corrina Bustos — to re-confirm (c) with the arithmetic in front of her and Brian's
   objection on the table, and to fill the rest of the grid with the BA if he will; Brian Petros
   to align his app or to make the case to Corrina, not to us.
+
+## Higher rate for the day (MLA Art. IV-C) — never walked through with TCG
+
+- **Status:** open
+- **Asked:** 2026-09-17 — raised by Brian Petros in his [written note after the 2026-09-15 demo](crew-assignment-and-rate-derivation-brian-2026-09-16.md)
+  (point 5, with a proposed 5-step order); logged by Syed Haris while drafting the reply.
+- **Question:** Article IV-C says that when an employee works at a higher rate than the minimum at
+  any point in a calendar day, *"the higher rate of pay shall apply on all time worked during that
+  day"*, except the long-boom increment (IV-B-2), which stays on boom hours with the 4-hour
+  minimum; Art. III-I.5 says something similar per job. Which rates propagate (base craft rate
+  only, a secondary craft picked on an allocation, lattice or other adders)? Does it propagate to
+  the whole day or only to hours on that job? Brian's proposed order: classify each segment →
+  premiums/overrides → highest rate reached that day → apply the higher-day rule → ST/OT/DT.
+- **Sources checked:** [rules/PAY-015](rules/PAY-015-higher-rate-for-day-job.md) (`open`,
+  "union/legal interpretation required"); [codingcops-rule-matrix.md](codingcops-rule-matrix.md)
+  `PR-015` ("new ERP requirement"); the FRD decision list item #12 in the first entry of this file
+  (contract text only); [payroll-engine-status-2026-09-12.md](payroll-engine-status-2026-09-12.md),
+  which parks PAY-015. No meeting note, transcript, client message or decision discusses it. The
+  engine has no day-level true-up.
+- **Owner:** Corrina Bustos (interpretation), with Brian Petros. Proposed for the next payroll call.
+
+## Relief employee paid at the relieved employee's rate (MLA Art. III-H.1(a)) — not modelled
+
+- **Status:** open
+- **Asked:** 2026-09-17 — raised by Brian Petros in his [written note after the 2026-09-15 demo](crew-assignment-and-rate-derivation-brian-2026-09-16.md)
+  (point 3); logged by Syed Haris.
+- **Question:** when an employee has worked over 16 hours without an 8-hour break and the employer
+  calls in a replacement for safety, the replacement *"shall be paid at the same rate of pay as the
+  relieved employees at the time of relief for all hours worked on the job"*
+  ([mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md)).
+  It applies to any employee, not only Oilers. How often does this happen, and how does payroll
+  handle it today? Does "rate" include the relieved employee's premiums (long boom, lattice)?
+  Under the craft-locked model ([decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md))
+  a relief allocation that inherits the relieved allocation's craft is the likely shape, but
+  nothing is designed.
+- **Sources checked:** the MLA text above and
+  [mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md](mcog-l12-mla-2025-2028/wage-rate-sheet-2026-07-01.md);
+  no PAY rule, no gap entry, no meeting, transcript or decision mentions it. No schema field.
+- **Owner:** Corrina Bustos, with Brian Petros.
+
+## Same pay as the craft worked with (MLA Art. III-C) — not modelled
+
+- **Status:** open
+- **Asked:** 2026-09-17 — raised by Brian Petros in his [written note after the 2026-09-15 demo](crew-assignment-and-rate-derivation-brian-2026-09-16.md)
+  (point 4); logged by Syed Haris.
+- **Question:** Art. III-C says covered employees get the same pay as the craft they work with
+  when that craft's agreement is more advantageous. Brian reads it as work alongside another
+  building-trades union, not the Operator/Oiler pairing, and suggests a separate craft-rate
+  override. This is different from a secondary craft: the rate comes from another trade's
+  agreement, not from any L12 craft the employee holds, so the current resolver cannot express it.
+  Does this happen at TCG, and where would the other trade's rate come from?
+- **Sources checked:** MLA text in `mcog-l12-mla-2025-2028/`; no PAY rule, gap entry, meeting,
+  transcript or decision mentions it.
+- **Owner:** Corrina Bustos, with Brian Petros.
+
+## Is a secondary craft paid only when it is higher than the primary?
+
+- **Status:** open
+- **Asked:** 2026-09-17 — Syed Haris, while replying to Brian Petros's post-demo note on the
+  Oiler's Operator craft code.
+- **Question:** the reply drafted for Brian says an employee on a secondary-craft allocation is paid
+  the secondary rate when it is higher than the primary, otherwise the primary (a floor at the
+  employee's own rate). That is Brian's proposal from the 2026-08-13 call, which Kyle Harlow agreed
+  with (entry *Pay rate follows the employee, not the role worked*, above). But
+  [decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md)
+  calls that floor unnecessary under controlled assignment and says that if TCG still wants it,
+  *"it is a validation warning, not a rate rule"*. The code follows the decision:
+  `CraftRateResolverService` pays whichever craft is on the allocation and never compares rates
+  (`apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts:328-353`,
+  `apps/api/src/usecase/payroll/payroll-secondary-craft.ts`). Should the floor be enforced as a
+  rate rule, shown as a warning, or left out?
+- **Sources checked:** the two entries and the decision above; `PAY-010`; the resolver and
+  `das-allocations.service.ts:1120-1183` (dispatch must pick a SECONDARY craft of the seat's role on
+  a mismatch).
+- **Owner:** Brian Petros and Corrina Bustos. If the reply goes out as drafted, their answer
+  settles this; until then, don't describe the floor as built.
+
+## Holiday-start guarantee — Brian's 2026-09-14 workbook calls the union reading a $1,440 overpayment, and prices the post-midnight hours at triple
+
+- **Status:** open
+- **Asked:** 2026-09-14 — Brian Petros, two Teams messages (05:02 and 05:11 PKT) with
+  `___holidayGuaranteeScenario.xlsx`: *"I definitely do not want to 'fix' our Payroll App
+  calculations/logic with that interpretation. It conflicts with what the Labor Union contract
+  language specifically/clearly explains/requires. Needs to be reviewed."* He proposed discussing
+  it at the next meeting. No outcome is on record. Logged 2026-09-17; the workbook is transcribed
+  and its arithmetic checked in [holiday-guarantee-scenario-2026-09-14.md](holiday-guarantee-scenario-2026-09-14.md).
+- **Question:** The pink column is labelled *"Union Rep wrong interpretation"*. It pays
+  00:00–06:00 at triple **and** adds a 6-hour TRI top-up. That is not the BA breakdown recorded in
+  [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md), where the post-midnight hours are 4 OT then DT, and 8 TRI is reached as 2 worked
+  hours plus 6 top-up hours. So three questions, each answerable in a line:
+  - **(a)** Brian: which union-rep explanation does the pink column model — the 2026-09-12 relay,
+    or something the rep said later that the vault does not have?
+  - **(b)** Brian: does the "contract" row replace your 2026-09-11 reading (a)? That reading was
+    2 worked + 6 top-up = 8 TRI, then 10 OT, and it is what your app does. The new row instead
+    meets the 8-hour minimum by paying worked Tuesday hours (00:00–06:00) at triple, which also
+    reverses ruling (b), "reverts at midnight", a ruling nobody had disputed.
+  - **(c)** Corrina / the BA: with both sheets in front of you, is the 2026-09-12 breakdown
+    (8 TRI · 4 OT · 6 DT on 22:00→10:00) still the ruling?
+- **Money at $80, one 22:00→10:00 Labor Day shift, before meal deductions:**
+
+  | Reading | Pay |
+  | --- | --- |
+  | BA via Corrina | **$3,360** |
+  | Brian's app (2026-09-11) | $3,120 |
+  | Brian's "contract" row | **$2,400** |
+  | Brian's "union rep" column | $3,840 |
+
+  The $1,440 per employee is the 6-hour top-up alone. It is measured against a reading no named
+  person has stated. Against the ruling on record, Brian's new row **underpays by $960** per
+  employee ($3,840 for his four-person example).
+- **Sheet arithmetic, for whoever replies:**
+  - The 05:02 version's "Final" ($1,500) starts from the *without-guarantee* total.
+  - The 05:11 version and the downloaded file deduct the two breaks twice in the union column
+    (`SUM(26:26)` already excludes the lunch cells). Priced consistently, that column is $3,660,
+    not $3,480.
+  - The downloaded file's own column is consistent: 7.5 TRI + 3.5 OT = $2,220.
+
+  Details in [holiday-guarantee-scenario-2026-09-14.md](holiday-guarantee-scenario-2026-09-14.md).
+- **Sources checked:**
+  - [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md](../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-guarantee-hours-count-toward-twelve.md): rulings (a) total, (b) reverts at midnight, (c) guarantee hours reach the
+    12-hour mark, including its *Contested by Brian Petros, 2026-09-11* section.
+  - *Holiday shift-start continuation…* (closed) above, which holds Brian's 2026-09-11 reading
+    (a) and his five-concept list.
+  - *Added hours — which rules' phantom hours reach which thresholds?* above.
+  - [rules/PAY-033-holiday-pay.md](rules/PAY-033-holiday-pay.md).
+  - MLA Art. III *Holidays* §1 ([mcog-l12-mla-2025-2028/01-article-iii-working-rules.md](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md)):
+    *"…shall be paid for all work performed… on the following holidays"*. It says nothing about
+    post-midnight hours on a non-holiday.
+  - The 2026-09-15 and 2026-09-16 transcripts: neither mentions a holiday.
+- **Blocked:** nothing new in the ERP. Per the decision note, the engine follows the BA
+  breakdown (PR #565). The parallel run against Brian's app now diverges on every holiday-start
+  shift **in the opposite direction** from before if his app adopts the workbook row: the app
+  would pay less than the ERP, not more.
+- **Owner:** Brian Petros for (a) and (b); Corrina Bustos, with the BA, for (c). Agenda item for
+  the next payroll call alongside WTL.
+
+## The payroll rules sheet promised to Brian for Monday 2026-09-21 — a CodingCops commitment with no ticket
+
+- **Status:** open — a deliverable, not a question
+- **Asked:** 2026-09-19 — Syed Haris told Brian Petros in Teams that CodingCops is preparing *"a
+  list of the payroll rules we've implemented and the ones that have been decided"*, to be shared
+  **Monday 2026-09-21**, to serve as the single source of truth and to be expanded from there.
+  Brian accepted: *"Oh... that is going to be great... Love it."* No ticket, no owner recorded
+  anywhere else.
+- **What was promised, in the same message:** the two systems may implement a rule differently —
+  his app follows FCC's constraints, the ERP does not carry them — but *"the underlying rules
+  should be identical"*. Brian was asked to update the sheet whenever something is settled,
+  **including after his calls with Corrina Bustos**, and to say what changed.
+- **What it has to be built from, and the trap in it:** the vault already holds the content —
+  [rules/INDEX.md](rules/INDEX.md) (73 `PAY-###` rules), [payroll-rules-provenance.md](payroll-rules-provenance.md)
+  (each rule's status and source), [payroll-engine-status-2026-09-12.md](payroll-engine-status-2026-09-12.md)
+  and [implementation-audit-2026-09-11.md](implementation-audit-2026-09-11.md) (what the engine
+  actually does). **"Implemented" and "decided" are not the same column**: a rule the engine runs
+  is not necessarily one a named TCG person has confirmed, and this register exists because of
+  that difference. A sheet that collapses the two would launder unverified rules into a "source of
+  truth" the client then edits.
+- **Two open points the sheet itself raises:** where it lives (a shared-folder file Brian edits in
+  place, or a copy that comes back as messages — the second recreates the scatter it is meant to
+  fix), and how its updates get back into the vault, which is the actual memory.
+- **Live disagreements it must not paper over:** the holiday-guarantee dispute
+  ([holiday-guarantee-scenario-2026-09-14.md](holiday-guarantee-scenario-2026-09-14.md)) and the
+  added-hours grid — both are cases where his app and the ERP deliberately differ today.
+- **Owner:** CodingCops — Syed Haris made the commitment; Brian Petros to maintain it once
+  delivered.
+
+## Employee Billing Code and Employee Pay — asked in UAT 1, never answered, and the schema keeps them independent
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. The underlying question was put to the client in **UAT 1** and has never come back.
+- **Question:** is there **any relationship** between an employee's **billing code** and their **pay**? Three readings, and the answer is one line in each direction: does a billing code constrain the pay rate, does the pay rate constrain which billing codes the employee may be billed under, or are they genuinely independent as built?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Relationship between Employee Billing Code and Employee Pay*, [UAT 1]. The session sheet: *"**Confirm with the client** whether there is any relationship between **Employee Billing Code and Employee Pay**."* The register's finding: *"Still pending with the client. **Today's independence between the two is provisional until they answer.** … Billing codes and pay rates are independent in the schema today; whether they should be linked is undecided."*
+  - [../decisions/](../decisions/) — **nothing.** A grep of every decision note and every module register for an employee-billing-code ↔ pay rule returns no substantive hit. The closest artefact is a set of **fields, not a rule**: [../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md](../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md) *Q10 — the nineteen unhoused fields* places *Pay Rate OT · Pay Rate DB · **Billing Rate** · Billing Rate OT · Billing Rate DB* together on the Payroll Profile → *Advanced* disclosure. **No note says what a Billing Rate on an employee does, or how it relates to a billing code.**
+  - **What *is* decided, and is a different axis — do not let it stand in for this:** [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) (Corrina Bustos, confirmed Brian Petros, `status: verified`) settles **pay rate vs role worked** — the rate comes from the employee's craft code, and a different day's craft is set by a secondary craft code, *"locked to a craft-code amount"*. That is craft↔pay, not billing-code↔pay. Scope carve-outs: [../decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md](../decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md), [../decisions/2026-08-25-non-union-base-rate-per-person.md](../decisions/2026-08-25-non-union-base-rate-per-person.md).
+  - Evidence that a zero-valued employee billing rate exists upstream and means nothing there: FCC's `UNION_CRAFT.BillingRate` is *"0.000 on every sampled row — a dead path; billing actually comes from pricing sheets"* ([../quotations/gaps.md → *Billing-rate effective dating for pricing sheets*](../quotations/gaps.md#billing-rate-effective-dating-for-pricing-sheets--raised-by-the-client-no-design-yet)). **So the incumbent answers "no relationship" by neglect, which is not the same as TCG answering it.**
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This row is unusual and useful: it is a **question put to the client**, so the register is recording an unanswered question rather than an unbuilt feature. The build's current independence is therefore a default, not a decision — which is exactly the state this register exists to make visible.
+- **Blocked:** nothing hard today. What it blocks is any future work that assumes the two are linked (or that they are not) — employee billing rates on the payroll profile, and anything that derives a bill rate from an employee rather than a price list.
+- **Owner:** the client, as the sheet says — Brian Petros / Corrina Bustos for pay, Joe Schacatano for what a billing code means. One line from any of them closes it.
+- **Pointer:** [../quotations/gaps.md](../quotations/gaps.md) → *Employee Billing Code and Employee Pay — pointer, owned by payroll*.
+
+## Lattice boom premium — UAT 6 asks to validate it against craft code groups; PAY-044 gates on payroll Group 6 and above
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. **Rules:** PAY-044, and PAY-043 / PAY-009 by adjacency.
+- **Question:** what does *"validate the lattice boom premium with craft code groups"* mean against the rule as written? [rules/PAY-044-lattice-boom-premium.md](rules/PAY-044-lattice-boom-premium.md) keys eligibility on the **payroll group** — *"Eligible **Group 6+** employees"*, $1.00/h operator and $0.50/h oiler, four-way confirmed — not on a **craft code group**. Either the UAT row is naming the same thing loosely, or it is asking for a second gate nobody has specified. Which?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Validate the lattice boom premium against craft code groups*, [UAT 6]. Its whole comment is a restatement: *"The lattice boom premium needs validating against craft code groups."* **⚠️ Register caveat: this is one of the 38 UAT 6 rows, which were entered NOT DONE *without a code check* — the register says to treat their status as assumed.** So "not done" here means "not checked", and it is possible the rule already does what the row wants.
+  - [rules/PAY-044-lattice-boom-premium.md](rules/PAY-044-lattice-boom-premium.md) (`status: open`) — the trigger is *"Eligible Group 6+ employees… Qualifying lattice boom is used"*, requiring *"Equipment group; employee role"*. **Kyle Harlow's answer, recorded there**, makes the group a real-world gate rather than a pay threshold: *"**Group 6+ is a qualification reality, not just a pay threshold** — only Group 6+ field employees are qualified to work lattice cranes, so dispatch self-enforces the premium's condition."* Also recorded there: Corrina, *"lattice pay applies to the **ENTIRE JOB**"*, not just boom-operating time; and identification belongs at the **job** level via a *Boom Configuration* field, superseding the asset-subcategory idea.
+  - **Still unruled on that rule, and it is the live one:** the **luffer** classification — Jeff Stricker (via Brian) says add-on luffers are *"technically lattice"*; Joe (2026-08-04) says lattice on a non-crawler is a jib extension earning **boom pay only**. The MLA text found since (*"Long Boom pay including combined total mast and Luffing Boom applicable"*) sides with Joe. **Kyle adjudicates; he has not.** If the UAT row is really about which *equipment* qualifies rather than which *employees*, it is this question and should be answered there, not opened twice.
+  - Payroll group vs craft code are distinct objects in the vault: craft codes carry a required `CraftCode.unionCodeId` and the group is a payroll classification (PAY-009). Nothing anywhere defines a *"craft code group"* as a term.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). One line from whoever raised it settles which of three things they meant: (a) confirm the existing Group 6+ gate is implemented, (b) add a craft-code-based gate alongside it, or (c) the luffer/equipment question above wearing different words.
+- **Blocked:** closing PAY-044; the lattice premium's implementation gate.
+- **Owner:** Kyle Harlow (he already owns the luffer adjudication on PAY-044) with Corrina Bustos; whoever raised the UAT 6 row for what *"craft code groups"* meant.
+
+## Adding a rate when the previous one has no effective-to date — back-fill it, or error
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. **Rules:** PAY-008.
+- **Question:** when a new rate is added and the **previous** rate has **no effective-to date**, should the system **back-fill** the old rate's end date (closing it the day before the new one starts) or **refuse** with an error, as it does now? And if back-filling: to what date exactly, and does the same rule apply to wage rates, billing rates and craft modifiers alike?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Adding a rate when the previous one has no effective date*, [UAT 6]: *"Where the previous rate has no effective-to date, adding a new rate should back-fill that date on the old rate instead of raising an error."* **⚠️ Register caveat: a UAT 6 row — the 38 rows from the 17 Sep internal session were entered NOT DONE without a code check, so its status is assumed.**
+  - [rules/PAY-008-effective-dated-configuration.md](rules/PAY-008-effective-dated-configuration.md) (`status: open`) — *"Historical recalculation must use rules effective on the work date"*, requiring *"Effective from/to; rule version; approver"*. Its **Blocking (matrix)** item is *"Confirm configuration ownership"*, which is adjacent to this: whoever owns the configuration owns whether an open-ended rate may be silently closed.
+  - **Why an open-ended previous rate is the normal case, not an edge case:** the same rule records that FCC *"has `StartDate`/`EndDate` columns but uses neither — **rates are overwritten in place**"*, one row per craft, no history. So every rate migrated from FCC arrives with no effective-to date, and the first ERP rate change on any of them hits this path.
+  - [../decisions/](../decisions/) — nothing on rate-row succession, back-fill or the error. [../decisions/2026-09-03-l12-bulk-rate-update-uniform-delta.md](../decisions/2026-09-03-l12-bulk-rate-update-uniform-delta.md) covers a uniform bulk increase, not the dating of the row it replaces.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This one reads as a UX complaint and is a **data-history rule**: silently writing an end date onto an existing rate row changes what a historical recalculation will produce for every week in the overlap, which is the entire point of PAY-008. It needs the owner named in PAY-008's blocking item, not a front-end fix.
+- **Blocked:** closing PAY-008; any bulk rate rollover run against FCC-imported rates.
+- **Owner:** Corrina Bustos / Brian Petros (they roll the rates over each fiscal year); PAY-008's *configuration ownership* question needs answering with it.
+
+## Primary craft code constrained to the employee type, and changing a craft code in DAS
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Two UAT 6 rows, kept together because one is unanswerable without the other. **Rules:** PAY-009, PAY-010, PAY-015.
+- **Question:** **(a)** should the **primary craft code** offered for an employee be constrained to that employee's **employee type** — and if so, by what mapping, given that nothing today relates the two objects? **(b)** may a dispatcher **change an allocated employee's craft code in DAS**, and if so does that change the day's **pay rate**?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Primary craft code should match the employee type*, [UAT 6] (*"The primary craft code offered should be constrained to the employee's type."*) and NOT DONE *Option to change craft code in DAS*, [UAT 6] (*"DAS needs a way to change an allocated employee's craft code."*). **⚠️ Register caveat: both are UAT 6 rows — entered NOT DONE without a code check, status assumed.**
+  - **(b) runs straight into a `verified` decision.** [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) (Corrina Bustos, confirmed Brian Petros, `status: verified`): the day's rate is driven by *"a **secondary craft code assigned for that day**"*, and *"**Only the crane superintendent or payroll** may set the day's craft/rate — never the employee ('would create extra double-checking')."* **It does not name the dispatcher.** So a DAS craft-code control is not forbidden by it and is not permitted by it: whether Lisette Anzaldo counts as "the crane superintendent or payroll" for this purpose is precisely what is unwritten. A control that changes the employee's *primary* craft rather than assigning a *secondary craft for the day* would contradict it outright.
+  - **(a) has no mapping to constrain against.** [*Employee types — FCC holds several per employee; we store one*](#employee-types--fcc-holds-several-per-employee-we-store-one) asks whether an employee may hold several types with one primary, **and its second half is this question**: *"does `EmployeeType` become the single source of truth for a field role, with `CraftRoleType` deriving from it?"* Until that is answered there is no employee-type→craft-code relation to filter a picker by. See also [*Field role vs portal role — one list in FCC, three representations in TCG*](#field-role-vs-portal-role--one-list-in-fcc-three-representations-in-tcg): the same role concept exists in `DepartmentRole`, `EmployeeType` **and** `CraftRoleType`, and nothing says which derives from which. **A cross-reference has been added to the *Employee types* entry pointing here.**
+  - Kept separate from that entry deliberately: *Employee types* is a **data-model** question (how many types per employee, which object is authoritative). This is a **behaviour** question (what a picker offers, and who may change a rate-bearing field on the board). They share a dependency; they are not the same ask, and merging them would hide (b) entirely.
+  - Craft/premium context that survives whatever (a) decides: [*Pay rate follows the employee, not the role worked — Kyle and Corrina, unrecorded*](#pay-rate-follows-the-employee-not-the-role-worked--kyle-and-corrina-unrecorded) (**resolved**) records that role still governs **premium eligibility** even where it does not govern the base rate — *"someone paid at group 9 can go out as an oiler and qualify for oiler long boom, or as a third man and not"*.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). (b) is the one to be careful with: a craft-code control on the DAS board is a **pay-rate control**, and the only `verified` rule on the subject restricts who may operate one.
+- **Blocked:** both UAT 6 rows; any employee-type→craft-code filtering; the DAS allocation panel's field set.
+- **Owner:** Corrina Bustos / Brian Petros (they own who may set a day's craft) with Lisette Anzaldo for the DAS affordance.
+- **Pointer:** [../dispatch/gaps.md](../dispatch/gaps.md) → *Changing an employee's craft code in DAS — pointer, owned by payroll*.
+
+## DAS dispatchability is an employee-type attribute — pointer, owned by dispatch
+
+- **Status:** open — **answer owned by dispatch**, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
+- **Why it lands here too:** the attribute the answer needs belongs to this module's objects. [fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §2 records FCC's `Dispatchable on: Jobs/Quotes (J), Work Orders (W), Both (B), or None (N)` as an attribute of the **employee type**, and states that it is *"a field the ERP has nowhere"*. Two open entries here are upstream of it: [*Employee types — FCC holds several per employee; we store one*](#employee-types--fcc-holds-several-per-employee-we-store-one) and [*Field role vs portal role — one list in FCC, three representations in TCG*](#field-role-vs-portal-role--one-list-in-fcc-three-representations-in-tcg).
+- **Read:** [../dispatch/gaps.md → *Sales Persons in the DAS Employees tab…*](../dispatch/gaps.md#sales-persons-in-the-das-employees-tab--dispatchability-is-an-employee-type-attribute-we-do-not-have)

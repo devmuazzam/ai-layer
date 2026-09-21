@@ -117,3 +117,9 @@ tags: [module/payroll, kind/rule, open-questions]
   union's reading. **The ERP currently overpays both holiday-start cases** (14 TRI and 18 TRI
   instead of 8/4/2 and 8/4/6) because the A4 fix floors post-midnight slices at the anchor day's
   ×3. Rest trigger, weekly OT and meal spans were not ruled on.
+- **⚠️ Contested 2026-09-14, Brian Petros (workbook).** His "contract" reading pays a holiday-start
+  shift's first eight worked hours at triple, 00:00–06:00 included, with no top-up: $2,400 on
+  22:00→10:00 at $80, against the ruling's $3,360. He calls the union reading a $1,440
+  overpayment. The ruling above is unchanged. See
+  [../holiday-guarantee-scenario-2026-09-14.md](../holiday-guarantee-scenario-2026-09-14.md) and
+  [../gaps.md](../gaps.md) → *Holiday-start guarantee — Brian's 2026-09-14 workbook…*.

@@ -130,11 +130,11 @@ itself is not annotated.
 
 ## What this supersedes in the code
 
-Main carries PR #561 `feat/crew-ticket-read-only-copy` (merged 2026-09-12) and PR #568: one
-`JobTicket` row per allocation, with `JobTicket.primaryTicketId` (self-FK,
-`apps/api/prisma/schema.prisma`:4514) linking the Operator's row to the Oiler's as a read-only
-mirrored copy (`apps/api/src/usecase/job-tickets/job-tickets.service.ts` `linkCrewTickets`,
-line 960). That was built **provisionally, to get the verdict** (gap entry, update
+Main carried PR #561 `feat/crew-ticket-read-only-copy` (merged 2026-09-12) and PR #568: one
+`JobTicket` row per allocation, with a `primaryTicketId` self-FK linking the Operator's row to
+the Oiler's as a read-only mirrored copy. That mechanism has since been retired by
+SCRUM-CREW-TICKET (the link column, the mirroring and its linking service are removed), so it
+is no longer cited by line number. The mechanism was built **provisionally, to get the verdict** (gap entry, update
 2026-09-12). This decision supersedes that shape. **Target:** one ticket row per asset group
 per day, with a ticket-employees join carrying a primary flag and per-employee labor entries
 — FCC's `FMS_JOB_TICKET` + `FMS_JOB_TICKET_EMP_UNIT` shape. The link column and the mirrors

@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-09-11
+updated: 2026-09-19
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -253,7 +253,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** needs assignment — Ryan Adams / Joe Schacatano (sales & quotation) for whether the
   entry point is wanted; ehtesham.anwar owns the 2026-05-05 access-control objection above.
 
-
 ## Sub-category association cycles — rejected at self-reference only, not at multi-hop
 
 - **Status:** open
@@ -282,7 +281,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** nothing is blocked. The Resources tab now guards the ancestor path, so a looping
   catalog no longer produces garbage rows. This asks whether the rule belongs in the API instead.
 - **Owner:** needs assignment — whoever owns asset-management catalog rules.
-
 
 ## Quotation duplicate — what a copy carries, and what a fresh copy resets
 
@@ -588,7 +586,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   15 Sep* is inclusive of the whole of 15 September, or expires at the instant that day begins.
   Knowing the zone does not decide inclusivity. **Stays open.**
 
-
 ## Should editing a quotation adopt the customer's current price list?
 
 - **Status:** open
@@ -627,6 +624,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md) §6, slide 6) — silent on re-pricing. So
   the legacy default is "keep the list it was written against"; whether the ERP should re-price on
   edit still needs the client.
+- **See also (2026-09-17):** Brian's FCC deep dive ([fcc-billing-resource-configuration-deep-dive-2026-09-16.md](fcc-billing-resource-configuration-deep-dive-2026-09-16.md) §7–§9, recommendation) reports these FCC numbers:
+  - of historical quote lines, 11,284 took the price-list rate and kept it, and 458 took it and were then edited;
+  - `OriginalRate` stores the resolved rate and `Rate` the final one.
+
+  It recommends freezing the resolved rate, its source and the final rate on the line, so that *"changing the PREFERRED Price List next month must not alter this historical Quote"*. That supports keeping a saved quotation's rates. It does not say what an edit should do to the quotation's price-list **selection**. Not a ruling.
 
 ## Should a quotation with a past job date or valid-until still be editable?
 
@@ -1067,6 +1069,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   quote so nobody forgets it ever"*, Brian Petros, 2026-05-05 @ 1:03:00); Fouzan Shakil on (c),
   which is naming rather than policy.
 
+- **Update 2026-09-19 (UAT register) — UAT 1 asks for the hover total to be removed, which is weaker than it looks.**
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Remove the hover total in Resources*, [UAT 1]:
+  *"No column named 'Amount Total' ever existed — the headers are Item / Quantity / Measuring Unit / Rate / Amount / Comments.
+  The surcharge lines were removed from the hover tooltip, but a **'Final Amount' total still appears on hover whenever a
+  discount or price hike is present**."* `resource-row.amount-cell.tsx:75`.
+  Against [../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md](../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md)
+  rule 2 — *"Each resource row's Amount is the amount **before** any adjustment"* — and rule 3 — *"**The footer rows carry the
+  adjustment money**"*. A per-row *Final Amount* on hover is adjustment money surfacing on the row, which is what that
+  decision routes to the footer, and it is the second of the two numbers this entry already names as *"Final Amount"*.
+  **Flagged as the weakest of the six conflicts logged this day**, and deliberately so: the decision governs the **Amount
+  column**, and a tooltip is not the column. It may be exactly the residual UI this entry was opened for, or it may be
+  harmless. The UAT row also mis-names the thing it wants removed, so the request itself is not clean. **Do not treat
+  this as a contradiction to resolve; treat it as one more reason to answer this entry.** Nothing adjudicated.
+
 ## Estimate defaults per resource type / job type / yard — FCC has them, TCG has no job type at all
 
 - **Status:** open
@@ -1165,6 +1181,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   *Default as Sub-Item* (§8.2). Unchanged: (b) still needs `03_UnitPeople_Resources` opened; (g)
   still Joe's; (h) the NULL-configuration behaviour; (i) what `M` means. All of this is FCC as held,
   not a TCG decision on what the ERP adopts.
+
+- **Update 2026-09-16 (Joe Schacatano, dedicated call).** The owner narrowed what the template seeds on the **quote**: its **estimate billing codes only**. The *Unit/People* half is a dispatch requirement and must not populate the quote ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)). So the main question splits: estimate lines seed the quotation, and the Unit/People set seeds the job and dispatch side. (b) now matters for dispatch, not for quoting.
+  - **(d) moves.** Joe (24:27) wants the mob/demob roll-up *"so that we're not showing 50 billing codes"*. He also wants (24:46) *"something on our billing codes to have the option of adding it all up to where it totals into our mob and demobs"*. That is a billing-code-level option, like FCC's *Default as Sub-Item* (§8.2 of the source doc), which TCG does not have.
+  - The customer quote shows only the mob line, the demob line and the lines after demob. This confirms FR-1/2/6/7 of [mobilization-and-demobilization.md](mobilization-and-demobilization.md).
+  - The lines after demob come from the template. Crew OT/DT and traffic control on quote OM-29537 were added by hand (26:03).
+  - **Configurations are separate resource types.** Joe: *"after this job, we made separate ones for the different configurations"* (26:31; FCC ID 76 *360 Ton All Terrain w/Luffer*).
+  - Ryan has built a spreadsheet mob/demob tool, and Joe offered to show it on a separate call. The mob/demob walkthrough is deferred to the week of 2026-09-28.
+
+  Source: [../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §1, §3, §4.
 
 ## FCC estimate templates were already extracted — and the seeder flattened them to one FK
 
@@ -1867,6 +1892,25 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   §1). Nothing in the drop says per-user Microsoft 365 sending vs a from-name / reply-to change, or
   whether DocuSign stays underneath. Still Joe's and CodingCops'.
 
+- **Update 2026-09-17 (2026-09-15 ERP live demo 01, [../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §4–§5):**
+  Joe raised it again (57:16), now as **retiring DocuSign altogether** — *"I would like to get away
+  from DocuSign completely… I want it to be personal"*; *"We can get rid of DocuSign. We're not paying
+  a subscription on it"* — **self-labelled "just my opinion from the salesperson"**, so not a
+  decision. Ryan Adams: *"I think you nailed it"* (58:52). As built on 2026-09-15, *send quotation to
+  customer* offers **send via DocuSign** or **send via e-mail**, and the e-mail path has **no
+  electronic signature** (Ehtesham 57:47). Brian suggested a later *send through the portal* option
+  (57:59). Ehtesham (59:04–59:22): *"we are going to get rid of DocuSign. We have already discussed
+  and finalized"* a **customer portal** with electronic signature or email reply and **one-time
+  customer credentials** — no decision note, ticket or scope in the vault records that finalisation.
+  Ryan (59:39) wants to show CodingCops a platform he uses as a model (the name did not transcribe);
+  Joe will schedule a separate call. **New, same surface — redlines** (Ryan 54:21–57:14): when a
+  customer redlines the DocuSign contract and terms are agreed by email, where does the revised
+  contract go so **Accounting can see the governing terms**? Answered only with attachments /
+  internal change request; nothing marks a redlined agreement as superseding the signed quote. The
+  entry now asks: **(i)** is DocuSign retired for in-house portal signing, and when; **(ii)** until
+  then, does *send via e-mail* need a signing path; **(iii)** where does a redlined, email-agreed
+  contract live, and how does accounting know it governs? Owner unchanged, plus Ryan Adams for (iii).
+
 ## Billing-code and price-list rules the E2E suite asserts with no written source — PR #488
 
 - **Status:** open
@@ -2312,3 +2356,131 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   - [*"Customer PO" on the quotation — which of three things does it mean?*](#customer-po-on-the-quotation--which-of-three-things-does-it-mean): its 2026-09-05 answer and 2026-09-09 update.
 - **Blocked:** treating the relabelled acceptance block, the DocuSign field locking and the write-back as settled spec.
 - **Owner:** Brian Petros for the location in (c) and (d) (his 2026-09-05 call); Ryan Adams / Joe Schacatano for the printed acceptance block in (a) and (b).
+
+## Quote line items vs dispatch resources — the associated set auto-fills the quote, and the sales owner says dispatch resources must not be quoted
+
+- **Status:** open — **principle decided 2026-09-16** ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)): the quote carries billing codes, resources are dispatch-side. The model — (a)–(d) in the 2026-09-16 update below — is still open
+- **Asked:** 2026-09-15 — Joe Schacatano (VP of Sales), ERP live demo 01, while the *100 Ton* sub-category's associated set auto-filled a quotation's Resources ([../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §2; transcript 39:38–45:27). Ehtesham Anwar called it *"a critical thing that we have missed a while in the discovery"* (45:10) and, at close, *the* missing configuration step — *"assets configurations for the field versus asset configuration for the quotation"* (1:16:04). No ticket.
+- **Question:** three parts. **(a)** Confirm the principle Joe stated: a quotation carries only **charged line items** — for a 100-ton job *"100 ton operator load, travel permit, and a surcharge. That's it."* (40:17) — while **dispatch resources** (*"Oiler, operator, semi, those things don't get charged. Those are the resources utilized in dispatching"*, 39:45) are never quote rows: *"you don't want the 10 resources populating with it, with charges for it"* (42:33). If so, associated-field-asset sets stop auto-populating quotations. **(b)** What is the relationship between **billing codes, resources and field assets** — which charged line implies which dispatch resources, and where is that configured? (Ehtesham's proposal, 44:36: a resources tab or flag on the sub-category; Joe, 42:33: it *"could be a subcategory… we have to just keep them separate when it's quoted"*.) **(c)** Joe (43:28) says a customer's price list applies *"when you're quoting for that customer **or scheduling** that customer"* — what does a price list do at scheduling time?
+- **Sources checked:**
+  - [../decisions/2026-09-04-always-included-associated-children-cannot-be-removed.md](../decisions/2026-09-04-always-included-associated-children-cannot-be-removed.md) (`reference`, CodingCops design, acknowledged once by Ryan Adams) — associated children auto-populate **onto the quotation** and *Always Included* ones cannot be removed. (a) contradicts this for dispatch-only resources such as the oiler and operator.
+  - [../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md](../decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md) (`reference`, Syed Haris) — job resources and DAS slots are materialised from the quotation's priced lines plus *Always Included* children. If dispatch resources leave the quote, the DAS needs another source for those slots.
+  - [../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md](../meetings/2026-09-02-sprint-demo-tickets-payroll-and-crew-configuration.md) item 2 — Joe: quotes populate from resource types; *"the additional items like the riggers… We don't want that to populate."* Same direction, two weeks earlier.
+  - [*Estimate defaults per resource type / job type / yard*](#estimate-defaults-per-resource-type--job-type--yard--fcc-has-them-tcg-has-no-job-type-at-all) above — FCC's template model; its (g) (a 110 Ton requiring Operator + Oiler) is already Joe's to answer.
+  - Adjacent, not the same question: [../dispatch/gaps.md](../dispatch/gaps.md) → *Requested vs dispatched resources*; [../assets/gaps.md](../assets/gaps.md) → *Nomenclature for the template level*.
+  - Joe (41:07) says he already showed Brian the difference; Brian (41:38) says he sent it to CodingCops. That material is not in the vault.
+- **Blocked:** quotation Resources auto-fill from the sub-category; the sub-category associated-field-asset configuration; conversion → job resources → DAS slots.
+- **Owner:** Joe Schacatano with Ryan Adams (the billing-code / resource / field-asset relationship), relayed by Brian Petros; CodingCops for the model.
+- **Update 2026-09-16 — the principle is decided; the model is not.** On a dedicated follow-up call ([../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §1–2) Joe Schacatano explained the relationship Ehtesham asked for on 09-15 (44:43), and confirmed it when asked directly:
+  - The estimate carries **billing codes only**. Unit/People resources do not populate the quote (6:11 *"Correct."*).
+  - *"the billing codes should dictate the resources and the assets for dispatch to assign"* (7:09).
+  - A load's tractor, trailer and driver have **no billing code** of their own: *"their costs are built into that code"* (10:48–11:10).
+  - The salesperson picks the machine from one drop-down, with **no unit-type step** (15:00).
+
+  Recorded as [../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md) (`verified`; conflicts with the 2026-09-04 Always Included note). Part (a) above is answered; (b) and (c) continue as the open items below.
+
+  **Still open, each answerable in a line:**
+  - **(a)** Is the dispatch requirement held on the resource type × job type configuration (FCC's Unit/People; `SubCategoryAssociatedResource` today), or on the billing code (Joe 6:43: *"the codes should generate the resources"*)?
+  - **(b)** What happens to the Unit/People rows already on quotations, and to the Always Included no-delete rule on the quotation screen?
+  - **(c)** With the category step gone, how does the one drop-down reach non-machine lines (tools and rigging, employee types, permits, lift plans)?
+  - **(d)** Who keeps billing-code amounts right? Joe answered *"Right"* to *"the stakeholder team"* (11:21), probably an ASR error for *sales team*.
+  - The 09-15 price-list-at-scheduling question (part (c) above) was not raised on 09-16 and stays open.
+
+  Ehtesham (15:35) is designing the change against the build. The mob/demob session with Joe is the week of 2026-09-28.
+- **Update 2026-09-17: Brian's FCC deep dive** ([fcc-billing-resource-configuration-deep-dive-2026-09-16.md](fcc-billing-resource-configuration-deep-dive-2026-09-16.md); his and TCG's AI model, a recommendation, not a decision). On (a) it recommends **both**: requirements may come from a billing-code rule (Operator Load → tractor, trailer, crew), a service-profile rule (the 350 package), a profile variant (Hourly w/ Mob adds a tractor), or a manual Dispatch add. It models this as a *Dispatch Requirement Template* beside a *Billing Bundle Template*, both hung off a *Service Profile*. FCC evidence it adds:
+  - quote OM-40439 stored type-level Unit/People placeholders only, with every `UnitCode` NULL;
+  - job OM60788 resolved them to real units and employees;
+  - job OM60788 also ran a 40 Ton (4003) with **no billing line**;
+  - FCC's 350 configuration has no usable personnel template.
+
+  (a) stays Joe's to confirm. The document's own §34 lists it as open too.
+
+- **Conflict logged 2026-09-19 — the whole UAT Resources screen is built on the reading this decision rejects, and the register never mentions the decision.**
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) carries **20-plus rows** that treat quotation
+  **Resources** as priced lines and argue about their pricing chrome — the Margins column removed from Resources,
+  the Adjustment column off the print, the hover total on a resource row, *Resources Total Value should not round*,
+  *Permit line items in Resources*, the removed rigger showing at $0, the unsaved-resources warning, and the rest.
+  Every one of them presupposes that a resource is a **priced quotation line**.
+  [../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)
+  — **`status: verified`, Joe Schacatano (TCG VP of Sales), and the only `verified` quotation decision in the vault** —
+  says the opposite: *"At the quoting stage, the estimate is **billing codes only**"*, *"**Resources exist for dispatch**"*,
+  *"A resource **has no billing code of its own**"*. On tape, 39:45: *"Oiler, operator, semi, those things don't get charged."*
+  **The register was assembled on 2026-09-18, two days after that decision, and never cites it.** Its rows are
+  checked against `origin/main @ f800a3972`, i.e. against the build — and the decision note already records that
+  the build contradicts it (*"As built (Ehtesham, 5:46 and 14:25): the quotation populates Unit/People rows"*).
+  **What this means for anyone working the register:** a Resources row marked DONE is DONE against the current
+  screen, not against Joe's model; and a Resources row marked NOT DONE may be work that should not be done at all.
+  This is **not** an adjudication — the principle is decided, the model (a)–(d) in the 2026-09-16 update above is
+  still open, and nothing here reverses a shipped row. It is a warning that the register and this entry are
+  describing two different products. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
+
+## Resources Total Value — UAT asks for exact decimals, the code deliberately strips cents
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Not a ticket question.
+- **Question:** may a quotation **resource rate** carry cents? The UAT 3 ask reads as a display complaint but lands on a **pricing rule**: if rates stay whole-dollar, the Total Value cannot show anything but a whole number, and no formatter change will satisfy it.
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Resources Total Value should not round*, [UAT 3]. The session sheet: *"In the Total Value field in Resources, there should be exact decimal values. There is no need to round off."* The register's finding: *"Display formatting is not the culprit — rates are deliberately whole-dollar: cents are stripped on keystroke and rejected with 'Rate must be a whole number (no cents)'. The complaint stands, but this is a pricing rule to revisit with the client, not a formatter to fix."*
+  - **The rule it collides with:** [../decisions/2026-08-31-quotation-resource-rate-whole-dollars.md](../decisions/2026-08-31-quotation-resource-rate-whole-dollars.md) — *"A resource line's **Rate must be a positive whole number**"*. In code: `apps/web/src/features/quotations/utils/resource-rate.ts:33-35` — `Rate must be greater than 0` and ``Rate must be a whole number (no cents) — got …``.
+  - Nothing in [../decisions/](../decisions/) revisits whole-dollar rates, and nothing anywhere says the **Total** is computed to a different precision than its rows.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). Read literally the row asks for a formatter change, and a formatter change will not produce cents that the rate never held. Whoever answers must answer the pricing question, not the display one. Two sub-questions, each a line: **(a)** may a rate carry cents? **(b)** if rates stay whole, may a **computed** total (qty × rate, or a mob/demob parent sum) ever be non-integral — and if not, is there anything left of the complaint?
+- **Blocked:** any change to `resource-rate.ts` rounding; the Total Value display; whether [2026-08-31-quotation-resource-rate-whole-dollars.md](../decisions/2026-08-31-quotation-resource-rate-whole-dollars.md) needs revisiting.
+- **Owner:** Joe Schacatano (sales, quotation pricing) with Melissa McNutt. Fouzan Shakil wrote the whole-dollar rule and can say what it was protecting.
+
+## Permits in Resources — is a permit a quotation line at all
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Raised in **UAT 2 (2026-09-09)**, explicitly deferred past the 15 September deadline and assigned to the product team; never answered since.
+- **Question:** does a **permit** appear on a quotation's **Resources** table — as a priced line, an unpriced line, or not at all — and if it does, what does converting it to a job produce?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Permit line items in Resources*, [UAT 2]. The session sheet: *"Figure out the permit functionality in **Resources**. Product team to figure this out. **Not to be included in the 15 September deadline.**"* The register: *"Still deferred. The product team owns the definition… Still undefined."*
+  - **The one adjacent client statement, and it cuts across this:** [../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md) (`status: verified`, Joe Schacatano) — a quotation carries **billing codes only**; resources are dispatch-side. Quoted in that note, Joe at 40:17 names what a 100-ton quote contains: *"100 ton operator load, **travel permit**, and a surcharge. That's it."* **So a permit is on his estimate as a billing code — which is an answer to a different question than the one UAT 2 asked**, because UAT 2 asks about the *Resources* table. Do not read the one as settling the other.
+  - [../decisions/2026-09-11-quote-to-project-permits-plans-flow.md](../decisions/2026-09-11-quote-to-project-permits-plans-flow.md) covers the quote→project permit flow but not a Resources line.
+  - [../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md](../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md) — Melissa McNutt: *"we don't bill the annuals to customers"*, so at least one permit class is not a customer-facing line at all.
+  - Related, already open — do not duplicate: [*Quote line items vs dispatch resources…*](#quote-line-items-vs-dispatch-resources--the-associated-set-auto-fills-the-quote-and-the-sales-owner-says-dispatch-resources-must-not-be-quoted), which asks what the Resources table is *for*. This entry is a sub-case of it and should be answered after it.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This one is unusual: the row is itself a **deferral**, so the register records that nobody has decided, which matches the vault.
+- **Blocked:** any permit work on the quotation Resources tab; the post-15-Sep permit-class work.
+- **Owner:** the product team, per the UAT 2 sheet's own words — Joe Schacatano for what belongs on an estimate, Liz Lopez for the permit side.
+
+## Billing Code Flags and Surcharge checkboxes — the expected behaviour was never defined
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Raised in **UAT 1**, never answered.
+- **Question:** on **Edit Billing Code → Flags and Surcharge**, what is each checkbox supposed to do? Specifically, what does `applySurcharge` mean for a code that is never quoted, what do the other flags on that panel gate, and does any of them interact with the one-surcharge-per-quote rule?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → NOT DONE *Billing Code Flags and Surcharge checkbox behaviour*, [UAT 1]. The session sheet: *"Under **Edit Billing Code > Flags and Surcharge**, the checkbox behaviour needs to be confirmed/figured out."* The register: *"Deferred to the product team — the expected behaviour was never defined, so there is nothing to build or verify against."*
+  - **The nearest written rule, which covers only one of the checkboxes:** [../decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md) (Melissa McNutt, `status: verified`) — *"Per line, only **membership** varies — `BillingCode.applySurcharge` decides whether a line is inside the surcharge base."* That gives `applySurcharge` a meaning; it gives the rest of the panel none.
+  - Still open next to it: [*The surcharge is blanket in the contract but per-resource in the model, and it has no name*](#the-surcharge-is-blanket-in-the-contract-but-per-resource-in-the-model-and-it-has-no-name) — (a) *"The T&C is unconditional…; should the ERP enforce that, or is per-line opt-out intended?"* **That is the same question this UAT row asks, from the contract end.** Answer them together.
+  - [billing-code-and-price-list.md](billing-code-and-price-list.md) — no per-flag semantics. [../decisions/2026-09-11-billing-code-type-master-dropped.md](../decisions/2026-09-11-billing-code-type-master-dropped.md) touches the type field, not the flags.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This row asks for a definition rather than a change, so there is nothing here to build from and nothing to verify against; that is the finding.
+- **Blocked:** verification of the Flags and Surcharge panel (QA has no expected behaviour); the per-line surcharge opt-out question above.
+- **Owner:** Melissa McNutt (she owns the surcharge rule) with Joe Schacatano.
+
+## A billing code rate may never be zero — shipped and enforced at every layer, adjudicated by nobody
+
+- **Status:** open
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Not a ticket question: the work is done; what is missing is the decision behind it.
+- **Question:** is *"a billing code's default rate must be greater than zero"* a **product rule**, or an expedient? It is in production, enforced on create and on edit, server and client, and **no named human is recorded as having decided it.** Two halves need a line each: **(a)** may a billing code legitimately have a `0` rate — a no-charge or included code — and if so how is that expressed now? **(b)** the UAT 3 wording asks for a different thing from the UAT 1 wording (see below) — is a zero rate *invalid input*, or a *reason not to create the code at all*?
+- **Sources checked:**
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → **DONE** *Billing code rate can never be zero*, [UAT 1] — *"Enforced at every layer — API validation on create and edit, and the same rule client-side. Also fixed for price listings in the same commit. Raised again in UAT 3."* sha `ba99841ee`.
+  - The two session sheets do **not** say the same thing. UAT 1: *"The **Billing Code default rate** should not be zero. Please add a restriction to prevent this."* UAT 3: *"In Resources > Quotation: Billing Code default is set to 0. **If the Billing Code is [0], the Billing Code should not be created.**"* The first is a field validation; the second is a creation gate keyed on a value the *quotation* showed. One row was built; nobody checked whether the other was the same request.
+  - In code, as shipped: `apps/api/src/presentation/billing-codes/dto/create-billing-code.dto.ts:57-60` — `@IsNumber() @IsPositive() defaultRate!: number`; `update-billing-code.dto.ts` extends `PartialType(CreateBillingCodeDto)`, so edit inherits it; `apps/web/src/features/billing-codes/schemas/billing-code.schema.ts:33-39` — *"Default rate must be greater than 0"*; `apps/web/src/features/billing-codes/views/create-billing-code-modal-base-fields.tsx:79`.
+  - [../decisions/](../decisions/) — **nothing.** No note decides a billing-code rate floor. The only adjacent rule is about a different object: [../decisions/2026-08-31-quotation-resource-rate-whole-dollars.md](../decisions/2026-08-31-quotation-resource-rate-whole-dollars.md), a **quotation resource** rate — *"not a number, or `<= 0` → `Rate must be greater than 0`"*.
+  - **Evidence that zero rates exist upstream, not against the rule but worth answering first:** [*Billing-rate effective dating for pricing sheets — raised by the client, no design yet*](#billing-rate-effective-dating-for-pricing-sheets--raised-by-the-client-no-design-yet) records that FCC's `UNION_CRAFT.BillingRate` is *"0.000 on every sampled row"* — a dead path there, but it means a `0` rate is representable in the system this one imports from.
+- **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This is the pattern most worth flagging: **a pricing rule reached production from a UAT bullet, with no decision note behind it.** Recording it does not question the rule; it gives it a place to be confirmed or unwound.
+- **Blocked:** nothing hard — the rule is shipped and reversible. Recorded so it does not become settled product intent by being old.
+- **Owner:** Joe Schacatano (billing codes are his to price) with Melissa McNutt.
+
+## Employee Billing Code and Employee Pay — pointer, owned by payroll
+
+- **Status:** open — **answer owned by payroll**, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
+- **Why it lands here too:** billing codes are this module's object. If an employee's pay ever derives from, or constrains, their billing code, then a billing code stops being purely a pricing artefact and the create/edit rules in this register change shape.
+- **Read:** [../payroll/gaps.md → *Employee Billing Code and Employee Pay…*](../payroll/gaps.md#employee-billing-code-and-employee-pay--asked-in-uat-1-never-answered-and-the-schema-keeps-them-independent)
+
+## Tool and Rigging allocation from the quotation — pointer, owned by assets
+
+- **Status:** open — **answer owned by assets**, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
+- **Why it lands here too:** the UAT 1 ask is that tool & rigging allocation *"come from the quotation"*, so it asserts a quotation→job carry-over for a resource class. It runs straight into [*Quote line items vs dispatch resources…*](#quote-line-items-vs-dispatch-resources--the-associated-set-auto-fills-the-quote-and-the-sales-owner-says-dispatch-resources-must-not-be-quoted) and the `verified` [2026-09-16 decision](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md), under which dispatch-side resources are not quotation lines at all.
+- **Read:** [../assets/gaps.md → *Tool and Rigging allocation from the quotation…*](../assets/gaps.md#tool-and-rigging-allocation-from-the-quotation--who-supplies-it-in-what-form-and-how-it-reaches-the-job)

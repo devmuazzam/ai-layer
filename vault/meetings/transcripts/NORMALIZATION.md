@@ -148,3 +148,49 @@ Petros uses in the same passage Corrina's lines were heard as "page straight thr
 train" sits between "build up a crane" and "the buildup for every crane"; "graph ports/quotes"
 both occur inside the craft-code bulk-rate discussion; "Cal, correct me" addresses Kyle Harlow,
 who answers. Left unchanged: the items listed in the file's own header note.
+
+---
+
+# Pass 6 — 2026-09-17 (two new transcripts only)
+
+Applied to `2026-09-15-erp-live-demo-01.md` and `2026-09-16-resource-types-and-billing-codes.md`;
+no earlier file was touched. (The 2026-09-10 file's 23 substitutions are listed in its own header
+note and were not logged here as a pass.)
+
+| File | n |
+| --- | --- |
+| `2026-09-15-erp-live-demo-01.md` | 76 |
+| `2026-09-16-resource-types-and-billing-codes.md` | 35 |
+
+**2026-09-15 — 76, judged in context:** "graph code(s)" -> "craft code(s)" (9); "graph board(s)" -> "craft code(s)" (3);
+"draft codes" -> "craft codes" (2); "graph based" -> "craft based" (3 — the *Craft-Based Hourly*
+compensation type); "graph modifier(s)" / "prop modifiers" -> "craft modifier(s)" (4 + 1);
+"train(s)" / "frame(s)" / "green(s)" -> "crane(s)" (9); "the green guys" -> "The Crane Guys" (1);
+"turn" / "done" -> "ton" (2); "whiler" / "Eiler" / "Euler" / "boiler" / "order" -> "oiler" (6);
+"crop" / "props" / "drug(s)" -> "truck(s)" (6); "Samantha" / "Sam Sarah" -> "Samsara" (3 + 2);
+"left plan" / "left line" -> "lift plan" (5); "side line" -> "site plan" (1); "DL allocation" ->
+"daily allocation" (1); "A to B file number" -> "ADP file number" (1); "Taylor" -> "trailer" (1);
+"operator Rd." -> "operator load" (1); "billing quotes" -> "billing codes" (2); "quoted 2" ->
+"quoted to" (1); "FA permit" -> "FAA permit" (1); "send code for approval" -> "send quote for
+approval" (1); "status to one" / "mark as one" -> "won" (2); "pre-label form" -> "pre-labor form"
+(1); "tools and rankings" -> "tools and riggings" (1); "notation" -> "quotation" (1); "DocuSane" /
+"send via document" -> "DocuSign" (2); "snack" -> "snag" (1); "intra" -> "Entra" (1); "FCC
+logging" -> "FCC login" (1). New evidence rule used here: **"crop / props / drug" -> truck** is
+pinned by the same speaker's *"operator load is going to have operator and the truck"* (30:24) and
+the Samsara vehicle-ID reply (29:48); it does **not** license "frog" elsewhere, which stays
+unresolved.
+
+**2026-09-16 — 35, judged in context:** "Maine"/"mean" -> "Main" (4; the FCC Main tab);
+"coding stage" -> "quoting stage" (1); "done"/"turn" -> "ton" (4);
+"trains"/"train"/"grain(s)"/"screen"/"cream"/"queen" -> "crane(s)" (11); "9010" -> "90 ton" (2);
+"Laufer"/"lover"/"loffer" -> "luffer" (6); "mode" -> "mob" (2); "MobDMob" -> "mob/demob" (1);
+"debop" -> "demob" (1); "demo" -> "demob" (3). "luffer" is pinned by FCC resource type 76, *360 Ton
+All Terrain w/Luffer* (`assets/fcc-units-and-schedule-types.md` §6); "9010" by the speaker's own
+"I see two 90s"; "screen" occurs only as "mobile screen"/"crawler screen" in a question about crane
+types; "demo" -> "demob" only inside the demobilization block (23:52) — "demos" (16:19, meaning
+walkthroughs) is unchanged; "mean" -> "main" only where it names the tab (3:54, 12:21), not in "can
+one thing mean" (4:21).
+
+Both source .docx files carried in-turn line breaks as U+2028; they were rendered as newlines
+(layout only). Left unchanged: the items listed in each file's own header note, including "350 time
+frame", the same pattern pass 3 left unresolved.

@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-09-07
+updated: 2026-09-19
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -90,7 +90,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   page names no third-party integration at all
   ([codingcops-sow-and-engagement-terms.md](codingcops-sow-and-engagement-terms.md)).
 
-
 ## Map provider, no-key fallback, and which table owns address coordinates
 
 - **Status:** open
@@ -125,7 +124,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `SCRUM-414` (Blocked); any move of coordinates onto `addresses`.
 - **Owner:** Brian Petros (data and integrations — the only recorded voice on address
   coordinates), with Patrick for the Mapsly half.
-
 
 ## What a newly created tenant must contain — provisioned defaults, or an empty portal
 
@@ -257,8 +255,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Whether TCG needs the lookup at all is a CodingCops call, not a TCG one, so (b) comes back if
   TCG overrules it. **(a), (c) and (d) are unaffected. The entry stays open.**
 
-
-
 ## Departments — does archive replace delete outright, and what may an archived department still be used for
 
 - **Status:** open
@@ -325,6 +321,24 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (`meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:68, :72).
 - **Cross-link:** payroll/gaps.md → *Pointers — departments archive* (STRUCTURE.md:40 routes the
   `departments` usecase to payroll, and (b) turns on employee assignments)
+
+- **Conflict logged 2026-09-19 (UAT register vs the app-wide archive decision) — 56 hard deletes survive, and the row that covers them is marked DONE.**
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → **DONE** *Departments editable, roles under departments, soft
+  delete, checklist type enum*, [UAT 1] — *"Four separate UAT 1 asks, all verified… 19 models carry an archive field with
+  archive/unarchive endpoints… **Caveat on soft delete: 56 delete routes remain hard deletes, including removing a role from a
+  department.**"*
+  Against [../decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  (Fouzan Shakil, `status: reference`): *"**Archive is the entity-removal action across the app, not delete.** Where a user today
+  removes a record, the action becomes archive"* — and that note states its scope explicitly: *"the claim 'across the app we are
+  replacing delete functionality with archive' is **app-wide, not plan-only**."*
+  **The named example is this entry's own (a).** *"Removing a role from a department"* is a hard delete, and (a) above asks exactly
+  whether `DELETE /departments/:code` goes away or stays. So the register's caveat is not a new question — it is a **count** on the
+  open one: **56 routes**, app-wide, one of them the role-removal this entry names.
+  **This does not make the DONE status wrong.** The four UAT 1 asks were about departments being editable, roles nesting, a soft-delete
+  field existing and the checklist enum, and all four shipped. And the decision itself leaves *"Whether the `DELETE` endpoints stay"*
+  under *What this does NOT settle*, so 56 surviving routes are **undecided, not non-compliant**. What is worth carrying forward is
+  that anyone reading the DONE row as *"soft delete is finished app-wide"* will be wrong on 56 routes. Nothing adjudicated; no status
+  changed. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
 
 ## System departments and roles are now fully editable — was `isSystem` ever meant to protect anything?
 
@@ -978,7 +992,6 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   of this is background; still needed from TCG: the department list, the role list, and each
   role's capabilities.
 
-
 ## Must a new nav entry be permission-gated, and who may see live vehicle locations?
 
 - **Status:** open
@@ -1150,3 +1163,16 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** the browser-suggestion complaint is plausible and probably came from UAT, but **no written source names it**, and the branch answers it with an app-wide, no-exceptions mechanism that changes login, accessibility and E2E surface as a side effect. This entry does not adjudicate any of (a)–(e); it records that nobody written down has. (b) is the one with a security dimension in both directions — password managers off means more typed and reused passwords, and on means credentials in a third-party vault.
 - **Blocked:** nothing technically — the branch is reversible. But it is **app-wide by construction**: the MutationObserver reaches inputs no feature author wrote, and `isBrowserAutofillDisabled()` has no opt-out, so after merge this becomes the default for every future form without anyone choosing it again. Recorded before merge for that reason.
 - **Owner:** Fouzan Shakil — internal UI / form conventions, as with the adjacent app-wide form entries. **(b) and (d) are not his alone:** password-manager lockout on the login screen is a security-posture call for Brian Petros (TCG IT) with Ehtesham Anwar on the CodingCops side, and the `getByLabel` / screen-reader impact in (d) needs QA to confirm before merge rather than after.
+## Sign-in identity — Microsoft 365 (Entra) credentials, or phone number and SMS code, and for whom?
+
+- **Status:** open
+- **Asked:** 2026-09-15 — ERP live demo 01: Brian Petros (1:14:00) and Patrick ("IT Support", 1:14:15) ([../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §7). No ticket.
+- **Question:** three parts. **(a)** Do **office** users sign in to the web portal and the mobile app with **Entra / Office 365** credentials — Patrick: *"You always be using your Entra or Office 365 set of credentials"*, with the work-email domain already joined to Apple ID — and is that Microsoft SSO in CodingCops' scope? **(b)** Do **field** employees, who have no Microsoft mailbox, sign in by **mobile phone number and SMS code** (as stated on 2026-09-10), making a work cell phone mandatory for every field employee? **(c)** If AWS SNS production access is delayed, is the **email-invite** fallback Ehtesham offered (1:12:22) acceptable, and which address would it use for employees with no mailbox?
+- **Sources checked:**
+  - [../meetings/transcripts/2026-09-10-payroll-rate-buckets-work-orders-paper-tickets.md](../meetings/transcripts/2026-09-10-payroll-rate-buckets-work-orders-paper-tickets.md) 58:08–58:22 — Brian: *"the field employees don't have Microsoft e-mail address"*; Ehtesham: *"Mobile… phone number"*; Brian and Corrina agree.
+  - [../meetings/transcripts/2026-09-15-erp-live-demo-01.md](../meetings/transcripts/2026-09-15-erp-live-demo-01.md) 1:12:22–1:15:40 — mobile SMS runs on AWS SNS, still in sandbox (test number only); TestFlight invites sent; Patrick's Entra statement. Nobody said which population each method is for.
+  - [*Integrations — HubSpot, Microsoft 365, Dialpad, Mapsly*](#integrations--hubspot-microsoft-365-dialpad-mapsly) above — TCG's RFP makes **Microsoft 365 SSO via Azure AD** a High-priority integration; the SOW names no third-party integration; in FCC, NexGen user IDs come from Active Directory *"for all users, including field employees"*.
+  - [../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md](../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md) — an SMS opt-in beside the work cell phone on Basic Information.
+  - `decisions/` has no note on authentication method.
+- **Blocked:** onboarding TCG users onto the mobile app; any SSO work; whether the employee profile must require a work cell phone.
+- **Owner:** Patrick McKiernan (TCG IT) for (a); Brian Petros / Kyle Harlow for (b) and (c); CodingCops for scope.

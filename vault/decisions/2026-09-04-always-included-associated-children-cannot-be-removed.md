@@ -11,7 +11,7 @@ decided_by: >-
   Brian Petros flagged the 2026-03-17 screens as mock-ups in the same call, so this is
   status: reference — a sourced, demoed, unobjected design, not an adjudicated decision.
 status: reference
-conflicts_with: []
+conflicts_with: [decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md]
 tags: [module/quotations, module/asset-management, kind/decision, resource-hierarchy, requirements]
 entities: [QuotationResource, SubCategoryAssociatedResource, quotation]
 ---

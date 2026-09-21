@@ -138,6 +138,17 @@ the BA. Registered as an open question with the three categories and four thresh
 [../payroll/gaps.md](../payroll/gaps.md) → *Added hours — which rules' phantom hours reach which
 thresholds*.
 
+## ⚠️ Contested again by Brian Petros, 2026-09-14 — the workbook
+
+Brian sent `___holidayGuaranteeScenario.xlsx` and called *"how our Labor Union rep explained to
+us"* a **$1,440-per-employee overpayment** on a Labor Day 22:00→10:00 shift. His "contract" row
+pays 00:00–06:00 at triple with no top-up, which departs from ruling **(b)** as well. His "union
+rep" column is not the breakdown recorded above. This note is unchanged by the workbook; it
+stands until Corrina or the BA says otherwise. Transcription and arithmetic:
+[../payroll/holiday-guarantee-scenario-2026-09-14.md](../payroll/holiday-guarantee-scenario-2026-09-14.md).
+Open question: [../payroll/gaps.md](../payroll/gaps.md) → *Holiday-start guarantee — Brian's
+2026-09-14 workbook…*.
+
 # Worked outcomes, at an $80.00 base
 
 | Shift | Union BA | Brian's app | ERP as of `015136f79` |
