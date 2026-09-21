@@ -465,9 +465,9 @@ requirement of its own; REQ-16 already ships its default.
   `ticket_employees` row does not need its own allocation FK unless a later need (e.g.
   craft-code resolution per employee) surfaces one; that employee's own `JobResourceAllocation`
   row remains findable via `(subJobId, setResourceId, shiftNumber, employeeId)` if needed. Do
-  not add fields the decision did not list. Per-employee start/end time overrides are `NOT
-  SPECIFIED` — build them only if the existing labor-hours code already supports the concept
-  (decision Q1 point 7); do not introduce them otherwise.
+  not add fields the decision did not list. The per-employee start/stop window was later
+  **BUILT** under TCG-25 (see REQ-14 and §13): two nullable columns on `ticket_employees`
+  (`work_started_at`, `work_ended_at`); the shared `TicketTimeEntry` is untouched.
 
 ### REQ-14 — Per-employee time & labor keying: `ticket_employees` holds labor; `TicketTimeEntry` stays shared `[VERIFIED]`
 
@@ -496,9 +496,16 @@ requirement of its own; REQ-16 already ships its default.
 - **Acceptance:** `TicketTimeEntry` rows carry no `employeeId` column and are read the same way
   for every employee on a ticket; a `ticket_employees` row's Labor & Unit fields are independently
   readable/writable per employee on the same ticket.
-- **Notes for the executor:** Per-employee start/end time overrides are explicitly **not**
-  decided here — build them only if the existing labor-hours code already supports the concept
-  (decision Q1 point 7); do not introduce them for this ticket.
+- **Per-employee work window — BUILT (TCG-25).** Source: TCG-25 (Brian Petros, transcript 2026-03-03 32:51: ticket-level times shared, the labor entry's start/stop and craft code modifier unique per employee; Corrina Bustos: "one time card for the job ticket, but each have their own line"; transcript 2026-05-21 9:27: the Oiler picks which employee he enters for; transcript 2026-05-19 34:03). Ticket-level times stay
+  shared on `TicketTimeEntry` (unchanged, no `employeeId`); the one per-employee time is the
+  start/stop of the employee's own labor entry. It is an optional override on the employee's
+  `ticket_employees` row — `work_started_at`/`work_ended_at`, both null (follows the ticket) or
+  both set with end > start (CHECK, migration `20260921020000_ticket_employees_work_window`). An
+  explicit entry (by the Oiler for a teammate, or by the employee for themselves) is written to
+  that row and never to the shared `ticket_time_entries`; it replaces the payable window
+  (Start Work → Review & Complete) for that employee only, in labor reads and in payroll ingest.
+  Lunch/WTL/leave-yard and the boom segments stay shared. This supersedes decision Q1 point 7's
+  "build only if supported"; it is client-sourced by TCG-25, not inferred from existing code.
 
 ### REQ-15 — COMPLETE linked-pair migration treatment: keep both rows, backfill `isPrimary=true` `[VERIFIED]`
 
@@ -658,9 +665,8 @@ model TicketEmployee {           // name is a suggestion — see REQ-13 notes
 - **Child relations:** `TicketEmployee.employeeId` references `Employee.id`, never a code, per
   convention. `JobTicket.allocationId` (unchanged) continues to reference
   `JobResourceAllocation.id`.
-- **Fields whose type/precision no source states:** per-employee start/end time overrides (Q1
-  point 7) — `NOT SPECIFIED`; build only if the existing labor-hours code already supports the
-  concept, per the decision. Not added to the model above.
+- **Per-employee start/end window:** now BUILT under TCG-25 (REQ-14) as `workStartedAt`/
+  `workEndedAt` (nullable `timestamptz`) on `TicketEmployee` — an addition to the model above.
 
 ## 4. API surface — `apps/api`
 
@@ -990,6 +996,76 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
   listing). If production has such rows and the bracket must survive, a one-off
   `INSERT INTO ticket_employees … FROM job_resource_allocations` before the drop is the fix,
   and belongs in this migration, not a later one.
+- **Status:** deferred 2026-09-21 — requester (in-session answer): leave the faithful reading as it is for now (no roster row, NOTICE, preflight §A2 listing); revisit once the production count from the preflight is known. Stays open as a data-repair item.
+
+### Q7 — An Operator already has a started or finished ticket of their own when an Oiler joins their set
+
+- **Question:** REQ-01 says an Operator in an Oiler-seated set gets no ticket of their own. When
+  the Oiler is allocated *after* the Operator's ticket exists, U1's `ensureTickets`/`sendTickets`
+  folds the Operator into the Oiler's ticket and cancels their own ticket **only while it is
+  PENDING/SENT**. A ticket that is already IN_PROGRESS or COMPLETE is left as the Operator's own
+  ticket (they are not absorbed, and stay their own primary). Is that the right cut, or should an
+  IN_PROGRESS ticket also be folded (moving its time entries), or the allocation change refused?
+- **Why it cannot be answered from what is written:** REQ-01/REQ-10 settle the shape for tickets
+  minted together and for the one-time live-pair migration. No source says what happens to a
+  ticket that has started when the crew composition changes afterwards; REQ-10 only covers the
+  migration, and `sendTickets` locks the sub-job once sent, so the case is rare but reachable.
+- **Blocked:** nothing — U1 ships the conservative cut above (`planCrewTickets`,
+  `apps/api/src/usecase/job-tickets/crew-roster.ts`).
+- **Candidates:** `decisions/2026-09-14-crew-ticket-shape-primary-allocation-and-ticket-employees.md`
+  (Q2 point 1, Q4); REQ-10's cancel semantics.
+- **Owner:** product (dispatch) — a dispatch-workflow question.
+- **Workaround, if any:** the conservative cut in U1.
+- **Status:** resolved 2026-09-21 — requester answer: an Operator whose own ticket has already started or finished when an Oiler joins keeps managing that ticket independently of the Oiler. Matches the shipped cut (`planCrewTickets`: IN_PROGRESS/COMPLETE not absorbed). A requester answer in-session, not a client statement; no decision note yet.
+
+### Q8 — Can the Oiler still enter Labor & Unit for an Operator who kept a ticket of their own (Q7)?
+
+- **Question:** REQ-04 retargets `resolveTargetTicket` to the target's `ticket_employees` row on
+  **the caller's ticket**. An Operator left on their own IN_PROGRESS/COMPLETE ticket (Q7's
+  not-absorbed cut) is not on the Oiler's roster, so U2's Oiler write for them now answers 403
+  ("not a boom-working member of this ticket"); before, it crossed to that ticket via the set's
+  allocations. Should the Oiler keep that cross-ticket write for such an Operator, or is "their
+  own ticket, their own entry" the intended end state?
+- **Why it cannot be answered from what is written:** REQ-04 / decision Q1 point 1 speak only of
+  the shared ticket; Q7 leaves the not-absorbed case open and nothing says who enters that
+  Operator's Labor & Unit.
+- **Blocked:** nothing — U2 ships same-ticket-only targeting (the non-absorbed Operator, as their
+  own ticket's primary, can still write their own entry).
+- **Candidates:** Q7; `decisions/2026-09-14-crew-ticket-shape-primary-allocation-and-ticket-employees.md` (Q1 point 1).
+- **Owner:** product (dispatch)
+- **Workaround, if any:** the same-ticket-only cut in U2.
+- **Status:** resolved 2026-09-21 — requester answer: the Oiler must fill the tickets assigned to them, as the Operator fills theirs — each on their own ticket. An Operator who kept their own ticket (Q7) fills their own Labor & Unit; the Oiler has no cross-ticket write for them. Matches the shipped same-ticket-only targeting. Requester answer, not a client statement; no decision note yet.
+
+### Q9 — Which priced row is the ticket-level "Payable" hours on Progress Tracking once a ticket has two?
+
+- **Question:** `job-progress` shows one *Payable* figure per ticket, read from the ticket's latest
+  payroll job-day. REQ-11 now prices one job-day per roster employee, so a crew ticket has two
+  per run. U2 shows the **primary's** row (what the figure meant while only the primary was
+  priced). Should it instead show the primary's, the sum across the crew, or one figure per
+  employee (U4's employee list)?
+- **Why it cannot be answered from what is written:** REQ-07 specifies the row/employee layout,
+  not which payroll row feeds the ticket-level figure; REQ-11 does not address display readers.
+- **Blocked:** nothing — U2 ships the primary's row; U4 (web Progress) is where a per-employee
+  figure would land.
+- **Candidates:** REQ-07, REQ-11.
+- **Owner:** product
+- **Workaround, if any:** primary's row.
+- **Status:** resolved 2026-09-21 — requester answer: no crew total; progress and payroll are managed per individual. Built: `ProgressTicketEmployee.payableHours` is each person's own payroll figure and the web crew list shows it per person; the ticket-level Payable stays the primary's. Requester answer, not a client statement; no decision note yet.
+
+### Q10 — Per-employee work window (TCG-25): three edges the ticket text does not settle
+
+- **Question:** With the per-employee start/stop built (REQ-14), (a) should lunch/WTL windows also
+  be per employee, or stay shared (built: shared)? (b) should the boom segments (Build Up / boom /
+  Break-down, which earn the long-boom adder) be clipped to an employee's own window when it is
+  narrower than the ticket's (built: not clipped)? (c) what ceiling should an Oiler-entered
+  window be held to — the ticket's shared boom time (built), or the employee's current own window?
+- **Why it cannot be answered from what is written:** TCG-25 and the cited transcripts settle
+  that the start/stop and craft code modifier are per employee, and that ticket-level times are
+  shared; they say nothing on meals, boom segments or the entry ceiling.
+- **Blocked:** nothing — built with the defaults in parentheses; each is a one-line change.
+- **Candidates:** REQ-14, REQ-11.
+- **Owner:** product
+- **Workaround, if any:** the defaults above.
 - **Status:** open
 
 ## 13. What this spec deliberately does not specify
@@ -1009,9 +1085,10 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Operator visibility beyond step status** (signatures, checklists, comments) on the shared
   ticket — deliberately deferred to the client as the non-blocking residual **Q5**; REQ-16
   ships the status-only default regardless of how Q5 is later answered.
-- **Per-employee start/end time overrides** on the shared ticket — decision Q1 point 7: build
-  only if the existing labor-hours code already supports the concept; not introduced for this
-  ticket otherwise.
+- ~~Per-employee start/end time overrides~~ — **no longer deferred: BUILT under TCG-25** (REQ-14;
+  source TCG-25 (Brian Petros, transcript 2026-03-03 32:51: ticket-level times shared, the labor entry's start/stop and craft code modifier unique per employee; Corrina Bustos: "one time card for the job ticket, but each have their own line"; transcript 2026-05-21 9:27: the Oiler picks which employee he enters for; transcript 2026-05-19 34:03)). Still not specified: whether lunch/meal windows should also be per employee
+  (kept shared), and whether boom segments should be clipped to an employee's own window (they
+  are not).
 - **The final Prisma model name for `ticket_employees`** — `TicketEmployee` is the convention
   suggestion (REQ-13); confirming it against team naming convention is left to the executor.
 - **Sets with more than two personnel seats, or a set with two Oiler allocations** — the Q4
