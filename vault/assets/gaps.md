@@ -1436,3 +1436,32 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** product team, with Brian Petros on the operational half — three of the eight are
   main cranes, so whether they are genuinely untracked today is a fleet question before it is a
   display question.
+
+## Archived rows in pickers — never offered except the record's own saved value?
+
+- **Status:** open
+- **Asked:** 2026-09-22 — UAT observation *"Archived categories should not be displayed"* on the
+  sub-category Category picker; Path B fix (no ticket folder). The create form was passing
+  `includeArchived` as a like-for-like port from a pre-fetched list (`b6e2c25d62`), not from a
+  product decision.
+- **Question:** two lines. **(a)** Is it a **general picker rule** that archived rows never appear
+  as new choices, anywhere — with the sole exception that a record's **own saved** archived
+  reference stays visible and re-selectable after the field is cleared? **(b)** When a parent
+  category is archived after a sub-category was created under it, does that archived FK remain a
+  **valid parent** until the user reparents, or must the child be reparented / archived too?
+  [decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  settles archive-as-removal and explicitly leaves *"what an archived record still participates in
+  (search, reports, references from live records)"* open.
+- **Working assumption shipped 2026-09-22 (UAT, not ratified):** for categories on the sub-category
+  create/edit forms — (a) archived categories are excluded from search; the edit form pins only
+  the saved archived parent with a `formatArchivedLabel` suffix; (b) that saved archived parent
+  remains a valid FK (save-unchanged must succeed). Other pickers (yards, etc.) are **not**
+  covered by this assumption until (a) is ratified.
+- **Sources checked:** the archive decision above; this register; admin/gaps → *Departments —
+  does archive replace delete…* part (c) (same participation question on another entity);
+  sub-category name uniqueness part (b) in this file (name reservation — related archive theme,
+  do not fold in).
+- **Blocked:** treating the UAT line as app-wide product law; signing off that departments,
+  yards and every other picker must converge on the same rule.
+- **Owner:** Fouzan Shakil — named decider on the app-wide archive convention.
+- **Cross-link:** [admin/gaps.md → Departments — does archive replace delete… (c)](../admin/gaps.md#departments--does-archive-replace-delete-outright-and-what-may-an-archived-department-still-be-used-for)
