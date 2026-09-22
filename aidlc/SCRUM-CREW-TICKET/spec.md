@@ -1016,7 +1016,7 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
   (Q2 point 1, Q4); REQ-10's cancel semantics.
 - **Owner:** product (dispatch) — a dispatch-workflow question.
 - **Workaround, if any:** the conservative cut in U1.
-- **Status:** resolved 2026-09-21 — requester answer: an Operator whose own ticket has already started or finished when an Oiler joins keeps managing that ticket independently of the Oiler. Matches the shipped cut (`planCrewTickets`: IN_PROGRESS/COMPLETE not absorbed). A requester answer in-session, not a client statement; no decision note yet.
+- **Status:** resolved — see decisions/2026-09-21-crew-ticket-not-absorbed-operator-and-per-employee-progress.md.
 
 ### Q8 — Can the Oiler still enter Labor & Unit for an Operator who kept a ticket of their own (Q7)?
 
@@ -1034,7 +1034,7 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** Q7; `decisions/2026-09-14-crew-ticket-shape-primary-allocation-and-ticket-employees.md` (Q1 point 1).
 - **Owner:** product (dispatch)
 - **Workaround, if any:** the same-ticket-only cut in U2.
-- **Status:** resolved 2026-09-21 — requester answer: the Oiler must fill the tickets assigned to them, as the Operator fills theirs — each on their own ticket. An Operator who kept their own ticket (Q7) fills their own Labor & Unit; the Oiler has no cross-ticket write for them. Matches the shipped same-ticket-only targeting. Requester answer, not a client statement; no decision note yet.
+- **Status:** resolved — see decisions/2026-09-21-crew-ticket-not-absorbed-operator-and-per-employee-progress.md.
 
 ### Q9 — Which priced row is the ticket-level "Payable" hours on Progress Tracking once a ticket has two?
 
@@ -1050,7 +1050,7 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** REQ-07, REQ-11.
 - **Owner:** product
 - **Workaround, if any:** primary's row.
-- **Status:** resolved 2026-09-21 — requester answer: no crew total; progress and payroll are managed per individual. Built: `ProgressTicketEmployee.payableHours` is each person's own payroll figure and the web crew list shows it per person; the ticket-level Payable stays the primary's. Requester answer, not a client statement; no decision note yet.
+- **Status:** resolved — see decisions/2026-09-21-crew-ticket-not-absorbed-operator-and-per-employee-progress.md.
 
 ### Q10 — Per-employee work window (TCG-25): three edges the ticket text does not settle
 
@@ -1066,6 +1066,27 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Candidates:** REQ-14, REQ-11.
 - **Owner:** product
 - **Workaround, if any:** the defaults above.
+- **Status:** open
+
+### Q11 — Per-employee work window: is it ever clearable back to "follow the ticket"?
+
+- **Question:** Once a per-employee `workStartedAt`/`workEndedAt` (REQ-14) is set on a
+  `ticket_employees` row, is there meant to be a way to clear it back to NULL — reading the
+  ticket's shared time again — or is a set window permanent once entered?
+- **Why it cannot be answered from what is written:** nothing in the vault, the decision notes,
+  the UAT register or TCG-25 addresses removal. The nearest written statement — AC4, "it
+  survives every subsequent write" — describes durability against being overwritten, not
+  whether it can be intentionally cleared, and reads either way. `ticket-labor-entries.service.ts`
+  §442-449 currently asserts "no window leaves the stored one untouched" as if settled, with no
+  source cited for that direction specifically.
+- **Blocked:** nothing ships broken either way — today there is simply no clear path. Found in
+  PR #625 review (F1): three independent layers each make NULL unreachable
+  (`@IsBoomWindowPaired` on the DTO, the `editedHours > 0` gate, and the repository's
+  `!== undefined` guard on the write), so a mis-entered window is permanent short of
+  `prisma/scripts/reset-ticket.ts` or direct SQL.
+- **Candidates:** REQ-14.
+- **Owner:** product
+- **Workaround, if any:** none in the UI today; `reset-ticket.ts` or SQL only.
 - **Status:** open
 
 ## 13. What this spec deliberately does not specify
