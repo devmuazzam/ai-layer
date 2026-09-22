@@ -12,7 +12,7 @@ decided_by: >-
 status: reference
 conflicts_with: [decisions/2026-08-20-job-completed-on-last-day-offload.md]
 resolves: []
-jira: [TCG-70]
+jira: [TCG-70, TCG-184]
 tags: [module/dispatch, module/field-ops, module/projects-jobs, kind/decision, das, job-status, ticket-workflow]
 ---
 
@@ -27,6 +27,7 @@ concrete proposal to put in front of the two people who can actually rule on it.
 
 **No code implements any of this.** TCG-70 shipped the safe subset instead —
 [`2026-09-22-das-card-shows-ticket-status-beside-the-stage.md`](2026-09-22-das-card-shows-ticket-status-beside-the-stage.md).
+The derivation is carried by **TCG-184**, which is blocked on the ratification below.
 
 ## The answers given
 
@@ -84,7 +85,7 @@ the filter pill and the badge cannot diverge.
   not a TCG ruling: *"it's also going to get tied to the tickets as well"*
   (`meetings/transcripts/2026-05-12-loading-figma-demo.md`:326-330).
 
-## What the implementing ticket must carry
+## What the implementing ticket (TCG-184) must carry
 
 Beyond TCG-70's AC1–AC7 and AC9–AC13:
 

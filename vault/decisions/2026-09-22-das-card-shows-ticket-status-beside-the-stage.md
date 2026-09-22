@@ -14,7 +14,7 @@ decided_by: >-
 status: reference
 conflicts_with: []
 resolves: []
-jira: [TCG-70]
+jira: [TCG-70, TCG-184]
 tags: [module/dispatch, module/projects-jobs, kind/decision, das, job-status, ticket-workflow]
 ---
 
@@ -34,7 +34,7 @@ JOB-0000  [Ticket Sent]  [In Progress 2/3]
 This is TCG-70's own AC8 — the subset its §6 preamble names as satisfying the ask's literal
 complaint without touching the stage machine. **AC1–AC7 and AC9–AC13 are deferred**, to
 [`2026-09-22-das-stage-is-derived-forward-only-from-the-ticket-lifecycle.md`](2026-09-22-das-stage-is-derived-forward-only-from-the-ticket-lifecycle.md)
-and its follow-up ticket.
+and carried by **TCG-184**.
 
 ## What asked for it
 
