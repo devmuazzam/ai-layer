@@ -264,7 +264,9 @@ the bare array it always did, and with any of them a `{ data, total, page, limit
 page. `utility/picker-list.helpers.ts` implements it. Every such route carries
 `@SkipThrottle()` — type-ahead bursts otherwise exhaust the global throttler budget.
 
-`scripts/check-dropdown-preloads.sh` runs on pre-push and makes two checks over `apps/web`:
+`scripts/check-dropdown-preloads.sh` **runs as the first step of `@tcg/web`'s `test` target** —
+so `pnpm test`, `pnpm nx run @tcg/web:test` and `pnpm affected -t test` all gate on it, and a
+violation fails the run before a single test executes. It makes two checks over `apps/web`:
 a list read with a hardcoded `limit:` of 100+, and a call to a reader that takes **no limit
 at all** and so returns the whole table (`getAssets(`, `getTools(`, `getCategories(`,
 `getSubCategories(`, `useGetEmployeeTypes(`, `useBillingCodeCustomTypesList(`,
@@ -276,6 +278,13 @@ calling an unparameterised reader.
 returns the same whole table as the bare call, and `getAssets\(\)` did not match
 `getAssets({ includeArchived: true })` — a tenth preloaded picker sat under the green guard
 for exactly that reason. Stopping at `(` still leaves the paged `getCategoriesList(` alone.
+
+**The guard searches with `grep`, and must fail closed.** It used `rg` until 2026-09-22, and
+because both searches ended in `|| true` a missing ripgrep was swallowed: it printed its
+success line having examined **zero files**, for as long as nobody noticed. Two rules follow.
+Use POSIX ERE — `\s` is PCRE and `grep -E` does not understand it, so a pattern using it
+matches nothing and looks exactly like a clean tree. And never treat a non-zero grep status as
+"no matches": 1 means no match, 2 means the search did not run, and collapsing them is the bug.
 
 It also **warns on allow-list entries that no longer match anything**. A line left behind
 after its picker is migrated is a standing exemption for whatever lands at that path next,
@@ -296,7 +305,9 @@ not a read of an entity table, and there is nothing there to page. Say so at the
 `qa-automation/` is a Playwright suite driving the real app, API and Postgres. It addresses
 the UI through `data-testid`, which makes **a test ID a contract, not a debugging aid**.
 Rename or delete one and a test breaks — silently: the suite is not yet an Nx project, so no
-gate in `.husky/` or `affected.yml` runs it, and nothing will tell you. (Registering it is an
+gate anywhere runs it, and nothing will tell you — `.husky/` holds only a branch guard, and
+`.github/workflows/` only `deploy.yml`, which is `workflow_dispatch`-only. (The `affected.yml`
+this used to name was deleted in `46ebf4228`.) (Registering it is an
 accepted PR #386 follow-up; the grep below is the interim signal, and stays useful after.)
 
 **A new screen or form ships with test IDs on its controls**, whether or not a spec covers
