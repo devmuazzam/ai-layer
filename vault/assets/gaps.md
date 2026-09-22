@@ -1441,7 +1441,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 - **Status:** open
 - **Asked:** 2026-09-22 — UAT observation *"Archived categories should not be displayed"* on the
-  sub-category Category picker; Path B fix (no ticket folder). The create form was passing
+  sub-category Category picker; Path C fix (no ticket folder). The create form was passing
   `includeArchived` as a like-for-like port from a pre-fetched list (`b6e2c25d62`), not from a
   product decision.
 - **Question:** two lines. **(a)** Is it a **general picker rule** that archived rows never appear
