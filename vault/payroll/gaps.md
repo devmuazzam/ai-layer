@@ -4383,7 +4383,7 @@ somewhere it should not have. Settle that before touching either.
 - **Live disagreements it must not paper over:** the holiday-guarantee dispute
   ([holiday-guarantee-scenario-2026-09-14.md](holiday-guarantee-scenario-2026-09-14.md)) and the
   added-hours grid — both are cases where his app and the ERP deliberately differ today.
-- **Update 2026-09-23 — the document exists; it has not been sent.** Built as a Word file,
+- **Update 2026-09-23 — built and sent.** Built as a Word file,
   `TCG-Payroll-Rules-Status-2026-09-23.docx`, from [rules/](rules/INDEX.md),
   [payroll-rules-provenance.md](payroll-rules-provenance.md) and this register. Two days past the
   promised Monday. **It is written as a joint working document, not as a CodingCops
@@ -4400,13 +4400,27 @@ somewhere it should not have. Settle that before touching either.
   section of their own so none of them can be read as settled: the holiday guarantee, the
   added-hours grid, the meal thresholds / worked-through modes, and the luffer classification.
   Corrina's 2026-09-14 luffer note is in it with its six unknowns.
-- **Still open after delivery, and the first one is unanswered:** (a) **where it lives** — the
-  document was handed over as a file, which is the "copy that comes back as messages" shape this
-  entry warned about; nobody has agreed on a shared-folder home Brian edits in place. (b) how
-  updates return to the vault — the document asks Brian to mark a row and say what changed, which
-  is a convention, not a mechanism. Closing this entry needs (a) settled and Brian maintaining it.
-- **Owner:** CodingCops — Syed Haris made the commitment; Brian Petros to maintain it once
-  delivered.
+- **Sent to Brian Petros on Teams, 2026-09-23, with the covering message.** The message states the
+  three buckets and the 46 / 11 / 5 split; states in as many words that the document tracks
+  *decisions, not what is built*; says that where the Payroll App and the ERP differ the difference
+  is written down rather than resolved toward either one, *"nothing has been quietly resolved in
+  code"*; asks Brian to update the row, change its state and record what changed and who decided it
+  whenever something is settled, **especially after a call with Corrina Bustos**; names **luffer pay
+  and its six unknowns** as the first thing to look at; and closes by asking him to flag any row
+  marked *Decided* he would not recognise. It also carries the question below, put to him directly.
+- **The one thing asked of him that is not about a rule — where the document lives.** The covering
+  message says plainly that mailing the file around produces versions, *"which is the exact problem
+  it's meant to fix"*, and offers to put it wherever he would edit it in place. **Unanswered as of
+  2026-09-23.** Until it is, the file on the Desktop is the only copy and this entry stays open: a
+  `.docx` passed back and forth recreates the scatter rather than fixing it. If Brian has no
+  preference, naming a specific SharePoint or Teams location closes it faster than asking again.
+- **Still open after delivery:** (a) **where it lives**, above. (b) How updates return to the vault
+  — the document asks for a row to be marked and the change noted, which is a convention, not a
+  mechanism; nothing reports a divergence if he edits and the vault does not follow. Closing this
+  entry needs (a) settled and Brian actually maintaining it — the first edit from his side is the
+  signal, not the acceptance.
+- **Owner:** Brian Petros — the commitment is delivered, so maintenance is his from here. CodingCops
+  (Syed Haris) to fold his edits back into this vault, and to chase (a) if it goes quiet.
 
 ## Employee Billing Code and Employee Pay — asked in UAT 1, never answered, and the schema keeps them independent
 
