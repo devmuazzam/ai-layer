@@ -2484,3 +2484,18 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
 - **Why it lands here too:** the UAT 1 ask is that tool & rigging allocation *"come from the quotation"*, so it asserts a quotation→job carry-over for a resource class. It runs straight into [*Quote line items vs dispatch resources…*](#quote-line-items-vs-dispatch-resources--the-associated-set-auto-fills-the-quote-and-the-sales-owner-says-dispatch-resources-must-not-be-quoted) and the `verified` [2026-09-16 decision](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md), under which dispatch-side resources are not quotation lines at all.
 - **Read:** [../assets/gaps.md → *Tool and Rigging allocation from the quotation…*](../assets/gaps.md#tool-and-rigging-allocation-from-the-quotation--who-supplies-it-in-what-form-and-how-it-reaches-the-job)
+
+## Is the quotation builder supported on tablet, and at which breakpoint?
+
+- **Status:** open
+- **Asked:** 2026-09-21 — PR review of the Resources-table surcharge toggle hit-target / touch-visibility fix (`fix/quotation-surcharge-toggle`). No ticket.
+- **Question:** is the **quotation builder** (create/edit Resources table, including hover-revealed per-row affordances) a supported surface on **tablet**, and if so at which breakpoint (e.g. `md` 768 / `xl` 1280)?
+- **Sources checked:**
+  - [../claude/contexts/web.md](../../claude/contexts/web.md) → *Misc* — *"Mobile-first Tailwind breakpoints. Touch targets ≥ 44px."* States the size rule; names **no supported device set** and no quotations-module carve-out.
+  - [../admin/responsive-design-and-security-posture.md](../admin/responsive-design-and-security-posture.md) §Part 1 — client-facing commitment to **md 768 / xl 1280** breakpoints and a future WCAG 2.1 **44×44px** touch-target audit (*"not as done"*). Does not name the quotation builder.
+  - Main-repo commit `1242f593e` *"iPad and Mobile responsiveness Web 1.0"* (2026-08-19) — iPad is an active web target app-wide; still silent on this screen.
+  - Code precedent only (not product intent): the Resources-table **"New Item"** insert already forces itself open on `(hover: none)` via `usePrefersNoHover` / the former inline `touchAlways` in `resource-row.add-child-insert.tsx`. The surcharge toggle now mirrors that. Precedent in code ≠ a written support claim for the builder on tablet.
+  - This module's INDEX / quotation.md / quotations.md — no tablet-support statement for the builder.
+- **Note:** the touch visibility criterion on the surcharge fix **assumes yes** because the sibling pill already implements a no-hover fallback in the same table. That assumption should be confirmed or walked back here; until then treat tablet quotation-builder support as unspecified.
+- **Blocked:** nothing shipping — the UI fix landed against the code precedent. Product answer would decide whether further builder layout work for tablet is in scope.
+- **Owner:** product / UX for supported device set; escalate via Brian Petros if treated as a client commitment rather than an engineering convention.
