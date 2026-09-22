@@ -4383,6 +4383,23 @@ somewhere it should not have. Settle that before touching either.
 - **Live disagreements it must not paper over:** the holiday-guarantee dispute
   ([holiday-guarantee-scenario-2026-09-14.md](holiday-guarantee-scenario-2026-09-14.md)) and the
   added-hours grid — both are cases where his app and the ERP deliberately differ today.
+- **Update 2026-09-23 — the document exists; it has not been sent.** Built as a Word file,
+  `TCG-Payroll-Rules-Status-2026-09-23.docx`, from [rules/](rules/INDEX.md),
+  [payroll-rules-provenance.md](payroll-rules-provenance.md) and this register. Two days past the
+  promised Monday. It honours the trap above by keeping **decided** and **built** apart in writing
+  rather than in a column: a "how to read this" section says in as many words that a rule marked
+  *Decided* may not be built and a rule the ERP runs may never have been confirmed. Six states —
+  *Decided · Decided (contract) · Partly decided · Working assumption · Contested · Open* — carried
+  over from this register's own vocabulary. Per Brian's ask it carries **no per-rule sources**; the
+  traceability stays here, which is the point of the vault. The four live disagreements get a
+  section of their own so none of them can be read as settled: the holiday guarantee, the
+  added-hours grid, the meal thresholds / worked-through modes, and the luffer classification.
+  Corrina's 2026-09-14 luffer note is in it with its six unknowns.
+- **Still open after delivery, and the first one is unanswered:** (a) **where it lives** — the
+  document was handed over as a file, which is the "copy that comes back as messages" shape this
+  entry warned about; nobody has agreed on a shared-folder home Brian edits in place. (b) how
+  updates return to the vault — the document asks Brian to mark a row and say what changed, which
+  is a convention, not a mechanism. Closing this entry needs (a) settled and Brian maintaining it.
 - **Owner:** CodingCops — Syed Haris made the commitment; Brian Petros to maintain it once
   delivered.
 
