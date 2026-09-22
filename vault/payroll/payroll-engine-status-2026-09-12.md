@@ -59,7 +59,7 @@ Decision note: [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-gu
 | **Shift differential $3 / $4, into the rate; 7 → 8 and 6½ → 8 hours-add** | MLA Art. III Shifts; Brian 2026-08-24 | ✅ rates · ✅ hours-add once per chain, on the last 2nd/3rd-shift entry — fixed, PR #565 (was N2) | Test: two back-to-back 2nd-shift tickets → one add |
 | **Non-union hourly: daily 8/12 → 7th day → weekly 40, in that order, reasons preserved** | Brian 2026-09-07, written, 9 scenarios | ✅ | Audit re-run A9 |
 | **Non-union is admin/yard only; every dispatched job is L12; no non-union mechanics** | Corrina 2026-09-10 (38:20, 50:43) | 🟡 scope statement — work-order and salaried populations not modelled | — |
-| **Subsistence $85 (45–77.5 mi) / $200 (>77.5 mi), per job not per craft** | 2026-08-20 SME call; decision 2026-09-01 | 🟡 built, **unreachable** — no DTO/UI sets the job fields (B4) | — |
+| **Subsistence $85 (45–77.5 mi) / $200 (>77.5 mi), per job not per craft** | 2026-08-20 SME call; decision 2026-09-01 | ✅ writer added (uncommitted, app branch): `PATCH payroll/jobs/:id/flags` + *Subsistence* card on the job Main tab (B4). Manual miles only; PAY-049 calendar-day holdover still unbuilt | — |
 | **Anniversary check: L12 vacation payout, 40 h at regular rate, 1 yr + 1200 h; preserved as entered, exempt from every rule; special-earning policy, not a labor row** | MLA Vacation §1; Brian's spec + as-built app 2026-09-11; FCC pattern ruled out for the ERP | ❌ not built — special-earnings model undecided (flag / entity / ledger) | — |
 | **SICK is a special earning** (falls through to NORMAL_WORK in Brian's app today; being fixed) | Brian 2026-09-11 | ❌ not built | — |
 
@@ -90,7 +90,7 @@ steps executed — a runner/config failure, not a code result; merged on the loc
 
 | # | Defect | Per occurrence | Fix |
 | --- | --- | --- | --- |
-| **B4** | Subsistence unreachable — no UI for `subsistenceDistanceMiles` / `subsistenceHoldover` | –$85 to –$200 per eligible day | Job form fields + DTO |
+| **B4** | Subsistence unreachable — no UI for `subsistenceDistanceMiles` / `subsistenceHoldover` | –$85 to –$200 per eligible day | **Fixed** — writer added; end-to-end on a seeded job not yet run. Card is on the Main tab, not the Send Ticket modal |
 | — | Before-midnight built on the categorical reading | ±1 h on 23:00-type starts if Corrina says mechanical | Await her answer; no change until then |
 | — | Sunday-start now reverts at midnight (2 DT + 10 OT, was 12 DT) | $400 per such shift, now *less* | Applied by principle from the holiday ruling — one line to Corrina to confirm, easy to reverse |
 
@@ -101,9 +101,35 @@ steps executed — a runner/config failure, not a code result; merged on the loc
 
 ## Not on any list — never spoken by the client, not in the legacy app
 
-2-h reporting pay (PAY-039) · crane-remains-on-job 4/6/8 (PAY-041) · first-day travel/assembly
-exception (PAY-042) · hazmat $2 (PAY-038) · injury-day pay (PAY-056) · higher-rate-for-the-day
-(PAY-015). Leave until asked.
+**Known and deferred — not gaps.** Six rules are documented in `rules/`, absent from the
+engine, and consciously parked: *leave until asked.* An audit of `rules/` against code that
+finds them missing has found nothing to file. Absence verified by behaviour search at app
+`main` `72d6cc4c9` (no engine commit since 2026-09-12; no later decision note reopens any).
+
+| Rule | Absence evidence (VERIFIED) |
+| --- | --- |
+| [PAY-015](rules/PAY-015-higher-rate-for-day-job.md) — higher rate for the day/job | Cited but not implemented: `craft-rate-resolver.service.ts:166` mentions it only in a comment saying it "belongs to the…" elsewhere. No `higherRate` / `highestRate` concept exists. A code citation is not proof of implementation |
+| [PAY-038](rules/PAY-038-hazardous-material-premium.md) — hazardous-material premium | `grep -rni "hazmat\|hazardous\|HAZ"` over API, web, engine, shared, schema: only JSA hazard items, quotation PDF terms and a comment — zero payroll hits. Seeded `PAYROLL_PREMIUMS` holds exactly FOREMAN, MILITARY, LATTICE_OP, LATTICE_OI |
+| [PAY-039](rules/PAY-039-reporting-pay-no-work.md) — reporting pay, no work (2 h) | No `reportingPay` / show-up-pay symbol. `guarantee.ts` has only `DAILY_MINIMUM_HOURS = 4`, `PREMIUM_DAY_MINIMUM_HOURS = 8`, `LONG_BOOM_MINIMUM_HOURS`; no 2-hour rung and no "reported, no work" input |
+| [PAY-041](rules/PAY-041-crane-remains-on-job.md) — crane remains on job (4/6/8) | No `craneRemains`, `shutdownReason` or first/subsequent-day flag in engine, API or schema. The only "remains on job" string is customer-facing subsistence wording in `quotation-pdf-terms.ts:154` |
+| [PAY-042](rules/PAY-042-first-day-travel-assembly-exception.md) — first-day travel/assembly exception | No `travelOnly` / `assemblyOnly` / activity-type-on-labor concept; every `activityType` hit is `QuotationSignatureActivityType` |
+| [PAY-056](rules/PAY-056-injury-day-pay.md) — injury-day pay | No injury→pay link; `grep -rn "incident"` over the payroll usecase and service is empty. Only safety capture exists (`TicketIncidentType.INJURY`), with no payroll consequence |
+
+Two forward-looking notes, recorded rather than advocated:
+
+- **PAY-038 would likely need no engine change when unparked.** The generic premium framework
+  (`PayrollPremiumType`: basis HOURLY|DAILY, `appliesTo`, `isJobFlag`, `ruleId`,
+  `craftRoleType`, `minCraftGroup`) is built so a premium the engine has never heard of pays
+  correctly once ticked (`calculate.ts:328-330`), and HOURLY premiums ride the day-type
+  multiplier (`:356-360`) — the MLA's "becomes the basic hourly rate". Eventual cost: a seed
+  row plus tenant config. *INFERRED — mechanism verified, applicability to hazmat not adjudicated.*
+- **PAY-056 now has a contract source and a live exhibit it lacked when parked:** MLA Art III §7
+  (full day at straight time, ability determined by a qualified physician), the DOT clause making
+  drug-test time work time, and the 2026-08-24 message about employee Jonathen (1092). That
+  strengthens the eventual case. It does not unpark the rule, which still needs Legal/HR.
+
+**No provenance-register row for any of them, and none until someone asks for the rule.** If one
+is unparked it becomes its own card with its own spec.
 
 ## Where the rules live
 

@@ -9,6 +9,8 @@ tags: [module/payroll, kind/rule, open-questions]
 
 # PAY-056 — Injury-day pay
 
+> **Deferred, not a gap.** Absent from the engine by choice — parked, "leave until asked". See [payroll-engine-status-2026-09-12.md](../payroll-engine-status-2026-09-12.md) → *Not on any list*. Do not file a ticket for the absence.
+
 **Rule:** Pay full day at straight-time rate where required.
 
 **Applies to:** Eligible L12 employee. **Trigger:** Workplace injury prevents completion of day.

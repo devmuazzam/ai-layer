@@ -9,6 +9,8 @@ tags: [module/payroll, kind/rule, open-questions]
 
 # PAY-038 — Hazardous-material premium
 
+> **Deferred, not a gap.** Absent from the engine by choice — parked, "leave until asked". See [payroll-engine-status-2026-09-12.md](../payroll-engine-status-2026-09-12.md) → *Not on any list*. Do not file a ticket for the absence.
+
 **Rule:** Add configured premium to base for qualifying time.
 
 **Applies to:** Eligible L12 labor. **Trigger:** Employee performs Level A or B regulated work.

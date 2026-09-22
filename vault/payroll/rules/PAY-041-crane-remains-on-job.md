@@ -9,6 +9,8 @@ tags: [module/payroll, kind/rule, open-questions]
 
 # PAY-041 — Crane remains on job
 
+> **Deferred, not a gap.** Absent from the engine by choice — parked, "leave until asked". See [payroll-engine-status-2026-09-12.md](../payroll-engine-status-2026-09-12.md) → *Not on any list*. Do not file a ticket for the absence.
+
 **Rule:** Apply four-, six-, or eight-hour decision tree.
 
 **Applies to:** Eligible L12 employees. **Trigger:** Subsequent day and crane remains assigned to job.

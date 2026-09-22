@@ -9,6 +9,8 @@ tags: [module/payroll, kind/rule, open-questions]
 
 # PAY-042 — First-day travel/assembly exception
 
+> **Deferred, not a gap.** Absent from the engine by choice — parked, "leave until asked". See [payroll-engine-status-2026-09-12.md](../payroll-engine-status-2026-09-12.md) → *Not on any list*. Do not file a ticket for the absence.
+
 **Rule:** Do not automatically apply eight-hour guarantee.
 
 **Applies to:** Eligible L12 employees. **Trigger:** First day contains only travel, assembly, or preparation.

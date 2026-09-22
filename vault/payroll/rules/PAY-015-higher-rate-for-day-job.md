@@ -9,6 +9,8 @@ tags: [module/payroll, kind/rule, open-questions]
 
 # PAY-015 — Higher rate for day/job
 
+> **Deferred, not a gap.** Absent from the engine by choice — parked, "leave until asked". See [payroll-engine-status-2026-09-12.md](../payroll-engine-status-2026-09-12.md) → *Not on any list*. Do not file a ticket for the absence.
+
 **Rule:** Identify higher qualifying rate and create true-up component.
 
 **Applies to:** Eligible L12 employees. **Trigger:** Employee works at multiple qualifying rates.
