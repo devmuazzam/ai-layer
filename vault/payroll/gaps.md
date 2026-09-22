@@ -4408,13 +4408,20 @@ somewhere it should not have. Settle that before touching either.
   whenever something is settled, **especially after a call with Corrina Bustos**; names **luffer pay
   and its six unknowns** as the first thing to look at; and closes by asking him to flag any row
   marked *Decided* he would not recognise. It also carries the question below, put to him directly.
-- **The one thing asked of him that is not about a rule — where the document lives.** The covering
-  message says plainly that mailing the file around produces versions, *"which is the exact problem
-  it's meant to fix"*, and offers to put it wherever he would edit it in place. **Unanswered as of
-  2026-09-23.** Until it is, the file on the Desktop is the only copy and this entry stays open: a
-  `.docx` passed back and forth recreates the scatter rather than fixing it. If Brian has no
-  preference, naming a specific SharePoint or Teams location closes it faster than asking again.
-- **Still open after delivery:** (a) **where it lives**, above. (b) How updates return to the vault
+- **Where it lives — ANSWERED 2026-09-23, same day: Teams.** Brian Petros will add the document to
+  Teams and edit it there. That is the home; every other copy is a transfer artefact or a stale
+  read. **Delivery path:** Syed Haris uploaded the file to Google Docs and sent Brian the link; Brian
+  downloads from it and puts the result in Teams. So the Google Doc is a **one-time transfer, not a
+  second home** — the moment Brian's first Teams edit lands it is out of date, and so is the local
+  `.docx` it was made from.
+- **What that leaves, and it is small but real:** the Teams copy is the only current one, and
+  CodingCops does not have a link to it — **ask Brian for the Teams location once it is up**, or the
+  side that maintains the vault is reading a copy that stopped being true at his first edit. The
+  Google Doc and the local file should be retired, or marked as the 2026-09-23 snapshot they are,
+  so neither is opened later and mistaken for the register. Three copies of a rules document is the
+  scatter this whole entry exists to prevent.
+- **Still open after delivery:** (a) is answered — what remains of it is the Teams link, above.
+  (b) How updates return to the vault
   — the document asks for a row to be marked and the change noted, which is a convention, not a
   mechanism; nothing reports a divergence if he edits and the vault does not follow. Closing this
   entry needs (a) settled and Brian actually maintaining it — the first edit from his side is the
