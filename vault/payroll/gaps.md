@@ -4386,11 +4386,16 @@ somewhere it should not have. Settle that before touching either.
 - **Update 2026-09-23 — the document exists; it has not been sent.** Built as a Word file,
   `TCG-Payroll-Rules-Status-2026-09-23.docx`, from [rules/](rules/INDEX.md),
   [payroll-rules-provenance.md](payroll-rules-provenance.md) and this register. Two days past the
-  promised Monday. It honours the trap above by keeping **decided** and **built** apart in writing
+  promised Monday. **It is written as a joint working document, not as a CodingCops
+  deliverable addressed to Brian** — no byline, no second person, both sides named in the third
+  person, and a maintenance section asking whoever settles a row to change its state and record
+  on whose word. That shape was a deliberate correction: a document addressed *to* the client is
+  one the client receives, and this one has to be one both sides edit. It honours the trap above by keeping **decided** and **built** apart in writing
   rather than in a column: a "how to read this" section says in as many words that a rule marked
   *Decided* may not be built and a rule the ERP runs may never have been confirmed. Six states —
-  *Decided · Decided (contract) · Partly decided · Working assumption · Contested · Open* — carried
-  over from this register's own vocabulary. Per Brian's ask it carries **no per-rule sources**; the
+  *Decided · Decided (contract) · Partly discussed · Working assumption · Contested · Open* — carried
+  over from this register's own vocabulary and **grouped into three buckets on the page** — decided,
+  discussed but still needing a final decision, and open. Per Brian's ask it carries **no per-rule sources**; the
   traceability stays here, which is the point of the vault. The four live disagreements get a
   section of their own so none of them can be read as settled: the holiday guarantee, the
   added-hours grid, the meal thresholds / worked-through modes, and the luffer classification.
