@@ -3,7 +3,7 @@ id: PAY-043
 title: PAY-043 — Long-boom premium
 section: E-guarantees-special-pay
 status: open
-updated: 2026-09-07
+updated: 2026-09-23
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -93,3 +93,18 @@ tags: [module/payroll, kind/rule, open-questions]
   `gap = min(4, shift hours) − boom hours`, priced at adder × the highest boom-slice multiplier,
   bucketed to that LB column, pinned to the last boom-paid entry of the shift.
 
+- **⚠️ Luffer pay breaks the two-bracket-sets model — Corrina Bustos, Teams 2026-09-14 (relayed by
+  Brian Petros 2026-09-23), in full:** *"**Luffer Pay-** Oiler gets paid operator rate for base rate
+  AND long boom"*. Two firsts in one sentence. (1) The oiler draws from the **operator** bracket set
+  ($0.75 at 80–100 ft, 18 brackets) rather than the oiler set ($0.25, 15 brackets) — the resolver
+  chooses on role alone (`roleType === 'OPERATOR' ? operatorAdder : oilerAdder`), so *"oiler role,
+  operator bracket"* is a case the model cannot express. (2) His **base** rate moves too, which no
+  rule here has ever done from an equipment configuration, and which crosses the `verified`
+  [../../decisions/2026-08-20-craft-locked-rate-override.md](../../decisions/2026-08-20-craft-locked-rate-override.md).
+  It also **corroborates** the parked question-21 default — Corrina writes *"long boom"* for a
+  luffer, siding with Joe and the MLA against *"technically lattice"* — without closing it, because
+  she is answering which rate, not which premium family. **Six things it does not say** (which
+  operator rate; whole job or boom window; rate or premium; oiler only; does lattice flip too; how a
+  luffer job is identified) are registered in [../gaps.md → *Luffer pay — the oiler is paid the
+  operator rate for base and long boom*](../gaps.md#luffer-pay--the-oiler-is-paid-the-operator-rate-for-base-and-long-boom).
+  **Do not build any of it on a guess.**

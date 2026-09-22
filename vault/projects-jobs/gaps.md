@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-09-19
+updated: 2026-09-23
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -284,6 +284,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   if chosen; its values; and whether *lattice-capable* is an asset attribute — the wind sheet needs
   one for its own purpose, nobody has said so for pay.
 - **Update 2026-09-04, from the record** (computed the same day from `stg.FMS_JOB_UNITS_Raw` in the restored 2026-06-23 backup): `ConfigType` is **empty on all 76,307 job-unit rows** — FCC's per-unit-on-job configuration column was never used, so there is no legacy job-level boom or crane configuration to migrate or to mirror. The nearest legacy precedent stays the per-labor-row craft modifier.
+- **Update 2026-09-23 — a second payroll rule now depends on this field, and it is not lattice.** Corrina Bustos, Teams 2026-09-14, relayed by Brian: *"**Luffer Pay-** Oiler gets paid operator rate for base rate AND long boom"*. Brian's covering note proposes this field as the mechanism — *"I think we can determine if employees are eligible for 'luffer pay' based on the crane configuration of the job… Can check with Kyle, Joe, and Corrina"* — **explicitly unconfirmed**, and he ties it to the *crane configurations* resource-type work with Joe ([../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md); FCC resource type 76 *360 Ton All Terrain w/Luffer*, made *"after this job… separate ones for the different configurations"*). Two consequences for this entry's open question. **(a) The value set is no longer binary.** Kyle's ask was lattice-or-not; luffer pay needs the field to distinguish a **luffer** configuration as well, which the MLA treats as *long boom* (Article IV, *"including combined total mast and Luffing Boom"*), not lattice. **(b) The Kyle-vs-Joe axis — chosen field or derived from the dispatched asset — gets harder, not easier.** FCC's own answer is that a luffer configuration is a **separate resource type on the same unit** (36001 carries both *360 Ton All Terrain Crane* and *360 Ton All Terrain w/Luffer*), i.e. derivable from what was dispatched, which favours Joe. But a crane is reconfigured between jobs, so the resource type dispatched has to be the *actual* one — which is the quotation/dispatch question in [../assets/gaps.md → *One asset, one type — but one crane in several configurations*](../assets/gaps.md#one-asset-one-type--but-one-crane-in-several-configurations-how-does-an-asset-stand-for-more-than-one-resource-type). **Still needs the client**, and the pay side is registered separately: [../payroll/gaps.md → *Luffer pay — the oiler is paid the operator rate for base and long boom*](../payroll/gaps.md#luffer-pay--the-oiler-is-paid-the-operator-rate-for-base-and-long-boom).
 
 ## Job Schedule tab — what to show when the date range yields zero days
 

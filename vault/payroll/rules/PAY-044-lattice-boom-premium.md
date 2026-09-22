@@ -3,7 +3,7 @@ id: PAY-044
 title: PAY-044 — Lattice-boom premium
 section: E-guarantees-special-pay
 status: open
-updated: 2026-09-07
+updated: 2026-09-23
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -34,3 +34,17 @@ tags: [module/payroll, kind/rule, open-questions]
 - **Luffer question — contract evidence found:** the MLA classification table (Groups 5/7) reads *"Long Boom pay **including combined total mast and Luffing Boom** applicable"* — the contract itself treats luffing boom under **long-boom pay**, siding with Joe's 08-04 classification against Jeff's "technically lattice". Kyle's confirmation is now a formality with text behind it.
 - **Boom window (2026-09-03 call):** same build-up-through-breakdown-incl-hook-work window as PAY-043,
   per Kyle Harlow 45:31; see that file's bullet and [../../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md).
+- **Luffer pay, and what it does *not* say about lattice — Corrina Bustos, Teams 2026-09-14
+  (relayed by Brian Petros 2026-09-23):** *"**Luffer Pay-** Oiler gets paid operator rate for base
+  rate AND long boom"*. She names **long boom**, unprompted, for a luffer — evidence for Joe's
+  classification and the contract reading over Jeff Stricker's *"technically lattice"*, though
+  **Kyle's adjudication is still the thing that closes question 21**; she is answering which *rate*,
+  not which *premium family*. The message is **silent on lattice**: if a luffer were also lattice,
+  the $1.00 / $0.50 operator-oiler split would need the same operator-rate treatment and nobody has
+  said so. Read the silence neither way. Registered with its five other unknowns in
+  [../gaps.md → *Luffer pay — the oiler is paid the operator rate for base and long
+  boom*](../gaps.md#luffer-pay--the-oiler-is-paid-the-operator-rate-for-base-and-long-boom); the
+  identification half rides on the same job-level **Boom Configuration** field asked for above,
+  which Brian now proposes to source from the *crane configurations* resource types
+  ([../../projects-jobs/gaps.md](../../projects-jobs/gaps.md) → *Job-level "Boom Configuration"
+  field*, update 2026-09-23).
