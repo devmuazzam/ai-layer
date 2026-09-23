@@ -232,6 +232,46 @@ file. The persona filter is `CHECKLIST_ONLY_FOR_OILER_KEYS` in
 
 ### U3 — Draft every field (mobile)
 
+**Done, 2026-09-24.** Differences from the plan below:
+- `features/field-ticket/steps/use-step-draft.ts`. It debounces writes by 300 ms and flushes
+  on unmount and when the app goes to the background. Each draft carries a `draftUpdatedAt`
+  stamp.
+  - A stamped draft outranks the step's capture. Completion drops the draft, so a stamped
+    draft next to a capture can only be an edit made after completion.
+  - An unstamped (pre-U3) draft is used only when there is no capture.
+  - Bodies call `flush()` before `onComplete`, so a pending write cannot re-create a draft
+    after completion.
+  - Opening a step writes nothing: the Checklist and JSA mount-time progress report is skipped.
+- What is drafted, per step:
+
+  | Step | Drafted fields |
+  |---|---|
+  | TimeRecordBody | recorded or auto-stamped time, time nudged before recording, Left Yard note |
+  | Sig1 | signer name, terms, early sign-off and its ack, unavailable and reason |
+  | Sig2 | the same fields, plus the 3 approvals and comments |
+  | Checklist (Pre-Trip, Post-Trip) | answers and photo refs, through the hook; the emergency banner is re-derived from the restored answers |
+  | JSA | hazards |
+  | Labor | bracket picks and payroll comment (`setStepData` is now passed to it) |
+  | WTL sheet | signer name and comment, per break (`startWork:wtl<idx>:draft`); closing the sheet is a cancel and clears it |
+
+- **Fixed along the way (Gap A):** RECORD and the ± taps on the milestone steps used to write
+  the step's *capture*. A step that was recorded but not sent then looked completed on return,
+  and its adjustments went straight to the backend. They now go to the draft.
+- **Fixed, U8:** Sig2 rehydrate treated a null approval as `true`; it is now `false`.
+- **Fixed:** the Sig1/Sig2 resync effect now re-runs only when the capture's *content*
+  changes. Every draft write re-renders the dispatcher, which re-parses the capture, and the
+  old effect would have reset fields while the crew typed.
+- **Deferred to U4, not drafted here:**
+  - Drawn signatures: the Sig1/Sig2 pads, the checklist sign-off and the WTL pad. Restoring a
+    "signed" flag without an image would pass validation with no signature to show.
+  - Identity and WTL photos: they upload on capture today.
+  - The on-device file pipeline in U4 is where both belong.
+- **Not drafted, on purpose:**
+  - Start Work's ± adjustments in progress, and a completed milestone's time adjustment: both
+    commit explicitly on "Done adjusting".
+  - Compliance: it has no editable inputs.
+  - `SignatureBody`: no step renders it, since all three signature steps have their own bodies.
+
 - Add a `useStepDraft(stepKey)` hook.
   - Writes are debounced about 300 ms and flushed on unmount and on AppState `background`.
   - The draft carries `updatedAt`.
