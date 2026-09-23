@@ -57,6 +57,9 @@ The **rounding-adjustment** half of PAY-069 remains closed — inapplicable; unr
 
 ## Open
 
+- **Run "version" (decided 2026-09-24):** a run records the configuration in effect (union/craft rates, pay settings for the week) and the source data used (tickets included + last-changed time). PR #656's `engineVersion` alone does not meet it — [decision](../../decisions/2026-09-24-payroll-run-records-configuration-and-source-data-used.md).
+- **Failed recalculation (decided 2026-09-24):** worklist keeps the last successful run with a warning (when, which run); approve/export blocked until a recalculation succeeds or the payroll manager confirms; failure + reason on the audit log. PR #656 meets only the audit-log part — [decision](../../decisions/2026-09-24-payroll-failed-recalculation-keeps-last-good-run-and-blocks-approval.md).
+
 - **Blocking (matrix):** Confirm retention period — still open, and still owned by TCG. It
   blocks *pruning*, not exposing: nothing here deletes a run, and the read path above does
   not depend on the answer. Registered in [gaps.md](../gaps.md) as one of the 24 decisions
