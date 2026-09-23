@@ -2,7 +2,7 @@
 title: Client message verification — running findings
 status: reference
 kind: reference
-updated: 2026-09-09
+updated: 2026-09-23
 tags: [module/payroll, kind/reference, payroll-rules, open-questions]
 ---
 
@@ -1000,6 +1000,41 @@ the token-parse failure mode with its exception view (`v_UI_WTL_Exceptions_Lates
 the v5.1 SOP tells anyone to check.
 
 **Not asked:** nothing. This message needs no reply beyond the WTL material above.
+
+## 2026-09-14 — Luffer pay: the oiler is paid the **operator** rate (Corrina Bustos, Teams; relayed by Brian Petros 2026-09-23)
+
+Corrina Bustos, Teams, 2026-09-14 14:44 — screenshot relayed by Brian on 2026-09-23
+([assets/2026-09-14-corrina-luffer-pay-oiler-operator-rate.png](assets/2026-09-14-corrina-luffer-pay-oiler-operator-rate.png)).
+The message is two lines and is quoted here **in full** — there is no further text:
+
+> **Luffer Pay-**
+> Oiler gets paid operator rate for base rate AND long boom
+
+Brian's covering note, in the same relay: *"Having the 'crane configurations' type/setting we
+were talking about with Joe will be helpful for getting what we need for payroll rules as
+well… like this one… Can check with Kyle, Joe, and Corrina… but I think we can determine if
+employees are eligible for 'luffer pay' based on the crane configuration of the job."*
+
+| Claim | Verdict | Register |
+| --- | --- | --- |
+| On a luffer job the **oiler is paid the operator BASE rate** | 🆕 **new, and in no vault document.** No rule, transcript, decision note or MLA extract says an *equipment configuration* moves an employee's **base** rate — every base-rate source in the vault keys on the employee's craft code. It therefore sits across [`decisions/2026-08-20-craft-locked-rate-override.md`](../decisions/2026-08-20-craft-locked-rate-override.md) (`verified`: rate comes from the craft code; a different day's rate is a **secondary craft code**, set only by the crane superintendent or payroll). **Mechanism unstated** — secondary craft assignment, or a new branch in rate resolution? | PAY-010, PAY-011, PAY-015 |
+| On a luffer job the oiler takes the **operator long-boom adder**, not the oiler adder | 🆕 **new, and contradicts the built model.** PAY-043 carries two bracket sets — MLA $0.75 operator / $0.25 oiler at 80–100 ft, 18 operator / 15 oiler brackets in the workbook — and the resolver picks between them on role alone (`roleType === 'OPERATOR' ? operatorAdder : oilerAdder`, noted in `SCRUM-961/spec.md` §13). Nothing today can express "oiler role, operator bracket" | PAY-043, PAY-011 |
+| Luffer work earns **long boom** pay | ✅ **corroborates the parked default on question 21** — the contract reading (luffing boom under *Long Boom pay*, mast + jib combined) and Joe's 2026-08-04 classification, against Jeff Stricker's *"technically lattice"*. Corrina writes *"long boom"* for a luffer without qualification. **Not closure:** she is answering *which rate*, not *which premium family*, and Kyle still owns the adjudication | PAY-043, PAY-044 |
+| Nothing about the **lattice** premium | ⚠️ **silence, not exclusion.** If a luffer were also lattice (Jeff's reading), the $1.00/$0.50 split would need the same operator-rate treatment and the message does not say so. Do not read the omission either way | PAY-044 |
+| Eligibility could be derived from the **job's crane configuration** | 🆕 Brian's **proposal, explicitly unconfirmed** (*"Can check with Kyle, Joe, and Corrina"*). It is the same job-level **Boom Configuration** field Kyle asked for in message 20, now with a second consumer — and the same object as the *crane configurations* resource-type work with Joe ([../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md), FCC resource type 76 *360 Ton All Terrain w/Luffer*). Schema ask already filed: [../projects-jobs/gaps.md](../projects-jobs/gaps.md) → *Job-level "Boom Configuration" field* | PAY-044, projects-jobs, assets |
+
+**Client questions from this message:** (1) *operator rate* — which one? The operator craft
+code the oiler's own group maps to, the rate of the operator actually on that crane, or a
+named luffer craft code? (2) does it cover the **whole job** (lattice's scope) or only the
+luffer-configured slices (long boom's scope)? (3) does the lifted base rate carry into
+fringes, pension and OT/DT, or is it a premium wearing the word *rate*? (4) does the same
+lift apply to any other crew role on a luffer job — third man, apprentice — or oiler only?
+(5) does the **lattice** premium flip to the operator figure too, or only long boom? (6) is
+eligibility really per-job crane configuration, and who sets it — the answer Kyle, Joe and
+Corrina have not yet given.
+
+**Registered:** [gaps.md](gaps.md) → *Luffer pay — the oiler is paid the operator rate for
+base and long boom*.
 
 ## Parked — 2026-08-24 (build proceeds on defaults)
 

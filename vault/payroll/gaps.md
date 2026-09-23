@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-19
+updated: 2026-09-23
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -4383,8 +4383,64 @@ somewhere it should not have. Settle that before touching either.
 - **Live disagreements it must not paper over:** the holiday-guarantee dispute
   ([holiday-guarantee-scenario-2026-09-14.md](holiday-guarantee-scenario-2026-09-14.md)) and the
   added-hours grid — both are cases where his app and the ERP deliberately differ today.
-- **Owner:** CodingCops — Syed Haris made the commitment; Brian Petros to maintain it once
-  delivered.
+- **Update 2026-09-23 — built and sent.** Built as a Word file,
+  `TCG-Payroll-Rules-Status-2026-09-23.docx`, from [rules/](rules/INDEX.md),
+  [payroll-rules-provenance.md](payroll-rules-provenance.md) and this register. Two days past the
+  promised Monday. **It is written as a joint working document, not as a CodingCops
+  deliverable addressed to Brian** — no byline, no second person, both sides named in the third
+  person, and a maintenance section asking whoever settles a row to change its state and record
+  on whose word. That shape was a deliberate correction: a document addressed *to* the client is
+  one the client receives, and this one has to be one both sides edit. It honours the trap above by keeping **decided** and **built** apart in writing
+  rather than in a column: a "how to read this" section says in as many words that a rule marked
+  *Decided* may not be built and a rule the ERP runs may never have been confirmed. Six states —
+  *Decided · Decided (contract) · Partly discussed · Working assumption · Contested · Open* — carried
+  over from this register's own vocabulary and **grouped into three buckets on the page** — decided,
+  discussed but still needing a final decision, and open. Per Brian's ask it carries **no per-rule sources**; the
+  traceability stays here, which is the point of the vault. The four live disagreements get a
+  section of their own so none of them can be read as settled: the holiday guarantee, the
+  added-hours grid, the meal thresholds / worked-through modes, and the luffer classification.
+  Corrina's 2026-09-14 luffer note is in it with its six unknowns.
+- **Sent to Brian Petros on Teams, 2026-09-23, with the covering message.** The message states the
+  three buckets and the 46 / 11 / 5 split; states in as many words that the document tracks
+  *decisions, not what is built*; says that where the Payroll App and the ERP differ the difference
+  is written down rather than resolved toward either one, *"nothing has been quietly resolved in
+  code"*; asks Brian to update the row, change its state and record what changed and who decided it
+  whenever something is settled, **especially after a call with Corrina Bustos**; names **luffer pay
+  and its six unknowns** as the first thing to look at; and closes by asking him to flag any row
+  marked *Decided* he would not recognise. It also carries the question below, put to him directly.
+- **Where it lives — ANSWERED 2026-09-23, same day: Teams.** Brian Petros will add the document to
+  Teams and edit it there. That is the home; every other copy is a transfer artefact or a stale
+  read. **Delivery path:** Syed Haris uploaded the file to Google Docs and sent Brian the link; Brian
+  downloads from it and puts the result in Teams. So the Google Doc is a **one-time transfer, not a
+  second home** — the moment Brian's first Teams edit lands it is out of date, and so is the local
+  `.docx` it was made from.
+- **What that leaves, and it is small but real:** the Teams copy is the only current one, and
+  CodingCops does not have a link to it — **ask Brian for the Teams location once it is up**, or the
+  side that maintains the vault is reading a copy that stopped being true at his first edit. The
+  Google Doc and the local file should be retired, or marked as the 2026-09-23 snapshot they are,
+  so neither is opened later and mistaken for the register. Three copies of a rules document is the
+  scatter this whole entry exists to prevent.
+- **Brian's response, 2026-09-23 (two Teams messages, 04:57 and 07:42 Pakistan time — his
+  afternoon and evening, so he read it the same working day).** Accepted and committed to
+  maintaining it: *"this looks like it's going to be good… I'll spend some time taking a closer
+  look at it… and save to our shared folder"*, and later *"This document is really good, Haris!…
+  I'm only halfway through it… I'll keep you updated as I work my way through it."* Three things
+  to carry forward. **(1) The shared folder is confirmed as the home** — he will put it there
+  himself, which closes (a) in practice; the link back is still owed. **(2) He plans to change it:**
+  *"I might redesign the layout and/or wording a bit, but I get the overall idea."* Welcomed in the
+  reply, with one thing asked to survive a rewrite — the three states, and specifically the
+  **decided vs built** line, because a rule the ERP runs that nobody confirmed surfaces nowhere
+  else. If a later version of the document has lost that distinction, this entry is the record that
+  it was deliberate once. **(3) He has not edited it yet** — he is still reading. The closing signal
+  for this entry stays the first edit from his side, not the acceptance.
+- **Still open after delivery:** (a) is answered — what remains of it is the Teams link, above.
+  (b) How updates return to the vault
+  — the document asks for a row to be marked and the change noted, which is a convention, not a
+  mechanism; nothing reports a divergence if he edits and the vault does not follow. Closing this
+  entry needs (a) settled and Brian actually maintaining it — the first edit from his side is the
+  signal, not the acceptance.
+- **Owner:** Brian Petros — the commitment is delivered, so maintenance is his from here. CodingCops
+  (Syed Haris) to fold his edits back into this vault, and to chase (a) if it goes quiet.
 
 ## Employee Billing Code and Employee Pay — asked in UAT 1, never answered, and the schema keeps them independent
 
@@ -4451,3 +4507,21 @@ somewhere it should not have. Settle that before touching either.
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
 - **Why it lands here too:** the attribute the answer needs belongs to this module's objects. [fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §2 records FCC's `Dispatchable on: Jobs/Quotes (J), Work Orders (W), Both (B), or None (N)` as an attribute of the **employee type**, and states that it is *"a field the ERP has nowhere"*. Two open entries here are upstream of it: [*Employee types — FCC holds several per employee; we store one*](#employee-types--fcc-holds-several-per-employee-we-store-one) and [*Field role vs portal role — one list in FCC, three representations in TCG*](#field-role-vs-portal-role--one-list-in-fcc-three-representations-in-tcg).
 - **Read:** [../dispatch/gaps.md → *Sales Persons in the DAS Employees tab…*](../dispatch/gaps.md#sales-persons-in-the-das-employees-tab--dispatchability-is-an-employee-type-attribute-we-do-not-have)
+
+## Luffer pay — the oiler is paid the operator rate for base and long boom
+
+- **Status:** open
+- **Asked:** 2026-09-23 — logging Corrina Bustos's 2026-09-14 Teams message, relayed by Brian Petros. **Rules:** PAY-010, PAY-011, PAY-015, PAY-043; PAY-044 by adjacency.
+- **Question:** Corrina, in full: *"**Luffer Pay-** Oiler gets paid operator rate for base rate AND long boom"*. Six things it does not say, and the build cannot proceed past any of them by guessing. **(a) Which operator rate?** The operator craft code that the oiler's own MLA group maps to, the rate of the operator actually on that crane that day, or a distinct luffer craft code? **(b) What scope?** The **entire job**, as lattice is (PAY-044, Corrina's own earlier ruling), or only the boom-window slices, as long boom is (PAY-043)? **(c) Is it a rate or a premium?** If the oiler's *base rate* really changes, fringes, pension, OT/DT and the ADP export all move with it; if it is a premium wearing the word *rate*, they do not. **(d) Oiler only?** Or does any other crew role on a luffer job — third man, apprentice — lift the same way? **(e) Does lattice flip too?** The message names base rate and long boom and is silent on the $1.00/$0.50 lattice split. **(f) How is a luffer job identified,** and who sets it?
+- **Sources checked:**
+  - [client-message-findings.md → *2026-09-14 — Luffer pay*](client-message-findings.md#2026-09-14--luffer-pay-the-oiler-is-paid-the-operator-rate-corrina-bustos-teams-relayed-by-brian-petros-2026-09-23) — the message verbatim, its screenshot ([assets/2026-09-14-corrina-luffer-pay-oiler-operator-rate.png](assets/2026-09-14-corrina-luffer-pay-oiler-operator-rate.png)) and the claim-by-claim verdicts. **This is the whole written source. There is no second one.**
+  - [rules/PAY-043-long-boom-premium.md](rules/PAY-043-long-boom-premium.md) (`status: open`) — the long-boom adder is **two bracket sets**, MLA $0.75 operator / $0.25 oiler at 80–100 ft stepping every 20 ft; the workbook carries **18 operator and 15 oiler brackets**. [source-attribution-and-conflicts.md](source-attribution-and-conflicts.md) → *Long boom* records *"only oiler and operator qualify, not third man"*. Nothing anywhere pays an oiler out of the operator set.
+  - **The resolver cannot express this today.** [../../aidlc/SCRUM-961/spec.md](../../aidlc/SCRUM-961/spec.md) §13 records that bracket choice is binary on role — `roleType === 'OPERATOR' ? operatorAdder : oilerAdder` — which is already known to mis-pay a `MECHANIC` craft. **Verified in code 2026-09-23:** `apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts:153` reads `const adder = roleType === 'OPERATOR' ? row.operatorAdder : row.oilerAdder;` — one ternary, no third branch, and `CraftModifier` carries exactly the two columns (`craft-modifiers.repository.ts:11-12`). "Oiler role, operator bracket" is a third case the model has no room for.
+  - **It crosses a `verified` decision on base rates.** [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md): the rate comes from the employee's craft code, a different day's rate is a **secondary craft code**, and *"only the crane superintendent or payroll"* may set it. Scope carve-outs: [../decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md](../decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md). If luffer pay is implemented as an automatic configuration-driven lift, it sets a day's rate with **no human in that loop** — which is either a deliberate exception or a contradiction, and nobody has said which. The neighbouring resolved entry [*Pay rate follows the employee, not the role worked*](#pay-rate-follows-the-employee-not-the-role-worked--kyle-and-corrina-unrecorded) points the other way again: role governs **premium** eligibility, not the base rate. Corrina's line moves *both*.
+  - **Contract:** the full MLA ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md) → Article IV) puts mobile tower cranes under *"Long Boom pay including combined total mast and Luffing Boom applicable"* at Groups 5, 7, 8 and 9 — it explains why a luffer earns **long boom**, and says **nothing** about an oiler drawing the operator figure. So this is TCG practice, not contract text, and cannot be derived from the agreement. (An agreement is a floor; TCG may pay above it.)
+  - [rules/PAY-044-lattice-boom-premium.md](rules/PAY-044-lattice-boom-premium.md) and [*Lattice boom premium — UAT 6…*](#lattice-boom-premium--uat-6-asks-to-validate-it-against-craft-code-groups-pay-044-gates-on-payroll-group-6-and-above) — the **luffer classification** question (Jeff Stricker *"technically lattice"* vs Joe 2026-08-04 *"boom pay only"*) is still Kyle's and still unanswered. Corrina writing *"long boom"* for a luffer **corroborates the parked default** (question 21 in [client-message-findings.md](client-message-findings.md#parked--2026-08-24-build-proceeds-on-defaults)) but does not close it — she is answering *which rate*, not *which premium family*. **Kept as a separate entry deliberately:** that one asks which premium a luffer earns; this one asks who is paid at what rate once it does.
+  - **(f) already has a home, and now a second consumer.** [../projects-jobs/gaps.md → *Job-level "Boom Configuration" field*](../projects-jobs/gaps.md#job-level-boom-configuration-field--schema-ask-from-payroll-kyle) carries Kyle's ask (configuration is per-job and stable for the job's duration). Brian's note proposes the same object serve luffer-pay eligibility, and ties it to the *crane configurations* resource-type work with Joe — [../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) (FCC resource type 76 *360 Ton All Terrain w/Luffer*; *"after this job, we made separate ones for the different configurations"*), and [../assets/gaps.md → *One asset, one type — but one crane in several configurations*](../assets/gaps.md#one-asset-one-type--but-one-crane-in-several-configurations-how-does-an-asset-stand-for-more-than-one-resource-type). **⚠️ Brian's proposal is explicitly unconfirmed** — *"Can check with Kyle, Joe, and Corrina… but I think we can determine…"*. It is a hypothesis about a mechanism, not an answer.
+- **Note:** the message is a **rule statement from the person who runs payroll**, which is the strongest kind of source this register gets — but it is one sentence, and every one of (a)–(f) changes what gets built. Do not let the sentence's confidence stand in for the six answers. In particular, **do not build (c) as a base-rate change on a guess**: it is the difference between a $4 premium and a rate that propagates through fringes, pension and every multiplier.
+- **Blocked:** any luffer handling in `packages/payroll-engine` (and the pay-rule change it would need in [payroll-rules-provenance.md](payroll-rules-provenance.md), same commit); closing PAY-043's *Blocking — confirm equipment source data*; the field set of whatever carries crane configuration on a job.
+- **Owner:** Corrina Bustos for (a)–(e) — it is her rule and her practice; Kyle Harlow with Joe Schacatano for (f) and for the still-open luffer classification. Brian Petros relays.
+- **Pointer:** [../projects-jobs/gaps.md](../projects-jobs/gaps.md) → *Job-level "Boom Configuration" field* — payroll now has a second rule depending on it.

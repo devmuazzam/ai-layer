@@ -5,6 +5,17 @@ migrated: 2026-09-04
 updated: 2026-02-26
 status: unverified
 conflicts_with: []
+provenance_note: >-
+  Still `unverified` and NOT superseded — this remains the written scope of the whole
+  engagement. One row is known stale as a build constraint: §5 *User base*,
+  `Sales / Estimating → Desktop (Mac/Windows)`. Per
+  decisions/2026-09-22-tablet-is-an-active-conversion-target-for-the-web-portal.md
+  (Syed Haris, CodingCops, 2026-09-22, `status: reference`), that row describes the
+  pre-conversion state; tablet is an active conversion target for the web portal,
+  including the quotation builder. That is a vendor-side engineering statement only —
+  whether TCG is *promised* tablet support for Sales / Estimating is still unadjudicated
+  and open at quotations/gaps.md#is-tcg-promised-tablet-support-for-sales--estimating-and-at-which-breakpoint.
+  No other row of this file is affected.
 jira: []
 tags: [module/admin, module/all, kind/source, requirements, integrations, architecture, data-migration, union-agreement, certified-payroll, permissions-roles, reporting]
 entities: []
