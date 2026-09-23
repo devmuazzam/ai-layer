@@ -349,6 +349,58 @@ file. The persona filter is `CHECKLIST_ONLY_FOR_OILER_KEYS` in
 
 ### U7 — Backend (api)
 
+**Done, 2026-09-24.** Differences from the plan below:
+
+**Submit guard**
+- `submit-step-guard.ts` holds `findMissingSubmitSteps`, a pure function run against one
+  evidence query (`JobTicketsRepository.findSubmitEvidence`).
+- What counts as a step being on the server:
+
+  | Step | Evidence |
+  |---|---|
+  | Milestones | the time-entry edge |
+  | sig1 / sig2 / compliance | a signature row |
+  | Pre-Trip / JSA / Post-Trip | the completion marker, and every assignment of that type `SUBMITTED` |
+  | Driving / Start Work / Labor | the completion marker |
+  | WORK_TIME | closed (`workTimeClosed`) |
+
+- The persona is the primary crew member's employee type.
+- A refusal is a 400 with `code: 'TICKET_STEPS_MISSING'` and `missingSteps`.
+- The flag is `TICKET_SUBMIT_STEP_GUARD` (`'true'` or `'false'`, default off). It is validated
+  in `env.validation.ts`.
+- **`.env.example` is not updated.** Reading env files is blocked in this session, so add the
+  line by hand.
+
+**COMPLETE transition**
+- `completeTicketIfOpen` is one `updateMany ... WHERE status <> COMPLETE`. The losing side of a
+  race returns the idempotent response and does not log or notify.
+
+**Checklist finish time**
+- The `completedAt` field is on the three `*ChecklistsDto`s, one time per step.
+- Rules: not in the future, with 5 minutes allowed for clock skew. There is **no** Left Yard
+  floor, because Pre-Trip is finished before Left Yard, so the plan's rule was wrong.
+- `markSubmitted` without `completedAt` keeps an existing `submittedAt`, so a replay never
+  moves it later.
+
+**Idempotent uploads**
+- Migration `20260924120000_attachments_client_upload_id` adds a nullable `client_upload_id`
+  and `uq_attachments_tenant_client_upload`.
+- `TicketAttachmentGuardService.storeUpload`: a repeated `clientUploadId` returns the existing
+  row; the same id arriving for a different ticket is a 403; a P2002 race returns the row
+  that won and drops its own S3 object.
+- The checklist, signature and lunch-break uploads all use it; each takes an optional
+  multipart field `clientUploadId`.
+
+**Deletes**
+- `DELETE :id/signatures/attachments/:attachmentId` and
+  `DELETE :id/lunch-breaks/attachments/:attachmentId`, via `removeUnreferenced`.
+- An id that is already gone succeeds, so a retried delete is fine. An image a saved
+  signature still points at returns 409.
+
+**Left as is**
+- `storageService` is still injected into the three services, which no longer use it.
+  Removing it would change constructor signatures that the specs build positionally.
+
 - `submitTicket` guard.
   - Before setting `COMPLETE`, check that every required step exists server-side:
     - the milestone timestamps
