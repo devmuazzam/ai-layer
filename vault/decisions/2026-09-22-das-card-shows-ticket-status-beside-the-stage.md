@@ -31,6 +31,13 @@ JOB-0000  [Ticket Sent]  [In Progress 2/3]
           stage badge     crew chip (new)
 ```
 
+**The chip never reads *Sent*.** While every ticket is merely sent, the stage badge beside it
+already says *Ticket Sent*, so a `Sent 3/3` chip would state the same fact twice — the card
+shows the badge alone until a crew member has actually done something. A sub-job where some
+tickets are complete and the rest only sent **does** get a chip (`Completed 1/3`): that is the
+crew's own progress, not a restatement of the badge. The per-slot pill inside an expanded row
+still renders *Sent*, because there is no badge next to it to duplicate.
+
 This is TCG-70's own AC8 — the subset its §6 preamble names as satisfying the ask's literal
 complaint without touching the stage machine. **AC1–AC7 and AC9–AC13 are deferred**, to
 [`2026-09-22-das-stage-is-derived-forward-only-from-the-ticket-lifecycle.md`](2026-09-22-das-stage-is-derived-forward-only-from-the-ticket-lifecycle.md)
