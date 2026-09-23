@@ -320,7 +320,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the only recorded voice on departments as org structure
   (`meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:68, :72).
 - **Cross-link:** payroll/gaps.md → *Pointers — departments archive* (STRUCTURE.md:40 routes the
-  `departments` usecase to payroll, and (b) turns on employee assignments)
+  `departments` usecase to payroll, and (b) turns on employee assignments); [assets/gaps.md →
+  *Archived rows in pickers…*](../assets/gaps.md#archived-rows-in-pickers--never-offered-except-the-records-own-saved-value)
+  (2026-09-22 — same participation question for categories; working assumption on the sub-category
+  form only until Fouzan ratifies)
 
 - **Conflict logged 2026-09-19 (UAT register vs the app-wide archive decision) — 56 hard deletes survive, and the row that covers them is marked DONE.**
   [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → **DONE** *Departments editable, roles under departments, soft
