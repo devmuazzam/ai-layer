@@ -4433,6 +4433,22 @@ somewhere it should not have. Settle that before touching either.
   else. If a later version of the document has lost that distinction, this entry is the record that
   it was deliberate once. **(3) He has not edited it yet** — he is still reading. The closing signal
   for this entry stays the first edit from his side, not the acceptance.
+- **Review workflow set by Brian, 2026-09-24 00:07 Pakistan time.** The document is **saved to the
+  shared folder**, which closes (a) properly: that is the home, and he is running it. Two identical
+  copies sit there, **one Word and one PDF**, so Corrina Bustos can mark up whichever she prefers.
+  The order is **Corrina first, then Brian, then wider circulation**: *"I have several things I
+  would like to comment on, but think it's best to have Corrina review first… After her comments,
+  then I'll add mine and send to other for review/comments."* He has told only Corrina so far. On
+  versioning, unprompted and before anyone raised it with him: *"I'll be careful to not make too
+  many copies and keep it controlled with new dated versions… Try to keep it a nice and clean
+  working document… it will be important for us to keep track of things."* He also withdrew the
+  redesign: *"not much change is needed to the layout."*
+- **Why the order matters more than it looks.** Corrina owns the answer to most of what is still
+  open in this register — luffer pay (a)–(e), the meal thresholds, the holiday guarantee with the
+  BA, and the three MLA rules never discussed. A pass by her is worth more than any other single
+  review, and it is the first time the open list has been put in front of her as one list rather
+  than as scattered questions. **CodingCops is holding its copy unedited until her round returns**,
+  so the two sides do not edit in parallel.
 - **Still open after delivery:** (a) is answered — what remains of it is the Teams link, above.
   (b) How updates return to the vault
   — the document asks for a row to be marked and the change noted, which is a convention, not a
