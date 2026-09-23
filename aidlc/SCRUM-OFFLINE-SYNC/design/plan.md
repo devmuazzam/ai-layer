@@ -289,6 +289,49 @@ file. The persona filter is `CHECKLIST_ONLY_FOR_OILER_KEYS` in
 
 ### U4 — Photos stored on the device first (mobile)
 
+**Done, 2026-09-24.** Differences from the plan below:
+
+**Local references**
+- On capture, the file is copied to `Paths.document/ticket-attachments/<ticketId>/` and a
+  `local:<uuid>` is returned wherever an attachment id would go, so nothing downstream needed
+  to change shape.
+- The ledger is `sync.attachments[localId]`: target, uri, name, type, and `serverId` once
+  uploaded.
+- Badges show a single tick for a `local:` id and a double tick once it is a server id.
+
+**At send time**
+- The upload is not grouped by step. At Next, `resolveLocalAttachments` walks the capture
+  being sent, uploads the `local:` references it finds, one at a time and each at most once,
+  with `clientUploadId` set to the local id, then swaps the ids.
+- `saveChecklistStep` and `saveSignatureStep` in `[key].tsx` do this before their existing
+  save. A failure blocks the step and shows a toast; files already uploaded stay uploaded.
+
+**What is deferred**
+- Checklist and JSA photos: every `CameraSim` use.
+- Sig1 and Sig2 identity photos (`SignerCapture deferUpload`).
+- Every drawn signature from `useResumableSignature`: Sig1, Sig2, Compliance.
+
+**Not deferred, on purpose (decision 1)**
+- The WTL sheet's photo and signature. Its lunch break is recorded on the server the moment
+  it is accepted, so the attachment has to exist by then. Offline WTL is U5.
+- Incident reports and the ticket attachments sheet: out of scope.
+
+**Cleanup**
+- The ticket's local files are deleted after a successful submit, and whenever its draft is
+  wiped.
+- A photo removed while still local is deleted on the device only.
+
+**No `expo-crypto`**
+- Local ids use the codebase's existing `Math.random` v4 pattern (`createResourceId`), so no
+  native rebuild is needed. The approved dependency is not used.
+
+**Known gaps**
+- Signature re-rasterized on retry: if the signature save fails and the crew taps again,
+  the pad is rasterized into a new local file. That file is uploaded once, but the previous
+  one is orphaned on the server if it had already been uploaded.
+- Drawn-signature restore after leaving mid-step (deferred from U3) is still not done. The
+  local file would allow it, but the pad cannot be pre-filled with an image.
+
 - `usePhotoCapture` gains a deferred mode, built on its unused `snapOnly`.
   - On capture, copy the file to `documentDirectory/tickets/<ticketId>/<localId>.jpg` and
     add it to the ledger as `local`, shown as a single green tick (`SyncStatusBadge` `local`).
