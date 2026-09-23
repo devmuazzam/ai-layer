@@ -209,6 +209,18 @@ file. The persona filter is `CHECKLIST_ONLY_FOR_OILER_KEYS` in
 
 ### U2 — Offline cold start (mobile)
 
+**Done, 2026-09-24.** Differences from the plan below:
+- The persist packages are pinned to exactly `5.101.2`, the installed `@tanstack/react-query`.
+  The latest release (5.103) declares a peer of `^5.103.2`.
+- `expo-crypto` moves to U5, where client UUIDs are first needed. It is a **native module**:
+  adding it needs a new EAS or dev-client build, and an OTA update will not carry it. U2 is
+  JS-only.
+- Persisted: identity; checklists; tickets list, detail, signatures, lunchBreaks, breakdowns,
+  work-segments, laborCrew. Max age 3 days, and `gcTime` raised to match for those roots.
+- Sign-in and sign-out also delete the on-disk cache, not just the in-memory one.
+- Not done: the "kill app in airplane mode, reopen" check. It needs a device, so it's for
+  the reviewer to run.
+
 - Persist the react-query cache to AsyncStorage for the ticket list, checklist assignments,
   signatures, labor crew and Start Work segment queries. Raise `gcTime` for them.
 - New dependencies (**approved 2026-09-24**): `@tanstack/react-query-persist-client` and
