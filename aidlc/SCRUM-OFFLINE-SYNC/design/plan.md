@@ -426,6 +426,47 @@ file. The persona filter is `CHECKLIST_ONLY_FOR_OILER_KEYS` in
 
 ### U6 — Pre-submit verification (mobile)
 
+**Done, 2026-09-24.** Differences from the plan below:
+
+**The online submit sequence (`onSubmit`, then `preSubmitCheck`)**
+1. Catch up (`drainPendingSteps`).
+2. Punch Review, which closes WORK_TIME.
+3. Fetch the server snapshot: the ticket list entry, signatures, and checklists for Oilers.
+4. `findStepDiscrepancies` checks the required steps from `@tcg/shared`.
+5. For each gap, rebuild its ops from the local capture, re-drain, then verify once more.
+6. Submit, or block.
+
+The loader message changes at each stage ("Sending saved steps…", "Saving work time…",
+"Verifying ticket data…").
+
+**Blocked submits**
+- An `Alert` names the steps and offers "Open <step>" for the first one. This replaces the
+  bottom sheet in the plan: it is simpler, with the same content.
+
+**Comparators, deliberately coarse**
+
+| Step | Checked |
+|---|---|
+| Milestones | server time equals the local time, to the minute |
+| Signatures | a row exists, with the same image id when the local id is a server id |
+| Checklists | the completion marker, and every assignment `SUBMITTED` |
+| Driving / Start Work / Labor | the completion marker |
+| Work Time | `completedAt` set |
+
+Checklists are not compared answer by answer: the phone and the server key answers
+differently, and a false mismatch would block a correct ticket. The server guard (U7) is
+the second line.
+
+**Offline submit (`useTicketSync`)**
+- Now runs the catch-up first, and skips the submit if the catch-up fails. It does not
+  resend: rebuilding a step's ops needs the step screen's context. Opening Review and
+  retrying runs the full check.
+- Fixed along the way: `useTicketSync` looped on a persistently failing submit, because
+  `submitting` → `error` re-triggered it. It now tries once per stretch of connectivity.
+
+**Default confirmed by use**
+- Resend-then-block, as proposed in intent §12.
+
 - `features/field-ticket/sync/submit-pipeline.ts` runs in `onSubmit` and in `useTicketSync`:
   1. `drainPendingSteps()`, then `flushStepAttachments` for every step.
   2. Punch `review`, which closes WORK_TIME. This is the "work time saved in DB" point in the request.
