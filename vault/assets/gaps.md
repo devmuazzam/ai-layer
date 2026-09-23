@@ -1441,9 +1441,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 - **Status:** open
 - **Asked:** 2026-09-22 — UAT observation *"Archived categories should not be displayed"* on the
-  sub-category Category picker; Path C fix (no ticket folder). The create form was passing
+  sub-category Category picker; Path C fix (no `.ai/aidlc/` folder). The create form was passing
   `includeArchived` as a like-for-like port from a pre-fetched list (`b6e2c25d62`), not from a
   product decision.
+- **Ticket:** Linear **[TCG-43](https://linear.app/the-crane-guys/issue/TCG-43)** — *Archived
+  categories appear in the Sub-Category form's Category dropdown*; milestone *UAT remediation*,
+  parent TCG-13, raised by syed haris, assignee Areeba Gul, `PR Review and QA`. Recorded
+  2026-09-23 at PR review of `fix/archived-category-appear-in-subcategory` (commits `e1732cdb0`,
+  `4301f84d7`, Mohsin Akram): this entry and the `processed.log` row both read *no ticket*, which
+  was wrong — the work is tracked, in **Linear rather than Jira** (the Jira tenant is suspended
+  for payment, so Jira is not a place to look). It matters here because TCG-43 **defers** its own
+  edit-form criterion behind its open question 1, which is part **(b)** below — so the working
+  assumption below is shipped behaviour, not something the ticket authorised. Related: **TCG-109**
+  (yards, same mechanism), whose acceptance criterion 8 names this register as where the general
+  rule belongs and says the rule is *"unspecified today; do not infer it from this fix"*.
 - **Question:** two lines. **(a)** Is it a **general picker rule** that archived rows never appear
   as new choices, anywhere — with the sole exception that a record's **own saved** archived
   reference stays visible and re-selectable after the field is cleared? **(b)** When a parent
@@ -1457,6 +1468,34 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the saved archived parent with a `formatArchivedLabel` suffix; (b) that saved archived parent
   remains a valid FK (save-unchanged must succeed). Other pickers (yards, etc.) are **not**
   covered by this assumption until (a) is ratified.
+- **Added at PR review 2026-09-23 — three things the working assumption does not account for.**
+  **(1) Two shipped conventions now contradict each other on (a).** The branch pins the saved
+  archived parent as a **selectable** option (`category-select.tsx`, `pinnedCategory`), while
+  `apps/web/src/lib/archived-reference-options.ts` → `buildArchivedReferenceOptions` pins the
+  same kind of reference **`disabled: true`** — and is consumed by
+  `sub-category/components/create-sub-category.helpers.ts` → `buildCategoryOptions`, i.e. **the
+  same edit form**, plus `assets/asset/lib/asset-classification-options.ts`. A third
+  shape is in use elsewhere: `includeArchived` left on the picker, so archived rows stay fully
+  searchable and selectable — `part-form-sections.tsx:62`, `permit-form-fields.tsx:256`,
+  `po-form-fields.tsx:185`, `po-line-item-row.tsx:88`, `quote-info-section.tsx:58`. TCG-43's
+  criterion permits *"either pin it as an option or suppress the clear control"* and does not
+  choose between them. Whoever answers (a) should name which of the three is the rule, or the
+  next picker picks a fourth.
+  **(2) (b) has no server-side enforcement in either direction.**
+  `usecase/asset-management/sub-categories/sub-categories.service.ts` never checks the parent's
+  `archivedAt` on `create()` (:499) or `update()` (:583) — the only such check in the module is
+  `unarchive()` (:757), which refuses while the parent is archived. So the FK can be pointed at an
+  archived category by any client whatever (b) decides, and honouring the answer will take a guard,
+  not only a picker change. Note also that archiving a category **cascade-archives its live
+  children** (`categories.repository.ts:240`, `archiveWithActiveSubCategories`), so the state (b)
+  asks about is reachable today mainly through legacy rows and the unguarded paths named here.
+  **(3) "Excluded from search" is not "unreachable".** `category-details-view.tsx:126` builds
+  `/asset-management/sub-categories/create?categoryId=<id>` with no archived guard, and
+  `create-sub-category-view.tsx:70` resolves the label from `getCategory(id)` rather than from the
+  list — so an archived parent still prefills the create form and still saves, and without the
+  `formatArchivedLabel` suffix the rest of the branch adds. Already carried as Q4 of
+  [*Create-form prefill from URL query params*](#create-form-prefill-from-url-query-params--the-whole-contract-is-unwritten)
+  in this file; named here so (a) is not read as having closed it.
 - **Sources checked:** the archive decision above; this register; admin/gaps → *Departments —
   does archive replace delete…* part (c) (same participation question on another entity);
   sub-category name uniqueness part (b) in this file (name reservation — related archive theme,
