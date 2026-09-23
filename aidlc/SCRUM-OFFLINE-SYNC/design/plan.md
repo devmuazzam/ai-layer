@@ -187,6 +187,18 @@ file. The persona filter is `CHECKLIST_ONLY_FOR_OILER_KEYS` in
 
 ### U1 — Store foundation (mobile)
 
+**Done, 2026-09-24.** Differences from the plan below:
+- `kv.setJSON(key, value, { strict: true })` rethrows, instead of `kv.setJSON` always
+  rethrowing. The sales stores, the shift clock and the SOS button call it fire-and-forget,
+  and would have turned into unhandled rejections.
+- Draft **reads and removals** go through the same queue as writes. Without that, a wipe could
+  be undone by a queued write, and `openTicket` could read an older snapshot.
+- The ledger has `sync.steps` only. The `sync.attachments` half lands with U4.
+- A queued write whose ledger is still `pending`/`failed` blocks the wipe for tickets that are
+  not open. For the open ticket, the in-memory ledger decides.
+- Known cost: after a real backend reset, a ticket that still has an unconfirmed step keeps
+  its local draft rather than wiping it. U6 re-sends the step, or the crew sees it fail.
+
 - Serialize persist writes through a promise chain, and `await` each write.
 - `kv.setJSON` rethrows, so `persistFailed` becomes true when a write fails.
 - Add the sync ledger (`sync.steps`, `sync.attachments`) to `TicketDraft` and persist it.
