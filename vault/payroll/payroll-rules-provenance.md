@@ -2,7 +2,7 @@
 title: Payroll rules — provenance register: every rule, its status, and the source that confirms it
 source: consolidation of rules/PAY-*, decisions/, meetings/, client-message-findings.md, the MLA and the legacy config, as of 2026-09-13
 migrated: 2026-09-13
-updated: 2026-09-13
+updated: 2026-09-23
 status: reference
 conflicts_with: []
 jira: []
@@ -147,6 +147,7 @@ the FRD and the legacy extract; where a client statement exists it is noted.
 | Payroll approval (PAY-065) | **Pending** | FCC Pending/Approved status — Brian 2026-09-13 FYI | Approval levels |
 | ADP export, earning codes (PAY-067) | **Contested** | [adp-hour-earning-codes.md](adp-hour-earning-codes.md); codes for guaranteed hours / rest / WTL (D-002/3/4) owed since August; **how added hours reach ADP — Brian 2026-09-13, on Tuesday's agenda** | D-002 / D-003 / D-004 |
 | Retroactive correction (PAY-068) | **Pending** | Matrix; closed-payroll immutability proposal in the dependency matrix | — |
+| Money rounding to cents (PAY-069) | **Legacy** | The legacy Payroll App rounds in SQL Server `decimal` — T-SQL `ROUND(x, 2)`, which is **half away from zero** on both signs. That behaviour is the measuring stick for the July 25–31 golden-week parallel run, so the engine matches it exactly. `Math.round(n * 100) / 100` did not: it rounds half toward +∞, under-deducting a penny on an exact negative half (reachable — PAY-046 posts the meal deduction with −0.5 h), and `n * 100` reintroduced binary-float error that put `1.015`, `10.075` and `0.145` a cent low on either sign. Pinned in `packages/payroll-engine/src/money.spec.ts`. Nobody at TCG has ruled on rounding *method* for money; this is legacy behaviour matched, not a ruling. | — |
 | Rounding-adjustment component (PAY-069) | **Closed — inapplicable** | Engine computes totals one way only (overlay `9a5c5a1`) | — |
 | Certified payroll (PAY-072) | **Legacy** | FCC per-classification `UseCertifiedPayroll`; [certified-payroll-playbook.md](certified-payroll-playbook.md) | — |
 
