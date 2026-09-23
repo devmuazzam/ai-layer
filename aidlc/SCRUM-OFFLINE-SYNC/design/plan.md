@@ -353,6 +353,57 @@ file. The persona filter is `CHECKLIST_ONLY_FOR_OILER_KEYS` in
 
 ### U5 — Offline completion and the sync engine (mobile)
 
+**Done, 2026-09-24.** Differences from the plan below:
+
+**Stored writes**
+- There is no generic `syncStep` function. Each step's backend writes are stored as data:
+  `StepSyncOp[]` on `sync.steps[key].ops`, in `features/field-ticket/sync/step-ops.ts`.
+- `runStepOps` sends them in order, uploading any `local:` photos first.
+- Every op targets an upserting endpoint.
+
+**Offline Next**
+- `onComplete` calls `completeOffline` → `completeStepLocally(key, n, capture, summary, ops)`.
+  The step advances and stays `pending`, and the crew see "Saved on this device".
+- `buildOfflineOps` builds the ops: a milestone's recordStep; a checklist's submit (with
+  `completedAt`) plus the ack; a signature's POST plus the ack; Start Work's rebuilt ops plus
+  the ack; Labor's queued entries plus the ack; otherwise just the ack.
+
+**Online Next**
+- Unchanged, and still blocking. The one addition: a step that already owes queued ops (Start
+  Work edited offline) is sent through the catch-up, not just acked.
+
+**Catch-up**
+- `drainPendingSteps` (single-flight) sends unsynced steps in flow order.
+- A step with no stored ops gets derived ones: a milestone re-sends its time, any other step
+  its ack.
+- It stops at the first refusal, which is marked `failed` with the server's message, and its
+  ops are kept.
+- `useTicketOutboxSync` (ticket `_layout`) runs it on coming online or when a ticket opens.
+  It does not run on every pending step, which would double-send a step saved online.
+
+**Start Work, state-based rather than a tap log**
+- `buildStartWorkOps` rebuilds the writes from the saved capture: closed build-up and
+  breakdown (both edges, created at the phone's id), taken lunches by index, End Work. Boom
+  time is mirrored by the server off build-up and breakdown.
+- Every write site checks the connection. Offline, the write stays local and
+  `queueStartWorkSync` refreshes the step's ops; a failed online write queues the same way.
+  The completion ack is included only once the step is completed.
+- Segment starts get a client UUID, and closes send both edges.
+- The misleading "useTicketSync re-sends" behaviour is now real, through the catch-up.
+
+**Labor**
+- Offline, `LaborStepBody` queues one `laborEntry` op per crew member instead of mutating.
+
+**Checklists**
+- Online and offline both send `completedAt` (the capture's `at`), which U7 stores.
+
+**Still not offline**
+- Work Through Lunch is refused offline with a clear message. Its authorization and
+  signature must reach the server when accepted, and the capture does not keep them for a
+  replay.
+- Labor Gap F (no boom window means nothing is sent) is unchanged. `expo-crypto` is still not
+  needed.
+
 - `features/field-ticket/sync/step-sync.ts` holds `syncStep(stepKey, ctx)`. It is built from
   the save logic now inline in `step/[key].tsx`: `saveTrackedStep`, `submitChecklistForStep`,
   `submitSignatureForStep`, and Labor's `submitAllEntries`, plus the Start Work replay.
