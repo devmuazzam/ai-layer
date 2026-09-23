@@ -4420,6 +4420,19 @@ somewhere it should not have. Settle that before touching either.
   Google Doc and the local file should be retired, or marked as the 2026-09-23 snapshot they are,
   so neither is opened later and mistaken for the register. Three copies of a rules document is the
   scatter this whole entry exists to prevent.
+- **Brian's response, 2026-09-23 (two Teams messages, 04:57 and 07:42 Pakistan time — his
+  afternoon and evening, so he read it the same working day).** Accepted and committed to
+  maintaining it: *"this looks like it's going to be good… I'll spend some time taking a closer
+  look at it… and save to our shared folder"*, and later *"This document is really good, Haris!…
+  I'm only halfway through it… I'll keep you updated as I work my way through it."* Three things
+  to carry forward. **(1) The shared folder is confirmed as the home** — he will put it there
+  himself, which closes (a) in practice; the link back is still owed. **(2) He plans to change it:**
+  *"I might redesign the layout and/or wording a bit, but I get the overall idea."* Welcomed in the
+  reply, with one thing asked to survive a rewrite — the three states, and specifically the
+  **decided vs built** line, because a rule the ERP runs that nobody confirmed surfaces nowhere
+  else. If a later version of the document has lost that distinction, this entry is the record that
+  it was deliberate once. **(3) He has not edited it yet** — he is still reading. The closing signal
+  for this entry stays the first edit from his side, not the acceptance.
 - **Still open after delivery:** (a) is answered — what remains of it is the Teams link, above.
   (b) How updates return to the vault
   — the document asks for a row to be marked and the change noted, which is a convention, not a
