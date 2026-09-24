@@ -4500,6 +4500,9 @@ somewhere it should not have. Settle that before touching either.
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). One line from whoever raised it settles which of three things they meant: (a) confirm the existing Group 6+ gate is implemented, (b) add a craft-code-based gate alongside it, or (c) the luffer/equipment question above wearing different words.
 - **Blocked:** closing PAY-044; the lattice premium's implementation gate.
 - **Owner:** Kyle Harlow (he already owns the luffer adjudication on PAY-044) with Corrina Bustos; whoever raised the UAT 6 row for what *"craft code groups"* meant.
+- **Update 2026-09-24 (TCG-141 audit):** still **open**.
+  - **Reading (a) is built end to end.** The Group 6+ gate is on origin/main (PR #462 `1faf90eba`, with the wage-group field from PR #446). Checked by reading: `calculate.ts` raises `PREMIUM_GROUP_INELIGIBLE`, and `payroll-premium-form-dialog.tsx` has the premium's minimum group. It has **not been demoed**. `claude/skills/demo-walkthrough/WALKTHROUGH.md` has been corrected so it no longer calls it a defect.
+  - **A consequence nothing written covers.** The code gates on the wage group of the **craft the day's rate resolved to**, not the employee's payroll group. So a Group 6+ employee working a Group 4 *secondary* craft for the day loses the premium. The PAY-044 rule says *"Eligible Group 6+ employees"*. Whether that means the employee's group or the day's craft group is the same question as reading (a) vs (b). Kyle's *"qualification reality"* note suggests the employee's group, but it does not rule on it.
 
 ## Adding a rate when the previous one has no effective-to date — back-fill it, or error
 
