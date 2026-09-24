@@ -59,7 +59,7 @@ Decision note: [../decisions/2026-09-12-holiday-start-reverts-at-midnight-and-gu
 | **Shift differential $3 / $4, into the rate; 7 → 8 and 6½ → 8 hours-add** | MLA Art. III Shifts; Brian 2026-08-24 | ✅ rates · ✅ hours-add once per chain, on the last 2nd/3rd-shift entry — fixed, PR #565 (was N2) | Test: two back-to-back 2nd-shift tickets → one add |
 | **Non-union hourly: daily 8/12 → 7th day → weekly 40, in that order, reasons preserved** | Brian 2026-09-07, written, 9 scenarios | ✅ | Audit re-run A9 |
 | **Non-union is admin/yard only; every dispatched job is L12; no non-union mechanics** | Corrina 2026-09-10 (38:20, 50:43) | 🟡 scope statement — work-order and salaried populations not modelled | — |
-| **Subsistence $85 (45–77.5 mi) / $200 (>77.5 mi), per job not per craft** | 2026-08-20 SME call; decision 2026-09-01 | ✅ writer added (uncommitted, app branch): `PATCH payroll/jobs/:id/flags` + *Subsistence* card on the job Main tab (B4). Manual miles only; PAY-049 calendar-day holdover still unbuilt | — |
+| **Subsistence $85 (45–77.5 mi) / $200 (>77.5 mi), per job not per craft** | 2026-08-20 SME call; decision 2026-09-01 | ✅ writer merged (app PR #632, `fd0d09776`, 2026-09-23; TCG-162): `PATCH payroll/jobs/:id/flags` + *Subsistence* card on the job Main tab (B4). Manual miles only; PAY-049 calendar-day holdover still unbuilt | — |
 | **Anniversary check: L12 vacation payout, 40 h at regular rate, 1 yr + 1200 h; preserved as entered, exempt from every rule; special-earning policy, not a labor row** | MLA Vacation §1; Brian's spec + as-built app 2026-09-11; FCC pattern ruled out for the ERP | ❌ not built — special-earnings model undecided (flag / entity / ledger) | — |
 | **SICK is a special earning** (falls through to NORMAL_WORK in Brian's app today; being fixed) | Brian 2026-09-11 | ❌ not built | — |
 
@@ -90,7 +90,7 @@ steps executed — a runner/config failure, not a code result; merged on the loc
 
 | # | Defect | Per occurrence | Fix |
 | --- | --- | --- | --- |
-| **B4** | Subsistence unreachable — no UI for `subsistenceDistanceMiles` / `subsistenceHoldover` | –$85 to –$200 per eligible day | **Fixed** — writer added; end-to-end on a seeded job not yet run. Card is on the Main tab, not the Send Ticket modal |
+| **B4** | Subsistence unreachable — no UI for `subsistenceDistanceMiles` / `subsistenceHoldover` | –$85 to –$200 per eligible day | **Fixed** — writer merged in PR #632. `calculate.spec.ts` pins a 50-mile holdover job through to the ADP workbook (Subsistence = 85). A live run on a dev tenant is reported by Ali Riaz on TCG-162 (2026-09-23), not independently verified; browser click-through not recorded. Card is on the Main tab, not the Send Ticket modal |
 | — | Before-midnight built on the categorical reading | ±1 h on 23:00-type starts if Corrina says mechanical | Await her answer; no change until then |
 | — | Sunday-start now reverts at midnight (2 DT + 10 OT, was 12 DT) | $400 per such shift, now *less* | Applied by principle from the holiday ruling — one line to Corrina to confirm, easy to reverse |
 
