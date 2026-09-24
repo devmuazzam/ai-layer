@@ -88,13 +88,31 @@ What each answer refers to:
 4. The server-side submit check is in scope for this ticket.
 5. No Jira issue.
 
+Decision given 2026-09-25 regarding photo and attachment uploads (verbatim):
+
+```
+We need to revert back to how we were uploading the images before this branch change
+which is that we upload to first mobile local storage and then roght away upload the
+image to backedn and S3 bucket and use S3 preview URL to display the image!
+
+This chnage we need to do is for only photos and attchments. Nothing else needs to be change!
+```
+
+What this changes:
+- Photos and attachments in ticket steps are uploaded immediately to the backend and S3 upon
+  capture, displaying the authenticated S3 preview URL (single tick in-flight, double tick
+  once uploaded).
+- This applies ONLY to photos and attachments.
+- Drawn signatures remain deferred/local-first until step Next or offline catch-up.
+- The pre-submit data verification layer and offline step sync behavior remain active.
+
 - Acceptance criteria present on the ticket: no (behaviour described, no AC list)
 - `OPEN — no acceptance criteria; the elaborator should propose them from §3 for sign-off`
 
 ## 4. In scope
 
 - [ ] Every user-editable value on every ticket step is written to the on-device draft as it changes, and restored when the step is reopened
-- [ ] Photos and attachments are stored on the device at capture (single green tick) and uploaded only when Next is tapped, or when sync runs after an offline Next
+- [ ] Photos and attachments are uploaded immediately to backend & S3 at capture (single tick in-flight, double tick on completion from S3 preview URL; reverted from deferred-to-Next on 2026-09-25); drawn signatures remain stored on device and uploaded at Next
 - [ ] Next while online saves the step to the backend before advancing (as today)
 - [ ] Next while offline completes the step locally and marks it as waiting to sync
 - [ ] Before the ticket completes: all queued step data is caught up, Work Time is closed, then every step's device copy is compared with the server copy; the ticket completes only if all steps match

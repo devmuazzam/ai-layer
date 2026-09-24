@@ -38,6 +38,22 @@ File references are as of `349982639`.
 - **D3, D4:** no answer, so the defaults stand (resend-then-block; DELETE callers in a
   follow-up).
 
+**Answered 2026-09-25 by the session user, verbatim:**
+
+> We had changed flow for all photo/attachments upload behaviour in ticket steps.
+> This is the behaviour we have implemented:
+> When we upload photo/attachment we save it in mobile local storage first and display it with single green ticket. Next when we click on the button to move to the next step then we save these attchments data in the backedn and S3 and show double green ticket in photo preview
+> We need to revert back to how we were uploading the images before this branch change which is that we upload to first mobile local storage and then roght away upload the image to backedn and S3 bucket and use S3 preview URL to display the image!
+> This chnage we need to do is for only photos and attchments. Nothing else needs to be change!
+
+- **Photo & attachment uploads revert to immediate upload on capture.** The U4 deferral of
+  photos and attachments to the Next step is reverted: photos are written to local storage,
+  immediately uploaded in-flight to backend and S3, and previewed using the authenticated S3 URL.
+- **Signatures untouched:** Drawn signatures (`useSignatureCapture`, `useResumableSignature`)
+  remain deferred to step completion.
+- **Pre-submit verification untouched:** Step data verification prior to ticket completion
+  remains active.
+
 **Review-plan corrections (session review, 2026-09-24):**
 - F6: the segment kind is `'boom-sessions'`, not `'booms'`.
 - F3: `query.isFetchedAfterMount`, or `dataUpdatedAt` versus launch time, both mark a list

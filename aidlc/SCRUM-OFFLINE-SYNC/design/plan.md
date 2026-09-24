@@ -289,7 +289,26 @@ file. The persona filter is `CHECKLIST_ONLY_FOR_OILER_KEYS` in
 
 ### U4 — Photos stored on the device first (mobile)
 
-**Done, 2026-09-24.** Differences from the plan below:
+**Done, 2026-09-24; Reverted for photos/attachments on 2026-09-25.** Differences from the plan below:
+
+**Reversion on 2026-09-25 (Photos & attachments only):**
+- Reverted photo/attachment upload flow across ticket steps back to immediate upload upon
+  shutter capture (restoring pre-U4 behavior while preserving drawn signatures).
+- Photos are saved locally first, then uploaded immediately in-flight to backend and S3,
+  displaying the authenticated S3 preview URL (`${env.apiUrl}/attachments/${id}/download?disposition=inline`),
+  showing a single tick while uploading and a double green tick once uploaded.
+- Reverted call sites:
+  - `usePhotoCapture`: removed `saveLocal` option and local-only bypass.
+  - `CameraSim`: removed `saveLocalAttachment` call, restoring default capture behavior.
+  - `SignerCapture`: removed `deferUpload` prop and `saveLocalAttachment`; restored `resolvePhotoUri`
+    with `attachmentId` to display S3 preview; restored sync indicator based on `isUploaded`.
+  - `DeficiencyPanel`: reverted `resolveSyncStatus` to `syncStatus`; resolved S3 preview URL with `attachmentId`.
+  - `ChecklistEngine`: restored `syncStatus = isUploaded ? 'server' : 'local'` in photo grid and preview modal;
+    resolved S3 preview URL.
+  - `Sig1Body` & `Sig2Body`: removed `deferUpload` from `SignerCapture`; updated preview resolution to use `attachmentId`.
+  - `signer-capture.test.tsx`: updated assertion to verify `resolvePhotoUri(null, 'att-real-123')`.
+- **Drawn signatures** (`useSignatureCapture`, `useResumableSignature`, `local-attachments.ts`) remain
+  deferred/local-first until step completion or offline sync catch-up.
 
 **Local references**
 - On capture, the file is copied to `Paths.document/ticket-attachments/<ticketId>/` and a
@@ -306,10 +325,9 @@ file. The persona filter is `CHECKLIST_ONLY_FOR_OILER_KEYS` in
 - `saveChecklistStep` and `saveSignatureStep` in `[key].tsx` do this before their existing
   save. A failure blocks the step and shows a toast; files already uploaded stay uploaded.
 
-**What is deferred**
-- Checklist and JSA photos: every `CameraSim` use.
-- Sig1 and Sig2 identity photos (`SignerCapture deferUpload`).
-- Every drawn signature from `useResumableSignature`: Sig1, Sig2, Compliance.
+**What is deferred (updated 2026-09-25)**
+- Drawn signatures from `useResumableSignature`: Sig1, Sig2, Compliance.
+- (Checklist photos, JSA photos, and Sig1/Sig2 identity photos are no longer deferred — uploaded immediately on capture).
 
 **Not deferred, on purpose (decision 1)**
 - The WTL sheet's photo and signature. Its lunch break is recorded on the server the moment
