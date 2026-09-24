@@ -4655,3 +4655,24 @@ somewhere it should not have. Settle that before touching either.
   - The provenance PAY-065 row is updated.
   - A data migration replaces the provisional rows in existing tenants, and the seed constant is changed to match.
 - **Owner:** **Corrina Bustos** (named on TCG-164 and as the approval-levels owner).
+
+## Calculation-run log (PAY-064): who "the payroll manager" is, and what "pay settings in effect" covers
+
+- **Status:** open
+- **Asked:** 2026-09-24, from the TCG-171 audit of app PR #656. **Rules:** PAY-064.
+- **Question (a): who may confirm going ahead after a failed recalculation?**
+  - [../decisions/2026-09-24-payroll-failed-recalculation-keeps-last-good-run-and-blocks-approval.md](../decisions/2026-09-24-payroll-failed-recalculation-keeps-last-good-run-and-blocks-approval.md) says approve/export stay blocked until the recalculation succeeds or *"the payroll manager **explicitly confirms**"*.
+  - The shipped route `POST periods/:id/runs/:runId/acknowledge-failure` requires only `@RequirePermission('payroll', 'edit')`. That is the same permission that runs a calculation. So anyone who can recalculate can also lift the hold.
+  - Nothing written says whether "payroll manager" is a distinct role or permission, or just anyone with payroll edit.
+  - Related, but not the same question: who may reopen a processed period.
+- **Question (b): what does "pay settings in effect" cover?**
+  - [../decisions/2026-09-24-payroll-run-records-configuration-and-source-data-used.md](../decisions/2026-09-24-payroll-run-records-configuration-and-source-data-used.md) asks a run to record *"the union/craft rates and pay settings that were in effect"*.
+  - The shipped `configurationSnapshot` holds rates, boom adders and premiums.
+  - Is that all "pay settings" means, or does it also include OT/DT thresholds, holiday calendars, per-diem/subsistence amounts, or the approval-blocking list (PAY-065)?
+- **Question (c), vault mechanics: does a rounding change count as a "pay-rule change"?**
+  - `packages/payroll-engine/src/version.ts` says to bump `PAYROLL_ENGINE_VERSION` for any change to *"how money rounds"*. It defines `1.0.0` as the rule set *including* PAY-069's rounding.
+  - PAY-069 (#657) merged **after** #656, so any run calculated in between is stamped `1.0.0` with the old rounding. The window is narrow and is real only if an environment ran a calculation in it.
+  - The bump rule is written only in `version.ts` and the PAY-064 rule file, not in `.ai/claude/contexts/payroll-engine.md`, which is where #656's review asked for it. Adding a convention to `contexts/` is a human's call, from an accepted reflection.
+- **Owners:**
+  - (a) and (b): Syed Haris, who recorded both decisions, with **Corrina Bustos** for the payroll-manager role.
+  - (c): CodingCops.
