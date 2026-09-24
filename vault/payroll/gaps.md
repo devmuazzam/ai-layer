@@ -4684,3 +4684,77 @@ somewhere it should not have. Settle that before touching either.
 - **Owners:**
   - (a) and (b): Syed Haris, who recorded both decisions, with **Corrina Bustos** for the payroll-manager role.
   - (c): CodingCops.
+
+## Lattice oiler premium lands in the ADP "Lattice Oper" column (TCG-163)
+
+- **Status:** open (known mis-mapping, logged on purpose)
+- **Asked:** 2026-09-24. Logged as syed haris ruled on TCG-163 (2026-09-22): *"log the mis-mapping … leave the code alone here, and let's scope the split separately."* **Rules:** PAY-044, PAY-067.
+- **What happens:**
+  - `LATTICE_OP` ($1.00/h) and `LATTICE_OI` ($0.50/h) are both seeded with `ruleId: 'PAY-044'` (`apps/api/src/utility/seed-data.ts`).
+  - `PayComponent` carries only `ruleId` and `label`.
+  - So `packages/payroll-engine/src/xlsx-rows.ts` sums the **oiler's** lattice hours into "Lattice Oper", and "Lattice Oiler" is hardcoded 0.
+  - Oiler hours reach ADP, but under the wrong column. The code now carries a comment saying so (app PR #668).
+- **Settled, per haris's sourcing on TCG-163:** the two columns are the client's intended shape.
+  - Corrina, `meetings/transcripts/2026-08-04-payroll-process.md` at 1:09:08.
+  - Brian, `crew-assignment-and-rate-derivation-brian-2026-09-16.md`.
+  - The oiler rate is **$0.50**, not the 75¢ said on the 13 Aug recording.
+- **What is open:**
+  - **The split is ours.** It needs a `PayComponent` modelling change plus a provenance row. It needs **its own ticket**, which is not yet filed.
+  - **Which cranes trigger the premium** is a separate question for Joe and Kyle. See *what does "validate the lattice boom premium with craft code groups" mean*.
+- **Owner:** CodingCops (to file and scope the split ticket).
+
+## ADP file number — uniqueness, change policy, and a format conflict (PAY-006, TCG-169)
+
+- **Status:** open
+- **Asked:** 2026-09-24, from scoping TCG-169. Nothing is built: `Employee.adpFileNumber` is `String? @db.VarChar(50)` with no uniqueness rule, and the DTOs accept any 50 characters. **Rules:** PAY-006.
+- **The written sources disagree on format. Not adjudicated here.**
+  - TCG-169 ("Done when": *"a 7-character number is refused"*), `rules/PAY-006`, the matrix, the FRD and the crosswalk all say **at most 6 letters or numbers**.
+  - The closed gap *ADP File Number — the crosswalk's format rule is wrong* (`gaps-2026-08-20-retired.md`, observed 2026-08-13) records ADP's own regex `^0*(5[1-9]|[6-9][0-9]|[1-9][0-9]{2,5})$`: digits only, value 51 or more, and leading zeros allowed that do not count toward the 6.
+  - [client-message-findings.md](client-message-findings.md) records that **the client concurs in writing**.
+  - So TCG-169 as written would refuse `0001234`, which ADP accepts, and would admit letters, which ADP rejects at submission.
+  - `rules/PAY-006` has no `conflicts_with` pointing at this.
+- **Questions TCG-169 itself leaves to its owners:**
+  1. The ADP mapping, and what happens when a file number changes: overwrite, or deactivate the old one as legacy did.
+  2. Does "unique within a company" mean the TCG tenant or the ADP company code (4RZ vs 4RY)?
+  3. Does an archived or terminated employee keep their number reserved? The FRD says "unique among **active** mappings"; the ticket says a plain unique index.
+  4. If duplicates exist today, who decides which employee keeps the number?
+  5. Should the field stay freely editable? The FRD limits it to payroll manager and IT admin, and the 2026-06-30 decision says the ERP never mints the number.
+- **Engineering notes for whoever builds it:**
+  - `qa-automation` uses fixed, non-numeric values (`ADP-4417`, `ADP-2000`, `ADP-9001`, `ADP-9002` in `lifecycle.spec.ts` / `temp-employees.spec.ts`) with no cleanup. They fail the ADP format, and any database those tests ran against likely already holds duplicates.
+  - Empty strings must be normalised to null before any unique index is added.
+  - `create-employee-payload.ts` sends `|| undefined` on edit, so a number cannot currently be cleared.
+- **Owner:** **Brian Petros** with **Corrina Bustos** (named on TCG-169); **Brian Petros** for the format conflict.
+
+## Effective-dating the rest of payroll's rates (PAY-008, TCG-168)
+
+- **Status:** open
+- **Asked:** 2026-09-24, from scoping TCG-168. **Rules:** PAY-008, PAY-013, PAY-068.
+- **What is dated today:** only the union craft base rate (`findRateInForce`). Everything else is read at its current value, so recalculating an old week uses today's amounts:
+  - non-union `Employee.hourlyRate`;
+  - the salaried amount (`hourlyRate`; `salaryAmount` is never read);
+  - Foreman and 2nd/3rd-shift premiums, read once per run;
+  - job-flag premiums such as lattice and military;
+  - boom adders (`CraftModifierRate`, no date columns);
+  - subsistence, which is a code constant.
+
+  Archiving a premium or a bracket also changes old weeks on recalculation.
+- **Questions nothing written answers:**
+  1. **Start date for existing rows.** What effective-from date do existing premium and boom-adder rows get when dating is added? No source, no owner.
+  2. **Archived amounts.** Should an archived premium or bracket still pay old weeks at its old amount?
+  3. **Employee rate history.** TCG-168's AC2 cannot be built as written. `hourlyRateEffectiveFrom/To` is kept only for Hourly Non-Craft employees, whom payroll never prices, and `hourlyRate` is overwritten in place. A rate-history model was deferred by the 2026-08-25 decision to PAY-068 / SCRUM-920. Owner: **Syed Haris** with **Brian Petros**.
+  4. **"Boom adders change every year."** TCG-168 gives this as the reason, but it has no source. The L12 wage notice records Long Boom Pay $0.75 "since 2001-07-01". PAY-008 still requires dating; only the stated reason is unsupported.
+  5. **UI and subsistence scope.** Is a UI for entering dated rates in scope? Should subsistence amounts become dated configuration?
+- **Also blocked by:** *Adding a rate when the previous one has no effective-to date* (the day-before vs same-day end date, and whether the back-fill applies to every rate type). Adding more dated tables before that is answered would copy the same ambiguity into each one.
+- **Owner:** **Corrina Bustos / Brian Petros** (configuration ownership, PAY-008's blocking item).
+
+## Recording which time source paid a job day (PAY-017, TCG-178)
+
+- **Status:** open
+- **Asked:** 2026-09-24, from scoping TCG-178. **Rules:** PAY-017, PAY-004, PAY-005, PAY-018.
+- **What the code does now:** TCG-178 says there is "exactly one source, hardcoded". That was true before TCG-25. Since then, `payroll.service.ts` `buildJobDay` prices from the roster row's own `workStartedAt/workEndedAt` when the Oiler entered one, and otherwise from the ticket's shared `WORK_TIME` pair. The CHECK in migration `20260921020000` keeps the two from being mixed. Nothing records which one was used (`payroll_job_days` has no such column).
+- **Questions nothing written answers:**
+  1. **Priority when sources disagree.** PAY-017 names it; the FRD's order is unverified. Owner: **Brian Petros** (ticket 45888, the 0.00 / 0.98 / 24.00-hour example).
+  2. **Pay from dispatch start?** The verified 2026-09-03 decision says pay starts at dispatch start; the code pays from the punch (audit A11). Changing it is a pay-rule change needing provenance. Owners: **Kyle Harlow / Joe Schacatano**.
+  3. **End boundary.** The same decision ends paid time when the crane is "back in the yard, fuelled, parked, paperwork done"; the code ends at Review & Complete. Nobody has checked they are the same moment. Owners: **Kyle Harlow / Joe Schacatano**.
+  4. **Backfill.** Should the source be recorded on historical `payroll_job_days`, or only on new runs? Rebuilding it from today's roster may not match what was actually paid. Owner: **Syed Haris**.
+  5. **Naming and export.** What are the names and screen labels for the sources, and should the ADP export carry them too?
