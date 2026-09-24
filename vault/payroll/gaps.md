@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-19
+updated: 2026-09-24
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -1785,6 +1785,11 @@ someone has confirmed otherwise.
   are both real steps today, which is the operational fact the two candidate sets disagree on.
   System and process facts; whether payroll needs *Received* / *Paid* as ERP states is still
   Corrina's to say.
+- **Update 2026-09-24 (TCG-170 audit):** still **open**. The status set is untouched (five values, `schema.prisma:206-212` and `@tcg/shared`), as TCG-170 AC1 requires until Corrina answers.
+  - **What shipped.** App PR #655 (merged 2026-09-23, 0 reviews) removed the web's derived "Closed" and its hand-written status union. It also added a period-level audit of the **latest** change only: `payroll_periods.status_changed_at` / `status_changed_by_id`.
+  - **Two questions nothing written answers.** Same owner:
+    1. **History or latest only?** PAY-002 asks for user and timestamp on status changes. As built, once a period moves APPROVED → EXPORTED, nothing records who approved it. Is a per-transition history required?
+    2. **Display.** Should the payroll screen show who changed the status and when? The web type carries the fields, but no component reads them.
 
 ## Labor Compliance module — no vault coverage
 
@@ -2384,6 +2389,15 @@ someone has confirmed otherwise.
   answer above is what actually settles that. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
   Adjacent row from the same session, deliberately **not** folded in: *Remove the add-row control from the top* on the craft-modifier
   screen is UI chrome on the same page, not this question.
+
+- **Update 2026-09-24 (TCG-140 audit): built before it was confirmed. Still open.**
+  - **What was built.** App PR #660 (`feat/craft-modifier-union-link`, merged 2026-09-24 with 0 reviews, body marked *"DO NOT MERGE"*) built the **FCC split** (union-neutral brackets plus a `CraftModifierRate` row per union), not a `unionCodeId` on each bracket. It also added `payroll_job_days.boom_union_code`. Brian Petros has **not** confirmed in writing, so this entry still closes only on his confirmation and `tcg-scrum`'s decision note. If he picks a union id on each bracket instead, #660's migration has to be reworked.
+  - **Mobile regression from #660**, fixed in app PR #665 (open). Mobile read `/craft-modifiers` without a union, and the API now returns null flat adders in that case, so the Labor step lost its `(+$x/hr)` suffix. #665 prices each crew card from that member's own local.
+  - **Questions nothing written answers**, all for the same owners:
+    1. **Migration default.** The #660 migration assigned every existing tenant's adders to one union: local 12 first, else a code starting `L12`, else the oldest union code. Nobody has confirmed that choice. Record it with Brian's shape decision.
+    2. **Ledger display.** `boomUnionCode` is saved per job day, but no requirement says whether the ledger or review screen shows which union's table priced the adder.
+    3. **Approval blocking.** Should the resolver's `NO_UNION_MODIFIER_RATE` (a union has not priced this bracket) block approval under PAY-065? See TCG-164; owner Corrina Bustos.
+    4. **Mixed-union crew on mobile.** #665 shows each member their own local's adder. That is consistent with payroll, but the UX is not written anywhere.
 
 ## A labor-entry edit can reprice an approved week — and the ERP has no path for it
 
@@ -4383,8 +4397,80 @@ somewhere it should not have. Settle that before touching either.
 - **Live disagreements it must not paper over:** the holiday-guarantee dispute
   ([holiday-guarantee-scenario-2026-09-14.md](holiday-guarantee-scenario-2026-09-14.md)) and the
   added-hours grid — both are cases where his app and the ERP deliberately differ today.
-- **Owner:** CodingCops — Syed Haris made the commitment; Brian Petros to maintain it once
-  delivered.
+- **Update 2026-09-23 — built and sent.** Built as a Word file,
+  `TCG-Payroll-Rules-Status-2026-09-23.docx`, from [rules/](rules/INDEX.md),
+  [payroll-rules-provenance.md](payroll-rules-provenance.md) and this register. Two days past the
+  promised Monday. **It is written as a joint working document, not as a CodingCops
+  deliverable addressed to Brian** — no byline, no second person, both sides named in the third
+  person, and a maintenance section asking whoever settles a row to change its state and record
+  on whose word. That shape was a deliberate correction: a document addressed *to* the client is
+  one the client receives, and this one has to be one both sides edit. It honours the trap above by keeping **decided** and **built** apart in writing
+  rather than in a column: a "how to read this" section says in as many words that a rule marked
+  *Decided* may not be built and a rule the ERP runs may never have been confirmed. Six states —
+  *Decided · Decided (contract) · Partly discussed · Working assumption · Contested · Open* — carried
+  over from this register's own vocabulary and **grouped into three buckets on the page** — decided,
+  discussed but still needing a final decision, and open. Per Brian's ask it carries **no per-rule sources**; the
+  traceability stays here, which is the point of the vault. The four live disagreements get a
+  section of their own so none of them can be read as settled: the holiday guarantee, the
+  added-hours grid, the meal thresholds / worked-through modes, and the luffer classification.
+  Corrina's 2026-09-14 luffer note is in it with its six unknowns.
+- **Sent to Brian Petros on Teams, 2026-09-23, with the covering message.** The message states the
+  three buckets and the 46 / 11 / 5 split; states in as many words that the document tracks
+  *decisions, not what is built*; says that where the Payroll App and the ERP differ the difference
+  is written down rather than resolved toward either one, *"nothing has been quietly resolved in
+  code"*; asks Brian to update the row, change its state and record what changed and who decided it
+  whenever something is settled, **especially after a call with Corrina Bustos**; names **luffer pay
+  and its six unknowns** as the first thing to look at; and closes by asking him to flag any row
+  marked *Decided* he would not recognise. It also carries the question below, put to him directly.
+- **Where it lives — ANSWERED 2026-09-23, same day: Teams.** Brian Petros will add the document to
+  Teams and edit it there. That is the home; every other copy is a transfer artefact or a stale
+  read. **Delivery path:** Syed Haris uploaded the file to Google Docs and sent Brian the link; Brian
+  downloads from it and puts the result in Teams. So the Google Doc is a **one-time transfer, not a
+  second home** — the moment Brian's first Teams edit lands it is out of date, and so is the local
+  `.docx` it was made from.
+- **What that leaves, and it is small but real:** the Teams copy is the only current one, and
+  CodingCops does not have a link to it — **ask Brian for the Teams location once it is up**, or the
+  side that maintains the vault is reading a copy that stopped being true at his first edit. The
+  Google Doc and the local file should be retired, or marked as the 2026-09-23 snapshot they are,
+  so neither is opened later and mistaken for the register. Three copies of a rules document is the
+  scatter this whole entry exists to prevent.
+- **Brian's response, 2026-09-23 (two Teams messages, 04:57 and 07:42 Pakistan time — his
+  afternoon and evening, so he read it the same working day).** Accepted and committed to
+  maintaining it: *"this looks like it's going to be good… I'll spend some time taking a closer
+  look at it… and save to our shared folder"*, and later *"This document is really good, Haris!…
+  I'm only halfway through it… I'll keep you updated as I work my way through it."* Three things
+  to carry forward. **(1) The shared folder is confirmed as the home** — he will put it there
+  himself, which closes (a) in practice; the link back is still owed. **(2) He plans to change it:**
+  *"I might redesign the layout and/or wording a bit, but I get the overall idea."* Welcomed in the
+  reply, with one thing asked to survive a rewrite — the three states, and specifically the
+  **decided vs built** line, because a rule the ERP runs that nobody confirmed surfaces nowhere
+  else. If a later version of the document has lost that distinction, this entry is the record that
+  it was deliberate once. **(3) He has not edited it yet** — he is still reading. The closing signal
+  for this entry stays the first edit from his side, not the acceptance.
+- **Review workflow set by Brian, 2026-09-24 00:07 Pakistan time.** The document is **saved to the
+  shared folder**, which closes (a) properly: that is the home, and he is running it. Two identical
+  copies sit there, **one Word and one PDF**, so Corrina Bustos can mark up whichever she prefers.
+  The order is **Corrina first, then Brian, then wider circulation**: *"I have several things I
+  would like to comment on, but think it's best to have Corrina review first… After her comments,
+  then I'll add mine and send to other for review/comments."* He has told only Corrina so far. On
+  versioning, unprompted and before anyone raised it with him: *"I'll be careful to not make too
+  many copies and keep it controlled with new dated versions… Try to keep it a nice and clean
+  working document… it will be important for us to keep track of things."* He also withdrew the
+  redesign: *"not much change is needed to the layout."*
+- **Why the order matters more than it looks.** Corrina owns the answer to most of what is still
+  open in this register — luffer pay (a)–(e), the meal thresholds, the holiday guarantee with the
+  BA, and the three MLA rules never discussed. A pass by her is worth more than any other single
+  review, and it is the first time the open list has been put in front of her as one list rather
+  than as scattered questions. **CodingCops is holding its copy unedited until her round returns**,
+  so the two sides do not edit in parallel.
+- **Still open after delivery:** (a) is answered — what remains of it is the Teams link, above.
+  (b) How updates return to the vault
+  — the document asks for a row to be marked and the change noted, which is a convention, not a
+  mechanism; nothing reports a divergence if he edits and the vault does not follow. Closing this
+  entry needs (a) settled and Brian actually maintaining it — the first edit from his side is the
+  signal, not the acceptance.
+- **Owner:** Brian Petros — the commitment is delivered, so maintenance is his from here. CodingCops
+  (Syed Haris) to fold his edits back into this vault, and to chase (a) if it goes quiet.
 
 ## Employee Billing Code and Employee Pay — asked in UAT 1, never answered, and the schema keeps them independent
 
@@ -4414,6 +4500,9 @@ somewhere it should not have. Settle that before touching either.
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). One line from whoever raised it settles which of three things they meant: (a) confirm the existing Group 6+ gate is implemented, (b) add a craft-code-based gate alongside it, or (c) the luffer/equipment question above wearing different words.
 - **Blocked:** closing PAY-044; the lattice premium's implementation gate.
 - **Owner:** Kyle Harlow (he already owns the luffer adjudication on PAY-044) with Corrina Bustos; whoever raised the UAT 6 row for what *"craft code groups"* meant.
+- **Update 2026-09-24 (TCG-141 audit):** still **open**.
+  - **Reading (a) is built end to end.** The Group 6+ gate is on origin/main (PR #462 `1faf90eba`, with the wage-group field from PR #446). Checked by reading: `calculate.ts` raises `PREMIUM_GROUP_INELIGIBLE`, and `payroll-premium-form-dialog.tsx` has the premium's minimum group. It has **not been demoed**. `claude/skills/demo-walkthrough/WALKTHROUGH.md` has been corrected so it no longer calls it a defect.
+  - **A consequence nothing written covers.** The code gates on the wage group of the **craft the day's rate resolved to**, not the employee's payroll group. So a Group 6+ employee working a Group 4 *secondary* craft for the day loses the premium. The PAY-044 rule says *"Eligible Group 6+ employees"*. Whether that means the employee's group or the day's craft group is the same question as reading (a) vs (b). Kyle's *"qualification reality"* note suggests the employee's group, but it does not rule on it.
 
 ## Adding a rate when the previous one has no effective-to date — back-fill it, or error
 
@@ -4428,6 +4517,15 @@ somewhere it should not have. Settle that before touching either.
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This one reads as a UX complaint and is a **data-history rule**: silently writing an end date onto an existing rate row changes what a historical recalculation will produce for every week in the overlap, which is the entire point of PAY-008. It needs the owner named in PAY-008's blocking item, not a front-end fix.
 - **Blocked:** closing PAY-008; any bulk rate rollover run against FCC-imported rates.
 - **Owner:** Corrina Bustos / Brian Petros (they roll the rates over each fiscal year); PAY-008's *configuration ownership* question needs answering with it.
+- **Update 2026-09-24 (TCG-138 audit):** still **open**. The code went ahead before this question was answered. It still needs the owners' ruling.
+  - **What shipped.** App PR #659 (`fix/craft-rate-backfill-open-ended`, merged 2026-09-24 without review) makes craft-code **Add Rate** back-fill an open-ended previous rate instead of erroring. It shares `findPreviousRate` with Bulk Rate Update (`bulk-rate-plan.ts`). The *"refuse with an error, as it does now"* above is no longer what the product does. #659 changed **craft-code rates only**; wage rates, billing rates and craft modifiers were not touched.
+  - **The end date conflicts between written sources. Not adjudicated here.**
+    - [../decisions/2026-09-03-l12-bulk-rate-update-uniform-delta.md](../decisions/2026-09-03-l12-bulk-rate-update-uniform-delta.md) (`status: verified`, lines 68–73) ends the previous rate **the day before** the new one starts: *"added from 10th… the previous rates get the date 9th"*.
+    - The TCG-138 ticket text, #659 and `bulk-rate-plan.ts` end it **on** the new rate's start date, with the new rate winning the shared day.
+    - Both paths already ship the same-day behaviour. The owners must say which is right.
+  - **Correction to a reason given on TCG-138.** The rate date columns are `@db.Date`, and `findRateInForce` includes the end date. So ending on *start − 1* would **not** leave a $0 gap day. The written "not the day before" rule on the ticket stands or falls on the owners' answer, not on that reason.
+  - **New question: a rate closed under an open period.** Payroll recomputes only on an explicit Recalculate (`payroll.service.ts` `calculate`), which is refused only for APPROVED/EXPORTED. So a CALCULATED or REVIEW period keeps its stored results after a rate under it is added or closed. The next Recalculate silently reprices every work date on or after the new start, and nothing warns that the stored results are stale. Should adding a rate that affects a CALCULATED/REVIEW period warn, block, or do nothing? Same owners; cross-reference TCG-168.
+  - **Still owed:** Fouzan Shakil, what the UAT 6 row meant.
 
 ## Primary craft code constrained to the employee type, and changing a craft code in DAS
 
@@ -4451,3 +4549,212 @@ somewhere it should not have. Settle that before touching either.
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
 - **Why it lands here too:** the attribute the answer needs belongs to this module's objects. [fcc-employee-master-reference-data.md](fcc-employee-master-reference-data.md) §2 records FCC's `Dispatchable on: Jobs/Quotes (J), Work Orders (W), Both (B), or None (N)` as an attribute of the **employee type**, and states that it is *"a field the ERP has nowhere"*. Two open entries here are upstream of it: [*Employee types — FCC holds several per employee; we store one*](#employee-types--fcc-holds-several-per-employee-we-store-one) and [*Field role vs portal role — one list in FCC, three representations in TCG*](#field-role-vs-portal-role--one-list-in-fcc-three-representations-in-tcg).
 - **Read:** [../dispatch/gaps.md → *Sales Persons in the DAS Employees tab…*](../dispatch/gaps.md#sales-persons-in-the-das-employees-tab--dispatchability-is-an-employee-type-attribute-we-do-not-have)
+
+## Luffer pay — the oiler is paid the operator rate for base and long boom
+
+- **Status:** open
+- **Asked:** 2026-09-23 — logging Corrina Bustos's 2026-09-14 Teams message, relayed by Brian Petros. **Rules:** PAY-010, PAY-011, PAY-015, PAY-043; PAY-044 by adjacency.
+- **Question:** Corrina, in full: *"**Luffer Pay-** Oiler gets paid operator rate for base rate AND long boom"*. Six things it does not say, and the build cannot proceed past any of them by guessing. **(a) Which operator rate?** The operator craft code that the oiler's own MLA group maps to, the rate of the operator actually on that crane that day, or a distinct luffer craft code? **(b) What scope?** The **entire job**, as lattice is (PAY-044, Corrina's own earlier ruling), or only the boom-window slices, as long boom is (PAY-043)? **(c) Is it a rate or a premium?** If the oiler's *base rate* really changes, fringes, pension, OT/DT and the ADP export all move with it; if it is a premium wearing the word *rate*, they do not. **(d) Oiler only?** Or does any other crew role on a luffer job — third man, apprentice — lift the same way? **(e) Does lattice flip too?** The message names base rate and long boom and is silent on the $1.00/$0.50 lattice split. **(f) How is a luffer job identified,** and who sets it?
+- **Sources checked:**
+  - [client-message-findings.md → *2026-09-14 — Luffer pay*](client-message-findings.md#2026-09-14--luffer-pay-the-oiler-is-paid-the-operator-rate-corrina-bustos-teams-relayed-by-brian-petros-2026-09-23) — the message verbatim, its screenshot ([assets/2026-09-14-corrina-luffer-pay-oiler-operator-rate.png](assets/2026-09-14-corrina-luffer-pay-oiler-operator-rate.png)) and the claim-by-claim verdicts. **This is the whole written source. There is no second one.**
+  - [rules/PAY-043-long-boom-premium.md](rules/PAY-043-long-boom-premium.md) (`status: open`) — the long-boom adder is **two bracket sets**, MLA $0.75 operator / $0.25 oiler at 80–100 ft stepping every 20 ft; the workbook carries **18 operator and 15 oiler brackets**. [source-attribution-and-conflicts.md](source-attribution-and-conflicts.md) → *Long boom* records *"only oiler and operator qualify, not third man"*. Nothing anywhere pays an oiler out of the operator set.
+  - **The resolver cannot express this today.** [../../aidlc/SCRUM-961/spec.md](../../aidlc/SCRUM-961/spec.md) §13 records that bracket choice is binary on role — `roleType === 'OPERATOR' ? operatorAdder : oilerAdder` — which is already known to mis-pay a `MECHANIC` craft. **Verified in code 2026-09-23:** `apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts:153` reads `const adder = roleType === 'OPERATOR' ? row.operatorAdder : row.oilerAdder;` — one ternary, no third branch, and `CraftModifier` carries exactly the two columns (`craft-modifiers.repository.ts:11-12`). "Oiler role, operator bracket" is a third case the model has no room for.
+  - **It crosses a `verified` decision on base rates.** [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md): the rate comes from the employee's craft code, a different day's rate is a **secondary craft code**, and *"only the crane superintendent or payroll"* may set it. Scope carve-outs: [../decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md](../decisions/2026-08-25-craft-locked-rate-override-scoped-to-union.md). If luffer pay is implemented as an automatic configuration-driven lift, it sets a day's rate with **no human in that loop** — which is either a deliberate exception or a contradiction, and nobody has said which. The neighbouring resolved entry [*Pay rate follows the employee, not the role worked*](#pay-rate-follows-the-employee-not-the-role-worked--kyle-and-corrina-unrecorded) points the other way again: role governs **premium** eligibility, not the base rate. Corrina's line moves *both*.
+  - **Contract:** the full MLA ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md) → Article IV) puts mobile tower cranes under *"Long Boom pay including combined total mast and Luffing Boom applicable"* at Groups 5, 7, 8 and 9 — it explains why a luffer earns **long boom**, and says **nothing** about an oiler drawing the operator figure. So this is TCG practice, not contract text, and cannot be derived from the agreement. (An agreement is a floor; TCG may pay above it.)
+  - [rules/PAY-044-lattice-boom-premium.md](rules/PAY-044-lattice-boom-premium.md) and [*Lattice boom premium — UAT 6…*](#lattice-boom-premium--uat-6-asks-to-validate-it-against-craft-code-groups-pay-044-gates-on-payroll-group-6-and-above) — the **luffer classification** question (Jeff Stricker *"technically lattice"* vs Joe 2026-08-04 *"boom pay only"*) is still Kyle's and still unanswered. Corrina writing *"long boom"* for a luffer **corroborates the parked default** (question 21 in [client-message-findings.md](client-message-findings.md#parked--2026-08-24-build-proceeds-on-defaults)) but does not close it — she is answering *which rate*, not *which premium family*. **Kept as a separate entry deliberately:** that one asks which premium a luffer earns; this one asks who is paid at what rate once it does.
+  - **(f) already has a home, and now a second consumer.** [../projects-jobs/gaps.md → *Job-level "Boom Configuration" field*](../projects-jobs/gaps.md#job-level-boom-configuration-field--schema-ask-from-payroll-kyle) carries Kyle's ask (configuration is per-job and stable for the job's duration). Brian's note proposes the same object serve luffer-pay eligibility, and ties it to the *crane configurations* resource-type work with Joe — [../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) (FCC resource type 76 *360 Ton All Terrain w/Luffer*; *"after this job, we made separate ones for the different configurations"*), and [../assets/gaps.md → *One asset, one type — but one crane in several configurations*](../assets/gaps.md#one-asset-one-type--but-one-crane-in-several-configurations-how-does-an-asset-stand-for-more-than-one-resource-type). **⚠️ Brian's proposal is explicitly unconfirmed** — *"Can check with Kyle, Joe, and Corrina… but I think we can determine…"*. It is a hypothesis about a mechanism, not an answer.
+- **Note:** the message is a **rule statement from the person who runs payroll**, which is the strongest kind of source this register gets — but it is one sentence, and every one of (a)–(f) changes what gets built. Do not let the sentence's confidence stand in for the six answers. In particular, **do not build (c) as a base-rate change on a guess**: it is the difference between a $4 premium and a rate that propagates through fringes, pension and every multiplier.
+- **Blocked:** any luffer handling in `packages/payroll-engine` (and the pay-rule change it would need in [payroll-rules-provenance.md](payroll-rules-provenance.md), same commit); closing PAY-043's *Blocking — confirm equipment source data*; the field set of whatever carries crane configuration on a job.
+- **Routed to its owner, 2026-09-24.** Brian Petros is running a review of the payroll rules
+  document with **Corrina first** (see [*The payroll rules sheet promised to Brian*](#the-payroll-rules-sheet-promised-to-brian-for-monday-2026-09-21--a-codingcops-commitment-with-no-ticket)),
+  and CodingCops asked in writing that she be pointed at these six questions while she is in it,
+  naming this as the one open item actually holding work up. **So (a)–(e) are now in front of the
+  person who owns them for the first time, as one list rather than scattered.** If her pass comes
+  back without touching them, that is itself an answer worth recording here: it means the questions
+  need asking directly rather than through a document.
+- **Owner:** Corrina Bustos for (a)–(e) — it is her rule and her practice; Kyle Harlow with Joe Schacatano for (f) and for the still-open luffer classification. Brian Petros relays.
+- **Pointer:** [../projects-jobs/gaps.md](../projects-jobs/gaps.md) → *Job-level "Boom Configuration" field* — payroll now has a second rule depending on it.
+
+## A rule file's `status:` records the product question, not whether the rule is built — so build status in the register drifts silently
+
+- **Status:** open
+- **Asked:** 2026-09-24 — raised while correcting PAY-025, PAY-026 and PAY-061, all three of which
+  were wrong at HEAD and had been for roughly two weeks with nothing reporting it.
+- **Question:** the `status:` field in `payroll/rules/*.md` has exactly four values in use —
+  `open`, `settled`, `conflicted`, `reference` (`grep -h '^status:' vault/payroll/rules/*.md | sort | uniq -c`:
+  67 open, 4 settled, 2 conflicted, 1 reference) — and every one of them describes **the product
+  question**: is the requirement agreed, contested, or still owed an answer. **None of them says
+  anything about whether the rule is implemented.** `vault/STRUCTURE.md` line 103 documents a
+  different vocabulary again (`verified` / `unverified` / `reference` / `superseded`) for the
+  vault at large. So a rule can be fully built, tested and shipped while its register entry still
+  reads `status: open` and its body still asserts "Not built" — which is exactly what happened.
+  Two questions follow, and they are separable. **(a) Should a rule file carry build status at
+  all?** Its body prose already does, informally and in free text, which is what drifted; and
+  `payroll-engine-status-2026-09-12.md` already carries a per-rule ✅/🟡/❌ column that stayed
+  correct throughout. If that table is the register of record for implementation, the rule files
+  should point at it rather than restate it. **(b) If rule files are going to carry it, what keeps
+  it true?** A second frontmatter axis (e.g. `implementation:` alongside `status:`) is only worth
+  adding if something updates it — a `close-ticket` step, a check that greps a rule's cited
+  `file:line` targets and fails when they no longer resolve, or a named human pass. Adding the
+  field without the mechanism reproduces the present defect with more ceremony.
+- **Why it is not a ticket question:** it is a property of how the vault records rules, spanning all
+  73 `PAY-###` files (and the other modules' rule registers by the same shape). No single ticket
+  owns it, so per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes* it belongs here.
+- **Sources checked:**
+  - [rules/INDEX.md](rules/INDEX.md) — the register's own summary line, *"Status: **4 settled · 67
+    open · 2 conflicted**"*, and the per-section Status columns. Every value is a product-question
+    value; the index has no implementation column.
+  - [../STRUCTURE.md](../STRUCTURE.md) line 103 — *"`status:` stays a plain frontmatter key
+    (verified/unverified/reference/superseded), not a tag"*. The rules register does not use this
+    vocabulary, and nothing reconciles the two.
+  - [payroll-engine-status-2026-09-12.md](payroll-engine-status-2026-09-12.md) line 60 — the row
+    *"Non-union hourly: daily 8/12 → 7th day → weekly 40, in that order, reasons preserved | Brian
+    2026-09-07, written, 9 scenarios | ✅ | Audit re-run A9"*. **This row was right the whole
+    time.** So the information existed in the vault; it simply was not wired to the rule files.
+  - [rules/PAY-025-weekly-overtime.md](rules/PAY-025-weekly-overtime.md) and
+    [rules/PAY-026-seventh-consecutive-day.md](rules/PAY-026-seventh-consecutive-day.md) — the two
+    drifted files. Both said "Not built"; both are built in
+    `packages/payroll-engine/src/non-union.ts`, added by commit `56091e98f` (2026-09-11). PAY-025
+    additionally cited an engine signal that does not exist (`WEEKLY_OT_APPLIED` — only occurrence
+    repo-wide is `apps/web/src/features/payroll/components/payroll-issue-catalog.ts:84`, a web
+    display catalog) and a line range (`calculate.ts:444-452`) that has since become unrelated
+    code. **A stale citation is the failure mode worth noting: the line number kept resolving to
+    *something*, so nothing looked broken.**
+  - [rules/PAY-061-employee-payroll-worklist.md](rules/PAY-061-employee-payroll-worklist.md) — a
+    different drift with the same root: the rule carried a 2026-06-09 client clause that a
+    2026-09-15 decision had overturned, and nothing propagated the decision back into the rule.
+    A `status:` axis for implementation would not have caught this one; the general problem is
+    that **rule files are written forward and never re-read against their own citations.**
+- **Blocked:** nothing is blocked on the answer — but every future reader of a `PAY-###` file is
+  exposed to the same defect until it is settled, and the correction of PAY-025/026/061 fixed three
+  instances without fixing the cause.
+- **Owner:** CodingCops — this is a vault-mechanics question (how we record), not a product
+  question, so it needs no client input. Pairs with whatever owns `close-ticket`'s writeback steps.
+- **Rules:** all of [rules/INDEX.md](rules/INDEX.md); [PAY-025](rules/PAY-025-weekly-overtime.md),
+  [PAY-026](rules/PAY-026-seventh-consecutive-day.md),
+  [PAY-061](rules/PAY-061-employee-payroll-worklist.md) as the instances that raised it.
+
+## Which payroll issues block approval (PAY-065) — a provisional list is live in every tenant
+
+- **Status:** open
+- **Asked:** 2026-09-24. This is the TCG-164 audit. The question itself dates from the TCG-164 ticket (2026-09-23), which recorded it only in Linear and in code comments. **Rules:** PAY-065; PAY-063 shares the blocking item.
+- **Question:**
+  - **(a)** Which `PayrollIssue` codes block approval of an employee-week or a period?
+  - **(b)** Is that a fixed product list or a per-company setting?
+  - **(c)** At which approval levels does it apply? FRD PR-053 lists four: labor entry, employee/day, employee/pay period, and complete pay period. Only employee-week and period approval exist.
+- **Why it is urgent, not theoretical:**
+  - TCG-164 says *"No one has said which errors are critical … **Do not guess the list**."*
+  - App PR #661 (merged 2026-09-24 with 0 reviews; body *"WIP … DO NOT MERGE"*) shipped the gate. Its migration `20260924000000_payroll_approval_blocking_issues` **backfilled every existing tenant** with a list its own code calls *"PROVISIONAL — a developer's conservative guess"*: `NO_ADP_FILE` plus the five `RATE_*` codes.
+  - New tenants get the same six codes from `DEFAULT_PAYROLL_APPROVAL_BLOCKING_ISSUES` (`packages/shared/src/constants/payroll-issue-severity.ts`) through `seedPayrollApprovalBlockingIssues`.
+  - So approvals are already being blocked on an unratified list.
+- **Sources checked:**
+  - [payroll-rules-provenance.md](payroll-rules-provenance.md) PAY-065 row: still *Pending — Approval levels*.
+  - `rules/PAY-065-payroll-approval.md`: *"Block approval for configured critical errors"*; blocking item *Management confirmation*.
+  - `decisions/`: nothing on which codes are critical.
+  - **Decision cited but not on overlay main:** the code cites `decisions/2026-09-10-an-open-overlay-entry-warns-before-approval-and-never-blocks.md`. That file exists only on the unmerged overlay branch `feat/payroll-pending-ticket-visibility` (commit `5a535fc`, one of ten SCRUM-PENDING decisions stranded there).
+    - The decision that *is* on main, [../decisions/2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md](../decisions/2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md) clause 6, says *"whether it also blocks is explicitly not settled"*.
+- **Sub-questions nothing written answers:**
+  1. **Who may change a tenant's list?** There is no API or UI for `payroll_approval_blocking_issues`; today it takes a direct DB update.
+  2. **Already approved weeks.** If an APPROVED employee-week gains a blocking issue later (for example after a Recalculate below APPROVED on another week), is it re-gated?
+  3. **Run-level codes.** Should codes not tied to a week ever block period approval? Examples: `EMPLOYEE_ON_PAYROLL_HOLD`, `TICKET_MISSING_PAYABLE_WINDOW`. The gate reads week-level issues only.
+  4. **`NO_UNION_MODIFIER_RATE`.** Should it block? See *Boom pay rates cannot hold a second union*, TCG-140.
+- **When answered:**
+  - `tcg-scrum` records the decision.
+  - The provenance PAY-065 row is updated.
+  - A data migration replaces the provisional rows in existing tenants, and the seed constant is changed to match.
+- **Owner:** **Corrina Bustos** (named on TCG-164 and as the approval-levels owner).
+
+## Calculation-run log (PAY-064): who "the payroll manager" is, and what "pay settings in effect" covers
+
+- **Status:** open
+- **Asked:** 2026-09-24, from the TCG-171 audit of app PR #656. **Rules:** PAY-064.
+- **Question (a): who may confirm going ahead after a failed recalculation?**
+  - [../decisions/2026-09-24-payroll-failed-recalculation-keeps-last-good-run-and-blocks-approval.md](../decisions/2026-09-24-payroll-failed-recalculation-keeps-last-good-run-and-blocks-approval.md) says approve/export stay blocked until the recalculation succeeds or *"the payroll manager **explicitly confirms**"*.
+  - The shipped route `POST periods/:id/runs/:runId/acknowledge-failure` requires only `@RequirePermission('payroll', 'edit')`. That is the same permission that runs a calculation. So anyone who can recalculate can also lift the hold.
+  - Nothing written says whether "payroll manager" is a distinct role or permission, or just anyone with payroll edit.
+  - Related, but not the same question: who may reopen a processed period.
+- **Question (b): what does "pay settings in effect" cover?**
+  - [../decisions/2026-09-24-payroll-run-records-configuration-and-source-data-used.md](../decisions/2026-09-24-payroll-run-records-configuration-and-source-data-used.md) asks a run to record *"the union/craft rates and pay settings that were in effect"*.
+  - The shipped `configurationSnapshot` holds rates, boom adders and premiums.
+  - Is that all "pay settings" means, or does it also include OT/DT thresholds, holiday calendars, per-diem/subsistence amounts, or the approval-blocking list (PAY-065)?
+- **Question (c), vault mechanics: does a rounding change count as a "pay-rule change"?**
+  - `packages/payroll-engine/src/version.ts` says to bump `PAYROLL_ENGINE_VERSION` for any change to *"how money rounds"*. It defines `1.0.0` as the rule set *including* PAY-069's rounding.
+  - PAY-069 (#657) merged **after** #656, so any run calculated in between is stamped `1.0.0` with the old rounding. The window is narrow and is real only if an environment ran a calculation in it.
+  - The bump rule is written only in `version.ts` and the PAY-064 rule file, not in `.ai/claude/contexts/payroll-engine.md`, which is where #656's review asked for it. Adding a convention to `contexts/` is a human's call, from an accepted reflection.
+- **Owners:**
+  - (a) and (b): Syed Haris, who recorded both decisions, with **Corrina Bustos** for the payroll-manager role.
+  - (c): CodingCops.
+
+## Lattice oiler premium lands in the ADP "Lattice Oper" column (TCG-163)
+
+- **Status:** open (known mis-mapping, logged on purpose)
+- **Asked:** 2026-09-24. Logged as syed haris ruled on TCG-163 (2026-09-22): *"log the mis-mapping … leave the code alone here, and let's scope the split separately."* **Rules:** PAY-044, PAY-067.
+- **What happens:**
+  - `LATTICE_OP` ($1.00/h) and `LATTICE_OI` ($0.50/h) are both seeded with `ruleId: 'PAY-044'` (`apps/api/src/utility/seed-data.ts`).
+  - `PayComponent` carries only `ruleId` and `label`.
+  - So `packages/payroll-engine/src/xlsx-rows.ts` sums the **oiler's** lattice hours into "Lattice Oper", and "Lattice Oiler" is hardcoded 0.
+  - Oiler hours reach ADP, but under the wrong column. The code now carries a comment saying so (app PR #668).
+- **Settled, per haris's sourcing on TCG-163:** the two columns are the client's intended shape.
+  - Corrina, `meetings/transcripts/2026-08-04-payroll-process.md` at 1:09:08.
+  - Brian, `crew-assignment-and-rate-derivation-brian-2026-09-16.md`.
+  - The oiler rate is **$0.50**, not the 75¢ said on the 13 Aug recording.
+- **What is open:**
+  - **The split is ours.** It needs a `PayComponent` modelling change plus a provenance row. It needs **its own ticket**, which is not yet filed.
+  - **Which cranes trigger the premium** is a separate question for Joe and Kyle. See *what does "validate the lattice boom premium with craft code groups" mean*.
+- **Owner:** CodingCops (to file and scope the split ticket).
+
+## ADP file number — uniqueness, change policy, and a format conflict (PAY-006, TCG-169)
+
+- **Status:** open
+- **Asked:** 2026-09-24, from scoping TCG-169. Nothing is built: `Employee.adpFileNumber` is `String? @db.VarChar(50)` with no uniqueness rule, and the DTOs accept any 50 characters. **Rules:** PAY-006.
+- **The written sources disagree on format. Not adjudicated here.**
+  - TCG-169 ("Done when": *"a 7-character number is refused"*), `rules/PAY-006`, the matrix, the FRD and the crosswalk all say **at most 6 letters or numbers**.
+  - The closed gap *ADP File Number — the crosswalk's format rule is wrong* (`gaps-2026-08-20-retired.md`, observed 2026-08-13) records ADP's own regex `^0*(5[1-9]|[6-9][0-9]|[1-9][0-9]{2,5})$`: digits only, value 51 or more, and leading zeros allowed that do not count toward the 6.
+  - [client-message-findings.md](client-message-findings.md) records that **the client concurs in writing**.
+  - So TCG-169 as written would refuse `0001234`, which ADP accepts, and would admit letters, which ADP rejects at submission.
+  - `rules/PAY-006` has no `conflicts_with` pointing at this.
+- **Questions TCG-169 itself leaves to its owners:**
+  1. The ADP mapping, and what happens when a file number changes: overwrite, or deactivate the old one as legacy did.
+  2. Does "unique within a company" mean the TCG tenant or the ADP company code (4RZ vs 4RY)?
+  3. Does an archived or terminated employee keep their number reserved? The FRD says "unique among **active** mappings"; the ticket says a plain unique index.
+  4. If duplicates exist today, who decides which employee keeps the number?
+  5. Should the field stay freely editable? The FRD limits it to payroll manager and IT admin, and the 2026-06-30 decision says the ERP never mints the number.
+- **Engineering notes for whoever builds it:**
+  - `qa-automation` uses fixed, non-numeric values (`ADP-4417`, `ADP-2000`, `ADP-9001`, `ADP-9002` in `lifecycle.spec.ts` / `temp-employees.spec.ts`) with no cleanup. They fail the ADP format, and any database those tests ran against likely already holds duplicates.
+  - Empty strings must be normalised to null before any unique index is added.
+  - `create-employee-payload.ts` sends `|| undefined` on edit, so a number cannot currently be cleared.
+- **Owner:** **Brian Petros** with **Corrina Bustos** (named on TCG-169); **Brian Petros** for the format conflict.
+
+## Effective-dating the rest of payroll's rates (PAY-008, TCG-168)
+
+- **Status:** open
+- **Asked:** 2026-09-24, from scoping TCG-168. **Rules:** PAY-008, PAY-013, PAY-068.
+- **What is dated today:** only the union craft base rate (`findRateInForce`). Everything else is read at its current value, so recalculating an old week uses today's amounts:
+  - non-union `Employee.hourlyRate`;
+  - the salaried amount (`hourlyRate`; `salaryAmount` is never read);
+  - Foreman and 2nd/3rd-shift premiums, read once per run;
+  - job-flag premiums such as lattice and military;
+  - boom adders (`CraftModifierRate`, no date columns);
+  - subsistence, which is a code constant.
+
+  Archiving a premium or a bracket also changes old weeks on recalculation.
+- **Questions nothing written answers:**
+  1. **Start date for existing rows.** What effective-from date do existing premium and boom-adder rows get when dating is added? No source, no owner.
+  2. **Archived amounts.** Should an archived premium or bracket still pay old weeks at its old amount?
+  3. **Employee rate history.** TCG-168's AC2 cannot be built as written. `hourlyRateEffectiveFrom/To` is kept only for Hourly Non-Craft employees, whom payroll never prices, and `hourlyRate` is overwritten in place. A rate-history model was deferred by the 2026-08-25 decision to PAY-068 / SCRUM-920. Owner: **Syed Haris** with **Brian Petros**.
+  4. **"Boom adders change every year."** TCG-168 gives this as the reason, but it has no source. The L12 wage notice records Long Boom Pay $0.75 "since 2001-07-01". PAY-008 still requires dating; only the stated reason is unsupported.
+  5. **UI and subsistence scope.** Is a UI for entering dated rates in scope? Should subsistence amounts become dated configuration?
+- **Also blocked by:** *Adding a rate when the previous one has no effective-to date* (the day-before vs same-day end date, and whether the back-fill applies to every rate type). Adding more dated tables before that is answered would copy the same ambiguity into each one.
+- **Owner:** **Corrina Bustos / Brian Petros** (configuration ownership, PAY-008's blocking item).
+
+## Recording which time source paid a job day (PAY-017, TCG-178)
+
+- **Status:** open
+- **Asked:** 2026-09-24, from scoping TCG-178. **Rules:** PAY-017, PAY-004, PAY-005, PAY-018.
+- **What the code does now:** TCG-178 says there is "exactly one source, hardcoded". That was true before TCG-25. Since then, `payroll.service.ts` `buildJobDay` prices from the roster row's own `workStartedAt/workEndedAt` when the Oiler entered one, and otherwise from the ticket's shared `WORK_TIME` pair. The CHECK in migration `20260921020000` keeps the two from being mixed. Nothing records which one was used (`payroll_job_days` has no such column).
+- **Questions nothing written answers:**
+  1. **Priority when sources disagree.** PAY-017 names it; the FRD's order is unverified. Owner: **Brian Petros** (ticket 45888, the 0.00 / 0.98 / 24.00-hour example).
+  2. **Pay from dispatch start?** The verified 2026-09-03 decision says pay starts at dispatch start; the code pays from the punch (audit A11). Changing it is a pay-rule change needing provenance. Owners: **Kyle Harlow / Joe Schacatano**.
+  3. **End boundary.** The same decision ends paid time when the crane is "back in the yard, fuelled, parked, paperwork done"; the code ends at Review & Complete. Nobody has checked they are the same moment. Owners: **Kyle Harlow / Joe Schacatano**.
+  4. **Backfill.** Should the source be recorded on historical `payroll_job_days`, or only on new runs? Rebuilding it from today's roster may not match what was actually paid. Owner: **Syed Haris**.
+  5. **Naming and export.** What are the names and screen labels for the sources, and should the ADP export carry them too?

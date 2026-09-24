@@ -320,7 +320,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the only recorded voice on departments as org structure
   (`meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md`:68, :72).
 - **Cross-link:** payroll/gaps.md → *Pointers — departments archive* (STRUCTURE.md:40 routes the
-  `departments` usecase to payroll, and (b) turns on employee assignments)
+  `departments` usecase to payroll, and (b) turns on employee assignments); [assets/gaps.md →
+  *Archived rows in pickers…*](../assets/gaps.md#archived-rows-in-pickers--never-offered-except-the-records-own-saved-value)
+  (2026-09-22 — same participation question for categories; working assumption on the sub-category
+  form only until Fouzan ratifies)
 
 - **Conflict logged 2026-09-19 (UAT register vs the app-wide archive decision) — 56 hard deletes survive, and the row that covers them is marked DONE.**
   [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) → **DONE** *Departments editable, roles under departments, soft
@@ -1176,3 +1179,18 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - `decisions/` has no note on authentication method.
 - **Blocked:** onboarding TCG users onto the mobile app; any SSO work; whether the employee profile must require a work cell phone.
 - **Owner:** Patrick McKiernan (TCG IT) for (a); Brian Petros / Kyle Harlow for (b) and (c); CodingCops for scope.
+
+## Accessibility standard — WCAG 2.1 AA, or only the de-facto 44px lines?
+
+- **Status:** open
+- **Asked:** 2026-09-21 — PR review of Resources-table touch-target work (`fix/quotation-surcharge-toggle`). No ticket. App-wide policy question; the quotations-module tablet-support ask is adjacent and lives in [../quotations/gaps.md → *Is the quotation builder supported on tablet…*](../quotations/gaps.md#is-the-quotation-builder-supported-on-tablet-and-at-which-breakpoint).
+- **Question:** is TCG committing to **WCAG 2.1 AA** (or another named conformance level) for the web portal, or only to the two de-facto **≥44px touch-target** lines already written down — with no audit process, no enforcement, and no other a11y criteria?
+- **Sources checked:**
+  - [../claude/contexts/web.md](../../claude/contexts/web.md) → *Misc* — one sentence: *"Touch targets ≥ 44px."* No conformance level, no audit cadence, no other criteria.
+  - `apps/web/src/components/ui/button.tsx` size comment — *"All sizes ≥ 44 px to meet WCAG 2.1 touch-target minimum"* — **already inaccurate for its own `sm: 'h-9'` (36px) variant**. Code comment, not policy.
+  - [responsive-design-and-security-posture.md](responsive-design-and-security-posture.md) §Part 1 — client-facing promise of a future **44×44px** audit and larger mobile input tap areas; explicitly *"not as done."* Never recorded as performed.
+  - Nothing in ESLint, the pre-push hook, or CI checks hit-target size — consistent with CLAUDE.md *"Lint does not enforce most of the conventions in this file."*
+  - `decisions/` — no accessibility / WCAG note.
+- **Note:** there is a **de facto 44px standard** with no policy, no conformance target, and no enforcement. Whether that is enough, or whether AA (or another level) is a contract commitment, is a product/contract question — not a dev one. Do not treat individual control fixes as settling this.
+- **Blocked:** nothing — individual controls can keep meeting the written 44px line. Blocked: claiming WCAG 2.1 AA conformance in client-facing material, or building an enforcement rail, without an answer here.
+- **Owner:** Brian Petros / client contract side for whether AA is committed; Fouzan Shakil for any engineering convention that falls short of a contract claim.
