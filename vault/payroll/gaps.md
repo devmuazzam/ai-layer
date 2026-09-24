@@ -1785,6 +1785,11 @@ someone has confirmed otherwise.
   are both real steps today, which is the operational fact the two candidate sets disagree on.
   System and process facts; whether payroll needs *Received* / *Paid* as ERP states is still
   Corrina's to say.
+- **Update 2026-09-24 (TCG-170 audit):** still **open**. The status set is untouched (five values, `schema.prisma:206-212` and `@tcg/shared`), as TCG-170 AC1 requires until Corrina answers.
+  - **What shipped.** App PR #655 (merged 2026-09-23, 0 reviews) removed the web's derived "Closed" and its hand-written status union. It also added a period-level audit of the **latest** change only: `payroll_periods.status_changed_at` / `status_changed_by_id`.
+  - **Two questions nothing written answers.** Same owner:
+    1. **History or latest only?** PAY-002 asks for user and timestamp on status changes. As built, once a period moves APPROVED → EXPORTED, nothing records who approved it. Is a per-transition history required?
+    2. **Display.** Should the payroll screen show who changed the status and when? The web type carries the fields, but no component reads them.
 
 ## Labor Compliance module — no vault coverage
 
@@ -2384,6 +2389,15 @@ someone has confirmed otherwise.
   answer above is what actually settles that. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
   Adjacent row from the same session, deliberately **not** folded in: *Remove the add-row control from the top* on the craft-modifier
   screen is UI chrome on the same page, not this question.
+
+- **Update 2026-09-24 (TCG-140 audit): built before it was confirmed. Still open.**
+  - **What was built.** App PR #660 (`feat/craft-modifier-union-link`, merged 2026-09-24 with 0 reviews, body marked *"DO NOT MERGE"*) built the **FCC split** (union-neutral brackets plus a `CraftModifierRate` row per union), not a `unionCodeId` on each bracket. It also added `payroll_job_days.boom_union_code`. Brian Petros has **not** confirmed in writing, so this entry still closes only on his confirmation and `tcg-scrum`'s decision note. If he picks a union id on each bracket instead, #660's migration has to be reworked.
+  - **Mobile regression from #660**, fixed in app PR #665 (open). Mobile read `/craft-modifiers` without a union, and the API now returns null flat adders in that case, so the Labor step lost its `(+$x/hr)` suffix. #665 prices each crew card from that member's own local.
+  - **Questions nothing written answers**, all for the same owners:
+    1. **Migration default.** The #660 migration assigned every existing tenant's adders to one union: local 12 first, else a code starting `L12`, else the oldest union code. Nobody has confirmed that choice. Record it with Brian's shape decision.
+    2. **Ledger display.** `boomUnionCode` is saved per job day, but no requirement says whether the ledger or review screen shows which union's table priced the adder.
+    3. **Approval blocking.** Should the resolver's `NO_UNION_MODIFIER_RATE` (a union has not priced this bracket) block approval under PAY-065? See TCG-164; owner Corrina Bustos.
+    4. **Mixed-union crew on mobile.** #665 shows each member their own local's adder. That is consistent with payroll, but the UX is not written anywhere.
 
 ## A labor-entry edit can reprice an approved week — and the ERP has no path for it
 
@@ -4486,6 +4500,9 @@ somewhere it should not have. Settle that before touching either.
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). One line from whoever raised it settles which of three things they meant: (a) confirm the existing Group 6+ gate is implemented, (b) add a craft-code-based gate alongside it, or (c) the luffer/equipment question above wearing different words.
 - **Blocked:** closing PAY-044; the lattice premium's implementation gate.
 - **Owner:** Kyle Harlow (he already owns the luffer adjudication on PAY-044) with Corrina Bustos; whoever raised the UAT 6 row for what *"craft code groups"* meant.
+- **Update 2026-09-24 (TCG-141 audit):** still **open**.
+  - **Reading (a) is built end to end.** The Group 6+ gate is on origin/main (PR #462 `1faf90eba`, with the wage-group field from PR #446). Checked by reading: `calculate.ts` raises `PREMIUM_GROUP_INELIGIBLE`, and `payroll-premium-form-dialog.tsx` has the premium's minimum group. It has **not been demoed**. `claude/skills/demo-walkthrough/WALKTHROUGH.md` has been corrected so it no longer calls it a defect.
+  - **A consequence nothing written covers.** The code gates on the wage group of the **craft the day's rate resolved to**, not the employee's payroll group. So a Group 6+ employee working a Group 4 *secondary* craft for the day loses the premium. The PAY-044 rule says *"Eligible Group 6+ employees"*. Whether that means the employee's group or the day's craft group is the same question as reading (a) vs (b). Kyle's *"qualification reality"* note suggests the employee's group, but it does not rule on it.
 
 ## Adding a rate when the previous one has no effective-to date — back-fill it, or error
 
@@ -4500,6 +4517,15 @@ somewhere it should not have. Settle that before touching either.
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This one reads as a UX complaint and is a **data-history rule**: silently writing an end date onto an existing rate row changes what a historical recalculation will produce for every week in the overlap, which is the entire point of PAY-008. It needs the owner named in PAY-008's blocking item, not a front-end fix.
 - **Blocked:** closing PAY-008; any bulk rate rollover run against FCC-imported rates.
 - **Owner:** Corrina Bustos / Brian Petros (they roll the rates over each fiscal year); PAY-008's *configuration ownership* question needs answering with it.
+- **Update 2026-09-24 (TCG-138 audit):** still **open**. The code went ahead before this question was answered. It still needs the owners' ruling.
+  - **What shipped.** App PR #659 (`fix/craft-rate-backfill-open-ended`, merged 2026-09-24 without review) makes craft-code **Add Rate** back-fill an open-ended previous rate instead of erroring. It shares `findPreviousRate` with Bulk Rate Update (`bulk-rate-plan.ts`). The *"refuse with an error, as it does now"* above is no longer what the product does. #659 changed **craft-code rates only**; wage rates, billing rates and craft modifiers were not touched.
+  - **The end date conflicts between written sources. Not adjudicated here.**
+    - [../decisions/2026-09-03-l12-bulk-rate-update-uniform-delta.md](../decisions/2026-09-03-l12-bulk-rate-update-uniform-delta.md) (`status: verified`, lines 68–73) ends the previous rate **the day before** the new one starts: *"added from 10th… the previous rates get the date 9th"*.
+    - The TCG-138 ticket text, #659 and `bulk-rate-plan.ts` end it **on** the new rate's start date, with the new rate winning the shared day.
+    - Both paths already ship the same-day behaviour. The owners must say which is right.
+  - **Correction to a reason given on TCG-138.** The rate date columns are `@db.Date`, and `findRateInForce` includes the end date. So ending on *start − 1* would **not** leave a $0 gap day. The written "not the day before" rule on the ticket stands or falls on the owners' answer, not on that reason.
+  - **New question: a rate closed under an open period.** Payroll recomputes only on an explicit Recalculate (`payroll.service.ts` `calculate`), which is refused only for APPROVED/EXPORTED. So a CALCULATED or REVIEW period keeps its stored results after a rate under it is added or closed. The next Recalculate silently reprices every work date on or after the new start, and nothing warns that the stored results are stale. Should adding a rate that affects a CALCULATED/REVIEW period warn, block, or do nothing? Same owners; cross-reference TCG-168.
+  - **Still owed:** Fouzan Shakil, what the UAT 6 row meant.
 
 ## Primary craft code constrained to the employee type, and changing a craft code in DAS
 
@@ -4607,3 +4633,54 @@ somewhere it should not have. Settle that before touching either.
 - **Rules:** all of [rules/INDEX.md](rules/INDEX.md); [PAY-025](rules/PAY-025-weekly-overtime.md),
   [PAY-026](rules/PAY-026-seventh-consecutive-day.md),
   [PAY-061](rules/PAY-061-employee-payroll-worklist.md) as the instances that raised it.
+
+## Which payroll issues block approval (PAY-065) — a provisional list is live in every tenant
+
+- **Status:** open
+- **Asked:** 2026-09-24. This is the TCG-164 audit. The question itself dates from the TCG-164 ticket (2026-09-23), which recorded it only in Linear and in code comments. **Rules:** PAY-065; PAY-063 shares the blocking item.
+- **Question:**
+  - **(a)** Which `PayrollIssue` codes block approval of an employee-week or a period?
+  - **(b)** Is that a fixed product list or a per-company setting?
+  - **(c)** At which approval levels does it apply? FRD PR-053 lists four: labor entry, employee/day, employee/pay period, and complete pay period. Only employee-week and period approval exist.
+- **Why it is urgent, not theoretical:**
+  - TCG-164 says *"No one has said which errors are critical … **Do not guess the list**."*
+  - App PR #661 (merged 2026-09-24 with 0 reviews; body *"WIP … DO NOT MERGE"*) shipped the gate. Its migration `20260924000000_payroll_approval_blocking_issues` **backfilled every existing tenant** with a list its own code calls *"PROVISIONAL — a developer's conservative guess"*: `NO_ADP_FILE` plus the five `RATE_*` codes.
+  - New tenants get the same six codes from `DEFAULT_PAYROLL_APPROVAL_BLOCKING_ISSUES` (`packages/shared/src/constants/payroll-issue-severity.ts`) through `seedPayrollApprovalBlockingIssues`.
+  - So approvals are already being blocked on an unratified list.
+- **Sources checked:**
+  - [payroll-rules-provenance.md](payroll-rules-provenance.md) PAY-065 row: still *Pending — Approval levels*.
+  - `rules/PAY-065-payroll-approval.md`: *"Block approval for configured critical errors"*; blocking item *Management confirmation*.
+  - `decisions/`: nothing on which codes are critical.
+  - **Decision cited but not on overlay main:** the code cites `decisions/2026-09-10-an-open-overlay-entry-warns-before-approval-and-never-blocks.md`. That file exists only on the unmerged overlay branch `feat/payroll-pending-ticket-visibility` (commit `5a535fc`, one of ten SCRUM-PENDING decisions stranded there).
+    - The decision that *is* on main, [../decisions/2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md](../decisions/2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md) clause 6, says *"whether it also blocks is explicitly not settled"*.
+- **Sub-questions nothing written answers:**
+  1. **Who may change a tenant's list?** There is no API or UI for `payroll_approval_blocking_issues`; today it takes a direct DB update.
+  2. **Already approved weeks.** If an APPROVED employee-week gains a blocking issue later (for example after a Recalculate below APPROVED on another week), is it re-gated?
+  3. **Run-level codes.** Should codes not tied to a week ever block period approval? Examples: `EMPLOYEE_ON_PAYROLL_HOLD`, `TICKET_MISSING_PAYABLE_WINDOW`. The gate reads week-level issues only.
+  4. **`NO_UNION_MODIFIER_RATE`.** Should it block? See *Boom pay rates cannot hold a second union*, TCG-140.
+- **When answered:**
+  - `tcg-scrum` records the decision.
+  - The provenance PAY-065 row is updated.
+  - A data migration replaces the provisional rows in existing tenants, and the seed constant is changed to match.
+- **Owner:** **Corrina Bustos** (named on TCG-164 and as the approval-levels owner).
+
+## Calculation-run log (PAY-064): who "the payroll manager" is, and what "pay settings in effect" covers
+
+- **Status:** open
+- **Asked:** 2026-09-24, from the TCG-171 audit of app PR #656. **Rules:** PAY-064.
+- **Question (a): who may confirm going ahead after a failed recalculation?**
+  - [../decisions/2026-09-24-payroll-failed-recalculation-keeps-last-good-run-and-blocks-approval.md](../decisions/2026-09-24-payroll-failed-recalculation-keeps-last-good-run-and-blocks-approval.md) says approve/export stay blocked until the recalculation succeeds or *"the payroll manager **explicitly confirms**"*.
+  - The shipped route `POST periods/:id/runs/:runId/acknowledge-failure` requires only `@RequirePermission('payroll', 'edit')`. That is the same permission that runs a calculation. So anyone who can recalculate can also lift the hold.
+  - Nothing written says whether "payroll manager" is a distinct role or permission, or just anyone with payroll edit.
+  - Related, but not the same question: who may reopen a processed period.
+- **Question (b): what does "pay settings in effect" cover?**
+  - [../decisions/2026-09-24-payroll-run-records-configuration-and-source-data-used.md](../decisions/2026-09-24-payroll-run-records-configuration-and-source-data-used.md) asks a run to record *"the union/craft rates and pay settings that were in effect"*.
+  - The shipped `configurationSnapshot` holds rates, boom adders and premiums.
+  - Is that all "pay settings" means, or does it also include OT/DT thresholds, holiday calendars, per-diem/subsistence amounts, or the approval-blocking list (PAY-065)?
+- **Question (c), vault mechanics: does a rounding change count as a "pay-rule change"?**
+  - `packages/payroll-engine/src/version.ts` says to bump `PAYROLL_ENGINE_VERSION` for any change to *"how money rounds"*. It defines `1.0.0` as the rule set *including* PAY-069's rounding.
+  - PAY-069 (#657) merged **after** #656, so any run calculated in between is stamped `1.0.0` with the old rounding. The window is narrow and is real only if an environment ran a calculation in it.
+  - The bump rule is written only in `version.ts` and the PAY-064 rule file, not in `.ai/claude/contexts/payroll-engine.md`, which is where #656's review asked for it. Adding a convention to `contexts/` is a human's call, from an accepted reflection.
+- **Owners:**
+  - (a) and (b): Syed Haris, who recorded both decisions, with **Corrina Bustos** for the payroll-manager role.
+  - (c): CodingCops.

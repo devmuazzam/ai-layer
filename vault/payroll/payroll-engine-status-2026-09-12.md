@@ -104,13 +104,13 @@ steps executed — a runner/config failure, not a code result; merged on the loc
 **Known and deferred — not gaps.** Six rules are documented in `rules/`, absent from the
 engine, and consciously parked: *leave until asked.* An audit of `rules/` against code that
 finds them missing has found nothing to file. Absence verified by behaviour search at app
-`main` `72d6cc4c9` (no engine commit since 2026-09-12; no later decision note reopens any).
+`main` `72d6cc4c9`, and re-verified at `951a77226` on 2026-09-24 (TCG-176 audit). Engine commits have landed since (PAY-069, PAY-064, subsistence), but none touches these six.
 
 | Rule | Absence evidence (VERIFIED) |
 | --- | --- |
-| [PAY-015](rules/PAY-015-higher-rate-for-day-job.md) — higher rate for the day/job | Cited but not implemented: `craft-rate-resolver.service.ts:166` mentions it only in a comment saying it "belongs to the…" elsewhere. No `higherRate` / `highestRate` concept exists. A code citation is not proof of implementation |
+| [PAY-015](rules/PAY-015-higher-rate-for-day-job.md) — higher rate for the day/job | Cited but not implemented: `craft-rate-resolver.service.ts:244` (was :166) mentions it only in a comment saying it "belongs to the…" elsewhere. No `higherRate` / `highestRate` concept exists. A code citation is not proof of implementation. **⚠️ Parked here, but the subject of an open question:** Brian Petros's written note of 2026-09-16 ([crew-assignment-and-rate-derivation-brian-2026-09-16.md](crew-assignment-and-rate-derivation-brian-2026-09-16.md), point 5) proposes a higher-rate-for-the-day step. See [gaps.md → *Higher rate for the day (MLA Art. IV-C) — never walked through with TCG*](gaps.md). "Never spoken by the client" no longer holds for this row. Whether it stays parked is for Corrina Bustos / Brian Petros; if it is unparked it becomes its own card |
 | [PAY-038](rules/PAY-038-hazardous-material-premium.md) — hazardous-material premium | `grep -rni "hazmat\|hazardous\|HAZ"` over API, web, engine, shared, schema: only JSA hazard items, quotation PDF terms and a comment — zero payroll hits. Seeded `PAYROLL_PREMIUMS` holds exactly FOREMAN, MILITARY, LATTICE_OP, LATTICE_OI |
-| [PAY-039](rules/PAY-039-reporting-pay-no-work.md) — reporting pay, no work (2 h) | No `reportingPay` / show-up-pay symbol. `guarantee.ts` has only `DAILY_MINIMUM_HOURS = 4`, `PREMIUM_DAY_MINIMUM_HOURS = 8`, `LONG_BOOM_MINIMUM_HOURS`; no 2-hour rung and no "reported, no work" input |
+| [PAY-039](rules/PAY-039-reporting-pay-no-work.md) — reporting pay, no work (2 h) | No `reportingPay` / show-up-pay symbol. The only minimum-hours constants are `DAILY_MINIMUM_HOURS = 4`, `PREMIUM_DAY_MINIMUM_HOURS = 8` and `LONG_BOOM_MINIMUM_HOURS = 4`, defined in `packages/shared/src/constants/payroll.ts:47,55,66`; no 2-hour rung and no "reported, no work" input |
 | [PAY-041](rules/PAY-041-crane-remains-on-job.md) — crane remains on job (4/6/8) | No `craneRemains`, `shutdownReason` or first/subsequent-day flag in engine, API or schema. The only "remains on job" string is customer-facing subsistence wording in `quotation-pdf-terms.ts:154` |
 | [PAY-042](rules/PAY-042-first-day-travel-assembly-exception.md) — first-day travel/assembly exception | No `travelOnly` / `assemblyOnly` / activity-type-on-labor concept; every `activityType` hit is `QuotationSignatureActivityType` |
 | [PAY-056](rules/PAY-056-injury-day-pay.md) — injury-day pay | No injury→pay link; `grep -rn "incident"` over the payroll usecase and service is empty. Only safety capture exists (`TicketIncidentType.INJURY`), with no payroll consequence |
@@ -128,7 +128,7 @@ Two forward-looking notes, recorded rather than advocated:
   drug-test time work time, and the 2026-08-24 message about employee Jonathen (1092). That
   strengthens the eventual case. It does not unpark the rule, which still needs Legal/HR.
 
-**No provenance-register row for any of them, and none until someone asks for the rule.** If one
+**No per-rule provenance row for any of them, and none until someone asks for the rule.** The register has only the combined placeholder row (*Contract only — Leave until asked*), which matches this parking. If one
 is unparked it becomes its own card with its own spec.
 
 ## Where the rules live
