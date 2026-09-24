@@ -1785,6 +1785,11 @@ someone has confirmed otherwise.
   are both real steps today, which is the operational fact the two candidate sets disagree on.
   System and process facts; whether payroll needs *Received* / *Paid* as ERP states is still
   Corrina's to say.
+- **Update 2026-09-24 (TCG-170 audit):** still **open**. The status set is untouched (five values, `schema.prisma:206-212` and `@tcg/shared`), as TCG-170 AC1 requires until Corrina answers.
+  - **What shipped.** App PR #655 (merged 2026-09-23, 0 reviews) removed the web's derived "Closed" and its hand-written status union. It also added a period-level audit of the **latest** change only: `payroll_periods.status_changed_at` / `status_changed_by_id`.
+  - **Two questions nothing written answers.** Same owner:
+    1. **History or latest only?** PAY-002 asks for user and timestamp on status changes. As built, once a period moves APPROVED → EXPORTED, nothing records who approved it. Is a per-transition history required?
+    2. **Display.** Should the payroll screen show who changed the status and when? The web type carries the fields, but no component reads them.
 
 ## Labor Compliance module — no vault coverage
 
