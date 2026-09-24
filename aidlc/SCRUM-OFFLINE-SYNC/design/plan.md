@@ -577,6 +577,14 @@ the second line.
 
 ## 4. Comparators (U6)
 
+> **As built, after review fix F6 (2026-09-24).**
+> - Start Work: compared row by row, and Labor: by crew member (F6).
+> - Checklists: still checked for submission, not answer by answer.
+> - Signatures: checked by image id only, not field by field.
+>
+> The last two rows are **deferred**. A false mismatch would block a correct ticket, and the
+> API guard is the second line.
+
 | Step | "ok" means |
 |---|---|
 | leftYard, arriveJob, endWork, leftJob, arriveYard | server timestamp equals the device `at`, to the minute (the server truncates); leftYard note matches |
