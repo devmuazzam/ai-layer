@@ -4500,6 +4500,15 @@ somewhere it should not have. Settle that before touching either.
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This one reads as a UX complaint and is a **data-history rule**: silently writing an end date onto an existing rate row changes what a historical recalculation will produce for every week in the overlap, which is the entire point of PAY-008. It needs the owner named in PAY-008's blocking item, not a front-end fix.
 - **Blocked:** closing PAY-008; any bulk rate rollover run against FCC-imported rates.
 - **Owner:** Corrina Bustos / Brian Petros (they roll the rates over each fiscal year); PAY-008's *configuration ownership* question needs answering with it.
+- **Update 2026-09-24 (TCG-138 audit):** still **open**. The code went ahead before this question was answered. It still needs the owners' ruling.
+  - **What shipped.** App PR #659 (`fix/craft-rate-backfill-open-ended`, merged 2026-09-24 without review) makes craft-code **Add Rate** back-fill an open-ended previous rate instead of erroring. It shares `findPreviousRate` with Bulk Rate Update (`bulk-rate-plan.ts`). The *"refuse with an error, as it does now"* above is no longer what the product does. #659 changed **craft-code rates only**; wage rates, billing rates and craft modifiers were not touched.
+  - **The end date conflicts between written sources. Not adjudicated here.**
+    - [../decisions/2026-09-03-l12-bulk-rate-update-uniform-delta.md](../decisions/2026-09-03-l12-bulk-rate-update-uniform-delta.md) (`status: verified`, lines 68–73) ends the previous rate **the day before** the new one starts: *"added from 10th… the previous rates get the date 9th"*.
+    - The TCG-138 ticket text, #659 and `bulk-rate-plan.ts` end it **on** the new rate's start date, with the new rate winning the shared day.
+    - Both paths already ship the same-day behaviour. The owners must say which is right.
+  - **Correction to a reason given on TCG-138.** The rate date columns are `@db.Date`, and `findRateInForce` includes the end date. So ending on *start − 1* would **not** leave a $0 gap day. The written "not the day before" rule on the ticket stands or falls on the owners' answer, not on that reason.
+  - **New question: a rate closed under an open period.** Payroll recomputes only on an explicit Recalculate (`payroll.service.ts` `calculate`), which is refused only for APPROVED/EXPORTED. So a CALCULATED or REVIEW period keeps its stored results after a rate under it is added or closed. The next Recalculate silently reprices every work date on or after the new start, and nothing warns that the stored results are stale. Should adding a rate that affects a CALCULATED/REVIEW period warn, block, or do nothing? Same owners; cross-reference TCG-168.
+  - **Still owed:** Fouzan Shakil, what the UAT 6 row meant.
 
 ## Primary craft code constrained to the employee type, and changing a craft code in DAS
 
