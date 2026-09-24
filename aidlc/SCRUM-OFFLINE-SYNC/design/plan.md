@@ -512,7 +512,7 @@ the second line.
 
 **Checklist finish time**
 - The `completedAt` field is on the three `*ChecklistsDto`s, one time per step.
-- Rules: not in the future, with 5 minutes allowed for clock skew. There is **no** Left Yard
+- Rules: none beyond a valid date (**corrected 2026-09-24**: a future-time check was removed, because the flow stamps on the ticket timeline, which runs ahead of the clock once a milestone is adjusted forward). There is **no** Left Yard
   floor, because Pre-Trip is finished before Left Yard, so the plan's rule was wrong.
 - `markSubmitted` without `completedAt` keeps an existing `submittedAt`, so a replay never
   moves it later.
