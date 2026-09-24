@@ -2385,6 +2385,15 @@ someone has confirmed otherwise.
   Adjacent row from the same session, deliberately **not** folded in: *Remove the add-row control from the top* on the craft-modifier
   screen is UI chrome on the same page, not this question.
 
+- **Update 2026-09-24 (TCG-140 audit): built before it was confirmed. Still open.**
+  - **What was built.** App PR #660 (`feat/craft-modifier-union-link`, merged 2026-09-24 with 0 reviews, body marked *"DO NOT MERGE"*) built the **FCC split** (union-neutral brackets plus a `CraftModifierRate` row per union), not a `unionCodeId` on each bracket. It also added `payroll_job_days.boom_union_code`. Brian Petros has **not** confirmed in writing, so this entry still closes only on his confirmation and `tcg-scrum`'s decision note. If he picks a union id on each bracket instead, #660's migration has to be reworked.
+  - **Mobile regression from #660**, fixed in app PR #665 (open). Mobile read `/craft-modifiers` without a union, and the API now returns null flat adders in that case, so the Labor step lost its `(+$x/hr)` suffix. #665 prices each crew card from that member's own local.
+  - **Questions nothing written answers**, all for the same owners:
+    1. **Migration default.** The #660 migration assigned every existing tenant's adders to one union: local 12 first, else a code starting `L12`, else the oldest union code. Nobody has confirmed that choice. Record it with Brian's shape decision.
+    2. **Ledger display.** `boomUnionCode` is saved per job day, but no requirement says whether the ledger or review screen shows which union's table priced the adder.
+    3. **Approval blocking.** Should the resolver's `NO_UNION_MODIFIER_RATE` (a union has not priced this bracket) block approval under PAY-065? See TCG-164; owner Corrina Bustos.
+    4. **Mixed-union crew on mobile.** #665 shows each member their own local's adder. That is consistent with payroll, but the UX is not written anywhere.
+
 ## A labor-entry edit can reprice an approved week — and the ERP has no path for it
 
 - Update 2026-09-07: the client's own answer, in code — the 2026-09-07 backup
