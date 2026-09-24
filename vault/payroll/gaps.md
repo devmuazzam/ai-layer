@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-23
+updated: 2026-09-24
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -4548,3 +4548,62 @@ somewhere it should not have. Settle that before touching either.
   need asking directly rather than through a document.
 - **Owner:** Corrina Bustos for (a)–(e) — it is her rule and her practice; Kyle Harlow with Joe Schacatano for (f) and for the still-open luffer classification. Brian Petros relays.
 - **Pointer:** [../projects-jobs/gaps.md](../projects-jobs/gaps.md) → *Job-level "Boom Configuration" field* — payroll now has a second rule depending on it.
+
+## A rule file's `status:` records the product question, not whether the rule is built — so build status in the register drifts silently
+
+- **Status:** open
+- **Asked:** 2026-09-24 — raised while correcting PAY-025, PAY-026 and PAY-061, all three of which
+  were wrong at HEAD and had been for roughly two weeks with nothing reporting it.
+- **Question:** the `status:` field in `payroll/rules/*.md` has exactly four values in use —
+  `open`, `settled`, `conflicted`, `reference` (`grep -h '^status:' vault/payroll/rules/*.md | sort | uniq -c`:
+  67 open, 4 settled, 2 conflicted, 1 reference) — and every one of them describes **the product
+  question**: is the requirement agreed, contested, or still owed an answer. **None of them says
+  anything about whether the rule is implemented.** `vault/STRUCTURE.md` line 103 documents a
+  different vocabulary again (`verified` / `unverified` / `reference` / `superseded`) for the
+  vault at large. So a rule can be fully built, tested and shipped while its register entry still
+  reads `status: open` and its body still asserts "Not built" — which is exactly what happened.
+  Two questions follow, and they are separable. **(a) Should a rule file carry build status at
+  all?** Its body prose already does, informally and in free text, which is what drifted; and
+  `payroll-engine-status-2026-09-12.md` already carries a per-rule ✅/🟡/❌ column that stayed
+  correct throughout. If that table is the register of record for implementation, the rule files
+  should point at it rather than restate it. **(b) If rule files are going to carry it, what keeps
+  it true?** A second frontmatter axis (e.g. `implementation:` alongside `status:`) is only worth
+  adding if something updates it — a `close-ticket` step, a check that greps a rule's cited
+  `file:line` targets and fails when they no longer resolve, or a named human pass. Adding the
+  field without the mechanism reproduces the present defect with more ceremony.
+- **Why it is not a ticket question:** it is a property of how the vault records rules, spanning all
+  73 `PAY-###` files (and the other modules' rule registers by the same shape). No single ticket
+  owns it, so per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes* it belongs here.
+- **Sources checked:**
+  - [rules/INDEX.md](rules/INDEX.md) — the register's own summary line, *"Status: **4 settled · 67
+    open · 2 conflicted**"*, and the per-section Status columns. Every value is a product-question
+    value; the index has no implementation column.
+  - [../STRUCTURE.md](../STRUCTURE.md) line 103 — *"`status:` stays a plain frontmatter key
+    (verified/unverified/reference/superseded), not a tag"*. The rules register does not use this
+    vocabulary, and nothing reconciles the two.
+  - [payroll-engine-status-2026-09-12.md](payroll-engine-status-2026-09-12.md) line 60 — the row
+    *"Non-union hourly: daily 8/12 → 7th day → weekly 40, in that order, reasons preserved | Brian
+    2026-09-07, written, 9 scenarios | ✅ | Audit re-run A9"*. **This row was right the whole
+    time.** So the information existed in the vault; it simply was not wired to the rule files.
+  - [rules/PAY-025-weekly-overtime.md](rules/PAY-025-weekly-overtime.md) and
+    [rules/PAY-026-seventh-consecutive-day.md](rules/PAY-026-seventh-consecutive-day.md) — the two
+    drifted files. Both said "Not built"; both are built in
+    `packages/payroll-engine/src/non-union.ts`, added by commit `56091e98f` (2026-09-11). PAY-025
+    additionally cited an engine signal that does not exist (`WEEKLY_OT_APPLIED` — only occurrence
+    repo-wide is `apps/web/src/features/payroll/components/payroll-issue-catalog.ts:84`, a web
+    display catalog) and a line range (`calculate.ts:444-452`) that has since become unrelated
+    code. **A stale citation is the failure mode worth noting: the line number kept resolving to
+    *something*, so nothing looked broken.**
+  - [rules/PAY-061-employee-payroll-worklist.md](rules/PAY-061-employee-payroll-worklist.md) — a
+    different drift with the same root: the rule carried a 2026-06-09 client clause that a
+    2026-09-15 decision had overturned, and nothing propagated the decision back into the rule.
+    A `status:` axis for implementation would not have caught this one; the general problem is
+    that **rule files are written forward and never re-read against their own citations.**
+- **Blocked:** nothing is blocked on the answer — but every future reader of a `PAY-###` file is
+  exposed to the same defect until it is settled, and the correction of PAY-025/026/061 fixed three
+  instances without fixing the cause.
+- **Owner:** CodingCops — this is a vault-mechanics question (how we record), not a product
+  question, so it needs no client input. Pairs with whatever owns `close-ticket`'s writeback steps.
+- **Rules:** all of [rules/INDEX.md](rules/INDEX.md); [PAY-025](rules/PAY-025-weekly-overtime.md),
+  [PAY-026](rules/PAY-026-seventh-consecutive-day.md),
+  [PAY-061](rules/PAY-061-employee-payroll-worklist.md) as the instances that raised it.
