@@ -273,14 +273,12 @@ Also make a `NU-OP` on the `NU` union code if you want the non-union comparison.
 Open a craft → **Rates** panel to see/extend `CraftCodeRate` rows (effective from/to, base rate,
 source). OT and DT are **never stored** — they are multipliers applied at pricing time.
 
-> 🔴 **Known defect — `wageGroup` cannot be set from the UI or the API.**
-> `CraftCode.wageGroup` exists in the schema ("only Group 6+ qualifies for the lattice-boom
-> premium, PAY-044"), but there is **no field on the create/edit form**, no field in the DTOs, and
-> it is not serialized in any craft-codes response. Consequence: the **Lattice premium can never
-> pay out** for any craft created through this app — the calculation emits
-> `LATTICE_GROUP_INELIGIBLE` on every lattice-flagged job day. Demo this in step 13 by flagging the
-> job as Lattice and showing the issue in the employee's breakdown. Fixing it requires a direct DB
-> edit.
+> **Wage group gates the Lattice premium (PAY-044). It was fixed in PR #446 and PR #462 (2026-09-01).**
+> - The craft form has a **Wage Group** field (6–9), and the craft detail panel shows it.
+> - A premium's **Minimum union group** (Payroll → Premiums, `payroll-premiums-form-min-group`) sets the gate.
+> - A craft below that minimum on a job with the premium ticked raises `PREMIUM_GROUP_INELIGIBLE` (severity *info*, "Premium skipped — wage group") and is not paid the premium.
+> - To demo the gate (TCG-141): give one craft Group 4 and another Group 6, tick the Lattice Operator premium on the job in step 9.1, and compare the two in step 13.
+> - The group is read from the craft the day's rate resolved to, not from the employee.
 
 **Secondary crafts:** open a craft → **Users** tab → assign an employee as **Primary** or
 **Secondary**. Secondary matters when a person is allocated to a slot their primary craft doesn't
@@ -686,15 +684,17 @@ Oiler indented beneath it. If they are flat here, stop and fix it before allocat
 **Schedule tab —** set the working interval, e.g. `06:00–20:00` on your chosen job date. This is
 what puts the job on the DAS board for that date.
 
-**Main tab — Job Payroll Flags card.** Toggle **Is Lattice**, **Is Military Base**, **Is Hazmat**,
-and pick a **Foreman**. These directly drive premium lines in the calculation.
+**Main tab — Payroll premiums card.** Tick the premiums that apply to this job. The options are
+the tenant's catalog under **Payroll → Premiums**; the seed has Foreman, Military Base, Lattice
+Operator and Lattice Oiler. Hazmat was dropped in migration `20260902090000`. The ticked premiums
+drive premium lines in the calculation.
 
 **Verify:** re-open the job; the flags persist.
 
 **Edge cases:**
-- Flag **Lattice** deliberately. In step 13 the breakdown will carry `LATTICE_GROUP_INELIGIBLE`
-  because `wageGroup` is unsettable (3.1). Showing a premium that *can't* fire is more honest than
-  hiding it.
+- Tick **Lattice Operator** deliberately, with one employee on a Group 6+ craft and one below it
+  (3.1). In step 13 the first is paid the premium, and the second carries `PREMIUM_GROUP_INELIGIBLE`
+  and is not.
 - **Military Base** → flat `$10/hr × actual hours`, **not** multiplied through OT/DT. Foreman is
   flat `$3/hr` likewise. Both are an **open product question** — `PAY-070`/`PAY-071` note that the
   `FRT` (Foreman TRI) ADP code implies the premium *should* multiply through the tiers, and the
@@ -1007,8 +1007,9 @@ breakdown, pricing slices, **rate resolution**, rest audit, guaranteed hours.
 > body, so the *correct* response (reject? flag? cap?) is unspecified — but silently paying DT on
 > hours recorded at two jobs simultaneously is very unlikely to be it.
 
-> 🔴 **2. `LATTICE_GROUP_INELIGIBLE`** on every lattice-flagged job day — see 3.1. Check the
-> `issues` array on the employee's day rows.
+> **2. `PREMIUM_GROUP_INELIGIBLE`** on the job days of any employee whose craft is below the
+> premium's minimum group. This is expected, not a defect; see 3.1. Check the `issues` array on the
+> employee's day rows.
 
 > 🔴 **3. The craft-modifier override you recorded on the phone had no effect** — see 12.3.
 
@@ -1091,7 +1092,7 @@ Ranked by how much they cost, from [E2E_PAYROLL_FLOW_REPORT.md](../E2E_PAYROLL_F
 | --- | --- | --- |
 | 1 | Overlapping same-day labor entries chained and mispriced — **$565.44 + $396.00 measured overpayment**; `PAY-029` registered and unimplemented | 13.3 |
 | 2 | Foreman + Military premium dollars absent from the ADP export — **$350/employee/week with no column** | 13.5 |
-| 3 | `CraftCode.wageGroup` unsettable via UI or API → Lattice premium (`PAY-044`) can never pay | 3.1, 13.3 |
+| 3 | ~~`CraftCode.wageGroup` unsettable via UI or API → Lattice premium (`PAY-044`) can never pay~~ **Fixed:** PR #446 and PR #462 (2026-09-01); see 3.1 | 3.1, 13.3 |
 | 4 | Recorded/overridden `craftModifierBracket` has **zero effect** on boom pay | 12.3 |
 | 5 | `POST/PATCH /quotations` 500s on a date-only `jobDate`/`jobEndDate` | 8.1 |
 | 6 | `tempId`/`parentId` linking silently fails; allocations against a flat tree lose boom length **permanently** | 5.2, 11.3 |
