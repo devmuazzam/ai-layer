@@ -4625,3 +4625,33 @@ somewhere it should not have. Settle that before touching either.
 - **Rules:** all of [rules/INDEX.md](rules/INDEX.md); [PAY-025](rules/PAY-025-weekly-overtime.md),
   [PAY-026](rules/PAY-026-seventh-consecutive-day.md),
   [PAY-061](rules/PAY-061-employee-payroll-worklist.md) as the instances that raised it.
+
+## Which payroll issues block approval (PAY-065) — a provisional list is live in every tenant
+
+- **Status:** open
+- **Asked:** 2026-09-24. This is the TCG-164 audit. The question itself dates from the TCG-164 ticket (2026-09-23), which recorded it only in Linear and in code comments. **Rules:** PAY-065; PAY-063 shares the blocking item.
+- **Question:**
+  - **(a)** Which `PayrollIssue` codes block approval of an employee-week or a period?
+  - **(b)** Is that a fixed product list or a per-company setting?
+  - **(c)** At which approval levels does it apply? FRD PR-053 lists four: labor entry, employee/day, employee/pay period, and complete pay period. Only employee-week and period approval exist.
+- **Why it is urgent, not theoretical:**
+  - TCG-164 says *"No one has said which errors are critical … **Do not guess the list**."*
+  - App PR #661 (merged 2026-09-24 with 0 reviews; body *"WIP … DO NOT MERGE"*) shipped the gate. Its migration `20260924000000_payroll_approval_blocking_issues` **backfilled every existing tenant** with a list its own code calls *"PROVISIONAL — a developer's conservative guess"*: `NO_ADP_FILE` plus the five `RATE_*` codes.
+  - New tenants get the same six codes from `DEFAULT_PAYROLL_APPROVAL_BLOCKING_ISSUES` (`packages/shared/src/constants/payroll-issue-severity.ts`) through `seedPayrollApprovalBlockingIssues`.
+  - So approvals are already being blocked on an unratified list.
+- **Sources checked:**
+  - [payroll-rules-provenance.md](payroll-rules-provenance.md) PAY-065 row: still *Pending — Approval levels*.
+  - `rules/PAY-065-payroll-approval.md`: *"Block approval for configured critical errors"*; blocking item *Management confirmation*.
+  - `decisions/`: nothing on which codes are critical.
+  - **Decision cited but not on overlay main:** the code cites `decisions/2026-09-10-an-open-overlay-entry-warns-before-approval-and-never-blocks.md`. That file exists only on the unmerged overlay branch `feat/payroll-pending-ticket-visibility` (commit `5a535fc`, one of ten SCRUM-PENDING decisions stranded there).
+    - The decision that *is* on main, [../decisions/2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md](../decisions/2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md) clause 6, says *"whether it also blocks is explicitly not settled"*.
+- **Sub-questions nothing written answers:**
+  1. **Who may change a tenant's list?** There is no API or UI for `payroll_approval_blocking_issues`; today it takes a direct DB update.
+  2. **Already approved weeks.** If an APPROVED employee-week gains a blocking issue later (for example after a Recalculate below APPROVED on another week), is it re-gated?
+  3. **Run-level codes.** Should codes not tied to a week ever block period approval? Examples: `EMPLOYEE_ON_PAYROLL_HOLD`, `TICKET_MISSING_PAYABLE_WINDOW`. The gate reads week-level issues only.
+  4. **`NO_UNION_MODIFIER_RATE`.** Should it block? See *Boom pay rates cannot hold a second union*, TCG-140.
+- **When answered:**
+  - `tcg-scrum` records the decision.
+  - The provenance PAY-065 row is updated.
+  - A data migration replaces the provisional rows in existing tenants, and the seed constant is changed to match.
+- **Owner:** **Corrina Bustos** (named on TCG-164 and as the approval-levels owner).
