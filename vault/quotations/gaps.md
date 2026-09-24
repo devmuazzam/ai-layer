@@ -1271,7 +1271,12 @@ editability). Each entry below is a concrete code defect still open until fixed.
 
 ## Q-01 — Public PDF endpoint has no authentication
 
-- **Status:** open
+- **Status:** **resolved 2026-09-22** — [decisions/2026-09-22-public-quotation-pdf-route-deleted.md](../decisions/2026-09-22-public-quotation-pdf-route-deleted.md).
+  Answer: **delete the controller**, not gate it. Nothing consumed the route, and the
+  customer receives the PDF as a MIME attachment on the delivery email. The status
+  question ("should a DRAFT be downloadable") is answered in the same note as
+  **SENT-or-later only**, recorded as the rule for any future public link even though
+  the deletion makes it moot. Shipped on `fix/tcg-88-public-quotation-pdf-route` (TCG-88).
 - **Asked:** 2026-09-01 — quotation module E2E audit
 - **Severity:** critical
 - **Evidence:** confirmed (code read this session)
@@ -1288,7 +1293,15 @@ editability). Each entry below is a concrete code defect still open until fixed.
 
 ## Q-02 — Public signed-document endpoint has no authentication
 
-- **Status:** open
+- **Status:** **resolved 2026-09-15** — fixed in `0a01900b0`, whose message says
+  *"Answers gaps Q-02"*. **This entry was stale: it stayed `open` for a week after the
+  code was fixed.** At HEAD the route carries no `@Public()` and takes
+  `@GetCurrentUser`, and its docstring explains the reasoning: *"Signed in, so the
+  quotation lookup is tenant-scoped — as a public route it had no tenant, and a quote
+  number is only unique within one."* Dispositioned 2026-09-22 during TCG-88.
+  **This staleness had a downstream cost:** the `register-2026-09-18` row that became
+  TCG-88 names two routes as not tenant-scoped, and the `signed-document` half was
+  already false when the register was written — see the correction note under Q-03.
 - **Asked:** 2026-09-01 — quotation module E2E audit
 - **Severity:** critical
 - **Evidence:** confirmed
@@ -1303,7 +1316,25 @@ editability). Each entry below is a concrete code defect still open until fixed.
 
 ## Q-03 — Public routes resolve quoteNo across tenants
 
-- **Status:** open
+- **Status:** **resolved for the routes it named, 2026-09-22** —
+  [decisions/2026-09-22-public-quotation-pdf-route-deleted.md](../decisions/2026-09-22-public-quotation-pdf-route-deleted.md). The PDF route is
+  deleted; `signed-document` was fixed in `0a01900b0` (see Q-02); the three remaining
+  public signature routes resolve by **DocuSign envelope id**, globally unique, so they
+  are tenant-correct with no tenant context. The decision note records the standing rule
+  for any future public quotation link: resolve by a globally unique unguessable key,
+  verify the secret before any DB read, and never rely on the `$extends` extension.
+- ⚠️ **The underlying hazard is NOT fixed.** `findByCodeWithRelations` is still
+  `findFirst({ where: { quoteNo } })` with no `tenantCompanyId`; TCG-88 removed its one
+  public caller and corrected its JSDoc, nothing more. Any new `@Public()` route that
+  reaches it reintroduces this. The guard is a source-level tripwire —
+  `apps/api/src/presentation/public-route-allowlist.spec.ts` pins the set of `@Public()`
+  routes and fails the build when it changes. **If you want this closed by construction**,
+  that is a separate change: give the method a required `tenantCompanyId`.
+- 📌 **Register correction owed.** `uat/register-2026-09-18.md` (and the Confluence
+  "UAT Final Doc" row `id-181`) says *"Two public quote routes are not tenant-scoped"*.
+  Only one was still open when that was written — the `signed-document` fix
+  (`0a01900b0`, 15 Sep) is an ancestor of the register's own base commit. Left unedited
+  here because the register is a dated snapshot; flagged for whoever maintains it.
 - **Asked:** 2026-09-01 — quotation module E2E audit
 - **Severity:** critical
 - **Evidence:** confirmed
