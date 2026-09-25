@@ -54,6 +54,30 @@ File references are as of `349982639`.
 - **Pre-submit verification untouched:** Step data verification prior to ticket completion
   remains active.
 
+**Answered 2026-09-25 by the session user, verbatim:**
+
+> When submitting the ticket I get this warning that ticket data is saved on local device. and it
+> will save on server when onlie. But my device and server is online. And it saved to backend
+> successfully! We should not have this notification. Pleae review.
+>
+> Same thing is happening for Breakdown and build Up when their timer stops. These warning
+> notifications are displayed there as well. That these are saved on local mobile storage and is
+> not saved on server. We do not need to show any warning that data saved on local and is not on
+> server. We need to first save it on local mobile async storage and sync with server behind the
+> scenes.
+
+- **Warning notifications suppressed & local-first save:**
+  - Removed warning banners about data being saved locally and syncing when online.
+  - Device saves immediately and silently to local mobile AsyncStorage first, syncing behind the scenes.
+  - Positive confirmation messages for timer actions (`Build up started`, `Build up complete · boom time started`, `Break-down started · boom time closed`).
+- **PostgreSQL serialization conflict resolution:**
+  - Added exponential jittered retry loop to `TicketTimeEntriesRepository.runSerializable` to eliminate `P2034` / `40P01` deadlock 500 errors during concurrent step punches.
+- **Checklist 403 Forbidden handling in sync engine:**
+  - Wrapped `submitChecklist` in `sendOp` with try/catch to ignore 403 Forbidden when a secondary crew member's queued operations drain.
+- **Breakdown & Work-Segment "cannot start after it ends" timing fix:**
+  - In `StartWorkBody.tsx`, ensured `completeBreakdown` and `completeBuildup` enforce `endedAt >= start + 1000` (at least 1 second ahead), preventing timeline clamping (`timelineNow`) from causing `start === end`.
+  - In `ticket-breakdowns.service.ts` and `ticket-work-segments.service.ts`, gracefully advance `finalEnd` by 1 second when `start === end` instead of rejecting with `BadRequestException('Break-down cannot start after it ends')`.
+
 **Review-plan corrections (session review, 2026-09-24):**
 - F6: the segment kind is `'boom-sessions'`, not `'booms'`.
 - F3: `query.isFetchedAfterMount`, or `dataUpdatedAt` versus launch time, both mark a list

@@ -133,6 +133,28 @@ What this changes:
   - Uses asynchronous cooperative yielding (`setTimeout(0)`) between each write/upload step to guarantee zero UI jank or main-thread freezing.
   - Invalidates React Query tickets and checklists caches once synchronization succeeds.
 
+Decision given 2026-09-25 regarding warning notifications and local-first saves (verbatim):
+
+```
+When submitting the ticket I get this warning that ticket data is saved on local device. and it
+will save on server when onlie. But my device and server is online. And it saved to backend
+successfully! We should not have this notification. Pleae review.
+
+Same thing is happening for Breakdown and build Up when their timer stops. These warning
+notifications are displayed there as well. That these are saved on local mobile storage and is
+not saved on server. We do not need to show any warning that data saved on local and is not on
+server. We need to first save it on local mobile async storage and sync with server behind the
+scenes.
+```
+
+What this changes:
+- All warnings indicating that data is saved locally on the device and will sync later are eliminated across the entire mobile flow.
+- Local mobile AsyncStorage persistence happens first, silently and immediately.
+- Positive confirmation toasts are displayed for timer and user actions (`Build up started`, `Build up complete · boom time started`, `Break-down started · boom time closed`).
+- Backend synchronization runs behind the scenes without noisy failure toasts for transient connectivity or deferred sync states.
+- Handled PostgreSQL serialization conflicts (`P2034` / `40P01` deadlock) with automatic jittered retry in `TicketTimeEntriesRepository.runSerializable`.
+- Prevented breakdown and work segment timing inversion errors (`Break-down cannot start after it ends`): ensured client enforces minimum 1-second gap (`Math.max(rawEnd, start + 1000)`), and backend auto-advances identical start and end timestamps by 1 second rather than throwing false inversions.
+
 - Acceptance criteria present on the ticket: no (behaviour described, no AC list)
 - `OPEN — no acceptance criteria; the elaborator should propose them from §3 for sign-off`
 
