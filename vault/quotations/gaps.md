@@ -2552,3 +2552,18 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** **cross-module, filed here only because this work surfaced it.** It is a *build rail*, not product intent: its answer belongs in `claude/contexts/web.md` (and/or `mobile.md`), written by a human from an accepted reflection per `CLAUDE.md` → *One memory, every tool*. It is **not** the WCAG / conformance question open in [../admin/gaps.md](../admin/gaps.md), which is about the conformance target itself and stays open and untouched. No answer is invented here: the 44px half of `fix/quotation-surcharge-toggle` shipped against the existing web rail, which is what the rail said at the time.
 - **Blocked:** nothing shipped. Blocked: stating a single touch-target minimum for tablet-targeted web work, and reviewing such work against one.
 - **Owner:** CodingCops engineering — the rails in `claude/contexts/` are internal build conventions, not a TCG decision.
+
+## Send Quotation modal — what the preview shows when the Subject box is empty
+
+- **Status:** open
+- **Asked:** 2026-09-24 — PR review of `fix/tcg-40-empty-subject-email-preview` (Linear TCG-40, Path C — `aidlc/processed.log:140`). No `SCRUM-###`. tcg-scrum escalation.
+- **Question:** when the Subject box is empty and the API preview subject has not loaded yet, should the web preview show **(a)** a neutral note — the branch ships *"(default subject will be used)"* — or **(b)** the real API-seeded subject (`Your New TCG Quotation — <quoteNo>`), waiting on it if necessary? A one-line reply resolves it: *"Empty Subject in the Send Quotation preview: show the note, or show the real default subject?"*
+- **Candidates:**
+  - [../uat/sessions/uat-session-4.md](../uat/sessions/uat-session-4.md) item 9 (Umair Khan, session 2026-09-14, `unverified`) — asks that the email subject become *"Your New TCG Quotation"* instead of *"Your Crane Service Quotation"*. It is about the **sent** subject. It says nothing about the preview, the empty state, or a ` — <quoteNo>` suffix.
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) line 215 (Fouzan Shakil, 2026-09-18, `unverified`) — NOT DONE. Records that the modal still falls back to the old wording in preview. That is an as-built observation. The register says of itself that it is *"never a source for a spec"*.
+  - [quotations.md](quotations.md) lines 31–32 (punch list, 2026-07-14, `unverified`) — *"Need to demand text from TCG team for email"*; *"Add TCG: in subject"*. That second item asks for a different subject form from both the UAT ask and the string the API sends. Nobody has reconciled them.
+  - [*Is "Pre-Quote" being retired in customer-facing copy, and who signs off the send-email text?*](#is-pre-quote-being-retired-in-customer-facing-copy-and-who-signs-off-the-send-email-text) (open) — covers who owns the send-email wording in general. It does **not** cover the subject preview or its empty state. Cited here, not restated.
+  - `decisions/` — nothing on the email subject or the preview.
+- **Note:** retiring the old wording from the preview is sourced as a UAT **ask**, not as adjudicated intent. Neither option (a) nor option (b) is sourced. The API's ` — <quoteNo>` suffix is also unsourced against UAT 4 #9's bare *"Your New TCG Quotation"*. The branch changes only the preview; the delivered subject is untouched.
+- **Blocked:** nothing hard — send is unaffected. Blocked: calling the TCG-40 empty-state preview behaviour sourced, and closing the UAT register row 215 as "preview matches what is sent".
+- **Owner:** Ryan Adams / Joe Schacatano (quotation send), as in the send-email-text entry above.
