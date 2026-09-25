@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-24
+updated: 2026-09-25
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -4506,7 +4506,7 @@ somewhere it should not have. Settle that before touching either.
 
 ## Adding a rate when the previous one has no effective-to date — back-fill it, or error
 
-- **Status:** open
+- **Status:** resolved (craft code rates) — see [../decisions/2026-09-25-craft-rate-succession-day-before-auto-end.md](../decisions/2026-09-25-craft-rate-succession-day-before-auto-end.md). Other rate types stay open under [*Effective-dating the rest of payroll's rates (PAY-008, TCG-168)*](#effective-dating-the-rest-of-payrolls-rates-pay-008-tcg-168). *(Was: open, 2026-09-19 – 2026-09-25.)*
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. **Rules:** PAY-008.
 - **Question:** when a new rate is added and the **previous** rate has **no effective-to date**, should the system **back-fill** the old rate's end date (closing it the day before the new one starts) or **refuse** with an error, as it does now? And if back-filling: to what date exactly, and does the same rule apply to wage rates, billing rates and craft modifiers alike?
 - **Sources checked:**
@@ -4526,6 +4526,13 @@ somewhere it should not have. Settle that before touching either.
   - **Correction to a reason given on TCG-138.** The rate date columns are `@db.Date`, and `findRateInForce` includes the end date. So ending on *start − 1* would **not** leave a $0 gap day. The written "not the day before" rule on the ticket stands or falls on the owners' answer, not on that reason.
   - **New question: a rate closed under an open period.** Payroll recomputes only on an explicit Recalculate (`payroll.service.ts` `calculate`), which is refused only for APPROVED/EXPORTED. So a CALCULATED or REVIEW period keeps its stored results after a rate under it is added or closed. The next Recalculate silently reprices every work date on or after the new start, and nothing warns that the stored results are stale. Should adding a rate that affects a CALCULATED/REVIEW period warn, block, or do nothing? Same owners; cross-reference TCG-168.
   - **Still owed:** Fouzan Shakil, what the UAT 6 row meant.
+- **Resolution 2026-09-25 (craft code rates only):** Syed Haris (CodingCops), [../decisions/2026-09-25-craft-rate-succession-day-before-auto-end.md](../decisions/2026-09-25-craft-rate-succession-day-before-auto-end.md) (`status: reference` — Corrina Bustos / Brian Petros to ratify):
+  1. **Back-fill, no error.** An open-ended previous craft code rate is ended automatically; an end date already set is never rewritten.
+  2. **Day before.** Previous effective-to = new effective-from − 1 day, for Add Rate and Bulk Rate Update alike. **Affirms** the 2026-09-03 bulk-rate note; **supersedes** the same-day rule in the TCG-138 ticket, `f1e1d0a27` and PR #659. Existing rows sharing a boundary day are to be corrected to the day before. Pay is identical either way (`effectiveTo` inclusive, `@db.Date`).
+  3. **Scope:** craft code rates only. Employee, billing and craft-modifier rates stay with TCG-168 (below).
+  4. **Rate closed under an open period (the 2026-09-24 question):** a rate added, ended or changed whose window overlaps a `CALCULATED`/`REVIEW` week after that week's latest completed calculation → the week shows a *rates changed since calculated, recalculate* warning. Approve and export are **not** blocked.
+  5. **Ownership:** current access kept — craft-code write permission may create/end rates, no second approver. PAY-008's *approver* requirement stays open for the client.
+  - **Still open from this entry:** what Fouzan Shakil's UAT row meant beyond the back-fill; PAY-008's configuration-ownership item.
 
 ## Primary craft code constrained to the employee type, and changing a craft code in DAS
 
@@ -4745,6 +4752,7 @@ somewhere it should not have. Settle that before touching either.
   4. **"Boom adders change every year."** TCG-168 gives this as the reason, but it has no source. The L12 wage notice records Long Boom Pay $0.75 "since 2001-07-01". PAY-008 still requires dating; only the stated reason is unsupported.
   5. **UI and subsistence scope.** Is a UI for entering dated rates in scope? Should subsistence amounts become dated configuration?
 - **Also blocked by:** *Adding a rate when the previous one has no effective-to date* (the day-before vs same-day end date, and whether the back-fill applies to every rate type). Adding more dated tables before that is answered would copy the same ambiguity into each one.
+- **Update 2026-09-25:** the craft code half of that blocker is answered — [../decisions/2026-09-25-craft-rate-succession-day-before-auto-end.md](../decisions/2026-09-25-craft-rate-succession-day-before-auto-end.md) (day-before auto-end; open `CALCULATED`/`REVIEW` weeks warn, not block). It **explicitly does not** extend the rule to the rate types listed here; whether each newly dated table follows the same day-before succession is still this entry's question. **Status stays open.**
 - **Owner:** **Corrina Bustos / Brian Petros** (configuration ownership, PAY-008's blocking item).
 
 ## Recording which time source paid a job day (PAY-017, TCG-178)
