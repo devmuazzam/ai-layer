@@ -630,3 +630,20 @@ the second line.
   anyway.
 - **Lost upload response.** Duplicate attachments are possible until U7's `clientUploadId`
   ships, so U4 should ship after U7, or together with it.
+
+---
+
+## 6. Revision: Offline Submit & Background Sync Engine (2026-09-25)
+
+**Background & Intent**
+Reverses Decision D1 (which had blocked submit while offline).
+When offline:
+- Ticket submission is never blocked; it completes on the local device.
+- Local attachments (photos and signatures) and draft data remain safely on disk (`ticket:*` in AsyncStorage and document directory).
+- `SubmitSuccessModal` opens so the crew member can finish without interruption.
+- A centralized background sync engine (`sync/background-sync.ts`) listens to `NetInfo` connectivity changes:
+  1. On reconnection, scans all `ticket:*` drafts in AsyncStorage.
+  2. For partially completed tickets: uploads pending local attachments and drains pending step ops in order without blocking the UI.
+  3. For completely completed tickets: drains step ops, closes the review punch, calls `services.submit.submit()`, deletes local files, and removes the draft from storage.
+  4. Cooperatively yields to the JS event loop (`setTimeout(0)`) between operations so the main thread and UI remain responsive.
+  5. Invalidates React Query tickets and checklists caches upon successful sync.

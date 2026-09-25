@@ -106,16 +106,45 @@ What this changes:
 - Drawn signatures remain deferred/local-first until step Next or offline catch-up.
 - The pre-submit data verification layer and offline step sync behavior remain active.
 
+Decision given 2026-09-25 regarding offline submit and background sync (verbatim):
+
+```
+What we need to do is that if the mobile app is offline then we need to sync all the data
+on mobile local device including the images uploads and even if ticket is submitted when
+internet connectivity is offline then we do not need to block the ticket submit. We need to
+complete that ticket and save it in mobile local storge. And in the background we need to
+listen to the internet, as soon as the internt comes back we need to scan the tickets that
+are completly or partually residing on mobile local storage and auto save them to backend
+without affacting main thread/ mobile UI.
+```
+
+What this changes:
+- Reverses online-only submit (Decision D1): offline submit is NO LONGER blocked at the Review screen.
+- When offline, ticket submission completes locally:
+  - Generates offline submit ref (`OFFLINE-{timestamp}`), marks `submitState: 'submitted'`, sets `active: TICKET_TOTAL + 1`.
+  - Persists full ticket draft to local storage (`AsyncStorage`).
+  - Does NOT delete local photo files or wipe the draft while unsynced.
+  - Displays `SubmitSuccessModal` so the crew member can proceed.
+- Background sync engine (`background-sync.ts`):
+  - Listens to `NetInfo` connectivity events across the mobile app.
+  - As soon as connectivity returns, scans all drafts stored in local storage (`ticket:*`).
+  - For partially completed tickets: uploads pending local attachments and drains pending step ops without blocking UI.
+  - For completely completed/offline-submitted tickets: drains pending step ops (including `review` work time punch), submits the ticket payload to the backend, deletes local photo files, and removes the draft from storage upon confirmed backend success.
+  - Uses asynchronous cooperative yielding (`setTimeout(0)`) between each write/upload step to guarantee zero UI jank or main-thread freezing.
+  - Invalidates React Query tickets and checklists caches once synchronization succeeds.
+
 - Acceptance criteria present on the ticket: no (behaviour described, no AC list)
 - `OPEN — no acceptance criteria; the elaborator should propose them from §3 for sign-off`
 
 ## 4. In scope
 
 - [ ] Every user-editable value on every ticket step is written to the on-device draft as it changes, and restored when the step is reopened
-- [ ] Photos and attachments are uploaded immediately to backend & S3 at capture (single tick in-flight, double tick on completion from S3 preview URL; reverted from deferred-to-Next on 2026-09-25); drawn signatures remain stored on device and uploaded at Next
+- [ ] Photos and attachments: uploaded immediately when online; saved to device local storage with `local:<id>` references when offline
 - [ ] Next while online saves the step to the backend before advancing (as today)
 - [ ] Next while offline completes the step locally and marks it as waiting to sync
-- [ ] Before the ticket completes: all queued step data is caught up, Work Time is closed, then every step's device copy is compared with the server copy; the ticket completes only if all steps match
+- [ ] Submitting offline completes the ticket locally, saves to AsyncStorage, and displays completion UI without blocking
+- [ ] Background sync engine listens to NetInfo and automatically syncs pending step ops, uploads offline photos, and submits offline-completed tickets when connectivity returns, without affecting the main thread or UI responsiveness
+- [ ] Before the ticket completes online: all queued step data is caught up, Work Time is closed, then every step's device copy is compared with the server copy; the ticket completes only if all steps match
 - [ ] The backend `POST /field/tickets/:id/submit` refuses to complete a ticket whose required step data is missing
 - [ ] The ticket flow can be reopened offline after an app restart
 - [ ] A checklist records the time the crew actually finished it, including when it syncs later from offline
