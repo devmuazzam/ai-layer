@@ -2309,7 +2309,7 @@ someone has confirmed otherwise.
 
 ## Boom pay rates cannot hold a second union — and the failure is silent
 
-- **Status:** open
+- **Status:** open — **remainder only: the multi-union boom shape** (see *Open remainder* at the end of this entry). The union link and the one-union-per-company limit are **resolved** — see [../decisions/2026-09-25-boom-adders-single-union-per-company.md](../decisions/2026-09-25-boom-adders-single-union-per-company.md) (`status: reference` — Brian Petros / Corrina Bustos to ratify). *(Was: open in full, 2026-09-01 – 2026-09-25.)*
 - **Asked:** 2026-09-01 — reviewing the craft-modifier configuration screen while setting up a
   fresh tenant. Not a ticket question: no ticket asks for a second union, and the defect only
   appears when one is added.
@@ -2371,7 +2371,9 @@ someone has confirmed otherwise.
   whether craft codes and craft modifier codes are tied to a union, and said they should be,
   *"for when/if there is more than one Union"*. Craft codes already are (`CraftCode.unionCodeId`
   is required); craft modifiers are not. CodingCops' drafted reply (Syed Haris, 2026-09-17) says
-  *"we will add the union link on the modifiers"*. That is a commitment in a reply, not a
+  *"we will add the union link on the modifiers"*. **[Date corrected 2026-09-25:** the reply is
+  dated **2026-09-16 19:09 PKT** in the stored note (section header, line 261 of the file linked
+  below); 2026-09-17 was when it was logged here, not when it was sent.**]** That is a commitment in a reply, not a
   decision note: once Brian confirms in writing, `tcg-scrum` records the decision and this entry
   closes. The note itself is stored at [crew-assignment-and-rate-derivation-brian-2026-09-16.md](crew-assignment-and-rate-derivation-brian-2026-09-16.md).
 
@@ -2395,9 +2397,21 @@ someone has confirmed otherwise.
   - **Mobile regression from #660**, fixed in app PR #665 (open). Mobile read `/craft-modifiers` without a union, and the API now returns null flat adders in that case, so the Labor step lost its `(+$x/hr)` suffix. #665 prices each crew card from that member's own local.
   - **Questions nothing written answers**, all for the same owners:
     1. **Migration default.** The #660 migration assigned every existing tenant's adders to one union: local 12 first, else a code starting `L12`, else the oldest union code. Nobody has confirmed that choice. Record it with Brian's shape decision.
+       **→ Answered 2026-09-25 (clause 2):** not "Local 12 first" — existing adders belong to the ACTIVE `UNION`-kind code referenced by the most union craft codes; a follow-up data migration moves them. (The default seed creates `UNION`, not `L12`, so #660's ranking could strand the adders.)
     2. **Ledger display.** `boomUnionCode` is saved per job day, but no requirement says whether the ledger or review screen shows which union's table priced the adder.
+       **→ Answered 2026-09-25 (clause 4):** the payroll review screen shows it, from `payroll_job_days.boom_union_code`.
     3. **Approval blocking.** Should the resolver's `NO_UNION_MODIFIER_RATE` (a union has not priced this bracket) block approval under PAY-065? See TCG-164; owner Corrina Bustos.
+       **→ Answered 2026-09-25 (clause 3):** no — a review flag, not an approval block; removed from the default seed and from any tenant it was seeded into. Corrina Bustos to ratify.
     4. **Mixed-union crew on mobile.** #665 shows each member their own local's adder. That is consistent with payroll, but the UX is not written anywhere.
+       **→ Answered 2026-09-25 (clause 4):** keep #665's per-member behaviour; with one union per company it shows the same figure for everyone. (#665 merged 2026-09-24.)
+
+- **Resolution 2026-09-25 (partial):** Syed Haris (CodingCops), [../decisions/2026-09-25-boom-adders-single-union-per-company.md](../decisions/2026-09-25-boom-adders-single-union-per-company.md) (`status: reference`):
+  1. **One union only.** Keep #660's structure (union-neutral brackets + a `CraftModifierRate` per (bracket, union)), but a company's boom adders may belong to **one** union code; the API refuses to price brackets for a second union while another already has adders. This is the union link Brian Petros asked for on 2026-09-16, with multi-union deferred — the *"a union id on each bracket"* alternative is not taken, so #660's migration does not need reworking for shape.
+  2. **Existing data** → the ACTIVE `UNION`-kind code most union crafts reference (follow-up data migration).
+  3. **`RATE_NO_UNION_MODIFIER_RATE`** is a review flag, not a PAY-065 approval block.
+  4. **Review screen** shows `boom_union_code`; mobile keeps #665.
+  The silent-failure concern in the original question is closed by clause 1 for as long as the limit holds: a second union cannot receive adders, so it cannot be priced from the first union's table.
+- **Open remainder (still open, not decided by the note above):** when TCG signs a second labour agreement, does its boom schedule differ in **ft brackets**, in **amounts only**, or not at all? CodingCops' 2026-09-16 reply predicted *"its own brackets and amounts"*; nothing written from TCG says so, and no meeting has discussed boom pay per union. The answer decides whether lifting clause 1 is only removing the API guard (amounts only — the current table already supports it) or also scoping brackets to a union. **Owner:** Brian Petros, with Corrina Bustos. **Not urgent** — one union today (`FMS_UNION_MASTER` one row; ADP one code, `L12`). Effective-dating of boom adders is separate and stays with TCG-168.
 
 ## A labor-entry edit can reprice an approved week — and the ERP has no path for it
 
@@ -4653,6 +4667,7 @@ somewhere it should not have. Settle that before touching either.
   - TCG-164 says *"No one has said which errors are critical … **Do not guess the list**."*
   - App PR #661 (merged 2026-09-24 with 0 reviews; body *"WIP … DO NOT MERGE"*) shipped the gate. Its migration `20260924000000_payroll_approval_blocking_issues` **backfilled every existing tenant** with a list its own code calls *"PROVISIONAL — a developer's conservative guess"*: `NO_ADP_FILE` plus the five `RATE_*` codes.
   - New tenants get the same six codes from `DEFAULT_PAYROLL_APPROVAL_BLOCKING_ISSUES` (`packages/shared/src/constants/payroll-issue-severity.ts`) through `seedPayrollApprovalBlockingIssues`.
+    **[Corrected 2026-09-25:** not the same six — **seven**. The seed maps every key of `PAYROLL_RATE_ISSUE_REASONS`, which since #660 includes `NO_UNION_MODIFIER_RATE`; the migration's backfill is a literal list of six. So new tenants blocked on `RATE_NO_UNION_MODIFIER_RATE` and existing tenants did not — found by a test run on 2026-09-24. [2026-09-25-boom-adders-single-union-per-company.md](../decisions/2026-09-25-boom-adders-single-union-per-company.md) clause 3 aligns both on non-blocking.**]**
   - So approvals are already being blocked on an unratified list.
 - **Sources checked:**
   - [payroll-rules-provenance.md](payroll-rules-provenance.md) PAY-065 row: still *Pending — Approval levels*.
@@ -4665,6 +4680,7 @@ somewhere it should not have. Settle that before touching either.
   2. **Already approved weeks.** If an APPROVED employee-week gains a blocking issue later (for example after a Recalculate below APPROVED on another week), is it re-gated?
   3. **Run-level codes.** Should codes not tied to a week ever block period approval? Examples: `EMPLOYEE_ON_PAYROLL_HOLD`, `TICKET_MISSING_PAYABLE_WINDOW`. The gate reads week-level issues only.
   4. **`NO_UNION_MODIFIER_RATE`.** Should it block? See *Boom pay rates cannot hold a second union*, TCG-140.
+     **→ Answered 2026-09-25 for this one code:** no — [../decisions/2026-09-25-boom-adders-single-union-per-company.md](../decisions/2026-09-25-boom-adders-single-union-per-company.md) clause 3 (`status: reference`, Corrina Bustos to ratify). `RATE_NO_UNION_MODIFIER_RATE` is a review flag; it is removed from the default seed and from any tenant it was seeded into. Source: FRD PR-011 (*"missing modifier rate"* is a review issue; *"Rate differences should normally be warnings or review items"*). Sub-questions 1–3 and (a)–(c) for every other code stay open.
 - **When answered:**
   - `tcg-scrum` records the decision.
   - The provenance PAY-065 row is updated.
