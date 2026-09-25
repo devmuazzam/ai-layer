@@ -936,10 +936,14 @@ shows no suggestion, your resource tree was flat — see 5.2.
 Step 15 → **Submit**. Ticket status → `COMPLETE`.
 
 **Edge case worth raising deliberately:** submit **without completing Pre-Trip, JSA, Post-Trip or
-either signature**. It succeeds. Empty `captures`/`summaries` are accepted. Whether a checklist
-should gate submission is **genuinely unspecified** — `field-ops-mobile-INDEX.md` is an
-un-reconciled three-way conflict between FR-TCG-FOP-001, FR-TCG-FOP-002 and the Atom user stories,
-and none is authoritative. So this is an open product question, not a bug. Ask the room.
+either signature**. It succeeds when `TICKET_SUBMIT_STEP_GUARD=false` (the default). Empty `captures`/`summaries`
+are accepted. When `TICKET_SUBMIT_STEP_GUARD=true` is enabled on the API, the backend enforces
+`findMissingSubmitSteps` (refusing tickets lacking required milestone, signature, or checklist records),
+and the mobile app performs pre-submit snapshot verification and step resending before completing.
+Note: whether checklists should gate submission is **genuinely unspecified** — `field-ops-mobile-INDEX.md`
+is an un-reconciled three-way conflict between FR-TCG-FOP-001, FR-TCG-FOP-002 and the Atom user stories,
+and none is authoritative. So gating is an operational feature flag (`TICKET_SUBMIT_STEP_GUARD`), not hardcoded
+default behavior.
 
 ### 12.5 Mobile screens that are not real
 
