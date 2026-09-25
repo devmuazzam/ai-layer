@@ -6,6 +6,12 @@ decided_by: Corrina Bustos (Payroll Manager; the engagement directory lists her 
 status: verified
 resolves: [PAY-008, PAY-010, payroll/gaps.md#annual-craft-rate-change--nine-codes-one-rule-no-bulk-path]
 tags: [module/payroll, kind/decision, craft-code, pricing, union-agreement, reference-data, payroll-rules]
+provenance_note: >-
+  Correction 2026-09-25: the "Effective dating" section says day-before auto-end was "already
+  built and demoed for single-rate effective dating". It was not — on 2026-09-02 it was demoed as
+  functionality still to come; single-rate back-fill shipped only in app PR #659 (2026-09-24), and
+  with a same-day end date. The day-before rule itself stands and is affirmed by
+  decisions/2026-09-25-craft-rate-succession-day-before-auto-end.md.
 ---
 
 # Decision
