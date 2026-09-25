@@ -22,6 +22,7 @@ tags: [module/payroll, kind/rule, open-questions]
 
 ## Open
 
+- **One code decided (2026-09-25, TCG-140):** `RATE_NO_UNION_MODIFIER_RATE` does **not** block approval — removed from the default seed and from tenants it was seeded into — [decision](../../decisions/2026-09-25-boom-adders-single-union-per-company.md) clause 3 (reference, Corrina Bustos to ratify). The rest of the critical list stays open: [../gaps.md#which-payroll-issues-block-approval-pay-065--a-provisional-list-is-live-in-every-tenant](../gaps.md#which-payroll-issues-block-approval-pay-065--a-provisional-list-is-live-in-every-tenant).
 - **Blocking (matrix):** Management confirmation
 - **FCC approval status now surfaces as a warning in Brian's app (2026-09-13, FYI).** FCC labor
   entries start *Pending* and are approved by checkbox; his app still calculates unapproved

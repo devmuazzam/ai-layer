@@ -23,6 +23,7 @@ tags: [module/payroll, kind/rule, open-questions]
 
 ## Open
 
+- **Union scope decided for now (2026-09-25, TCG-140):** one union per company may hold boom adders; brackets stay union-neutral, money is per (bracket, union); multi-union shape open — [decision](../../decisions/2026-09-25-boom-adders-single-union-per-company.md) (reference). Built in app PR #679.
 - **Blocking (matrix):** Confirm modifier source and windows
 - **Conflict:** MLA says boom/modifier-class premiums go **into the base rate** before multipliers; the legacy slice formula partly agrees; “on top” never confirmed — Corrina had left the call (`../source-attribution-and-conflicts.md` → *Into the rate vs on top*).
 - **Client statement, client message 2026-06-09 (Brian Petros — payroll-group determination + FCC profile screenshot):** modifier rate = `UNION_CRAFT_MODIFIER.PayRateChange`, applied **only when a Craft Modifier Code is selected on the labor entry** — selection-driven, on top of the boom-window eligibility this rule states. Does not settle into-rate vs on-top.
