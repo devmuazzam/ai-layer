@@ -1202,10 +1202,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   **(a)** Yes: a completed reset accepts the invitation and activates the account, because
   the reset token proves control of the same mailbox the invite link would. **(b)** Not
   adopted — the invite link stays the primary path, and whether it is now merely a
-  convenience is left open in the note for TCG. Everything below is left as written, as the
-  record of what was in question. One consequence worth noting here: the already-stranded
-  rows can now self-recover through *Forgot password*, so the repair script TCG-82
-  contemplated is no longer needed.
+  convenience is left open in the note for TCG. Signing in with a password that already
+  works accepts the invitation too, on the same reasoning. Everything below is left as
+  written, as the record of what was in question. One consequence worth noting here: the
+  already-stranded rows need no repair — they hold a working password, so the next sign-in
+  activates them, and the script TCG-82 contemplated is unnecessary rather than deferred.
 - **Asked:** 2026-09-22 — surfaced by `TCG-82` (UAT 5 *Password Reset*), but filed here because the question is product-wide and outlives that ticket: it governs what the invitation step is *for*, on every path that could set a password. The ticket-scoped consequence — which repair the already-stranded rows get — stays in [`../../aidlc/TCG-82/spec.md`](../../aidlc/TCG-82/spec.md) §12 Q1, per this register's own scope rule.
 - **Question:** two parts. **(a)** When a `PENDING_INVITE` user has completed a password reset — proving control of the mailbox via an emailed, single-use, 24-hour token — has the invitation been satisfied, or must they still go through accept-invite? **(b)** If the answer is "satisfied", is `accept-invite` then a *convenience* rather than a gate, and may any future mailbox-proving flow activate a user? The two answers are not independent: (a) decides whether `TCG-82`'s stranded rows are activated with the password they chose or have it discarded and re-invited, and (b) decides whether the invite token is an authorization artifact or merely a link.
 - **Sources checked:**

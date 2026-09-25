@@ -74,13 +74,18 @@ distinguishable. `forgotPassword` returns rather than throws on every branch, be
 endpoint answers a constant `200` specifically to prevent email enumeration — a branch that
 threw would turn that into an error for one account state alone.
 
-## What this replaces
+## The invariant this rests on
 
-An earlier ruling on 2026-09-22, made when this question was still open, went the other way:
-refuse the reset for a pending user and re-send the invitation instead. It was chosen
-**because** nobody had answered the question, not because it was thought better. It shipped
-briefly, is superseded entirely by this note, and its `spec.md` §12 Q2 entry should be read
-together with this file.
+Sign-in reads a pending account that holds a password as one whose owner is entitled to it.
+That is only true while **`PENDING_INVITE` implies no password**, which every invite branch
+in `InvitationsService` maintains — all four write `passwordHash: null` beside the status.
+`AdminUsersService.update` was the one place that could write the status without going
+through an invite, and did not clear the hash; it now does, so an administrator cannot
+create a pending row carrying someone's old password. `REVOKED` is the way to withdraw
+access from an account that keeps its password, and is refused at sign-in before the
+password is compared.
+
+Anything added later that sets `PENDING_INVITE` must clear `passwordHash` with it.
 
 ## What this does not settle
 
