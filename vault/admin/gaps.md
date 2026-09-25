@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-09-19
+updated: 2026-09-25
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -1194,3 +1194,27 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** there is a **de facto 44px standard** with no policy, no conformance target, and no enforcement. Whether that is enough, or whether AA (or another level) is a contract commitment, is a product/contract question — not a dev one. Do not treat individual control fixes as settling this.
 - **Blocked:** nothing — individual controls can keep meeting the written 44px line. Blocked: claiming WCAG 2.1 AA conformance in client-facing material, or building an enforcement rail, without an answer here.
 - **Owner:** Brian Petros / client contract side for whether AA is committed; Fouzan Shakil for any engineering convention that falls short of a contract claim.
+
+## What does accepting a portal invitation attest, and may a password reset ever substitute for it?
+
+- **Status:** resolved 2026-09-25 — see
+  [decisions/2026-09-25-password-reset-accepts-a-pending-invitation.md](../decisions/2026-09-25-password-reset-accepts-a-pending-invitation.md).
+  **(a)** Yes: a completed reset accepts the invitation and activates the account, because
+  the reset token proves control of the same mailbox the invite link would. **(b)** Not
+  adopted — the invite link stays the primary path, and whether it is now merely a
+  convenience is left open in the note for TCG. Everything below is left as written, as the
+  record of what was in question. One consequence worth noting here: the already-stranded
+  rows can now self-recover through *Forgot password*, so the repair script TCG-82
+  contemplated is no longer needed.
+- **Asked:** 2026-09-22 — surfaced by `TCG-82` (UAT 5 *Password Reset*), but filed here because the question is product-wide and outlives that ticket: it governs what the invitation step is *for*, on every path that could set a password. The ticket-scoped consequence — which repair the already-stranded rows get — stays in [`../../aidlc/TCG-82/spec.md`](../../aidlc/TCG-82/spec.md) §12 Q1, per this register's own scope rule.
+- **Question:** two parts. **(a)** When a `PENDING_INVITE` user has completed a password reset — proving control of the mailbox via an emailed, single-use, 24-hour token — has the invitation been satisfied, or must they still go through accept-invite? **(b)** If the answer is "satisfied", is `accept-invite` then a *convenience* rather than a gate, and may any future mailbox-proving flow activate a user? The two answers are not independent: (a) decides whether `TCG-82`'s stranded rows are activated with the password they chose or have it discarded and re-invited, and (b) decides whether the invite token is an authorization artifact or merely a link.
+- **Sources checked:**
+  - **No vault document states what an invitation attests.** `grep -rn 'PENDING_INVITE' .ai/vault --include=*.md` returns three hits and only one is substantive: [../quotations/gaps.md](../quotations/gaps.md):1554, noting that a `PENDING_INVITE` user who cannot log in may nonetheless be the only entry in `approverIds` — about quotation approval, not portal invites. The other two are [../payroll/gaps.md](../payroll/gaps.md):2917 and :2935, which are the payroll item (c) cited in the next bullet *making this same observation*, not answering it.
+  - [../decisions/](../decisions/) — 84 notes, swept with `grep -rln -iE 'invite|activat|password|reset-password|sign-?in'` → 4 hits, all read, **none bears on invite semantics**: [2026-09-22-browser-autofill-suppression-scope-and-mechanism.md](../decisions/2026-09-22-browser-autofill-suppression-scope-and-mechanism.md):44 names accept-invite only as a password field a manager cannot save, and [2026-09-15-employee-profile-compensation-type-and-statuses.md](../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md):52 tabulates which *employee statuses* may be invited — who gets an invite, never what completing one means.
+  - [../payroll/gaps.md#employee-module-rules-the-e2e-suite-asserts-with-no-written-source--pr-488](../payroll/gaps.md#employee-module-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) item **(c)** — asks whether the invite lifecycle (`PENDING_INVITE` / role `USER`, 64-character token, rotated on resend, nulled on revoke, re-invitable after) is right at all. **Open**, asked 2026-09-07, same owners. It asks whether the mechanism is correct; this entry asks what the mechanism is *for*. Neither answers the other. Pointer from [*Settings picklist rules…*](#settings-picklist-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) above.
+  - [*Sign-in identity — Microsoft 365 (Entra) credentials, or phone number and SMS code, and for whom?*](#sign-in-identity--microsoft-365-entra-credentials-or-phone-number-and-sms-code-and-for-whom) above — **open**, asked 2026-09-15. If field employees move to phone + SMS, the email-invite/password-reset pair this question is about may not be their onboarding path at all. Does not answer (a) or (b) for the office population, which is shipped and live today.
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md):256 and [../uat/sessions/uat-session-5.md](../uat/sessions/uat-session-5.md):30 — the originating ask and its triage note. A UAT row is an ask, not adjudicated intent; the register's own entry additionally overstates the case (recovery *does* exist in-product, and the *"send a password reset instead"* string does **not** fire for a pending user — both corrected on `TCG-82`).
+  - Code establishes only what happens today, never what should: `acceptInvite` and `activateViaSso` are the sole activation paths (`apps/api/src/service/users/users.repository.ts`), and the entire lifecycle is `status: unverified` shipped behaviour that no human has ratified.
+- **Blocked:** the remediation write in `TCG-82` (which of two one-way repairs ~N stranded rows receive — count unmeasured, no DB access at time of asking). **Not** blocked: `TCG-82`'s forward fix, which is correct under either answer because both agree a reset must not leave a user stranded.
+- **Owner:** product team — **Corrina Bustos** and **Brian Petros**, the same pair who own [../payroll/gaps.md](../payroll/gaps.md) item (c); **Lisette Anzaldo** for the DAS temp population, which is where UAT 5 raised it.
+- **Related ruling, narrower than this question:** on 2026-09-22 Syed Haris ruled for `TCG-82` that a password reset **must not** activate a user going forward — refuse the reset and resend the invite. That settles the *forward* behaviour and is being written up as a decision note by `close-ticket`. It deliberately does **not** answer (a) or (b): it chose the conservative path precisely because nobody had answered them.
