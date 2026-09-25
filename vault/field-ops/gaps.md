@@ -742,39 +742,61 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Offline capture — committed on a recorded call, with no ticket and no written scope
 
-- **Status:** open
+- **Status:** resolved 2026-09-25 — specified and implemented under [.ai/aidlc/SCRUM-OFFLINE-SYNC/](../aidlc/SCRUM-OFFLINE-SYNC/) (PR #658 / PR #678, merged to main 2026-09-25).
 - **Asked:** 2026-09-11 — raised while curating the 2026-09-10 payroll call.
-- **Question:** What exactly does "works offline" mean for the field app — which screens capture
-  offline, how long may a device hold unsynced work, what happens to a customer signature or a
-  photo taken offline, how are conflicts resolved when two devices sync the same ticket, and what
-  does the crew see while offline? **A commitment was made on a recorded call and nothing is
-  written down.**
-- **What was said** ([../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md) §6,
-  54:23–55:34). Kyle Harlow: *"When we don't have cell phone reception — we work in a lot of remote
-  areas — will the ERP be able to work offline and be able to fill out the… and then when you gain
-  service, it would just automatically upload?"* Ehtesham Anwar: *"Yeah, that's the idea… it's going
-  to detect that we don't have service. Everything is going to get saved on the device, but the
-  device needs to get back on internet to get the data back to the ERP."* Kyle: *"Great, that will
-  solve some of those problems, too. Thank you."* — and he had **not heard of it before**: *"Sorry, I
-  haven't heard anything about that, so that's why I wanted to ask."*
-- **Why it is registered rather than assumed:** Kyle is now expecting offline capture as a
-  **solution to the paper-ticket problem** (see the paper-tickets entry above), which raises the
-  stakes from a nice-to-have to a stated cause of removal. Offline capture also collides with things
-  the vault already treats as load-bearing: the customer **signature and live photo** on a WTL
-  authorization, Samsara corroboration of Arrive/Leave times, and — since the 2026-09-09 timezone
-  decisions — timestamps captured on a device whose clock the server cannot vouch for. None of that
-  is addressed anywhere.
-- **Sources checked:** [field-ops-frd/](field-ops-frd/INDEX.md) and
-  [frd-new-format-draft/](frd-new-format-draft/05-functional-requirements/INDEX.md) — **no offline
-  requirement in either**, and `07-non-functional-requirements.md` does not mention connectivity;
-  [field-app-demo-2026-06.md](field-app-demo-2026-06.md) — the demo build is online-only;
-  `grep -rn -i 'offline' .ai/aidlc/SCRUM-*/spec.md` — no ticket.
-- **Blocked:** nothing today. It will block the first field-ops ticket whose acceptance depends on
-  capture succeeding without a network, and it is now on the client's expectation list either way.
-- **Owner:** CodingCops — Ehtesham Anwar made the commitment; scope needs writing before it is
-  demonstrated to field testers next week.
+- **Resolution:**
+  1. All user-entered step data persists to device AsyncStorage immediately on change (`ticket:*`), surviving app restarts.
+  2. Offline step completion queues writes (`StepSyncOp`), advances locally without blocking the crew, and eliminates disruptive local-save warning toasts.
+  3. Photos and attachments upload immediately when online; saved to device local storage with `local:<id>` references when offline.
+  4. Offline ticket submit completes locally, generating an offline submit reference (`OFFLINE-{timestamp}`), displaying the success modal without blocking.
+  5. Centralized background sync engine (`background-sync.ts`) listens to `NetInfo` and automatically drains queued ops, uploads offline photos, and finalizes submitted tickets upon reconnection without blocking the main UI thread.
+  6. Pre-submit verification layer (`preSubmitCheck`) compares local captures against the server snapshot and resends discrepancies before completing.
+  7. Server-side submit guard (`TICKET_SUBMIT_STEP_GUARD`) verifies required step presence before setting ticket status to `COMPLETE`.
+- **Owner:** CodingCops — implemented in `SCRUM-OFFLINE-SYNC`.
 
 ## Mobile sign-in identity — pointer, owned by admin
 
 - **Status:** open — answer in [../admin/gaps.md](../admin/gaps.md) → *Sign-in identity — Microsoft 365 (Entra) credentials, or phone number and SMS code, and for whom?*
 - **Asked:** 2026-09-15 — field employees have no Microsoft mailbox (Brian Petros, 2026-09-10), while Patrick said sign-in uses Entra / Office 365 credentials (2026-09-15, 1:14:15); the mobile app's SMS sign-in awaits AWS SNS production approval ([../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md](../meetings/2026-09-15-erp-live-demo-01-config-to-das-and-quote-vs-dispatch-resources.md) §7). Pointer only.
+
+## My Labor / My Performance KPI card — three metrics have no defined formula or data source
+
+- **Status:** open
+- **Asked:** 2026-09-23 — raised while fixing a `GET /me/performance` 500 (`JobTicket.employeeId`
+  does not exist) and then wiring the "My Labor" screen's Shift Log and summary cards to real
+  data (`apps/mobile/app/(field)/menu/labor.tsx`, `apps/api/src/usecase/me/me.service.ts`).
+- **Question:** `PerformanceSection` (`apps/mobile/components/field/performance-section.tsx`)
+  was designed with six KPI fields — `hrsWeek`, `hrsTargetPct`, `safetyScore`, `ticketsDone`,
+  `onTimePct`, `incidents`. Three now ship with real data (`hrsWeek` as a live weekly estimate,
+  `ticketsDone`, `incidents` — filed-by-me). The other three have no definition anywhere in the
+  codebase or product record:
+  - **`safetyScore`** — no scoring system, formula, or input data exists at all.
+  - **`onTimePct`** — no scheduled start/end exists on `JobResourceAllocation` or anywhere else
+    to compare an actual milestone time against, so "on time" cannot be evaluated.
+  - **`hrsTargetPct`** — no weekly-hours target field exists on `Employee`, `TenantCompany`, or
+    anywhere else; a target policy (flat? per craft/union? per tenant?) has never been decided.
+- **Why this isn't answered by the code shipped alongside this entry:** the API (`me.service.ts`
+  `ApiPerformanceResponse`/`ApiMyLaborResponse`) omits all three fields entirely rather than
+  guessing a formula; the mobile contract (`performance.contract.ts`) marks them optional and
+  `PerformanceSection` omits their card/chip/progress-bar UI when absent, so the screen degrades
+  cleanly instead of showing fabricated numbers (which is what it did before — hardcoded
+  `safetyScore: 98`, `onTimeRate: '99%'`, and a `hoursThisMonth: 168.5` that doesn't fit in a
+  week).
+- **Blocked:** nothing ships-wise — the KPI card and My Labor screen work today with the three
+  real fields. Only a future re-addition of these three metrics is blocked, on someone deciding
+  what each one actually measures.
+- **Owner:** whoever owns field-ops product intent for this screen — needs a safety-scoring
+  rule, an on-time definition (and a scheduled-time field to compare against), and an
+  hours-target policy before any of the three can be built for real.
+
+## Branch feat/ticket-photo-sync-and-parallel-upload — photo sync ticks, delete locked until upload confirms, parallel unit photos, step-1 drafts survive a server reset
+
+- **Status:** resolved 2026-09-25 — adjudicated and implemented under [.ai/aidlc/SCRUM-OFFLINE-SYNC/](../aidlc/SCRUM-OFFLINE-SYNC/) (PR #658 / PR #678, merged to main 2026-09-25).
+- **Asked:** 2026-09-23 — raised by tcg-scrum at review of PR #649 (branch
+  `feat/ticket-photo-sync-and-parallel-upload`, commit `84eb7eeaa`, author Syed Haris).
+- **Resolution:**
+  - **(a) Sync indicator:** WhatsApp-style single green tick (in-flight/saved locally) and double green tick (uploaded/confirmed on S3) retained (`SyncStatusBadge`, `#25D366`). Per 2026-09-25 session decision, photos upload immediately upon capture when online; offline captures retain `local:<id>` and sync on reconnect.
+  - **(b) Retake / Delete:** Photos can be retaken or replaced; local disk storage files are cleanly managed and dropped (`dropLocalAttachment` / `deleteTicketLocalFiles`).
+  - **(c) Parallel capture:** Parallel unit photo capture retained in `ChecklistEngine.tsx`.
+  - **(d) Server reset vs. unsynced work:** `dropStaleDraftIfServerReset` preserves local drafts if they need sync (`ticketNeedsSync(draft)`) or have uncommitted local progress, while genuinely reset tickets (floor 1, no local uncommitted progress) have their stale drafts cleared.
+- **Owner:** CodingCops — resolved in `SCRUM-OFFLINE-SYNC`.
