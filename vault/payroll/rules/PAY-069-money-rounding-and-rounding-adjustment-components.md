@@ -19,9 +19,12 @@ tags: [module/payroll, kind/rule, open-questions]
 ## Implemented — the money-rounding half
 
 `packages/payroll-engine/src/money.ts` rounds **half away from zero**, matching T-SQL
-`ROUND(x, 2)`, and shifts through the decimal string form so binary-float halves
-(`1.015`, `10.075`, `0.145`) round as their decimal form reads. `money.spec.ts` pins the
-table on both signs. Source and reasoning: the *Money rounding to cents (PAY-069)* row in
+`ROUND(x, 2)`. It first snaps the absolute value to **15 significant digits**, which
+repairs float products like `1.5 × 16.33 = 24.494999…`. Then it shifts through the decimal
+string form, so binary-float halves (`1.015`, `10.075`, `0.145`) round as their decimal form
+reads. A rounded-away negative returns `0`, never `-0`. `money.spec.ts` pins the table on
+both signs, plus the float-product and `-0` cases. The snap and `-0` handling came from
+PR #657's review (app commit `0952501a2`). Source and reasoning: the *Money rounding to cents (PAY-069)* row in
 [payroll-rules-provenance.md](../payroll-rules-provenance.md) §7.
 
 The previous `Math.round(n * 100) / 100` rounded half toward +∞, so it under-deducted a

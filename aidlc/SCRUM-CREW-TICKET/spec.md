@@ -1089,6 +1089,41 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
 - **Workaround, if any:** none in the UI today; `reset-ticket.ts` or SQL only.
 - **Status:** open
 
+### Q12 — Removing a crew member from the set silently deletes their roster row and the labor on it
+
+- **Question:** When an Operator is removed from the Oiler's set while the crew ticket is still
+  PENDING/SENT, should the removal be refused once that member has labor recorded, warn first, or
+  discard it silently as it does now?
+- **Why it cannot be answered from what is written:** `job-tickets.service.ts` `syncTicketRosters`
+  deletes every non-primary `ticket_employees` row no longer in the wanted crew whenever the ticket
+  status is in `ROSTER_REMOVABLE_STATUSES`. The Labor & Unit fields live on that row (REQ-02), so
+  they go with it. Nothing in the vault, the decisions or TCG-25 says whether entered labor may be
+  discarded by a dispatch change.
+- **Blocked:** nothing ships broken until someone edits a set after labor was entered. Then the labor
+  is lost with no message. Found in the PR #625 review (F5), as relayed on TCG-25 (Ali Riaz,
+  2026-09-22). It was not recorded anywhere until the 2026-09-24 TCG-25 audit.
+- **Candidates:** REQ-02, REQ-09.
+- **Owner:** product
+- **Workaround, if any:** none; re-enter the labor after re-adding the member.
+- **Status:** open
+
+### Q13 — Payroll runs already priced off a drifted copy ticket
+
+- **Question:** Weeks priced before #625 used the Operator's copy ticket. Its time entries could have
+  drifted from the Oiler's. Should those already-priced runs be re-priced, flagged for review, or left
+  as they are?
+- **Why it cannot be answered from what is written:** Q2 keeps COMPLETE pairs as two rows so priced
+  `PayrollJobDay` runs are untouched, which settles the *migration*, not whether the old figures were
+  right. TCG-25's *Not taken care of* item 2 and the body of app commit `41b61161a` both note this,
+  and nothing re-prices or flags such runs.
+- **Blocked:** only the correctness of historical weeks. Depends on PAY-066 / PAY-068 (correction and
+  reopen policy) for how a re-price would even be applied to an approved week.
+- **Candidates:** REQ-10, REQ-11, REQ-15.
+- **Owner:** product, with payroll (Corrina Bustos for the correction policy)
+- **Workaround, if any:** the preflight's Z-checks can list affected tickets once run against a
+  production-shaped snapshot.
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - **Removing customer-signature steps from 3rd-man / support-load tickets** — out of scope per

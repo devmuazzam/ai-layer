@@ -941,3 +941,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** any further permit-cost or PO-fee work; whether the approval-time overwrite is a defect or the intended behaviour.
 - **Owner:** Liz Lopez (the permit-driven PO process) with Brian Petros. Whoever raised UAT 4 #30 needs to say which of the two rows they meant.
 - **Pointer:** [../vendors-agencies/gaps.md](../vendors-agencies/gaps.md) → *Permit Cost vs PO Fee — pointer, owned by projects-jobs*.
+
+## Live update scope and freshness across DAS, Schedule tab and Yard Operations — pointer, owned by dispatch
+
+- **Status:** open — **answer owned by dispatch**, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Asked:** 2026-09-22 — reviewing branch `fix/tcg-91-das-live-update` (TCG-91).
+- **Why it lands here too:** the two acceptance criteria that source it are this module's —
+  [project-module/02-view-manage-job-details.md](project-module/02-view-manage-job-details.md):63
+  (*"reflected in real time across all views (DAS, Schedule tab, Dylan's loadout view)"*) and
+  [project-module/03-create-manage-job-schedule.md](project-module/03-create-manage-job-schedule.md):44
+  (*"The Schedule tab inside the job always shows the latest real-time view"*). Both `unverified`.
+  They name **screens**; whether an already-open allocation panel counts as a "view" is unwritten.
+- **Read:** [../dispatch/gaps.md](../dispatch/gaps.md) → *Live update scope and freshness — "real time across all views" names screens, not panels, and sets no bound*
