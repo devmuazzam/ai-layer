@@ -2328,6 +2328,7 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** embedded DocuSign suppresses DocuSign's invite ([Q-18](#q-18--docusign-send-reports-success-when-branded-email-fails)); if (a) is yes, SES becomes the customer's only signed-artifact delivery unless they use an in-app link.
 - **Blocked:** Path C `fix/12-sep-uat` quotation-signature completion UX; reconciling with Joe Schacatano's salesperson-sender ask if the COMPLETED email is platform-branded.
 - **Owner:** Joe Schacatano / Ryan Adams (customer correspondence); Patrick if Outlook per-user sending is required instead.
+- **Update 2026-09-28 (Jz-Nd, TCG-21 — developer, not product).** Related, does not answer this entry: the platform now stores its own copy of the signed PDF as a *Signed Quotation* attachment on the quotation and its projects and jobs ([../decisions/2026-09-28-docusign-signed-copy-stored-as-attachment.md](../decisions/2026-09-28-docusign-signed-copy-stored-as-attachment.md), `reference`). Customer delivery stays open here.
 
 ## Manual Mark as Won — must comment or dialog attachment satisfy the gate?
 
@@ -2370,6 +2371,7 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   - [*Branch fix/12-sep-uat — …*](#branch-fix12-sep-uat--after-docusign-completed-branded-ses-to-customer-with-signed-pdf-attached): the email in (c) is that entry's (a). The email and (b) are two customer delivery paths for the same signed PDF.
 - **Blocked:** treating the return-page wording, customer self-download and download-triggered WON as settled spec.
 - **Owner:** Joe Schacatano / Ryan Adams (customer-facing signing experience); whoever owns tenancy, for the public-route shape in (b).
+- **Update 2026-09-28 (Jz-Nd, TCG-21 — developer, not product).** Related, does not answer (a)–(c): the signed PDF is now also stored as a *Signed Quotation* attachment on the quotation and its projects and jobs, and envelopes completed before that change are stored lazily on first signed-PDF download ([../decisions/2026-09-28-docusign-signed-copy-stored-as-attachment.md](../decisions/2026-09-28-docusign-signed-copy-stored-as-attachment.md), `reference`).
 
 ## Branch fix/quotation-signed-copy-and-customer-po — acceptance block Customer Name and Customer PO, and PO write-back on completion
 
