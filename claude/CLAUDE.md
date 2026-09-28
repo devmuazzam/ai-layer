@@ -10,11 +10,11 @@ work. It does not describe how work moves — that is AI-DLC's job, below.
 Three different questions, three different sources. Getting this wrong is the most
 expensive mistake available here.
 
-| Question | Source |
-| --- | --- |
-| **How do we build it?** | This file, plus the surface context for what you are touching |
-| **What should it do?** | `.ai/vault/` — read `INDEX.md` **first**, then the module's `INDEX.md` |
-| **What is in flight on this ticket?** | `.ai/aidlc/SCRUM-###/` — intent, spec, units |
+| Question                              | Source                                                                 |
+| ------------------------------------- | ---------------------------------------------------------------------- |
+| **How do we build it?**               | This file, plus the surface context for what you are touching          |
+| **What should it do?**                | `.ai/vault/` — read `INDEX.md` **first**, then the module's `INDEX.md` |
+| **What is in flight on this ticket?** | `.ai/aidlc/SCRUM-###/` — intent, spec, units                           |
 
 **Rules govern how we build, never what to build. A rule can never make a requirement
 true.** If a behaviour is not written in the vault or on a ticket, it is unspecified —
@@ -28,7 +28,7 @@ one and answer from it — read the conflict stub.
 **Read the vault and ticket folders by section, never whole.** Several files there are
 80–220 KB (`SCRUM-926/spec.md`, `payroll/gaps.md`, `payroll/legacy-payroll-app-db-extract/`,
 `meetings/transcripts/`). One whole-file read of those is 20–55k tokens and is why sessions
-hit *prompt too long*. Before opening anything under `.ai/vault/` or `.ai/aidlc/`, check its
+hit _prompt too long_. Before opening anything under `.ai/vault/` or `.ai/aidlc/`, check its
 size (`wc -c`); over ~40 KB, `grep -n` for the heading or anchor and read only that range
 (`sed -n`, or `Read` with offset/limit). Never read a meeting transcript or a retired
 `gaps` file in full. Research that spans several large files belongs in a subagent
@@ -59,13 +59,13 @@ you find out when two developers confidently give different answers.
 
 Anything worth keeping goes to exactly one of these, and each has an owner:
 
-| What you learned | Where it goes | Who writes it |
-| --- | --- | --- |
-| A named human decided something | `.ai/vault/decisions/` | `tcg-scrum` |
-| An open question raised by a ticket | `.ai/aidlc/SCRUM-###/spec.md` §12 | any agent, append |
-| An open question belonging to no ticket | `.ai/vault/<module>/gaps.md` — the module's live register. See `vault/STRUCTURE.md` → *Where a question goes* | any agent, append |
-| How we build — a convention, a rail | `.ai/claude/contexts/` | a human, from an accepted reflection |
-| A defect the loop made | `.ai/aidlc/reflections/INDEX.md` | `tcg-reflector` |
+| What you learned                        | Where it goes                                                                                                 | Who writes it                        |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| A named human decided something         | `.ai/vault/decisions/`                                                                                        | `tcg-scrum`                          |
+| An open question raised by a ticket     | `.ai/aidlc/SCRUM-###/spec.md` §12                                                                             | any agent, append                    |
+| An open question belonging to no ticket | `.ai/vault/<module>/gaps.md` — the module's live register. See `vault/STRUCTURE.md` → _Where a question goes_ | any agent, append                    |
+| How we build — a convention, a rail     | `.ai/claude/contexts/`                                                                                        | a human, from an accepted reflection |
+| A defect the loop made                  | `.ai/aidlc/reflections/INDEX.md`                                                                              | `tcg-reflector`                      |
 
 **The test: if deleting your tool's local state would lose it, it is not memory yet.**
 
@@ -83,23 +83,23 @@ you. The knowledge is portable; the automation is not. Open the file by path.
 Deeper rules live per surface. On Claude Code these load automatically when you work in
 the directory; **on other tools they do not — open them by path.**
 
-| Working in | Read |
-| --- | --- |
-| `apps/api/` | `.ai/claude/contexts/api.md` |
-| `apps/api/prisma/` | `.ai/claude/contexts/prisma.md` |
-| `apps/web/` | `.ai/claude/contexts/web.md` |
-| `apps/mobile/` | `.ai/claude/contexts/mobile.md` |
+| Working in                 | Read                                                                                                                                            |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/api/`                | `.ai/claude/contexts/api.md`                                                                                                                    |
+| `apps/api/prisma/`         | `.ai/claude/contexts/prisma.md`                                                                                                                 |
+| `apps/web/`                | `.ai/claude/contexts/web.md`                                                                                                                    |
+| `apps/mobile/`             | `.ai/claude/contexts/mobile.md`                                                                                                                 |
 | `packages/payroll-engine/` | `.ai/claude/contexts/payroll-engine.md` — **no pay-rule change without its source in `vault/payroll/payroll-rules-provenance.md`, same commit** |
 
 ## Stack
 
-| App | Path | Stack | Port |
-| --- | --- | --- | --- |
-| API | `apps/api/` | NestJS 11 + Prisma 7 + PostgreSQL | 3000 |
-| Web | `apps/web/` | Next.js 16 + Tailwind v4 + shadcn/ui | 3001 |
-| Mobile | `apps/mobile/` | Expo SDK 54 + Expo Router | 8081 |
-| Shared | `packages/shared/` | Pure TypeScript | — |
-| E2E | `qa-automation/` | Playwright + Prisma 7 — live API + Postgres | — |
+| App    | Path               | Stack                                       | Port |
+| ------ | ------------------ | ------------------------------------------- | ---- |
+| API    | `apps/api/`        | NestJS 11 + Prisma 7 + PostgreSQL           | 3000 |
+| Web    | `apps/web/`        | Next.js 16 + Tailwind v4 + shadcn/ui        | 3001 |
+| Mobile | `apps/mobile/`     | Expo SDK 54 + Expo Router                   | 8081 |
+| Shared | `packages/shared/` | Pure TypeScript                             | —    |
+| E2E    | `qa-automation/`   | Playwright + Prisma 7 — live API + Postgres | —    |
 
 Node 22.22.0 (`.nvmrc`), pnpm 10 workspaces, orchestrated by **Nx** (package-based — every
 `package.json` script is a target; Nx owns ordering, caching and affected-only runs; the apps
@@ -143,12 +143,12 @@ command you run by hand until those are restored. Verified 2026-09-22.
 
 ## Naming
 
-| Thing | Convention | Example |
-| --- | --- | --- |
-| Files | `kebab-case` | `access-token.guard.ts` |
-| Classes | `PascalCase` | `AuthService` |
-| Functions | `camelCase` | `signUp` |
-| Constants | `UPPER_SNAKE` | `JWT_SECRET` |
+| Thing               | Convention                            | Example                   |
+| ------------------- | ------------------------------------- | ------------------------- |
+| Files               | `kebab-case`                          | `access-token.guard.ts`   |
+| Classes             | `PascalCase`                          | `AuthService`             |
+| Functions           | `camelCase`                           | `signUp`                  |
+| Constants           | `UPPER_SNAKE`                         | `JWT_SECRET`              |
 | DB columns / tables | `snake_case` via `@map()` / `@@map()` | `password_hash` / `users` |
 
 ## Import aliases
@@ -198,7 +198,7 @@ and no CI job lints, typechecks or runs it, and renaming an ID breaks a test not
 report. (Registering it as an Nx project is an accepted PR #386 follow-up; until that lands,
 the grep below is the only signal there is.)
 New screens ship with IDs; before renaming one, `grep -rn '<the-id>' qa-automation/e2e`.
-Scheme and the shared-component rule: `contexts/web.md` → *Test IDs*.
+Scheme and the shared-component rule: `contexts/web.md` → _Test IDs_.
 
 **Browser autofill is suppressed on every `apps/web` form control except login.** Chrome
 runs two systems: profile Autofill, beaten by an `autocomplete` token it has never seen, and
@@ -210,7 +210,7 @@ page load, so it just becomes the new key history accumulates under. Never rewri
 `placeholder` or label text: `qa-automation` selects on all three, and the ZWNJ label disguise
 was removed because a screen reader announces it. `browser-autofill-coverage.test.mjs` fails
 the build on a control that breaks any of this. Scope, exemptions and the two things it does
-*not* cover: `vault/decisions/2026-09-22-browser-autofill-suppression-scope-and-mechanism.md`.
+_not_ cover: `vault/decisions/2026-09-22-browser-autofill-suppression-scope-and-mechanism.md`.
 
 **Lint does not enforce most of the conventions in this file.** There is no rule for
 module boundaries, duplication, or hardcoded colours. Passing lint is not evidence a
@@ -226,5 +226,29 @@ convention was followed.
 - `.ai/vault/<module>/gaps.md` — live module questions · root/payroll `gaps.md` retired, historical only
 - `.ai/aidlc/agents/` — the AI-DLC phase agents
 - `.ai/vault/sync/confluence-sync.md` — how the vault tracks Confluence
-- `.ai/claude/contexts/web.md` → *Test IDs* — the `data-testid` contract `qa-automation/` depends on
+- `.ai/claude/contexts/web.md` → _Test IDs_ — the `data-testid` contract `qa-automation/` depends on
 - `.ai/claude/skills/demo-walkthrough/WALKTHROUGH.md` — fresh tenant → calculated payroll, every URL and pre-req. **Describes shipped code, never a source for a spec**; kept current by `close-ticket` step 5
+
+<!-- nx configuration start-->
+<!-- Leave the start & end comments to automatically receive updates. -->
+
+## General Guidelines for working with Nx
+
+- For navigating/exploring the workspace, invoke the `nx-workspace` skill first - it has patterns for querying projects, targets, and dependencies
+- When running tasks (for example build, lint, test, e2e, etc.), always prefer running the task through `nx` (i.e. `nx run`, `nx run-many`, `nx affected`) instead of using the underlying tooling directly
+- Prefix nx commands with the workspace's package manager (e.g., `pnpm nx build`, `npm exec nx test`) - avoids using globally installed CLI
+- You have access to the Nx MCP server and its tools, use them to help the user
+- For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
+- NEVER guess CLI flags - always check nx_docs or `--help` first when unsure
+
+## Scaffolding & Generators
+
+- For scaffolding tasks (creating apps, libs, project structure, setup), ALWAYS invoke the `nx-generate` skill FIRST before exploring or calling MCP tools
+
+## When to use nx_docs
+
+- USE for: advanced config options, unfamiliar flags, migration guides, plugin configuration, edge cases
+- DON'T USE for: basic generator syntax (`nx g @nx/react:app`), standard commands, things you already know
+- The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
+
+<!-- nx configuration end-->
