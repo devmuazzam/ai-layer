@@ -2595,3 +2595,38 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** before TCG-51, the PDF was the only surface that added tax. It printed a Sales Tax row on every quote ($0.00 for web-created ones), on a base that counted grouped lines two or three times ($1,448 → $231.61 at 9.5% instead of $137.56). `isTaxable` has no web writer, so only API, seed, import or migration quotes could be taxable. Related open entries, not re-raised here: [*"Final Amount" means two different numbers*](#per-row-surcharge-now-has-no-ui-on-createedit-and-final-amount-means-two-different-numbers) and [Q-24](#q-24--list-and-summary-disagree-on-resource-less-quotation-totals).
 - **Blocked:** printing any tax on the quotation PDF or showing it on screens; the meaning of the stored `tax` column (send no longer rewrites it, and see [*Quotation duplicate*](#quotation-duplicate--what-a-copy-carries-and-what-a-fresh-copy-resets) (c)); product sign-off of TCG-51.
 - **Owner:** Joe Schacatano (sales, quotation pricing) with Melissa McNutt, and Ryan Adams (quotation send). Accounting should be consulted if invoice tax must match.
+
+## Additional Information on a quotation — does a sent quote freeze it, and what is the PDF heading called?
+
+- **Status:** open
+- **Asked:** 2026-09-28. Linear TCG-123 (UAT remediation, *"Additional Info: saving a sub-category template wipes saved answers"*), whose **Blocked / needs decision** section asks both (a) and (b) in its own words and says *"Ask before choosing."* `.ai/aidlc/` has no TCG-123 folder, so there is no `spec.md` §12 to hold them. Raised from UAT: `17sep-internal-uat.md:84`, *"Need to see mapping of additional info"*, via [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md).
+- **Question:** three answers. **(a)** When a quote is sent (or signed), should it keep a fixed copy of its Additional Information: the field labels, section names and answers as they were at that moment? Or should it always re-render against the sub-category's current template? **(b)** The customer PDF and the browser print show a quote's Additional Information under the heading **"Other Information"**. That name is already used for a different group on the same quotation: Billing Type, Industry Code, Valid Until, Certified Payroll and Lost Reason (`other-info-section.tsx:12`, `main-tab.tsx:754`). Should the PDF and print heading be renamed to "Additional Information", as on the quote editor and view tab? The asset tab says "Additional Info". **(c)** Lower priority: should a template field carry a unit (ft, tons, lbs)? And may a field's type be changed after answers exist? No unit is modelled anywhere. Numbers and ranges are stored as strings. `CustomField.type` is a free `VarChar(100)`, editable after the fact, and nothing migrates the answers already saved under the old type.
+- **Why it matters:**
+  - **(a)** `QuotationRevision` (`schema.prisma`, `QuotationRevision`) stores status, totals and resources only, not Additional Information. A quote sent in March re-renders its Additional Information against today's template, so a signed PDF and a later re-print of the same quote can disagree about labels and sections. Answers are kept by field id since TCG-123, so a rename changes the label but not the value.
+  - **(b)** Two different things print under one name on a customer-facing document.
+- **Candidates:** none. No `decisions/` note covers quotation snapshotting or this heading. [../assets/gaps.md](../assets/gaps.md) → *"Saving a sub-category template re-mints every field id…"* is the related identity question, which TCG-123 fixed in code (update 2026-09-28 there); it does not answer (a)–(c).
+- **Note:** what TCG-123 did ship, on branch `fix/misc-fixes-2026-09-25`:
+  - A template save now keeps field ids.
+  - The editor, view, print and PDF all resolve a line's sub-category by its stored id, with a name fallback only for lines saved without one. Archived sub-categories are included.
+  - The PDF no longer dumps raw `fieldId: value` pairs, and it looks up sub-categories with the quote's tenant explicit.
+  - The PDF heading was **left as "Other Information"**, and no snapshot was added, pending this entry.
+  - The public PDF route itself is unchanged. It remains [Q-01](#q-01--public-pdf-endpoint-has-no-authentication) / Q-03 / Q-05's to fix.
+- **Blocked:** any snapshot of Additional Information on send, revision or sign; renaming the PDF and print heading; unit or type-change handling on template fields; product sign-off of TCG-123.
+- **Owner:**
+  - (a) Ryan Adams (quotation send) with Joe Schacatano (sales), because it decides what a signed quote legally showed.
+  - (b) Joe Schacatano.
+  - (c) Brian Petros, who owns template field identity in the assets entry.
+
+## Editing a quotation — should opening it re-apply the customer's price list, and re-price a draft?
+
+- **Status:** open
+- **Asked:** 2026-09-28, from a read-only audit of false "unsaved changes" warnings (the leave-page modal appearing on forms nobody edited), on branch `fix/misc-fixes-2026-09-25`. No ticket; Jz-Nd.
+- **Question:** two answers. **(a)** When someone opens an existing quotation to edit it, should the form re-apply the customer's **current** price list, or keep the one the quote was saved with? **(b)** When someone opens a **draft** quotation's Resources tab, should its lines be re-priced to today's rates automatically? And if so, is that a change the user must save or discard, triggering the leave warning?
+- **Why it matters:**
+  - **(a)** `views/use-quotation-customer-data.ts` refetches the customer on every open (`refetchOnMount: 'always'`) and calls `handlePriceListUpdate` (`create-quotation-form-model.ts`). That overwrites `customerPriceList`, and sets `priceListSource: 'master'` when the customer has none. The edit mapper seeds `customerPriceList` from `quotation.priceList ?? customer.priceList` (`edit-quotation.mapper.ts`).
+  - When the two differ, the result depends on timing. The dirty check snapshots its baseline 500 ms after mount (`use-quotation-dirty.ts`, `SETTLE_MS`). If the fetch lands later, the untouched quote shows the leave warning. If it lands earlier, the change is silently folded in and saved with the next edit. Either way nobody decided it.
+  - **(b)** `useRepriceDraftResources` (`components/organisms/resources-tab.tsx`) runs `applyResolvedPricing` on first mount of the Resources tab. It rewrites rate, unit, discount, surcharge and amount on draft lines, so the draft then counts as edited.
+- **Candidates:** none found. No `decisions/` note covers re-applying a price list on edit or re-pricing drafts.
+- **Note:** fixed separately on the same branch: the display-only `referenceRate` that the Resources tab resolves on open no longer counts as an edit. The timing-dependent 500 ms baseline itself is fragile and should go once (a) and (b) are settled. The baseline would then be the mapped quote, not "whatever the form looks like after half a second".
+- **Blocked:** a deterministic dirty check for quotation edit; any work on re-pricing drafts.
+- **Owner:** Joe Schacatano (sales, quotation pricing), with Melissa McNutt for the customer price-list side.

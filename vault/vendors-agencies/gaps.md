@@ -329,3 +329,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
 - **Why it lands here too:** the figure in question is the **PO Fee**, which this module owns and which this register already records as built-but-unspecified — [*PO and vendor/agency rules the E2E suite asserts with no written source — PR #488*](#po-and-vendoragency-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) (b): *"The `area`, `city`, `PO fee`, `discount %` and `invoice #` fields now built and mocked up. Still unspecified."* Approving a permit currently overwrites the linked PO's fee.
 - **Read:** [../projects-jobs/gaps.md → *Permit Cost vs PO Fee…*](../projects-jobs/gaps.md#permit-cost-vs-po-fee--uat-says-keep-them-separate-an-untraced-row-says-auto-populate-and-approval-already-overwrites-the-fee)
+
+## Pointer — leave-page warning and value rewriting on open (vendor, agency)
+
+- **Pointer (2026-09-28):** the leave-page "unsaved changes" warning sticking after a no-op edit, and forms rewriting stored values on open, is filed once in [customers/gaps.md](../customers/gaps.md) → *Leave-page warning — does undoing an edit count as a change, and may opening a record rewrite its stored values?* It covers the vendor form (due/discount defaults, address normalization) and the agency form (state normalization).

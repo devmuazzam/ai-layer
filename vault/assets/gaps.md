@@ -732,6 +732,18 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** product team — Brian Petros for whether a template field keeps its identity
   across edits (this is a data-retention question, not a UI one). Fouzan Shakil to sequence
   the fix once the answer exists.
+- **Update 2026-09-28 (TCG-123):** the same re-mint orphans **quotations**, too, not only assets:
+  `Quotation.additionalInfo` is `{ [quotationResourceId]: { [customFieldId]: value } }`, so
+  every quote line using the sub-category also reads back blank after a template save. Linear
+  TCG-123 (UAT remediation, created by syed haris) states the expected behaviour, "Saving a
+  template should keep the existing answers on assets and quotations". On branch
+  `fix/misc-fixes-2026-09-25` a template save now updates sections and fields in place
+  (`service/asset-management/template-sections.reconcile.ts`, used by both the sub-category
+  and the category repository), and the web sends each id back. That covers both halves. It
+  does **not** restore answers that were already orphaned by earlier saves: nothing records
+  the old-id→new-id mapping, so they cannot be recovered. The status stays open until the
+  owner confirms that a field keeps its identity across edits. The ticket settles the
+  behaviour for UAT, but no decision note records it.
 
 ## Editing a record on its detail page — is in-place tab editing the pattern, and what stays on /edit?
 
@@ -1504,3 +1516,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   yards and every other picker must converge on the same rule.
 - **Owner:** Fouzan Shakil — named decider on the app-wide archive convention.
 - **Cross-link:** [admin/gaps.md → Departments — does archive replace delete… (c)](../admin/gaps.md#departments--does-archive-replace-delete-outright-and-what-may-an-archived-department-still-be-used-for)
+
+## Pointer — leave-page warning and value rewriting on open (yards)
+
+- **Pointer (2026-09-28):** the leave-page "unsaved changes" warning sticking after a no-op edit, and forms rewriting stored values on open, is filed once in [customers/gaps.md](../customers/gaps.md) → *Leave-page warning — does undoing an edit count as a change, and may opening a record rewrite its stored values?* It covers the yard form (empty address and phone defaults; the discarded `normalizeForDirtyCheck`).
