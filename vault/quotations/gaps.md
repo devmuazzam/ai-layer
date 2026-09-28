@@ -2630,3 +2630,54 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** fixed separately on the same branch: the display-only `referenceRate` that the Resources tab resolves on open no longer counts as an edit. The timing-dependent 500 ms baseline itself is fragile and should go once (a) and (b) are settled. The baseline would then be the mapped quote, not "whatever the form looks like after half a second".
 - **Blocked:** a deterministic dirty check for quotation edit; any work on re-pricing drafts.
 - **Owner:** Joe Schacatano (sales, quotation pricing), with Melissa McNutt for the customer price-list side.
+
+## Several main cranes on one quotation — how are the crane packages grouped, and how does dispatch see them?
+
+- **Status:** open
+- **Asked:** 2026-09-28, from Brian Petros's Teams thread of Thursday 2026-09-24 (early morning PKT), pasted into the session by syed.haris on 2026-09-28. Not otherwise in the vault. Raised originally by **Ryan Adams**, relayed by Brian.
+- **Question:** When one job needs **two or more main cranes, each with its own crew and support
+  loads** (Brian's example: a 550-ton package plus a 90-ton package), is that **one quotation / one
+  job with explicit crane groups**, or does sales keep splitting it into separate quotations / jobs
+  as it does in FCC today? And if it is one quotation, what do the customer PDF, the job and DAS show
+  per group?
+- **What TCG said:**
+  - Brian (relaying Ryan): *"sales is currently creating two separate quotes/jobs… so that dispatch
+    can easily see (and assign) the vehicles/employees separately (in groups)… even though they are
+    both for the same Job."* He expects the ERP to *"record 'groupings' of vehicles/employees… so that
+    we have a single Quote/Job for the customer… AND… dispatch will still be able to easily
+    see/assign the vehicles/employees in specific 'groups'."* He wants Joe, Kyle and Ryan to explain
+    it on the next crane-configuration call.
+  - A second message in the thread reports an **FCC data query**. FCC quotations do carry 2, 3, 4, 5,
+    7 and even 9 main-crane `QuoteUnit` rows (MC/CR/RT/SL). The grouping is **implicit, by line
+    order only**. `OM-40822` is a 550 Ton Main Crane at line 1, its tractors, operator load and
+    support loads 1–10 on lines 2–23, then a 90 Ton Main Crane at line 24 with tractor and operator
+    load on 25–26. `OM-40920` is a 190-ton crane at line 1 (support to line 8), then a 175-ton crane
+    at line 9. The raw `QuoteUnit` has **no parent / group / configuration key** (`QuoteUnitID,
+    QuoteNumb, LineNumb, UnitSchedType, UnitTypeID, UnitCode, LoadNo`). `LoadNo` and
+    `SourceUnitCode` are empty on every multi-main example, and `GroupNumb` is header-level.
+    **`OM-40959` has two main cranes both on `LineNumb = 1`**, so line number is not a usable key.
+    The message recommends *"an explicit Main Crane Group identifier rather than… infer[ring] grouping
+    from FCC line order"*, *"for us to discuss with Joe/Kyle/Ryan/Lisette."*
+  - abdulrehman replied in the thread that the current ERP already supports several cranes, each with
+    its own crew and support load, and that a meeting would still help.
+- **What the build does (checked 2026-09-28, not a product answer):** grouping is **explicit**.
+  `QuotationResource.parentId` and `JobResource.parentId` (`apps/api/prisma/schema.prisma`) form a
+  tree per crane. The associated set hangs under its crane row, and
+  `apps/api/src/usecase/projects/materialize-job-resources.ts` builds each crane's deeper levels
+  under that crane on conversion. DAS computes missing components per parent
+  (`usecase/das/missing-required-components.util.ts`). So two crane packages on one quotation are two
+  separate trees. That is the key the FCC query found missing. Still unchecked against TCG's
+  expectation: whether the **customer PDF** shows the packages as groups, and whether the DAS job card
+  **visually groups** slots by crane.
+- **Related:** the 2026-09-22 demo showed per-crane **permit coverage** on a two-crane quotation
+  (*Individual* vs *Combined*): [../projects-jobs/gaps.md → *Artifact coverage model*](../projects-jobs/gaps.md#artifact-coverage-model--individual-vs-combined-and-whether-the-choice-is-permanent).
+  What a quote line is at all is still open:
+  [*Quote line items vs dispatch resources…*](#quote-line-items-vs-dispatch-resources--the-associated-set-auto-fills-the-quote-and-the-sales-owner-says-dispatch-resources-must-not-be-quoted).
+  For the *assist* crane that is needed only on some days, see
+  [../dispatch/gaps.md → *An assist crane needed only on some days of a multi-day job*](../dispatch/gaps.md#an-assist-crane-needed-only-on-some-days-of-a-multi-day-job--setup-and-breakdown).
+- **Migration note:** FCC history can't be split into groups reliably (implicit order, duplicate line
+  numbers). Any import of multi-main FCC quotes needs a rule or a manual pass.
+- **Blocked:** nothing in the build today. Blocked: calling multi-crane quotations "done", the PDF
+  layout for multi-crane quotes, and FCC quote migration.
+- **Owner:** Ryan Adams / Joe Schacatano (how sales quotes it), Lisette Anzaldo (how dispatch needs
+  to see it), Kyle Harlow. To be taken on the next crane-configuration call, as Brian proposed.

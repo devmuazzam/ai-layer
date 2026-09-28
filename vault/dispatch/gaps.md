@@ -989,3 +989,35 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** the two directions are not the same question. Whether **copy implies holdover** is the dev claim. Whether **holdover implies copy** is what shipped. Crane-configuration-rules §10 suggests that a holdover should **not** copy day 1's allocation unchanged, because the tractor and trailer come back after day 1. If that holds, "copy everything to every day" is the wrong default for a real holdover.
 - **Blocked:** any change that sets or clears the holdover flag as a side effect of Copy Allocations; the holdover configuration variants.
 - **Owner:** Lisette Anzaldo (dispatch). The discovery session that is said to have settled it is unidentified, so ehtesham.anwar should name it if it exists.
+
+## An assist crane needed only on some days of a multi-day job — setup and breakdown
+
+- **Status:** open
+- **Asked:** 2026-09-28, from Brian Petros's Teams thread of Thursday 2026-09-24 (early morning PKT), pasted into the session by syed.haris on 2026-09-28. Not otherwise in the vault.
+- **Question:** On a multi-day job, a second crane is sometimes needed **only on the first and last
+  day**, for example to set up and break down the main crane's counterweights. How is that crane
+  quoted, scheduled and dispatched, so it goes out on day 1 and the last day and **not** on the
+  days in between?
+- **What TCG said:** Brian: *"the 550-ton may need a 90-ton to help it setup/breakdown the crane … the
+  90-ton would be there on the first day… and then go back to the yard (while the 550-ton would
+  remain on-site)… and then dispatch will need to dispatch a 90-ton again on the last day."* On FCC:
+  *"I am unsure exactly how FCC currently handles this… Lisette just knows that the 90-ton has two
+  'dispatches'"*. He believes she creates separate job tickets for that asset on those two days
+  (*"a separate Job Ticket per day"*). Not confirmed with Lisette.
+- **What the build does (checked 2026-09-28):** the job's resource tree is the same on every day.
+  `JobResource` has no day or date scoping. A day (sub-job) reaches **allocation completed**, which
+  unlocks *Send tickets*, only when **every fillable slot on the job** is filled for it
+  (`apps/api/src/service/das-allocations/das-allocations.repository.ts` →
+  `getFillableJobResourceIds` / `countFilledSlots`). As built, an assist crane on the job leaves
+  every middle day stuck in *open* unless it is allocated there too. The only workarounds are
+  splitting it into a separate job or allocating it on days it isn't used, and both are the FCC
+  pattern Brian wants to leave.
+- **Questions for TCG:** (a) Is the assist crane a line on the same quotation as the main crane, or
+  quoted separately? Is it billed per trip or per day? (b) Is the pattern always first and last day,
+  or can it be any subset of days? (c) Does its crew follow the same days? (d) Should DAS treat
+  those days as "required on these days only", or as a separate dispatch inside the job?
+- **Related:** [../quotations/gaps.md → *Several main cranes on one quotation…*](../quotations/gaps.md#several-main-cranes-on-one-quotation--how-are-the-crane-packages-grouped-and-how-does-dispatch-see-them);
+  [*Does copying allocations make a job a holdover?*](#does-copying-allocations-make-a-job-a-holdover)
+  (copy-to-all-days would also copy the assist crane).
+- **Blocked:** DAS completion and *Send tickets* for any multi-day job with a part-time crane.
+- **Owner:** Lisette Anzaldo (dispatch), with Ryan Adams / Joe Schacatano for how it is quoted.
