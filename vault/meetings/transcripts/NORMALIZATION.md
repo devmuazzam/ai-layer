@@ -194,3 +194,26 @@ one thing mean" (4:21).
 Both source .docx files carried in-turn line breaks as U+2028; they were rendered as newlines
 (layout only). Left unchanged: the items listed in each file's own header note, including "350 time
 frame", the same pattern pass 3 left unresolved.
+
+---
+
+# Pass 7 — 2026-09-24 (one new transcript only)
+
+Applied to `2026-09-22-erp-live-demo-02.md`; no earlier file was touched. **56 substitutions**, each
+applied to a named line and judged in context, never by blanket rule. The full breakdown, with the
+timestamps that pin each one, is in that file's header note. In summary: "one" -> "won" (5); "view" -> "PO" (3);
+"train"/"plane" -> "crane" (4); "leave your / live year / leave year time" -> "leave yard time" (4)
+and "onset" -> "onsite" (1); "side plan" -> "site plan" (1); "task" -> "DAS" (6); "Euler" -> "oiler"
+(3); "market holdover" -> "mark it holdover" (2); "their locations" / "a location" -> "the
+allocations" / "allocation" (3); "graph code(s)" -> "craft code(s)" (6); "graph boards" / "draft
+board" -> "craft codes" / "craft code" (2); "operate load" -> "operator load" (1); "tools and
+rankings" -> "tools and rigging" (2); "leaf" -> "leave" (1); "Samsung" / "Sam Sarah" -> "Samsara"
+(2); "1910 print" -> "190 ton crane" (1); "frames" / "clean" / "screens" / "green(s)" / "print" /
+"queen" -> "crane(s)" (7); "share" / "shirts" -> "shift(s)" (2).
+
+New evidence rules used here: **"task" -> DAS** only where the sentence names the daily allocation
+system or a DAS screen in the same turn. It does not license "task" elsewhere. **"view" -> PO** only
+inside a purchase-order sentence. **"Piazza" is not an error**: it is an outside-trucking vendor
+(`vendors-agencies/outside-trucking-piazza-invoice-sop.md`). Speaker labels are reproduced
+uncorrected. Lisette Anzaldo speaks on Brian Petros's room microphone throughout, and the file
+header lists her probable turns. Left unchanged: the items listed in the file's own header note.
