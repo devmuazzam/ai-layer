@@ -341,6 +341,7 @@ someone has confirmed otherwise.
 - **Status:** **largely resolved** — residual question open
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#ventura-a-second-adp-company-nobody-has-mentioned](gaps-2026-08-20-retired.md#ventura-a-second-adp-company-nobody-has-mentioned)
+- Update 2026-09-28 (ADP Integration Sync, [../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md](../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md) §1.1): Corrina answered the residual question. `4RY` *"is a dead code … made because we were going to use it for something else, but they're deleting it"* (6:43). She did not call it Ventura. At the dev team's request she asked ADP to keep it as a possible test company. As set up today it can't take a new hire. The single-company design stands, though `4RY` may reappear as a test target.
 
 ## ADP returns two incompatible error envelopes, and one has no machine-readable code
 
@@ -741,6 +742,7 @@ someone has confirmed otherwise.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#adp-product-api-central-entitlement-and-sandbox](gaps-2026-08-20-retired.md#adp-product-api-central-entitlement-and-sandbox)
 - Update 2026-09-04 (Project Repository ingest): the write path is now sequenced and confirmed blocked. [../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §2 and §5: internal scope to 15 September ends at **CSV export for manual ADP import**, ADP API automation starts *after* the 15th, and **API write access appears not to be granted** (read tested, write not) — Ehtesham to send Patrick the exact permissions. The workbook's own parameters settle the identifiers the SOP screenshots only implied: Co Code `4RZ` / `THE CRANE GUYS LLC` in `__hiddenParams`, file name `EPI4RZnn` (counter restarts each payroll year), Batch ID = `YrMoWk` ([adp-workbook-power-query-engine.md](adp-workbook-power-query-engine.md) §2), while the ADP Worksheet screenshot shows company **`631 - The Crane Gu…`**, batch `ROLL` ([sources/screenshot of ADP labor entry screen.png.md](sources/screenshot%20of%20ADP%20labor%20entry%20screen.png.md)) — consistent with the rename-in-time reading, not new evidence for it. Nothing in the drop touches the test company, credential scoping or the WFN Next Generation date; those remain with TCG (ADP administrator) and Patrick.
+- Update 2026-09-28 (ADP Integration Sync, [../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md](../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md) §1.1, §2, §5.3): the test-company request has a partial answer, and no test company exists yet. (a) abdulrehman reports that ADP support confirmed there is no separate sandbox. (b) `4RY` was offered as the test company. Corrina asked ADP not to cancel it, but it isn't set up to accept a new hire (no pay codes, *"not set up on the back end"*), so the test hire was made in **live `4RZ`**. (c) The working agreement is to test in `4RZ` with **test employees**: abdulrehman as a union oiler, syed.haris as operator, and Ehtesham as rigger or third man. Brian expects a test POST to appear as a separate worksheet under *Manage payroll*, which Corrina deletes, with her warned in advance (*"we might as well test it"*, 1:05:50), once ADP support is consulted. Brian is to contact Josie at ADP. That is a stated plan, not a recorded decision on live writes. (d) **Screens:** Corrina runs payroll from *Process → Payroll → Payroll Dashboard → Manage payroll*, the new screens that ADP's 2022 *Payroll Dashboard vs Payroll Cycle* guide maps from the classic *Payroll Cycle*. The Next-Generation sub-question above is still open: new screens inside classic WFN, or the upgrade?
 
 ## ERP↔ADP round trip — what happens when a practitioner edits the batch
 
@@ -1623,6 +1625,7 @@ someone has confirmed otherwise.
   and file tickets in FCC with no ADP record, and the cost lands at payroll close-out, which is why
   Corrina gives them *"until Sunday"*. Legacy-process facts, not a decision. Still needs Brian and
   Corrina: whether step 5 applies to fill-ins or is amended for them.
+- Update 2026-09-28 (ADP Integration Sync, [../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md](../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md) §1.2, §2): (a) Fill-ins are onboarded in ADP **exactly like everyone else**, and ADP doesn't distinguish them (*"They look the same"*). Fill-in status exists only in TCG's own records. (b) Today Corrina **hires and terminates a fill-in in ADP every time they start and stop working** (23:03). (c) She asked for the ERP to **activate / deactivate the profile and have that reach ADP**, and abdulrehman said *"we can do that"*. That is a new integration requirement (ADP `worker.rehire` / `worker.terminate`, still open in the 06-30 decision's edge-case row), not an answer to step 5. (d) The call also moved *where onboarding starts*. See *Where the employee lifecycle starts — ERP-initiated (06-30) or ADP-first (09-28)?*. If the ERP no longer creates the employee, step 5's "pending until ADP completes" gate needs rethinking with it.
 
 ## Lattice — Joe settled it on the recording, nothing records it
 
@@ -3680,6 +3683,8 @@ somewhere it should not have. Settle that before touching either.
   shop and yard structure; CodingCops to decide whether work-order labor runs through the same
   pricing engine.
 
+- Update 2026-09-28 (ADP Integration Sync, [../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md](../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md) §1.4, §2): how the other populations reach ADP today. **Three worksheets a week:** (1) a **salary sheet** covering all office/admin staff, salaried *and* hourly, keyed by Corrina with PTO, sick, bereavement, on-call and subsistence; (2) a **time-off worksheet** for those who qualify, added by hand every week; (3) the **field worksheet** from the CSV, which carries **union field and non-union yard** employees. **Union employees get no PTO or sick leave.** Salaried staff are not in FCC at all (*"factored … into the burden rate"*). Corrina called whether the new ERP holds them *"an ownership question"*. **Phase 1 was stated as union field employees only** (abdulrehman 42:42, Brian *"I think so"*), with union mechanics excluded as well (1:07:43), and everything else stays with Corrina in ADP. Whether the ERP tracks PTO depends on how far the HR module goes, which is Ehtesham's call. The work-order population is not addressed.
+
 ## The before-midnight bucket rule — we were given it, we had it right, and `ad9041bc` changed away from it
 
 - **Status:** open
@@ -4786,3 +4791,35 @@ somewhere it should not have. Settle that before touching either.
 ## Pointer — leave-page warning and value rewriting on open (employee edit)
 
 - **Pointer (2026-09-28):** the leave-page "unsaved changes" warning sticking after a no-op edit, and forms rewriting stored values on open, is filed once in [customers/gaps.md](../customers/gaps.md) → *Leave-page warning — does undoing an edit count as a change, and may opening a record rewrite its stored values?* It covers employee edit specifically: `emergencyContact` defaults, and OT/DT rates rewritten by `payroll-advanced-fields.tsx`.
+
+## Where the employee lifecycle starts — ERP-initiated (06-30) or ADP-first (09-28)?
+
+- **Status:** open
+- **Asked:** 2026-09-28, from the ADP Integration Sync ([../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md](../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md) §2, §5.1).
+- **Question:** When a new employee is hired, does the ERP create them and push creation to ADP, as
+  the verified 2026-06-30 decision says? Or does the employee **originate in ADP** and the ERP only
+  link to it by file number, as the 2026-09-28 call assumed?
+- **Candidates:**
+  - [../decisions/2026-06-30-adp-erp-employee-data-ownership.md](../decisions/2026-06-30-adp-erp-employee-data-ownership.md)
+    *Where the lifecycle starts*, `status: verified`, Brian Petros and Ehtesham Anwar: *"The ERP
+    **initiates**, ADP **performs**, the ERP **records the result**."* The ERP creates a pending
+    record, initiates ADP creation, captures the file number and blocks dispatch until ADP completes.
+  - 2026-09-28, Brian Petros 22:04: *"It seems more natural for the employee information to
+    originate in ADP. First … ADP is going to have more information than the ERP does on the
+    employee level."* Corrina Bustos 23:03: *"keep it ADP based because it does house more
+    information"*, with an ERP-side activate/deactivate trigger. abdulrehman 31:22 restated it as
+    the working assumption: *"there would be always an employee present in the ADP and we just need
+    to bind their file number in our ERP."* Corrina: *"Yes, yes."*
+- **Note:** the ownership table in the 06-30 decision is **not** contested. ADP owns the legal
+  record, and the ERP stores the file number and never generates it. Only the **direction and
+  trigger of creation** moved. This is the same person changing position, so don't resolve it by
+  recency. It needs Brian and Ehtesham together, recorded by `tcg-scrum` as a superseding decision or
+  a confirmation.
+- **Blocked:** the employee-creation push in
+  [adp-read-write-boundary-2026-08-18.md](adp-read-write-boundary-2026-08-18.md); step 5's pending
+  gate and the fill-in entry that depends on it (*Fill-in field employees vs the ADP-onboarding
+  dispatch block*); how an ERP employee record gets its file number (manual entry vs lookup by
+  associate ID).
+- **Owner:** Brian Petros and Ehtesham Anwar (the decision's co-owners); Corrina Bustos for the
+  onboarding practice.
+- **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md), [PAY-067](rules/PAY-067-adp-export.md)

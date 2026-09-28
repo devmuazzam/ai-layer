@@ -217,3 +217,25 @@ inside a purchase-order sentence. **"Piazza" is not an error**: it is an outside
 (`vendors-agencies/outside-trucking-piazza-invoice-sop.md`). Speaker labels are reproduced
 uncorrected. Lisette Anzaldo speaks on Brian Petros's room microphone throughout, and the file
 header lists her probable turns. Left unchanged: the items listed in the file's own header note.
+
+---
+
+# Pass 8 — 2026-09-28 (one new transcript only)
+
+Applied to `2026-09-28-adp-integration-sync.md`; no earlier file was touched. **49 substitutions**, each
+judged in its own line. The full breakdown, with the timestamps that pin each one, is in that file's
+header note. In summary: "ADB" / "ATP" -> "ADP" (12 / 1, as pass 3); "DRP" -> "ERP" (1); "Karina" ->
+"Corrina" (1) and "Michaela" -> "Micaela" (1), as pass 3; "Estraham" -> "Ehtesham" (1); "Harris" ->
+"Haris" (5) and "Umar" / "Omar" -> "Umer" (5); "graph code" / "graph modifier" -> "craft code" /
+"craft modifier" (3 / 2); "grain" / "train" -> "crane" (2); "rigor" -> "rigger" (1); "lung boom" ->
+"long boom" (1); "non-immune" -> "non-union" (1); "EBI4RZ36" -> "EPI4RZ36" (1); "for RZ" / "before
+RY" -> "4RZ" / "4RY" (2 / 1); "temperate" / "template" -> "temp rate" (3 / 3); "Overly" -> "Hourly"
+(1); "filling" -> "fill-in" (1).
+
+New evidence rules used here: **"Harris" -> Haris and "Umar"/"Omar" -> Umer** only where the turn is
+about inviting the two CodingCops attendees (pinned by *"It's Umer Islam, right?"*). **"temperate" /
+"template" -> temp rate** only inside the 48:24–1:01:25 temp-rate explanation; Corrina's "The
+temporary is" (50:01) was left, because a genuine *temporary rate* reading is possible. **Company
+codes** were corrected only where the speaker's sentence names the live or dead company
+unambiguously; abdulrehman's "4YZ" / "4Y4RY" (3:48) was left. Speaker labels are reproduced
+uncorrected. Left unchanged: the items listed in the file's own header note.
