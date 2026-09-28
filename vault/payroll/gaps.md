@@ -4782,3 +4782,7 @@ somewhere it should not have. Settle that before touching either.
   3. **End boundary.** The same decision ends paid time when the crane is "back in the yard, fuelled, parked, paperwork done"; the code ends at Review & Complete. Nobody has checked they are the same moment. Owners: **Kyle Harlow / Joe Schacatano**.
   4. **Backfill.** Should the source be recorded on historical `payroll_job_days`, or only on new runs? Rebuilding it from today's roster may not match what was actually paid. Owner: **Syed Haris**.
   5. **Naming and export.** What are the names and screen labels for the sources, and should the ADP export carry them too?
+
+## Pointer — leave-page warning and value rewriting on open (employee edit)
+
+- **Pointer (2026-09-28):** the leave-page "unsaved changes" warning sticking after a no-op edit, and forms rewriting stored values on open, is filed once in [customers/gaps.md](../customers/gaps.md) → *Leave-page warning — does undoing an edit count as a change, and may opening a record rewrite its stored values?* It covers employee edit specifically: `emergencyContact` defaults, and OT/DT rates rewritten by `payroll-advanced-fields.tsx`.

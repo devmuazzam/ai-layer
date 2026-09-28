@@ -2328,6 +2328,7 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** embedded DocuSign suppresses DocuSign's invite ([Q-18](#q-18--docusign-send-reports-success-when-branded-email-fails)); if (a) is yes, SES becomes the customer's only signed-artifact delivery unless they use an in-app link.
 - **Blocked:** Path C `fix/12-sep-uat` quotation-signature completion UX; reconciling with Joe Schacatano's salesperson-sender ask if the COMPLETED email is platform-branded.
 - **Owner:** Joe Schacatano / Ryan Adams (customer correspondence); Patrick if Outlook per-user sending is required instead.
+- **Update 2026-09-28 (Jz-Nd, TCG-21 — developer, not product).** Related, does not answer this entry: the platform now stores its own copy of the signed PDF as a *Signed Quotation* attachment on the quotation and its projects and jobs ([../decisions/2026-09-28-docusign-signed-copy-stored-as-attachment.md](../decisions/2026-09-28-docusign-signed-copy-stored-as-attachment.md), `reference`). Customer delivery stays open here.
 
 ## Manual Mark as Won — must comment or dialog attachment satisfy the gate?
 
@@ -2370,6 +2371,7 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   - [*Branch fix/12-sep-uat — …*](#branch-fix12-sep-uat--after-docusign-completed-branded-ses-to-customer-with-signed-pdf-attached): the email in (c) is that entry's (a). The email and (b) are two customer delivery paths for the same signed PDF.
 - **Blocked:** treating the return-page wording, customer self-download and download-triggered WON as settled spec.
 - **Owner:** Joe Schacatano / Ryan Adams (customer-facing signing experience); whoever owns tenancy, for the public-route shape in (b).
+- **Update 2026-09-28 (Jz-Nd, TCG-21 — developer, not product).** Related, does not answer (a)–(c): the signed PDF is now also stored as a *Signed Quotation* attachment on the quotation and its projects and jobs, and envelopes completed before that change are stored lazily on first signed-PDF download ([../decisions/2026-09-28-docusign-signed-copy-stored-as-attachment.md](../decisions/2026-09-28-docusign-signed-copy-stored-as-attachment.md), `reference`).
 
 ## Branch fix/quotation-signed-copy-and-customer-po — acceptance block Customer Name and Customer PO, and PO write-back on completion
 
@@ -2577,3 +2579,54 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Sources checked:** [*Sell-side scheduling artefacts — no vault coverage*](#sell-side-scheduling-artefacts--no-vault-coverage) (the Job Schedule Master and Geographic Heat Map were shared on 2026-08-12 but are not in the vault); [*Quote line items vs dispatch resources…*](#quote-line-items-vs-dispatch-resources--the-associated-set-auto-fills-the-quote-and-the-sales-owner-says-dispatch-resources-must-not-be-quoted). If quoting and dispatch schedule different things (Ehtesham, 8:27 on the same call), then "availability" at quote time has to be defined against one of them. Nothing written defines it.
 - **Blocked:** any availability indicator on the quotation builder; any "emergency job" definition or SLA.
 - **Owner:** Brian Petros (raised it), with Joe Schacatano / Ryan Adams for what sales needs to see.
+
+## Does a quotation carry sales tax at all, and if so on which amount?
+
+- **Status:** open
+- **Asked:** 2026-09-28. Linear TCG-51 (quotation PDF total), which asks this in its own words: *"Should quotes have tax at all? If yes, on which amount (before or after discount)? A named person must decide."* `.ai/aidlc/` has no TCG-51 folder, so there is no `spec.md` §12 to hold it. tcg-scrum.
+- **Question:** three one-line answers. **(a)** Does a TCG quotation carry sales tax, yes or no? **(b)** If yes, is it charged on the pre-discount subtotal or on the total after discount, price hike and surcharge? **(c)** If yes, must it also show on the quotation screens, the print view and the send-email body, not only on the PDF?
+- **Candidates:**
+  - [../decisions/2026-09-28-quotation-pdf-carries-no-tax.md](../decisions/2026-09-28-quotation-pdf-carries-no-tax.md) (Jz-Nd, TCG-51, `reference`, **developer, not product**). An interim ruling: the PDF prints no tax and no Sales Tax row until this is answered. It does not answer (a)–(c).
+  - [billing-code-and-price-list.md](billing-code-and-price-list.md):73 and [fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md):383, :389 (2026-09-04, `unverified`). TCG on the FCC billing-code slides: *"Taxable: Not needed"*, *"We don't use/need 'Taxable'"*. This covers the per-billing-code flag only. It does not say TCG charges no tax, and it says nothing about quotation-level tax.
+  - [../meetings/transcripts/2026-03-20-fcc-fields-screens-review.md](../meetings/transcripts/2026-03-20-fcc-fields-screens-review.md):83 (meeting statement, not a decision, `unverified`). On the customer *Taxable* field: *"The taxable we don't charge sales tax unless it's a. I would keep taxable because if we do bare rentals and stuff, I think ideally we're supposed to be charging tax."*
+  - [../meetings/transcripts/2026-07-28-invoicing-details-contracts-certs-trainings.md](../meetings/transcripts/2026-07-28-invoicing-details-contracts-certs-trainings.md):133, :135, :142 (meeting statements, not decisions, `unverified`). Kyle Harlow: *"we should be charging the customer sales tax based on their location"*; *"every county and city, well, not everyone, but they all have their own sales tax. And that's something we'll have to build out for anything that we charge."* ehtesham.anwar: *"We are going to add that sales tax only to tools and rankings that we are billing for the adding within the invoice for the customer."* **Contrary evidence:** these are about invoices and bare rentals, not the quotation PDF, so they do not conflict with the interim PDF ruling. They do show tax is a live concern for TCG, so (a) is **not** presumptively "no".
+  - [../accounting/avalara-sales-tax-in-nexgen.md](../accounting/avalara-sales-tax-in-nexgen.md):36–40 (FCC guide, 2024-07-01, `unverified`). Avalara taxes invoices only, and quote tax is *"not available in this release"*. This is FCC reference, not a TCG requirement.
+  - [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md):224 (UAT 1, `unverified`). *Quotation email PDF shows the wrong total*, NOT DONE. The mismatch came from tax that only the PDF added.
+- **Note:** before TCG-51, the PDF was the only surface that added tax. It printed a Sales Tax row on every quote ($0.00 for web-created ones), on a base that counted grouped lines two or three times ($1,448 → $231.61 at 9.5% instead of $137.56). `isTaxable` has no web writer, so only API, seed, import or migration quotes could be taxable. Related open entries, not re-raised here: [*"Final Amount" means two different numbers*](#per-row-surcharge-now-has-no-ui-on-createedit-and-final-amount-means-two-different-numbers) and [Q-24](#q-24--list-and-summary-disagree-on-resource-less-quotation-totals).
+- **Blocked:** printing any tax on the quotation PDF or showing it on screens; the meaning of the stored `tax` column (send no longer rewrites it, and see [*Quotation duplicate*](#quotation-duplicate--what-a-copy-carries-and-what-a-fresh-copy-resets) (c)); product sign-off of TCG-51.
+- **Owner:** Joe Schacatano (sales, quotation pricing) with Melissa McNutt, and Ryan Adams (quotation send). Accounting should be consulted if invoice tax must match.
+
+## Additional Information on a quotation — does a sent quote freeze it, and what is the PDF heading called?
+
+- **Status:** open
+- **Asked:** 2026-09-28. Linear TCG-123 (UAT remediation, *"Additional Info: saving a sub-category template wipes saved answers"*), whose **Blocked / needs decision** section asks both (a) and (b) in its own words and says *"Ask before choosing."* `.ai/aidlc/` has no TCG-123 folder, so there is no `spec.md` §12 to hold them. Raised from UAT: `17sep-internal-uat.md:84`, *"Need to see mapping of additional info"*, via [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md).
+- **Question:** three answers. **(a)** When a quote is sent (or signed), should it keep a fixed copy of its Additional Information: the field labels, section names and answers as they were at that moment? Or should it always re-render against the sub-category's current template? **(b)** The customer PDF and the browser print show a quote's Additional Information under the heading **"Other Information"**. That name is already used for a different group on the same quotation: Billing Type, Industry Code, Valid Until, Certified Payroll and Lost Reason (`other-info-section.tsx:12`, `main-tab.tsx:754`). Should the PDF and print heading be renamed to "Additional Information", as on the quote editor and view tab? The asset tab says "Additional Info". **(c)** Lower priority: should a template field carry a unit (ft, tons, lbs)? And may a field's type be changed after answers exist? No unit is modelled anywhere. Numbers and ranges are stored as strings. `CustomField.type` is a free `VarChar(100)`, editable after the fact, and nothing migrates the answers already saved under the old type.
+- **Why it matters:**
+  - **(a)** `QuotationRevision` (`schema.prisma`, `QuotationRevision`) stores status, totals and resources only, not Additional Information. A quote sent in March re-renders its Additional Information against today's template, so a signed PDF and a later re-print of the same quote can disagree about labels and sections. Answers are kept by field id since TCG-123, so a rename changes the label but not the value.
+  - **(b)** Two different things print under one name on a customer-facing document.
+- **Candidates:** none. No `decisions/` note covers quotation snapshotting or this heading. [../assets/gaps.md](../assets/gaps.md) → *"Saving a sub-category template re-mints every field id…"* is the related identity question, which TCG-123 fixed in code (update 2026-09-28 there); it does not answer (a)–(c).
+- **Note:** what TCG-123 did ship, on branch `fix/misc-fixes-2026-09-25`:
+  - A template save now keeps field ids.
+  - The editor, view, print and PDF all resolve a line's sub-category by its stored id, with a name fallback only for lines saved without one. Archived sub-categories are included.
+  - The PDF no longer dumps raw `fieldId: value` pairs, and it looks up sub-categories with the quote's tenant explicit.
+  - The PDF heading was **left as "Other Information"**, and no snapshot was added, pending this entry.
+  - The public PDF route itself is unchanged. It remains [Q-01](#q-01--public-pdf-endpoint-has-no-authentication) / Q-03 / Q-05's to fix.
+- **Blocked:** any snapshot of Additional Information on send, revision or sign; renaming the PDF and print heading; unit or type-change handling on template fields; product sign-off of TCG-123.
+- **Owner:**
+  - (a) Ryan Adams (quotation send) with Joe Schacatano (sales), because it decides what a signed quote legally showed.
+  - (b) Joe Schacatano.
+  - (c) Brian Petros, who owns template field identity in the assets entry.
+
+## Editing a quotation — should opening it re-apply the customer's price list, and re-price a draft?
+
+- **Status:** open
+- **Asked:** 2026-09-28, from a read-only audit of false "unsaved changes" warnings (the leave-page modal appearing on forms nobody edited), on branch `fix/misc-fixes-2026-09-25`. No ticket; Jz-Nd.
+- **Question:** two answers. **(a)** When someone opens an existing quotation to edit it, should the form re-apply the customer's **current** price list, or keep the one the quote was saved with? **(b)** When someone opens a **draft** quotation's Resources tab, should its lines be re-priced to today's rates automatically? And if so, is that a change the user must save or discard, triggering the leave warning?
+- **Why it matters:**
+  - **(a)** `views/use-quotation-customer-data.ts` refetches the customer on every open (`refetchOnMount: 'always'`) and calls `handlePriceListUpdate` (`create-quotation-form-model.ts`). That overwrites `customerPriceList`, and sets `priceListSource: 'master'` when the customer has none. The edit mapper seeds `customerPriceList` from `quotation.priceList ?? customer.priceList` (`edit-quotation.mapper.ts`).
+  - When the two differ, the result depends on timing. The dirty check snapshots its baseline 500 ms after mount (`use-quotation-dirty.ts`, `SETTLE_MS`). If the fetch lands later, the untouched quote shows the leave warning. If it lands earlier, the change is silently folded in and saved with the next edit. Either way nobody decided it.
+  - **(b)** `useRepriceDraftResources` (`components/organisms/resources-tab.tsx`) runs `applyResolvedPricing` on first mount of the Resources tab. It rewrites rate, unit, discount, surcharge and amount on draft lines, so the draft then counts as edited.
+- **Candidates:** none found. No `decisions/` note covers re-applying a price list on edit or re-pricing drafts.
+- **Note:** fixed separately on the same branch: the display-only `referenceRate` that the Resources tab resolves on open no longer counts as an edit. The timing-dependent 500 ms baseline itself is fragile and should go once (a) and (b) are settled. The baseline would then be the mapped quote, not "whatever the form looks like after half a second".
+- **Blocked:** a deterministic dirty check for quotation edit; any work on re-pricing drafts.
+- **Owner:** Joe Schacatano (sales, quotation pricing), with Melissa McNutt for the customer price-list side.
