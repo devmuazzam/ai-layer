@@ -4306,7 +4306,7 @@ somewhere it should not have. Settle that before touching either.
 
 ## Is a secondary craft paid only when it is higher than the primary?
 
-- **Status:** open
+- **Status:** open — **answered provisionally, pending ratification**: [../decisions/2026-09-28-boom-union-follows-the-worked-craft.md](../decisions/2026-09-28-boom-union-follows-the-worked-craft.md) clause 6 (developer decision, TCG-140, 2026-09-28, `status: reference`) makes the primary base a floor — the higher of worked and primary base on the work date, day stays on the worked craft, issue `PRIMARY_RATE_FLOOR` (info). It departs from the verified 2026-08-20 note's "a validation warning, not a rate rule"; Brian Petros / Corrina Bustos to ratify. *(Was: open, 2026-09-17 – 2026-09-28.)*
 - **Asked:** 2026-09-17 — Syed Haris, while replying to Brian Petros's post-demo note on the
   Oiler's Operator craft code.
 - **Question:** the reply drafted for Brian says an employee on a secondary-craft allocation is paid
@@ -4550,7 +4550,7 @@ somewhere it should not have. Settle that before touching either.
 
 ## Primary craft code constrained to the employee type, and changing a craft code in DAS
 
-- **Status:** open
+- **Status:** open — **(b) answered provisionally, pending ratification**: [../decisions/2026-09-28-boom-union-follows-the-worked-craft.md](../decisions/2026-09-28-boom-union-follows-the-worked-craft.md) clause 5 (developer decision, TCG-140, 2026-09-28, `status: reference`) — dispatch sets the day's craft in DAS when seating (SECONDARY assignments only), crane superintendent and payroll may correct it afterwards; this adds dispatch to the verified 2026-08-20 list, Corrina Bustos / Brian Petros to ratify. **(a) stays open.** *(Was: open in full, 2026-09-19 – 2026-09-28.)*
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Two UAT 6 rows, kept together because one is unanswerable without the other. **Rules:** PAY-009, PAY-010, PAY-015.
 - **Question:** **(a)** should the **primary craft code** offered for an employee be constrained to that employee's **employee type** — and if so, by what mapping, given that nothing today relates the two objects? **(b)** may a dispatcher **change an allocated employee's craft code in DAS**, and if so does that change the day's **pay rate**?
 - **Sources checked:**
