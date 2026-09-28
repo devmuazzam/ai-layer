@@ -1191,7 +1191,7 @@ someone has confirmed otherwise.
   the craft-code shape should cite these pages *as unverified Confluence*, not as the vault.
 - Owner: whoever re-migrates (human, per README *Who does what*); Umair Khan for whether the pages
   are finished.
-- **Status:** open
+- **Status:** open — **partly answered provisionally, pending ratification**: [../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md) (developer decision, no ticket id known, 2026-09-28, `status: reference`). Clause 1 says what flags an entry: the boom bracket lies wholly outside the crane's min–max boom length (ft), which warns and does not block. Clause 3 says Send Back goes to one Crane Supervisor (an active Employee with the `supervisor` flag and a login), with a required reason, and an uncorrected send-back blocks approval of the week. The *Worker* send-back target, the 3-hour reminder, and whether these pages supersede the vault **stay open**. Brian Petros / Corrina Bustos and the field-ops owner to ratify. *(Was: open, 2026-08-19 – 2026-09-28.)*
 - **From (frozen original):** [gaps-2026-08-20-retired.md#confluence-payroll-user-stories-first-payroll-pages-in-confluence-unmigrated](gaps-2026-08-20-retired.md#confluence-payroll-user-stories-first-payroll-pages-in-confluence-unmigrated)
 
 ## Meeting recordings disagree with the vault — 2026-08-19 review
