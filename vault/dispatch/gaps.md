@@ -916,7 +916,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Changing an employee's craft code in DAS — pointer, owned by payroll
 
-- **Status:** open — **answer owned by payroll**, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*.
+- **Status:** open — **answered provisionally, pending ratification**: [../decisions/2026-09-28-boom-union-follows-the-worked-craft.md](../decisions/2026-09-28-boom-union-follows-the-worked-craft.md) clause 5 (developer decision, TCG-140, 2026-09-28, `status: reference`) — dispatch may set the day's craft in DAS when seating (SECONDARY assignments only); crane superintendent and payroll may correct it. Answer owned by payroll, per [STRUCTURE.md](../STRUCTURE.md) → *Where a question goes*; Corrina Bustos / Brian Petros to ratify. *(Was: open, 2026-09-19 – 2026-09-28.)*
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
 - **Why it lands here too:** the DAS half of the pair is a **dispatch affordance** — UAT 6 asks for *"an option to change craft code in DAS"*, i.e. the dispatcher overriding a rate-bearing attribute on the board. The rate rule it collides with is payroll's: [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) (`verified`) gives the day's craft to *"the crane superintendent or payroll — **never the employee**"*, and says nothing about a dispatcher.
 - **Read:** [../payroll/gaps.md → *Primary craft code constrained to the employee type, and changing a craft code in DAS*](../payroll/gaps.md#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das)
