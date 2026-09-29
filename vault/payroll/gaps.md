@@ -4790,6 +4790,7 @@ somewhere it should not have. Settle that before touching either.
   3. **End boundary.** The same decision ends paid time when the crane is "back in the yard, fuelled, parked, paperwork done"; the code ends at Review & Complete. Nobody has checked they are the same moment. Owners: **Kyle Harlow / Joe Schacatano**.
   4. **Backfill.** Should the source be recorded on historical `payroll_job_days`, or only on new runs? Rebuilding it from today's roster may not match what was actually paid. Owner: **Syed Haris**.
   5. **Naming and export.** What are the names and screen labels for the sources, and should the ADP export carry them too?
+- **Related, 2026-09-29, resolved the same day:** a developer briefly chose to end the correction page's payable span at End Work (break-down end, on site) instead of Review & Complete. Their final definition is Start Ticket → End Ticket. That is `WORK_TIME`, the span the code prices, so nothing here changed. See [*Payable time — Start Work to End Work, or yard to yard*](#payable-time--start-work-to-end-work-or-yard-to-yard) (resolved). Questions 2 and 3 above are unchanged and still open.
 
 ## Pointer — leave-page warning and value rewriting on open (employee edit)
 
@@ -4872,3 +4873,484 @@ somewhere it should not have. Settle that before touching either.
   - the crew-time mismatch flag (Q10) and the Samsara start-of-ticket check (Q11). Neither is built;
   - the Samsara and invalid-entry flag sources. **None is in PR #690 / #691**, including the 30-minute tolerance and the AM/PM, same-time and out-of-order checks.
 - **Owner:** Corrina Bustos (payroll), with Brian Petros for C1–C3 (engine / rest rule). CodingCops for Q2's role design and C4.
+
+## Should a Crane Supervisor see an employee's pay in the correction preview without payroll view
+
+- **Status:** open
+- **Asked:** 2026-09-29, while recording the addendum to
+  [../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#addendum-2026-09-29--build-up-and-break-down-live-totals-and-a-pay-estimate)
+  (item D). No ticket covers Send Back (the decision names none), so it is filed here, not in a
+  `spec.md` §12.
+- **Question:** A user holds `crane-supervisor` at `edit` or `full` but does **not** hold
+  `payroll:view`. When they preview a Send Back correction, may they see the employee's pay?
+  That means the rate lines, the week total, this entry's share, and the before → after amounts.
+  - **Yes:** keep it as built.
+  - **No:** show them hours only, and show the pay estimate only to users who also hold
+    `payroll:view`.
+- **Update 2026-09-29, interim developer direction. The status stays open.**
+  - The session wrote the options, and the developer (git user `devmohsinakram`) chose **"Only with
+    payroll view"**. The chosen option's text is the direction: *"The preview shows hours for
+    everyone. Pay lines and totals only appear if the user also has the payroll:view permission.
+    This is safest until Brian and Corrina answer."*
+  - That is the **No** answer above, adopted as an interim default. It is not a ruling. Brian Petros
+    and Corrina Bustos still decide. If they answer **Yes**, the gate can be removed.
+  - **Build status:** being built on `fix/payroll-correction-page-ui`, and not built when this was
+    recorded. On 2026-09-29, a grep of the correction controller, the send-back usecase and the web
+    feature found no `payroll:view` check.
+  - **Not recorded:** whether the gate is in the API response, the page, or both. The **Blocked**
+    line below still applies: both need it, or the API still sends pay to a user without
+    `payroll:view`.
+  - Recorded in the decision note's first addendum, item D:
+    [*Pay in the preview only with `payroll:view`*](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#d-pay-in-the-preview-only-with-payrollview-interim-direction-open-needs-ratification).
+- **What is built:** the developer directed the pay estimate on 2026-09-29, in their words
+  *"preview should also show the all rates total amount"*.
+  - The preview route, `POST payroll-corrections/:id/preview`, requires only
+    `@RequirePermission('crane-supervisor', 'edit')`
+    (`apps/api/src/presentation/payroll-corrections/payroll-corrections.controller.ts`).
+  - Before this change the preview showed hours only.
+  - The change is uncommitted on the platform branch `fix/payroll-correction-page-ui`.
+- **Sources checked:**
+  - The decision note, clause 3: it defines the permission (`view` = see the entries sent to you;
+    `edit`/`full` = correct and resubmit them). It says nothing about whether that includes seeing
+    pay.
+  - [erp-payroll-module-frd/11-security-decisions-and-acceptance.md](erp-payroll-module-frd/11-security-decisions-and-acceptance.md)
+    §24, `status: unverified`. Its recommended-roles table gives *Payroll Team* "View calculations"
+    and *Operations Manager* "Review labor/job information and resolve operational issues". No row
+    names a Crane Supervisor, and none gives an operations role pay visibility. It does not settle
+    the question.
+  - `decisions/`: nothing on who may see pay amounts.
+- **Blocked:** nothing in the build, because it is already built. But merging
+  `fix/payroll-correction-page-ui` shows pay to every user with `crane-supervisor` edit. If the
+  answer is **no**, the estimate has to be gated on `payroll:view` in both the API response and the
+  page before merging.
+- **Owner:** **Brian Petros** and **Corrina Bustos**, the payroll-side ratifiers the decision names.
+
+## Multi-day entry — which pay period owns the hours after Saturday 00:00
+
+- **Status:** open
+- **Asked:** 2026-09-29, while recording the
+  [second 2026-09-29 addendum (multi-day tickets)](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#addendum-2026-09-29-second--multi-day-tickets).
+  The developer (git user `devmohsinakram`) said a job can now run over several days, including as
+  **one ticket of 24 h or more**. No ticket covers Send Back, so this is filed here, not in a
+  `spec.md` §12. **This is a pay rule.** The engine will not change until the answer is written in
+  [payroll-rules-provenance.md](payroll-rules-provenance.md).
+- **Question:** One labor entry starts before Saturday 00:00 and runs past it, into the next
+  Saturday–Friday week. Which pay period owns the hours after Saturday 00:00?
+  - **Anchor:** the whole entry belongs to the period its Start Work falls in.
+  - **Split:** slices from Saturday 00:00 on belong to the next period.
+- **What the engine does today: anchor.**
+  - A completed ticket is loaded into the period whose range contains its `WORK_TIME` start
+    (`apps/api/src/service/payroll/payroll.repository.ts:506-513`).
+  - Every slice of that entry is then priced in that period. Nothing splits an entry across two
+    periods.
+  - **Related, not this question:** the range edges are **UTC** midnight
+    (`packages/payroll-engine/src/period.ts:5-9`), not 00:00 in the tenant's zone. The vault
+    already records this as one of the competing day definitions
+    ([../decisions/2026-09-09-business-day-starts-at-midnight-local.md](../decisions/2026-09-09-business-day-starts-at-midnight-local.md):224).
+    It moves the same boundary.
+- **Sources checked:**
+  - [payroll-concepts-shift-job-labor-entry.md](payroll-concepts-shift-job-labor-entry.md),
+    `status: unverified`. Its anchor-date rule (:44-52) says the anchor date is always the start,
+    and (:69) *"The Saturday–Friday pay period is assigned from the anchor date, not from where the
+    hours fall."* It is not confirmed by anyone. Its example is 22:30 → 02:00, and it never
+    considers an entry of 24 h or more.
+  - [rules/PAY-001](rules/PAY-001-saturday-friday-payroll-week.md) (settled) makes the week
+    Saturday–Friday.
+    [../decisions/2026-09-09-business-day-starts-at-midnight-local.md](../decisions/2026-09-09-business-day-starts-at-midnight-local.md)
+    (`reference`) opens it at 00:00 Saturday, local (§4). Neither says who owns an entry that
+    crosses that line.
+  - [../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md)
+    (`verified`) settles day type per slice. It does not assign slices to periods.
+- **Blocked:** nothing built yet. But one entry across the week line is now possible. The answer
+  decides which week's run pays those hours, and, for non-union, which week's 40-hour and
+  seventh-day counts see them.
+- **Related, 2026-09-29 (not an answer):** a Send Back correction that moves Start Ticket across the
+  week line now moves the **whole entry** into the other period. The send-back's `periodId` and
+  `workDate` follow it, and both periods are flagged for recalculation. That is the entry's anchor
+  moving, not a split, so this question is unchanged. See the decision note's
+  [second addendum, item F](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#f-a-correction-may-move-an-entry-into-another-pay-week-amends-clause-4-added-later-on-2026-09-29).
+- **Owner:** **Brian Petros** and **Corrina Bustos**.
+- **Rules:** [PAY-001](rules/PAY-001-saturday-friday-payroll-week.md),
+  [PAY-019](rules/PAY-019-cross-midnight-processing.md)
+
+## Multi-day entry — does the 8-hour OT and 12-hour DT ladder ever reset inside one entry
+
+- **Status:** open
+- **Asked:** 2026-09-29, same origin as
+  [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
+  **A pay rule**, so the engine will not change without a source in
+  [payroll-rules-provenance.md](payroll-rules-provenance.md).
+- **Question:** One continuous labor entry runs longer than 24 hours. Does the daily ladder (8 ST,
+  OT to 12, DT after 12) ever start again inside it?
+  - **Never:** one entry is one shift. After the 12th hour, every hour is DT or higher, however long
+    it runs.
+  - **It resets:** then say when, for example after an off-shift interval of some length. One entry
+    cannot show time off, so those intervals would have to be captured, as separate entries or as
+    breaks.
+- **What the engine does today: never, inside one entry.**
+  - `cumulative` and `stAccrued` carry through every slice of the entry
+    (`packages/payroll-engine/src/calculate.ts:190-255`).
+  - At midnight, the only change is that a premium date's top-up hours join the count (:205-207).
+  - Once `cumulative` reaches 12, every slice is DT or higher (`day-type.ts:200`).
+  - The ladder resets only **between** entries, when the gap between them is 8 hours or more
+    (`CHAIN_GAP_HOURS`, `calculate.ts:632-660`; the reset is at :1103).
+- **Sources checked:**
+  - [*Cross-midnight OT carryover*](#cross-midnight-ot-carryover--the-incumbent-pays-no-st-after-midnight-and-the-erp-now-does-the-same)
+    (open, built to the incumbent 2026-09-11). The ladder carries over midnight, with no fresh
+    8-hour bank. That covers entries under 24 h. It does not consider an entry that goes on into
+    another day.
+  - *Rest chain — is a job-to-job gap a "rest period" at all?* (open). It is about the gap between
+    entries, and a single entry has none.
+  - [../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md)
+    (`verified`): day type per slice, and the cumulative bucket never downgrades. It says nothing on
+    resets. Its resolved companion entry, *Long-boom day breakdowns — drive time, cross-midnight,
+    and the 20-hour day*, reaches a 20-hour day, not beyond 24.
+- **Blocked:** nothing built yet. Today the engine prices a 24 h+ entry as never resetting.
+- **Related, 2026-09-29 (interim, not an answer):** until this is answered, a ticket over 24 h is
+  priced as the engine prices it today, and its week shows a review flag, *"ticket over 24 h, check
+  pay rules"*. This is the developer's interim direction. See the decision note's
+  [second addendum, item G](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#g-a-single-ticket-over-24-h-price-it-flag-it-for-review-amends-clause-6-added-later-on-2026-09-29).
+- **Owner:** **Brian Petros** and **Corrina Bustos**.
+- **Rules:** [PAY-022](rules/PAY-022-daily-straight-time.md),
+  [PAY-023](rules/PAY-023-daily-overtime.md), [PAY-024](rules/PAY-024-daily-double-time.md),
+  [PAY-045](rules/PAY-045-rest-period-premium.md)
+
+## Daily and long-boom 4-hour minimums — grouped on the shift anchor date or on each calendar date
+
+- **Status:** open. **Written sources conflict.** This is not only a gap.
+- **Asked:** 2026-09-29, same origin as
+  [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
+  **A pay rule.**
+- **Question:** Are PAY-040's daily 4-hour minimum and PAY-043's long-boom 4-hour minimum owed once
+  per **shift anchor date** (the date the entry started), or once per **calendar date** the work
+  touches?
+  - **Anchor date:** an entry's hours after midnight count toward its start date's minimum.
+  - **Calendar date:** each date the entry touches is its own group.
+  - Both give the same answer for an entry on one date. They differ on every cross-midnight entry.
+    Example: Monday 06:00 → Wednesday 01:00. By calendar date, Wednesday holds 1 hour and is owed a
+    3-hour top-up. By anchor date, nothing is owed.
+- **The sources:**
+  - **Anchor date:**
+    [../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md):92-102,
+    `status: verified`.
+    - Its table puts the daily and long-boom minimums on `ShiftAnchorDate`, and the holiday and
+      special-Saturday minimums on `CalendarDate`. It warns that collapsing both onto one "day" is
+      wrong.
+    - That table comes from the legacy engine (`usp_Apply_GuaranteedHours`). Corrina's own words in
+      that note were about the holiday minimum.
+  - **Calendar date:** [payroll-rules-provenance.md](payroll-rules-provenance.md):89-90
+    (`status: reference`) says *"per calendar day"* for both minimums. It cites Brian Petros,
+    2026-09-10, 35:46–36:28, with Corrina agreeing.
+    - The meeting record
+      ([../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md):138-141,
+      `status: unverified`) quotes *"based on the calendar work day"* for the holiday 8-hour, 4-hour
+      shift and 4-hour boom minimums.
+    - **Its point was per day versus per labor entry.** It does not say which date an hour after
+      midnight belongs to. The two sources may differ only in wording. Nobody has said so.
+  - **Engine:** `applyCalendarDayMinimums` (`packages/payroll-engine/src/calculate.ts:756-779`).
+    - Its doc comment says *"per calendar work day"* and quotes 2026-09-10.
+    - It actually groups by `entry.day.workDate`, the date of the entry's first slice (:157, :392).
+      So in effect it groups on the **anchor date**.
+    - The holiday minimum is grouped per calendar date, separately (:1085-1095), as the verified
+      note says.
+- **Blocked:** nothing built yet. The engine's comment and its code disagree. Multi-day entries make
+  the difference common.
+- **Owner:** **Brian Petros** and **Corrina Bustos**. Corrina decided the verified note, so
+  changing it needs her.
+- **Rules:** [PAY-040](rules/PAY-040-work-provided-minimum.md),
+  [PAY-043](rules/PAY-043-long-boom-premium.md)
+
+## Multi-day entry — subsistence on a date reached only by a spill past midnight
+
+- **Status:** open
+- **Asked:** 2026-09-29, same origin as
+  [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
+  **A pay rule.**
+- **Question:** An entry on a subsistence job runs past midnight into the next date or dates. Does
+  a date the entry reaches only by running past midnight earn a subsistence day?
+  - **Yes:** every date the entry touches earns one.
+  - **No:** only the date it started.
+  - Both tiers need the answer:
+    - **Short, $85/day, "days worked":** is a spill-only date a day worked?
+    - **Long, $200/day, "every day of the holdover":** is every date one entry touches a holdover
+      day?
+- **What the engine does today: start date only.**
+  - `applySubsistence` (`packages/payroll-engine/src/calculate.ts:923-968`) keys on `jobId` plus
+    `entry.day.workDate`, the entry's start date (:944). It pays once per key.
+  - One entry from Monday 06:00 to Wednesday 10:00 pays one day, Monday.
+  - The same work as one ticket per day pays three.
+- **Sources checked:**
+  - [payroll-rules-provenance.md](payroll-rules-provenance.md):128, **Confirmed**: *"$200/day
+    beyond 77.5 mi, every day of the holdover"*.
+  - [*Subsistence — the recording and the engine disagree*](#subsistence--the-recording-and-the-engine-disagree-on-both-the-amount-and-the-trigger)
+    (answered): *"every calendar day of the holdover, worked or not"* (:1348).
+  - [../decisions/2026-09-01-subsistence-not-a-craft-attribute.md](../decisions/2026-09-01-subsistence-not-a-craft-attribute.md).
+  - None of these considers one entry over several dates.
+- **Blocked:** nothing built yet. A multi-day single ticket pays fewer subsistence days than the
+  same work as one ticket per day.
+- **Related, 2026-09-29 (interim, not an answer):** until this is answered, a ticket over 24 h is
+  priced as the engine prices it today, which pays the start date only. Its week shows a review
+  flag, *"ticket over 24 h, check pay rules"*. This is the developer's interim direction. See the
+  decision note's
+  [second addendum, item G](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#g-a-single-ticket-over-24-h-price-it-flag-it-for-review-amends-clause-6-added-later-on-2026-09-29).
+  The flag covers only tickets over 24 h. An overnight ticket shorter than 24 h also reaches a
+  second date, and it gets no flag.
+- **Owner:** **Brian Petros** and **Corrina Bustos**.
+- **Rules:** [PAY-048](rules/PAY-048-standard-subsistence.md),
+  [PAY-049](rules/PAY-049-weekend-subsistence.md)
+
+## Multi-day entry — meal and WTL opportunities after 27 hours
+
+- **Status:** open
+- **Asked:** 2026-09-29, same origin as
+  [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
+  **A pay rule.**
+- **Question:** On one entry longer than 27 hours, is a fifth meal period due, and more after it?
+  - **Continue the cadence:** one every 5.5 hours, so the fifth at 27 h, the sixth at 32.5 h, and so
+    on.
+  - **Cap at four.**
+- **What the engine does today: caps at four.**
+  - `MEAL_OPPORTUNITY_HOURS = [5, 10.5, 16, 21.5]`
+    (`packages/payroll-engine/src/meal-periods.ts:35`), counted at :151.
+  - The WTL check uses `WTL_TRIGGERS = [5.01, 10.51, 16.01, 21.51]`
+    (`calculate.ts:43`, :101-112).
+  - After 21.5 h, no further meal is due and no WTL issue is raised, however long the entry runs.
+  - Capture has four lunch slots to match (`calculate.ts:105`:
+    `VISIBLE_LUNCH_BREAKS === WTL_TRIGGERS.length`).
+- **Sources checked:**
+  - MLA *Meal Periods* §1, quoted in
+    [*Lunch thresholds*](#lunch-thresholds--the-recording-is-the-origin-and-it-disagrees-with-the-wtl-charts):
+    *"No employee shall be required to work more than five (5) hours consecutively without a
+    one-half (½) hour meal period."* It sets no upper limit.
+  - In the same entry: the legacy config `cfg.WTL_MaxMealThreshold` stops at the band
+    *22–27 h → 4*.
+  - The open entries [*Lunch thresholds*](#lunch-thresholds--the-recording-is-the-origin-and-it-disagrees-with-the-wtl-charts)
+    (the third and fourth thresholds) and
+    [*Meal thresholds — we count per labor entry*](#meal-thresholds--we-count-per-labor-entry-the-incumbent-counts-per-stitched-group).
+    Neither goes past four.
+- **Blocked:** nothing built yet. A 30-hour entry today owes no meal after 21.5 h.
+- **Related, 2026-09-29 (interim, not an answer):** until this is answered, a ticket over 24 h is
+  priced as the engine prices it today, with no meal due after 21.5 h. Its week shows a review flag,
+  *"ticket over 24 h, check pay rules"*. This is the developer's interim direction. See the decision
+  note's
+  [second addendum, item G](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#g-a-single-ticket-over-24-h-price-it-flag-it-for-review-amends-clause-6-added-later-on-2026-09-29).
+- **Owner:** **Brian Petros** and **Corrina Bustos**.
+- **Rules:** [PAY-046](rules/PAY-046-meal-opportunity.md),
+  [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)
+
+## Multi-day entry — the non-union workday for an entry longer than 24 hours
+
+- **Status:** open
+- **Asked:** 2026-09-29, same origin as
+  [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
+  **A pay rule.**
+- **Question:** For Non-Union Admin Hourly, one entry runs longer than 24 hours. Do all its hours
+  stay in the workday it started on? Or does each calendar date become its own workday, for daily
+  OT/DT and the seventh-day count?
+  - **The start workday owns every hour.**
+  - **Split at each midnight.**
+- **What the engine does today: the start workday owns every hour.**
+  - `packages/payroll-engine/src/non-union.ts:12-13`: *"Every entry belongs to one workday: the
+    calendar date it started on."* The entry's workday is its first slice's date (:44-45).
+  - A 30-hour entry lands in one workday: at most 8 ST, then 4 daily OT, then 18 daily DT.
+  - The next date shows no hours from it. So that date is not a worked day for the seventh-day rule
+    (:73-75).
+- **Sources checked:**
+  - [non-union-hourly-rules-2026-09-07.md](non-union-hourly-rules-2026-09-07.md) §10 (:104-109),
+    `status: unverified`.
+    - Its example is 7:00 PM → 1:30 AM. It says the workday *"must remain available"*, so hours do
+      not land in the wrong day or week.
+    - It does not say how long a workday is, or what happens past 24 hours.
+  - [*Non-union hourly — holidays, PTO, sick…*](#non-union-hourly--holidays-pto-sick-vacation-shift-differential-minimums-unspecified-by-the-clients-own-account)
+    (open) does not cover this.
+- **Blocked:** nothing built yet.
+- **Owner:** **Brian Petros**, who wrote the non-union rules, and **Corrina Bustos**.
+- **Rules:** [PAY-012](rules/PAY-012-non-union-hourly-rate.md)
+
+## Multi-day entry — DAILY catalog premiums once per ticket or once per calendar date
+
+- **Status:** open
+- **Asked:** 2026-09-29, same origin as
+  [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
+  **A pay rule.**
+- **Question:** A payroll premium with basis `DAILY` applies to one entry that runs over several
+  dates. Is it paid once for the ticket, or once for each calendar date the entry touches?
+  - **Once per ticket.**
+  - **Once per calendar date.**
+- **What the engine does today: once per entry.**
+  - `packages/payroll-engine/src/calculate.ts:372-373` adds one flat component per priced entry:
+    `addComponent(components, premium.ruleId, premium.label, 1, premium.amount)`.
+  - Its comment says *"DAILY pays once for the day, flat"*. The "day" it means is the entry.
+  - One 30-hour ticket pays it once. The same work as one ticket per day pays it two or three times.
+- **Sources checked:**
+  - The basis is `PayrollPremiumBasis.DAILY` (`apps/api/prisma/schema.prisma:237-240`).
+  - The open entries
+    [*Payroll premium catalog — configured per tenant, or constants in the engine*](#payroll-premium-catalog--configured-per-tenant-or-constants-in-the-engine)
+    and [*Premium catalog CRUD*](#premium-catalog-crud--the-engine-reads-six-literal-codes-not-the-catalog)
+    are about where premiums are configured. They do not say how often a DAILY one pays.
+  - No written rule defines "day" for a DAILY premium.
+- **Blocked:** nothing built yet.
+- **Owner:** **Brian Petros** and **Corrina Bustos**.
+- **Rules:** none of its own. It is a property of the premium catalog.
+
+## Multi-day entry — a craft rate change that takes effect inside one entry
+
+- **Status:** open
+- **Asked:** 2026-09-29, same origin as
+  [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
+  **A pay rule.**
+- **Question:** A craft code's base rate changes on a date that falls inside one running entry, for
+  example the July 1 union increase. Do the hours after the change take the new rate? Or does the
+  whole entry keep the rate in force when it started?
+  - **Start rate for the whole entry.**
+  - **Split at the effective date:** slices on or after it take the new rate.
+- **What the API and engine do today: the start rate, for the whole entry.**
+  - Pricing resolves one rate per entry: `rates.resolve({ workDate: shiftStartedAt, … })`.
+    - Working tree: `apps/api/src/usecase/payroll-pricing/payroll-week-pricing.service.ts:473-482`,
+      uncommitted on `fix/payroll-correction-page-ui`.
+    - `main`: `apps/api/src/usecase/payroll/payroll.service.ts:1333-1335`.
+  - The engine prices every slice at that one `baseRate` (`calculate.ts:285-295`).
+  - **Noticed, not investigated, not a pay-rule question:** the resolver cuts `shiftStartedAt` to
+    its **UTC** date (`asWorkDate`,
+    `apps/api/src/service/craft-rate-resolver/craft-rate-resolver.service.ts:160-165`, used at
+    :279). An entry starting at or after 17:00 PDT (16:00 PST) looks up the next date's rate. On the
+    evening before a rate change, that affects entries of any length.
+- **Sources checked:**
+  - [*Annual craft-rate change*](#annual-craft-rate-change--nine-codes-one-rule-no-bulk-path)
+    (resolved 2026-09-07): rates change every July 1 (Corrina). It does not say what happens to an
+    entry running across the change.
+  - [rules/PAY-010](rules/PAY-010-l12-union-base-rate.md): the labor entry's craft prices the row.
+    It says nothing about time within the entry.
+- **Blocked:** nothing built yet.
+- **Owner:** **Brian Petros** and **Corrina Bustos**.
+- **Rules:** [PAY-010](rules/PAY-010-l12-union-base-rate.md)
+
+## Payable time — Start Work to End Work, or yard to yard
+
+- **Status:** resolved 2026-09-29 — **the developer's final definition withdrew the conflicting
+  direction, and it matches the verified decision.** Payable time is Start Ticket → End Ticket. That
+  is `WORK_TIME`, the span the engine prices, and the span the verified 2026-09-03 decision is built
+  as. The verified decision stands, unchanged. No pay rule, engine code or provenance row changes.
+  See the
+  [third 2026-09-29 addendum](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#addendum-2026-09-29-third--payable-window-on-the-correction-page).
+  The rest of this entry is kept as the record of what was in question.
+- **Resolution:**
+  - The developer's final words, 2026-09-29, same session: *"the payable time will be when i came
+    from home to start and click on start ticket on clicking on start ticket to till end ticket all
+    that time should be payable not let yard to arrived yard time"*.
+  - **Start Ticket** is the Start Work button on mobile's ticket card: the punch-in that opens
+    `WORK_TIME` (`apps/mobile/components/field/ticket-card.tsx:361`, `:506`;
+    `apps/mobile/components/field/work-time-banner.tsx:39`, *"Start work to begin recording paid
+    hours"*).
+  - **End Ticket** is Submit ticket on the Review step, which closes `WORK_TIME`
+    (`apps/mobile/features/field-ticket/steps/review/ReviewBody.tsx:553-555`, `:635`).
+  - The correction page's *Paid window* and *Labor Total* (+30 min per WTL) now show that span,
+    the same one payroll prices. The earlier End Work reading below is superseded.
+  - **This resolution rests on the verified note, not on the developer's authority.** The developer
+    withdrew a reading that contradicted it.
+  - **Still open, elsewhere:**
+    [*Recording which time source paid a job day (PAY-017, TCG-178)*](#recording-which-time-source-paid-a-job-day-pay-017-tcg-178),
+    questions 2 and 3. Is the punch-in the verified note's dispatch start? Is Review & Complete its
+    yard return?
+- **Asked:** 2026-09-29, while recording the
+  [third 2026-09-29 addendum (payable window on the correction page)](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#addendum-2026-09-29-third--payable-window-on-the-correction-page).
+  The developer (git user `devmohsinakram`) chose Start Work → End Work as the payable time. By
+  their own definition, that is **punch-in → End Work (break-down end)**. No ticket covers Send
+  Back, so this is filed here, not in a `spec.md` §12. **This is a pay rule.** The engine will not
+  change until the answer is written in [payroll-rules-provenance.md](payroll-rules-provenance.md).
+- **Question:** Is payable time **Start Work → End Work** (punch-in → break-down end), or **yard to
+  yard** (punch-in → Review & Complete)?
+  - **Both start at the punch-in.** The only question is where paid time ends.
+  - **Yard to yard:** the verified 2026-09-03 decision stands, and the engine stays as built. The
+    correction page's *Paid window* and *Labor Total* go back to punch-in → Review & Complete.
+  - **Start Work → End Work:** the verified 2026-09-03 decision is superseded, and what every
+    employee is paid changes. Everything after break-down ends falls outside paid time: the
+    customer sign-off, leaving the site, the drive back, and the post-trip and sign-off at the yard.
+- **The one-line reply that settles it:** *"Paid time ends (a) at Review & Complete, back at the
+  yard, as decided on 2026-09-03, or (b) at End Work, when break-down ends on site."*
+- **The sources:**
+  - **Yard to yard:**
+    [../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md),
+    **`status: verified`**. Kyle Harlow and Joe Schacatano decided it; Corrina Bustos concurred.
+    - Kyle Harlow, 47:57, on the pre-trip before the crane leaves the yard: *"They're paid the
+      whole entire time, yes."*
+    - Kyle Harlow, 53:54: *"Yes"*, to paid hours ending *"whenever they leave with all of the
+      paperwork done and leave the equipment back at the yard"*.
+    - The note itself (:101-102): *"The return leg is paid time, and so is the post-trip work at
+      the yard. Paid span is yard to yard, not yard to job to job-exit."*
+    - [payroll-rules-provenance.md](payroll-rules-provenance.md):61, *Paid time — start and end*,
+      **Confirmed**.
+  - **Start Work → End Work:** the developer, 2026-09-29, in a Syed Haris Claude Code session.
+    - **Their definition of the two words:** *"start work is always first entery when we atsrt
+      ticket and endworking is last entery of job then we get back at yard and siging off from yard
+      it should auto udgest when we increase the time anything between them"*.
+      - The ticket's first entry is the punch-in on the ticket's card, which opens `WORK_TIME`
+        (`apps/api/src/usecase/job-tickets/ticket-step.constants.ts:7`, `:73`, `:88`).
+      - The job's last entry is End Work, before the return to the yard and the sign-off.
+    - Also: *"on mobile app time logging main time is Start Work Time to End Work Time but i think
+      you are getting Left Yard Time to End Job Time … you are getting confused because of names
+      but functionality is diff fix them"*.
+    - Then they were asked explicitly, with the verified decision quoted. They chose "Start Work →
+      End Work" over *"Punch-in → Review & Complete (recommended)"*.
+    - The option they chose read: *"Pay only the build-up start → break-down end span. That changes
+      what every employee is paid, contradicts the verified 2026-09-03 decision, and needs a
+      written ruling from Kyle Harlow and Corrina Bustos plus a payroll-engine change. I would
+      record the question and not change pay until they answer."*
+      - **"Build-up start → break-down end" was the session's gloss, not the developer's.** Their
+        own definition, above, supersedes it: the span starts at the punch-in, not at build-up.
+      - They were not asked again after choosing.
+    - It is a developer's `reference` decision. Nobody at TCG has ratified it.
+    - **It is not mobile's Labor Total.**
+      - Mobile's Labor Total is the boom timer plus 30 min per WTL, and it starts at build-up
+        (`apps/mobile/features/field-ticket/steps/shared/payable-time/labor-hours.ts:74-96`;
+        SCRUM-877 REQ-01 `[VERIFIED]`,
+        [../../aidlc/SCRUM-877/spec.md](../../aidlc/SCRUM-877/spec.md):145-150).
+      - The SCRUM-877 decision does not make its Labor Total the paid span. It calls Labor Total
+        *"a field-ops-local figure that may not equal whatever payroll's future engine
+        eventually computes"*
+        ([../decisions/2026-08-21-scrum-877-labor-and-unit-details-oiler-crew-linking.md](../decisions/2026-08-21-scrum-877-labor-and-unit-details-oiler-crew-linking.md):209-212,
+        `verified`).
+- **What is built:**
+  - **The engine prices `WORK_TIME`: punch-in → Review & Complete.** When the member has their own
+    TCG-25 window, it prices that instead.
+    - `apps/api/src/usecase/payroll/payroll.service.ts:1286-1293` on `main`.
+    - `apps/api/src/usecase/payroll-pricing/payroll-week-pricing.service.ts:467-474` in the working
+      tree of `fix/payroll-correction-page-ui`, uncommitted.
+    - `payableWindow` is `WORK_TIME`
+      (`apps/api/src/usecase/ticket-time-entries/derive-ticket-times.ts:311`). The punch-in opens
+      it and Review & Complete closes it
+      (`apps/api/src/usecase/job-tickets/ticket-step.constants.ts:73`, `:77`).
+  - **The correction page displays punch-in → End Work**, per the developer.
+    - Its *Paid window* is that span. Its *Labor Total* is that span plus 30 min per WTL.
+    - **Start:** the page's *Start Work Time*, which is the punch-in, or the member's own window
+      start (`apps/api/src/usecase/payroll-send-backs/payroll-send-backs.service.ts:379`).
+    - **End:** *End Work Time*, `WORK_AT_JOB_SITE_TIME` end, which mobile closes when the break-down
+      timer ends (`payroll-send-backs.service.ts:380`; `ticket-step.constants.ts:74`;
+      `apps/mobile/features/field-ticket/steps/start-work/StartWorkBody.tsx:261-274`).
+    - Its pay estimate is priced by the engine on `WORK_TIME`, and is labelled that way.
+    - Uncommitted on `fix/payroll-correction-page-ui`, and not yet built when this was recorded.
+  - **Mobile's in-flow `startWork` capture is a different instant.** It is the start of build-up,
+    not the punch-in. It is not the page's Start Work.
+  - **Until this is answered, the page's *Paid window* is not what payroll pays.** It is shorter by
+    everything after break-down ends.
+- **Changing the engine is a pay-rule change.** Its source must be written into
+  [payroll-rules-provenance.md](payroll-rules-provenance.md) **in the same commit** as the code. It
+  replaces the *Paid time — start and end* row (:61).
+  - The rule is `CLAUDE.md`'s `packages/payroll-engine/` row, and
+    `.ai/claude/contexts/payroll-engine.md`.
+  - The window itself is chosen in `apps/api`, at the pricing service above.
+  - Answer (b) also needs a decision note naming who decided. That note would supersede the
+    2026-09-03 decision.
+- **Blocked:**
+  - Any change to the paid span.
+  - Merging `fix/payroll-correction-page-ui` as directed puts a figure labelled *Paid window* in
+    front of Crane Supervisors that disagrees with what payroll pays.
+- **Related:**
+  - [*Recording which time source paid a job day (PAY-017, TCG-178)*](#recording-which-time-source-paid-a-job-day-pay-017-tcg-178),
+    question 3. It asks whether the code's Review & Complete is the verified decision's yard
+    return. This entry asks whether paid time reaches the yard at all.
+- **Owner:** **Kyle Harlow** and **Corrina Bustos**, who must rule in writing, with **Brian
+  Petros**. The verified note's end boundary is Kyle Harlow's (50:33, 53:54). Joe Schacatano
+  co-decided the note.
+- **Rules:** [PAY-017](rules/PAY-017-time-source-selection.md),
+  [PAY-021](rules/PAY-021-l12-standard-work-window.md)
