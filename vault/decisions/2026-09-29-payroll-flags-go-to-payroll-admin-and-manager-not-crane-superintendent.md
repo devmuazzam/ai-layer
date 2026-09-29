@@ -19,6 +19,8 @@ provenance_note: >-
   all times editable, rest gap from rounded paid time, six more auto-flag sources). See
   decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md.
   Items 3, 4 and 6 and the reminder stay open. Body unchanged.
+  2026-09-30: item 3 answered — Send Back survives, and its target is the WORKER, with a reminder
+  after 3 hours — in decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md. Every flag now blocks approval until fixed.
 supersedes_partial:
   - decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md (clause 3 send-back target; clause 5 notification recipient. Clause 4's actor is removed; its rules are not ruled on. Clauses 1, 2 and 6 untouched)
 resolves:

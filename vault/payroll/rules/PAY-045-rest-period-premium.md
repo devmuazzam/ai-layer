@@ -17,8 +17,11 @@ provenance_note: >-
   decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md.
   So for the WTL penalty and the rest-gap start, the "Phantom hours" line in the Open list is
   superseded. Its other uses (guarantees and the rest trigger, PAY-029 windows) are untouched.
-  Still open: Brian's concurrence, and whether a FIRST missed meal (absorbed under PAY-047, no hours
-  added) also moves the start. Engine not changed. Body unchanged.
+  2026-09-30, Corrina ("no, only the 2nd and onward"): a FIRST missed meal does NOT move the start;
+  only the 2nd and later, which add a half-hour, do. This agrees with PAY-047's absorption. See
+  decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md.
+  Still open: Brian's concurrence; the 2026-09-25 union BA meeting is not in the vault. Engine not
+  changed. Body unchanged.
 updated: 2026-09-07
 tags: [module/payroll, kind/rule, open-questions]
 ---

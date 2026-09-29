@@ -36,6 +36,11 @@ provenance_note: >-
   employee: a shared Start Work / End Job edit no longer moves the whole crew. Clause 4's "everything
   is editable" agrees with the client ("all times"). Clause 1's boom-range rule is now one of seven
   auto-flag sources. The body banner above predates this second amendment.
+  THIRD CLIENT AMENDMENT, 2026-09-30 — decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md (status: verified).
+  CLAUSE 6 IS OVERRULED: "A boom-range flag on its own only warns" no longer holds. EVERY flag
+  (nine are listed) blocks approval until "adjusted and fixed". The open-send-back block is
+  unaffected. Send Back survives, with the WORKER as target and a reminder after 3 hours. Clause 1's
+  comparison basis (crane range vs the job configuration set by sales) was asked and NOT answered.
 resolves:
   - "payroll/gaps.md#confluence-payroll-user-stories--first-payroll-pages-in-confluence-unmigrated (partial, provisional — send-back target (clause 3) and what makes an entry Flagged (clause 1) only; whether the Confluence pages supersede the vault stays open)"
 jira: []

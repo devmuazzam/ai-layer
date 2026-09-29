@@ -12,6 +12,12 @@ decided_by: >-
   is not on record agreeing.
 status: verified
 conflicts_with: []
+provenance_note: >-
+  FOLLOWED UP 2026-09-30 by Corrina Bustos — decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md.
+  C2 is ANSWERED: only the 2nd and later missed-lunch penalties move the rest start; the first does
+  not ("no, only the 2nd and onward"). This agrees with PAY-047's first-meal absorption. Clause 3
+  below is narrowed accordingly. She also asked for the Samsara rule to apply at the start of the
+  ticket. Body unchanged.
 supersedes_partial:
   - "payroll/client-message-findings.md#2026-08-24-batch--rest-rule-exclusion--infrastructure-reality-brian-petros (row 'Added hours must not affect the 8-hour rest rule', as it applies to the WTL penalty and the rest-gap start only)"
 resolves:

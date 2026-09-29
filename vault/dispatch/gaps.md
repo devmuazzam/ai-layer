@@ -1021,3 +1021,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (copy-to-all-days would also copy the assist crane).
 - **Blocked:** DAS completion and *Send tickets* for any multi-day job with a part-time crane.
 - **Owner:** Lisette Anzaldo (dispatch), with Ryan Adams / Joe Schacatano for how it is quoted.
+
+## Pointer — asset-not-home flag depends on the holdover definition
+
+- **Pointer (2026-09-30):** Corrina Bustos asked for a flag when an asset **not assigned to a holdover job** does not return to its home yard at end of shift. It is filed once in [../assets/gaps.md → *Asset not returned to its home yard at end of shift*](../assets/gaps.md#asset-not-returned-to-its-home-yard-at-end-of-shift--a-requested-flag-with-no-owner-no-yard-geometry-and-no-shift-end). **Update 2026-09-30:** the Payroll Admin and Payroll Manager receive it and **dispatch is notified**, and the trigger is an engine-off away from the yards, not a time. Developer reading, pending ratification ([../decisions/2026-09-30-crew-flag-compares-left-and-arrived-yard-asset-must-return-to-departure-yard.md](../decisions/2026-09-30-crew-flag-compares-left-and-arrived-yard-asset-must-return-to-departure-yard.md)): the last shut-off of the day, away from the yard the asset left from that day. Dispatch owns how it is notified and what makes a job a holdover ([*Does copying allocations make a job a holdover?*](#does-copying-allocations-make-a-job-a-holdover)).

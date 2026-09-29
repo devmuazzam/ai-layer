@@ -24,6 +24,12 @@ decided_by: >-
   this attribution*.
 status: reference
 conflicts_with: []
+provenance_note: >-
+  CLAUSE 6 SUPERSEDED BY THE CLIENT, 2026-09-30 — decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md (status: verified). Corrina Bustos
+  (Payroll Manager): "all tickets must be completed before the payroll can be processed/approved".
+  An incomplete ticket now BLOCKS approval, not just warns. Whether it also blocks Calculate
+  ("processed") is open. The display-only, never-priced overlay (the other clauses) is untouched.
+  Body unchanged.
 resolves: [SCRUM-PENDING/intent.md#11-numbers-thresholds-and-enumerated-values-on-the-ticket]
 jira: []
 tags: [module/payroll, kind/decision, ticket-workflow, time-tracking, reporting, requirements]
