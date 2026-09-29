@@ -16,7 +16,17 @@ decided_by: >-
   written down for this question.
 status: reference
 supersedes: []
-conflicts_with: []
+conflicts_with: [decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md]
+provenance_note: >-
+  AMENDED IN PART BY THE CLIENT, 2026-09-29 — see
+  decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md
+  (status: verified). Corrina Bustos, Payroll Manager and a named ratifier of this note, in writing
+  (Teams): "please update all flags to go to the payroll admin and payroll manager. not the crane
+  superintendent". Clause 3 (Send Back to one Crane Supervisor via the crane-supervisor role
+  permission) and clause 5 (the supervisor is notified) are OVERRULED. Clause 4 (the supervisor
+  corrects on web at /payroll-corrections) has lost its actor: who corrects now is open. Clauses 1,
+  2 and 6 are not addressed, but clause 6's send-back block depends on Send Back having a target.
+  Status stays reference because clauses 1, 2 and 6 stand. Body unchanged.
 resolves:
   - "payroll/gaps.md#confluence-payroll-user-stories--first-payroll-pages-in-confluence-unmigrated (partial, provisional — send-back target (clause 3) and what makes an entry Flagged (clause 1) only; whether the Confluence pages supersede the vault stays open)"
 jira: []
@@ -25,6 +35,13 @@ entities: []
 ---
 
 # Flagged entries: boom bracket vs crane range, and Send Back to a Crane Supervisor
+
+> **Amended in part by the client, 2026-09-29.** Corrina Bustos (Payroll Manager): *"please update
+> all flags to go to the payroll admin and payroll manager. not the crane superintendent"* —
+> [2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md).
+> **Clauses 3 and 5 below are overruled**; clause 4 has no actor until who corrects a flagged entry
+> is answered. Clauses 1, 2 and 6 still stand. The overruled routing is already on `main`
+> (PR #690, PR #691). The body below is kept as it was decided.
 
 **No ticket id is known for this work.** No Jira or Linear ticket was named when the decision
 was made. The work lives on branch `feat/payroll-flagged-entries-send-back`, uncommitted as of

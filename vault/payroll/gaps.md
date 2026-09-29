@@ -1193,7 +1193,7 @@ someone has confirmed otherwise.
   the craft-code shape should cite these pages *as unverified Confluence*, not as the vault.
 - Owner: whoever re-migrates (human, per README *Who does what*); Umair Khan for whether the pages
   are finished.
-- **Status:** open — **partly answered provisionally, pending ratification**: [../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md) (developer decision, no ticket id known, 2026-09-28, `status: reference`). Clause 1 says what flags an entry: the boom bracket lies wholly outside the crane's min–max boom length (ft), which warns and does not block. Clause 3 says Send Back goes to one Crane Supervisor (an active Employee with the `supervisor` flag and a login), with a required reason, and an uncorrected send-back blocks approval of the week. The *Worker* send-back target, the 3-hour reminder, and whether these pages supersede the vault **stay open**. Brian Petros / Corrina Bustos and the field-ops owner to ratify. *(Was: open, 2026-08-19 – 2026-09-28.)*
+- **Status:** open — **partly answered provisionally, pending ratification**: [../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md) (developer decision, no ticket id known, 2026-09-28, `status: reference`). Clause 1 says what flags an entry: the boom bracket lies wholly outside the crane's min–max boom length (ft), which warns and does not block. Clause 3 says Send Back goes to one Crane Supervisor (an active Employee with the `supervisor` flag and a login), with a required reason, and an uncorrected send-back blocks approval of the week. The *Worker* send-back target, the 3-hour reminder, and whether these pages supersede the vault **stay open**. Brian Petros / Corrina Bustos and the field-ops owner to ratify. *(Was: open, 2026-08-19 – 2026-09-28.)* **Update 2026-09-29: clause 3's provisional answer is overruled by the client.** Corrina Bustos, Teams, in writing: *"please update all flags to go to the payroll admin and payroll manager. not the crane superintendent"*. See [../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md) (`status: verified`, partial). Send Back no longer has a sanctioned target. What replaces it is open in [*Flagged entries go to payroll, not the crane superintendent*](#flagged-entries-go-to-payroll-not-the-crane-superintendent--who-corrects-them-who-the-payroll-admin-is-and-whether-send-back-survives). This entry's main question stays open. (Also stale above: clause 3 was revised on 2026-09-28 from the `supervisor` flag to a `crane-supervisor` role permission.)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#confluence-payroll-user-stories-first-payroll-pages-in-confluence-unmigrated](gaps-2026-08-20-retired.md#confluence-payroll-user-stories-first-payroll-pages-in-confluence-unmigrated)
 
 ## Meeting recordings disagree with the vault — 2026-08-19 review
@@ -4823,3 +4823,34 @@ somewhere it should not have. Settle that before touching either.
 - **Owner:** Brian Petros and Ehtesham Anwar (the decision's co-owners); Corrina Bustos for the
   onboarding practice.
 - **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md), [PAY-067](rules/PAY-067-adp-export.md)
+
+## Flagged entries go to payroll, not the crane superintendent — who corrects them, who the payroll admin is, and whether Send Back survives
+
+- **Status:** open
+- **Asked:** 2026-09-29, by Syed Haris (CodingCops) to Corrina Bustos on Teams. The eight-question message described the 2026-09-28 review design. She answered only the routing point, recorded in [../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md) (`status: verified`, partial). **Syed Haris is sending her a follow-up with the questions below.**
+- **Settled, for context:** flags go to the **payroll admin and payroll manager**, not the crane superintendent. That overrules clauses 3 and 5 of [../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md).
+- **Questions**, each phrased so a one-line reply settles it:
+  1. **Who corrects a flagged entry?** (a) Payroll edits it directly on the payroll screen, or (b) payroll only sees the flag and contacts the crew, who fix it? Send Back as built (PR #690) sends to a Crane Supervisor, a target the client has now excluded.
+  2. **Who is the "payroll admin"?** Which person or people? Is it a new ERP role or permission separate from *Payroll Manager*? The seed has `ROLE-ACCOUNTS-PM` *Payroll Manager* and no *Payroll Admin*. Also: do both roles receive every flag, and can either one act on it alone?
+  3. **Does Send Back survive?** If yes, to whom: the worker on mobile (Confluence US-03 AC 3 and 10; floated by Ehtesham Anwar 2026-08-04 20:24 and 34:11), or no one?
+  4. **Does "all flags" include the field-ops ticket progress *Flagged*** (incident / deficiency / customer unavailable), or only payroll review flags?
+  5. **The rest of the 2026-09-29 message, unanswered:**
+     - (a) When a correction edits the shared Start Work / End Job, should it move the whole crew?
+     - (b) Which times are editable?
+     - (c) Is the 8-hour rest gap (PAY-045) measured on rounded or actual times? Rounding is [../decisions/2026-08-24-payroll-time-rounding-method.md](../decisions/2026-08-24-payroll-time-rounding-method.md).
+     - (d) Are there auto-flag sources beyond the boom range, and can a flag be raised manually?
+     - (e) May the recipient approve or override a flag directly?
+     - (f) Should an unanswered flag trigger an automatic reminder, and after how long? Corrina asked for one herself, 2026-08-04 15:50 ([../meetings/transcripts/2026-08-04-payroll-process.md](../meetings/transcripts/2026-08-04-payroll-process.md) line 78). Confluence US-03 AC 9 says 3 hours.
+  6. **What does the boom flag compare against?** The crew's bracket vs (a) the crane's physical min–max boom length, which is the 2026-09-28 rule, clause 1; or (b) the job's crane configuration set by sales? Melissa McNutt described (b) on 2026-05-28 at 46:05 ([../meetings/transcripts/2026-05-28-mobile-app-payroll.md](../meetings/transcripts/2026-05-28-mobile-app-payroll.md) line 276).
+- **Sources checked:**
+  - both decision notes above;
+  - transcripts 2026-05-28 (l. 276), 2026-06-23 (l. 243, 261), 2026-08-04 (l. 77–78, 102, 106, 116–117, 141, 184) and 2026-08-13 (l. 394–396);
+  - [../sync/.conflict/2026-08-24-bootstrap/payroll-management.md](../sync/.conflict/2026-08-24-bootstrap/payroll-management.md) US-03;
+  - the Confluence `Craft codes` conflict copy, which uses *Payroll Administrator* as its persona but does not define it;
+  - `apps/api/src/utility/seed-data.ts`.
+- **Related:** [*Calculation-run log (PAY-064): who "the payroll manager" is*](#calculation-run-log-pay-064-who-the-payroll-manager-is-and-what-pay-settings-in-effect-covers) asks the same role question from another side. [*Confluence payroll user stories*](#confluence-payroll-user-stories--first-payroll-pages-in-confluence-unmigrated) is the parent.
+- **Tension to put to her, not resolve here:** the verified [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md), also Corrina's, lets *"the crane superintendent or payroll"* set the day's craft. The boom bracket is a craft code modifier. Does "not the crane superintendent" for flags also mean the superintendent no longer corrects a bracket on a flagged entry?
+- **Blocked:**
+  - what replaces the Crane Supervisor routing that shipped on `main` in PR #690 / #691: the `crane-supervisor` permission, `/payroll-corrections`, the supervisor notification;
+  - the clause-6 approval block, which depends on Send Back having a target.
+- **Owner:** Corrina Bustos (payroll), with Brian Petros for the role/permission question.

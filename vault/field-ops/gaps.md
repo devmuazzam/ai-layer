@@ -800,3 +800,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - **(c) Parallel capture:** Parallel unit photo capture retained in `ChecklistEngine.tsx`.
   - **(d) Server reset vs. unsynced work:** `dropStaleDraftIfServerReset` preserves local drafts if they need sync (`ticketNeedsSync(draft)`) or have uncommitted local progress, while genuinely reset tickets (floor 1, no local uncommitted progress) have their stale drafts cleared.
 - **Owner:** CodingCops — resolved in `SCRUM-OFFLINE-SYNC`.
+
+## Pointer — payroll flags no longer go to the crane superintendent
+
+- **Pointer (2026-09-29):** Corrina Bustos (Teams, 2026-09-29) routed all flags to the payroll admin and payroll manager, *"not the crane superintendent"* ([../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md)). Two things are open and filed once, in [../payroll/gaps.md → *Flagged entries go to payroll, not the crane superintendent*](../payroll/gaps.md#flagged-entries-go-to-payroll-not-the-crane-superintendent--who-corrects-them-who-the-payroll-admin-is-and-whether-send-back-survives): what the superintendent may still correct after submission, and whether "all flags" includes ticket progress *Flagged* (incident / deficiency / customer unavailable).

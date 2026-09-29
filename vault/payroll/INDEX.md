@@ -144,13 +144,14 @@ neighbouring module.**
 
 ## Decisions that bind this module
 
-Thirteen `decisions/` notes carry `module/payroll`. None is `verified` — all are `reference`,
-meaning a named person on the team decided them and they bind implementation until TCG says
-otherwise.
+Sixteen `decisions/` notes carry `module/payroll`. **Six are `verified`** (a named TCG person
+decided them), **nine are `reference`** (a named person on the team decided them; they bind
+implementation until TCG says otherwise), and **one is `superseded`**. Check each note's own
+`status:` before relying on it.
 
-*(This count read "Seven" while listing eight from 2026-09-09 until 2026-09-10; the
-2026-09-09 business-day note flagged the same drift. Corrected here along with the two
-additions below — count the list, not the sentence.)*
+*(Corrected 2026-09-29: this sentence read "Thirteen … None is `verified`" while five listed notes
+were already `verified`, and the two 2026-09-28 payroll notes were missing. Count the list, not the
+sentence.)*
 
 - [2026-09-01-subsistence-not-a-craft-attribute.md](../decisions/2026-09-01-subsistence-not-a-craft-attribute.md) — subsistence is a property of the trip, not the trade; supersedes the per-craft modifier shown on 2026-08-13
 - [2026-08-25-non-union-base-rate-per-person.md](../decisions/2026-08-25-non-union-base-rate-per-person.md) — non-union base rate comes from `Employee.hourlyRate`
@@ -165,6 +166,9 @@ additions below — count the list, not the sentence.)*
 - [2026-09-25-boom-adders-single-union-per-company.md](../decisions/2026-09-25-boom-adders-single-union-per-company.md) — boom adders (craft modifiers) belong to one union per company for now (multi-union deferred); existing adders move to the union the crafts use; `RATE_NO_UNION_MODIFIER_RATE` is a review flag, not an approval block; the review screen shows which union paid the adder (reference — Brian Petros / Corrina Bustos to ratify)
 - [2026-09-25-craft-rate-succession-day-before-auto-end.md](../decisions/2026-09-25-craft-rate-succession-day-before-auto-end.md) — craft code rate succession: an open-ended previous rate is auto-ended the day before the new one starts; a stale CALCULATED/REVIEW week warns, never blocks; no approver step (reference — Corrina Bustos / Brian Petros to ratify)
 - [2026-09-15-employee-profile-compensation-type-and-statuses.md](../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md) — the Employee Profile's Compensation Type (craft-based hourly / hourly non-craft / salaried) drives pay type and payroll group; employee status gains On Leave and Pending Onboarding; payroll status Eligible / Hold gates the worklist; over-scale, salary amount and subsistence overrides are **stored, not priced** — developer answers to `SCRUM-EMPLOYEE-PROFILE` §12, each naming who at TCG can overrule it
+- [2026-09-28-boom-union-follows-the-worked-craft.md](../decisions/2026-09-28-boom-union-follows-the-worked-craft.md) — secondary-craft days: the boom adder comes from the worked craft's union, dispatch may set the day's craft, the primary base rate is a floor
+- [2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md) — developer decision: an entry is flagged when its boom bracket is wholly outside the crane's range; Send Back to a Crane Supervisor — **clauses 3 and 5 overruled 2026-09-29** (next line)
+- [2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md) — **Corrina Bustos, `verified`, partial:** all flags go to the payroll admin and payroll manager, not the crane superintendent; who corrects, and who "payroll admin" is, stay open
 
 ## Where payroll meets the rest of the vault
 
