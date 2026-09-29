@@ -80,6 +80,13 @@ entities: []
 > superseded. The payroll engine is unchanged. See
 > [*Addendum 2026-09-29, third*](#addendum-2026-09-29-third--payable-window-on-the-correction-page)
 > at the end.
+>
+> **Amended a fourth time 2026-09-29, display only:** on the weekly timesheet, a priced entry over
+> more than one date shows as a main row for its Start Ticket date, with each later date nested
+> under it, and the rows add up to the entry. No pay rule, API or engine change. The open
+> DAILY-premium question stays open. See
+> [*Addendum 2026-09-29, fourth*](#addendum-2026-09-29-fourth--multi-day-entries-on-the-weekly-timesheet)
+> at the end.
 
 **No ticket id is known for this work.** No Jira or Linear ticket was named when the decision
 was made. The work lives on branch `feat/payroll-flagged-entries-send-back`, uncommitted as of
@@ -1010,3 +1017,149 @@ Not changed:
   *Paid time — start and end* row (:61) still reads yard to yard, **Confirmed**.
 - [payroll/INDEX.md](../payroll/INDEX.md) still needs the line described above. That is still
   outside the recording agent's write scope.
+
+## Addendum 2026-09-29, fourth — multi-day entries on the weekly timesheet
+
+**What this amends: no clause.** It adds a display rule for a surface the note did not cover: the
+weekly payroll timesheet, `/payroll/:employeeId?weekStart=…`. It sits beside the second addendum's
+item C, which shows a multi-date entry's date range on Returned Entries, the correction page and
+the send-back email. Clauses 1–6 and the earlier addenda are unchanged.
+
+**Who decided.** The same developer as the original note: git user `devmohsinakram`, on
+2026-09-29, reviewing PR #699 (branch `fix/payroll-correction-page-ui`). They were looking at
+ticket LEM-00048 (Sep 24–25, 2026) on `/payroll/:employeeId?weekStart=2026-09-19`. Their words:
+
+- *"in provided image it should show 2 rows one for 24 and one for 25; 25 one will be nested to
+  24 main row; both row should have one expand view to see overall calculations; make this design
+  and handle this division in best way"*
+
+The image was not given to the recording agent. The words settle three things: one row per date,
+the later date nested under the first, and an expanded view on each row that shows the overall
+calculation. **How the entry is divided between the rows is the session's implementation of
+"handle this division in best way"** (items B–D). The recording agent was given no separate
+verbatim quote for it.
+
+- **An earlier direction the same day is quoted only in a code comment**, not in the vault:
+  *"if a job spread in 2 days it should show 2 entries on weekly payroll against these 2 dates just
+  handle it like child in ui"* (`apps/web/src/features/payroll/lib/payroll-date-rows.ts:4-6`).
+  Under it, child rows carried hours only, and the module "never splits money" (:8-9). This
+  addendum records the later direction, under which each row carries pay.
+
+Like the original note, this is a **developer's decision** at `status: reference`. It binds the
+timesheet's implementation now, and TCG can overrule it. **Nobody on the client side has ratified
+it.**
+
+**Presentation only. No pay rule, API or engine change, and no money moves.** The entry is still
+one priced job day, with one stored total, paid in one week. The rows only divide how that total is
+shown. No source in [payroll/payroll-rules-provenance.md](../payroll/payroll-rules-provenance.md)
+is needed or touched.
+
+**Build status: committed, not merged.** Commit `b3c992f10` on `fix/payroll-correction-page-ui`
+(PR #699), pushed 2026-09-29. Paths are under `apps/web/src/features/payroll/`, line numbers as of
+that commit:
+
+- `lib/payroll-entry-split.ts` (new): `splitEntryByDate` (:108-142) and its match check,
+  `matchesRun` (:82-88).
+- `components/payroll-employee-table.row.tsx` (modified): an entry is split by default (:45-72).
+- `components/payroll-employee-table.nested.tsx` (new): the nested rows, `EntryDateRows`
+  (:156-243).
+- `components/payroll-employee-table.split.tsx` (new): the *Ticket by date* table
+  (:97-163), the one-row explanation (:170-188), and a nested row's panel, `EntryDateDetail`
+  (:232-263).
+- The per-date slices are the server's `dateSplits`, read by `lib/payroll-date-rows.ts`, committed
+  earlier in `5a5770309`. No API file is in this change.
+
+Check A–E against the merged code when the branch closes.
+
+### A. One row per date, with the Start Ticket date as the main row
+
+- A priced entry whose half-hour slices cover more than one payroll-zone date shows as a **main
+  row** for its Start Ticket date, with **one nested row per later date** under it.
+- **Why the main row is the Start Ticket date:** it is the date the entry is filed under, and the
+  date that decides which pay week pays it.
+  - That is what the engine does today. Whether it is right for hours after Saturday 00:00 is the
+    second addendum's item E(a), still open.
+- A nested date outside the pay week is marked as falling before or after it
+  (`payroll-employee-table.nested.tsx:32-54`). It is still paid in the main row's week.
+
+### B. How the entry is divided between the rows
+
+- **A nested row** shows its own date's half hours, from the server's `dateSplits`: worked hours,
+  ST/OT/DT/H2x/H3x, and slice pay at base rate × multiplier.
+- **The main row** takes the remainder of the entry's stored figures. That is its own date's
+  slices, plus everything priced once for the entry:
+  - premiums and adders;
+  - the daily, long-boom and holiday minimums;
+  - the rest premium;
+  - meal deductions and WTL adds;
+  - subsistence;
+  - guarantee top-up hours.
+- **So the rows add up exactly to the entry's stored total.** Nothing is re-priced in the browser.
+- **Why the entry's own items sit on the main row:** it is the date the entry is paid under. The
+  engine prices those items once for the entry, not for a date, and the web does not allocate
+  them to one.
+
+### C. Expanded panels
+
+- **The main row's panel** shows the entry's full calculation, plus a *Ticket by date* table. The
+  table has one line per date (window, worked, payable, hours by rung, slice pay), an *Entry
+  items* line priced once for the ticket, and the ticket's total.
+- **Each nested row's panel** shows that date's pay by rung (hours × rate = pay), then the same
+  whole-ticket table with its own date picked out.
+- So the overall calculation is one click from either row, as the developer asked.
+
+### D. Folding, and when the split is not offered
+
+- **A `2 days` chip** beside the ticket code (`N days` for N dates) folds the entry back to one
+  whole row. Split is the default (`payroll-employee-table.tsx:83-85`,
+  `payroll-employee-table.dates.tsx:40-42`).
+- **The entry stays one row when the per-date explanation does not match the stored run**
+  (`payroll-entry-split.ts:82-88`, `:112-113`). That happens:
+  - after a correction not yet recalculated, because `dateSplits` is explained from the ticket's
+    times as they are now;
+  - with a chain carried in from last week;
+  - on an API that sends no `dateSplits`. Its clock fallback gives hours only, no pay by date.
+- Its panel then says why it is one row (`payroll-employee-table.split.tsx:170-188`).
+
+### E. Not an answer to any open pay question
+
+- **This does not answer**
+  [payroll/gaps.md → *Multi-day entry — DAILY catalog premiums once per ticket or once per calendar date*](../payroll/gaps.md#multi-day-entry--daily-catalog-premiums-once-per-ticket-or-once-per-calendar-date),
+  the second addendum's item E(g). **It stays open.** A DAILY premium shows on the main row
+  because the engine prices it once per entry today, as that entry records. That is not a ruling
+  that once per ticket is right.
+- Also open and unaffected: E(a), which pay period owns the hours after Saturday 00:00, and E(c),
+  daily and long-boom minimums on the shift anchor date or on each calendar date.
+- **A display tension, noted, not resolved.** The verified
+  [2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](2026-09-04-cross-midnight-day-type-and-holiday-minimum.md)
+  groups the holiday minimum on `CalendarDate` (:92-95). When the holiday is a later date of the
+  entry, the main row can show a minimum that belongs to a nested date. The total is unchanged;
+  only the row it shows on is.
+- **If E(g) or E(c) is answered "per calendar date"**, those items would be priced per date, and
+  item B's placement of them on the main row must be revisited.
+
+### Who ratifies this addendum
+
+- **A–D: nothing beyond this note's own ratification.** They change only how the weekly timesheet
+  shows an entry, like the second addendum's items B and C.
+- **The pay questions in E**: Brian Petros and Corrina Bustos, as already registered.
+
+### Effect on the vault (this addendum)
+
+Done in the same pass:
+
+- This file: **done**.
+  - A fourth line was added to the pointer under the title.
+  - `updated: 2026-09-29` already stood. `status` stays `reference`, and `conflicts_with` stays
+    `[]`.
+
+Not changed:
+
+- [payroll/gaps.md](../payroll/gaps.md) is untouched. E(a), E(c) and E(g) stay `open`. This
+  direction raises no new pay question.
+- **The holiday-minimum display tension in E is not registered.** It is stated here only. If it
+  needs tracking, it belongs in [payroll/gaps.md](../payroll/gaps.md): *"On a multi-date entry
+  whose holiday falls on a later date, should the timesheet show the holiday minimum on that
+  date's row rather than the main row?"*
+- **No other file's frontmatter.** Nothing is verified or superseded by a developer's reference
+  decision.
