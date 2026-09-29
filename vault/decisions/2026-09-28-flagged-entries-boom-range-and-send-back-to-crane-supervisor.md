@@ -16,7 +16,9 @@ decided_by: >-
   written down for this question.
 status: reference
 supersedes: []
-conflicts_with: [decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md]
+conflicts_with:
+  - decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md
+  - decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md
 provenance_note: >-
   AMENDED IN PART BY THE CLIENT, 2026-09-29 — see
   decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md
@@ -27,6 +29,13 @@ provenance_note: >-
   corrects on web at /payroll-corrections) has lost its actor: who corrects now is open. Clauses 1,
   2 and 6 are not addressed, but clause 6's send-back block depends on Send Back having a target.
   Status stays reference because clauses 1, 2 and 6 stand. Body unchanged.
+  SECOND CLIENT AMENDMENT, same day — see
+  decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md
+  (status: verified). CLAUSE 4 IS OVERRULED in two respects. (a) The Payroll Admin / Payroll Manager
+  correct flagged entries, not a Crane Supervisor. (b) A correction applies to the INDIVIDUAL
+  employee: a shared Start Work / End Job edit no longer moves the whole crew. Clause 4's "everything
+  is editable" agrees with the client ("all times"). Clause 1's boom-range rule is now one of seven
+  auto-flag sources. The body banner above predates this second amendment.
 resolves:
   - "payroll/gaps.md#confluence-payroll-user-stories--first-payroll-pages-in-confluence-unmigrated (partial, provisional — send-back target (clause 3) and what makes an entry Flagged (clause 1) only; whether the Confluence pages supersede the vault stays open)"
 jira: []

@@ -3,6 +3,22 @@ id: PAY-045
 title: PAY-045 — Rest-period premium
 section: F-contributions-other
 status: open
+provenance_note: >-
+  2026-09-29 — Corrina Bustos (Payroll Manager), in writing, on where the 8-hour gap starts: from
+  the ROUNDED paid end time, "per union rule ... when the EE was last paid", INCLUDING a WTL penalty
+  half-hour (worked to 11:00 PM + 30-min WTL penalty → gap starts 11:30 PM). Recorded in
+  decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md
+  (status: verified). The rounded-window half agrees with the A7 stitch work below. The WTL half
+  CONFLICTS with "Phantom hours must not affect the rest rule" in this file's Open list (Brian
+  Petros, 2026-08-24) and may conflict with PAY-047's first-missed-meal "absorbed" model.
+  UPDATE, same day: Corrina's third reply was asked with Brian's statement named, and says "yes, the
+  WTL penalty effect the rest starts. this was confirmed last friday in our meeting with the union
+  business agent" (2026-09-25; that meeting is NOT in the vault) —
+  decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md.
+  So for the WTL penalty and the rest-gap start, the "Phantom hours" line in the Open list is
+  superseded. Its other uses (guarantees and the rest trigger, PAY-029 windows) are untouched.
+  Still open: Brian's concurrence, and whether a FIRST missed meal (absorbed under PAY-047, no hours
+  added) also moves the start. Engine not changed. Body unchanged.
 updated: 2026-09-07
 tags: [module/payroll, kind/rule, open-questions]
 ---

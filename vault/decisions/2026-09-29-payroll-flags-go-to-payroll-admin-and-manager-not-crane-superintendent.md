@@ -12,6 +12,13 @@ decided_by: >-
   Brian Petros (the other named ratifier of the 2026-09-28 note) has not commented.
 status: verified
 conflicts_with: []
+provenance_note: >-
+  FOLLOWED UP THE SAME DAY — Corrina Bustos's second Teams reply (2026-09-29) answers this note's
+  open items 1 (payroll corrects), 2 (Payroll Administrator = Micaela Slykhuis today, an assignable
+  role; both roles get all flags and either may adjust) and most of 5 (corrections per employee,
+  all times editable, rest gap from rounded paid time, six more auto-flag sources). See
+  decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md.
+  Items 3, 4 and 6 and the reminder stay open. Body unchanged.
 supersedes_partial:
   - decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md (clause 3 send-back target; clause 5 notification recipient. Clause 4's actor is removed; its rules are not ruled on. Clauses 1, 2 and 6 untouched)
 resolves:

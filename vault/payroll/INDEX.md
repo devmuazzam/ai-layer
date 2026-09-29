@@ -144,7 +144,7 @@ neighbouring module.**
 
 ## Decisions that bind this module
 
-Sixteen `decisions/` notes carry `module/payroll`. **Six are `verified`** (a named TCG person
+Eighteen `decisions/` notes carry `module/payroll`. **Eight are `verified`** (a named TCG person
 decided them), **nine are `reference`** (a named person on the team decided them; they bind
 implementation until TCG says otherwise), and **one is `superseded`**. Check each note's own
 `status:` before relying on it.
@@ -169,6 +169,8 @@ sentence.)*
 - [2026-09-28-boom-union-follows-the-worked-craft.md](../decisions/2026-09-28-boom-union-follows-the-worked-craft.md) — secondary-craft days: the boom adder comes from the worked craft's union, dispatch may set the day's craft, the primary base rate is a floor
 - [2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md) — developer decision: an entry is flagged when its boom bracket is wholly outside the crane's range; Send Back to a Crane Supervisor — **clauses 3 and 5 overruled 2026-09-29** (next line)
 - [2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md) — **Corrina Bustos, `verified`, partial:** all flags go to the payroll admin and payroll manager, not the crane superintendent; who corrects, and who "payroll admin" is, stay open
+- [2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md](../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md) — **Corrina Bustos, `verified`:** payroll admin/manager correct flagged entries themselves, per employee (not whole crew), any time; Payroll Administrator = Micaela Slykhuis today (assignable role); rest gap from the rounded paid end incl. the WTL penalty (**contested**, see PAY-045); six more auto-flag sources
+- [2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md](../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md) — **Corrina Bustos, `verified`:** invalid entries = wrong AM/PM, identical start/end, out of order, "etc"; Samsara flag beyond 30 min of geotag time; the WTL penalty moves the 8-hour rest start (union business agent, 2026-09-25, meeting not in vault; supersedes Brian's 08-24 line on this point; first-meal case open)
 
 ## Where payroll meets the rest of the vault
 
