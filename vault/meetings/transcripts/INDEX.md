@@ -1,8 +1,8 @@
 # meetings/transcripts/ — raw client meeting transcripts
 
-**67 files, 2026-01-15 → 2026-09-28.** 57 migrated 2026-08-19 from a OneDrive/Teams/
+**68 files, 2026-01-15 → 2026-09-29.** 57 migrated 2026-08-19 from a OneDrive/Teams/
 Read.ai/Fireflies export (see `../../sync/` — there is no automated pipeline for this;
-it was a one-time manual pull); two more added 2026-08-27 from a 2026-08-27 OneDrive drop; **two more added 2026-09-04 from the `OneDrive_1_9-4-2026` drop** (2026-09-01 accounting/onboarding, 2026-09-02 sprint demo — the second needed 61 ASR substitutions, the heaviest single-file pass in the corpus, almost all of them "Euler" for *oiler*); one each added 2026-09-04 (2026-09-03) and 2026-09-11 (2026-09-10); **two more added 2026-09-17 from the `OneDrive_1_9-17-2026` drop** (2026-09-15 ERP live demo 01, 2026-09-16 resource types and billing codes); one more added 2026-09-24 from a single `.docx` in Downloads (2026-09-22 ERP live demo 02); one more added 2026-09-28 the same way (2026-09-28 ADP integration sync). Each file is a transcript **as captured**, not curated —
+it was a one-time manual pull); two more added 2026-08-27 from a 2026-08-27 OneDrive drop; **two more added 2026-09-04 from the `OneDrive_1_9-4-2026` drop** (2026-09-01 accounting/onboarding, 2026-09-02 sprint demo — the second needed 61 ASR substitutions, the heaviest single-file pass in the corpus, almost all of them "Euler" for *oiler*); one each added 2026-09-04 (2026-09-03) and 2026-09-11 (2026-09-10); **two more added 2026-09-17 from the `OneDrive_1_9-17-2026` drop** (2026-09-15 ERP live demo 01, 2026-09-16 resource types and billing codes); one more added 2026-09-24 from a single `.docx` in Downloads (2026-09-22 ERP live demo 02); one more added 2026-09-28 the same way (2026-09-28 ADP integration sync); one more added 2026-10-01 the same way (2026-09-29 safety discussion). Each file is a transcript **as captured**, not curated —
 no analysis, no cross-referencing, no conflict-flagging. That work exists separately for
 three of these dates as the curated minutes in `../` (2026-08-05, 08-07, 08-12) and, at a
 broader scale, in the *Recordings vs. Confluence Audit*.
@@ -94,3 +94,4 @@ and two dates in July have `no-recording` at all.
 | 2026-09-16 | Resource Types and Billing Codes | Transcript | 31.7 | [2026-09-16-resource-types-and-billing-codes.md](2026-09-16-resource-types-and-billing-codes.md) |
 | 2026-09-22 | ERP Live Demo 02 — quotation to project, job schedule, permit and plan trackers, DAS allocation and vendors | Transcript | 53.4 | [2026-09-22-erp-live-demo-02.md](2026-09-22-erp-live-demo-02.md) |
 | 2026-09-28 | ADP Integration Sync — new-hire onboarding in ADP, employee types, weekly worksheets, temp rate and the paydata CSV | Transcript | 52.7 | [2026-09-28-adp-integration-sync.md](2026-09-28-adp-integration-sync.md) |
+| 2026-09-29 | Safety Discussion — onboarding and safety training, certification matrix, accident / injury / incident reporting, facility compliance, dev environment | Transcript | 63.7 | [2026-09-29-safety-discussion.md](2026-09-29-safety-discussion.md) |

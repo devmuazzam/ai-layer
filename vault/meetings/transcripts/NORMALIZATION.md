@@ -239,3 +239,24 @@ temporary is" (50:01) was left, because a genuine *temporary rate* reading is po
 codes** were corrected only where the speaker's sentence names the live or dead company
 unambiguously; abdulrehman's "4YZ" / "4Y4RY" (3:48) was left. Speaker labels are reproduced
 uncorrected. Left unchanged: the items listed in the file's own header note.
+
+---
+
+# Pass 9 — 2026-10-01 (one new transcript only)
+
+Applied to `2026-09-29-safety-discussion.md`; no earlier file was touched. **22 substitutions**, each
+judged in its own line. The full breakdown, with the timestamps that pin each one, is in that file's
+header note. In summary: "Shyam" -> "Ehtesham" (2); "Sam Sara" -> "Samsara" (1, as pass 7); "Steb" /
+"Steph Gallagher" -> "Step Gallagher" (1 / 1); "Abdirahman" / "Abrahman" -> "Abdulrehman" (1 / 1) and
+"Aris" / "Paris" -> "Haris" (1 / 1); "TOIC" -> "TWIC" (1); "metrics" -> "matrix" (2); "ERB" -> "ERP" (1);
+"be an SF" -> "BNSF" (1); "debrivatized" -> "deprioritized" (1); "Green Super" -> "Crane Super" (1, as
+pass 1); "Dean" / "Adi" -> "Dee" (2 / 1); "Vanessa" -> "Melissa" (1); "SERS" / "Koopa" -> "CERS" /
+"CUPA" (1 / 1).
+
+New evidence rules used here: **"Dean" / "Adi" -> Dee** only where ehtesham.anwar addresses the Safety
+Manager, pinned by the spelling exchange at 5:38 (*"DEE"*); the exchange itself ("D EE Dean") is left
+as heard. **"Step Gallagher"** is pinned by the speaker spelling *"step STEP"* (10:03). It does not
+establish the product's official name. **"SERS" / "Koopa" -> CERS / CUPA** only as the pair, in the
+turn that names California submissions. **Speaker labels are reproduced uncorrected.** Dennene "Dee"
+Jones (Safety Manager) speaks on Brian Petros's room microphone for most of the call, and the file
+header lists the evidence. Left unchanged: the items listed in the file's own header note.

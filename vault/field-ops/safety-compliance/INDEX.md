@@ -2,7 +2,7 @@
 title: Safety and compliance — module index
 source: shared-folder/Project-Repository-2026-09-04/3.6.1_MODULE-SAFETY-COMPLIANCE/ and 1.0.1_BUSINESS-REQUIREMENTS/TCG_FORMS_(paper_and_electronic)/
 migrated: 2026-09-04
-updated: 2026-09-04
+updated: 2026-10-01
 status: unverified
 conflicts_with: []
 jira: []
@@ -21,6 +21,11 @@ so and link across.
 **What is here.** Everything TCG's safety department shipped in the 2026-09-04 Project Repository
 drop (`3.6.1_MODULE-SAFETY-COMPLIANCE`, 8 files), plus the two safety forms that arrived in the
 general forms folder instead.
+
+**Re-sent 2026-10-01 with two new files.** syed.haris supplied `3.6.1_MODULE-SAFETY-COMPLIANCE.zip` again (10 files). The eight files above are unchanged: their sizes match the [2026-09-04 inventory](../../sync/project-repository-2026-09-04-file-inventory.md). The new subfolder `Safety Module Ideas/` holds two files that Dennene Jones (Safety Manager) sent to Brian Petros on 2026-09-30, in answer to the [2026-09-29 safety call](../../meetings/2026-09-29-safety-discussion-onboarding-certifications-incidents-and-facility-compliance.md):
+
+- the **AbInBev360 requirements spec**, offered as *"an example of what we are looking for concerning accidents and injury submissions"* → [06](06-safety-data-platform-requirements-spec.md);
+- the **California compliance calendar**, meant to drive *"email notifications 90, 60 and 30 days out"* → [07](07-environmental-compliance-calendar.md).
 
 ## The requirement this material answers to
 
@@ -52,6 +57,8 @@ field-ops.**
 | [03-field-audit-and-safety-value.md](03-field-audit-and-safety-value.md) | **How is safety measured and reported?** — the field crane audit, the Safety Value Assessment, and the quarterly customer-facing report with its metric list | 13.9 |
 | [04-incident-investigation-form.md](04-incident-investigation-form.md) | **What happens after an incident?** — the 24-hour report, its full code lists, root causes and corrective actions | 10.0 |
 | [05-customer-imposed-safety-requirements.md](05-customer-imposed-safety-requirements.md) | **What do customers require of TCG?** — the SCE 71-page orientation and safety plan, and two H&M/Mesa subcontract safety documents | 18.3 |
+| [06-safety-data-platform-requirements-spec.md](06-safety-data-platform-requirements-spec.md) | **What should accident and injury reporting look like?** — the AbInBev360 (UL Solutions 360) reference Dee sent as an example (2026-09-30): five modules, roles and locations, TRIR/DART formulas, the OSHA 300, a 3-phase MVP, and 8 open questions. The e-mail says *"they wrote their own ERP … and it worked"* | 19.6 |
+| [07-environmental-compliance-calendar.md](07-environmental-compliance-calendar.md) | **What must TCG file, with whom, and when?** — 19 recurring California and federal filings (IFTA, UCR, Clearinghouse, CERS/CUPA HMBP and APSA, IGP, OSHA 300A) and 20 agency systems, for 90/60/30-day e-mail reminders | 10.4 |
 
 ## What is not here
 

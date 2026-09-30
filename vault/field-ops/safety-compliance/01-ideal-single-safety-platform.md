@@ -35,6 +35,8 @@ The stated purpose, verbatim:
 > documentation**. This would eliminate duplicate data entry, spreadsheets, paper files, and missed
 > compliance deadlines."*
 
+> **Later material (2026-09-30):** [06](06-safety-data-platform-requirements-spec.md) is the AbInBev360 reference that Dee sent as an example for accident and injury reporting. Her covering e-mail (*"they wrote their own ERP as well, and it worked"*) is the first lean on the build-or-buy question in §7.1. [07](07-environmental-compliance-calendar.md) is the compliance calendar.
+
 ---
 
 ## 1. Twelve domains in one dashboard
