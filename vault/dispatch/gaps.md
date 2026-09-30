@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-09-22
+updated: 2026-09-30
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -690,6 +690,29 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** product team — Lisette Anzaldo (DAS board), with Corrina Bustos where the answer
   has to agree with the payroll day.
 
+- **Build note (2026-09-29, branch `feat/schedule-datetime-holdover`, not yet merged) — the
+  job Schedule tab now lets an Estimated End fall on the next day, under a CodingCops rule
+  nobody at TCG has confirmed.** The new date+time dropdown lets the dispatcher put the
+  **Estimated End only** on the row's date or the day after; Start and On Site stay on the
+  row's date, and a shift must end **no more than 24 hours after its Start**. Nothing new is stored:
+  the day is derived from the `"HH:mm"` strings (end at or before On Site ⇒ next day,
+  `@tcg/shared` `isShiftEndNextDay` / `validateShiftTimes`), which is the rule
+  `shift-hours.util.ts`, the DAS loadout lock and the allocation overlap split already apply, so
+  no downstream reader changed. The API now refuses a *changed* shift that breaks it
+  (`apps/api/src/usecase/jobs/job-schedule-timeline.ts`). **This does not answer the question
+  above** — the DAS map clock still resolves an 18:00 → 02:00 end to that morning — and it adds
+  three of its own, below under *Schedule times on a later day*.
+- **Build note (same branch, TCG-186) — the DAS availability lock now treats an overnight shift
+  correctly.** It used to wrap 18:00 → 02:00 onto the **same** date (blocking 00:00–02:00 of the
+  morning *before*) and never looked at the next day. It now compares real date-time windows and
+  checks the day before and after, so the shift blocks the next morning at drop and Copy time.
+  The board's resource status stays per date (last night's crew keeps its *Previous Night* tag
+  and stays available, as [daily-allocation-system.md](daily-allocation-system.md) describes).
+  A conflict on another date is never cleared by *Reassign*: the save is refused and names the
+  other job's date. Otherwise reassigning onto an early shift could delete last night's
+  allocation, and its tickets, while that crew is still working it. The **map clock** (question
+  above) is unchanged.
+
 ## DAS map detail sidebar — what a unit's "resources" must list is unwritten
 
 - **Status:** open
@@ -990,6 +1013,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** any change that sets or clears the holdover flag as a side effect of Copy Allocations; the holdover configuration variants.
 - **Owner:** Lisette Anzaldo (dispatch). The discovery session that is said to have settled it is unidentified, so ehtesham.anwar should name it if it exists.
 
+- **Build note (2026-09-29, branch `feat/schedule-datetime-holdover`, not yet merged) — holdover
+  is now also a per-line job setting, and neither direction of this question was decided.**
+  *Make Holdover* (job Schedule tab footer and the DAS allocation panel, one shared modal) saves
+  which of the job's asset and employee lines are held: `JobResource.isHoldover`, per line, not
+  per job. Copy Allocations with *Hold over* ticked now **also** marks the copied lines held, so
+  the two paths share one set. Holding a line **carries its allocation onto the job's other
+  days**, earlier empty days included (see the entry below; revised the same day at syed.haris's request). Releasing a line clears the
+  day-level `JobResourceAllocation.isHoldover` on days still Open / Allocation Completed and not
+  ticket-locked, and keeps the allocations. Built defaults, not answers — see
+  [*Make Holdover — does holding an item carry its allocation forward on its own?*](#make-holdover--does-holding-an-item-carry-its-allocation-forward-on-its-own).
+
 ## An assist crane needed only on some days of a multi-day job — setup and breakdown
 
 - **Status:** open
@@ -1025,3 +1059,205 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## Pointer — asset-not-home flag depends on the holdover definition
 
 - **Pointer (2026-09-30):** Corrina Bustos asked for a flag when an asset **not assigned to a holdover job** does not return to its home yard at end of shift. It is filed once in [../assets/gaps.md → *Asset not returned to its home yard at end of shift*](../assets/gaps.md#asset-not-returned-to-its-home-yard-at-end-of-shift--a-requested-flag-with-no-owner-no-yard-geometry-and-no-shift-end). **Update 2026-09-30:** the Payroll Admin and Payroll Manager receive it and **dispatch is notified**, and the trigger is an engine-off away from the yards, not a time. Developer reading, pending ratification ([../decisions/2026-09-30-crew-flag-compares-left-and-arrived-yard-asset-must-return-to-departure-yard.md](../decisions/2026-09-30-crew-flag-compares-left-and-arrived-yard-asset-must-return-to-departure-yard.md)): the last shut-off of the day, away from the yard the asset left from that day. Dispatch owns how it is notified and what makes a job a holdover ([*Does copying allocations make a job a holdover?*](#does-copying-allocations-make-a-job-a-holdover)).
+
+## Make Holdover — does holding an item carry its allocation forward on its own?
+
+- **Status:** open
+- **Asked:** 2026-09-29 — building the Make Holdover design (job Schedule tab + DAS) on branch
+  `feat/schedule-datetime-holdover` (tcg), not yet merged. No SCRUM ticket.
+- **Question:** When a dispatcher holds an item over (say the crane) that is already allocated on
+  today's DAS, **should the same crane be placed on every remaining day of the job
+  automatically**, or does the dispatcher still decide which days, as with Copy Allocations?
+  One line settles it: "holding an item books it on every remaining scheduled day" or "holding
+  an item marks it; the dispatcher carries it forward".
+- **Built (revised 2026-09-29, at syed.haris's request):** the **first**. A held line's allocation
+  **carries onto the job's other days** and shows **On Hold** there, so it is at the site and not
+  offered to other jobs. Mechanics: for each held line and shift, every **empty** day of the job
+  takes the occupant from the nearest earlier day, or from the nearest later day when nothing
+  earlier has one. Assigning the crane on day 2 therefore also fills day 1; syed.haris expected
+  exactly that when testing JOB-00042. A day that already has someone keeps them, and the days
+  after it take that person. Only days from today that are still
+  Open / Allocation Completed and not ticket-locked are written. Each write goes through Copy
+  Allocations with *Hold over*, so its conflict rules apply, and a day where the resource is booked
+  elsewhere is skipped and named, with the day and the reason, in a warning after Save
+  Allocations or Make Holdover. Seen on JOB-00042 on 2026-09-30: TCG-CR-101 was held, but it is
+  booked on JOB-00032 on 1 and 2 Oct at the same hours, so those days were refused. That is
+  correct; the missing part was saying so. It runs when the holdover is saved, when an
+  allocation is saved on a held line, and when the schedule is saved. Saving Make Holdover with
+  an unchanged selection still saves, so it fills any day the items are missing from. The earlier
+  "offer Copy Allocations" prompt was removed.
+- **Why, from the record (no TCG ruling yet):** Lisette's dispatch sheet lists a holdover's crane
+  on **every** day of the job, marked `onsite` — *"already at the job site and … not leaving the
+  yard that day"* ([dispatch-sheet-workbook.md](dispatch-sheet-workbook.md) §4). UAT 3 logged as a
+  defect that an Oiler allocated on 12 September *"was not shown on the other days"* ([../uat/sessions/uat-session-3.md](../uat/sessions/uat-session-3.md)).
+  The design's banner says held items *"will not return to the yard on any day till end of the job."*
+  §10's objection (the tractor comes back) is met by holding per item: an item that isn't ticked
+  is not carried.
+- **Still for Lisette to confirm:** the whole rule. Also: (a) days **added** after items were held
+  now pick them up; is that right? (b) a crane **swapped** on one day stays swapped, and the new
+  one is carried on; is that right? (c) **releasing** a line keeps the carried allocations (only
+  their hold flag clears); should they be removed instead? (d) should an **employee** line be
+  carried too, booking that person on every later day (ticketed when each day's tickets go out),
+  or only equipment?
+- **Sources checked:** the design prototype (`TCG Platform (standalone) time.html`, `js2HoldModal`
+  / `dasAllocationPanel`) shows the modal and chips but saves nothing beyond the list;
+  [*Does copying allocations make a job a holdover?*](#does-copying-allocations-make-a-job-a-holdover);
+  [crane-configuration-rules.md](crane-configuration-rules.md) §10;
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) (*Holdover functionality* row:
+  "a manual Copy Allocations action… not automatic carry-forward").
+- **Owner:** Lisette Anzaldo (dispatch).
+
+## Which items of a holdover job go back to the yard between working days?
+
+- **Status:** open
+- **Asked:** 2026-09-29 — same build. The design's modal says *"The assets and resources we hold
+  over for the job will not return to the yard on any day till end of the job."*
+- **Question:** On a holdover job, **which items normally stay on site and which return each
+  night** — crane, tractor, trailer, counterweight trucks, crew vehicles? Is there a default the
+  modal should pre-tick, and does the first/last-day pattern need its own configuration variant?
+- **Built default:** nothing pre-ticked; the dispatcher ticks items per job, and the banner was
+  reworded to *"Selected assets and resources stay on site between working days and don't return
+  to the yard until the job ends"*, so it only claims what the dispatcher chose.
+- **Sources checked:** [crane-configuration-rules.md](crane-configuration-rules.md) §10
+  (reference, Lisette 2026-05-21: *"they bring back the tractor and sometimes the trailer comes
+  back or sometimes it stays"*; the crew uses personal vehicles until the last day; holdover
+  configuration variants were to be added to the workbook and never were);
+  [dispatch-sheet-workbook.md](dispatch-sheet-workbook.md) §4 (`onsite` / `crane-tractor onsite`
+  rows); [crane-configurations.md](crane-configurations.md) legend *"Crane is staying on site."*
+- **Blocked:** a pre-filled holdover selection; any per-day configuration variant.
+- **Owner:** Lisette Anzaldo (dispatch).
+
+## Is the DAS holdover the same thing as payroll's subsistence holdover?
+
+- **Status:** open
+- **Asked:** 2026-09-29 — same build.
+- **Question:** The platform now has **two** things called holdover: payroll's job-level
+  *"Crew stays away overnight (holdover)"* (`Job.subsistenceHoldover`, the Subsistence card on
+  the job's Main tab, gating PAY-048/049 subsistence) and dispatch's per-item *Make Holdover*
+  (`JobResource.isHoldover`). **Should holding an item over set the payroll flag, should the
+  payroll flag pre-fill the dispatch holdover, or are they independent?** And is *Kyle's* rule
+  (2026-09-03) that a tower-crane job is always a holdover a dispatch default, a payroll
+  default, or both?
+- **Built default:** independent; nothing links them. The modal says nothing about pay.
+- **Why it matters:** PAY-049 (*"every day of the holdover job, worked or not"*) is unbuilt for
+  want of "which employee is on holdover, and on which calendar days, independent of any
+  ticket" (`packages/payroll-engine/src/subsistence.ts` header). Held employee lines are that
+  data, if TCG says they mean the same thing.
+- **Sources checked:** [../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)
+  (verified); [../payroll/payroll-rules-provenance.md](../payroll/payroll-rules-provenance.md)
+  (subsistence rows); [../payroll/2026-08-20-payroll-rules-meeting-notes.md](../payroll/2026-08-20-payroll-rules-meeting-notes.md).
+- **Blocked:** any link between the two flags; PAY-049's calendar-day rule.
+- **Owner:** Lisette Anzaldo (dispatch) with Corrina Bustos (payroll).
+
+## Make Holdover — every unit of a line, who may set it, and at what stage?
+
+- **Status:** open
+- **Asked:** 2026-09-29 — same build.
+- **Question:** Three edges the design does not show. (a) A resource line with **quantity 2**
+  (two operators) is held as a whole — should the dispatcher be able to hold one of the two?
+  (b) **Who** may set a holdover — any user who can edit the job, or dispatch only? (c) Can it be
+  changed once a day's **tickets are sent**, or once the job is **completed**?
+- **Built default:** (a) the whole line; (b) anyone who can edit the job (no extra permission,
+  matching the job's other routes); (c) editable at any stage except a **Completed** job, and
+  releasing only clears holds on days still Open / Allocation Completed and not ticket-locked.
+- **Also:** the dev team said on the 2026-09-22 demo that the Schedule tab *"schedules the job
+  only; per-day resource scheduling is done in DAS"*. The design puts Make Holdover on the
+  Schedule tab anyway; built as designed. See
+  [../meetings/2026-09-22-erp-live-demo-02-project-schedule-permits-das-allocation-and-vendors.md](../meetings/2026-09-22-erp-live-demo-02-project-schedule-permits-das-allocation-and-vendors.md) §1.
+- **Owner:** Lisette Anzaldo (dispatch).
+
+## Schedule times on a later day — Start and On Site, shifts of 24 hours or more, and the minute step
+
+- **Status:** open
+- **Asked:** 2026-09-29 — building the job Schedule tab's date+time dropdown (same branch). See
+  the build note under [*Overnight DAS shifts*](#overnight-das-shifts--may-a-shift-cross-midnight-and-what-does-the-board-show-when-it-does).
+- **Question:** The design lets **any** of Start, On Site and Estimated End move to any later
+  date. The build allows only the **Estimated End**, and only to the **next** day. (a) Can
+  **Start** or **On Site** fall on the day after the row's date (a crew that leaves at 23:30 and
+  is on site at 00:30)? (b) Does any job run a single shift of **24 hours or more**? (c) The
+  design's time arrows step **1 minute**; the app's other date+time picker steps 15. Which does
+  dispatch want?
+- **Update 2026-09-29:** the second design drop (`TCG Platform (standalone)j.html`) lets you
+  click the date in every time field and pick any later date, and syed.haris asked for the same.
+  The built picker now opens the calendar on **all three** fields. But Start and On Site can only
+  take the row's date (other days greyed out, with the reason shown), and the End can take the
+  row's date or the next day. The reason: ~28 readers (tickets, DAS, payroll hours, notifications,
+  loadout lock) derive each time's day from the row's date. Letting Start or On Site move, or
+  allowing multi-day shifts, needs a stored per-time date and every reader updated. It also needs
+  (a) and (b) above answered first. TCG-186 does not need it.
+- **Built default:** (a) no — the row's date is the day the shift starts (the business day
+  starts at local midnight, [../decisions/2026-09-09-business-day-starts-at-midnight-local.md](../decisions/2026-09-09-business-day-starts-at-midnight-local.md)),
+  so such a shift belongs on the next row; (b) **at most 24 hours** — every downstream reader
+  (`shift-hours.util.ts`, the loadout lock, the allocation window) reads an end at or before the
+  start as the next day, so exactly 24 hours (End = On Site) is representable and allowed, and
+  anything longer is refused. Four rows in the local database already hold 07:00 → 07:00, saved
+  before the rule existed; (c) 1 minute, per the design. Allowing (a), or shifts over 24 hours,
+  would need a stored day offset per time, which the schedule does not have.
+- **Evidence on (b), not a ruling:** Ryan Adams, 2026-04-07 Figma demo (transcript 24:04–28:18,
+  unverified): *"Sometimes we have a 24 hour shifts too"*. And: *"you put one crew on one shift
+  during the day, one crew on shift during the night, but it is the same crane"*, for jobs
+  running *"seven days straight"*. ehtesham.anwar answered that this is the **second shift**.
+  So round-the-clock work is two shifts on one date, which the model supports.
+  Nobody has asked for a single shift longer than 24 hours.
+- **Owner:** Lisette Anzaldo (dispatch).
+
+## "Start Time" is renamed on the Schedule tab only — where else does "Leave Yard Time" appear?
+
+- **Status:** open
+- **Asked:** 2026-09-29 — same build.
+- **Question:** The verified decision
+  [../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)
+  (*The field is called "start time", not "leave yard time"*) was applied to the **job Schedule
+  tab** (column, bulk-apply label, messages and the time fields' accessible names). Should every
+  other screen that shows the same value rename it too — Tool/Rigging, the ticket-progress trip
+  step, the DAS, the mobile ticket flow and notification emails? The decision names the field,
+  not the screens, so this register does not assume it.
+- **Built default:** Schedule tab only. The API and database keep `leaveYardTime` /
+  `leave_yard_time`.
+- **Owner:** Joe Schacatano / Lisette Anzaldo.
+
+## Allocating by shift time (TCG-186) — which window holds a crane or crew member?
+
+- **Status:** open
+- **Asked:** 2026-09-29 — building Linear **TCG-186** *"DAS: Allocate by shift (time), not for
+  the whole day"* (Urgent; assigned to Fouzan Shakil) on branch `feat/schedule-datetime-holdover`
+  (tcg), not yet merged. No SCRUM folder.
+- **What was built:** a resource is held only for its shift's **window**, and may take a
+  non-overlapping shift on another job the same day. The API drop check, the Copy Allocations
+  check and its web preview, the board's per-resource bookings list and the side panels all use
+  one rule (`@tcg/shared` `shiftWindow` / `shiftWindowsOverlap`). Before this, the API compared
+  On Site → End on the same date only, while the board, the drop confirm and Copy treated any
+  booking that day as a whole-day block.
+- **Question:** the window is a CodingCops choice, and six parts of it need TCG to confirm:
+  (a) **Start → Estimated End.** It begins at **Start** (the dispatch start at the yard, per
+  [../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)),
+  or On Site when there is no Start. It ends at the **Estimated End**, which that decision says is
+  leaving the job, not arriving back at the yard. So the **drive back is not covered**, and a crane
+  can be offered to a job starting the minute it leaves the last site. Is a buffer, or an
+  estimated yard-arrival time, needed? (Joe asked for yard arrival; see *Schedule fields*.)
+  (b) **Untimed shifts** (no On Site or End yet) still block the whole date for the same shift
+  number, as before. Is that right?
+  (c) **A held-over item** is now carried onto the job's later days, so it blocks other jobs on
+  each of them — but only inside each day's shift window. Should a holdover block the resource
+  for the whole job, round the clock, regardless of windows? (See
+  [*Make Holdover — does holding an item carry its allocation forward on its own?*](#make-holdover--does-holding-an-item-carry-its-allocation-forward-on-its-own).)
+  (d) **Leave and sick** still block the whole date (`LeaveRequest` is date-only). Should a
+  half-day leave be possible?
+  (e) **A crane loaded out and not yet offloaded** on a morning job does **not** block a
+  non-overlapping afternoon job on another site. The API has always checked loadout state only
+  for overlapping windows. The old whole-day board hid this, and now nothing warns. Must a
+  loaded-out crane come back (be offloaded) before it can be offered to another job the same day?
+  (f) **Asset record "on site".** `Asset.jobCode` on the asset record shows it as on site on
+  every date. The side panels now offer such an asset for a non-overlapping shift when it also
+  has bookings that day. The field is unused locally (0 of 21 assets) and undocumented in the
+  vault. What is it for?
+- **Built rule, from the record rather than a ruling:** a job's allocations **never conflict
+  with the same job's other days**. The crane on a round-the-clock job is *"the same crane"* for
+  the day and night crews (Ryan, above, under *Schedule times on a later day*), and the loadout
+  carry-forward already ignored same-job conflicts (`conflict.jobUuid === item.jobId`). Without
+  this, the widened window would refuse the next day's crew on their own crane.
+- **Sources checked:** the Linear ticket text (problem / done-when only); the code paths above;
+  [daily-allocation-system.md](daily-allocation-system.md) (*Previous Night* tag);
+  the 2026-04-07 demo transcript (24-hour operations). No vault decision covers the allocation
+  window.
+- **Owner:** Lisette Anzaldo (dispatch).

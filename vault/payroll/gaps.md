@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-25
+updated: 2026-09-29
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -4876,3 +4876,15 @@ somewhere it should not have. Settle that before touching either.
   - the crew-time mismatch flag (Q10) and the Samsara start-of-ticket check (Q11). Neither is built;
   - the Samsara and invalid-entry flag sources. **None is in PR #690 / #691**, including the 30-minute tolerance and the AM/PM, same-time and out-of-order checks.
 - **Owner:** Corrina Bustos (payroll), with Brian Petros for C1–C3 (engine / rest rule). CodingCops for Q2's role design and C4.
+
+## DAS holdover vs subsistence holdover — pointer, owned by dispatch
+
+- **Status:** open
+- **Asked:** 2026-09-29 — building Make Holdover (branch `feat/schedule-datetime-holdover`, not merged).
+- **Question:** **Pointer only — the question lives in
+  [../dispatch/gaps.md](../dispatch/gaps.md) → *Is the DAS holdover the same thing as payroll's
+  subsistence holdover?*** Dispatch now marks held items per job line (`JobResource.isHoldover`);
+  payroll's `Job.subsistenceHoldover` is unchanged and unlinked. Whether they are one fact decides
+  whether PAY-049's "every day of the holdover, worked or not" can be fed from dispatch.
+- **Owner:** Lisette Anzaldo with Corrina Bustos.
+- **Rules:** [PAY-048](rules/PAY-048-standard-subsistence.md), [PAY-049](rules/PAY-049-weekend-subsistence.md)
