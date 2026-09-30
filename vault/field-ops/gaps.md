@@ -804,3 +804,37 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## Pointer — payroll flags no longer go to the crane superintendent
 
 - **Pointer (2026-09-29):** Corrina Bustos (Teams, 2026-09-29) routed all flags to the payroll admin and payroll manager, *"not the crane superintendent"* ([../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md)). Two things are open and filed once, in [../payroll/gaps.md → *Flagged entries go to payroll, not the crane superintendent*](../payroll/gaps.md#flagged-entries-go-to-payroll-not-the-crane-superintendent--who-corrects-them-who-the-payroll-admin-is-and-whether-send-back-survives): what the superintendent may still correct after submission, and whether "all flags" includes ticket progress *Flagged* (incident / deficiency / customer unavailable).
+
+## May one job ticket run 24 hours or more, or is a multi-day job always one ticket per day?
+
+- **Status:** open
+- **Asked:** 2026-09-30 — surfaced while recording the developer's answers to the multi-day gaps
+  ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md) A6).
+- **Question:** the verified
+  [../decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md](../decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md)
+  clause 1 has one ticket cover one asset group for one day (which may run past midnight). The
+  developer's 2026-09-30 answer (A6) allows a single ticket to run 24 hours or more across dates,
+  priced as one entry with a review flag — as PR #699 builds it. Which holds?
+- **Candidates:** (a) one ticket per day — a single 24 h+ ticket should not happen, and mobile /
+  corrections would need to stop it; (b) a 24 h+ ticket is allowed (developer answer A6).
+- **Blocked:** nothing ships-wise; payroll prices a 24 h+ ticket as one entry and flags it.
+- **Owner:** the TCG field-ops owner, with Lisette Anzaldo and Brian Petros.
+
+## End Work — break-down end, or the crew leaving the job site?
+
+- **Status:** open
+- **Asked:** 2026-09-30 — developer answer C10 in
+  [../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md).
+- **Question:** which instant closes `WORK_AT_JOB_SITE_TIME` (End Work)?
+- **Candidates:** (a) when the crew leaves the job site — `.ai/aidlc/SCRUM-PROGRESS/spec.md:201`
+  (`[UNVERIFIED]`: *"it closes `WORK_AT_JOB_SITE_TIME` when the crew leaves the job site"*) and the
+  developer's 2026-09-30 answer; (b) when the break-down timer closes — what mobile does today
+  (`apps/mobile/features/field-ticket/steps/start-work/StartWorkBody.tsx:261-274`) and what the
+  correction page labels it.
+- **Why it matters beyond payroll:** the API bills `WORK_AT_JOB_SITE_TIME` (arrived at site → End
+  Work). Moving End Work later lengthens the customer's billed window. The verified SCRUM-877 REQ-02
+  defines Net Billable from boom time instead. Pay (Start Ticket → End Ticket) is unaffected. Check
+  the billing effect before mobile ships the change.
+- **Developer answer 2026-09-30:** intended — customers are billed until the crew leaves the job
+  site ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), follow-up C10).
+- **Owner:** the TCG field-ops owner. No billing owner is named in the vault.

@@ -2,7 +2,7 @@
 title: "Flagged entries: boom bracket vs crane range, and Send Back to a Crane Supervisor — decision"
 source: decision/Syed Haris (CodingCops) — payroll flagged entries / send back, 2026-09-28 Claude Code session
 decided: 2026-09-28
-updated: 2026-09-29
+updated: 2026-09-30
 decided_by: >-
   The CodingCops developer building payroll flagged entries and Send Back (git user
   devmohsinakram, in a Syed Haris Claude Code session). The developer answered on 2026-09-28, on
@@ -86,6 +86,14 @@ entities: []
 > under it, and the rows add up to the entry. No pay rule, API or engine change. The open
 > DAILY-premium question stays open. See
 > [*Addendum 2026-09-29, fourth*](#addendum-2026-09-29-fourth--multi-day-entries-on-the-weekly-timesheet)
+> at the end.
+>
+> **Amended a fifth time 2026-09-30, display only, superseding the fourth addendum's items A, C
+> and D:** a multi-date entry now shows one independent row per date, each with the same ticket
+> code, its own panel, and a Send Back that returns the whole ticket. Nothing is nested, and the
+> `N days` chip is gone. The money division (fourth addendum, item B) is unchanged. No pay rule,
+> API or engine change. See
+> [*Addendum 2026-09-30, fifth*](#addendum-2026-09-30-fifth--independent-date-rows-on-the-weekly-timesheet)
 > at the end.
 
 **No ticket id is known for this work.** No Jira or Linear ticket was named when the decision
@@ -1020,6 +1028,12 @@ Not changed:
 
 ## Addendum 2026-09-29, fourth — multi-day entries on the weekly timesheet
 
+> **Superseded in part 2026-09-30.** Items A (a main row with later dates nested under it), C
+> (main vs nested panels) and D's `N days` chip are replaced by independent date rows, each with
+> the same kind of panel. D's list of when an entry stays one row is restated and extended there.
+> **Items B and E stay in force.** See
+> [*Addendum 2026-09-30, fifth*](#addendum-2026-09-30-fifth--independent-date-rows-on-the-weekly-timesheet).
+
 **What this amends: no clause.** It adds a display rule for a surface the note did not cover: the
 weekly payroll timesheet, `/payroll/:employeeId?weekStart=…`. It sits beside the second addendum's
 item C, which shows a multi-date entry's date range on Returned Entries, the correction page and
@@ -1163,3 +1177,203 @@ Not changed:
   date's row rather than the main row?"*
 - **No other file's frontmatter.** Nothing is verified or superseded by a developer's reference
   decision.
+
+## Addendum 2026-09-30, fifth — independent date rows on the weekly timesheet
+
+> **Read with the later 2026-09-30 decisions.** Corrina Bustos's verified decisions of the same
+> day change who acts on a Send Back:
+> - Send Back now goes to the **worker**, with a 3-hour reminder
+>   ([2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)).
+> - Payroll fixes entries itself
+>   ([2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md](2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md)).
+>
+> So "sent back as a whole", below, now means two things:
+> - **Every date of the ticket**, as item D says.
+> - **Every worker on a shared ticket**, per the developer's crew answer (item C6 of
+>   [2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md)).
+>   Sending back the Oiler or the Operator sends the ticket to both and blocks both their weeks.
+>   That is **the developer's reading, pending Corrina**, so the multi-crew gap stays open.
+>
+> **The Crane Supervisor correction page is superseded as the corrector.** That is the
+> `/payroll-corrections` form reworked on PR #699. Payroll's own fix and the worker's mobile edit
+> replace it (item C3 of the same note). This addendum's timesheet rows are unaffected.
+
+**What this amends: the fourth addendum's items A, C and D.** It changes how the weekly payroll
+timesheet, `/payroll/:employeeId?weekStart=…&periodId=…`, shows an entry that runs over more than
+one date. The fourth addendum's **item B** (how the money is divided between the rows) and **item
+E** (answers no open pay question) **stay in force**. Clauses 1–6 and the first three addenda are
+unchanged.
+
+- **Item A**, a main row with later dates nested under it, is replaced by independent top-level
+  rows, one per date.
+- **Item C**, the main vs nested panels, is replaced by one kind of panel on every date row.
+- **Item D**'s `N days` chip, which folded the entry back to one row, is removed. D's list of when
+  an entry stays one row is restated and extended in item E below.
+
+**Who decided.** The same developer as the original note: git user `devmohsinakram`, on
+2026-09-30, on PR #699 (branch `fix/payroll-correction-page-ui`), about the weekly timesheet. Their
+words:
+
+- *"if a job done in 2 days like 27 and 28 in payroll on this page there is no need to add nested
+  entery on for 27 and 28; make independent enteries for both days with same ticket id and manage
+  everyting in both enteries; when send that ticket back for corrrection like for 27 or 28 it
+  should send all ticket back not jut 27 or 28 one entry; do your best to handle it"*
+
+The words settle three things:
+
+- **One independent row per date, with the same ticket id.** No nesting.
+- **"Manage everything in both entries."** Every date row has the same panel and the same actions.
+- **Sending back from either date sends the whole ticket back**, not one date's share of it.
+
+The rest is the session's implementation of *"do your best to handle it"* (items A–E). The
+recording agent was given no separate verbatim quote for it.
+
+- **How "it should send all ticket back" was read.** As every date and every capture of **this
+  employee's** entry on that ticket. That is how Send Back already worked (item D). It was **not**
+  read as the ticket for every crew member on it, and the developer was not asked. That other
+  reading is registered as an open question:
+  [payroll/gaps.md → *Send Back of a multi-crew ticket*](../payroll/gaps.md#send-back-of-a-multi-crew-ticket--does-sending-a-ticket-back-also-return-it-for-the-other-crew-members-on-that-ticket).
+
+Like the original note, this is a **developer's decision** at `status: reference`. It binds the
+timesheet's implementation now, and TCG can overrule it. **Nobody on the client side has ratified
+it.**
+
+**Presentation only. No pay rule, API, engine or schema change, and no money moves.** The entry is
+still one priced job day, with one stored total, paid in one week. The rows only divide how that
+total is shown. No source in [payroll/payroll-rules-provenance.md](../payroll/payroll-rules-provenance.md)
+is needed or touched.
+
+**Build status: built, uncommitted.** Web only, on branch `fix/payroll-correction-page-ui` (PR
+#699), in the working tree on top of commit `b3c992f10`. No commit hash yet. Paths are under
+`apps/web/src/features/payroll/`. Line numbers are not given, because the working tree was still
+changing when this was recorded:
+
+- `lib/payroll-entry-split.ts` (modified): `splitEntryByDate` now returns a flat `parts[]`, in date
+  order, with `parts[0]` the Start Ticket date carrying the entry's items.
+- `lib/payroll-timesheet-rows.ts` (new): `timesheetRows`, which orders the rows.
+- `components/payroll-job-day-dates.ts` (modified): `timesheetRowsOf`.
+- `components/payroll-employee-table.tsx`, `.row.tsx`, `.cells.tsx`, `.dates.tsx`, `.split.tsx`
+  and `.expanded.tsx` (modified).
+- `components/payroll-employee-table.nested.tsx`, the fourth addendum's nested rows, is
+  **deleted**.
+- No `apps/api` file is in this change.
+
+Check A–F against the merged code when the branch closes.
+
+### A. One independent row per date (supersedes the fourth addendum's item A)
+
+- An entry split by date shows **one top-level row per payroll-zone date**. No row is nested under
+  another.
+- **Each row carries the same ticket code**, plus a `Day k/N` badge. Its hover text says it is one
+  ticket, priced as one entry, paid in the week of its Start Ticket date, and sent back as a whole.
+- **Rows sort by date, then by the start of that row's part of the shift.** A later date's row sits
+  among that date's other entries, not under its first date.
+- **A date outside the pay week** is marked *after week* or *before week*. The row stays on the
+  anchor week's timesheet, because that week pays it.
+  - That is what the engine does today. Which week should own hours after Saturday 00:00 is the
+    second addendum's item E(a), still open.
+- **A Daily Summary date filter** now shows only that date's rows. An entry that could not be split
+  (item E) still shows on every date it touched.
+
+### B. Money per row (the fourth addendum's item B, unchanged)
+
+The division is the fourth addendum's item B. It is restated here for the new row shape.
+
+- **Each later date's row** shows its own `dateSplits` hours, rungs and slice pay.
+- **The Start Ticket date's row** takes the remainder. That is its own slices, plus everything
+  priced once for the ticket.
+- **So the rows add up exactly to the entry's stored total.** Nothing is re-priced in the browser.
+- **Long boom, lunch/WTL hours and rule adjustments** are priced once for the ticket. They show only
+  on the Start Ticket date's row. A later row shows a dash, with hover text saying why. So no hour
+  or dollar is counted twice down the table.
+- **Craft, modifier and rules badges** describe the whole ticket, and show on every row.
+
+### C. One kind of panel on every row (supersedes the fourth addendum's item C)
+
+Every date row has its own expand chevron. The panel reads, in order:
+
+1. **The ticket's review state:** flag, and send-back state.
+2. **That date's own section:**
+   - the date, and day k of N;
+   - window, worked, payable, and hours by rung;
+   - pay. On the Start Ticket date, the entry-items share is named;
+   - *Pay on this date*, by rung.
+3. **A *Whole ticket `<code>` · `<date range>`* heading**, over the ticket-level sections:
+   - start/end, shift, gap, modifier, time source, boom union;
+   - worker comment, meal periods, rule explanation;
+   - the *Ticket by date* table, with this row's date picked out.
+4. **The actions.**
+
+So the overall calculation is one click from any row, as the fourth addendum's direction asked,
+and every row is managed the same way, as this one asks.
+
+### D. Send Back from any date row returns the whole ticket
+
+- **This was already how the system worked. Now every row exposes it.**
+  - A send-back is keyed per (period, job ticket, employee)
+    (`apps/api/src/usecase/payroll-send-backs/payroll-send-backs.service.ts:246-268` at
+    `b3c992f10`).
+  - The correction page edits every date and every capture of the ticket.
+- **Every row passes the job day's own id.** So both rows show the same send-back state, and the
+  button reads *Send back whole ticket*.
+- **The Send Back dialog lists one line per ticket**, with *all N dates*.
+- **Counts now say tickets, not entries:** the stats line, the ADP dialog, the send-back banners and
+  the toast.
+- **What this does not settle:** whether sending one employee's entry back should also return, or
+  hold, the ticket for the **other crew members** on it. A correction to shared ticket times changes
+  their pay, but creates no send-back or approval hold for them. That is open:
+  [payroll/gaps.md → *Send Back of a multi-crew ticket*](../payroll/gaps.md#send-back-of-a-multi-crew-ticket--does-sending-a-ticket-back-also-return-it-for-the-other-crew-members-on-that-ticket).
+
+### E. When it stays one row (replaces the fourth addendum's item D)
+
+- **The `N days` chip is removed.** Splitting is no longer a toggle. An entry that can be split is
+  always shown split.
+- **The entry is not split, and its panel says why, when:**
+  - its per-date explanation does not match the stored run: hours per bucket or worked hours
+    differ. That happens with a chain carried in from last week, or a correction that moved the
+    rungs;
+  - its first date is not the stored Start Ticket date;
+  - there is no base rate to price slices with, as on an entry paid only at holiday rates;
+  - its ticket was corrected while the week still has a correction waiting to be recalculated;
+  - the API sent no `dateSplits`.
+
+### F. Still not an answer to any open pay question (the fourth addendum's item E stands)
+
+- **E(a), E(c) and E(g) stay open**, as the fourth addendum's item E says:
+  - which pay period owns the hours after Saturday 00:00;
+  - daily and long-boom minimums on the shift anchor date or on each calendar date;
+  - DAILY catalog premiums once per ticket or once per calendar date.
+- A DAILY premium or a minimum shows on the Start Ticket date's row because the engine prices it
+  once per entry today. That is not a ruling that once per ticket is right.
+- **The holiday-minimum display tension** in the fourth addendum's item E still applies, with *the
+  Start Ticket date's row* in place of *the main row*. It is still not registered.
+
+### Who ratifies this addendum
+
+- **A–E: nothing beyond this note's own ratification.** They change only how the weekly timesheet
+  shows an entry. Item D exposes Send Back as clause 3 already defines it.
+- **The multi-crew Send Back question that item D raises:** Brian Petros and Corrina Bustos, who
+  ratify clauses 3 and 6. The TCG field-ops owner ratifies clause 4, which makes shared edits move
+  the whole crew. No field-ops owner is named for this question.
+- **The pay questions in F**: Brian Petros and Corrina Bustos, as already registered.
+
+### Effect on the vault (this addendum)
+
+Done in the same pass:
+
+- This file: **done**.
+  - A fifth line was added to the pointer under the title.
+  - A *Superseded in part 2026-09-30* note was added at the top of the fourth addendum.
+  - `updated: 2026-09-30`. `status` stays `reference`, and `conflicts_with` stays `[]`.
+- [payroll/gaps.md](../payroll/gaps.md): **done**. One new entry was appended, `Status: open`:
+  [*Send Back of a multi-crew ticket — does sending a ticket back also return it for the other crew
+  members on that ticket?*](../payroll/gaps.md#send-back-of-a-multi-crew-ticket--does-sending-a-ticket-back-also-return-it-for-the-other-crew-members-on-that-ticket)
+
+Not changed:
+
+- E(a), E(c) and E(g) in [payroll/gaps.md](../payroll/gaps.md) stay `open`, and their entries are
+  untouched.
+- **No other file's frontmatter.** Nothing is verified or superseded by a developer's reference
+  decision.
+- [payroll/INDEX.md](../payroll/INDEX.md) still needs the line described above. That is still
+  outside the recording agent's write scope.

@@ -4664,7 +4664,14 @@ somewhere it should not have. Settle that before touching either.
 
 ## Which payroll issues block approval (PAY-065) — a provisional list is live in every tenant
 
-- **Status:** open
+- **Status:** open — **partly answered 2026-09-30.**
+  - **Answered for the nine flags:** they block (Corrina, verified). A flag is cleared as "reviewed,
+    no change", and those mechanics are now settled (see the developer-answer line below).
+  - **Still open:**
+    - the provisional `NO_ADP_FILE` + `RATE_*` list;
+    - (b) product list vs tenant setting, and (c) approval levels;
+    - sub-questions 1–3;
+    - the developer's readings on Calculate and on a never-completed ticket, which wait on Corrina.
 - **Asked:** 2026-09-24. This is the TCG-164 audit. The question itself dates from the TCG-164 ticket (2026-09-23), which recorded it only in Linear and in code comments. **Rules:** PAY-065; PAY-063 shares the blocking item.
 - **Question:**
   - **(a)** Which `PayrollIssue` codes block approval of an employee-week or a period?
@@ -4693,6 +4700,24 @@ somewhere it should not have. Settle that before touching either.
   - The provenance PAY-065 row is updated.
   - A data migration replaces the provisional rows in existing tenants, and the seed constant is changed to match.
 - **Update 2026-09-30 — the payroll flags block (Corrina Bustos, Teams, `verified`):** [../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md). *"yes all of these will need to be adjusted and fixed before the payroll can be approved"*, said of the nine flags: boom out of range, overlapping jobs, under 8 h rest, missing notes, invalid times, invalid long boom time, Samsara more than 30 min off, crew Left Yard / Arrived Yard mismatch, asset not back at its departure yard. **These nine now block**, as client policy. The provisional `NO_ADP_FILE` + `RATE_*` list, (b) product-vs-tenant, (c) approval levels, and sub-questions 1–3 **stay open** for every other code. **New sub-question 5:** how a flag is cleared when nothing needs changing, given that every flag must be *"fixed"*. **→ Answered 2026-09-30** ([../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md)): payroll can mark a flag **"reviewed, no change"** and the week can be approved. Open: whether a note is required, who may do it, and the audit trail. **Also 2026-09-30, same note:** *"all tickets must be completed before the payroll can be processed/approved"*. **An incomplete ticket blocks**, which supersedes the warn-only in the 2026-09-10 overlay decision's clause 6. Open: whether Calculate is blocked too; an escape path for a cancelled or never-completed ticket.
+- **Developer answer 2026-09-30** (git user `devmohsinakram`, `reference`):
+  [../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md).
+  - **Every flag blocks weekly approval** (item C1). This agrees with Corrina and adds nothing.
+    **Settled.**
+  - **Sub-question 5, "reviewed, no change": answered** (item C2).
+    - A note is required, and the action is audited.
+    - Only the Payroll Admin / Payroll Manager may do it.
+    - It is available for every flag type.
+
+    Corrina said yes to the action, and the developer set the mechanics. **Settled.**
+  - **Flag 9 (asset not back at its departure yard) blocks that ticket's crew's weeks** (item C5).
+    **Settled**, as mechanics of her rule that every flag blocks.
+  - **An incomplete ticket blocks Approve only. Calculate stays allowed** (item C7). This is the
+    developer's reading of her *"processed/approved"*. **Pending Corrina.**
+  - **A never-completed ticket** (item C8). The Payroll Admin / Manager may complete it, entering
+    the missing times, or void it. Either way a note is required, and the action is audited.
+    **Pending Corrina.** Voiding reaches dispatch and billing, and nobody has asked either.
+  - **The over-24 h review flag** (item A7) fires at 24 h or more. It blocks like every other flag.
 - **Owner:** **Corrina Bustos** (named on TCG-164 and as the approval-levels owner).
 
 ## Calculation-run log (PAY-064): who "the payroll manager" is, and what "pay settings in effect" covers
@@ -4830,32 +4855,69 @@ somewhere it should not have. Settle that before touching either.
 
 ## Flagged entries go to payroll, not the crane superintendent — who corrects them, who the payroll admin is, and whether Send Back survives
 
-- **Status:** open — **partly answered 2026-09-29 by Corrina Bustos's second reply**, recorded in [../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md](../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md) (`status: verified`). Answered: 1, 2, 5(a)–(c), 5(d) sources half, 5(e) adjust half. **Third reply, same day** ([../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md](../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md), `verified`): C1 answered in her voice; Q7/Q8 partly answered; Q9's tolerance answered. Still open: 3, 4, 5(d) manual half, 5(f), 6, the remainders of 7–9, C1's confirmation trail, and C2–C6. **2026-09-30 messages** ([../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md](../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md), `verified`): C2 closed; a crew-time mismatch flag added (Q10); a Samsara start-of-ticket check requested (Q11); an asset-not-home flag requested and filed in assets (see *Related*). **Flag list confirmed 2026-09-30** ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)): nine flags, **all blocking** until fixed; Send Back to the worker with a 3-hour reminder; Q10's Left Yard / Arrived Yard ratified. **Q6 is still unanswered.** New open points: ~~how payroll clears a flag where nothing is wrong~~ **answered: "reviewed, no change"** ([../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md)); whose week an asset flag blocks; 24 vs 23.5 h. *(Was: open in full, 2026-09-29.)*
+- **Status:** open — **partly answered 2026-09-29 by Corrina Bustos's second reply**, recorded in [../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md](../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md) (`status: verified`). Answered: 1, 2, 5(a)–(c), 5(d) sources half, 5(e) adjust half. **Third reply, same day** ([../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md](../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md), `verified`): C1 answered in her voice; Q7/Q8 partly answered; Q9's tolerance answered. Still open: 3, 4, 5(d) manual half, 5(f), 6, the remainders of 7–9, C1's confirmation trail, and C2–C6. **2026-09-30 messages** ([../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md](../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md), `verified`): C2 closed; a crew-time mismatch flag added (Q10); a Samsara start-of-ticket check requested (Q11); an asset-not-home flag requested and filed in assets (see *Related*). **Flag list confirmed 2026-09-30** ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)): nine flags, **all blocking** until fixed; Send Back to the worker with a 3-hour reminder; Q10's Left Yard / Arrived Yard ratified. **Q6 is still unanswered.** New open points: ~~how payroll clears a flag where nothing is wrong~~ **answered: "reviewed, no change"** ([../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md)); ~~whose week an asset flag blocks~~ **answered 2026-09-30: that ticket's crew's weeks** (developer mechanics); 24 vs 23.5 h **→ developer 2026-09-30: 24, at or above** (the `>=` boundary is pending Corrina). **Developer answers 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), `reference`): Q3's open remainder and Q5(f) are answered as mechanics of Corrina's rule; see the dated line below. **The entry stays open** for Q4, Q5(d)'s manual half, Q6, the remainders of Q7–Q9, Q10(c)(d), Q11, C1's confirmation trail, and C3–C6. **Round 9, 2026-09-30** (developer, [same note, section *Round 9*](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30)): **C4 answered** (CodingCops design: a per-employee override table). Q6, Q7 (AM/PM detection, labor vs ticket), Q8, Q9, Q10(c)(d) and Q11 now have developer readings, **pending Corrina's ratification**. See the dated lines under each. **Open after round 9:** Q4, Q5(d)'s manual half, Q6–Q11 (ratification, plus the remainders named under each), C1's confirmation trail, C3, C5 and C6. **Rounds 10–11, 2026-09-30** (developer, [same note, section *Rounds 10 and 11*](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#rounds-10-and-11--flag-details-for-payroll-flags-u14u21-2026-09-30), `reference`): developer readings for Q5(d)'s *missing notes* (what counts as a note), Q7 (AM/PM replaces out-of-order; the 30 minutes is on the total difference) and Q10(c)(d) (only the mismatching workers are held, which narrows round 9), **pending Corrina's ratification**. C1's rest-start mechanics (per rest chain, across chains) are **pay-affecting, pending Corrina Bustos / Brian Petros**. Nothing is closed. *(Was: open in full, 2026-09-29.)*
 - **Asked:** 2026-09-29, by Syed Haris (CodingCops) to Corrina Bustos on Teams. The eight-question message described the 2026-09-28 review design. Her first reply answered only routing: [../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md). A six-question follow-up the same day got the second reply.
 - **Settled, for context:** flags go to the **payroll admin and payroll manager**, not the crane superintendent. That overrules clauses 3 and 5 of [../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md). The second reply overrules clause 4 (who corrects; whole crew → individual).
 - **Questions**, each phrased so a one-line reply settles it:
   1. ~~**Who corrects a flagged entry?**~~ **Answered:** *"Payroll Admin/Manager adjusts"*. Payroll corrects directly.
   2. ~~**Who is the "payroll admin"?**~~ **Answered:** *"Right now the Payroll Administrator is Micaela Slykhuis"*. The assignment must be adjustable, so it is a role, not a hardcoded person. Both roles *"need to get all of the flags and be able to adjust"*. **Left open:** whether it is a new ERP role/permission beside `ROLE-ACCOUNTS-PM`, which is design work, not a client question. Also who Micaela Slykhuis is (C5).
-  3. **Does Send Back survive?** Now that payroll corrects directly, is there still any send-back? If yes, to whom: the worker on mobile (Confluence US-03 AC 3 and 10; Ehtesham Anwar 2026-08-04 20:24 and 34:11)? **→ Answered 2026-09-30** ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)): yes. The target is **the worker**, with a reminder after 3 hours. Payroll may also fix any time itself. **Open:** the worker's mobile screen and edit rights, who the reminder goes to, and whether it repeats.
+  3. **Does Send Back survive?** Now that payroll corrects directly, is there still any send-back? If yes, to whom: the worker on mobile (Confluence US-03 AC 3 and 10; Ehtesham Anwar 2026-08-04 20:24 and 34:11)? **→ Answered 2026-09-30** ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)): yes. The target is **the worker**, with a reminder after 3 hours. Payroll may also fix any time itself. **Open:** the worker's mobile screen and edit rights, who the reminder goes to, and whether it repeats. **→ Answered 2026-09-30 as mechanics** (developer, items C3–C4 of [../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md)): the worker **edits the ticket times on mobile and resubmits**, and payroll recalculates. The reminder goes **to the worker, every 3 h, until they respond**. **Q3 is answered.** The one exception is the crew extension, a shared ticket sent back to every worker on it. That is pending Corrina under [*Send Back of a multi-crew ticket*](#send-back-of-a-multi-crew-ticket--does-sending-a-ticket-back-also-return-it-for-the-other-crew-members-on-that-ticket).
   4. **Does "all flags" include the field-ops ticket progress *Flagged*** (incident / deficiency / customer unavailable), or only payroll review flags? — **open**
   5. **The rest of the first 2026-09-29 message:**
      - (a) ~~Whole crew on a shared Start Work / End Job edit?~~ **Answered:** *"individual"*.
      - (b) ~~Which times are editable?~~ **Answered:** *"all times"*.
      - (c) ~~Is rest measured on rounded or actual times?~~ **Answered:** from the **rounded paid** time, and paid time includes the WTL penalty (11:00 PM + 30 min → 11:30 PM). This is a pay rule, and it is contested (C1, C2).
      - (d) Auto-flag sources: **answered:** overlapping jobs, under 8 hours' rest, missing notes, invalid time entries, invalid long boom time entries, time not matching Samsara. **Open:** can a flag be raised manually?
+       - **Developer answer 2026-09-30 (rounds 10–11)** ([note, H1](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#rounds-10-and-11--flag-details-for-payroll-flags-u14u21-2026-09-30), `reference`), on *missing notes*: **any note on the ticket** satisfies "a note is required": the labor comment, the left-yard comment, a ticket comment, the signature comment, or a time-adjustment reason. When a note is required is round 9's [F5](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30): an adjusted time, a worked-through lunch, any flag on the entry, a ticket over 12 h, or a checklist issue. **Still open**, for Corrina Bustos to ratify. Whether a flag can be raised manually is not addressed.
      - (e) Approve or override: **answered in part:** both roles *"be able to adjust"*. Whether a flag can be approved as-is without adjusting is assumed by the 09-28 clause 6 (flag warns only), and not restated.
-     - (f) **Reminder** for an unhandled flag, and after how long? Corrina asked for one herself, 2026-08-04 15:50 ([../meetings/transcripts/2026-08-04-payroll-process.md](../meetings/transcripts/2026-08-04-payroll-process.md) line 78). Confluence US-03 AC 9 says 3 hours. Now the recipients are payroll itself, so is a reminder still wanted? **→ Answered 2026-09-30:** a reminder after **3 hours** on a Send Back to the worker ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)).
+     - (f) **Reminder** for an unhandled flag, and after how long? Corrina asked for one herself, 2026-08-04 15:50 ([../meetings/transcripts/2026-08-04-payroll-process.md](../meetings/transcripts/2026-08-04-payroll-process.md) line 78). Confluence US-03 AC 9 says 3 hours. Now the recipients are payroll itself, so is a reminder still wanted? **→ Answered 2026-09-30:** a reminder after **3 hours** on a Send Back to the worker ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)). It repeats every 3 h until the worker responds (developer, 2026-09-30, item C4).
   6. **What does the boom flag compare against?** The crew's bracket vs (a) the crane's physical min–max boom length (2026-09-28 rule, clause 1), or (b) the job's crane configuration set by sales? Melissa McNutt described (b) on 2026-05-28 at 46:05 ([../meetings/transcripts/2026-05-28-mobile-app-payroll.md](../meetings/transcripts/2026-05-28-mobile-app-payroll.md) line 276). — **open**. **2026-09-30:** asked as an either/or and **not answered**. **Asked again later on 2026-09-30 and again not answered** ([../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md)). Suggest routing it to Brian Petros or raising it at the demo. Her *"all of those are correct"* confirmed item 1 as worded (*"the crane's boom range"*) but did not address the choice. Recorded as unanswered, not as a choice.
-  7. **What is an "invalid time entry"?** **Partly answered (third reply):** *"incorrect use of AM/PM … times out of order, etc"*, and identical start and end (*"start work 1am, end work 1am. we see that often"*). **Open:** the rest of "etc" — a missing milestone, an over-long window, a future time? And how is "incorrect AM/PM" detected: a 12-hour offset that would fix order, an implausible hour, or something else? **2026-09-30, confirmed by assent** ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)): the list also includes duplicate entries, a missing start or end, shifts over **24** hours (vs PAY-004 / the 09-28 correction's **23.5** h: which applies?), and labor not matching the ticket.
+     - **Developer answer 2026-09-30 (round 9)** ([note, F1](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30), `reference`): **(a), the crane's min–max boom range**. That is what is built, and clause 1 of the 2026-09-28 rule. The job's sales configuration (b) is not used. `RANGE_MISSING` (no range recorded) blocks, like every flag (C1). This is the developer's reading, **not Corrina's choice**. **Still open**, for Corrina Bustos (or Brian Petros) to ratify.
+  7. **What is an "invalid time entry"?** **Partly answered (third reply):** *"incorrect use of AM/PM … times out of order, etc"*, and identical start and end (*"start work 1am, end work 1am. we see that often"*). **Open:** the rest of "etc" — a missing milestone, an over-long window, a future time? And how is "incorrect AM/PM" detected: a 12-hour offset that would fix order, an implausible hour, or something else? **2026-09-30, confirmed by assent** ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)): the list also includes duplicate entries, a missing start or end, shifts over **24** hours (vs PAY-004 / the 09-28 correction's **23.5** h: which applies?), and labor not matching the ticket. **→ Developer 2026-09-30 (item A7): 24 h, at or above.** The correction's 23.5 h refusal was lifted on 2026-09-29 (second addendum, item A), and PAY-004's 23.5 h cap covers imported FCC rows only. The `>=` boundary differs from her *"over 24"* only at exactly 24.0 h, and is pending Corrina.
+     - **Developer answer 2026-09-30 (round 9)** ([note, F2–F3](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30), `reference`):
+       - **Wrong AM/PM:** flag an out-of-order time that adding or removing 12 hours would put in order.
+       - **Labor not matching the ticket:** compare the worker's **own** work window with the ticket's Start Ticket → End Ticket (see [*Payable time*](#payable-time--start-work-to-end-work-or-yard-to-yard)). Flag when they differ by **more than 30 minutes**. The 30 minutes is a new figure here, reusing the Samsara tolerance. Not stated: whether it is measured at each end or on the total.
+       - **Still open**, for Corrina Bustos to ratify. The rest of *"etc"* is not addressed.
+     - **Developer answer 2026-09-30 (rounds 10–11)** ([note, H3–H4](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#rounds-10-and-11--flag-details-for-payroll-flags-u14u21-2026-09-30), `reference`):
+       - **Wrong AM/PM replaces out-of-order.** Where adding or removing 12 hours would put a pair in order, only the AM/PM flag fires. It replaces the generic out-of-order flag for that pair. Other out-of-order pairs keep the generic flag.
+       - **Labor vs ticket, round 11: the total difference.** Flag when |own start − Start Ticket| + |own end − End Ticket| is more than 30 minutes. It is not measured per edge. 20 minutes at the start and 20 at the end (40 in total) flags. This answers round 9's *not stated*.
+       - **Still open**, for Corrina Bustos to ratify. The rest of *"etc"* is still not addressed.
   8. **What is an "invalid long boom time entry"?** **Partly answered (third reply):** boom start equal to boom end, out of order, wrong AM/PM. **Open:** is a boom session outside Start Work → End Job invalid? She was offered that example and did not repeat it. What about boom hours without a long-boom bracket? (PAY-043 long-boom 4-hour minimum is the nearby rule.)
+     - **Developer answer 2026-09-30 (round 9)** ([note, F4](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30), `reference`): **yes.** A boom session that starts before Start Work, or ends after End Job, is invalid. This is in addition to her three checks. **Still open**, for Corrina Bustos to ratify. Boom hours with no long-boom bracket: not answered.
   9. **How does the Samsara comparison work?** **Tolerance answered (third reply):** flag when a ticket time is *"further than 30 minutes outside of geotag time"*. **Open:** which ticket events are compared with which geotag events (leave yard / arrive site / leave site / arrive yard); and what happens when Samsara has no data — flag, no flag, or its own status? Untracked or silent cranes: [../assets/gaps.md](../assets/gaps.md) → *A Samsara link that has gone silent*, *One Asset ↔ one Samsara asset*, *Samsara vehicle tracking*.
+     - **Developer answer 2026-09-30 (round 9)** ([note, F8–F11](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30), `reference`):
+       - **Left Yard** is compared with the moment the asset **leaves the yard's location**, and **Arrived at Yard** with the moment it **re-enters** it. This needs yard geofences, with a **500 m** radius around a yard's address coordinates.
+       - Only those two points are compared, at the start and end of the day. Arriving at and leaving the job site are not compared.
+       - **No Samsara data → no flag.** So an untracked or silent crane never raises this flag.
+       - **Still open**, for Corrina Bustos to ratify.
   10. **Crew time mismatch flag (2026-09-30).** **Answered:** flag when crew times differ, with *"any difference"* and no tolerance. **Scope answered (later reply, [../decisions/2026-09-30-crew-time-flag-job-start-to-yard-return-across-tickets-and-asset-flag-on-engine-off.md](../decisions/2026-09-30-crew-time-flag-job-start-to-yard-return-across-tickets-and-asset-flag-on-engine-off.md)):** *"all members"* of the job, **across their separate tickets**. **Times replaced by the same reply:** *"Start time (very start of job) and End time (back at yard)"*, no longer *"Start work and End Work"*. (a)/(b) **ratified 2026-09-30** (flag list: *"Left Yard or Arrived at Yard different for anyone on the job"*), first developer-decided ([../decisions/2026-09-30-crew-flag-compares-left-and-arrived-yard-asset-must-return-to-departure-yard.md](../decisions/2026-09-30-crew-flag-compares-left-and-arrived-yard-asset-must-return-to-departure-yard.md), `reference`): "very start of job" = **Left Yard**, "back at yard" = **Arrived at Yard**. Both are per ticket, so the flag fires across a job's separate tickets. The rejected candidates were the shift-clock tap, the Start Work step, and Review & Complete. **Open:** (c) how a job's tickets are grouped (job + date? DAS allocation?); (d) ticket flag, per-employee payroll flag, or both. It bears on [*Recording which time source paid a job day*](#recording-which-time-source-paid-a-job-day-pay-017-tcg-178) items 2–3.
+     - **Developer answer 2026-09-30 (round 9)** ([note, F6–F7](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30), `reference`):
+       - **(c)** A job's tickets are grouped by **same job + same date**, not by the DAS allocation.
+       - **(d)** **The ticket only.** It is one ticket-level flag, not a per-employee payroll flag.
+       - **Session reading, to confirm:** it blocks the weeks of **everyone on that ticket**, as flag 9 does.
+       - **Not stated:** which ticket of the group carries it. A Left Yard / Arrived at Yard difference is always between two tickets.
+       - **Still open**, for Corrina Bustos to ratify.
+     - **Developer answer 2026-09-30 (rounds 10–11)** ([note, H2](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#rounds-10-and-11--flag-details-for-payroll-flags-u14u21-2026-09-30), `reference`): only the **mismatching workers** are held, those whose Left Yard or Arrived at Yard differs from the rest of the crew. Workers whose times match are not held.
+       - **This narrows round 9's (d).** Its session reading, marked *to confirm*, was that the flag blocks the weeks of everyone on that ticket, as flag 9 does. The developer did not confirm that reading, and this answer replaces it.
+       - Left Yard and Arrived at Yard are per ticket, so the held workers are the crew of the ticket whose times differ from the rest of the group. That also answers round 9's *which ticket carries it*.
+       - **Not stated:** a group that splits evenly (two tickets, two different times), where no ticket differs from "the rest".
+       - **Still open**, for Corrina Bustos to ratify.
   11. **Samsara at the start of the ticket (2026-09-30, requested).** Her example: leave time 6:30 AM, Samsara engine-on 7:30 AM → flag. *"the same rules as the end of the ticket for the start of the ticket."* **Open:** (a) which "end of ticket" rule. The 30-minute geotag tolerance (Q9) is **our inference**, not her words. (b) Which Samsara signal stands for leaving: first engine-on, trip start, or leaving the yard's coordinates? The integration has engine-state events and trips, and no geofences. (c) What happens with untracked or silent assets?
+     - **Developer answer 2026-09-30 (round 9)** ([note, F8–F10](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30), `reference`):
+       - **(a)** The points are Left Yard and Arrived at Yard only. That is the scope of item 7 of the verified flag list (30 minutes, *"at the start or end of the day"*, confirmed by assent).
+       - **(b)** The signal is the asset **leaving the yard's location**, not engine-on. Her own example named engine-on.
+       - **(c)** No Samsara data → **no flag**. This was given for this flag only. For the asset-not-home flag, the handling is still open in assets/gaps.md Q7.
+       - **Still open**, for Corrina Bustos to ratify.
 - **Conflicts raised by the second reply — recorded, not resolved** (detail in the decision note's *Conflicts*):
   - **C1.** Rest gap extended by the WTL penalty vs *"Added hours must not affect the 8-hour rest rule"* (Brian Petros 2026-08-24), PAY-045 *Phantom hours…*, and the PAY-029 invariant that added hours never become time windows. **Answered by Corrina, third reply, with Brian's statement put to her:** *"yes, the WTL penalty effect the rest starts. this was confirmed last friday in our meeting with the union business agent"* ([../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md](../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md)). For the WTL penalty and the rest start, Brian's 08-24 line is superseded. **Not closed:** (i) the 2026-09-25 union BA meeting is not in the vault (searched meetings/, transcripts, decisions/, client-message-findings.md, this file); (ii) Brian Petros, asked jointly, has not confirmed; (iii) no MLA text is on file for it. The rest of the added-hours doctrine (the rest trigger, PAY-029 windows) is untouched.
+    - **Developer answer 2026-09-30 (rounds 10–11)** ([note, J1–J2](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#rounds-10-and-11--flag-details-for-payroll-flags-u14u21-2026-09-30), `reference`). **Pay-affecting, pending Corrina Bustos / Brian Petros.** Both are what PAYROLL-FLAGS U2 built:
+      - **Per rest chain** (ticket spec Q9): the 2nd missed meal that moves the gap start is counted across the whole rest chain, as stitched by `REST_STITCH_MINUTES`, not per gapless meal group. Two tickets 1–30 minutes apart, with one worked-through meal each: the second moves the start 30 min.
+      - **Across chains** (ticket spec Q10): the gap is measured from the rounded paid end plus the WTL extension across a `chainJobDays` (OT/DT reset) boundary too. That decides which runs get the rest premium at all.
+      - The provenance row *8-hour rest — gap start* ([payroll-rules-provenance.md](payroll-rules-provenance.md), line 103) already records both as pending. **C1 is not closed.**
   - **C2.** Her WTL example adds 30 minutes. PAY-047 absorbs the **first** missed meal's half-hour, and only further missed meals add time. Which meal was her example? **Still open after the third reply.** Does a first missed lunch, which adds no hours, also move the rest start? **→ Closed 2026-09-30:** *"no, only the 2nd and onward"* ([../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md](../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md)). The first missed lunch does not move the rest start; the 2nd and later do. This agrees with PAY-047.
   - **C3.** Bears on, and does not settle, [*Do WTL added hours count toward the rest chain's 12-hour double-time threshold?*](#do-wtl-added-hours-count-toward-the-rest-chains-12-hour-double-time-threshold). Her paid-time reasoning points to payable hours; the build default is actual.
-  - **C4.** Individual corrections vs the verified [../decisions/2026-09-14-crew-ticket-shape-primary-allocation-and-ticket-employees.md](../decisions/2026-09-14-crew-ticket-shape-primary-allocation-and-ticket-employees.md) clause 4 (`TicketTimeEntry` per ticket, crew-wide). Needs a per-employee home for corrected times; its clause 7 left that undecided. Design question for CodingCops, not the client.
+  - **C4 — answered 2026-09-30 (round 9), see below.** Individual corrections vs the verified [../decisions/2026-09-14-crew-ticket-shape-primary-allocation-and-ticket-employees.md](../decisions/2026-09-14-crew-ticket-shape-primary-allocation-and-ticket-employees.md) clause 4 (`TicketTimeEntry` per ticket, crew-wide). Needs a per-employee home for corrected times; its clause 7 left that undecided. Design question for CodingCops, not the client.
+    - **Developer answer 2026-09-30 (round 9) — answered, CodingCops design** ([note, G1](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30)): a **per-employee override table**. Each row holds the ticket, employee, step, corrected time, reason, and who made it and when. The shared ticket times stay as captured. Pricing and payroll read an employee's override where one exists. **C4 is closed.** It does not settle what a **worker's** mobile edit of a shared time does; that conflict with Corrina is pending (C6, refined, in the same note).
   - **C5.** **"Micaela Slykhuis" vs "Micaela Dipane".** The transcripts label a payroll/accounting participant *Micaela Dipane* (13 transcript files, e.g. 2026-07-23, 2026-07-28, 2026-09-28 ADP sync). The unverified org chart ([../admin/engagement-directory-and-org-charts.md](../admin/engagement-directory-and-org-charts.md) l. 131) lists *Micaela Slykhuis* as an **Accounts Receivable Specialist**, not payroll. Kyle Harlow 2026-08-13 40:33: *"It's gonna be Micaela soon"* (payroll alerts). One person or two? — **open**
   - **C6.** The verified [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) lets *"the crane superintendent or payroll"* set the day's craft. The boom bracket is a craft modifier. Payroll now corrects flags. May the superintendent still set craft outside the flag flow? — **open** (carried from the first reply)
 - **Sources checked:**
@@ -4872,6 +4934,22 @@ somewhere it should not have. Settle that before touching either.
   - any PAY-045 change to where the gap starts. The direction is now answered (C1); first-meal scope (C2) is not;
   - the crew-time mismatch flag (Q10) and the Samsara start-of-ticket check (Q11). Neither is built;
   - the Samsara and invalid-entry flag sources. **None is in PR #690 / #691**, including the 30-minute tolerance and the AM/PM, same-time and out-of-order checks.
+- **Developer answer 2026-09-30** (git user `devmohsinakram`, `reference`):
+  [../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md).
+  - **Settled.** Each is a verified client rule, with only the mechanics set by the developer.
+    - **Q3 / Q5(f), Send Back** (items C3–C4): the worker edits the ticket times on mobile and
+      resubmits. The reminder goes to the worker, every 3 h, until they respond.
+    - **Whose week an asset flag blocks** (item C5): the weeks of that ticket's crew.
+    - **"Reviewed, no change"** (item C2): a note is required, and the action is audited. Only the
+      Payroll Admin / Manager may do it, for every flag type.
+  - **Pending Corrina:**
+    - **24 vs 23.5 h** (item A7): 24, at or above.
+    - **A shared ticket sent back to every worker on it** (item C6): see
+      [*Send Back of a multi-crew ticket*](#send-back-of-a-multi-crew-ticket--does-sending-a-ticket-back-also-return-it-for-the-other-crew-members-on-that-ticket).
+  - **Not answered by it:** Q4, Q5(d)'s manual half, Q6 (boom basis), the remainders of Q7–Q9,
+    Q10(c)(d), Q11, C1's confirmation trail, and C3–C6.
+  - **Round 9, later the same day** ([same note, section *Round 9*](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30)): developer readings for Q6–Q11, pending Corrina; C4 answered. See the dated lines under each.
+  - **Rounds 10–11, later the same day** ([same note, section *Rounds 10 and 11*](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#rounds-10-and-11--flag-details-for-payroll-flags-u14u21-2026-09-30)): developer readings for Q5(d)'s missing notes, Q7 and Q10(c)(d), pending Corrina; C1's rest-start mechanics, pay-affecting, pending Corrina / Brian. See the dated lines under each.
 - **Owner:** Corrina Bustos (payroll), with Brian Petros for C1–C3 (engine / rest rule). CodingCops for Q2's role design and C4.
 
 ## Should a Crane Supervisor see an employee's pay in the correction preview without payroll view
@@ -4927,7 +5005,8 @@ somewhere it should not have. Settle that before touching either.
 
 ## Multi-day entry — which pay period owns the hours after Saturday 00:00
 
-- **Status:** open
+- **Status:** open — the developer's 2026-09-30 answer is **superseded** by Corrina's verified
+  completion rule (see *Developer answer* below). Anchor vs split is still unanswered.
 - **Asked:** 2026-09-29, while recording the
   [second 2026-09-29 addendum (multi-day tickets)](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#addendum-2026-09-29-second--multi-day-tickets).
   The developer (git user `devmohsinakram`) said a job can now run over several days, including as
@@ -4969,13 +5048,26 @@ somewhere it should not have. Settle that before touching either.
   `workDate` follow it, and both periods are flagged for recalculation. That is the entry's anchor
   moving, not a split, so this question is unchanged. See the decision note's
   [second addendum, item F](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#f-a-correction-may-move-an-entry-into-another-pay-week-amends-clause-4-added-later-on-2026-09-29).
+- **Developer answer 2026-09-30 — superseded, not built.** [../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), item D1.
+  - The developer's round-1 rule, verbatim: *"if its done on time of payroll calculation all of it
+    will process with previous week otherwise if ticket is not complete then move that ticket to
+    next week payroll"*. Clarified in round 2 as "Week 1, until approved", never split.
+  - **Superseded** by Corrina Bustos, verified, the same day: *"all tickets must be completed before
+    the payroll can be processed/approved"*
+    ([../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md)).
+    The developer chose her rule. An incomplete ticket blocks its week and never rolls forward.
+  - Recorded as superseded only. Nothing is built from it.
+  - **This question stays open:** anchor or split for a *completed* ticket that crosses Saturday
+    00:00. Corrina's note asks the same thing as its open item 3. The superseded answer is not a
+    source for the anchor.
 - **Owner:** **Brian Petros** and **Corrina Bustos**.
 - **Rules:** [PAY-001](rules/PAY-001-saturday-friday-payroll-week.md),
   [PAY-019](rules/PAY-019-cross-midnight-processing.md)
 
 ## Multi-day entry — does the 8-hour OT and 12-hour DT ladder ever reset inside one entry
 
-- **Status:** open
+- **Status:** open — developer answered 2026-09-30 (never resets, as today); **pending Brian
+  Petros / Corrina Bustos**.
 - **Asked:** 2026-09-29, same origin as
   [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
   **A pay rule**, so the engine will not change without a source in
@@ -5010,6 +5102,9 @@ somewhere it should not have. Settle that before touching either.
   priced as the engine prices it today, and its week shows a review flag, *"ticket over 24 h, check
   pay rules"*. This is the developer's interim direction. See the decision note's
   [second addendum, item G](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#g-a-single-ticket-over-24-h-price-it-flag-it-for-review-amends-clause-6-added-later-on-2026-09-29).
+- **Developer answer 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), item A1, `reference`): **never resets** inside one
+  entry. That keeps today's behaviour, so there is no engine change. It is a pay rule, so it stays
+  **open** until Brian Petros and Corrina Bustos ratify.
 - **Owner:** **Brian Petros** and **Corrina Bustos**.
 - **Rules:** [PAY-022](rules/PAY-022-daily-straight-time.md),
   [PAY-023](rules/PAY-023-daily-overtime.md), [PAY-024](rules/PAY-024-daily-double-time.md),
@@ -5017,7 +5112,9 @@ somewhere it should not have. Settle that before touching either.
 
 ## Daily and long-boom 4-hour minimums — grouped on the shift anchor date or on each calendar date
 
-- **Status:** open. **Written sources conflict.** This is not only a gap.
+- **Status:** open. **Written sources conflict.** This is not only a gap. Developer answer
+  2026-09-30: the anchor date, siding with the verified note; **pending Corrina Bustos / Brian
+  Petros**.
 - **Asked:** 2026-09-29, same origin as
   [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
   **A pay rule.**
@@ -5055,6 +5152,16 @@ somewhere it should not have. Settle that before touching either.
       note says.
 - **Blocked:** nothing built yet. The engine's comment and its code disagree. Multi-day entries make
   the difference common.
+- **Developer answer 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), item A2, `reference`): the **start (anchor) date**, as
+  the engine groups today.
+  - **It takes a side in the conflict:** with the verified 2026-09-04 note (:92-102), against the
+    provenance rows :89-90 (*"per calendar day"*).
+  - A developer cannot settle a disagreement between two client-sourced records, so the entry
+    stays **open**.
+  - A one-line "yes, the anchor date" from Corrina or Brian would close it. The provenance rows'
+    *"per calendar day"* would then need a clarifying note.
+  - The engine's code already groups on the anchor date. Only its doc comment says *"per calendar
+    work day"*.
 - **Owner:** **Brian Petros** and **Corrina Bustos**. Corrina decided the verified note, so
   changing it needs her.
 - **Rules:** [PAY-040](rules/PAY-040-work-provided-minimum.md),
@@ -5062,7 +5169,8 @@ somewhere it should not have. Settle that before touching either.
 
 ## Multi-day entry — subsistence on a date reached only by a spill past midnight
 
-- **Status:** open
+- **Status:** open — developer answered 2026-09-30 (start date only, as today); **pending Brian
+  Petros / Corrina Bustos**. For the $200 long tier the answer sits against a Confirmed row.
 - **Asked:** 2026-09-29, same origin as
   [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
   **A pay rule.**
@@ -5095,13 +5203,25 @@ somewhere it should not have. Settle that before touching either.
   [second addendum, item G](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#g-a-single-ticket-over-24-h-price-it-flag-it-for-review-amends-clause-6-added-later-on-2026-09-29).
   The flag covers only tickets over 24 h. An overnight ticket shorter than 24 h also reaches a
   second date, and it gets no flag.
+- **Developer answer 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), item A4, `reference`): **the start date only**, as
+  today. Pending ratification.
+  - **For the $200 long tier, this sits against a Confirmed rule:**
+    [payroll-rules-provenance.md](payroll-rules-provenance.md):130 (*"every day of the holdover"*)
+    and the answered entry above (*"every calendar day of the holdover, worked or not"*).
+    - The later dates of one multi-date entry on a holdover job are calendar days of the holdover.
+      Start-date-only pays none of them.
+    - A developer answer cannot override a Confirmed rule, so for the long tier it is **not to be
+      relied on**.
+  - **For the $85 tier** (*"days worked"*): is a spill-only date a day worked? That stays the open
+    question. The developer says no.
 - **Owner:** **Brian Petros** and **Corrina Bustos**.
 - **Rules:** [PAY-048](rules/PAY-048-standard-subsistence.md),
   [PAY-049](rules/PAY-049-weekend-subsistence.md)
 
 ## Multi-day entry — meal and WTL opportunities after 27 hours
 
-- **Status:** open
+- **Status:** open — developer answered 2026-09-30 (continue every 5.5 h). **That changes pay:
+  not to be built until Brian Petros / Corrina Bustos ratify.**
 - **Asked:** 2026-09-29, same origin as
   [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
   **A pay rule.**
@@ -5134,13 +5254,23 @@ somewhere it should not have. Settle that before touching either.
   *"ticket over 24 h, check pay rules"*. This is the developer's interim direction. See the decision
   note's
   [second addendum, item G](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#g-a-single-ticket-over-24-h-price-it-flag-it-for-review-amends-clause-6-added-later-on-2026-09-29).
+- **Developer answer 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), item B1, `reference`): **continue the cadence**, one
+  every 5.5 h: the fifth at 27 h, the sixth at 32.5 h, and so on. WTL is checked at each.
+  - **This changes pay. Not to be built until ratified.**
+  - Building it needs:
+    - an engine change;
+    - more lunch slots in capture (`VISIBLE_LUNCH_BREAKS === WTL_TRIGGERS.length`);
+    - a row in [payroll-rules-provenance.md](payroll-rules-provenance.md), in the same commit.
+  - The fifth's position follows the first four, which are still contested (16.0 vs 16.5 h,
+    21.5 vs 22 h). With 22, the fifth falls at 27.5 h.
 - **Owner:** **Brian Petros** and **Corrina Bustos**.
 - **Rules:** [PAY-046](rules/PAY-046-meal-opportunity.md),
   [PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)
 
 ## Multi-day entry — the non-union workday for an entry longer than 24 hours
 
-- **Status:** open
+- **Status:** open — developer answered 2026-09-30 (split at each midnight). **That changes pay:
+  not to be built until Brian Petros / Corrina Bustos ratify.**
 - **Asked:** 2026-09-29, same origin as
   [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
   **A pay rule.**
@@ -5164,12 +5294,24 @@ somewhere it should not have. Settle that before touching either.
   - [*Non-union hourly — holidays, PTO, sick…*](#non-union-hourly--holidays-pto-sick-vacation-shift-differential-minimums-unspecified-by-the-clients-own-account)
     (open) does not cover this.
 - **Blocked:** nothing built yet.
+- **Developer answer 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), item B2, `reference`): **split at each midnight.**
+  Each calendar date is its own workday:
+  - the daily 8/12 ladder restarts on each date;
+  - each date counts toward the seventh-day rule.
+
+  **This changes pay. Not to be built until ratified.** When it is built, it needs a row in
+  [payroll-rules-provenance.md](payroll-rules-provenance.md) in the same commit.
+  - **Not asked, and needed before building:** does the split fall at the first midnight too?
+    - If so, a 25 h entry is cut where a 23 h entry is not; under §10, the 23 h entry stays in its
+      start workday.
+    - Or does the split apply only after the first 24 h?
 - **Owner:** **Brian Petros**, who wrote the non-union rules, and **Corrina Bustos**.
 - **Rules:** [PAY-012](rules/PAY-012-non-union-hourly-rate.md)
 
 ## Multi-day entry — DAILY catalog premiums once per ticket or once per calendar date
 
-- **Status:** open
+- **Status:** open — developer answered 2026-09-30 (once per ticket, as today); **pending Brian
+  Petros / Corrina Bustos**.
 - **Asked:** 2026-09-29, same origin as
   [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
   **A pay rule.**
@@ -5190,12 +5332,15 @@ somewhere it should not have. Settle that before touching either.
     are about where premiums are configured. They do not say how often a DAILY one pays.
   - No written rule defines "day" for a DAILY premium.
 - **Blocked:** nothing built yet.
+- **Developer answer 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), item A3, `reference`): **once per ticket**, as today.
+  No engine change. Pending ratification.
 - **Owner:** **Brian Petros** and **Corrina Bustos**.
 - **Rules:** none of its own. It is a property of the premium catalog.
 
 ## Multi-day entry — a craft rate change that takes effect inside one entry
 
-- **Status:** open
+- **Status:** open — developer answered 2026-09-30 (the start rate, as today); **pending Brian
+  Petros / Corrina Bustos**.
 - **Asked:** 2026-09-29, same origin as
   [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
   **A pay rule.**
@@ -5222,6 +5367,9 @@ somewhere it should not have. Settle that before touching either.
   - [rules/PAY-010](rules/PAY-010-l12-union-base-rate.md): the labor entry's craft prices the row.
     It says nothing about time within the entry.
 - **Blocked:** nothing built yet.
+- **Developer answer 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), item A5, `reference`): **the start rate for the whole
+  ticket**, as today. No engine change. Pending ratification. It does not touch the UTC
+  `asWorkDate` cut noticed above.
 - **Owner:** **Brian Petros** and **Corrina Bustos**.
 - **Rules:** [PAY-010](rules/PAY-010-l12-union-base-rate.md)
 
@@ -5354,3 +5502,112 @@ somewhere it should not have. Settle that before touching either.
   co-decided the note.
 - **Rules:** [PAY-017](rules/PAY-017-time-source-selection.md),
   [PAY-021](rules/PAY-021-l12-standard-work-window.md)
+
+## Send Back of a multi-crew ticket — does sending a ticket back also return it for the other crew members on that ticket?
+
+- **Status:** open — developer answered 2026-09-30: **(c), plus a hold on every worker's week**.
+  It extends Corrina's verified worker-target rule, so it is **pending Corrina Bustos**.
+- **Asked:** 2026-09-30, while recording the
+  [fifth addendum (independent date rows on the weekly timesheet)](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#addendum-2026-09-30-fifth--independent-date-rows-on-the-weekly-timesheet),
+  item D. No ticket covers Send Back (the decision names none), so it is filed here, not in a
+  `spec.md` §12.
+  - The developer (git user `devmohsinakram`, PR #699) said on 2026-09-30: *"when send that ticket
+    back for corrrection like for 27 or 28 it should send all ticket back not jut 27 or 28 one
+    entry"*.
+  - The session read "all ticket" as **every date of this employee's entry** on that ticket. That
+    is how Send Back already worked. It did not read it as every crew member on the ticket, and
+    the developer was not asked.
+- **Question:** Payroll sends back one employee's entry on a ticket that has other crew members.
+  What happens to the other crew members' entries on that ticket?
+  - **(a) Left alone (as built):** only this employee's entry is returned and held. The others'
+    pay changes when the period is recalculated, with no send-back of their own.
+  - **(b) Held:** the other crew members' weeks are held from approval until the correction is
+    priced, but not returned.
+  - **(c) Returned too:** the send-back covers every crew member's entry on that ticket.
+- **The one-line reply that settles it:** *"When one crew member's entry is sent back, the other
+  crew members on that ticket are (a) left alone until the period is recalculated, (b) held from
+  approval until it is, or (c) sent back too."*
+- **What the code does today: (a).** `apps/api` is unchanged in the working tree, so these lines
+  are as of commit `b3c992f10`.
+  - **A send-back is per (period, job ticket, employee).** `sendBack` creates one row per selected
+    ticket for the one employee
+    (`apps/api/src/usecase/payroll-send-backs/payroll-send-backs.service.ts:258-268`). It refuses a
+    second open one by period, employee and ticket (`:246-256`). The model is *"A payroll entry (one
+    employee on one job ticket)"* (`apps/api/prisma/schema.prisma:5307`).
+  - **A correction writes the ticket's shared time captures**, which every crew member's pay is
+    priced from
+    (`apps/api/src/service/payroll-send-backs/payroll-send-backs.repository.ts:541-574`). Only
+    Start Work and End Job with the member's own TCG-25 window are per member (decision clause 4).
+  - **Holds are per employee.**
+    - `countBlockingByEmployee` counts only the send-back's own `employeeId`
+      (`payroll-send-backs.repository.ts:614-676`).
+    - Approving one week checks only that week's employee
+      (`apps/api/src/usecase/payroll/payroll.service.ts:659-671`).
+    - So **another crew member's week carries no send-back and no approval hold.** Its figures in
+      force predate the correction until the period is recalculated, and this check does not stop
+      that week being approved in between.
+    - Approving the **whole period** is refused, because the sent-back employee's hold counts there.
+  - **The one cross-crew guard protects settled pay only.** A correction that moves shared times is
+    refused while another crew member's pay on that ticket is already approved or exported
+    (`payroll-send-backs.service.ts:756-767`; `findSettledCrewPay`,
+    `payroll-send-backs.repository.ts:678`). It does not cover a week still awaiting approval.
+  - **The other crew members are checked, not told.** The correction runs the overlap and rest
+    checks for each crew member (decision clause 4). The only notification on correction,
+    `payroll.entry_corrected`, goes to whoever sent the entry back
+    (`payroll-send-backs.service.ts:518-532`).
+- **Sources checked:**
+  - [../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md),
+    `status: reference`.
+    - Clause 3: Send Back goes to one Crane Supervisor.
+    - Clause 4: shared Start Work and End Job edits apply to the **whole crew**; the whole crew is
+      checked for overlap and rest; settled crew pay is protected; a corrected entry holds approval
+      until the period is recalculated.
+    - Clause 6: an uncorrected send-back blocks that employee's week and the whole period.
+    - None says whether the other crew members are returned or held.
+  - The Confluence story `Payroll management` US-03, `unverified`, never migrated
+    ([../sync/.conflict/2026-08-24-bootstrap/payroll-management.md](../sync/.conflict/2026-08-24-bootstrap/payroll-management.md)
+    :112-127). It sends back an *entry*, lets several entries be selected (AC 14), and lets the
+    Worker edit *"the specified ticket"* (AC 4). It says nothing about other crew members.
+  - `decisions/`: no other note mentions Send Back.
+- **Blocked:** nothing built waits on it. But:
+  - if the answer is **(b)** or **(c)**, the API must extend the hold or the send-back to the
+    crew (`countBlockingByEmployee`, `sendBack`);
+  - until then, a co-crew member's week can be approved on figures that a shared-time correction
+    has made stale.
+- **Developer answer 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), item C6, `reference`, pending Corrina Bustos):
+  - Round 3: *return it for everyone*. That is option (c).
+  - Round 6, verbatim, after Corrina's worker-target rule was put to the developer: *"we have rule
+    if any job have oiler and oprator both then oiler and oprator have one tickt so if we send oiler
+    or oprator ticket back it should send other employee as well and block both employees
+    payroll"*.
+  - **So:** sending back one worker's entry on a shared ticket sends the ticket back to **every
+    worker on it**, and **blocks every one of their weeks** until it is resolved. That is (c), with
+    (b)'s hold.
+  - The shared ticket is the verified shape in
+    [../decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md](../decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md)
+    clause 2. The Oiler is primary and fills the ticket; the Operator is a second employee on it.
+  - **Why it stays open:**
+    - Since 2026-09-30, Send Back goes to the **worker**, and payroll fixes entries itself
+      (Corrina, verified —
+      [../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)).
+      The developer's rule extends that from one worker to all of them, and it needs her OK.
+    - It is in tension with her verified *"individual"*
+      ([../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md](../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md)
+      clause 3). If the Oiler edits the shared ticket on mobile, does the Operator's pay move too?
+      Not stated.
+  - **Build:** an API change, not built (`sendBack`, `countBlockingByEmployee`).
+  - **Ratifier:** Corrina Bustos, whose rule it extends.
+- **Stale lines above, corrected 2026-09-30:**
+  - *Sources checked*, *"`decisions/`: no other note mentions Send Back"*: out of date. Send Back is
+    addressed by the 2026-09-29 routing note and by the 2026-09-30 flag-list note, which gives the
+    worker as target and a reminder after 3 h.
+  - *Sources checked*, clause 3's Crane Supervisor target: overruled since 2026-09-29.
+- **Owner:** **Brian Petros** and **Corrina Bustos**, the payroll-side ratifiers the decision
+  names for clauses 3 and 6 (who is sent an entry, and what blocks approval). The decision gives
+  clause 4, that shared edits move the whole crew, to **the TCG field-ops owner**. No field-ops
+  owner is named for this question.
+- **Related:**
+  - [*Should a Crane Supervisor see an employee's pay in the correction preview without payroll view*](#should-a-crane-supervisor-see-an-employees-pay-in-the-correction-preview-without-payroll-view),
+    the other open Send Back question.
+  - [*Confluence payroll user stories*](#confluence-payroll-user-stories--first-payroll-pages-in-confluence-unmigrated),
+    where the *Worker* send-back target stays open.
