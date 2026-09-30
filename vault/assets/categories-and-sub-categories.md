@@ -5,6 +5,9 @@ migrated: 2026-08-10
 updated: 2026-06-12
 status: unverified
 conflicts_with: []
+provenance_note: >-
+  Target hours per month validation (optional, whole number, 0-744) was ruled by a developer,
+  not product, in decisions/2026-09-30-sub-category-target-hours-per-month-whole-number-0-to-744.md (TCG-153). Body unchanged; file still unverified.
 jira: []
 tags: [module/assets, module/dispatch, kind/reference, scheduling]
 entities: [category, schedule, fcc]
