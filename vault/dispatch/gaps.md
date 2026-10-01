@@ -1265,7 +1265,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Question:** The verified decision
   [../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)
   (*The field is called "start time", not "leave yard time"*) was applied to the **job Schedule
-  tab** (column, bulk-apply label, messages and the time fields' accessible names). Should every
+  tab** (column, messages and the time fields' accessible names). Should every
   other screen that shows the same value rename it too — Tool/Rigging, the ticket-progress trip
   step, the DAS, the mobile ticket flow and notification emails? The decision names the field,
   not the screens, so this register does not assume it.
