@@ -690,18 +690,18 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** product team — Lisette Anzaldo (DAS board), with Corrina Bustos where the answer
   has to agree with the payroll day.
 
-- **Build note (2026-09-29, branch `feat/schedule-datetime-holdover`, not yet merged) — the
-  job Schedule tab now lets an Estimated End fall on the next day, under a CodingCops rule
-  nobody at TCG has confirmed.** The new date+time dropdown lets the dispatcher put the
-  **Estimated End only** on the row's date or the day after; Start and On Site stay on the
-  row's date, and a shift must end **no more than 24 hours after its Start**. Nothing new is stored:
-  the day is derived from the `"HH:mm"` strings (end at or before On Site ⇒ next day,
-  `@tcg/shared` `isShiftEndNextDay` / `validateShiftTimes`), which is the rule
-  `shift-hours.util.ts`, the DAS loadout lock and the allocation overlap split already apply, so
-  no downstream reader changed. The API now refuses a *changed* shift that breaks it
-  (`apps/api/src/usecase/jobs/job-schedule-timeline.ts`). **This does not answer the question
-  above** — the DAS map clock still resolves an 18:00 → 02:00 end to that morning — and it adds
-  three of its own, below under *Schedule times on a later day*.
+- **Build note (2026-09-29, revised 2026-09-30; branch `feat/schedule-datetime-holdover`, not
+  yet merged) — the job Schedule tab now lets an Estimated End fall on any later day.** The
+  date+time dropdown lets the dispatcher put the **Estimated End only** on the row's date or any
+  later day, so a shift may run past 24 hours (syed.haris, 2026-09-30 — see *Schedule times on a
+  later day*); Start and On Site stay on the row's date. The end's day is now **stored**
+  (`job_schedule_intervals.estimated_end_date` / `second_shift_estimated_end_date`, migration
+  `20260930120000`); rows saved before it keep the derived rule (end at or before On Site ⇒ next
+  day), so no backfill. One helper (`@tcg/shared` `shiftEndDate` / `shiftWindow`) gives every
+  logic reader the end's day: the allocation window, working hours, the shift-end instant the
+  payroll overlay uses. The API refuses a *changed* shift whose end, on its day, is not after On
+  Site (`apps/api/src/usecase/jobs/job-schedule-timeline.ts`). **This does not answer the
+  question above** — the DAS map clock still resolves an 18:00 → 02:00 end to that morning.
 - **Build note (same branch, TCG-186) — the DAS availability lock now treats an overnight shift
   correctly.** It used to wrap 18:00 → 02:00 onto the **same** date (blocking 00:00–02:00 of the
   morning *before*) and never looked at the next day. It now compares real date-time windows and
@@ -1185,20 +1185,32 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   loadout lock) derive each time's day from the row's date. Letting Start or On Site move, or
   allowing multi-day shifts, needs a stored per-time date and every reader updated. It also needs
   (a) and (b) above answered first. TCG-186 does not need it.
+- **(b) answered 2026-09-30 by syed.haris (CodingCops), not yet confirmed by TCG**
+  ([../decisions/2026-09-30-schedule-shift-may-run-past-24-hours.md](../decisions/2026-09-30-schedule-shift-may-run-past-24-hours.md),
+  `reference`): *"a shift
+  (job>schedule tab) can be greater than 24 hours. So there should be no restrictions on the
+  calendar date picker for the estimated end time."* Built the same day: the End's calendar
+  takes any day from the row's date on, the end's day is stored per shift
+  (`estimated_end_date` / `second_shift_estimated_end_date`), and the only rule left is that
+  the end, on its day, is after On Site. No maximum length. See the build note under
+  *Overnight DAS shifts* for which readers changed.
 - **Built default:** (a) no — the row's date is the day the shift starts (the business day
   starts at local midnight, [../decisions/2026-09-09-business-day-starts-at-midnight-local.md](../decisions/2026-09-09-business-day-starts-at-midnight-local.md)),
-  so such a shift belongs on the next row; (b) **at most 24 hours** — every downstream reader
-  (`shift-hours.util.ts`, the loadout lock, the allocation window) reads an end at or before the
-  start as the next day, so exactly 24 hours (End = On Site) is representable and allowed, and
-  anything longer is refused. Four rows in the local database already hold 07:00 → 07:00, saved
-  before the rule existed; (c) 1 minute, per the design. Allowing (a), or shifts over 24 hours,
-  would need a stored day offset per time, which the schedule does not have.
+  so such a shift belongs on the next row; (b) as above; (c) 1 minute, per the design.
+- **Still open after (b):** (d) a shift longer than a day covers the next rows' dates. Those
+  rows still exist as their own working days, with their own shifts. Should a row inside a
+  multi-day shift be switched off, or is a second crew on those days expected? Nothing stops
+  it today. (e) Tickets, notifications and ticket progress show an Estimated End as a **time
+  only** (`6:00 PM`), so a three-day shift's end reads like a same-day one. Should they show the
+  date too? The DAS map clock is worse: it builds both ends from the row's date, so it shows a
+  multi-day shift as ended that morning (see *Overnight DAS shifts*).
 - **Evidence on (b), not a ruling:** Ryan Adams, 2026-04-07 Figma demo (transcript 24:04–28:18,
   unverified): *"Sometimes we have a 24 hour shifts too"*. And: *"you put one crew on one shift
   during the day, one crew on shift during the night, but it is the same crane"*, for jobs
   running *"seven days straight"*. ehtesham.anwar answered that this is the **second shift**.
   So round-the-clock work is two shifts on one date, which the model supports.
-  Nobody has asked for a single shift longer than 24 hours.
+  Until syed.haris's 2026-09-30 answer above, nobody had asked for a single shift longer than
+  24 hours.
 - **Owner:** Lisette Anzaldo (dispatch).
 
 ## "Start Time" is renamed on the Schedule tab only — where else does "Leave Yard Time" appear?
@@ -1228,7 +1240,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   one rule (`@tcg/shared` `shiftWindow` / `shiftWindowsOverlap`). Before this, the API compared
   On Site → End on the same date only, while the board, the drop confirm and Copy treated any
   booking that day as a whole-day block.
-- **Question:** the window is a CodingCops choice, and six parts of it need TCG to confirm:
+- **Question:** the window is a CodingCops choice, and seven parts of it need TCG to confirm:
   (a) **Start → Estimated End.** It begins at **Start** (the dispatch start at the yard, per
   [../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)),
   or On Site when there is no Start. It ends at the **Estimated End**, which that decision says is
@@ -1251,6 +1263,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   every date. The side panels now offer such an asset for a non-overlapping shift when it also
   has bookings that day. The field is unused locally (0 of 21 assets) and undocumented in the
   vault. What is it for?
+  (g) **A shift longer than a day** (allowed since 2026-09-30, see *Schedule times on a later
+  day*) blocks its crane and crew for its whole window at drop and Copy time: the check now
+  also reads earlier rows whose stored end day reaches the target. But the board's side panels
+  list bookings **per date**, so on day 2 of a three-day shift the crane shows as available and
+  only the drop check stops it. Should the board show it booked on every day its window covers?
 - **Built rule, from the record rather than a ruling:** a job's allocations **never conflict
   with the same job's other days**. The crane on a round-the-clock job is *"the same crane"* for
   the day and night crews (Ryan, above, under *Schedule times on a later day*), and the loadout
