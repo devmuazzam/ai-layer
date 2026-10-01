@@ -260,3 +260,22 @@ establish the product's official name. **"SERS" / "Koopa" -> CERS / CUPA** only 
 turn that names California submissions. **Speaker labels are reproduced uncorrected.** Dennene "Dee"
 Jones (Safety Manager) speaks on Brian Petros's room microphone for most of the call, and the file
 header lists the evidence. Left unchanged: the items listed in the file's own header note.
+
+# Pass 10 — 2026-10-02 (one new transcript only)
+
+Applied to `2026-10-01-quotes-and-billing-codes.md`; no earlier file was touched. **26 substitutions**,
+each pinned to its own line, with the timestamps in that file's header note. In summary: "ATP" -> "ADP"
+(3); "early" -> "hourly" (5, pinned by the speakers' own "hourly" in the same exchange and by the
+prototype's *Hourly* column on screen); "Euler" / "Eiler" -> "oiler" (3 / 1, as pass 3); crane
+mis-hearings in tonnage phrases -> "crane" / "ton" (11: "done cream", "and frame", "and point", "100
+time", "and queen", "ton frame", "done train", "the queen", "and grain", "and crane", "grain
+configuration"); "queue overtime" -> "crew overtime" (1, the *Crew Overtime* line on screen); "Perez" /
+"Paris" -> "Haris" (2 / 1, as pass 9). One 37:07 substitution covers both an "early" and a "done train",
+so the categories sum to 27.
+
+New evidence rule used here: **"early" -> "hourly"** only where the speaker is naming the quote type or
+the prototype's column — every case sits in an exchange where another speaker, or the same one, says
+"hourly". "in RV as well" (7:32) is the same mis-hearing in all likelihood, but was left as heard because
+"RV" is not "early". "the 110 grand" (1:02:23) was left because 110 is a real tonnage. Speaker labels
+are reproduced uncorrected. Left unchanged: the items listed in the file's own header note.
+
