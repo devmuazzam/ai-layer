@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-09-22
+updated: 2026-10-01
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -1532,7 +1532,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   3. **What is the home yard of an asset?** Is it `Asset.yardId` (exists, nullable), or something else? The requirement names two yards. **→ Developer-decided 2026-09-30, pending ratification ([../decisions/2026-09-30-crew-flag-compares-left-and-arrived-yard-asset-must-return-to-departure-yard.md](../decisions/2026-09-30-crew-flag-compares-left-and-arrived-yard-asset-must-return-to-departure-yard.md), `reference`):** the comparison yard is **the yard the asset left from that day**, not `Asset.yardId`. No field records the departure yard today (`JobTicket`, `JobResourceAllocation` and `SubJobLoadout` carry no yard), so deriving it is CodingCops design.
   4. ~~**Where is the Ventura yard?**~~ **Withdrawn 2026-09-30:** yards are tenant-configured, so TCG adds its own yard addresses, including Ventura. Los Alamitos and Ventura were examples of the departure-yard rule (Q3) ([../decisions/2026-09-30-crew-flag-compares-left-and-arrived-yard-asset-must-return-to-departure-yard.md](../decisions/2026-09-30-crew-flag-compares-left-and-arrived-yard-asset-must-return-to-departure-yard.md)). It is not a client question.
   5. **What counts as "back in the yard"?** `Address` has latitude/longitude, but no radius or geofence exists, and the Samsara integration reads GPS, engine states and trips, not geofence events. What radius, and what signal: last GPS fix, or trip end location? **Still open:** the radius. The signal is developer-read as **the last engine shut-off of the day** (Corrina said *"shut off"*), pending ratification.
-  6. **What counts as "assigned to a holdover job"?** Today this is `JobResourceAllocation.isHoldover`, set by Copy Allocations with "Hold over" ticked. The definition is itself open: [../dispatch/gaps.md → *Does copying allocations make a job a holdover?*](../dispatch/gaps.md#does-copying-allocations-make-a-job-a-holdover).
+  6. **What counts as "assigned to a holdover job"?** Today this is `JobResourceAllocation.isHoldover`, set by Copy Allocations with "Hold over" ticked. The definition is itself open: [../dispatch/gaps.md → *Does copying allocations make a job a holdover?*](../dispatch/gaps.md#does-copying-allocations-make-a-job-a-holdover). **Update 2026-10-01 (tcg branch `feat/schedule-datetime-holdover`, not merged):** holdover is now also a per-line job setting, `JobResource.isHoldover` (Make Holdover), and the line's allocations carry onto the job's days; an item held over is offloaded on the job's last day, others every day ([../decisions/2026-10-01-multi-day-crane-offload-held-on-last-day-otherwise-daily.md](../decisions/2026-10-01-multi-day-crane-offload-held-on-last-day-otherwise-daily.md), `reference`). The flag should read the line-level setting.
   7. **Untracked or silent assets:** skip them, or flag them as unknown? See [*Which dispatchable cranes are untracked…*](#which-dispatchable-cranes-are-untracked-and-what-stands-in-for-them--asked-twice-unanswered-twice) and [*A Samsara link that has gone silent*](#a-samsara-link-that-has-gone-silent--three-200-ton-plus-cranes-have-not-reported-in-813-months).
   8. **Scope:** cranes only, or every tracked asset (tractors, trucks)?
 - **Blocked:** building the flag. Nothing exists for it in code.

@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-09-23
+updated: 2026-10-01
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -953,3 +953,22 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (*"The Schedule tab inside the job always shows the latest real-time view"*). Both `unverified`.
   They name **screens**; whether an already-open allocation panel counts as a "view" is unwritten.
 - **Read:** [../dispatch/gaps.md](../dispatch/gaps.md) → *Live update scope and freshness — "real time across all views" names screens, not panels, and sets no bound*
+
+## Job Schedule "Copy to all days" — replaces Apply Times, and which rows it overwrites
+
+- **Status:** open
+- **Asked:** 2026-10-01 — PR review of tcg branch `feat/schedule-datetime-holdover` (not merged);
+  built at syed.haris's request.
+- **Question:** The "Apply times to multiple days" panel is removed. The first row has a **Copy
+  to all days** button (shown in edit mode once that day has a time) that copies its Start, On
+  Site and Estimated End — and its second shift — onto **every other row that is not cancelled
+  or ticket-sent, unticked rows included**, keeping each shift's length (the end the same number
+  of days after the row's date). It never removes a second shift a row already has, and it does
+  not ask before overwriting. UAT disagrees on the panel: UAT 4 #26 asked for it closed by
+  default, UAT 1 asked for the collapse removed ([../uat/register-2026-09-18.md](../uat/register-2026-09-18.md)
+  lines 114 and 216; the register says someone should confirm which wins) — this build takes
+  UAT 1's side. The old panel could also apply to *selected* days only. Should Copy skip unticked
+  rows, offer "selected days only", or confirm first? What an unticked row means is open in
+  [*Schedule day deactivate orphans SubJob / allocations*](#schedule-day-deactivate-orphans-subjob--allocations).
+- **Built default:** as above.
+- **Owner:** Lisette Anzaldo (dispatch).

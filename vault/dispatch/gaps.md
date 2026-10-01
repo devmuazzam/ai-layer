@@ -711,8 +711,8 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   correctly.** It used to wrap 18:00 → 02:00 onto the **same** date (blocking 00:00–02:00 of the
   morning *before*) and never looked at the next day. It now compares real date-time windows and
   checks the day before and after, so the shift blocks the next morning at drop and Copy time.
-  The board's resource status stays per date (last night's crew keeps its *Previous Night* tag
-  and stays available, as [daily-allocation-system.md](daily-allocation-system.md) describes).
+  The board's resource status stays per date (last night's crew keeps its *Previous Night* tag;
+  [daily-allocation-system.md](daily-allocation-system.md) names the tag, not the status).
   A conflict on another date is never cleared by *Reassign*: the save is refused and names the
   other job's date. Otherwise reassigning onto an early shift could delete last night's
   allocation, and its tickets, while that crew is still working it. The **map clock** (question
@@ -731,12 +731,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     job expanded. They are left out of
     the stage counts. A shift ending on a later day reads `Shift 1(7:00AM - 6:00PM · ends Oct 7)`
     on every card, and the Send Ticket table shows the end's date.
-  - **DAS side panels:** a resource booked on a shift still running into the date now counts as
-    booked that date (`continuing` on its booking, marked in the popup), so the expanded job's
-    availability split compares its window. **This changes the 2026-09-29 note above:** last
-    night's overnight crew and crane now read Assigned / On Site the next morning, with the
-    booking ending 02:00, not Available. The *Previous Night* tag is unchanged (open: what it
-    means, see *Shifts that run past their own day*).
+  - **DAS side panels:** a shift still running into the date is listed in the resource's
+    bookings (`continuing`, marked in the popup), and the expanded job's availability split
+    compares its window, so a crane on day 2 of a multi-day shift is not offered for an
+    overlapping shift. Its **status that date is unchanged** — only the date's own bookings set
+    Assigned / On Site — because the summary counts, the dispatch packet's available pool and the
+    status filter read that status (found in review 2026-10-01; an earlier draft changed it and
+    dropped last night's overnight crew from the packet). The *Previous Night* tag is unchanged
+    (open: what it means, see *Shifts that run past their own day*).
   - **Leave:** dropping an employee onto a shift that runs over a day they have approved leave
     warns (*On Leave During This Shift*, Assign anyway). A warning, not a lock: the API still has
     no leave check on save.
@@ -1285,7 +1287,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   one rule (`@tcg/shared` `shiftWindow` / `shiftWindowsOverlap`). Before this, the API compared
   On Site → End on the same date only, while the board, the drop confirm and Copy treated any
   booking that day as a whole-day block.
-- **Question:** the window is a CodingCops choice, and seven parts of it need TCG to confirm:
+- **Question:** the window is a CodingCops choice, and eight parts of it need TCG to confirm:
   (a) **Start → Estimated End.** It begins at **Start** (the dispatch start at the yard, per
   [../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)),
   or On Site when there is no Start. It ends at the **Estimated End**, which that decision says is
@@ -1313,8 +1315,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   also reads earlier rows whose stored end day reaches the target. But the board's side panels
   list bookings **per date**, so on day 2 of a three-day shift the crane shows as available and
   only the drop check stops it. Should the board show it booked on every day its window covers?
-  **Built 2026-10-01** per the ruling under *Overnight DAS shifts*: the side panels now count a
-  shift still running into the date as a booking that date. Still open for TCG to confirm.
+  **Built 2026-10-01** per the ruling under *Overnight DAS shifts*: the side panels list a shift
+  still running into the date and the expanded job's availability check honours its window; the
+  resource's status that date stays per date. Whether the board should also *show* it booked
+  that day is still open for TCG.
+  (h) **A conflict on another date is never cleared by *Reassign*.** Dropping a resource whose
+  overlapping booking is on a different date (last night's shift running into this morning)
+  refuses the save and names that job and date, instead of offering Reassign — otherwise the
+  reassignment could delete an allocation, and its tickets, while that crew is still working it.
+  Built rule, from the code's own risk, never asked. Is that right, or should dispatch be able to
+  move a resource off a running shift? ([../projects-jobs/project-module/03-create-manage-job-schedule.md](../projects-jobs/project-module/03-create-manage-job-schedule.md),
+  unverified, says a same-time clash shows a *warning*, not a refusal.)
 - **Built rule, from the record rather than a ruling:** a job's allocations **never conflict
   with the same job's other days**. The crane on a round-the-clock job is *"the same crane"* for
   the day and night crews (Ryan, above, under *Schedule times on a later day*), and the loadout
@@ -1388,7 +1399,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (d) What does *Previous Night* mean — "was on Shift 2 yesterday" (the code) or "worked past
   midnight" (the window)? The tag also skips the window check in the employee panel.
   [The window.] See [daily-allocation-system.md](daily-allocation-system.md).
-  (e) Is leave during a shift a warning (built) or a refusal?
+  (e) Is leave during a shift a warning (built) or a refusal? [daily-allocation-system.md](daily-allocation-system.md)
+  (unverified) points both ways: *"On-leave employees are greyed out with a 'Leave' tag; they
+  remain visible but non-assignable"* (line 76) against *"unavailable ones are greyed out but
+  still drag-gable with a system warning"* (line 47). The API has no leave check on save.
   (f) The offload rule says a non-held item goes back every day — for one multi-day *shift*
   without holdover, does the crane come back mid-shift each night?
   (g) Which actions, if any, belong on a continuing card? Built read-only; its button opens its
@@ -1398,3 +1412,44 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Lisette Anzaldo (dispatch); Dylan Masterson (yard, items 1–8 and (f), (h));
   Corrina Bustos (payroll).
 
+## Schedule time order — may Start equal On Site, must the end follow On Site, and are older rows that break it left alone?
+
+- **Status:** open
+- **Asked:** 2026-10-01 — PR review of tcg branch `feat/schedule-datetime-holdover` (not merged).
+- **Question:** The job Schedule tab and `PUT /jobs/:jobId/schedule` now enforce (a) **Start at
+  or before On Site** — equal is allowed — and (b) the **Estimated End, on its day, after On
+  Site**. (c) The API only re-checks shifts a save *changes*, so an older row that breaks the
+  order never blocks saving the rest of the schedule. Are these the rules? The only written
+  source, the punch list [../quotations/quotation.md](../quotations/quotation.md) line 31
+  (unverified, in the quotations conflict set), says Start strictly **before** On Site; (b) is
+  the build's reading of the 2026-09-30 ruling, not its words.
+- **Built default:** (a) at or before; (b) after; (c) changed shifts only.
+- **Owner:** Lisette Anzaldo (dispatch), with Joe Schacatano for the Start time.
+
+## Make Holdover — which job lines can be held?
+
+- **Status:** open
+- **Asked:** 2026-10-01 — same review.
+- **Question:** The Make Holdover picker offers **Assets** (lines with a sub-category and no
+  employee type) and **Resources** (lines with an employee type) only. Tools and rigging, vendor
+  lines, and billing-only custom lines cannot be held. Should rigging that stays on site be
+  holdable — and if so, should it count against yard tool stock on the held days (see *Shifts
+  that run past their own day* item 6)?
+- **Built default:** assets and employee lines only.
+- **Related:** [*Which items of a holdover job go back to the yard between working days?*](#which-items-of-a-holdover-job-go-back-to-the-yard-between-working-days)
+- **Owner:** Lisette Anzaldo (dispatch), with Dylan Masterson (yard) for rigging.
+
+## Holdover on the DAS — colour, label, and what the job-card pill counts
+
+- **Status:** open
+- **Asked:** 2026-10-01 — same review.
+- **Question:** The build shows holdover in **purple**, labelled **"Holdover"** (job-card pill,
+  slot chip, Schedule footer badge), and the board's resource cards keep **"On Hold"** for a
+  held allocation. Lisette's sheet legend already uses **purple for "Working day and night"**
+  ([crane-configurations.md](crane-configurations.md), unverified), and "On Hold" is also a job
+  status (`ON_HOLD`). The job-card pill counts distinct job lines that are held plus lines whose
+  allocation that day was copied with *Hold over*. Are the colour, the two labels and the count
+  right?
+- **Built default:** as above (purple chosen because amber already means Allocation Completed on
+  the DAS).
+- **Owner:** Lisette Anzaldo (dispatch).
