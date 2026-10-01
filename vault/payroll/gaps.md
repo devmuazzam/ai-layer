@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-09-25
+updated: 2026-10-01
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -4876,3 +4876,65 @@ somewhere it should not have. Settle that before touching either.
   - the crew-time mismatch flag (Q10) and the Samsara start-of-ticket check (Q11). Neither is built;
   - the Samsara and invalid-entry flag sources. **None is in PR #690 / #691**, including the 30-minute tolerance and the AM/PM, same-time and out-of-order checks.
 - **Owner:** Corrina Bustos (payroll), with Brian Petros for C1–C3 (engine / rest rule). CodingCops for Q2's role design and C4.
+
+## DAS holdover vs subsistence holdover — pointer, owned by dispatch
+
+- **Status:** open
+- **Asked:** 2026-09-29 — building Make Holdover (branch `feat/schedule-datetime-holdover`, not merged).
+- **Question:** **Pointer only — the question lives in
+  [../dispatch/gaps.md](../dispatch/gaps.md) → *Is the DAS holdover the same thing as payroll's
+  subsistence holdover?*** Dispatch now marks held items per job line (`JobResource.isHoldover`);
+  payroll's `Job.subsistenceHoldover` is unchanged and unlinked. Whether they are one fact decides
+  whether PAY-049's "every day of the holdover, worked or not" can be fed from dispatch.
+- **Owner:** Lisette Anzaldo with Corrina Bustos.
+- **Rules:** [PAY-048](rules/PAY-048-standard-subsistence.md), [PAY-049](rules/PAY-049-weekend-subsistence.md)
+
+## A shift longer than 24 hours — how is it paid?
+
+- **Status:** open
+- **Asked:** 2026-10-01 — a job schedule shift may now run past 24 hours
+  ([../decisions/2026-09-30-schedule-shift-may-run-past-24-hours.md](../decisions/2026-09-30-schedule-shift-may-run-past-24-hours.md),
+  syed.haris, CodingCops, `reference`; built on tcg branch `feat/schedule-datetime-holdover`, not
+  merged). syed.haris asked to check the vault for how such a shift is paid.
+- **What the vault says:** nothing rules on one entry past 24 hours. Up to about 24 hours,
+  union time counts from the shift's start across midnight and every hour past 12 is double time
+  (MLA Art. III *Shifts* §1, unverified; Corrina 2026-09-10, PAY-024 open; legacy
+  `legacy-payroll-app-db-extract/rules-plain-language.md` §2). Day type is per calendar day and
+  the higher rate wins
+  ([../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md](../decisions/2026-09-04-cross-midnight-day-type-and-holiday-minimum.md),
+  verified, one midnight only). Brian splits imported FCC entries at 23.5 h and the halves chain
+  into one shift (PAY-004 / PAY-023, open). The only worked example past 24 h is the WTL chart's
+  26-hour Monday ([wtl-charts.md](wtl-charts.md), unverified, arithmetic not trusted). Every
+  dispatched job is L12, so a scheduled crew shift is a union case.
+- **What the engine does today:** union — after the start date every weekday half-hour is
+  overtime and everything past 12 hours is double time, with no reset
+  (`packages/payroll-engine/src/day-type.ts`); non-union — the whole entry is one workday, its
+  start date (`src/non-union.ts`), so later days never count toward the seventh-day rule; a
+  Friday-to-Sunday entry lands entirely in the week ending Friday.
+- **It also contradicts two existing answers.** Kyle Harlow, 2026-06-18
+  (`meetings/transcripts/2026-06-18-dispatch-permits.md` 1:35:04, reference): *"not ever going
+  over 24 hours"*. And the confirmed flag list
+  ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md),
+  verified) blocks approval of any shift over 24 hours, with the 24 vs 23.5 h threshold still
+  open (Q7 above); the correction form refuses windows over 23.5 h.
+- **Questions for Corrina Bustos / Brian Petros:**
+  1. Union: on one continuous shift over 24 h with no 8-hour break, is every hour after 12
+     double time to the end, or does the 8/12 count restart at midnight or at 24 h?
+  2. Union: on the third and later calendar days of such a shift, are weekday 06:00–17:00 hours
+     overtime (the incumbent's carryover) or straight time?
+  3. Non-union (admin/yard): is each calendar day of a multi-day entry its own 8/12 workday that
+     counts toward the seventh-day rule, or does the whole entry sit on its start date?
+  4. A Friday 20:00 → Sunday entry: are the hours after Friday midnight paid in the next
+     Saturday–Friday week, or the whole entry in the week it started?
+  5. Is the invalid-time flag "over 24 hours" or "over 23.5 hours", and does a genuine long shift
+     clear it with "reviewed, no change"?
+  6. Should the ERP refuse, flag, or allow a scheduled shift over 24 hours at all? (With Kyle and
+     Lisette — see [../dispatch/gaps.md](../dispatch/gaps.md) → *Schedule times on a later day* (f).)
+  7. After the 4th meal (21.5 h), when are the 5th and later meals owed on a shift over 27 h?
+  8. When the last calendar day of a multi-day shift has under 4 h, does the daily 4-hour minimum
+     apply to that day?
+- **Blocked:** merging the >24-hour schedule picker to `main` (recommended), and any payroll
+  change for multi-day entries.
+- **Owner:** Corrina Bustos (payroll) with Brian Petros (engine); Kyle Harlow and Lisette
+  Anzaldo for question 6.
+

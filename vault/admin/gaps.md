@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-09-25
+updated: 2026-09-30
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -942,6 +942,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   → *How the copy is refreshed*). Still needed: whether format is per-user, per-tenant or fixed,
   and whether a cross-midnight timestamp always renders with its date.
 
+- **Build note 2026-09-29 (branch `feat/schedule-datetime-holdover`, not merged; revised
+  2026-09-30):** the job Schedule tab's new time field keeps **12-hour with AM/PM** and shows the
+  day **under every time** (`09:00 AM` over `Mon, Oct 5`), in the brand colour when it is the
+  next day, per the second design drop (`TCG Platform (standalone)j.html`). That meets Brian's
+  cross-midnight ask for that screen without deciding the format question here.
+
 ## Departments, roles and their capabilities — the authorization layer is unbuilt and the list is unwritten
 
 - **Status:** open
@@ -1219,3 +1225,19 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** the remediation write in `TCG-82` (which of two one-way repairs ~N stranded rows receive — count unmeasured, no DB access at time of asking). **Not** blocked: `TCG-82`'s forward fix, which is correct under either answer because both agree a reset must not leave a user stranded.
 - **Owner:** product team — **Corrina Bustos** and **Brian Petros**, the same pair who own [../payroll/gaps.md](../payroll/gaps.md) item (c); **Lisette Anzaldo** for the DAS temp population, which is where UAT 5 raised it.
 - **Related ruling, narrower than this question:** on 2026-09-22 Syed Haris ruled for `TCG-82` that a password reset **must not** activate a user going forward — refuse the reset and resend the invite. That settles the *forward* behaviour and is being written up as a decision note by `close-ticket`. It deliberately does **not** answer (a) or (b): it chose the conservative path precisely because nobody had answered them.
+
+## Date format — is MM/DD/YYYY the app-wide rule?
+
+- **Status:** open
+- **Asked:** 2026-09-29 — building the job Schedule tab's date+time dropdown (branch
+  `feat/schedule-datetime-holdover`, not merged). The tab showed rows as `DD/MM/YYYY`, the
+  design prototype does too, and every other date on the page reads `Oct 5, 2026`.
+- **Question:** Is **MM/DD/YYYY** the rule for numeric dates across web and mobile, and where is
+  the long form (`Oct 5, 2026`) the right one instead?
+- **Built default:** schedule rows changed to `MM/DD/YYYY`, matching the job formatter
+  (`fmtDate`) and the only written rule.
+- **Sources checked:** [../vendors-agencies/agencies-module.md](../vendors-agencies/agencies-module.md)
+  line 45 — *"date format should be US => mm/dd/yyyy (across the app)"*, a Mohsin punch-list item,
+  `status: unverified`, never adjudicated. No decision in `decisions/`. Related:
+  [*Time display*](#time-display--military-12-hour-or-per-user-and-does-the-date-ride-along).
+- **Owner:** product (Brian Petros).
