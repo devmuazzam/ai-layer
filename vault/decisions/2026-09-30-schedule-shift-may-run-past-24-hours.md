@@ -79,6 +79,12 @@ Checked against the working tree on 2026-09-30:
   over. That is two shifts on one date, which ehtesham.anwar mapped to the **second shift**. It is
   not one shift longer than 24 hours. So this ruling **goes further than the client evidence**. It
   rests on CodingCops authority alone.
+- **A client statement points the other way** (found 2026-10-01). Kyle Harlow, 2026-06-18
+  dispatch/permits meeting (`meetings/transcripts/2026-06-18-dispatch-permits.md` 1:35:04,
+  `reference`): *"We're putting a limit on allowed work hours and not ever going over 24 hours"*;
+  and the verified payroll flag list blocks approval of any shift over 24 hours. Raised in
+  dispatch/gaps.md → *Schedule times on a later day* (f) and payroll/gaps.md → *A shift longer
+  than 24 hours — how is it paid?*
 - **The owner has not spoken.** Lisette Anzaldo (TCG dispatch) owns the register entry and should
   ratify this. Where the answer touches pay, the payroll owner (Corrina Bustos) should too.
 
