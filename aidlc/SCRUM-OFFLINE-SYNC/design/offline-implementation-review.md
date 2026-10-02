@@ -4,9 +4,51 @@ Reviewed 2026-10-02 at application commit `2e3fd102f`. Read-only application rev
 temporary reproduction tests were removed. This follows
 [the UI isolation review](nonblocking-sync-plan.md).
 
-**Conclusion: the offline foundation is implemented, but the full flow is not correct.**
+**Original review conclusion: the offline foundation was implemented, but the full flow was not correct.**
 There are confirmed data-loss and replay defects in addition to the foreground loader
 problem. Passing existing tests does not demonstrate end-to-end offline correctness.
+
+## Remediation status — 2026-10-02
+
+The original findings below describe the reviewed implementation before remediation.
+Commit `c43b0f14d` fixed findings 3, 4, 5 and 9 and the second-verification null result.
+Application commit `6f90f37eb` adds the remaining fixes and permanent regression coverage.
+
+| Finding | Current implementation |
+| --- | --- |
+| 1 — first-step draft loss | Reset detection uses completed progress, preserving checklist metadata and unfinished answers. |
+| 2 — local save failure | Offline Next and Submit require a durable save; storage errors retain editable work and surface an error. Authoritative draft reads also reject storage failures instead of overwriting work with a blank draft. |
+| 5 related P2 — incomplete discrepancy repair | Completed payloads remain in `replayOps`; background repair sends signature, checklist, timer/lunch and labor inputs. Older captures can rebuild supported payloads. Missing legacy labor/checklist data blocks completion with a review error. |
+| 6 — duplicate timers | Serializable close replay reconciles the existing nonrepeatable row by tenant, ticket and timer type before inserting. Repeatable timers keep separate identities. |
+| 7 — account mixing | Drafts, clocks, files and query caches use user/tenant partitions. Owner metadata retains the employee identifier. Session generations guard requests, refreshes, cache reads, acknowledgments and UI continuations; logout clears live state while preserving each owner's work. |
+| 8 — duplicate adjustment audits | Adjusted captures persist an operation UUID before dispatch. Replays reuse one immutable audit row; conflicting reuse is rejected before milestone writes. A new user adjustment receives a new UUID. No database migration is needed. |
+
+Additional reconnect safeguards: automatic profile revalidation remains silent; concurrent
+scanner callers await the same worker; same-owner revalidation preserves open tickets and
+clocks; lost shift-start punches retain a durable replay operation. Wrapped authentication
+rejections cannot authenticate an unrelated/stale cached profile.
+
+**Rollout limitation:** older drafts and query caches without trustworthy owner metadata
+remain untouched under their legacy keys. They are quarantined, not automatically assigned
+to whoever signs in next. An explicit owner-verification/recovery process is still needed
+for that historical data; current-account attribution would reintroduce finding 7. Older
+labor captures without full saved inputs likewise require review rather than a false repair.
+Physical-device lifecycle, flapping-network and frame-time validation remains pending.
+
+**Remediation validation:** 306 mobile sync/storage/session regression tests passed across
+16 suites; 79 API time-entry/adjustment tests passed across 5 suites. The signature and
+checklist dispatchers passed 15 tests, including durable-save failure/retry coverage;
+ticket/job deep-link screens passed 10 tests, including stale-account and read-failure
+coverage. Targeted notification/drain/storage checks also passed (overlapping core coverage).
+Mobile Nx lint and typecheck and API Nx lint/build passed. Focused Jest runs disabled
+Watchman because the sandbox cannot access its socket; the initial Nx test attempts did
+not provide a usable runner result, so the direct package Jest runners were used.
+
+An additional legacy Review dispatcher test still fails: its mocked server setup does
+not reach submission. Comparison against application HEAD `c43b0f14d` in an isolated
+tracked-file copy reproduced the same failure before these changes. That baseline also
+reproduced six signature/checklist fixture/assertion failures; those six are corrected
+in the now-passing dispatcher suites. This does not claim a clean whole-repository test run.
 
 ## Scope and authority
 
