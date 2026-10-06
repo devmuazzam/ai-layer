@@ -20,9 +20,25 @@ provenance_note: >-
   2026-09-30, Corrina ("no, only the 2nd and onward"): a FIRST missed meal does NOT move the start;
   only the 2nd and later, which add a half-hour, do. This agrees with PAY-047's absorption. See
   decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md.
-  Still open: Brian's concurrence; the 2026-09-25 union BA meeting is not in the vault. Engine not
-  changed. Body unchanged.
-updated: 2026-09-07
+  Still open: Brian's concurrence; the 2026-09-25 union BA meeting is not in the vault.
+  ENGINE CHANGED 2026-09-30 — PAYROLL-FLAGS U2, app commit 718c049a3 on PR #709 (hash as on the
+  PR branch on 2026-10-05), PAYROLL_ENGINE_VERSION 2.0.0: rest-period.ts → restGapStartMs measures
+  the gap from the prior chain's PAY-020 rounded paid end plus 30 min per worked-through meal from
+  the 2nd on; calculate.ts → countWorkedThroughMeals counts those meals before rest is priced, with
+  the meal step's own resolver (rule order unchanged — rest is still step 3, meals step 6); and
+  rest now runs once across every chain the employee has. PR #709 review fixes, 2026-10-05,
+  PAYROLL_ENGINE_VERSION 3.0.0: the chain's paid end is the LATEST end of any of its entries (an
+  entry nested in a longer one no longer ends it early); a gap judged short is recorded as at most
+  7.99, never 8.00 (no pay change); and the API's context read (findCompleteContextTickets, which
+  the recalculation and the correction estimate both use) walks back along a stitched chain so all
+  of its meals reach the engine (provenance register → "Rest chain — context read").
+  PENDING Corrina Bustos / Brian Petros — developer direction or readings, not client rulings:
+  the cumulative 3rd+ extension (../../../aidlc/PAYROLL-FLAGS/spec.md §12 Q2), the reach across a
+  chainJobDays (OT/DT reset) boundary (§12 Q10), and counting meals per rest chain rather than per
+  meal group (§12 Q9).
+  explain.ts explains base slices only and has no rest output, so nothing there mirrors this.
+  Body: step (3) of the rule-order note updated to match.
+updated: 2026-10-05
 tags: [module/payroll, kind/rule, open-questions]
 ---
 
@@ -112,7 +128,10 @@ tags: [module/payroll, kind/rule, open-questions]
   trigger itself evidently sat in the wrong place). **The ERP's order, for the record and for the
   parallel run** (`calculate.ts`, per employee-week): (1) slice pricing per chain — ST/OT/DT ladder
   with the premium-day top-up bump; (2) holiday / special-Saturday minimums, per calendar date;
-  (3) **rest premium, per chain, reading the priced slices** — before any phantom hours exist;
+  (3) **rest premium, reading the priced slices** — before any phantom hours exist; per chain
+  when this was written, and since PAYROLL-FLAGS U2 (2026-09-30) **one pass across every chain
+  the employee has**, so a gap is judged across a `chainJobDays` boundary too (developer reading,
+  pending Corrina / Brian — [spec §12 Q10](../../../aidlc/PAYROLL-FLAGS/spec.md));
   (4) shift hours-add, per chain; (5) daily 4-h and long-boom 4-h minimums, per calendar day;
   (6) meals, per gapless group; (7) subsistence; then every day's total restated from its ledger.
   Rest reads actual slices only, by construction. **Expect a further backup after his fix and a

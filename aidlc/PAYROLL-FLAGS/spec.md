@@ -1510,7 +1510,16 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/PAYROLL-FLAGS/spec.md
 - **Owner:** devmohsinakram (developer), mobile field-ops behavior.
 - **Workaround, if any:** none built. The server refuses any step or submit on a `CANCELLED`
   ticket (`job-tickets.service.ts` terminal-status guards), so a crew member cannot act on it.
-- **Status:** open
+- **Answer (2026-10-01, default built per `open-questions.md` OQ-1 and OQ-4 — the developer's
+  review of PR #709 and his Q5 answer):** the premise changed: a void no longer sets `CANCELLED`.
+  It is a payroll-only closure (`payrollClosedAction = VOIDED`, `status` untouched — OQ-1), so the
+  field contract (`GET /field/tickets`, `FieldTicket.payrollClosedAction`) now carries the closure
+  and the mobile app drops any ticket with it set — same-day and already-started ones included —
+  from `partitionDashboardTickets` (active and upcoming) and from `splitFieldTickets`' active list
+  (`isPayrollClosedFieldTicket`). `use-tickets.test.tsx` asserts the drop-off where it used to pin
+  the two `FINDING:` cases. `REJECTED` is not touched (not part of this question any more).
+- **Status:** resolved — default built, `open-questions.md` OQ-4 (and OQ-1); confirmation stays
+  open there with the developer.
 
 ### Q13 — REQ-06: must the void refuse a ticket that is not in period `:id`'s week?
 
@@ -1530,7 +1539,60 @@ grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/PAYROLL-FLAGS/spec.md
 - **Owner:** devmohsinakram (developer).
 - **Workaround, if any:** as built: no membership check. The web offers Void only on the rows of
   the period's own unfinished-tickets list.
-- **Status:** open
+- **Answer (2026-10-01, default built per `open-questions.md` OQ-2 — the developer's review of PR
+  #709):** **refuse, 409.** The void checks the ticket is in period `:id`'s incomplete-ticket set —
+  the set the overlay shows, read through the same `weekEntriesForPeriod` (Start Ticket week,
+  Pacific; the scheduled date's week while unstarted, Q7) — and otherwise answers 409 *"Ticket
+  T-… is not an incomplete ticket of this payroll period (week of yyyy-mm-dd)"*
+  (`assertIncompleteTicketOfPeriod`). A future-scheduled ticket can no longer be voided through
+  another week's period.
+- **Status:** resolved — default built, `open-questions.md` OQ-2; ratification of the void rule
+  (C8) stays open there.
+
+### Q14 — REQ-07: may the period still auto-advance to `APPROVED` while an employee with no priced week has an incomplete ticket?
+
+- **Question:** `approvePeriod` now refuses the whole period while **any** ticket in it is
+  incomplete, including one belonging to an employee who has no priced week (overlay-only). But
+  approving the priced weeks one at a time through `approveEmployee` still stamps the period
+  `APPROVED` once the last priced week is approved (`maybeAdvanceToApproved`), because each of
+  those weeks is individually clean. Should that auto-advance also be held while any ticket in the
+  period is incomplete? One line: **"hold the auto-advance"** or **"accept as is"**.
+- **Why it cannot be answered from what is written:** REQ-07 names Approve "per employee and per
+  period" and `units.md` U4 names `approveEmployee` and `approvePeriod` as the two call sites; no
+  source mentions the derived period stamp. Corrina's words ("all tickets must be completed before
+  the payroll can be processed/approved") read as covering it, but the developer's reading of
+  "processed" (C7) was about Calculate, not this. Raised by the U4 executor, 2026-09-30.
+- **Blocked:** nothing in U4. The auto-advance is unchanged.
+- **Candidates:** REQ-07; `payroll.service.ts` `maybeAdvanceToApproved` (its JSDoc argues it cannot
+  bypass PAY-065 — true per week, not for an overlay-only employee's ticket).
+- **Owner:** devmohsinakram (developer).
+- **Workaround, if any:** as built: the whole-period Approve refuses; one-at-a-time approval of
+  every priced week can still move the period to `APPROVED`.
+- **Answer (2026-10-01, default built per `open-questions.md` OQ-5):** **hold the auto-advance.**
+  `maybeAdvanceToApproved` stamps the period `APPROVED` only when every priced week is approved
+  **and** no ticket in the period is incomplete (not completed and not closed by payroll), read
+  through the same `weekEntriesForPeriod` the gate reads. A `CALCULATED` period still moves to
+  `REVIEW` meanwhile.
+- **Status:** resolved — default built, `open-questions.md` OQ-5; Corrina Bustos to confirm there.
+
+### Q15 — REQ-08: must Remind refuse a ticket that is not in period `:id`'s week?
+
+- **Question:** `POST /v1/payroll/periods/:id/tickets/:ticketId/remind` has the same shape as the
+  void route in Q13, and the same gap: nothing says the ticket must belong to period `:id`'s week.
+  One line: **"same answer as Q13"**, or a different rule for Remind.
+- **Why it cannot be answered from what is written:** REQ-08's Acceptance names only the recipient
+  and channels. Raised by the U4 executor, 2026-09-30.
+- **Blocked:** nothing. U4 mirrors U3: 404 on an unknown period, then acts on the ticket by id,
+  tenant-scoped, refusing (409) only a ticket that is not `PENDING`/`SENT`/`IN_PROGRESS` or has
+  no primary worker.
+- **Candidates:** REQ-08; Q13; §4 *Errors*.
+- **Owner:** devmohsinakram (developer).
+- **Workaround, if any:** as built: no membership check. The web offers Send Reminder only on the
+  rows of the period's own blocking banner.
+- **Answer (2026-10-01, default built per `open-questions.md` OQ-2):** **same answer as Q13** —
+  Remind refuses (409, same message) a ticket outside period `:id`'s incomplete-ticket set, and
+  also a ticket payroll already voided (its status is unchanged, OQ-1).
+- **Status:** resolved — default built, `open-questions.md` OQ-2.
 
 ## 13. What this spec deliberately does not specify
 
