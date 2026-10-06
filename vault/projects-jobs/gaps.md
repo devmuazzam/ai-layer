@@ -971,6 +971,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   rows, offer "selected days only", or confirm first? What an unticked row means is open in
   [*Schedule day deactivate orphans SubJob / allocations*](#schedule-day-deactivate-orphans-subjob--allocations).
 - **Built default:** as above.
+  - **Note 2026-10-06 (tcg branch `feat/yard-holdover-loadout`, fix pass commit
+    `6a254ffbf`, not merged):** "as above" is accurate again on this branch. Copy writes the times and leaves each
+    row's tick as it was (`patchShift(..., { tickOnTime: false })` in
+    `apps/web/src/features/projects/jobs/job-details/schedule/utils/schedule-shift-patch.ts`, called
+    from `job-schedule-tab.tsx` → `handleCopyToAll`). The note in
+    [*Schedule tab — what unticks a day…*](#schedule-tab--what-unticks-a-day-and-should-a-day-with-times-always-be-worked)
+    that said otherwise no longer applies.
 - **Owner:** Lisette Anzaldo (dispatch).
 
 ## Schedule tab — what unticks a day, and should a day with times always be worked?
@@ -1026,11 +1033,28 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
      `apps/web/src/features/projects/jobs/job-details/schedule/utils/schedule-range-shift.ts`,
      used by `hooks/use-range-change-guard.ts`). This comes from the decision's *Interpretation*
      section, not from Fouzan Shakil's words.
+- **Built defaults changed 2026-10-06 (fix pass on the same branch, commit `6a254ffbf`, not merged):**
+  - **(a) Copy to all days no longer ticks.** It writes the times and leaves each row's tick as it
+    was: `patchShift(..., { tickOnTime: false })` in
+    `apps/web/src/features/projects/jobs/job-details/schedule/utils/schedule-shift-patch.ts` (moved
+    there from `hooks/use-schedule.ts`), called from `job-schedule-tab.tsx` → `handleCopyToAll`.
+    Reason: a reopened schedule re-adds weekend rows unticked
+    ([decisions/2026-09-12-job-schedule-weekend-toggles-follow-the-date-range.md](../decisions/2026-09-12-job-schedule-weekend-toggles-follow-the-date-range.md)
+    (b)), and Copy would otherwise have ticked them and put the weekends on the DAS. Typing a time
+    into a single row still ticks it; built default 1 is otherwise unchanged.
+  - **(b) Built default 2 now also counts these as work, and still prompts for them:** a day with
+    Tool & Rigging assignments (`JobToolAssignment`, deleted with the day by cascade,
+    `apps/api/prisma/schema.prisma`), and a day whose sub-job has a yard loadout. See `hasDasWork`
+    in `apps/web/src/features/projects/jobs/job-details/schedule/utils/schedule-range-shift.ts` and
+    the job detail include in `apps/api/src/service/jobs/jobs.repository.ts`. A code fix restoring
+    the prompt for data that would be lost, not a new ruling.
 - **Consequence for an open entry:** under built default 1, **Copy to all days now also ticks**
   every editable unticked row it writes to. So a dispatcher who unticks days and then copies times
   re-ticks them. Whether Copy should touch unticked rows at all is already open in
   [*Job Schedule "Copy to all days"…*](#job-schedule-copy-to-all-days--replaces-apply-times-and-which-rows-it-overwrites).
   That entry's "Built default: as above" no longer describes this branch.
+  - **No longer applies, 2026-10-06:** see (a) above. Copy leaves the ticks alone, so that entry's
+    "Built default: as above" is accurate again on this branch.
 - **Sources checked:** **nothing written says what unticks a day, whether a day with times must
   be worked, or what view mode shows for an unticked day.**
   - [project-module/03-create-manage-job-schedule.md](project-module/03-create-manage-job-schedule.md)

@@ -13,6 +13,10 @@ decided_by: >-
   decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md.
   Attribution corrected 2026-10-06: first recorded as Syed Haris; the developer confirmed in
   the same session that the ruling was Fouzan Shakil's.
+  Revised 2026-10-06, later the same day: a PR review of the branch found that the build's reading
+  of "New crane lines only" did not match the pick. Fouzan Shakil picked one of three options in a
+  Claude Code session (*The exchange* → *Revision*). Same basis: CodingCops, not TCG-confirmed;
+  Lisette Anzaldo was not asked.
 status: reference
 conflicts_with: []
 resolves: []
@@ -42,6 +46,21 @@ as shown.
 | "How should a crane line's tonnage be read?" | **"Number in the name"**: *"\"550 Ton Crane\" or \"600 T\" counts. Lines named only by type (\"Crawler Crane\") are never held by default. Same way the DAS reads crane size today."* | **"Name, else its assets"**: use the largest rated capacity among that sub-category's assets when the name has no number |
 | "Which jobs get the default?" | **"New crane lines only"**: *"Applies to lines added from now on. Existing jobs are left as they are, so no held state changes under anyone's feet."* | **"Also open jobs today"**: a one-off migration marking 550 t+ crane lines on active jobs |
 
+**Revision, 2026-10-06, later the same day.** A PR review of the branch found that the build did not
+match the third pick. Question shown to Fouzan Shakil, verbatim:
+
+> "550 t pre-tick: your pick said "New crane lines only — applies to lines added from now on;
+> existing jobs left as they are". The branch instead pre-ticks on any job that holds nothing yet,
+> and skips a new 550 t line if the job already holds something. How should it work?"
+
+One option was picked. Labels and descriptions are verbatim as shown.
+
+| Option | Description | |
+| --- | --- | --- |
+| **"Lines added from today (Recommended)"** | *"Pre-tick only 550 t lines created from 2026-10-06, while nothing on the job is held. Old jobs are never pre-ticked. No schema change. Gap: a new 550 t line on a job that already holds something isn't pre-ticked."* | **Picked** |
+| "Per line, until first save" | *"Every new 550 t line is pre-ticked on any job until a Make Holdover save. Fully matches your pick, but needs a new job_resources column, a migration and a backfill."* | Rejected |
+| "Keep as built" | *"Read "new lines only" as "while nothing on the job is held" and record that. No code change."* | Rejected |
+
 ## Decision
 
 **The ruling, from the picks:**
@@ -54,17 +73,31 @@ as shown.
 - Tonnage is read from **the number in the line's name**. A line named only by type is never
   pre-ticked.
 - No migration. No existing job's held state is changed.
+- **Added by the revision, 2026-10-06:** only 550 t+ crane lines **created on or after 2026-10-06**
+  are pre-ticked, and only while nothing on the job is held. A line created before that is never
+  pre-ticked, on any job. No schema change.
+- **Known gap, accepted with the revision pick:** a new 550 t+ line on a job that already holds
+  something is not pre-ticked.
 
 **Interpretation, not the ruling's words.**
 
 - **"550 ton and anything above"** means 550 t **or more**.
-- **"New crane lines only", under a pre-tick that saves nothing.** It is built as: the Schedule tab
+- **"New crane lines only", under a pre-tick that saves nothing.** *Superseded 2026-10-06 by the
+  revision pick; kept as the record of the first build.* It is built as: the Schedule tab
   pre-ticks 550 t+ crane lines **only while nothing on the job is held yet**. Once a holdover has
   been saved for the job, the modal shows exactly what was saved and adds no pre-tick. Two
   consequences:
   - An existing job that has a 550 t+ crane line and nothing held will show the pre-tick when Make
     Holdover is opened. Nothing changes unless someone saves, so no held state moves under anyone.
+    *No longer true since the revision: a line created before 2026-10-06 is never pre-ticked.*
   - A 550 t+ crane line added to a job that already has something held is **not** pre-ticked.
+    *Still true: the revision pick accepts it as the known gap.*
+- **"From 2026-10-06"** (the revision) is built as UTC midnight, `2026-10-06T00:00:00Z`, which is
+  17:00 on 2026-10-05 in California (PDT). A line's age is its `JobResource.createdAt`.
+- **A line edited into a 550 t+ crane.** Changing a line's sub-category updates the row in place
+  (`apps/api/src/usecase/jobs/jobs.service.ts`), so it keeps its `createdAt`. A line created before
+  2026-10-06 and later changed to a 550 t+ crane is therefore not pre-ticked. A consequence of the
+  build, not asked.
 - **What counts as a crane line.** An asset line (a sub-category, no employee type) whose
   sub-category name or category name contains "crane".
 - **How the number is read.** The number in the sub-category name followed by "t", "ton" or "tonne"
@@ -81,6 +114,9 @@ No reason was given for the 550 t threshold. The option descriptions picked give
 
 - a pre-tick means *"nothing is held until someone presses Save"*;
 - new lines only means *"no held state changes under anyone's feet"*.
+
+For the revision, the picked description gives *"No schema change"*. The rejected per-line option
+*"needs a new job_resources column, a migration and a backfill."*
 
 The record has related material. None of it rules on this default:
 
@@ -124,6 +160,10 @@ This note does not close any entry.
   does not.
 - A pre-ticked row reads *"Ticked by default — 550 t or larger crane"*, with test ID
   `jobs-holdover-item-default-<jobResourceId>`.
+- **Revision, 2026-10-06** (tcg commit `6a254ffbf`): `DEFAULT_HOLDOVER_FROM = 2026-10-06T00:00:00Z` in
+  `apps/api/src/usecase/jobs/holdover-default.util.ts`. `isDefaultHoldoverLine` now also requires
+  `JobResource.createdAt >= DEFAULT_HOLDOVER_FROM`. The web gate, "while nothing on the job is
+  held" (`initialSelection`), is unchanged.
 
 ## What this does NOT settle
 
@@ -139,7 +179,8 @@ This note does not close any entry.
 - **Other items of a 550 t job.** Tractor, trailer, counterweight trucks and support loads are not
   pre-ticked. Which of them stays on site is the open register question.
 - **A job whose holdover was saved and then fully released.** Nothing on it is held again, so under
-  the interpretation above the pre-tick returns. Whether that is wanted is not stated.
+  the interpretation above the pre-tick returns. Whether that is wanted is not stated. Since the
+  revision it returns only for lines created from 2026-10-06.
 
 ## Effect on the vault
 
@@ -148,5 +189,7 @@ This note does not close any entry.
   not `verified`.
 - **Register:** a dated note pointing here was appended to dispatch/gaps.md → *Which items of a
   holdover job go back to the yard between working days?*. Its `Status:` line was not changed.
+- **Revision, 2026-10-06:** a dated note under that entry's *Default pre-tick* bullet. Done. No
+  `Status:` line was changed. No other file's frontmatter was edited.
 - **Not indexed.** Like the other 2026-10-01 and 2026-10-06 decisions, this note is not listed in
   INDEX.md or dispatch/INDEX.md. It is found by its `module/dispatch` tag.

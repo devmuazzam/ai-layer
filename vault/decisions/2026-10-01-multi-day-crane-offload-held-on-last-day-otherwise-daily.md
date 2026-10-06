@@ -98,6 +98,14 @@ This note does not close either entry.
   dispatch/gaps.md → *Manual vs automatic offload*. This ruling says **when** an item is offloaded,
   not **how**.
 
+**Update 2026-10-06: built** on tcg branch `feat/yard-holdover-loadout` (not merged), through
+decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md (`reference`). A held asset
+is not offloaded before the job's last day: its Off-load row is unticked and locked, and the API
+refuses offloading it (`isOffloadHeld`, `apps/api/src/usecase/das-loadout/das-loadout.service.ts`).
+On the last day it offloads like any other item. An item not held offloads every day, as before.
+The *Loadout* point under *What this does NOT settle* is answered there too: every day runs the
+normal flow, the held item ticked and locked in Loadout.
+
 ## What this does NOT settle
 
 - **A single multi-day *shift* without holdover.** This is different from a multi-day *job*.
@@ -131,3 +139,8 @@ This note does not close either entry.
 - **Register: not edited by this note's author.** The note was written under an instruction not to
   touch any `gaps.md`. Another agent in the same session is updating dispatch/gaps.md to link this
   note from the two entries above. Until that lands, neither entry points here.
+- **Update 2026-10-06:** dispatch/gaps.md → *Which items of a holdover job go back to the yard
+  between working days?* now points here (its *Partly answered 2026-10-01* bullet), and so does
+  item 1 of *Shifts that run past their own day*. *Make Holdover — does holding an item carry its
+  allocation forward on its own?* still does not. Built: see the 2026-10-06 update under *What is
+  built*.

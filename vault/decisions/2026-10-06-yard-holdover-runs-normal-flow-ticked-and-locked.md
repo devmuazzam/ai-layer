@@ -124,6 +124,13 @@ column is this note's first version (exchange 1 only); the right column is the r
 | 6. A held item blocks every other job for the whole hold, any hours | Stands | **Stands** (`HELD_ON_SITE`) |
 | Built default: a day closes with held items still out, no offload reason asked | Superseded | **Restored, now ruled** ("Stays out, no reason asked") |
 
+**Rule 6, widened 2026-10-06, later the same day.** The block now starts on the held job's first
+held day, not at "its day-1 loadout". A held asset is refused to other jobs before it goes out too,
+and for a held asset this overrides "Reassign anyway?"
+(decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md, item 4). See
+decisions/2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md (Fouzan Shakil,
+`reference`). The build was already this wide; no code changed.
+
 Also standing from the earlier note: **held** means the Make Holdover tick (`JobResource.isHoldover`)
 or a day's allocation copied with *Hold over* (`JobResourceAllocation.isHoldover`); the yard rule
 applies to **asset lines only**; **the last day** is the job's last active, non-cancelled schedule
@@ -198,6 +205,8 @@ revised (2026-10-06). The first build is commit `c6f74e315`.
 ## What this does NOT settle
 
 - **Server-side Loadout lock.** The API does not refuse a loadout that omits a held item. Not asked.
+  Registered 2026-10-06 as an open question for Lisette Anzaldo: dispatch/gaps.md → *Holdover
+  Loadout lock — should the API refuse a Loadout that leaves a held item behind?*
 - **The asset-not-home flag** (assets/gaps.md → *Asset not returned to its home yard at end of
   shift*, Q6). Whether the flag exempts a held item's on-site span is not decided.
 - Everything the earlier note listed under *What this does NOT settle* still applies: which items

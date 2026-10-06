@@ -1187,6 +1187,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
       adding or removing days moves it.
   - **Loadout** is refused for an item on site; **offload** is refused for a held item before the
     last day (400 with the reason). Both are enforced by the API, not only the modals.
+    - **Corrected 2026-10-06: the Loadout half is stale.** Under
+      [../decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md](../decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md)
+      the Loadout refusal was removed. The Loadout lock (held item ticked and locked) is
+      **web-only** (`apps/web/src/features/dylen-dashboard/hooks/use-dylen-held-asset-selection.ts`).
+      The API does not refuse a Loadout that leaves a held item behind (`completeLoadout`,
+      `apps/api/src/usecase/das-loadout/das-loadout.service.ts`). The Off-load half stands. Whether
+      the API should enforce the lock is open:
+      [*Holdover Loadout lock — should the API refuse a Loadout that leaves a held item behind?*](#holdover-loadout-lock--should-the-api-refuse-a-loadout-that-leaves-a-held-item-behind)
   - **Day 1:** a held item out tonight is not outstanding — the day closes without it, no offload
     reason is asked, and Force complete leaves it out. *Built default:* when only held items are
     out, Off-load still opens (rows disabled) and its button closes the day.
@@ -1206,6 +1214,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     wider than the ruling:* the block spans the held job's first to last held day for that asset,
     **whether or not it has gone out yet** (the ruling says "from its day-1 loadout"). Offloading it
     on a day frees that day; releasing the hold frees the later days.
+    - **Ruled 2026-10-06, later the same day, by fouzan.shakil (CodingCops), not confirmed by TCG**
+      — [../decisions/2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md](../decisions/2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md)
+      (`reference`). No longer a built default: the whole planned hold, before loadout too, is the
+      rule. For a held asset it overrides "Reassign anyway?"
+      ([../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md)
+      item 4). What frees it is as in the later yard note below: the last held day's offload, or
+      releasing the hold. Still in tension with [daily-allocation-system.md](daily-allocation-system.md):47-48
+      and [../projects-jobs/project-module/03-create-manage-job-schedule.md](../projects-jobs/project-module/03-create-manage-job-schedule.md):43
+      (both `unverified`: a clash warns, it does not block).
   - **Not built:** rigging cannot be held; a held *employee* is not blocked elsewhere; the DAS side
     panels still show a held crane as available on a day the job has no row (the drop is refused by
     the API); the yard board still lists jobs by row date (item 1 of *Shifts that run past their own
@@ -1240,6 +1257,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Holdover pre-ticks nothing. Being built on tcg branch `feat/yard-holdover-loadout`. Still open:
   which other items stay on site (tractor, trailer, counterweight trucks, crew vehicles, crew), and
   the first/last-day configuration variant.
+  - **Revised 2026-10-06, later the same day, by fouzan.shakil (CodingCops), not confirmed by
+    TCG** (same decision note, *Revision*): only 550 t+ crane lines **created on or after
+    2026-10-06** are pre-ticked, still only while nothing on the job is held. Older lines are never
+    pre-ticked. Known gap, accepted with the pick: a new 550 t+ line on a job that already holds
+    something is not pre-ticked. Built as `DEFAULT_HOLDOVER_FROM` (UTC midnight) and a
+    `JobResource.createdAt` check in `isDefaultHoldoverLine`
+    (`apps/api/src/usecase/jobs/holdover-default.util.ts`).
 - **Owner:** Lisette Anzaldo (dispatch).
 
 ## Is the DAS holdover the same thing as payroll's subsistence holdover?
@@ -1382,6 +1406,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   ([../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md](../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md),
   `reference`). The ruling starts the block at loadout. It says nothing about a held item that is
   allocated but not yet out. Being built on tcg branch `feat/yard-holdover-loadout`.
+  **(c) widened 2026-10-06, later the same day, by fouzan.shakil, not confirmed by TCG:** the
+  block starts on the held job's first held day, not at loadout, so a held item allocated but not
+  yet out is refused to other jobs too, and is never offered as "Reassign anyway?"
+  ([../decisions/2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md](../decisions/2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md),
+  `reference`). Still in tension with the `unverified` specs that say a clash warns (see (h)
+  and [daily-allocation-system.md](daily-allocation-system.md):47-48).
   (d) **Leave and sick** still block the whole date (`LeaveRequest` is date-only). Should a
   half-day leave be possible?
   (e) **A crane loaded out and not yet offloaded** on a morning job does **not** block a
@@ -1543,4 +1573,26 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   right?
 - **Built default:** as above (purple chosen because amber already means Allocation Completed on
   the DAS).
+- **Owner:** Lisette Anzaldo (dispatch).
+
+## Holdover Loadout lock — should the API refuse a Loadout that leaves a held item behind?
+
+- **Status:** open
+- **Asked:** 2026-10-06 — PR review of tcg branch `feat/yard-holdover-loadout` (not merged). Nobody
+  was asked.
+- **Question:** In Start Loadout a held item (Make Holdover) is **ticked and locked**
+  ([../decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md](../decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md),
+  `reference`, CodingCops). Should the API also refuse a Loadout that leaves a held item out, as it
+  already refuses offloading a held item before the job's last day? Or is the web lock enough?
+- **Built default:** web-only. The lock is in
+  `apps/web/src/features/dylen-dashboard/hooks/use-dylen-held-asset-selection.ts`.
+  `completeLoadout` (`apps/api/src/usecase/das-loadout/das-loadout.service.ts`) has no held-item
+  check. The Off-load rule is enforced by the API (400, `isOffloadHeld`).
+- **Sources checked:** the decision above, *What this does NOT settle*: *"The API does not refuse a
+  loadout that omits a held item. Not asked."* Nothing else written covers it. The earlier
+  *"Loadout is refused for an item on site"* build note in
+  [*Which items of a holdover job go back to the yard between working days?*](#which-items-of-a-holdover-job-go-back-to-the-yard-between-working-days)
+  described a different, removed rule (corrected 2026-10-06).
+- **Blocked:** nothing hard. A direct API call, or a client other than the web yard board, can load
+  out a day without its held item.
 - **Owner:** Lisette Anzaldo (dispatch).

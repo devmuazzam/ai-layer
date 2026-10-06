@@ -26,6 +26,10 @@ provenance_note: >-
   a day closes with held items out, no reason asked (now ruled). STAND: rule 3's offload half,
   rule 4 (Holdover pill), rule 5 (early return), rule 6 (blocking) and the definitions of held,
   asset lines only and the last day. Body unchanged.
+  WIDENED 2026-10-06, later the same day: rule 6's block now starts on the held job's first held
+  day, not at "its day-1 loadout", so a held asset is refused to other jobs before it goes out too,
+  per decisions/2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md (Fouzan
+  Shakil, `reference`).
 resolves: []
 related_decisions:
   - 2026-10-01-multi-day-crane-offload-held-on-last-day-otherwise-daily.md
