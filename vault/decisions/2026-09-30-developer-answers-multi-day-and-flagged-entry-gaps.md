@@ -42,6 +42,14 @@ provenance_note: >-
   ticket date for a multi-day non-holdover job. It is still date-based, so the F13 tension stands
   unchanged. J1–J2 sit on the provenance row "8-hour rest — gap start", which already records
   both as built and pending; that file is not changed.
+  SUPERSEDED IN PART, 2026-10-06, by decisions/2026-10-06-payroll-calculate-runs-automatically.md
+  (status: reference). That decision is delivery-side and relayed: Syed Haris relayed that AJ
+  (TPM) decided "we will do automatic recalculation". K5 ("A worker's resubmit waits for the next
+  Calculate") and C3's "Payroll then recalculates" no longer mean a payroll user starts the run:
+  the resubmit queues the Calculate automatically (PR #709). What K5 says otherwise still holds:
+  the week is held until a completed run, and the resubmit does not re-run flags by itself. The
+  client was not consulted. Per Syed Haris, 2026-10-06, their confirmation is not needed:
+  aidlc/PAYROLL-FLAGS/spec-u6-u13.md §12 Q26, resolved. Body unchanged.
 supersedes_partial:
   - "decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md (clause 4's bullet 'Adding or removing a lunch is not supported' — the later bullet, add / remove / switch, governs; C11)"
 resolves:

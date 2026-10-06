@@ -42,6 +42,17 @@ provenance_note: >-
   (nine are listed) blocks approval until "adjusted and fixed". The open-send-back block is
   unaffected. Send Back survives, with the WORKER as target and a reminder after 3 hours. Clause 1's
   comparison basis (crane range vs the job configuration set by sales) was asked and NOT answered.
+  FOURTH AMENDMENT, 2026-10-06. This one is NOT from the client: it is a delivery-side decision,
+  relayed. See decisions/2026-10-06-payroll-calculate-runs-automatically.md (status: reference).
+  Syed Haris relayed that AJ (TPM) decided "we will do automatic recalculation". CLAUSE 4's
+  "Automatic recalculation was not chosen: recalculating is a money operation Payroll triggers"
+  and its "Payroll then recalculates the period to price it" are SUPERSEDED as to who starts the
+  run: the period is now recalculated by the auto-calculate queue (PR #709). Clause 4's approval
+  hold (a correction newer than the latest completed run blocks approval) stands. The first
+  2026-09-29 addendum's item C ("Recalculating the period is still the only money write") stands.
+  The client (Corrina Bustos, Brian Petros) was not consulted. Per Syed Haris, 2026-10-06, their
+  confirmation is not needed ("it's our decision so no need for their confirmation"):
+  aidlc/PAYROLL-FLAGS/spec-u6-u13.md §12 Q26, resolved. Body unchanged.
 resolves:
   - "payroll/gaps.md#confluence-payroll-user-stories--first-payroll-pages-in-confluence-unmigrated (partial, provisional — send-back target (clause 3) and what makes an entry Flagged (clause 1) only; whether the Confluence pages supersede the vault stays open)"
 jira: []

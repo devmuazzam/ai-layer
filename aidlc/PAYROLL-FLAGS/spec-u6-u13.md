@@ -1041,6 +1041,13 @@ and Q24.
     resubmit holds the week until payroll recalculates, and flags and pay update then.* This
     closes C3's own admitted gap: no lightweight re-evaluation on resubmit, matching REQ-18's
     fix-hold pattern exactly, as this spec's proposed default already anticipated.
+  - `decisions/2026-10-06-payroll-calculate-runs-automatically.md` — `[UNVERIFIED]` — kind:
+    reference — AJ (TPM), relayed by Syed Haris 2026-10-06: *"we will do automatic
+    recalculation"*; client confirmation not required per Syed Haris the same day. Supersedes the
+    two quotes above as to **who starts** the recalculation: the resubmit enqueues it
+    (`payroll-send-backs.service.ts:598–601`, trigger `CORRECTION_RETURNED`) and the queue runs it
+    within ~10 s. The hold until the next completed run, and "resubmit does not itself re-evaluate
+    any flag", are unchanged.
   - `decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md`
     → Confluence US-03 AC 4 (unverified, cited within a verified note as corroborating context,
     not as its own source) — kind: vault, unverified — *"the Worker may edit the specified
@@ -1748,6 +1755,55 @@ grep -n '^### REQ-\|^### Q[0-9]' .ai/aidlc/PAYROLL-FLAGS/spec.md   # re-check be
   REQ-18's pattern) as the actual design, not merely the safest guess. Folded into REQ-30.
 - **Status:** resolved — developer direction, devmohsinakram, 2026-09-30, `reference`; not yet
   written into `.ai/vault/decisions/`.
+- **Superseded in part, 2026-10-06:** "until payroll recalculates" no longer means a payroll user
+  starts the run. Per `.ai/vault/decisions/2026-10-06-payroll-calculate-runs-automatically.md`
+  (`reference`; AJ (TPM), relayed by Syed Haris), the resubmit queues the Calculate automatically.
+  The hold until the next completed run stands, and so does "the resubmit does not re-run flags by
+  itself". Client confirmation: not required, see Q26 (resolved).
+
+### Q26 — Has the client been told that payroll Calculate now runs automatically, and do they agree?
+
+- **Question:** One line: *"Corrina / Brian: payroll now recalculates a pay period automatically,
+  within about 10 seconds. It runs when a crew completes a ticket, when a worker resubmits after
+  Send Back, when payroll fixes an entry or completes a ticket. A payroll user no longer has to
+  press Calculate, though the manual button stays. Approved and exported weeks are never touched.
+  Is that acceptable, or must recalculation stay a payroll-manager action?"*
+- **Why it cannot be answered from what is written:** the decision to calculate automatically is
+  AJ's (TPM, delivery side). Syed Haris relayed it on 2026-10-06, with no written source linked.
+  The only client statement on record goes the other way:
+  - Brian Petros, `.ai/vault/meetings/transcripts/2026-06-09-payroll-app-demo-01.md` 19:55. Of
+    the legacy Refresh, which *"pulls in new information and recalculates it"*, he says the payroll
+    team *"got to ask the payroll manager to refresh"*.
+  - That is a description of the legacy app, cited as context, not commitment, by the verified
+    `decisions/2026-09-24-payroll-failed-recalculation-keeps-last-good-run-and-blocks-approval.md`.
+  - The superseded developer rationale also points the other way: 2026-09-28 clause 4, *"a money
+    operation Payroll triggers"*.
+  - No note records Corrina Bustos or Brian Petros being told about this decision.
+- **Blocked:** nothing in the build. The queue is built (PR #709, commit `25c415f2b`) and the
+  decision says to keep it. If the client overrules it, the queue's enqueue calls (four call
+  sites, listed in the decision note) would be turned off, and Q25 / K5 would revert to
+  "payroll recalculates".
+- **Candidates:**
+  - `.ai/vault/decisions/2026-10-06-payroll-calculate-runs-automatically.md` (reference,
+    2026-10-06).
+  - `.ai/vault/decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md`
+    clause 4 (reference, superseded in part).
+  - `.ai/vault/decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md` K5
+    (reference, superseded in part).
+  - The 2026-06-09 transcript, 19:55 (unverified, a record).
+  - Closest pre-existing vault gap: `.ai/vault/payroll/gaps.md#a-labor-entry-edit-can-reprice-an-approved-week--and-the-erp-has-no-path-for-it`.
+    That gap asks who may trigger a recalculation of a **closed** week, which this queue never
+    does. It is related, but it is not this question.
+- **Owner:** Corrina Bustos (Payroll Manager), with Brian Petros. Also AJ, or whoever relayed it,
+  to link the written source of the original decision.
+- **Answer (2026-10-06, Syed Haris, same review session):** *"we've not discussed with corrina or
+  brian, but it's our decision so no need for their confirmation"*.
+  - The client was **not told**, and **no client confirmation is required**. It is a
+    delivery-side process decision, and TCG may still overrule it.
+  - Brian's 2026-06-09 remark stays context, not a conflict.
+  - Linking AJ's written source is not tracked here. It is bookkeeping on the decision note's
+    `provenance_note`, not a ticket question.
+- **Status:** resolved — see decisions/2026-10-06-payroll-calculate-runs-automatically.md
 
 ---
 

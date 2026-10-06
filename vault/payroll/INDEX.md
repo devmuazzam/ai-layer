@@ -144,8 +144,8 @@ neighbouring module.**
 
 ## Decisions that bind this module
 
-Twenty-four `decisions/` notes carry `module/payroll`. **Twelve are `verified`** (a named TCG person
-decided them), **eleven are `reference`** (a named person on the team decided them; they bind
+Twenty-five `decisions/` notes carry `module/payroll`. **Twelve are `verified`** (a named TCG person
+decided them), **twelve are `reference`** (a named person on the team decided them; they bind
 implementation until TCG says otherwise), and **one is `superseded`**. Check each note's own
 `status:` before relying on it.
 
@@ -177,6 +177,7 @@ sentence.)*
 - [2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md) — **Corrina Bustos, `verified`:** confirms the nine payroll flags (boom out of crane range, overlap, under 8 h rest, missing notes, invalid times incl. duplicates / missing start-end / over 24 h / labor ≠ ticket, invalid long boom, Samsara > 30 min at start or end, crew Left/Arrived Yard mismatch, asset not back at its departure yard); **all block approval until fixed** (overrules 09-28 clause 6); Send Back to the **worker** with a 3-hour reminder; boom basis (job config vs crane range) **not answered**
 - [2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md) — **Corrina Bustos, `verified`:** every ticket for the week must be **completed before payroll is processed/approved** (no rolling a late ticket into next week; supersedes the 09-10 overlay's warn-only clause 6); a flag can be cleared as **"reviewed, no change"** so the week can be approved; boom basis asked a second time, **not answered**
 - [2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md) — **developer direction (devmohsinakram), `reference`, pending client ratification:** multi-day pay kept as today (ladder never resets in one entry; 4 h minimums on the anchor date, siding with the verified 09-04 note over provenance :89-90; DAILY premiums once per ticket; subsistence on the start date only, **long tier sits against a Confirmed row**; start craft rate for the whole ticket); **would change pay, not to be built until ratified:** meals every 5.5 h after 27 h, and a non-union 24 h+ entry split at each midnight; mechanics of Corrina's 09-30 rules settled ("reviewed, no change" note/audit/roles, the worker edits on mobile, a 3-hourly reminder to the worker, flag 9 blocks that crew's weeks); pending Corrina: crew-wide Send Back on a shared ticket, incomplete tickets block Approve but not Calculate, completing or voiding a never-completed ticket; End Work = leaving the job site (billing effect not asked); the round-1 roll-forward week rule is superseded
+- [2026-10-06-payroll-calculate-runs-automatically.md](../decisions/2026-10-06-payroll-calculate-runs-automatically.md) — **AJ (TPM), relayed by Syed Haris, `reference`; client not consulted, confirmation not required (Syed Haris):** payroll Calculate is queued automatically on crew ticket completion, payroll completing a ticket, a worker's resubmit after Send Back, and a payroll entry fix (polled every 10 s; APPROVED/EXPORTED periods skipped; manual Calculate kept); supersedes 09-28 clause 4 "automatic recalculation was not chosen" and 09-30 K5 as to who starts the run; AJ's written source not yet linked
 
 ## Where payroll meets the rest of the vault
 
