@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-10-01
+updated: 2026-10-06
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -972,3 +972,87 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [*Schedule day deactivate orphans SubJob / allocations*](#schedule-day-deactivate-orphans-subjob--allocations).
 - **Built default:** as above.
 - **Owner:** Lisette Anzaldo (dispatch).
+
+## Schedule tab — what unticks a day, and should a day with times always be worked?
+
+- **Status:** open
+- **Asked:** 2026-10-06 — Fouzan Shakil (fouzan.shakil, CodingCops) reported, in a Claude Code
+  session, that a converted quotation's schedule days vanished after the dates were changed and
+  times were saved. Investigated and fixed on tcg branch `feat/yard-holdover-loadout` (not merged).
+  The date-range half of the report was ruled on the same day:
+  [decisions/2026-10-06-quotation-dates-are-schedule-placeholders.md](../decisions/2026-10-06-quotation-dates-are-schedule-placeholders.md)
+  (`reference`, CodingCops, not TCG-confirmed). This entry is the half nobody ruled on.
+- **What the data showed (local dev DB, read-only, 2026-10-06):** JOB-00045 (Oct 22–24),
+  JOB-00049 (Dec 8–10) and JOB-00051 (Jan 1–3 2027), created 2026-10-01 (UTC) and then given new
+  dates, had **every** schedule day saved **inactive** (unticked).
+  - JOB-00049's days were first saved with **no times**. Only an unticked day can be saved that
+    way, because a ticked day requires times. They were given times later.
+  - JOB-00051 was saved with times and every day unticked, in one save.
+  - JOB-00045 had one save with **zero days**.
+  - View mode lists only ticked days (`visibleEntries`,
+    `apps/web/src/features/projects/jobs/job-details/schedule/components/schedule-table-section.tsx:79`),
+    so on all three jobs the days "vanished".
+  - JOB-00046, JOB-00047 and JOB-00050 moved their dates and saved ticked days correctly.
+  - **The data does not show which control unticked the days.**
+- **Question:** four, each answerable in a line.
+  1. **Is a day with times always a working day?** Should giving a day a time tick it (as the
+     branch now builds), or may a dispatcher keep times on a day that is not worked?
+  2. **What unticked the days on JOB-00045/49/51?** The candidates in the tab are the header
+     select-all checkbox, the **Clear selection** button and the row checkboxes. A reopened saved
+     schedule also adds weekend rows unticked
+     ([decisions/2026-09-12-job-schedule-weekend-toggles-follow-the-date-range.md](../decisions/2026-09-12-job-schedule-weekend-toggles-follow-the-date-range.md)
+     (b)), but that cannot untick a weekday, and JOB-00049's Dec 8–10 is Tue–Thu. Whoever made those
+     saves would have to say.
+  3. **Should "Clear selection" and "Remove days" be renamed or reworked?** Both act on the ticked
+     days (`schedule-table-section.tsx:161-176`). A ticked day *is* a working day: the same tab
+     counts ticked days as *"Selected Working Days"* (:147) and shows *"No working days selected."*
+     when there are none (:93). So "Clear selection" un-schedules every working day, and "Remove
+     days" deletes every working day. "Selection" and "working day" are the same tick, and the
+     button labels do not say so.
+  4. **Should view mode show unticked days greyed out instead of hiding them?**
+- **Built defaults (tcg branch `feat/yard-holdover-loadout`, committed 2026-10-06, not
+  merged):**
+  1. **Giving a day a time ticks it.** That covers Start, On Site and End, and **Copy to all
+     days**, which goes through the same per-row update (`patchShift` in
+     `apps/web/src/features/projects/jobs/job-details/schedule/hooks/use-schedule.ts`). Reason: an
+     unticked day with times is saved as not worked and hidden in view mode, so times set on it
+     looked saved and then vanished. Cancelled and ticket-sent days are left alone
+     (`isEntrySelectable`).
+  2. **On a range change, saved days with no DAS work (no allocations, sub-job not past Open)
+     drop without the "Remove Schedule Dates?" prompt.** A day whose sub-job has allocations, or
+     is past Open, still prompts. An empty Open sub-job, which the DAS board creates just by being
+     viewed on that date, does not count as work. If the API sends no allocation count, the day is
+     treated as having work and still prompts (`hasDasWork` in
+     `apps/web/src/features/projects/jobs/job-details/schedule/utils/schedule-range-shift.ts`,
+     used by `hooks/use-range-change-guard.ts`). This comes from the decision's *Interpretation*
+     section, not from Fouzan Shakil's words.
+- **Consequence for an open entry:** under built default 1, **Copy to all days now also ticks**
+  every editable unticked row it writes to. So a dispatcher who unticks days and then copies times
+  re-ticks them. Whether Copy should touch unticked rows at all is already open in
+  [*Job Schedule "Copy to all days"…*](#job-schedule-copy-to-all-days--replaces-apply-times-and-which-rows-it-overwrites).
+  That entry's "Built default: as above" no longer describes this branch.
+- **Sources checked:** **nothing written says what unticks a day, whether a day with times must
+  be worked, or what view mode shows for an unticked day.**
+  - [project-module/03-create-manage-job-schedule.md](project-module/03-create-manage-job-schedule.md)
+    (`unverified`, SCRUM-234) is the only schedule spec. It has times per date (:26) and deleting
+    a date (:28, :39). It never mentions a per-day checkbox.
+  - What the tick means (checked ≡ on the DAS board, `SCRUM-697`) and the earliest description of
+    the checkbox (subtractive, *"you can uncheck a date"*) are already recorded in
+    [*Converted-quotation schedule days…*](#converted-quotation-schedule-days--checked-by-default-and-what-that-puts-on-the-das-board).
+    Not restated here.
+  - [decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)
+    (`verified`) confirms the three schedule time fields. It says nothing about ticking.
+  - Vault-wide grep for `clear selection`, `select all`, `unticked`, `greyed`, `grayed` turned up
+    only DAS panels, DAS copy-allocation and quotation lines. None of it is about the Schedule tab.
+  - Jira not checked: the Atlassian MCP did not connect in this session.
+- **Related, already open — do not duplicate:**
+  - [*Schedule day deactivate orphans SubJob / allocations*](#schedule-day-deactivate-orphans-subjob--allocations):
+    what unticking a day does to its sub-job.
+  - [*Converted-quotation schedule days…*](#converted-quotation-schedule-days--checked-by-default-and-what-that-puts-on-the-das-board):
+    whether a converted job's days arrive ticked.
+  - [*Job Schedule "Copy to all days"…*](#job-schedule-copy-to-all-days--replaces-apply-times-and-which-rows-it-overwrites):
+    whether Copy writes to unticked rows.
+- **Blocked:** nothing hard. Both defaults are web-side and reversible. Recorded so that merging
+  the branch does not make "a time ticks the day" the rule without anyone deciding it.
+- **Owner:** Lisette Anzaldo (dispatch) for what a working day is; the developer for the UI wording
+  ("Clear selection", "Remove days", greyed vs hidden).
