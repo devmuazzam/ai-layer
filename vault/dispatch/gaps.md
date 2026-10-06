@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-10-01
+updated: 2026-10-06
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -1131,6 +1131,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   their hold flag clears); should they be removed instead? (d) should an **employee** line be
   carried too, booking that person on every later day (ticketed when each day's tickets go out),
   or only equipment?
+- **(c) partly answered 2026-10-06 by fouzan.shakil (CodingCops), not confirmed by TCG** —
+  [../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md](../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md)
+  (`reference`): a held item that has to come back early (breakdown, needed elsewhere) is
+  **released by dispatch in Make Holdover**, and that day's Off-load then lists it as a normal
+  item. The yard gets no override. Still open in (c): whether the carried allocations on later days
+  should be removed on release.
 - **Sources checked:** the design prototype (`TCG Platform (standalone) time.html`, `js2HoldModal`
   / `dasAllocationPanel`) shows the modal and chips but saves nothing beyond the list;
   [*Does copying allocations make a job a holdover?*](#does-copying-allocations-make-a-job-a-holdover);
@@ -1149,7 +1155,8 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   modal should pre-tick, and does the first/last-day pattern need its own configuration variant?
 - **Built default:** nothing pre-ticked; the dispatcher ticks items per job, and the banner was
   reworded to *"Selected assets and resources stay on site between working days and don't return
-  to the yard until the job ends"*, so it only claims what the dispatcher chose.
+  to the yard until the job ends"*, so it only claims what the dispatcher chose. — *"nothing
+  pre-ticked"* superseded 2026-10-06, see the *Default pre-tick* note below.
 - **Sources checked:** [crane-configuration-rules.md](crane-configuration-rules.md) §10
   (reference, Lisette 2026-05-21: *"they bring back the tractor and sometimes the trailer comes
   back or sometimes it stays"*; the crew uses personal vehicles until the last day; holdover
@@ -1163,6 +1170,54 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   item not held over goes back to the yard every day. Not built — the yard board does not read
   holdover. Still open: whether a single multi-day *shift* without holdover means the crane comes
   back mid-shift each night, and the default pre-ticked items above.
+- **Loadout half ruled 2026-10-06 by fouzan.shakil (CodingCops), not confirmed by TCG** —
+  [../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md](../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md)
+  (`reference`): a held asset is loaded out once, on the first day it actually goes, and offloaded
+  only on the job's last day. On the days between, the yard modals show it disabled with a
+  *Holdover* pill, not hidden. Being built on tcg branch `feat/yard-holdover-loadout`. The open
+  parts above are unchanged.
+- **Build note (2026-10-06, tcg branch `feat/yard-holdover-loadout`, not merged).** Built to the
+  ruling above; the defaults marked *built default* are the build's, not the ruling's.
+  - **One rule, worked out by the API per day** (`apps/api/src/usecase/das-loadout/holdover-loadout.util.ts`),
+    sent as `DasSubJobLoadout.holdover` on `GET /das/sub-jobs` and every loadout route:
+    - *held* — the Make Holdover tick (`JobResource.isHoldover`) or that day's allocation copied
+      with *Hold over*;
+    - *on site* — loaded out on an earlier day or shift of the job and not offloaded or moved since;
+    - *last day* — the job's last active, non-cancelled schedule row, worked out when read, so
+      adding or removing days moves it.
+  - **Loadout** is refused for an item on site; **offload** is refused for a held item before the
+    last day (400 with the reason). Both are enforced by the API, not only the modals.
+  - **Day 1:** a held item out tonight is not outstanding — the day closes without it, no offload
+    reason is asked, and Force complete leaves it out. *Built default:* when only held items are
+    out, Off-load still opens (rows disabled) and its button closes the day.
+  - **Middle days:** the held item shows disabled in both modals with "On site since …" and the
+    pill. *Built default:* a middle day whose only items are held has nothing to load, so Mark
+    Available is disabled ("nothing to load"), as for an all-unassigned shift.
+  - **Last day:** the held item appears as on site and coming back (`incomingOnSiteItems`, flagged
+    `holdover`); Mark Available moves it onto the day (the earlier rows are closed through the
+    defer columns; the new row keeps when it went out), and Off-load lists it, tickable, "Comes back
+    today".
+  - **Early return:** releasing the line in Make Holdover makes it offloadable on that day — an item
+    still out from a day that closed with it out is received onto the day, even one already open.
+  - **Yard board:** the purple *Holdover* pill (`HoldoverBadge`) on held rows in both modals, a
+    *Holdover · n* pill on the job card, and the print sheet marks held rows.
+  - **DAS:** a held asset is refused for any other job (`HELD_ON_SITE`, 409; also in Copy
+    Allocations and the holdover carry) — no longer silently taken off the held job. *Built default,
+    wider than the ruling:* the block spans the held job's first to last held day for that asset,
+    **whether or not it has gone out yet** (the ruling says "from its day-1 loadout"). Offloading it
+    on a day frees that day; releasing the hold frees the later days.
+  - **Not built:** rigging cannot be held; a held *employee* is not blocked elsewhere; the DAS side
+    panels still show a held crane as available on a day the job has no row (the drop is refused by
+    the API); the yard board still lists jobs by row date (item 1 of *Shifts that run past their own
+    day*).
+- **Default pre-tick partly answered 2026-10-06 by fouzan.shakil (CodingCops), not confirmed by TCG** —
+  [../decisions/2026-10-06-cranes-550-ton-and-up-pre-ticked-for-holdover.md](../decisions/2026-10-06-cranes-550-ton-and-up-pre-ticked-for-holdover.md)
+  (`reference`): crane lines of **550 t or more** (tonnage read from the number in the sub-category
+  name) are pre-ticked in Make Holdover on the job **Schedule tab only**, and only while nothing on
+  the job is held yet. It is a pre-tick only: nothing is held until someone saves. The DAS's Make
+  Holdover pre-ticks nothing. Being built on tcg branch `feat/yard-holdover-loadout`. Still open:
+  which other items stay on site (tractor, trailer, counterweight trucks, crew vehicles, crew), and
+  the first/last-day configuration variant.
 - **Owner:** Lisette Anzaldo (dispatch).
 
 ## Is the DAS holdover the same thing as payroll's subsistence holdover?
@@ -1300,6 +1355,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   each of them — but only inside each day's shift window. Should a holdover block the resource
   for the whole job, round the clock, regardless of windows? (See
   [*Make Holdover — does holding an item carry its allocation forward on its own?*](#make-holdover--does-holding-an-item-carry-its-allocation-forward-on-its-own).)
+  **(c) answered 2026-10-06 by fouzan.shakil, not confirmed by TCG:** a held item on site blocks
+  other jobs for the whole hold, any hours — from its day-1 loadout until the last-day offload
+  ([../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md](../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md),
+  `reference`). The ruling starts the block at loadout. It says nothing about a held item that is
+  allocated but not yet out. Being built on tcg branch `feat/yard-holdover-loadout`.
   (d) **Leave and sick** still block the whole date (`LeaveRequest` is date-only). Should a
   half-day leave be possible?
   (e) **A crane loaded out and not yet offloaded** on a morning job does **not** block a
@@ -1356,6 +1416,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
      overnight crane coming back, and on days 2+ a multi-day job, is only reachable on its first
      day. Needs the continuing card plus the offload rule from
      [../decisions/2026-10-01-multi-day-crane-offload-held-on-last-day-otherwise-daily.md](../decisions/2026-10-01-multi-day-crane-offload-held-on-last-day-otherwise-daily.md).
+     **Update 2026-10-06:** the holdover loadout/offload rule
+     ([../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md](../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md),
+     `reference`) is being built on tcg branch `feat/yard-holdover-loadout`. The yard board still
+     lists jobs by row date there, and the continuing card is not part of that branch.
   2. Mark Available / Start Loadout locks go by the row date (API
      `das-loadout-schedule-lock.util.ts` checks the past date before the end) and the web reads the
      end on the row date (`dylen-dashboard/utils/schedule-time-utils.ts`); the two disagree and
