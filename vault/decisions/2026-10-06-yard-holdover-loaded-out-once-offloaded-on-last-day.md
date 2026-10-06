@@ -15,6 +15,17 @@ decided_by: >-
   the same session that the ruling was Fouzan Shakil's.
 status: reference
 conflicts_with: []
+provenance_note: >-
+  PARTLY SUPERSEDED the same day by
+  decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md (Fouzan Shakil,
+  `reference`), revised twice that day. Every day of a held job now runs the normal yard flow. In
+  Loadout a held item is ticked and locked, so it is loaded out each day. In Off-load it is
+  unticked and locked before the last day, and tickable on the last day. SUPERSEDED: rule 1
+  (loaded out once) and rule 3's loadout half (middle days now run Mark Available and Loadout).
+  RESTORED after a brief supersession: rule 2 (offloaded only on the last day) and the default that
+  a day closes with held items out, no reason asked (now ruled). STAND: rule 3's offload half,
+  rule 4 (Holdover pill), rule 5 (early return), rule 6 (blocking) and the definitions of held,
+  asset lines only and the last day. Body unchanged.
 resolves: []
 related_decisions:
   - 2026-10-01-multi-day-crane-offload-held-on-last-day-otherwise-daily.md

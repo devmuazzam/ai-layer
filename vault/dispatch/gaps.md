@@ -1210,6 +1210,28 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     panels still show a held crane as available on a day the job has no row (the drop is refused by
     the API); the yard board still lists jobs by row date (item 1 of *Shifts that run past their own
     day*).
+  - **Yard build changed 2026-10-06 (later the same day; tcg branch `feat/yard-holdover-loadout`,
+    uncommitted).** After the build above disabled Mark Available on a held-only middle day (local
+    JOB-00053, 2027-06-02), fouzan.shakil ruled in four steps that day —
+    [../decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md](../decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md)
+    (`reference`, not confirmed by TCG). Every day runs the normal flow, and the yard's
+    pre-existing button rules are unchanged; holdover changes only what the modals show.
+    - **Loadout:** a held item is **ticked and locked**, every day.
+    - **Off-load before the last day:** it is **unticked and locked**, with the hover "This item
+      is held over and can't be offloaded until <last day>." It stays out, no reason is asked, and
+      the day closes without it. The API refuses offloading or deferring it, and Force complete
+      leaves it out (`stayOnSiteItemKeys`).
+    - **Last day:** an ordinary tickable row ("Comes back today").
+    - **Off-load button (ruled, a fourth pick):** when held items are all that is out, Off-load
+      stays available until the day's off-load is submitted, and its Continue closes the day.
+    - **Earlier days closed (ruled, a fourth pick):** the last day's offload also marks the held
+      item returned on each earlier day of the job (`closeEarlierHeldRows`), Force complete included.
+    - **Removed from the build above:** the Loadout refusal for an item on site, the last-day carry
+      of earlier rows, and the disabled Mark Available.
+    - **Unchanged:** `HELD_ON_SITE` for the whole span (only the last held day's offload, or
+      releasing the hold, frees it), the job-card pill, the print marker.
+    - **Superseded in this note's first version, then restored:** offload only on the last day.
+      For a short while the Off-load row was ticked and locked too.
 - **Default pre-tick partly answered 2026-10-06 by fouzan.shakil (CodingCops), not confirmed by TCG** —
   [../decisions/2026-10-06-cranes-550-ton-and-up-pre-ticked-for-holdover.md](../decisions/2026-10-06-cranes-550-ton-and-up-pre-ticked-for-holdover.md)
   (`reference`): crane lines of **550 t or more** (tonnage read from the number in the sub-category
@@ -1420,6 +1442,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
      ([../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md](../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md),
      `reference`) is being built on tcg branch `feat/yard-holdover-loadout`. The yard board still
      lists jobs by row date there, and the continuing card is not part of that branch.
+     **Update 2026-10-06 (later):** that rule is partly superseded. Every day of a held job now
+     runs the normal yard flow; the held item is ticked and locked in Loadout, and in Off-load is
+     locked out until the job's last day
+     ([../decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md](../decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md),
+     `reference`). This item is unchanged by it: the board still lists jobs by row date.
   2. Mark Available / Start Loadout locks go by the row date (API
      `das-loadout-schedule-lock.util.ts` checks the past date before the end) and the web reads the
      end on the row date (`dylen-dashboard/utils/schedule-time-utils.ts`); the two disagree and
