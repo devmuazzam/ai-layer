@@ -12,6 +12,12 @@ decided_by: >-
   overruled by TCG.
 status: reference
 conflicts_with: []
+provenance_note: >-
+  Item 4 OVERRIDDEN FOR A HELD ASSET ONLY, 2026-10-06, by
+  decisions/2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md (Fouzan
+  Shakil, `reference`). A held asset (Make Holdover) is refused to other jobs for the whole planned
+  hold, before it is loaded out too; its allocation is not taken over with "Reassign anyway?".
+  Item 4 stands for every asset that is not held. The rest of this note is unchanged.
 supersedes_partial:
   - 2026-09-14-yard-unassigned-slots-not-loadable.md (Q3 employees-as-loadable; Q7(a) copy; REQ-04 assigned-row pre-tick)
 resolves:
@@ -62,6 +68,13 @@ Ehtesham Anwar, 2026-09-15 — **the branch as built is the rule.** In particula
    `TICKET_SENT` or `ticketsLocked`. Payroll-locked tickets still refuse.
    The dispatcher confirms "Reassign anyway?" on the target; there is no
    second confirm on the source job.
+   - **Overridden for a held asset, 2026-10-06** (Fouzan Shakil, CodingCops,
+     `reference`, not confirmed by TCG):
+     [2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md](2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md).
+     A held asset (Make Holdover) is refused to other jobs for the whole planned
+     hold, even before it is loaded out (`HELD_ON_SITE`, 409). It is never
+     offered as "Reassign anyway?". To move it, release it in Make Holdover
+     first. Item 4 is unchanged for every asset that is not held.
 5. **Same non-vendor resource cannot fill two slots in one shift** on the same
    sub-job. Drop and upsert both block. Shift 1→2 copies ("Same assets / Same
    resources of Shift 1") still allowed. Cross-job non-overlapping double-book
