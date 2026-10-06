@@ -558,10 +558,18 @@ what happens when a practitioner edits the batch — and right now neither draft
    `autoGenerateMemoCode=false`.
 6. Confirm the **payroll cycle window** in practice — how long is the cycle in
    `Entering Payroll Information`, and who moves it?
-7. **Ask directly whether any event notification fires on pay-data-batch edits.** This is the
-   single question that decides whether the round trip can be automated.
-8. Confirm whether a **payroll output / results API** is available on TCG's product, or whether
-   post-payroll data is report-only.
+7. ~~Ask directly whether any event notification fires on pay-data-batch edits.~~ **Answered
+   2026-10-07 (request `672204`): no.** *"Event notifications are not supported at this time"*, and
+   batches cannot be read or deleted through the API. The round trip is manual.
+8. ~~Confirm whether a payroll output / results API is available on TCG's product.~~ **Answered
+   2026-10-07 (request `672204`):** ADP points to the WFN **Payroll Output API** ("preview complete"
+   and final payrolls). This corrects §*So: can the ERP be the system of record?* item 3. Whether
+   it is entitled on the *TCG ERP Integration* project has not been checked.
+
+Request `672204` also settled: no `workDate`; credentials can be limited by company code and
+employee; Batch ID is alphanumeric, and ADP appends its own characters to it. Item 5's
+`autoGenerateMemoCode` got no direct answer. Full reply: [gaps.md](gaps.md) → *ADP product, API
+Central entitlement and sandbox*.
 
 ---
 
