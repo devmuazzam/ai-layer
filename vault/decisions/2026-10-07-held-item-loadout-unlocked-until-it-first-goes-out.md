@@ -99,7 +99,7 @@ Against decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md
 
 ## What is built
 
-Branch `feat/holdover-improvements` (tcg), commit `99d27ba17` (2026-10-07), not yet merged.
+Branch `feat/holdover-improvements` (tcg), commit `99d27ba17`, merged to tcg `main` in PR #739 (2026-10-07).
 
 - **API:** `DasSubJobLoadoutHoldover.outOnEarlierDayResourceIds`
   (`apps/api/src/usecase/das-loadout/holdover-loadout.util.ts`), computed in `toHoldoverPayload`
