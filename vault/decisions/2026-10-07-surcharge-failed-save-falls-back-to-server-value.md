@@ -23,7 +23,8 @@ On the **Billing Codes → Surcharge** card and the **Price Listing → Surcharg
    +/- buttons, 16px value.
 5. **The step follows the typed decimals.** 5 → steps of 1, 0.5 → 0.1, 0.25 → 0.01. Until
    the user types, it follows the shown value, locked at the first click so 0.9 → 1 does not
-   switch to whole steps. Results round to two decimals.
+   switch to whole steps. Results round to two decimals. The same rule applies to the
+   Surcharge card on the **Create Price List** form, which saves on submit.
 
 ## Context
 
@@ -50,9 +51,10 @@ the original reporter.
   instead of appending below it while the old one animates out. Only id-carrying toasts
   change: surcharge, and notification toasts when the same notification arrives twice.
 - Buttons: Billing Codes stepper restyled only; the card is not replaced by `AdjustmentCard`.
+- Create Price List form: its Surcharge card uses `useSurchargeStep`. Debounce, rollback
+  and the toast slot do not apply there; it saves once, on submit.
 - Tests: `persist-surcharge-percentage`, `trailing-debounce` and `surcharge-step`, in the
   web `test` target. No API change, no `data-testid` change.
-- Not covered: the Create Price List form's Surcharge card still steps by 1; slow clicks
-  (over 500 ms apart) still save once each, now in one toast slot.
+- Not covered: slow clicks (over 500 ms apart) still save once each, now in one toast slot.
 
-Client commits on branch `TCG-103`: `e8e66c2ab`, `b296356a2`, `3f9a504f7`.
+Client commits on branch `TCG-103`: `5fc1e939b`, `4080d3b7b`, `ed3f83a08`, `dd36b7e69`.
