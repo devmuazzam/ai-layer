@@ -18,6 +18,15 @@ decided_by: >-
   Off-load ruling below replaced that the same day; the note now records all four exchanges.
 status: reference
 conflicts_with: []
+provenance_note: >-
+  PARTLY SUPERSEDED 2026-10-07 by
+  decisions/2026-10-07-held-item-loadout-unlocked-until-it-first-goes-out.md (git user Jz-Nd,
+  CodingCops, `reference`). A held item can go out on any day of the job. SUPERSEDED: the Loadout
+  rule (held item selected and disabled) and the interpretation that the Loadout lock applies on
+  every day, the last day included. In Loadout the held item is now unticked and tickable until it
+  first goes out, the last day included; only after it has gone out on an earlier day and is still
+  out is it ticked and locked. STAND: every Off-load rule, the button rules and the held-only-day
+  exception, the closing of earlier days, and the Holdover pill. Body unchanged.
 resolves: []
 supersedes_partial:
   - "2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md (rule 1, loaded out once: now loaded out every day, ticked and locked; rule 3's loadout half: middle days now run Mark Available and Loadout. Rule 2, offload only on the last day, and the 'day closes with held items out' default were superseded by this note's first version and are now restored, the default as a ruling. Rules 4, 5 and 6 and the definitions of held, asset lines only and the last day stand)"

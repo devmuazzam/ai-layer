@@ -1634,6 +1634,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** nothing hard. A direct API call, or a client other than the web yard board, can load
   out a day without its held item.
 - **Owner:** Lisette Anzaldo (dispatch).
+- **Narrowed 2026-10-07:** a held item is now locked in Loadout only once it is out from an
+  earlier day
+  ([../decisions/2026-10-07-held-item-loadout-unlocked-until-it-first-goes-out.md](../decisions/2026-10-07-held-item-loadout-unlocked-until-it-first-goes-out.md),
+  `reference`). The question now covers only those rows.
 
 ## Make Holdover — may a held line be removed or replaced on a middle day?
 
@@ -1665,3 +1669,26 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (`reference`), *What is built*.
 - **Blocked:** any middle-day lock on held lines.
 - **Owner:** Lisette Anzaldo (dispatch).
+
+## Holdover — how does a day close when its only items are held and none is sent?
+
+- **Status:** open
+- **Asked:** 2026-10-07 — PR review of tcg branch `feat/holdover-improvements` (not merged). The
+  developer (`haris`) chose to merge first and decide later. Nobody else was asked.
+- **Question:** A held item can now go out on any day, unticked until sent
+  ([../decisions/2026-10-07-held-item-loadout-unlocked-until-it-first-goes-out.md](../decisions/2026-10-07-held-item-loadout-unlocked-until-it-first-goes-out.md),
+  `reference`). If a day's only assets are held and the yard sends none of them, nothing goes out.
+  How should that day close? Options put to the developer: **Loadout closes it** (submit with only
+  held items left behind; the day closes with nothing out), or **require it on that day** (keep
+  held items ticked and locked when they are all the day has).
+- **Built default:** nothing closes the day. The Loadout modal cannot submit an empty selection,
+  the API refuses one (`completeLoadout`, *"Nothing to load out for this shift."*), there is no
+  Off-load, and Force complete is reachable only from Off-load. The day's sub-job never reaches
+  `COMPLETED`, so the job cannot roll up to Completed (SCRUM-903). Sending the held item that day
+  avoids it.
+- **Sources checked:** the 2026-10-07 decision above and
+  [../decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md](../decisions/2026-10-06-yard-holdover-runs-normal-flow-ticked-and-locked.md)
+  (exchange 1 was this blocker, solved then by forcing the held item out). Nothing written covers
+  a day where a held item is deliberately not sent.
+- **Blocked:** a held-only day where the yard holds the item back.
+- **Owner:** Lisette Anzaldo (dispatch); Dylan Masterson (yard) for the yard flow.
