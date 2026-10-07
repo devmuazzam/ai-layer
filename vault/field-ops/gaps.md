@@ -985,3 +985,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Asked:** 2026-10-05 — raised while reviewing UAT 3 feedback and TCG-119.
 - **Resolution:** Automatic capture is not required. Confirmed by Fouzan Shakil / User. Capture behavior stays as-is (manual but required).
 - **Owner:** Fouzan Shakil, who authored the sheet.
+
+## Offline terminal-ticket history — which completed and expired payloads survive a cold start?
+
+- **Status:** open
+- **Asked:** 2026-10-07 — AI-DLC static review of PR #732 (`fix/mobile-offline-storage`), with no Jira ticket or PR-specific spec.
+- **Question:** For completed and expired tickets, should offline persistence retain only the latest three completed cards, their detail/checklist payloads too, or no terminal payloads — and should the same policy apply to default and status-filtered lists?
+- **Sources checked:** [Field-ops conflict stub](field-ops-mobile-INDEX.md) and its three unverified, unreconciled candidates: [FR-TCG-FOP-001 jobs list](frd-new-format-draft/05-functional-requirements/fr-fop-003-jobs-list.md), [FR-TCG-FOP-002 jobs list](field-ops-frd/08-functional-requirements/fr-fop-003-jobs-list.md), and [Atom authentication/dashboard stories](atom-mobile-app-user-stories/01-authentication-and-dashboard.md). These describe completed-ticket visibility without an offline retention limit. [SCRUM-OFFLINE-SYNC intent](../../aidlc/SCRUM-OFFLINE-SYNC/intent.md) records removal of submitted drafts after confirmed backend success, without settling query-cache history retention.
+- **Note:** PR #732's commit message preserves three recent completed cards through the default list. Local client remediation `1fe9d08926fa79c641600067a080f5af54260069` also prunes terminal query payloads while retaining returned tickets and pending native drafts. Both are implementation context, not a verified product ruling. The subsequent review treats retention as an unresolved requirement, separately from the lockfile mismatch and acknowledgment-notification race.
+- **Blocked:** product sign-off on terminal-history retention across offline dashboard, jobs filters, and ticket detail screens.
+- **Owner:** TCG product team.
