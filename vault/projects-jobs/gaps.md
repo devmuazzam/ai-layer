@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-10-06
+updated: 2026-10-08
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -1080,3 +1080,35 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the branch does not make "a time ticks the day" the rule without anyone deciding it.
 - **Owner:** Lisette Anzaldo (dispatch) for what a working day is; the developer for the UI wording
   ("Clear selection", "Remove days", greyed vs hidden).
+
+## Lift / site plan required fields — enforced on web and API, never written down
+
+- **Status:** open
+- **Asked:** 2026-10-08 — client branch `fix/permits-plans-pos-validation-parity` (TCG-143), which
+  copied the plan form's required-field checks onto the API (`apps/api/src/usecase/plans/plan-required-fields.ts`).
+- **Question:** the web plan form, and now the API, refuse to save
+  - (a) a **Lift** plan without **Crane Category** and **Capacity**;
+  - (b) a **Site** plan without **Length** and **Width**;
+  - (c) a Lift plan missing any field the crane sub-category's template marks **required**, where a
+    required **Boolean** counts as missing unless it is ticked *true*, and a required **Range**
+    needs both min and max.
+
+  Are these the right required fields for a plan? And for (c), does "required" on a Boolean template
+  field mean "must be answered" or "must be yes"? The code reads it as "must be yes" (copied from
+  `validateCraneAdditionalInfo`, `apps/web/src/features/plans/components/plan-form-additional-info-validation.ts`),
+  so a crane whose template has a required yes/no question cannot get a lift plan with a "no".
+- **Sources checked:**
+  - [project-module/04-create-and-approve-lift-plans.md](project-module/04-create-and-approve-lift-plans.md)
+    (`unverified`, 2026-04-30). It lists crane details ("category, capacity, beam length, and radius")
+    and site dimensions ("length, width, height clearance, and work radius"), but never says which
+    are required.
+  - `projects-jobs/lift-plans/` (all three files), this register and `decisions/`: nothing makes a
+    plan field required.
+  - Required / optional template attributes appear only for **assets**, in meeting summaries
+    (`meetings/summaries/2026-03-24-tcg-cc-product-sync-demo.md:45` and the 03-26 summary of the same
+    walkthrough), never for plans.
+  - Jira TCG-143 not read: the Atlassian site returned 403 (suspended payment).
+- **Blocked:** nothing hard. The checks match what the web form already enforced; the branch made
+  them server-side too. Recorded so the rule is not taken as decided because two layers now agree.
+- **Owner:** whoever owns lift-plan content on the TCG side (the plan module's approver) for (a)–(b);
+  the same person plus the asset-template owner for (c).
