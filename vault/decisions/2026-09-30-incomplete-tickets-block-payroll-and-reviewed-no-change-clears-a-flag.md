@@ -8,6 +8,18 @@ decided_by: >-
   boom basis, went unanswered for the second time that day.**
 status: verified
 conflicts_with: []
+provenance_note: >-
+  2026-10-07: PROVISIONAL ANSWERS bearing on "Not decided" items 2 and 4, not adopted. Melissa McNutt
+  (TCG President), in written Teams answers posted on or before 2026-10-06: every field employee may
+  complete or edit their own ticket for 24 hours. After that, approval from a "manager or payroll" is
+  needed, requested in the app, followed by 4 hours to complete. Supervisors and dispatchers may
+  complete on a worker's behalf ("Yes"). Payroll can edit at all times. TCG then asked CodingCops to
+  hold those answers until an updated version is sent. They do not change this note's ruling: every
+  ticket must be complete before the week is processed or approved. A ticket waiting on that
+  approval would hold the week. Recorded in
+  decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md
+  (status: reference, T2, T13). Open in payroll/gaps.md under "Who may complete or correct a ticket
+  on a worker's behalf". Body unchanged.
 supersedes_partial:
   - "decisions/2026-09-10-pending-tickets-are-a-display-only-payroll-overlay.md (clause 6: 'warn' is no longer the strongest word — an incomplete ticket blocks processing/approval)"
 resolves:

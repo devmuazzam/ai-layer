@@ -2,7 +2,7 @@
 title: Accounting — open questions
 status: reference
 kind: gaps
-updated: 2026-09-17
+updated: 2026-10-07
 tags: [module/accounting, kind/gaps, open-questions]
 ---
 
@@ -317,6 +317,22 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - Ehtesham (16:19) said creating an invoice from the job is affected by separating quote lines from resources ([../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md)). Joe: *"Correct."*
 
   Source: [../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §5.
+- **Update 2026-10-07: Melissa McNutt, provisional, on holdover days.**
+  - In written Teams answers posted on or before 2026-10-06
+    ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+    `reference`, T4): on a holdover day 2+, the oiler's *"billable time"* starts when he *"arrives at
+    the job site"*. The crew reports there directly.
+  - The question used *billable* for what may have meant pay. Her answer does not say which.
+  - If it means customer billing, it fits model (i) with no portal leg on the days between. Her
+    2026-05-21 53:44 statement agrees: *"you still need to do the travel in and travel out on the
+    1st and last day"*.
+  - If it means pay, it conflicts with the verified yard-to-yard span. That is filed in
+    [../payroll/gaps.md → *Holdover days 2+*](../payroll/gaps.md#holdover-days-2--does-paid-time-start-on-arrival-at-the-job-site-and-where-does-each-day-end).
+  - On (e): she said yes to a post-trip at the end of a holdover's final day. That is still open in
+    field-ops.
+  - Also: a late completion should show internally only, *"We don't want it on the customer's
+    paperwork."*
+  - TCG asked to hold these answers until an updated version is sent. Nothing here closes.
 
 
 ## Paper Job Tickets — pointer, owned by field-ops

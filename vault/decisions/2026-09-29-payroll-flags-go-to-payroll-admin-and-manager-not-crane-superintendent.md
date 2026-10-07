@@ -21,6 +21,15 @@ provenance_note: >-
   Items 3, 4 and 6 and the reminder stay open. Body unchanged.
   2026-09-30: item 3 answered — Send Back survives, and its target is the WORKER, with a reminder
   after 3 hours — in decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md. Every flag now blocks approval until fixed.
+  2026-10-07: PROVISIONAL TENSION, not an overrule. Melissa McNutt (TCG President), in written Teams
+  answers posted on or before 2026-10-06, answered "Yes" to whether supervisors or dispatchers may
+  complete or correct tickets on a worker's behalf. She also named "manager or payroll" as the
+  approver of late and post-submit edits, without saying which manager. TCG then asked CodingCops to
+  hold those answers until an updated version is sent. This note's exclusion covers flags, not edit
+  approvals; whether it should reach them is open. Recorded in
+  decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md
+  (status: reference, T2, T3). Open in payroll/gaps.md under "Who may complete or correct a ticket on
+  a worker's behalf".
 supersedes_partial:
   - decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md (clause 3 send-back target; clause 5 notification recipient. Clause 4's actor is removed; its rules are not ruled on. Clauses 1, 2 and 6 untouched)
 resolves:

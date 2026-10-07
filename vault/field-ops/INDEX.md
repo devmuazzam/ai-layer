@@ -48,6 +48,8 @@ Seven new pages and one new subfolder, all above. Three things it settled or sha
 
 [gaps.md](gaps.md) — this module's live register (entry format inside). Ticket questions stay in that ticket's `spec.md` §12.
 
+Provisional client answers on holdover days and late tickets (on hold): [../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md).
+
 ## Meetings
 
 16 meeting files carry `module/field-ops` — list them:

@@ -46,6 +46,7 @@ DAS, scheduling, yard operations. Backend usecases: `das, das-allocations, das-l
 - [2026-09-14-yard-unassigned-slots-not-loadable.md](../decisions/2026-09-14-yard-unassigned-slots-not-loadable.md) — Unassigned slots not loadable; Partial Loadout label. **Employees-as-loadable / pre-tick superseded** 2026-09-15
 - [2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md) — `fix/15-sep` as built (Ehtesham Anwar): employees not loaded; handover unchecked; steal of plain allocations; yard lock; Cancel Allocations
 - [2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md) — Resources (tractor, trailer, crew) are a dispatch-side requirement carried by the quote's billing codes, not quote lines (Joe Schacatano, `verified`)
+- [2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md) — **provisional, TCG asked us to hold** (`reference`): holdover Days 2+ time from arrival on site; 24 h late-completion window, then manager or payroll approval. Verified notes still govern
 
 ## Open questions
 

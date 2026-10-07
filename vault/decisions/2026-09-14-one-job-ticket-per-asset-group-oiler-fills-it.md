@@ -17,6 +17,13 @@ decided_by: >-
   already says the same thing, and the only REVIEWED field-ops document agrees.
 status: verified
 conflicts_with: []
+provenance_note: >-
+  2026-10-07: PROVISIONAL TENSION, not an overrule. Melissa McNutt (TCG President), in written Teams
+  answers posted on or before 2026-10-06, listed "Operators" among the roles that complete their own
+  incomplete tickets. TCG then asked CodingCops to hold those answers until an updated version is
+  sent. Whether that reaches an Operator on a set with an Oiler seat (clause 2 here) is not said.
+  Recorded in decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md
+  (status: reference, T1) and open in field-ops/gaps.md. This note still governs. Body unchanged.
 resolves: field-ops/gaps.md#who-fills-the-ticket--the-schema-has-already-picked-a-side-against-the-only-reviewed-document
 jira: [SCRUM-249]
 tags: [module/field-ops, module/dispatch, module/payroll, kind/decision, ticket-workflow, labor-record, oiler, operator]

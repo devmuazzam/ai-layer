@@ -17,6 +17,13 @@ provenance_note: >-
   asset flag's rule is "back to the yard it left from that day" (tenant-configured yards; Los
   Alamitos/Ventura were examples; not Asset.yardId), triggered by the last engine shut-off away from
   it. These are NOT Corrina's words. Body unchanged.
+  2026-10-07: PROVISIONAL TENSION. Melissa McNutt (TCG President), in written Teams answers posted on
+  or before 2026-10-06, said a holdover crew on days 2+ reports straight to the job site and their
+  time starts on arrival there. Such a day has no Left Yard, and may have no Arrived at Yard, for the
+  crew-time flag to compare. TCG then asked CodingCops to hold those answers until an updated version
+  is sent. Recorded in decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md
+  (status: reference, T4) and open in payroll/gaps.md under "Holdover days 2+". This note still
+  governs.
 supersedes_partial:
   - "decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md (clause 1: which times are compared — 'Start work and End Work' is replaced; clause 4: recipients and trigger added)"
 resolves:

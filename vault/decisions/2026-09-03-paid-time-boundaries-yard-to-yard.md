@@ -4,6 +4,15 @@ source: decision/client recorded call (Kyle Harlow and Joe Schacatano, 2026-09-0
 decided: 2026-09-03
 decided_by: Kyle Harlow (TCG **VP of Fleet** — the call's field/operations authority, [../admin/engagement-directory-and-org-charts.md](../admin/engagement-directory-and-org-charts.md)) at 47:15–47:57, 49:36, 50:33 and 53:54, and Joe Schacatano (TCG **VP of Operations**, speaking for dispatch) at 48:00–48:24, 49:57 and 52:02–52:28. Corrina Bustos (Payroll Manager; the engagement directory lists her as HR Manager) concurring at 47:10, 48:23 and 54:21. Confirmed against the built schedule configuration on screen (Ehtesham Anwar, 49:12).
 status: verified
+provenance_note: >-
+  2026-10-07: PROVISIONAL TENSION, not an overrule. Melissa McNutt (TCG President), in written Teams
+  answers posted on or before 2026-10-06, said a holdover crew on days 2+ reports straight to the job
+  site and their time starts when they "arrive at the job site". The question asked about "billable"
+  time, so it may mean customer billing rather than pay. TCG then asked CodingCops to hold those
+  answers until an updated version is sent. This note has no holdover exception. Recorded in
+  decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md
+  (status: reference, T4) and open in payroll/gaps.md under "Holdover days 2+". This note still
+  governs. Body unchanged.
 resolves: [PAY-017, PAY-021, PAY-043, PAY-044, dispatch/gaps.md#schedule-fields--the-build-already-agrees-and-the-new-fields-are-written-nowhere]
 tags: [module/payroll, module/dispatch, module/field-ops, kind/decision, time-tracking, scheduling, boom, payroll-rules]
 ---

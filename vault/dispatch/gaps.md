@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-10-06
+updated: 2026-10-07
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -1264,6 +1264,23 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     something is not pre-ticked. Built as `DEFAULT_HOLDOVER_FROM` (UTC midnight) and a
     `JobResource.createdAt` check in `isDefaultHoldoverLine`
     (`apps/api/src/usecase/jobs/holdover-default.util.ts`).
+- **Update 2026-10-07: Melissa McNutt (TCG), provisional, on a 6-day holdover.**
+  - What she wrote, in Teams answers posted on or before 2026-10-06
+    ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+    `reference`):
+    - At the end of Day 1 the crane *"typically stays built up in place"*. It is broken down on the
+      last day only.
+    - The crew *"just reports to the job site"* on days 2+, *"99% of the time"* in a personal car,
+      with a company truck *"if the job is far"*.
+    - *"The end of the job will be when the equipment returns back to our yard."*
+  - This is the first written TCG statement that the **crane** stays. It agrees with the CodingCops
+    rulings above and with Lisette Anzaldo 2026-05-21 59:11.
+  - It **does not answer** this entry's open part: which other items stay (tractor, trailer,
+    counterweight trucks), or the first/last-day configuration variant.
+  - The company-truck day is new for dispatch: a crew vehicle leaves the yard on a holdover day.
+  - TCG asked to hold the answers until an updated version is sent.
+  - Pay on holdover days is filed in
+    [../payroll/gaps.md → *Holdover days 2+*](../payroll/gaps.md#holdover-days-2--does-paid-time-start-on-arrival-at-the-job-site-and-where-does-each-day-end).
 - **Owner:** Lisette Anzaldo (dispatch).
 
 ## Is the DAS holdover the same thing as payroll's subsistence holdover?

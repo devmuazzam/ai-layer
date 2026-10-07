@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-10-01
+updated: 2026-10-07
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -2524,6 +2524,21 @@ someone has confirmed otherwise.
   (a) is a recommendation; (b)–(d) are facts about the incumbent. **Still needed:** someone with
   authority to accept the immutable-close + retro-delta policy, and the trigger/permission rule —
   the meeting Brian offered.
+- **Update 2026-10-07: Melissa McNutt's provisional answers. Not a policy.**
+  - In written Teams answers posted on or before 2026-10-06
+    ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+    `reference`, T7), on a ticket already approved, invoiced or processed for payroll:
+    - *"They will need to submit a edit request to their manager or payroll."*
+    - *"It will need to have approval."*
+    - Asked whether a change after billing or accounting has processed it should *"trigger a
+      re-approval or update"*: *"yes!"*.
+    - Also: *"Payroll will need the ability to edit at all times."*
+  - This names **who approves**: a manager or payroll. It does not say **how** a closed week
+    absorbs the change: reopen and re-approve the posted week, or keep it immutable and post a retro
+    adjustment (dependency matrix §13, unverified).
+  - TCG asked to hold the answers until an updated version is sent.
+  - The trigger and permission half of this entry has a candidate answer to put to Brian and
+    Corrina. The policy half is unchanged.
 
 ## The union-classified employee who must not be paid on union rules
 
@@ -4814,6 +4829,17 @@ somewhere it should not have. Settle that before touching either.
   3. **End boundary.** The same decision ends paid time when the crane is "back in the yard, fuelled, parked, paperwork done"; the code ends at Review & Complete. Nobody has checked they are the same moment. Owners: **Kyle Harlow / Joe Schacatano**.
   4. **Backfill.** Should the source be recorded on historical `payroll_job_days`, or only on new runs? Rebuilding it from today's roster may not match what was actually paid. Owner: **Syed Haris**.
   5. **Naming and export.** What are the names and screen labels for the sources, and should the ADP export carry them too?
+- **Update 2026-10-07: a holdover case for items 2–3, provisional.**
+  - In written Teams answers posted on or before 2026-10-06, Melissa McNutt said a holdover crew on
+    days 2+ reports straight to the job site, and their time starts when they *"arrive at the job
+    site"*
+    ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+    `reference`, T4).
+  - The verified yard-to-yard span has no such exception.
+  - TCG asked to hold the answers until an updated version is sent.
+  - Filed once:
+    [*Holdover days 2+ — does paid time start on arrival at the job site, and where does each day end?*](#holdover-days-2--does-paid-time-start-on-arrival-at-the-job-site-and-where-does-each-day-end).
+    Items 2–3 here stay open.
 
 ## Pointer — leave-page warning and value rewriting on open (employee edit)
 
@@ -4896,6 +4922,19 @@ somewhere it should not have. Settle that before touching either.
   - the crew-time mismatch flag (Q10) and the Samsara start-of-ticket check (Q11). Neither is built;
   - the Samsara and invalid-entry flag sources. **None is in PR #690 / #691**, including the 30-minute tolerance and the AM/PM, same-time and out-of-order checks.
 - **Owner:** Corrina Bustos (payroll), with Brian Petros for C1–C3 (engine / rest rule). CodingCops for Q2's role design and C4.
+- **Update 2026-10-07: Melissa McNutt's provisional answers bear on the superintendent's role.**
+  - In written Teams answers posted on or before 2026-10-06
+    ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+    `reference`, T2–T3):
+    - To *"should supervisors/dispatchers also be able to complete or correct tickets on their
+      behalf?"* she answered *"Yes"*.
+    - Late and post-submit edits are approved by *"manager or payroll"*. Which manager is not said.
+    - Managers and payroll get the late-completion notices and the overdue report.
+  - This touches C6 (may the superintendent still act outside the flag flow?) and this entry's
+    routing.
+  - TCG asked to hold the answers until an updated version is sent.
+  - Filed once:
+    [*Who may complete or correct a ticket on a worker's behalf, and who approves a late or post-submit edit*](#who-may-complete-or-correct-a-ticket-on-a-workers-behalf-and-who-approves-a-late-or-post-submit-edit--manager-or-payroll).
 
 ## DAS holdover vs subsistence holdover — pointer, owned by dispatch
 
@@ -4958,3 +4997,105 @@ somewhere it should not have. Settle that before touching either.
 - **Owner:** Corrina Bustos (payroll) with Brian Petros (engine); Kyle Harlow and Lisette
   Anzaldo for question 6.
 
+## Holdover days 2+ — does paid time start on arrival at the job site, and where does each day end?
+
+- **Status:** open
+- **Asked:** 2026-10-07 — recording Melissa McNutt's provisional holdover answers
+  ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+  `reference`, T4). TCG asked on 2026-10-06 to hold those answers until an updated version is sent.
+  **Rules:** PAY-017, PAY-021, PAY-004.
+- **What she wrote:**
+  - On days 2+ the crew *"just reports to the job site"*, *"99% of the time"* in a personal car.
+    *"Certain one off situations if the job is far we'd let them take a company truck."*
+  - Asked when the oiler's *"billable time"* starts on such a day: *"Arrives at the job site"*.
+  - Last day: *"If they break down on the last day only then the end of that day is when they leave
+    the site. The end of the job will be when the equipment returns back to our yard."*
+  - She also said yes to a post-trip, breakdown and return to the yard at the end of the final day.
+- **Conflict, recorded not resolved:**
+  - The verified
+    [../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)
+    starts paid time at the dispatch start time at the yard and ends it back at the yard, with **no
+    holdover exception**.
+  - The verified crew-time flag compares the job's start and the return to the yard
+    ([../decisions/2026-09-30-crew-time-flag-job-start-to-yard-return-across-tickets-and-asset-flag-on-engine-off.md](../decisions/2026-09-30-crew-time-flag-job-start-to-yard-return-across-tickets-and-asset-flag-on-engine-off.md)).
+    That was ratified as Left Yard / Arrived at Yard. A holdover day 2+ has no Left Yard.
+  - Her answer agrees with the 2026-05-21 record:
+    [../meetings/transcripts/2026-05-21-crane-configurations-job-tickets.md](../meetings/transcripts/2026-05-21-crane-configurations-job-tickets.md),
+    54:14–54:44. The journey on holdover days starts at the job and ends at *left job*, *"unless we
+    need them back in the yard"*. So this reads as a missing holdover case, not a reversal. TCG has
+    to say so.
+- **Questions**, each phrased so a one-line reply settles it:
+  1. **Pay or billing?** The question said *"billable"*. On a holdover day 2+, does **pay** start on
+     arrival at the job site? Customer billing is a separate question:
+     [../accounting/gaps.md → *Billable hours*](../accounting/gaps.md#billable-hours--the-recordings-say-portal-to-portal-the-jira-decision-says-boom-time-plus-wtl).
+  2. **Company-truck day.** When the crew takes a company truck from the yard (her *"one off"*;
+     Wes Staley 2026-05-21 1:11:59), does pay start at the yard as on a normal day, or still on
+     arrival at the site?
+  3. **Day 1 end.** The crane stays built on site. Does the crew's Day 1 end when they leave the
+     site, or back at the yard (for example, returning the tractor)?
+  4. **Days 2+ end.** Does each day in between end on leaving the site (*left job*)?
+  5. **Last day end.** Does the last day end when they leave the site (A11, first sentence), or when
+     the equipment is back at the yard (A11, second sentence; A12; the verified rule)?
+  6. **Crew-time flag.** On a holdover day with no yard leg, which captures does the flag compare?
+     Or is the day exempt?
+- **Sources checked:** the notes above;
+  [rules/PAY-017-time-source-selection.md](rules/PAY-017-time-source-selection.md);
+  [rules/PAY-021-l12-standard-work-window.md](rules/PAY-021-l12-standard-work-window.md);
+  [../dispatch/crane-configuration-rules.md](../dispatch/crane-configuration-rules.md) §10;
+  [../dispatch/gaps.md → *Is the DAS holdover the same thing as payroll's subsistence holdover?*](../dispatch/gaps.md#is-the-das-holdover-the-same-thing-as-payrolls-subsistence-holdover)
+  (which days and employees are on holdover).
+- **Blocked:** pricing a holdover day 2+; the crew-time flag on holdover days.
+- **Owner:** Kyle Harlow and Joe Schacatano (who set the yard-to-yard rule), with Corrina Bustos.
+  Melissa McNutt's updated answers may settle 1, 2 and 5.
+
+## Who may complete or correct a ticket on a worker's behalf, and who approves a late or post-submit edit — "manager" or payroll
+
+- **Status:** open
+- **Asked:** 2026-10-07 — recording Melissa McNutt's provisional incomplete-ticket answers
+  ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+  `reference`, T2, T3, T13). TCG asked on 2026-10-06 to hold those answers until an updated version
+  is sent.
+- **What she wrote:**
+  - Asked *"should supervisors/dispatchers also be able to complete or correct tickets on their
+    behalf?"*: *"Yes"*.
+  - Managers and admins can override after the deadline: *"Yes!"*.
+  - After 24 hours, and after submission, an edit needs *"Manager approval or Payroll approval"*.
+    The worker requests it in the app, and it is a *"quick click"* for the approver.
+  - Notices of late completion and the overdue report go to *"Managers and Payroll"*.
+  - *"Payroll will need the ability to edit at all times."*
+- **Conflict and gaps, recorded not resolved:**
+  - The verified
+    [../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md)
+    takes the crane superintendent out of the **flag** flow.
+  - The verified
+    [../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md)
+    leaves open who may complete a never-completed ticket (*Not decided*, item 2).
+  - The developer's direction makes that **payroll-only**: the Payroll Admin or Payroll Manager.
+    That is C8 and K4 in `2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md`
+    (`reference`), which is on overlay branch `feat/PAYROLL-FLAGS-foundation` and not on main.
+  - Her *"Yes"* answered an either/or question and does not pick a side. Read literally, it admits
+    supervisors and dispatchers.
+- **Questions**, each phrased so a one-line reply settles it:
+  1. Who may **complete** a worker's incomplete ticket on their behalf: dispatch, the crane
+     superintendent or supervisor, payroll only, or all of them?
+  2. Who may **correct** a submitted ticket on a worker's behalf: the same people, or payroll only?
+  3. Who is the **"manager"** who approves a late or post-submit edit: the worker's line manager or
+     crane superintendent, an operations manager, or the Payroll Manager?
+  4. Is the worker's in-app **edit request** the same flow as Send Back to the worker (verified
+     2026-09-30 flag list, 3-hour reminder), or a separate one?
+  5. A ticket waiting on that approval, and then its 4 hours, holds the whole payroll week (verified
+     2026-09-30: every ticket complete before processing). Is that intended, or may payroll complete
+     it to release the week?
+- **Sources checked:** the notes above;
+  [../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)
+  (verified: *"Payroll may fix any time, for one person"*, which agrees with her last line);
+  [../admin/engagement-directory-and-org-charts.md](../admin/engagement-directory-and-org-charts.md)
+  (unverified: field employees report to Crane Superintendent Jeff Kelley, then Kyle Harlow).
+- **Related:**
+  [*Flagged entries go to payroll, not the crane superintendent*](#flagged-entries-go-to-payroll-not-the-crane-superintendent--who-corrects-them-who-the-payroll-admin-is-and-whether-send-back-survives)
+  (C6);
+  [*A labor-entry edit can reprice an approved week*](#a-labor-entry-edit-can-reprice-an-approved-week--and-the-erp-has-no-path-for-it);
+  [../field-ops/gaps.md → *Late and incomplete tickets*](../field-ops/gaps.md#late-and-incomplete-tickets--where-the-24-hour-window-starts-what-it-allows-and-how-reminders-are-anchored).
+- **Blocked:** edit and complete permissions for anyone other than the worker and payroll; the
+  approval-request flow; notification recipients for late completion.
+- **Owner:** Corrina Bustos (payroll) and Melissa McNutt, with Lisette Anzaldo for dispatch.

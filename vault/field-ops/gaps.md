@@ -2,7 +2,7 @@
 title: Field Ops — open questions
 status: reference
 kind: gaps
-updated: 2026-09-17
+updated: 2026-10-07
 tags: [module/field-ops, kind/gaps, open-questions]
 ---
 
@@ -542,6 +542,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   billing language are to be corrected or kept. Nothing from Kyle is in the record.
 - **Owner:** Melissa McNutt → Kyle.
 - **Update 2026-09-04, from the record (computed the same day from `stg.FMS_JOB_UNIT_CHECK_LIST_Raw` and `stg.FMS_CHECK_LIST_Raw` in the restored 2026-06-23 backup):** the post-trip did not stop by a decision anyone wrote down; it was **switched off unit by unit**. The last ticket carrying a *Post-Trip Inspection* checklist is dated **2025-10-06**; monthly issuance ran 2,100–2,700 rows a month through June 2025, then 980 / 1,092 / 1,372 in July–September and 280 in October 2025, then nothing. Of the 48 per-unit copies, 40 are `Status = 0`, deactivated in batches — 20 on 2023-03-09, 4 on 2025-01-16, 3 on 2025-02-11, 6 on 2025-06-19, 1 on 2025-10-07, 3 on 2025-11-20 — and the 8 still active (last edited 2020–2022) sit on units that issued no post-trip after October 2025. So Melissa's 2026-08-31 statement is accurate for the last eleven months and the May–June 2026 recordings describe the practice up to autumn 2025; both are true in their moment. Whether that lapse is the intended end state is still Kyle's to say.
+- **Update 2026-10-07: Melissa McNutt's provisional answers. They do not settle this.**
+  - In written Teams answers posted on or before 2026-10-06, on a 6-day holdover job
+    ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+    `reference`, T5):
+    - Asked *"Is a post-trip inspection required at the end of Day 1?"*, she wrote *"Kyle Harlow ,
+      Yes?"*. That is a question to Kyle, not an answer.
+    - Asked about a post-trip at the end of the final day, then breakdown and return, she wrote
+      *"Yes!"*.
+  - That is the first written client *yes* since her 2026-08-31 *"we currently don't do post trips"*.
+    It covers the final day of a holdover only.
+  - TCG asked us on 2026-10-06 to hold the answers until an updated version is sent, because Joe
+    Schacatano also filled them in.
+  - **Still needs Kyle**, as before. The holdover days in between are a separate question:
+    [*Holdover days 2+ — on-site daily pre-trip*](#holdover-days-2--on-site-daily-pre-trip-and-is-there-a-post-trip-on-the-days-in-between).
 
 ## Lunch slots differ between the crane ticket and the tractor ticket
 
@@ -804,3 +818,164 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## Pointer — payroll flags no longer go to the crane superintendent
 
 - **Pointer (2026-09-29):** Corrina Bustos (Teams, 2026-09-29) routed all flags to the payroll admin and payroll manager, *"not the crane superintendent"* ([../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md)). Two things are open and filed once, in [../payroll/gaps.md → *Flagged entries go to payroll, not the crane superintendent*](../payroll/gaps.md#flagged-entries-go-to-payroll-not-the-crane-superintendent--who-corrects-them-who-the-payroll-admin-is-and-whether-send-back-survives): what the superintendent may still correct after submission, and whether "all flags" includes ticket progress *Flagged* (incident / deficiency / customer unavailable).
+
+## Late and incomplete tickets — where the 24-hour window starts, what it allows, and how reminders are anchored
+
+- **Status:** open
+- **Asked:** 2026-10-07 — recording Melissa McNutt's provisional answers to umer.islam's
+  incomplete-ticket questions
+  ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+  `reference`, T8–T11). TCG asked on 2026-10-06 to hold those answers until an updated version is
+  sent.
+- **What she wrote:**
+  - A field employee may complete or edit their own ticket, all steps, with the actual times of the
+    original date, for *"24 hours from their original ticket time"*.
+  - Same-day paperwork is the aim. The same deadline applies to everything.
+  - Reminders: *"Maybe when they leave the yard, 12 hours later and then a final reminder at 20
+    hours."*
+  - After 24 hours: approval from a manager or payroll, requested in the app with a one-click
+    grant, then *"4 hours to complete it"*.
+  - *"We need to make the workflow so they can't skip an inspection."* A late inspection
+    submission needs no approval.
+- **Questions**, each phrased so a one-line reply settles it:
+  1. **Start of the 24 hours.** Does *"original ticket time"* mean the scheduled start, the first
+     capture (Left Yard, or arrival on site on a holdover day), End Work, or the end of the ticket?
+  2. **A reason for an edit.** Inside the 24 hours, does a changed time need a reason?
+     [../brs.md](../brs.md) BRS-TIME-003 (*"Manual time edits require justification"*) and FCC
+     ([fcc-e-ticket-and-atom-guides.md](fcc-e-ticket-and-atom-guides.md): *"the user must provide a
+     justification for the modification of a time"*) both say yes. Both are unverified. Her answer
+     is silent.
+  3. **Reminder anchor.** Do *"12 hours"* and *"20 hours"* count from leaving the yard or from the
+     original ticket time? On a holdover day 2+, where the crew never leaves from the yard, what
+     starts the clock?
+  4. **Late inspections.** Can a missed inspection be completed late at all (*"can't skip"*)? If
+     yes, does one later than 24 hours need approval, as everything else does, or never (*"No"*)?
+  5. **Progress Tracking.** A ticket shows **Incomplete** once the shift's estimated end has passed
+     ([../decisions/2026-09-11-progress-tracking-ticket-status-rules.md](../decisions/2026-09-11-progress-tracking-ticket-status-rules.md),
+     `reference`; `SCRUM-PROGRESS` REQ-13 and §12 Q5 still open). Should the 24-hour window and its
+     overdue state show there, as a separate state or as Incomplete?
+  6. **The 4 hours.** Do they run from the approver's click? What happens if they lapse: a second
+     request, or payroll only?
+- **Sources checked:** the decision note above; [../brs.md](../brs.md) BRS-TIME-003, BRS-TVL-001 to
+  BRS-TVL-004, OD-001; [fcc-e-ticket-and-atom-guides.md](fcc-e-ticket-and-atom-guides.md) (editable
+  times, *"As recorded for customer"*); the 2026-09-11 Progress Tracking note;
+  [../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md)
+  (verified: every ticket complete before the week is processed). No other written rule on a
+  completion deadline was found.
+- **Blocked:** the late-completion window on mobile, the reminder schedule, the request-approval
+  flow, and the late marker (internal only, never on the customer's paperwork).
+- **Related:** approvers and who may act on a worker's behalf are filed in payroll:
+  [../payroll/gaps.md → *Who may complete or correct a ticket on a worker's behalf*](../payroll/gaps.md#who-may-complete-or-correct-a-ticket-on-a-workers-behalf-and-who-approves-a-late-or-post-submit-edit--manager-or-payroll).
+- **Owner:** Melissa McNutt, via TCG's promised updated answers, with Joe Schacatano, Kyle Harlow
+  and Wes Staley.
+
+## Who completes the ticket when an Oiler is on the set — "Operators complete their own tickets" (provisional) vs the verified one-ticket rule
+
+- **Status:** open
+- **Asked:** 2026-10-07 — recording Melissa McNutt's provisional answers
+  ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+  `reference`, T1).
+- **Question:** asked *"Which employee roles should be allowed to complete their own incomplete
+  tickets?"*, Melissa wrote: *"All field employees, Operators, Oilers, 3rd men, riggers, mechanics
+  and yard techs."* The verified
+  [../decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md](../decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md)
+  clause 2 says that on a set with an Oiler seat the Operator has **no fill, complete, sign or submit
+  step**, and the Oiler enters the Operator's labor. **Is her list only the roles that can hold a
+  ticket at all, so the verified rule stands, or may an Operator on an Oiler set now complete or
+  correct their own labor on the shared ticket?**
+- **Note:** her list fits the verified rule if read as roles that can hold a ticket: an Operator
+  with no Oiler seat does fill one (clause 3). Melissa is herself one of the sources of clause 2
+  (2026-05-19 42:09; 2026-06-04 15:00). The verified note governs until TCG says otherwise. TCG asked
+  to hold these answers until an updated version is sent.
+- **Sources checked:** the two decision notes above.
+- **Blocked:** nothing built; the shared-ticket edit rights stay as clause 2 says.
+- **Owner:** Melissa McNutt, with Lisette Anzaldo.
+
+## A field employee leaves the company or loses access with tickets still incomplete — asked, not answered
+
+- **Status:** open
+- **Asked:** 2026-10-07. umer.islam asked it on Teams: *"What should happen if the employee leaves the
+  company or loses access while they still have incomplete tickets?"* Melissa McNutt's provisional
+  answer was about offline capture instead: *"Currently the forms save on the tablet and then once
+  they get service it saves to FCC. Can we have the same thing? There are times they loose service."*
+  ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+  `reference`, T12).
+- **Question:** when a field employee is terminated or deactivated, or loses app access, with
+  tickets still incomplete, **who finishes those tickets: payroll, dispatch, or a supervisor? Or are
+  they cancelled?** And does the worker's own late-completion window still apply?
+- **Note:**
+  - FCC handles this from the office: cancellation, or **forced completion from NexGen**, which is
+    permanent ([fcc-e-ticket-and-atom-guides.md](fcc-e-ticket-and-atom-guides.md) → *Cancellation,
+    reconstitution, forced completion*; unverified).
+  - The verified
+    [../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md)
+    blocks the week until every ticket is complete. So an abandoned ticket blocks payroll (its *Not
+    decided* item 2).
+  - Her offline answer matches what SCRUM-OFFLINE-SYNC built (offline completion, background sync).
+    FCC's Atom actually **blocks** completing a ticket and entering labor offline (same file →
+    *Connectivity*).
+- **Sources checked:** the notes above; [Offline capture](#offline-capture--committed-on-a-recorded-call-with-no-ticket-and-no-written-scope)
+  (resolved).
+- **Blocked:** a departed-employee path for incomplete tickets; nothing else.
+- **Owner:** Melissa McNutt, with Corrina Bustos for payroll.
+
+## Holdover days 2+ — on-site daily pre-trip, and is there a post-trip on the days in between?
+
+- **Status:** open
+- **Asked:** 2026-10-07 — recording Melissa McNutt's provisional holdover answers
+  ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+  `reference`, T5–T6).
+- **What she wrote:**
+  - Day 2 needs *"pre trip / daily inspection and JSA"*. The first activity on arrival is the
+    *"Pre Trip inspection"*.
+  - At the end of Day 1 the crane *"typically stays built up in place"*. She then asked Kyle
+    Harlow: *"is there any procedure they would need to do before they leave?"*
+- **Questions:**
+  1. Is the on-site pre-trip on days 2+ the **same checklist** as the yard pre-trip, or a shorter
+     daily inspection?
+  2. Which units does it cover, now that the tractor and trailer may be back at the yard?
+  3. Is there a **post-trip, or any leave-the-crane procedure, at the end of each day in between**,
+     or only at the end of the final day?
+- **Note:** no earlier source puts a pre-trip on site.
+  - FR-TCG-FOP-001 [FR-FOP-009](frd-new-format-draft/05-functional-requirements/fr-fop-009-pre-trip-checklist.md)
+    places it after Leave Yard. FR-TCG-FOP-002
+    [FR-FOP-008](field-ops-frd/08-functional-requirements/fr-fop-008-pre-trip-checklist.md) places
+    it *"prior to departure from the yard"*. Both are unverified.
+  - Kyle Harlow and Joe Schacatano put it at the yard on 2026-09-03
+    ([../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md](../decisions/2026-09-03-paid-time-boundaries-yard-to-yard.md)).
+  - The final-day post-trip is in
+    [*Post-trip inspection*](#post-trip-inspection--melissa-says-it-does-not-happen-two-signed-documents-say-it-does).
+  - TCG asked to hold these answers until an updated version is sent.
+- **Sources checked:** the notes and FRD files above;
+  [../dispatch/crane-configuration-rules.md](../dispatch/crane-configuration-rules.md) §10.
+- **Blocked:** the checklist set and step order of a holdover day-2+ ticket on mobile.
+- **Owner:** Kyle Harlow (VP of Fleet), as Melissa deferred to him.
+
+## Previous-ticket enforcement (BRS-TVL-004 / OD-001) — warning, soft block or hard block
+
+- **Status:** open
+- **Asked:** 2026-10-07. It was never registered. [../brs.md](../brs.md) BRS-TVL-004 *Previous Ticket
+  Enforcement* (*"Unresolved tickets may restrict future ticket processing"*, possible outcomes
+  *Warning / Soft Block / Hard Block*) and Section 11 OD-001 (*"Previous ticket enforcement
+  behavior — Decision Needed"*) have sat in the BRS since migration, with no register entry. Brought
+  up while recording Melissa McNutt's provisional late-ticket answers
+  ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
+  `reference`, T14).
+- **Question:** when a worker has an earlier ticket still incomplete, or past its 24-hour window,
+  **may they start their next ticket?** Choose one: a warning only, a soft block they can override,
+  or a hard block.
+- **Note:** Melissa's answers set a 24-hour window, approval after it, reminders and an overdue
+  report. They do not say whether an overdue ticket stops the next one. Her worry that approval
+  *"would cause another bottleneck"* argues against a hard block, but it is not an answer.
+- **Sources checked:** [../brs.md](../brs.md) (unverified); the decision note above; this register.
+  No decision or ticket names it.
+- **Blocked:** any gate on starting a ticket while an earlier one is open.
+- **Owner:** Melissa McNutt, with Lisette Anzaldo for dispatch.
+
+## Pointer — late-ticket approvals, completion on a worker's behalf, and holdover-day paid time are filed in payroll
+
+- **Pointer (2026-10-07):** two questions raised by Melissa McNutt's provisional answers
+  ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md))
+  are filed once, in payroll:
+  - [../payroll/gaps.md → *Who may complete or correct a ticket on a worker's behalf*](../payroll/gaps.md#who-may-complete-or-correct-a-ticket-on-a-workers-behalf-and-who-approves-a-late-or-post-submit-edit--manager-or-payroll);
+  - [../payroll/gaps.md → *Holdover days 2+ — does paid time start on arrival at the job site*](../payroll/gaps.md#holdover-days-2--does-paid-time-start-on-arrival-at-the-job-site-and-where-does-each-day-end).
