@@ -1,0 +1,13 @@
+--- .ai/vault/field-ops/gaps.md
++++ .ai/vault/field-ops/gaps.md
+@@ -107,7 +107,6 @@
+   - [../payroll/gaps.md → *Who may complete or correct a ticket on a worker's behalf*](../payroll/gaps.md#who-may-complete-or-correct-a-ticket-on-a-workers-behalf-and-who-approves-a-late-or-post-submit-edit--manager-or-payroll);
+   - [../payroll/gaps.md → *Holdover days 2+ — does paid time start on arrival at the job site*](../payroll/gaps.md#holdover-days-2--does-paid-time-start-on-arrival-at-the-job-site-and-where-does-each-day-end).
+-<<<<<<< Updated upstream
+-=======
+ 
+ ## Live photo capture — is automatic capture still wanted?
+ 
+@@ -118,2 +117,0 @@
+ - **Owner:** Fouzan Shakil, who authored the sheet.
+->>>>>>> Stashed changes
