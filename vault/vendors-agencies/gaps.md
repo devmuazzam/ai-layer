@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-09-19
+updated: 2026-10-08
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -133,6 +133,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   **`OPEN` | `CLOSED`**. Does **not** settle Joe’s standalone level, the audit trail, or Ryan’s
   quote-lost → PO-closed rule — those remain open above. Orthogonal to Brian’s inbound/outbound
   direction taxonomy.
+
+- Update 2026-10-08 (client branch `fix/permits-plans-pos-validation-parity`, TCG-143 — **code
+  copied a web-only rule to the API; nothing written behind it**): the web PO form has long refused a
+  **`PERMIT`-type PO with no Job** (`apps/web/src/features/purchase-orders/lib/po-form-payload.ts`,
+  `getPoFormFieldErrors`, *"Job is required for Permit POs."*). That branch makes the API refuse it on
+  create and on any update that turns a PO into a Permit PO or clears its job — but **exempts**
+  Generate PO from a permit, because an **asset-level permit has no job** and
+  [decisions/2026-09-11-permit-approval-requires-linked-po.md](../decisions/2026-09-11-permit-approval-requires-linked-po.md)
+  still requires it to carry a PO. So a jobless Permit PO exists by construction, the API lets
+  unrelated edits to it through, and the web PO edit page still refuses to save it. **Needs the client
+  (Brian Petros or Liz Lopez):** *may a `PERMIT`-type PO for an asset-level (non-job) permit have no
+  job, or must every Permit PO carry one?* The answer decides which side changes: the web edit page
+  (if jobless is valid) or the Generate PO path (if not). Same question as the standalone half above,
+  narrowed to one PO type.
 
 ## PO and vendor/agency rules the E2E suite asserts with no written source — PR #488
 
