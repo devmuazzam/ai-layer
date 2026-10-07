@@ -1170,6 +1170,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   item not held over goes back to the yard every day. Not built — the yard board does not read
   holdover. Still open: whether a single multi-day *shift* without holdover means the crane comes
   back mid-shift each night, and the default pre-ticked items above.
+  - **Note 2026-10-07: the holdover half of the multi-day shift is settled in practice, unasked.**
+    Holdover now needs two or more working days, counted as active, non-cancelled schedule rows
+    ([../decisions/2026-10-07-holdover-not-allowed-on-a-single-day-job.md](../decisions/2026-10-07-holdover-not-allowed-on-a-single-day-job.md),
+    `reference`, fouzan.shakil, not confirmed by TCG). A multi-day shift on one row counts as one
+    day, so it cannot be held: it is always "without holdover". Nobody asked about this case; it
+    follows from how days are counted. Whether the crane comes back each night mid-shift is still
+    open.
 - **Loadout half ruled 2026-10-06 by fouzan.shakil (CodingCops), not confirmed by TCG** —
   [../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md](../decisions/2026-10-06-yard-holdover-loaded-out-once-offloaded-on-last-day.md)
   (`reference`): a held asset is loaded out once, on the first day it actually goes, and offloaded
@@ -1316,6 +1323,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Built default:** (a) the whole line; (b) anyone who can edit the job (no extra permission,
   matching the job's other routes); (c) editable at any stage except a **Completed** job, and
   releasing only clears holds on days still Open / Allocation Completed and not ticket-locked.
+  - **Update 2026-10-07: (c) also stops below two working days.** Ruled by fouzan.shakil
+    (CodingCops), not confirmed by TCG —
+    [../decisions/2026-10-07-holdover-not-allowed-on-a-single-day-job.md](../decisions/2026-10-07-holdover-not-allowed-on-a-single-day-job.md)
+    (`reference`; tcg branch `feat/holdover-single-day-block`, not merged). Make / Edit Holdover is
+    disabled on a job with fewer than two active, non-cancelled schedule days, with a hover saying
+    why. The API refuses a non-empty set there (400); releasing stays allowed in the API.
+    - Not settled: a held job later cut to one day cannot release its holds from the UI, because
+      Edit is disabled too. Copy Allocations with *Hold over* (`markHeld`) can still hold a line on
+      a one-day job. Neither was asked.
 - **Also:** the dev team said on the 2026-09-22 demo that the Schedule tab *"schedules the job
   only; per-day resource scheduling is done in DAS"*. The design puts Make Holdover on the
   Schedule tab anyway; built as designed. See
@@ -1543,6 +1559,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   still drag-gable with a system warning"* (line 47). The API has no leave check on save.
   (f) The offload rule says a non-held item goes back every day — for one multi-day *shift*
   without holdover, does the crane come back mid-shift each night?
+  **Note 2026-10-07:** such a shift can no longer be held, because holdover now needs two or more
+  working days and one row counts as one
+  ([../decisions/2026-10-07-holdover-not-allowed-on-a-single-day-job.md](../decisions/2026-10-07-holdover-not-allowed-on-a-single-day-job.md),
+  `reference`, fouzan.shakil, not confirmed by TCG). Nobody asked about this case. The mid-shift
+  nightly return is still open.
   (g) Which actions, if any, belong on a continuing card? Built read-only; its button opens its
   own day with the job expanded.
   (h) A crane still loaded out after its Estimated End: keep blocking other jobs?
@@ -1612,4 +1633,35 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   described a different, removed rule (corrected 2026-10-06).
 - **Blocked:** nothing hard. A direct API call, or a client other than the web yard board, can load
   out a day without its held item.
+- **Owner:** Lisette Anzaldo (dispatch).
+
+## Make Holdover — may a held line be removed or replaced on a middle day?
+
+- **Status:** open
+- **Asked:** 2026-10-07 — tcg branch `feat/holdover-single-day-block` (not merged). A lock was built
+  for this and dropped after review. Nobody was asked.
+- **Question:** On a **middle day** of a held job (after its first held day, before its last), may
+  dispatch **remove or replace** a held line's allocation on the DAS? And does the answer differ
+  for **asset lines** (the held crane) and **crew lines** (a no-show operator, a relief after 16
+  hours)? A one-line answer settles it, for example: *"assets locked, crew free"*, *"both free"*
+  or *"both locked; release in Make Holdover first"*.
+- **What was tried, and why it was dropped:** a middle-day held-slot lock disabled removing or
+  replacing a held line. It was dropped from the branch for two reasons:
+  - it locked crew lines as well. That contradicts
+    [daily-allocation-system.md](daily-allocation-system.md):64 (`unverified`, 9.6 KB, updated
+    2026-04-30): *"Dispatcher can remove and replace a non-responding employee directly from the
+    chip"*. That file is itself in an open conflict with
+    [../projects-jobs/job-project-das.md](../projects-jobs/job-project-das.md)
+    ([daily-allocation-INDEX.md](daily-allocation-INDEX.md));
+  - a guard-ordering bug.
+- **Built default:** no middle-day lock on held lines.
+- **Sources checked:** [daily-allocation-system.md](daily-allocation-system.md):64, above.
+  [../decisions/2026-10-01-multi-day-crane-offload-held-on-last-day-otherwise-daily.md](../decisions/2026-10-01-multi-day-crane-offload-held-on-last-day-otherwise-daily.md)
+  rule 1 (a held item stays on site between working days) and
+  [../decisions/2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md](../decisions/2026-10-06-held-asset-refused-by-other-jobs-for-the-whole-planned-hold.md)
+  (other jobs are refused; release in Make Holdover first). Both `reference`, CodingCops. Neither
+  says whether the held job itself may swap the line on a middle day.
+- **Related:** [../decisions/2026-10-07-holdover-not-allowed-on-a-single-day-job.md](../decisions/2026-10-07-holdover-not-allowed-on-a-single-day-job.md)
+  (`reference`), *What is built*.
+- **Blocked:** any middle-day lock on held lines.
 - **Owner:** Lisette Anzaldo (dispatch).

@@ -181,6 +181,11 @@ This note does not close any entry.
 - **A job whose holdover was saved and then fully released.** Nothing on it is held again, so under
   the interpretation above the pre-tick returns. Whether that is wanted is not stated. Since the
   revision it returns only for lines created from 2026-10-06.
+- **Update 2026-10-07: a one-day job never shows the pre-tick.** Make / Edit Holdover is disabled
+  on a job with fewer than two working days, so the modal does not open there
+  ([2026-10-07-holdover-not-allowed-on-a-single-day-job.md](2026-10-07-holdover-not-allowed-on-a-single-day-job.md),
+  `reference`, Fouzan Shakil; tcg branch `feat/holdover-single-day-block`, not merged). This
+  ruling is otherwise unchanged.
 
 ## Effect on the vault
 
