@@ -113,6 +113,14 @@ normal flow, the held item ticked and locked in Loadout.
   - Does "everyday" mean an item not held over returns to the yard **every night, mid-shift**? Or is
     it offloaded once, at the shift's Estimated End?
   - The ruling was given about a multi-day *job* and does not say.
+  - **Update 2026-10-07: such a shift can no longer be held.** Holdover now needs two or more
+    working days, counted as active, non-cancelled schedule rows, and a multi-day shift on one row
+    counts as one
+    ([2026-10-07-holdover-not-allowed-on-a-single-day-job.md](2026-10-07-holdover-not-allowed-on-a-single-day-job.md),
+    `reference`, Fouzan Shakil; tcg branch `feat/holdover-single-day-block`, not merged). So in
+    practice it is always "without holdover". Nobody asked about this case; it follows from how
+    days are counted. Whether the crane comes back each night mid-shift, or once at the Estimated
+    End, is still not answered.
 - **Employee lines.** A held employee line exists. What does "offloaded" mean for a person: no daily
   yard return, personal vehicle to site? Does it differ from equipment?
 - **"The last day of the job"** when the schedule changes after the hold:
