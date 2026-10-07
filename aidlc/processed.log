@@ -164,3 +164,4 @@ date        ticket      path  branch                              by    pr    no
 2026-10-07  -  C  fix/sidebar-payroll-badge-placement  haris  pr: 737  Sidebar badge placement: open-flags badge moved from Payroll Management group header to Weekly Payroll sub-item (Ali Riaz ruling 2026-10-07, vault/decisions/2026-10-07-payroll-sidebar-badge-on-child-items-not-group-header.md). OQ-7 test updated.
 2026-10-07 | LEM-00053 | path C | fix/background-sync-flicker-and-errors | Antigravity | pr: - | Fix mobile offline ticket UI flicker and 400 error formatting
 2026-10-07  -  C  fix/mobile-offline-storage  antigravity  pr: -  Stop persisting completed and expired tickets to offline storage to prevent AsyncStorage bloat.
+2026-10-07  -  C  fix/mobile-offline-storage  antigravity  pr: -  Update UI badge to react instantly to background sync completing instead of waiting for API refetch.
