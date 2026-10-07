@@ -979,3 +979,9 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   are filed once, in payroll:
   - [../payroll/gaps.md → *Who may complete or correct a ticket on a worker's behalf*](../payroll/gaps.md#who-may-complete-or-correct-a-ticket-on-a-workers-behalf-and-who-approves-a-late-or-post-submit-edit--manager-or-payroll);
   - [../payroll/gaps.md → *Holdover days 2+ — does paid time start on arrival at the job site*](../payroll/gaps.md#holdover-days-2--does-paid-time-start-on-arrival-at-the-job-site-and-where-does-each-day-end).
+## Live photo capture — is automatic capture still wanted?
+
+- **Status:** resolved 2026-10-05
+- **Asked:** 2026-10-05 — raised while reviewing UAT 3 feedback and TCG-119.
+- **Resolution:** Automatic capture is not required. Confirmed by Fouzan Shakil / User. Capture behavior stays as-is (manual but required).
+- **Owner:** Fouzan Shakil, who authored the sheet.
