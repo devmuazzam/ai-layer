@@ -45,6 +45,26 @@ product-wide question belonging to no ticket goes in that module's `vault/<modul
 `.ai/vault/gaps.md` and `.ai/vault/payroll/gaps-2026-08-20-retired.md` stay **retired and frozen** — historical snapshot, citable by anchor, never appended. The
 all-modules sweep: `grep -rn '^- \*\*Status:\*\* open' .ai/vault/*/gaps.md`.
 
+## Build requests enter AI-DLC — through triage
+
+**Any prompt that asks to build, change or fix code enters AI-DLC. The entry is triage,
+not the full loop.** Before writing code, name the ticket (or say there is none), classify
+it per `.ai/aidlc/GUIDE.md` §2, and state the path:
+
+| Path  | When                                                              | What runs                                          |
+| ----- | ----------------------------------------------------------------- | -------------------------------------------------- |
+| **A** | New behaviour, or anything needing product intent                 | intent → spec → units → execute → analyse → reflect |
+| **B** | Bug — the behaviour is specified, or the bug _is_ the deviation   | repro → `tcg-executor` → `tcg-analyst`             |
+| **C** | Small, stated change — copy, spacing, a column, a variant         | `find-component` if UI, build, self-review         |
+
+**Any path becomes A the moment you must decide something nobody specified** — a sort
+order, a default, a threshold, one side of a vault conflict. Schema, tenancy or an API
+shape calls `tcg-prisma-guardian` / `tcg-contract-tracer` on every path.
+
+Questions, debugging, reviews and exploration do not enter the loop. On Claude Code a
+`UserPromptSubmit` hook repeats this on every prompt; on other tools this section is the
+only trigger. Decision: `vault/decisions/2026-10-09-build-prompts-enter-aidlc-through-triage.md`.
+
 ## One memory, every tool
 
 Eight developers on four or more AI tools. **The memory is the files under `.ai/`, and
