@@ -71,7 +71,7 @@ existing save validation *"Unit Meas is required"* applies.
   Measuring Unit option (`Hours`, `Each`, `Days`, ...). A value outside the options renders as the
   placeholder, so the unit looked empty though it was set. Codes created through the billing-code
   form always use the options, so only seeded data showed it.
-- **Fix:** client branch `fix/8-oct`, commit `badabb3d6` — maps the stored
+- **Fix:** client branch `fix/8-oct`, commit `0e6da950b` — maps the stored
   unit onto an option in the browser
   (`apps/web/src/features/quotations/utils/resource-unit-measure.ts`: case, surrounding space,
   singular/plural, and the unambiguous FCC abbreviations), when a rate resolves and when a saved

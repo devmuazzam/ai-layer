@@ -60,7 +60,7 @@ Syed Haris, 2026-10-08:
 
 ## As built
 
-Client commit `abc4a5d92` on tcg branch `fix/8-oct` (*"feat(projects): show each job's selected
+Client commit `234e7c7fa` on tcg branch `fix/8-oct` (*"feat(projects): show each job's selected
 schedule days on Project Detail (TCG-101)"*):
 
 - Project Detail → **Details** tab → new **"Selected Schedule"** card
