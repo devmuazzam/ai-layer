@@ -9,6 +9,12 @@ decided_by: >-
   the CodingCops build, open to being overruled by TCG.
 status: reference
 conflicts_with: []
+provenance_note: >-
+  Point 2 (a Mob/Demob group parent shows the sum of its included children) holds for a
+  Mobilization or Demobilization group only at quantity 1. Joe Schacatano confirmed on 2026-10-08
+  that the group quantity is the number of visits and multiplies that sum; see
+  decisions/2026-10-07-mob-demob-group-quantity-is-visits-times-the-summed-lines.md. Other group
+  parents still roll up at the plain sum. Added 2026-10-09 by tcg-scrum (bookkeeping only).
 resolves:
   # part (c), the on-screen half; the printed-quote half stays open
   - quotations/gaps.md#branch-fixdas-fixes--archive-gate-rate-error-precedence-discount-and-price-hike-footer-rows

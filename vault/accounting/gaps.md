@@ -350,3 +350,42 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** see the field-ops entry — it carries the full source list.
 - **Blocked:** nothing today.
 - **Owner:** TCG accounting for the billing side; field-ops owns the question.
+
+## Does the invoice carry exactly the quotation's lines — including the lines hidden inside Mobilization/Demobilization?
+
+- **Status:** open
+- **Asked:** 2026-10-01. ehtesham.anwar (CodingCops) stated it as an assumption to Joe Schacatano on
+  the "Quotes and Billing Codes" call, 11:34: *"we have decided that everything that we see in
+  quotation is are going to be the same things that we are going to [port over to] invoices. That
+  was my assumption. Do you think that's the right approach or are we missing anything here?"*
+  Joe's next turn (13:37) answered a different point, the nested associations. Nobody answered this.
+  Filed 2026-10-07 by tcg-scrum while recording Linear TCG-218's decisions (TCG-218 excludes
+  invoices from its scope, so this belongs to no ticket); ported to overlay main 2026-10-09.
+- **Question:** *"When a quotation becomes an invoice, does the invoice carry exactly the quote's
+  customer-facing lines (Mobilization and Demobilization as single totals plus the main items), or
+  does it itemise the lines inside Mob/Demob?"* Two follow-ups, each a one-line answer: **(a)** Are
+  quote quantities replaced by actuals from tickets (Joe 33:29–33:48 wants quoted-vs-actual mob
+  hours compared), or invoiced as quoted? **(b)** Does a quote-hidden association (an "also brings
+  along" row, or an association with Show off) ever reach the invoice?
+- **Sources checked:**
+  - `meetings/2026-10-01-quotes-and-billing-codes-associated-assets-mob-demob-and-holdover.md` §2 and §10 Q4
+    (`unverified`), and the transcript at 11:34 / 13:37 (`reference`).
+  - `quotations/mobilization-and-demobilization.md` (`unverified`), *Pain Point* 3: *"The Estimate
+    already drives the Invoice"* (FCC as-is), with no rule for the ERP.
+  - `decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md`: the PO flow only; says
+    nothing about invoice lines.
+  - `decisions/2026-10-01-mob-demob-lines-quantities-and-placement-on-the-quote.md` (`verified`):
+    the customer **quote** shows mob, demob and the main items only. It says nothing about the
+    invoice.
+  - `decisions/2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md`
+    (`verified`): one invoice per job with two cranes. Says nothing about line itemisation.
+  - `meetings/2026-10-08-accounting-demo-invoicing-approval-ar-ap-and-quickbooks.md` §2
+    (`unverified`): invoice lines come from tickets linked to the quoted resources, *"follows the
+    quotation configuration"*, with a quoted-vs-actual flag (partly bears on (a)); Joe (27:20): *"the
+    only thing that's going to push through are the billing codes, correct?"* — ehtesham.anwar:
+    *"Yes."* Bears on the question but does not say whether Mob/Demob is invoiced as one line or
+    itemised.
+- **Blocked:** the invoicing module's line source for a Mob/Demob quote.
+- **Owner:** Joe Schacatano (what the customer is billed against the quote) with Corrina Bustos /
+  TCG accounting (invoice presentation). Relayed by Brian Petros. Brian (2026-10-01, 1:04:34) named
+  invoicing as the phase not yet covered.

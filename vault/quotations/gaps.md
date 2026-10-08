@@ -2692,3 +2692,9 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Update 2026-10-07:** (a) **built on TCG-103** — a burst of +/- clicks is one save and one toast (500 ms trailing debounce), approved by Akif. (b) **both**: +/- move the whole-number part by 1 and keep the decimals (12.5 → 13.5), the arrow keys fine-tune by 0.01, on all surcharge, discount and price hike cards, decided by Akif; a step that followed the typed decimals was built and dropped the same day (too many edge cases in testing). (c) **built on TCG-103** — the Billing Codes stepper restyled to 44px buttons like `AdjustmentCard` (the card itself not replaced), decided by Akif.
 - **Resolution (2026-10-07):** all three decided and built on TCG-103, together with the failed-save fix and a single toast slot (`surcharge-update`). The original reporter was never traced; the team decided without them.
 - **Owner:** Akif (CodingCops web team), as a UX convention call.
+
+## Invoice lines vs quote lines — pointer, owned by accounting
+
+- **Status:** open — see [../accounting/gaps.md → *Does the invoice carry exactly the quotation's lines*](../accounting/gaps.md#does-the-invoice-carry-exactly-the-quotations-lines--including-the-lines-hidden-inside-mobilizationdemobilization).
+  ehtesham.anwar's 2026-10-01 11:34 assumption, unanswered by Joe Schacatano. Filed 2026-10-07;
+  ported to overlay main 2026-10-09.

@@ -10,7 +10,16 @@ decided_by: >-
   Anzaldo, Ryan Adams, Melissa McNutt) has not confirmed it. Recorded as status: reference — a
   CodingCops-stated rule, shipped, not adjudicated by TCG.
 status: reference
-conflicts_with: []
+conflicts_with:
+  - decisions/2026-10-07-tcg-218-open-questions-answered-by-the-ticket-owner.md
+provenance_note: >-
+  Overlapped, not superseded: the TCG-218 ticket owner (Syed Haris) answered on 2026-10-07 that
+  quote show/hide is for the quote only and every billable association of a quoted item, Optional
+  included, becomes a job resource / DAS slot on conversion (Q6 and the U8 answer in
+  decisions/2026-10-07-tcg-218-open-questions-answered-by-the-ticket-owner.md). That contradicts
+  this note for an Optional association the quotation does not carry. Both are developer rulings;
+  open until Lisette Anzaldo, Melissa McNutt or Joe Schacatano confirms. Added 2026-10-09 by
+  tcg-scrum (bookkeeping only).
 resolves: [dispatch/gaps.md#branch-fixuat4-schedule-copy-allocation--a-das-slot-the-quotation-never-priced-the-job-resources-tab-now-hides-materialised-0-rows-the-board-still-allocates-against-them, projects-jobs/gaps.md#branch-fixuat4-schedule-copy-allocation--job-resources-tab-hides-rows-the-quotation-never-priced--see-dispatchgapsmd]
 tags: [module/dispatch, module/projects-jobs, module/quotations, kind/decision, daily-allocation]
 ---
