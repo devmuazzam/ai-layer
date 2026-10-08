@@ -5,11 +5,9 @@ decided: 2026-10-09
 decided_by: >-
   Syed Haris (git: hariscops), developer on the TCG platform, in a Claude Code
   session on 2026-10-09, deciding for the team's AI tooling. This is a process
-  rule about how work moves through AI-DLC, not a product behaviour. It was set
-  by one of the eight developers, and the vault records no delegation that lets
-  one developer bind the other seven. So it applies from today but is **pending
-  team acknowledgment**: the team can overrule or amend it. Until they do, treat
-  it as binding.
+  rule about how work moves through AI-DLC, not a product behaviour. Binding on
+  every developer from 2026-10-09; on 2026-10-09 he stated that no team
+  acknowledgment is needed.
 status: verified
 resolves: none (no open §12 or module gaps.md entry asked this; raised directly in the session)
 topics: []
