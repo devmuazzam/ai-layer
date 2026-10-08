@@ -172,6 +172,19 @@ A rule can make a unit unnecessary. It can never make one shippable.
 `S / M / L` is a reviewer-load estimate, not a time estimate. If a unit is `L`, ask whether
 it is actually two units that share a migration. Most are.
 
+**Every unit is one PR, and one PR has a budget: ~400 changed source lines, 25 source files**
+(tests, migrations, lockfiles and snapshots excluded — root `CLAUDE.md` → _One unit, or one
+independent task, per PR_). Estimate each unit against it from its slice-contents rows and
+write the estimate in the unit. A unit that will not fit is two units — split it now; an
+executor that discovers it mid-build has to stop.
+
+**Never write a "same branch, one PR" git layout.** PAYROLL-FLAGS' three `units*.md` files
+declared U1–U21 "same branch, same PR … developer's choice", and it shipped as #709: 958
+files, 35,108 source lines, reviewed in name only. If a developer asks for that, the answer
+is stacked PRs (each unit branches from the one it depends on — `commit` skill §1); if they
+still want one PR, that is a per-PR `size-exception` they set themselves, not a layout this
+file declares.
+
 A unit nobody can review in one sitting will be reviewed in name only, which converts the
 analyst step into a formality and puts the defect into `main`.
 

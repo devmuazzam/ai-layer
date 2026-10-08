@@ -59,6 +59,10 @@ git switch -c <type>/SCRUM-###-u<n>-<slug> origin/main
 
 **From `origin/main`, never local `main`** — local is stale more often than not, and
 branching from it silently reverts merged work into the new branch with nothing complaining.
+**Exception — a stacked unit:** if the unit's _Depends on_ names a unit whose PR has not
+merged, branch from that unit's branch (`origin/<its-branch>`) instead, and its PR targets
+that branch (`commit` skill §1). Never build two units on one branch, whatever `units.md`
+says about git layout.
 Rebase onto `origin/main` again before pushing, so the branch carries whatever else landed
 while you worked.
 
@@ -150,6 +154,21 @@ order, an enum member, a piece of copy. Ask *which row or which REQ is this from
 answer is "it's standard" or "it matches the neighbouring module", you have found a gap, and
 §2's four steps apply.
 
+### Structural choices stop too — they are the developer's
+
+§2 is about product values. The same stop applies to **structure**, and the lookup is the
+same: is this choice already fixed by a slice-contents row, a `spec.md` §11b row with
+_Decided by_ filled, or the reference in `.ai/claude/contexts/patterns.md`? If not, and it is
+on root `CLAUDE.md` → _Developers decide structure_'s list — a new table, column, enum member
+or relation; a new exported function/service/hook/component instead of reusing one; a new
+endpoint or shape; a new dependency; a deviation from the pattern reference — **stop that
+part and ask the developer**, with the options and the existing code you found (paths). You
+may recommend; the developer chooses. Then build what they chose.
+
+On Path B or C there is no spec: ask in the conversation, and put the answer in the PR
+description's _Developer decisions_ table (`commit` skill §6) with the developer's name.
+Never write your own name, or your suggestion, as the decider.
+
 ## 2b. `[UNVERIFIED]` is not a stop — but it caps what you may make permanent
 
 Most requirements you receive are tagged `[UNVERIFIED]`: sourced, migrated faithfully, never
@@ -215,6 +234,25 @@ If you genuinely need something new, put it where its neighbours are. Do not cor
 taxonomy in passing; that is revamp work, it is sequenced separately, and doing it inside a
 feature unit makes the diff unreviewable.
 
+**The API has the same rule.** Before writing a repository method, a helper or a usecase
+function, grep for one that already does the job — `BaseRepository`,
+`utility/reference-code-list.helpers.ts`, `SequenceRepository`, `ArchiveReferenceService`,
+and same-named methods in sibling modules. Copying a private helper into your module (the
+way `formatInternalId` and `mapWriteError` were copied) is the duplication this rule exists
+to stop. Reuse vs new is a developer decision (§2) — show what you found.
+
+## 4b. Follow the pattern; offer the change to the siblings
+
+If the unit builds a shape listed in `.ai/claude/contexts/patterns.md`, build it the way the
+**reference** is built — not the way the nearest module is. `UNDECIDED` reference: stop and
+ask (§2). Then, for any change to an instance of a pattern:
+
+1. **Name every sibling** the same change would apply to (`patterns.md` + `git grep`).
+2. **Ask the developer** — unless `spec.md` §11c already answered it.
+3. **On a yes, apply it in this unit**; on a no, record the reason where the decision lives.
+
+Never apply a sibling change silently, and never finish without having mentioned them.
+
 ## 5. The surface rules bind you
 
 | Touching | Read | Non-negotiable |
@@ -239,7 +277,13 @@ Scheme, the prop pattern and the worked examples are in `contexts/web.md` → *T
 If the unit changes a screen that already has IDs, `grep -rn '<the-id>' qa-automation/e2e`
 before renaming, and update the spec in the same unit. That is in scope, not a follow-up.
 
-## 6. Finish means the gates ran
+## 6. Finish means the gates ran — and the unit fits one PR
+
+Measure the diff against the branch base with the `commit` skill §7 command. Over ~400
+source lines or 25 source files, the unit was sliced too large: **stop, report the number,
+and propose the split** (which slice-contents rows become their own stacked unit). Do not
+trim the unit on your own and do not carry on — the developer decides, and the decomposer's
+`units.md` gets the new unit.
 
 Before you hand back: `pnpm lint` and `pnpm build`, plus the unit's tests (`pnpm affected`
 covers all three for the projects your branch touched; the surface commands —
@@ -250,8 +294,9 @@ unchanged project, but if a green looks wrong, `--skip-nx-cache` before you argu
 `pnpm lint` currently fails on pre-existing errors in `apps/web` (37 on 2026-08-19). **Check
 whether a failure is yours** (`lint-triage`) — and say which, explicitly, in your report.
 "Lint fails" without that distinction wastes the reviewer's time and trains everyone to
-ignore the gate. Know also that **the pre-push hook and PR CI exclude `@tcg/web` from lint
-and `@tcg/mobile` from typecheck** — a green push is not evidence web lint passed. Run it.
+ignore the gate. Know also that **nothing runs these gates for you** — the `nx affected`
+block in `.husky/pre-push` is commented out and CI only deploys (root `CLAUDE.md` →
+Commands). A green push is not evidence anything passed. Run them.
 
 ---
 
@@ -269,10 +314,16 @@ Slice delivered:
 Demo: <the exact thing to click or call>
 
 Gates: lint <pass | fail: N pre-existing, M mine>  build <pass|fail>  tests <n passed>
+Size: <n> source lines, <n> source files vs <base branch> — <within budget | OVER: proposed split>
+Branch: <name> — base: <origin/main | stacked on <unit branch>>
 
 Stopped on:
   <requirement / detail I needed and could not source — or "nothing">
   Open questions written to spec.md §12: <Q ids, or "none">
+
+Developer decisions: <each structural choice — chosen by <developer>, or "waiting on developer: <options>">
+Pattern: <patterns.md entry followed, or "none">
+Siblings: <each — applied (developer said yes) | not applied — <reason> | asked, waiting>
 
 Not in this unit: <what I deliberately left, and which unit it belongs to>
 Deviations: <where I followed the context against the surrounding code, and where I didn't>

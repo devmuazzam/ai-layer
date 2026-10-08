@@ -1,13 +1,17 @@
 ---
 name: review-pr
-description: Review a PR, branch or diff against both the code conventions and the product record in the vault. Use when reviewing a pull request, a branch, uncommitted changes, or before merging.
+description: Review a PR, branch or diff against the product record in the vault, the code conventions, the developer decisions behind its structure, the pattern registry, and the sibling features that should get the same change. Use when reviewing a pull request, a branch, uncommitted changes, or before merging.
 ---
 
-Review a change on three axes: **does it do what the product record says**, **is it built
-the way this codebase requires**, and **what already-working behaviour does it reach**. The
-middle one is well covered elsewhere. The first is the one nobody does, and it is where the
-expensive defects live; the third is where the last two weeks' defects actually landed —
-changes that were correct about their own feature and broke something adjacent.
+Review a change on five axes: **does it do what the product record says**, **is it built
+the way this codebase requires**, **did a developer decide its structure**, **is it built
+the way its siblings are — and do they need the same change**, and **what already-working
+behaviour does it reach**. The second is well covered elsewhere. The first is the one nobody
+does, and it is where the expensive defects live. The third and fourth are why this codebase
+has three ways to build a CRUD (`.ai/claude/contexts/patterns.md`): structure chosen by
+whoever — or whatever — was typing, and changes made to one instance and never offered to the
+others. The fifth is where most shipped defects landed — changes that were correct about
+their own feature and broke something adjacent.
 
 For a unit built through AI-DLC, `tcg-analyst` owns the verdict — use this when reviewing
 ad-hoc work, someone else's PR, or a branch with no unit behind it.
@@ -22,6 +26,22 @@ git log --oneline origin/main..HEAD
 Find the ticket. If the branch names one (`feat/SCRUM-757-u1-…`), read it. If there is a
 spec at `.ai/aidlc/SCRUM-###/spec.md`, that is the contract and it outranks your judgement
 about what the feature should do.
+
+**Size first.** One PR is one unit or one independent task, within ~400 changed source
+lines and 25 source files (root `CLAUDE.md` → _One unit, or one independent task, per PR_).
+Measure against the PR's real base — a stacked PR's base is the unit below it, not `main`:
+
+```bash
+git diff --numstat origin/<base>...HEAD | grep -Ev '(\.spec\.|\.test\.|/e2e/|__tests__/|^qa-automation/|/migrations/|pnpm-lock\.yaml$|\.snap$)' \
+  | awk '{l+=$1+$2; f++} END{print l+0" lines, "f+0" files"}'
+git log --no-merges --oneline origin/<base>..HEAD      # units and sweeps show up here
+```
+
+Over budget without a `size-exception` label and a written reason is **do not ship — split**.
+Propose the split from the commit list: one PR per unit (stacked where they depend), sweeps
+(lint/format autofix, import order, SDK or dependency upgrades) and unrelated fixes out
+first. Do not review a 900-file PR line by line and call it reviewed — that is the failure
+this check exists for.
 
 ## 2. The vault pass — what the product record says
 
@@ -45,8 +65,8 @@ mean the vault is stale. Report the disagreement; do not adjudicate it.
 
 If the change turns on something nobody has written down, name it in the review as
 Unsourced rather than assuming the author knew. `.ai/vault/gaps.md` is retired — do not
-append the question there; there is no register for it until the per-module gaps redesign
-lands.
+append there. A question raised by a ticket belongs in that ticket's `spec.md` §12; one
+belonging to no ticket goes in `.ai/vault/<module>/gaps.md` — `tcg-scrum` routes it (below).
 
 **Every Unsourced finding gets handed to `tcg-scrum` before the review is finalized, not
 just named and left.** The reviewer is the backstop when a dev pushes an unsourced rule
@@ -73,7 +93,14 @@ Two standing traps:
 
 ```bash
 grep -i '<SCRUM-###>' .ai/aidlc/processed.log
+# not on overlay main? the ticket's record may sit on an unmerged overlay branch
+git -C .ai fetch -q origin && git -C .ai branch -r --list '*<SCRUM-###>*'
 ```
+
+A ticket whose PR has merged but whose `.ai/aidlc/<ticket>/` and log row exist **only on an
+overlay branch** is a finding: `close-ticket` never ran, and nobody on overlay `main` can see
+its spec, units or decisions (PAYROLL-FLAGS: #709 merged 2026-10-07, its overlay branch still
+unmerged two days later).
 
 - **No entry, and no `.ai/aidlc/SCRUM-###/` folder** — the ticket left no trail at all. Say
   so in the output as its own line; do not silently treat it as "must have been Path C."
@@ -104,11 +131,66 @@ memory. Then the standing hazards, each silent and each unenforced:
   `qa-automation/` binds to them and no gate runs it, so the grep is the only signal.
 - **Reuse** — a new component that already exists somewhere in the nine `components/`
   directories. Search `ui/`, `base/`, `atoms/`, `molecules/`, `patterns/` — not just the
-  atomic tiers.
+  atomic tiers. **The API too:** a new repository method, helper or usecase function that
+  duplicates one in `BaseRepository`, `utility/`, `SequenceRepository`, the archive services
+  or a sibling module — and any private helper copied in from another module.
+- **Pattern** — if the diff builds or changes a shape in `.ai/claude/contexts/patterns.md`,
+  compare it to the **reference**, not to the nearest neighbour: layers, DTO style, code
+  minting, archive vs delete, list envelope, web list/form/table. A deviation needs a
+  recorded developer decision (§4b); without one it is a finding. Against an `UNDECIDED`
+  entry, report which variant the diff followed and that no reference exists yet.
+- **Tooling authorship** — if the change touches the AI layer's tooling paths (root
+  `CLAUDE.md` → _Tooling is Haris-only_), check
+  `git -C .ai log --format='%ae %s' origin/main..HEAD -- <paths>`. Any author other than
+  `syed.haris@codingcops.com` is a finding, first in the output. Nothing on GitHub blocks it,
+  so this check is the only one.
 
 Each of these is a question about the diff. *Who else consumes what it changed* is §5, and
 the two are not the same check: a DTO can be correct, conventional and still break three
 screens that are not in the diff.
+
+## 4b. The decisions pass — did a developer choose this structure
+
+AI is a tool here; a developer is the decider of record for structure (root `CLAUDE.md` →
+_Developers decide structure_). List every **structural** change in the diff with a command:
+
+```bash
+git diff origin/main...HEAD -- apps/api/prisma/schema.prisma   # models, columns, enums, relations
+git diff origin/main...HEAD | grep -E '^\+export '              # new exported functions / classes / hooks / components
+git diff origin/main...HEAD | grep -E '^\+.*@(Get|Post|Put|Patch|Delete)\('   # new endpoints
+git diff origin/main...HEAD -- '**/package.json'                # new dependencies
+```
+
+For each, find the decision: `spec.md` §11b (Path A) or the PR description's
+_Developer decisions_ table (Paths B/C, `commit` skill §6). Report one of:
+
+| Outcome | Meaning |
+| --- | --- |
+| **Decided** | A row names the developer who chose it. Cite it |
+| **Undecided** | No row, or _Decided by_ is blank, an AI, or "Claude". The structure was chosen by whoever was typing. Name the options a developer should have seen — including the existing code it could have reused, with paths |
+| **Contradicts decision** | The diff built something other than what the row says was chosen |
+
+Do not judge whether the undecided choice was right — that is the developer's call, and a
+reviewer who decides it has just made the same mistake. Report it so a developer makes it.
+For schema, delegate the shape questions (one-to-one with no history, a key repeated on a
+child, a duplicate model) to `tcg-prisma-guardian` §1b.
+
+## 4c. The sibling pass — what else should have changed with it
+
+§5 asks what this change **breaks**. This asks what it **should have reached and did not**:
+the other instances of the same shape, which will now drift from this one.
+
+1. For each feature the diff changes, find its siblings: its `patterns.md` entry's module
+   list, plus `git grep` for the same job under other names (e.g. the other reference-code
+   managers, the other archive flows).
+2. For each sibling not in the diff, ask: would this change apply there too?
+3. Check the PR's _Siblings_ table (or `spec.md` §11c). Report one of:
+   - **Asked** — the developer answered yes (and it is in the diff), no (with a reason), or
+     follow-up (with a ticket). Cite it.
+   - **Not asked** — the sibling is not mentioned. List it with what the same change would
+     be there. The developer has to know; that is the point of this pass.
+
+A sibling the developer said no to is not a finding. A sibling nobody mentioned is.
 
 ## 5. The ripple pass — what else this change reaches
 
@@ -146,9 +228,9 @@ Two judgements per ripple target, and both belong in the output:
   change to it is **Unsourced** — route it through §2 like any other, including the
   `tcg-scrum` hand-off.
 
-**Green is not evidence of no ripple.** The pre-push and CI gates run `nx affected` with
-**web excluded from lint and mobile excluded from typecheck** (`CLAUDE.md` → Commands) — the
-two surfaces most often on the receiving end. Nothing lints a module boundary, and no gate
+**Green is not evidence of no ripple.** Nothing runs lint, typecheck or build automatically
+right now — the `nx affected` block in `.husky/pre-push` is commented out and CI only deploys
+(`CLAUDE.md` → Commands). Nothing lints a module boundary, and no gate
 notices that a filter now returns rows it used to hide. The grep is the evidence; a ripple
 target you did not enumerate with a command is **INFERRED**, and must say so.
 
@@ -162,16 +244,33 @@ fact — a finding that looks tool-produced but was reasoned is the one that get
 wrongly.
 
 **Know what green means here.** `pnpm lint` enforces no module boundaries, no duplication,
-no hardcoded colour, and treats `any` as a warning. It also fails on ~14 pre-existing errors
-in `apps/web`, so establish which failures belong to this diff before reporting any.
+no hardcoded colour, and treats `any` as a warning. It also fails on pre-existing errors in
+`apps/web` (count in `CLAUDE.md` → Commands), so establish which failures belong to this diff
+before reporting any — `lint-triage`.
 
 ## 7. Output
 
 ```
-PR review: <branch> → main   (<n> files, ticket <SCRUM-###|none>)
+PR review: <branch> → <base>   (<n> files, ticket <SCRUM-###|none>)
+
+SIZE — <n> source lines, <n> source files vs <base> — <within budget | size-exception: <reason> | OVER — split: <PR 1: …; PR 2 stacked on 1: …; sweep PR: …>>
 
 LOOP TRAIL — .ai/aidlc/processed.log
   <entry found: path taken | no entry, no folder — untracked | no entry, folder exists — inconsistent>
+
+TOOLING — <untouched | changed by Haris only | changed by <author> — not permitted>
+
+DECISIONS — who chose the structure
+  Decided:     <change> — <developer> — <spec.md §11b D<n> | PR description>
+  Undecided:   <change> — options a developer should have seen: <a | b | reuse <path>>
+  Contradicts: <change> — decision says <x>, diff does <y>
+
+PATTERN — against .ai/claude/contexts/patterns.md
+  <feature> — P<n> — <matches reference | deviates: <how> — decided by <dev> | undecided | reference UNDECIDED, followed variant <X>>
+
+SIBLINGS — same shape, not in this diff
+  <sibling path> — same change would be: <what> — <asked: yes/no/follow-up, by <dev> | NOT ASKED>
+  <or "none — established by: <command>">
 
 PRODUCT — against the vault
   Sourced:      <behaviour> — <path> — status: <verified|unverified>
@@ -196,10 +295,17 @@ Verdict: <ship | ship with follow-ups | do not ship — one reason>
 Follow-ups, out of scope for this PR: <list>
 ```
 
-Anything **Contradicted**, or any isolation finding, goes first. A ripple target with no
-regression coverage caps the verdict at **ship with follow-ups**; an unintended one — an
-existing consumer whose behaviour changes and which no source mentions — is **do not ship**
-until someone says it was meant to.
+Anything **Contradicted**, any isolation finding, or a tooling change by anyone but Haris
+goes first. A ripple target with no regression coverage caps the verdict at **ship with
+follow-ups**; an unintended one — an existing consumer whose behaviour changes and which no
+source mentions — is **do not ship** until someone says it was meant to.
+
+**Over the size budget with no `size-exception` is do not ship** — the verdict is the split.
+
+**Undecided structure is do not ship** until a developer records the decision — one table
+row, not a rewrite; the developer may well keep exactly what was built. A **not-asked
+sibling** caps the verdict at **ship with follow-ups**, and the follow-up is the developer's
+yes/no on that sibling.
 
 ## 8. Rules
 

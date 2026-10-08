@@ -142,6 +142,11 @@ Repeat this block per requirement. Keep the field order.
 - **Migration required:** yes / no — *if yes: `pnpm db:migrate`, committed under
   `apps/api/prisma/migrations/`. Mandatory, not optional (`.ai/claude/contexts/prisma.md`).*
 - **Data backfill required:** yes / no / `NOT SPECIFIED`
+- **Existing models considered** *(mandatory before proposing a new model or column)*: *each
+  model that could hold this data, and why it does not — found by `grep -n 'model ' apps/api/prisma/schema.prisma`
+  and a grep for the entity's nouns. A new table needs a stated reason: one-to-many,
+  history/effective dates, or a lifecycle independent of its parent. A one-to-one table with
+  none of those is a column. The choice is a §11b developer decision, not the elaborator's.*
 
 ```prisma
 // New / changed models. Follow the Identity Convention:
@@ -166,6 +171,14 @@ Repeat this block per requirement. Keep the field order.
 ## 4. API surface — `apps/api`
 
 Layering is `presentation → usecase → service → orm`, never upward.
+
+- **Pattern:** *the `.ai/claude/contexts/patterns.md` entry this follows (P1, P2, …), or
+  "none — <why>". An `UNDECIDED` entry is a §11b decision before anything is built.*
+- **Existing functions/services to reuse** *(checked before proposing anything new —
+  mandatory)*: *repository methods, usecase services, `utility/` helpers, `BaseRepository`,
+  `SequenceRepository`, archive services — with paths*
+- **New exported functions/services proposed:** *name + layer + why nothing existing fits.
+  An empty list is the good outcome. Each one is a §11b developer decision.*
 
 | Method | Route | Presentation | Use-case | Repository | Req |
 | --- | --- | --- | --- | --- | --- |
@@ -274,6 +287,31 @@ should happen to each consumer is a product fact and needs a source, or an open 
   it — an absent grep result is a finding, an unrun grep is not*
 - **Consumers with no source for what happens to them:** *list them; each is a §12 question*
 
+## 11b. Developer decisions — structure is the developer's call
+
+*§12 asks the product owner what to build. This section asks a **developer** how it is
+structured* — every choice root `CLAUDE.md` → _Developers decide structure_ lists: a new
+table/column/enum/relation, new exported function vs reuse, a new endpoint or shape, a new
+dependency, a pattern choice or deviation.
+
+**The agent writes the options; a developer writes the choice.** An agent fills _Decision_
+and _Options_, may add its recommendation with trade-offs under _AI note_, and leaves
+_Chosen_ and _Decided by_ blank. A blank row blocks sign-off exactly like an open §12 question.
+
+| ID | Decision | Options (with existing code found) | AI note | Chosen | Decided by | Date |
+| --- | --- | --- | --- | --- | --- | --- |
+| D1 | *e.g. where boom adders live* | *new `CraftModifierRate` table; columns on `CraftModifier` (`schema.prisma:2597`)* | *recommendation + why, optional* | | | |
+
+## 11c. Siblings — same pattern, same change?
+
+*Features built on the same `patterns.md` entry as this one, or doing the same job by another
+name. For each: would this ticket's change apply there too? The developer answers; on a yes
+the change is in scope for this ticket's units.*
+
+| Sibling | Pattern | Same change? | Decided by | Enumerated by |
+| --- | --- | --- | --- | --- |
+| *module / screen* | P1 / P2 / none | yes — unit U*n* / no — *reason* / follow-up *ticket* | | `git grep -rn '<term>' <paths>` |
+
 ## 12. Open questions — the stop-and-ask list
 
 **The elaborator stops here.** Nothing below is built until these are answered.
@@ -321,6 +359,8 @@ exists so nobody mistakes the spec's silence for the feature's simplicity.
 - [ ] Answers written back into `spec.md` with their new sources and flags
 - [ ] Every §12 question updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
 - [ ] Every §11a ripple row has a source for what happens to that consumer, or a §12 question
+- [ ] Every §11b row has _Chosen_ and _Decided by_ filled by a developer
+- [ ] Every §11c sibling has a developer's yes / no / follow-up
 - [ ] Decomposed into vertical units — `units.md`
 
 Answered by: ______________  Date: ______________

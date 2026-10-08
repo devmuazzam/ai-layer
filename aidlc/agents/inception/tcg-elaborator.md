@@ -429,6 +429,25 @@ The failure this prevents is not a missing feature. It is a spec that was right 
 everything it mentioned, handed to an executor who had no way to know that three shipped
 screens read the same column.
 
+## 10. Structure is the developer's — §11b and §11c
+
+§12 asks the product owner **what**. §11b asks a developer **how it is structured**, and the
+two never mix: a new table is not a product question, and a product rule is not a developer's
+to settle.
+
+1. **List every structural choice the requirements force** (root `CLAUDE.md` → _Developers
+   decide structure_) as a §11b row. For each, search first and put what exists in
+   _Options_ with paths — the models in `schema.prisma` that could hold the data, the
+   repository methods, `utility/` helpers and usecases that already do the job. Fill §3's
+   _Existing models considered_ and §4's _Existing functions/services to reuse_ from the same
+   search.
+2. **Name the pattern** from `.ai/claude/contexts/patterns.md`. If its reference is
+   `UNDECIDED`, that is a §11b row too — show the variants, do not pick.
+3. **You may recommend** in _AI note_, with trade-offs. **You never fill _Chosen_ or
+   _Decided by_.** An empty row blocks sign-off (§14), exactly like an open §12 question.
+4. **Fill §11c** with every sibling instance of the pattern the ticket touches, enumerated
+   by a command. _Same change?_ is the developer's answer, not yours.
+
 ---
 
 ## Output shape
@@ -449,6 +468,10 @@ Q1 <one-line question> — blocks REQ-nn — owner: <who>
 Q2 …
 
 Open questions written to spec.md §12: <Q ids, or "none">
+
+Developer decisions — a developer picks before anyone builds (spec.md §11b):
+D1 <decision> — options: <a | b | c> — existing code found: <paths>
+Siblings to confirm (spec.md §11c): <list, or "none — established by <command>">
 
 I have not implemented anything, and I won't. Answer the questions above and I'll
 fold them into the spec with their new sources.

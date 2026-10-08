@@ -65,6 +65,10 @@ see **Risk** below.
 - **Kind:** vertical / foundation *(foundation requires the justification above)*
 - **Requirements covered:** REQ-nn, REQ-nn — *fully, or name the part*
 - **Depends on:** *unit ids, or `—`*
+- **Branch / PR base:** *`<type>/SCRUM-###-u<n>-<slug>` from `origin/main`, or stacked on
+  `<U<n>'s branch>` while that PR is open. One unit, one branch, one PR — always.*
+- **Size estimate:** *~<n> source lines, <n> source files — must be within ~400 / 25
+  (tests, migrations, lockfiles excluded). Over it → this is two units.*
 
 ### Slice contents
 

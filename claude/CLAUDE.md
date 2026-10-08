@@ -65,6 +65,87 @@ Questions, debugging, reviews and exploration do not enter the loop. On Claude C
 `UserPromptSubmit` hook repeats this on every prompt; on other tools this section is the
 only trigger. Decision: `vault/decisions/2026-10-09-build-prompts-enter-aidlc-through-triage.md`.
 
+## Developers decide structure — the AI proposes, on every path
+
+**AI is a tool here, not the builder of record.** The vault answers _what_ to build; a
+**developer** answers _how it is structured_. On a structural choice the AI lays out the
+options and stops — it does not pick one and carry on. A developer who asks "what would you
+do?" gets a recommendation with its trade-offs, and still has to state the choice; an AI
+suggestion becomes a decision only when the developer says so.
+
+**Structural — stop and ask:**
+
+- a new **table**, **column**, **enum member** or **relation** — and what it holds, its type,
+  nullability and default
+- a new **exported** function, service, repository method, hook or component **versus reusing
+  or extending** an existing one (name the existing candidates you found, with paths)
+- a new **endpoint** or a changed **request/response shape**
+- a new **dependency**
+- following a different shape than the reference in `.ai/claude/contexts/patterns.md`, or
+  building something whose pattern entry is `UNDECIDED`
+
+**Not structural — just build:** private helpers inside one file, local variables, test
+fixtures, anything the spec or the pattern reference already fixes.
+
+**Record every answer** — Path A: `spec.md` → _Developer decisions_; Paths B and C: the
+PR description's _Developer decisions_ table (`commit` skill §6). Each row names the
+developer who decided. **An AI never fills the _Decided by_ column**, and never records its
+own suggestion as decided. A structural change with no recorded decider is a `review-pr`
+finding.
+
+## Siblings get the same change — with the developer's say-so
+
+**Same job, same build.** Recurring shapes (a CRUD, a reference-code list, an archive flow)
+have a reference implementation in `.ai/claude/contexts/patterns.md` — follow it. When you
+change one instance of a pattern, the others are its **siblings**:
+
+1. **Name them** — every sibling, with paths and what the same change would be in each
+   (`patterns.md` lists the instances; confirm with `git grep`).
+2. **Ask the developer** whether they get the change too. Never apply it silently, never
+   skip mentioning it.
+3. **On a yes, apply it in the same PR.** On a no, record why in _Developer decisions_
+   ("intentionally different because…" or "follow-up ticket <id>").
+
+The goal is that no developer is surprised by drift: four CRUDs either change together or
+someone decided, in writing, that they should not.
+
+## One unit, or one independent task, per PR
+
+**A PR is one AI-DLC unit (Path A) or one independent task (Paths B/C) — and at most ~400
+changed source lines in 25 source files.** Tests, migrations, lockfiles and snapshots do
+not count. Measure before you push:
+
+```bash
+git diff --numstat origin/main...HEAD | grep -Ev '(\.spec\.|\.test\.|/e2e/|__tests__/|^qa-automation/|/migrations/|pnpm-lock\.yaml$|\.snap$)' \
+  | awk '{l+=$1+$2; f++} END{print l+0" lines, "f+0" files"}'
+```
+
+- **Dependent units ship as stacked PRs**, not one PR: U2 branches from U1's branch and its
+  PR targets U1's branch; when U1 merges, GitHub retargets U2 to `main`. Nobody waits.
+- **Sweeps are their own PR**: lint/format autofixes, import reordering, dependency or SDK
+  upgrades, unrelated fixes. Never inside a feature PR. `lint-staged` reformats whole files
+  you touch — if that balloons the diff, commit the reformat separately as its own PR first.
+- **"Same branch, one PR for all units" is not a developer choice any more.** It overrode
+  the rule on PAYROLL-FLAGS (#709: 21 units, 35,108 source lines, 784 files). The only way
+  over the budget is per PR: a developer adds the `size-exception` label and writes why in
+  the description.
+- **Enforced by** `.github/workflows/pr-size.yml` (red check + a comment listing the commits
+  to split along — the free plan cannot block the merge) and by the executor, `commit` and
+  `review-pr`, which measure and stop.
+
+## Tooling is Haris-only
+
+The AI layer is changed by **Haris (Syed Haris — git `syed.haris@codingcops.com`) only**:
+`.ai/claude/**` (this file, `contexts/`, `skills/`, `settings.json`), `.ai/aidlc/agents/**`,
+`.ai/aidlc/templates/**`, `.ai/aidlc/GUIDE.md`, `.ai/setup.sh`, `.ai/verify.sh`,
+`.ai/README.md`. Before editing any of them, an AI checks
+`git -C .ai config user.email`; if it is not Haris's, it **refuses the edit** and writes the
+proposed change out for the developer to send to Haris instead. Everything else in `.ai/` —
+`vault/`, ticket folders, `reflections/INDEX.md`, `processed.log` — stays open to every
+developer under its owner in the table below. This is enforced by agents only: nothing on
+GitHub blocks a hand edit, so `review-pr` flags any tooling change authored by someone else. Decision for this section
+and the two above: `vault/decisions/2026-10-09-developers-decide-structure-siblings-and-haris-only-tooling.md`.
+
 ## One memory, every tool
 
 Eight developers on four or more AI tools. **The memory is the files under `.ai/`, and
@@ -84,7 +165,7 @@ Anything worth keeping goes to exactly one of these, and each has an owner:
 | A named human decided something         | `.ai/vault/decisions/`                                                                                        | `tcg-scrum`                          |
 | An open question raised by a ticket     | `.ai/aidlc/SCRUM-###/spec.md` §12                                                                             | any agent, append                    |
 | An open question belonging to no ticket | `.ai/vault/<module>/gaps.md` — the module's live register. See `vault/STRUCTURE.md` → _Where a question goes_ | any agent, append                    |
-| How we build — a convention, a rail     | `.ai/claude/contexts/`                                                                                        | a human, from an accepted reflection |
+| How we build — a convention, a rail     | `.ai/claude/contexts/` (recurring shapes: `contexts/patterns.md`)                                             | Haris only — see _Tooling is Haris-only_ |
 | A defect the loop made                  | `.ai/aidlc/reflections/INDEX.md`                                                                              | `tcg-reflector`                      |
 
 **The test: if deleting your tool's local state would lose it, it is not memory yet.**
@@ -110,6 +191,7 @@ the directory; **on other tools they do not — open them by path.**
 | `apps/web/`                | `.ai/claude/contexts/web.md`                                                                                                                    |
 | `apps/mobile/`             | `.ai/claude/contexts/mobile.md`                                                                                                                 |
 | `packages/payroll-engine/` | `.ai/claude/contexts/payroll-engine.md` — **no pay-rule change without its source in `vault/payroll/payroll-rules-provenance.md`, same commit** |
+| Any CRUD, reference list or other recurring shape | `.ai/claude/contexts/patterns.md` — the reference to follow, and the siblings a change must be offered to |
 
 ## Stack
 
@@ -146,8 +228,9 @@ pnpm nx run @tcg/api:build --skip-nx-cache   # force a real run when a cached re
 whether a failure is yours before chasing it — `lint-triage` skill. **Nothing runs lint, test
 or build automatically right now** — `.husky/pre-push` keeps only the branch guard (the
 `nx affected` gates are commented out in the file, not deleted), and `.github/workflows/`
-contains only `deploy.yml`, which deploys and checks nothing. Every gate in this file is a
-command you run by hand until those are restored. Verified 2026-09-22.
+holds `deploy.yml`, which deploys and checks nothing, and `pr-size.yml`, which checks only
+PR size (see _One unit, or one independent task, per PR_). Every lint/test/build gate in
+this file is a command you run by hand until those are restored. Verified 2026-10-09.
 
 ## Architecture invariants
 
