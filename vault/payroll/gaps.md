@@ -943,6 +943,17 @@ someone has confirmed otherwise.
   exactly as this entry says. System facts (workbook code), not a decision. Still needs the client:
   a named owner and date for creating the new codes — no ingested document names one, and SOP §6.2
   simply assumes the codes exist.
+- Update 2026-10-08 (four imported files, `EPI4RZ38`–`41`, from Micaela Dipane; read, not stored):
+  **Foreman and Military codes do reach ADP today.** Week 38 imports `FRR · FRO · FRD` and week 41
+  `MLR · MLO · MLD`, each on a Temp-Rate row (foreman `3 · 4.5 · 6`, military `10 · 15 · 20`), so
+  those six codes exist in the validation table; item (b) above is out of date for them. Also from
+  the files, against the workbook description: **columns are not in fixed slots.** Each file carries
+  only the Hours-4 pairs that week uses, in first-use order (16, 24 and 36 columns), as Corrina said
+  on 2026-09-28 (47:17); `SIC` sits in a trailing Hours-3 pair after `SUB`. No `LBT`, 2nd/3rd shift,
+  `HDD` or `HOL` appears in these weeks. **Temp rates carry three decimals** (`1.875`, `10.125`,
+  `16.875` — the ×1.5 of a quarter-dollar adder); the pay-data API's money fields allow two
+  ([adp-api-responses/pay-data-input-meta.md](adp-api-responses/pay-data-input-meta.md)), and
+  whether `rate/rateValue` is one of them is untested — first API test is 2026-10-09.
 
 ## Certified payroll generation — is there already an ADP Marketplace connector?
 
@@ -3086,6 +3097,23 @@ someone has confirmed otherwise.
 - Blocked: the labor-entry rate-resolution design (PAY-010) if this is the practice; the ADP file
   contract's third row type either way.
 - Owner: Brian Petros (one sentence); Corrina Bustos if it is a payroll-department convention.
+- Update 2026-10-08 (four imported files, `EPI4RZ38`–`41`, weeks 38–41, shared by Micaela Dipane in
+  the ADP-testing Teams chat; read, not stored — they carry real pay data): **the override row is
+  routine, and has at least two purposes.** Every week has 3–4 primary rows carrying a `Temp Rate`
+  (ST/OT/DT on the row, no Hours-4 code); one employee has three primary rows at three different
+  rates in the same week. Most values are L12 group rates (`67.03`, `67.18`, `68.87`, `69.41`,
+  `69.75`, `72.16`), which fits the "worked a higher craft group / job rate" reading. One is not:
+  `135.14` on 25 regular hours (week 38). Asked about that row, **Micaela Dipane (2026-10-08, Teams):
+  *"That is a special agreement for that employee."*** So a per-employee special-agreement rate is
+  one purpose, sent through the same mechanism. Still open: what the group-rate overrides are for
+  (the question above), and where a special agreement is recorded — the ERP has no field for it.
+  This is the case Brian Petros described on 2026-08-13 (payroll-process transcript, 28:31–29:46:
+  *"the individual employee may have a special arrangement where they have a bump up … applied to
+  their base rate … across all hours"*, Corrina: *"it's in ADP and it's in FCC"*), which became
+  Confluence `PAY-CC-03` / `SCRUM-928` *Support Employee-Specific Rate Adjustments* — unadjudicated
+  and out of scope of `SCRUM-926` (its intent §5; the resolver leaves an extension point only). The
+  week-38 row does not obviously match that shape: it is a full rate (about twice a group rate) on
+  regular hours only, not a bump across all hours. Unverified, one-line chat answer; not a decision.
 
 ## Boom window as built — the ERP pays the adder across the whole paid shift, not build-up→breakdown
 
