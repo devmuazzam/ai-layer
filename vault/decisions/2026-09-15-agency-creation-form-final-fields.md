@@ -47,12 +47,13 @@ vendor ([2026-06-18 transcript](../meetings/transcripts/2026-06-18-dispatch-perm
 | 13 | Coverage Note | yes | text area |
 | 14 | Time Restrictions | yes | multi-line rows (≥ 1) |
 | 15 | Attachments | yes | ≥ 1 file |
-| 16 | Submission Type | — (not marked) | Manual · Email · 3rd Party Vendor (+ name) · Portal (+ URL + credentials) |
+| 16 | Submission Type | — (not marked) | Manual · Email (+ address — amended 2026-10-09, see below) · 3rd Party Vendor (+ name) · Portal (+ URL + credentials) |
 | 17 | Avg Permit Cost | — (not marked) | currency |
 
 Fields 16–17 arrived without a required/not-required marker; the build treats both
 as **optional**, with the vendor name required once *3rd Party Vendor* is chosen and
-the portal URL required once *Portal* is chosen. See gaps.
+the portal URL required once *Portal* is chosen (and, since 2026-10-09, the email address
+once *Email* is chosen). See gaps.
 
 ## How it maps onto Ben's sheet
 
@@ -84,3 +85,9 @@ sheet values have no dropdown entry — recorded in
 
 Everything under *Agency form 2026-09-15* in
 [`../vendors-agencies/gaps.md`](../vendors-agencies/gaps.md).
+
+## Amendment — 2026-10-09
+
+Row 16 originally gave *Email* no companion field. Syed Haris approved adding one (TCG-144):
+one Submission Email, required once Email is picked, reference only. See
+[2026-10-09-agency-email-submission-address.md](2026-10-09-agency-email-submission-address.md).
