@@ -4,7 +4,7 @@ source: decision/Syed Haris — the TCG-198 fix, choosing between SCRUM-567 and 
 decided: 2026-10-08
 decided_by: >-
   Syed Haris (CodingCops, the developer working TCG-198), stated 2026-10-08 in a Claude Code
-  session on tcg branch `fix/TCG-198-quote-measuring-unit`, picking one side of an explicit
+  session on tcg branch `fix/8-oct`, picking one side of an explicit
   choice: keep the SCRUM-567 lock, or follow TCG-198 acceptance criterion 4 and let the unit be
   edited by hand. The implementation detail (unlock only when the code's unit maps onto no
   option) was decided alongside it. This is a CodingCops developer-side ruling, not a TCG
@@ -71,7 +71,7 @@ existing save validation *"Unit Meas is required"* applies.
   Measuring Unit option (`Hours`, `Each`, `Days`, ...). A value outside the options renders as the
   placeholder, so the unit looked empty though it was set. Codes created through the billing-code
   form always use the options, so only seeded data showed it.
-- **Fix:** client branch `fix/TCG-198-quote-measuring-unit`, commit `badabb3d6` — maps the stored
+- **Fix:** client branch `fix/8-oct`, commit `badabb3d6` — maps the stored
   unit onto an option in the browser
   (`apps/web/src/features/quotations/utils/resource-unit-measure.ts`: case, surrounding space,
   singular/plural, and the unambiguous FCC abbreviations), when a rate resolves and when a saved
