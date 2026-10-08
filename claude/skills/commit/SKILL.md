@@ -23,7 +23,28 @@ chore, a doc change.
 not `add-model-and-endpoint`.
 
 **One unit per branch, one branch per PR.** Two units on one branch is one unreviewed unit,
-which defeats the point of slicing them.
+which defeats the point of slicing them. Not even as "one commit per unit" on a shared
+branch — PAYROLL-FLAGS shipped 21 units that way as #709 (958 files). A `units.md` that
+declares "same branch, one PR" is overruled by this rule; the only exception is per PR, via
+the `size-exception` label and a written reason (§7).
+
+**A unit that depends on an unmerged unit stacks on it.** Branch from the dependency's
+branch, not from `main`, and open the PR **against that branch**:
+
+```bash
+git fetch origin
+git switch -c feat/SCRUM-757-u2-<slug> origin/feat/SCRUM-757-u1-<slug>
+gh pr create --base feat/SCRUM-757-u1-<slug> ...
+```
+
+When U1 merges (this repo merges with merge commits) and its branch is deleted, GitHub
+retargets U2's PR to `main` by itself. If U1 changes under review, `git rebase
+origin/feat/SCRUM-757-u1-<slug>` in U2. Each PR's diff shows only its own unit.
+
+**Sweeps never ride along.** Lint/format autofixes, import reordering, dependency or SDK
+upgrades and unrelated fixes are their own branch and PR (`chore/…`, `style/…`). If
+`lint-staged` reformatted whole files you only touched, that reformat goes in its own PR
+first.
 
 The client repo currently has three competing conventions in flight — `task/SCRUM-864`,
 `scrum-866`, `fixes/minor-ui-11aug`. Use the form above for new work; do not rename
@@ -187,3 +208,48 @@ deliberately fuller than a one-line summary.
 git log --oneline origin/main..HEAD    # only your commits, nothing inherited
 git status --short                      # nothing unintended staged or stray
 ```
+
+## 6. PR description — the record for Paths B and C
+
+Path A records structural decisions in `spec.md`. Paths B and C have no spec, so the PR
+description is the only record — and `review-pr` reads it. Every PR carries these two
+sections, even when they say "none":
+
+```markdown
+## Developer decisions
+| Decision | Options considered | Chosen | Decided by |
+| --- | --- | --- | --- |
+| New column `foo.bar` vs reuse `foo.baz` | new column; reuse existing; derived value | reuse `foo.baz` | <developer name> |
+
+## Siblings
+| Sibling (pattern) | Same change? | Done here / follow-up / why not |
+| --- | --- | --- |
+| `apps/api/src/usecase/agencies` (P1) | yes | done in this PR |
+| `apps/api/src/usecase/yards` (P1) | no | intentionally different — <reason>, per <developer name> |
+```
+
+- **Structural** means what root `CLAUDE.md` → _Developers decide structure_ lists. Private
+  helpers do not go here.
+- **_Decided by_ is a developer's name.** An AI drafting the description leaves that cell
+  for the developer to fill — never its own suggestion, never "Claude".
+- **Siblings** come from `.ai/claude/contexts/patterns.md` plus a `git grep`. "None — no
+  pattern entry and no other instance found by `<command>`" is a valid row; an empty
+  section is not.
+
+## 7. Size — measure before every push
+
+Budget per PR: **~400 changed source lines, 25 source files** (root `CLAUDE.md` → _One
+unit, or one independent task, per PR_). Tests, migrations, lockfiles and snapshots do not
+count. `.github/workflows/pr-size.yml` runs the same count on the PR.
+
+```bash
+git diff --numstat origin/main...HEAD | grep -Ev '(\.spec\.|\.test\.|/e2e/|__tests__/|^qa-automation/|/migrations/|pnpm-lock\.yaml$|\.snap$)' \
+  | awk '{l+=$1+$2; f++} END{print l+0" lines, "f+0" files"}'
+```
+
+For a stacked branch, measure against its base branch, not `main`.
+
+Over budget → **stop and propose a split to the developer**: which commits or files form
+each PR, which stack on which, and which sweep comes out first. The developer decides. If
+they decide it stays one PR, they add the `size-exception` label and the reason goes in the
+PR description — never set by an AI on its own.
