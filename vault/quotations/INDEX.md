@@ -62,6 +62,7 @@ answered).
 - [2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md) — Print/PDF letterhead is the Lovable seal + Portal Dr fallbacks (Ehtesham Anwar). Does **not** adjudicate [quotations-INDEX.md](quotations-INDEX.md)
 - [2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md](../decisions/2026-09-16-quotation-carries-billing-codes-resources-are-dispatch-side.md) — Quote = billing codes only; Unit/People not on the quote; pick the machine directly (Joe Schacatano, `verified`). Conflicts with the 2026-09-04 Always Included note; model open in gaps.md
 - [2026-09-22-public-quotation-pdf-route-deleted.md](../decisions/2026-09-22-public-quotation-pdf-route-deleted.md) — The public quotation PDF route is **deleted**, not gated (Fouzan Shakil, `reference`). Closes gaps Q-01 and Q-03. Carries the standing rule for any future public quotation link: globally unique unguessable key, secret verified before any DB read, never rely on the `$extends` extension, SENT-or-later only
+- [2026-10-08-quotation-measuring-unit-stays-locked.md](../decisions/2026-10-08-quotation-measuring-unit-stays-locked.md) — Measuring Unit stays locked once a billing code fills it (`SCRUM-567` stands; TCG-198 criterion 4 dropped), unlocked only when the code's unit maps onto no option (Syed Haris, `reference`)
 
 ## Open questions
 
