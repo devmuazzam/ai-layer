@@ -2,7 +2,7 @@
 title: Quotations — open questions
 status: reference
 kind: gaps
-updated: 2026-09-19
+updated: 2026-10-07
 tags: [module/quotations, kind/gaps, open-questions]
 ---
 
@@ -2682,3 +2682,13 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   layout for multi-crane quotes, and FCC quote migration.
 - **Owner:** Ryan Adams / Joe Schacatano (how sales quotes it), Lisette Anzaldo (how dispatch needs
   to see it), Kyle Harlow. To be taken on the next crane-configuration call, as Brian proposed.
+
+## Surcharge stepper — one save per burst, and which step size?
+
+- **Status:** **resolved** — [decisions/2026-10-07-surcharge-failed-save-falls-back-to-server-value.md](../decisions/2026-10-07-surcharge-failed-save-falls-back-to-server-value.md)
+- **Asked:** 2026-10-07 — Linear **TCG-103**; UAT register row *"Surcharge +/- fires a toast on every click"* ([../uat/register-2026-09-18.md](../uat/register-2026-09-18.md)), which could not be traced to any UAT session.
+- **Question:** on the Billing Codes and Price Listing **Surcharge** cards each +/- click saves at once and raises a success toast, so five clicks give five saves and five toasts. (a) Who raised this, and do they want one save and one toast per burst of clicks (a short debounce, or no success toast for the stepper)? (b) The +/- buttons move by **1** but the box accepts **0.01** steps. Which is right? (c) Should the Billing Codes card use the shared `AdjustmentCard` stepper (44px buttons, already used on Price Listing)?
+- **Sources checked:** the six UAT session sheets, the whole vault and the meeting transcripts (by the register and the TCG-103 ticket notes, 2026-09-23). No source found.
+- **Update 2026-10-07:** (a) **built on TCG-103** — a burst of +/- clicks is one save and one toast (500 ms trailing debounce), approved by Akif. (b) **both**: +/- move the whole-number part by 1 and keep the decimals (12.5 → 13.5), the arrow keys fine-tune by 0.01, on all surcharge, discount and price hike cards, decided by Akif; a step that followed the typed decimals was built and dropped the same day (too many edge cases in testing). (c) **built on TCG-103** — the Billing Codes stepper restyled to 44px buttons like `AdjustmentCard` (the card itself not replaced), decided by Akif.
+- **Resolution (2026-10-07):** all three decided and built on TCG-103, together with the failed-save fix and a single toast slot (`surcharge-update`). The original reporter was never traced; the team decided without them.
+- **Owner:** Akif (CodingCops web team), as a UX convention call.
