@@ -279,3 +279,21 @@ the prototype's column — every case sits in an exchange where another speaker,
 "RV" is not "early". "the 110 grand" (1:02:23) was left because 110 is a real tonnage. Speaker labels
 are reproduced uncorrected. Left unchanged: the items listed in the file's own header note.
 
+# Pass 11 — 2026-10-08 (one new transcript only)
+
+Applied to `2026-10-07-erp-sprint-review-offline-tickets-holdover-and-mob-demob.md`; no earlier file was
+touched. **43 substitutions**, each pinned to its own turn, with the timestamps in that file's header note.
+In summary: "train(s)" / "grain(s)" -> "crane(s)" (14); "done" / "time" -> "ton" (2) and "hundred and" ->
+"100 ton" (2, as pass 10's "100 and"); "detector semi" -> "the tractor-semi" (1); "code(s)" -> "quote(s)"
+(5, as pass 6's "send code for approval") and "code invoice" -> "quote/invoice" (1, the column on screen);
+"Shyam" -> "Ehtesham" (1, as pass 9); "Perez" / "Harris" -> "Haris" (1 / 3, as pass 10); "GSA" -> "JSA" (1);
+"ADB" -> "ADP" (1); "one" -> "won" (1); "rigor" -> "rigger" (2); "dash" -> "DAS" (2); "joke" -> "job" (1);
+"SCS" -> "SES" (1); "SL" -> "SSL" (2); "Euler" -> "oiler" (1); "early" -> "hourly" (1).
+
+New evidence rules used here: **"code(s)" -> "quote(s)"** only where the code is sent to a customer, built
+in a project, or is "the single code" a set of cranes goes on. "Billing code" is never touched. **"dash" ->
+DAS** only where the sentence names the board that shows held items per day. "back to desk" (27:00) was
+left. **"SCS" -> SES** only beside "SNS" in the AWS sentence. "110 crane" was kept although the same speaker
+says 100 ton a turn later, because 110 is a real tonnage (as pass 10). Speaker labels are reproduced
+uncorrected. The 33:24 "Melissa McNutt" turn is macOS VoiceOver audio, noted in the header. Left
+unchanged: the items listed in the file's own header note.
