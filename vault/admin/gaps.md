@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-09-30
+updated: 2026-10-08
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -1241,3 +1241,19 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   `status: unverified`, never adjudicated. No decision in `decisions/`. Related:
   [*Time display*](#time-display--military-12-hour-or-per-user-and-does-the-date-ride-along).
 - **Owner:** product (Brian Petros).
+
+## Settings picklists — is "Inactive" a different state from "Archived"?
+
+- **Status:** open
+- **Asked:** 2026-10-08 — TCG-157 (PR #713). UAT 6 asked for *"an option to in-active"* union
+  codes; Archive / Restore already did that, labelled "Archived".
+- **Question:** Is "Inactive" meant to be a separate state from "Archived" on the Settings
+  picklists, or is the existing Archive / Restore what was asked for? If it is only a wording
+  change, should every Settings list say "Inactive" instead of "Archived"?
+- **Built default:** unchanged — the DB value is `INACTIVE`, the UI says "Archive" / "Archived" /
+  "Restore", on all lists sharing `reference-code-manager.tsx`.
+- **Sources checked:** [../decisions/2026-08-20-archive-instead-of-delete-app-wide.md](../decisions/2026-08-20-archive-instead-of-delete-app-wide.md)
+  (archive is the removal action app-wide; says nothing on the word "Inactive");
+  [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) union-codes row. No other
+  decision in `decisions/`.
+- **Owner:** Fouzan Shakil (raised it in UAT 6 and authored the register).
