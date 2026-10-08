@@ -297,3 +297,19 @@ left. **"SCS" -> SES** only beside "SNS" in the AWS sentence. "110 crane" was ke
 says 100 ton a turn later, because 110 is a real tonnage (as pass 10). Speaker labels are reproduced
 uncorrected. The 33:24 "Melissa McNutt" turn is macOS VoiceOver audio, noted in the header. Left
 unchanged: the items listed in the file's own header note.
+
+# Pass 12 — 2026-10-09 (one new transcript only)
+
+Applied to `2026-10-08-accounting-demo-invoicing-ar-ap-and-quickbooks-sync.md`; no earlier file was
+touched. **14 substitutions**, each pinned to its own turn, with the timestamps in that file's header note.
+In summary: "Sam Sara" -> "Samsara" (1) and "F CC" -> "FCC" (1); "Ed Shawn" / "Ashtem" -> "Ehtesham" (2, as
+pass 9's "Shyam"); "pre-driven inspection" -> "pre-trip inspection" (1); "build" -> "bill" (2, one beside
+"an invoice status", one naming the LADWP pay-before-bill rule); "building codes" -> "billing codes" (1);
+"ERB" -> "ERP" (1); "TRGs" / "DRG's" -> "TRG's" (2, The Repair Guys, named by Brian in the same call);
+"Abdul Rahman" / "Abdur Rahman" -> "Abdulrehman" (2, as pass 9) and "Harris" -> "Haris" (1, as pass 10).
+**"on the CC" (1:39) was left** although the next turn says FCC, because "CC" alone is also the meeting's
+own name (*CC TCG ERP System*). **"cubing integration within RCS" (28:58) was left** — it reads as *QB
+integration* but nothing in the turn pins it. "LW, LWBA" / "LABWB" were left: the speaker is fumbling the
+name and Brian supplies LADWP in the next turn. Speaker labels are reproduced uncorrected. Left unchanged:
+the items listed in the file's own header note.
+
