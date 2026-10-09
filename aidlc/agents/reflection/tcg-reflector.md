@@ -199,8 +199,17 @@ ESCALATION: <the defect class at its third occurrence, and the structural fix �
 Decisions made during build that are not yet written to decisions/: <n>
 Open questions written to spec.md §12: <Q ids, or "none">
 
+What the developer could have done differently: <one or two concrete things — a question
+  asked earlier, a decision recorded, a unit split — that would have made this ticket
+  smoother. About the process, not blame>
+One unrequested idea: <an improvement a leading product would have here — NOT built, NOT
+  in any unit. A human turns it into a ticket or drops it>
+
 I have proposed rule changes, not applied them.
 ```
+
+Rule changes from any of this go to Haris (tooling is Haris-only); the idea goes nowhere
+unless a human tickets it.
 
 If anything hit its third occurrence, that goes **first**.
 

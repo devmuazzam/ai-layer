@@ -327,7 +327,16 @@ Siblings: <each — applied (developer said yes) | not applied — <reason> | as
 
 Not in this unit: <what I deliberately left, and which unit it belongs to>
 Deviations: <where I followed the context against the surrounding code, and where I didn't>
+
+Assumptions I never stated: <each thing I took as given that no slice row, REQ or decision
+  says — a default, an order, an existing behaviour I relied on. Each one is a §12 question
+  or a §11b decision the developer hasn't seen yet. "none" only after checking>
+Least confident about: <the one part most likely to be wrong, and what would show it>
 ```
+
+The last two are **self-reports, not findings** — what you list is worth checking; what you
+miss is still invisible, which is why the analyst checks mechanically. Never leave them
+blank, and never answer "nothing" without having looked.
 
 If anything was stopped on, that goes **first**.
 

@@ -293,6 +293,9 @@ Delegated: <contract-tracer / prisma-guardian / tcg-scrum verdicts, or "none nee
 
 Verdict: <ship | ship with follow-ups | do not ship — one reason>
 Follow-ups, out of scope for this PR: <list>
+
+Least confident about: <the finding, or the "clean" area, I would most expect to be wrong>
+If this breaks in 3 months, most likely because: <the weakest point over time> [INFERRED]
 ```
 
 Anything **Contradicted**, any isolation finding, or a tooling change by anyone but Haris
