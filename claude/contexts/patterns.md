@@ -31,16 +31,25 @@ inside an unrelated ticket; it is sibling work and needs the developer's yes lik
 
 Entities with a minted business code, list/detail/create/edit, archive and unarchive.
 
-**Reference: `UNDECIDED` — Haris to pick.** Surveyed 2026-10-09; the variants as they exist:
+**Reference — decided by Haris, 2026-10-09:**
+
+- **API: `manufacturers`** (Variant A) — `apps/api/src/presentation/manufacturers/`,
+  `usecase/manufacturers/`, `service/manufacturers/`.
+- **Web: `agencies`** (W1) — `apps/web/src/features/agencies/` (`schemas/`, `api/`,
+  `hooks/`, `views/`, `components/`).
+
+Copy their shape, not their known deviations below — `agencies`' `data as any` (API) and
+the `manufacturers` web screen (W1b) are **not** part of the reference.
+
+The variants as surveyed on 2026-10-09:
 
 | Layer | Variant | Modules | Shape |
 | --- | --- | --- | --- |
 | API | **A** | yards, manufacturers, agencies, vendors, departments, customers | All four layers; repository extends `BaseRepository`; class-validator DTOs; code minted with `SequenceRepository.getNextValue`; code is the route key; `POST :code/archive` / `:code/unarchive` set `archivedAt`; `DELETE` is a hard delete guarded by `DeletionReferenceService`; list returns `{data,total,page,limit}`; `ArchiveReferenceService` + `ArchivedNameConflictService` |
 | Web | **W1** | yards, agencies, vendors | `views/<feature>.tsx` switches list/detail/create/edit on pathname; `WorkspaceTable` + `useWorkspaceListQueryState` + `useWorkspaceTableControls`; React Query key factory over an api object on `@/lib/base-api`; full-page react-hook-form + `formZodResolver`; `ConfirmDeleteModal` / `BulkActionConfirmDialog` |
 
-**Candidates** (cleanest per survey, not a recommendation): API `manufacturers` — full
-feature set without yards' nested addresses and legacy `{items,total}` list shape. Web
-`agencies` — schema / api / hooks / views each in their own folder.
+Every other module in the table is a **sibling**: a change to the reference's shape is
+offered to them (root `CLAUDE.md` → _Siblings get the same change_).
 
 **Known deviations:**
 - `formatInternalId` is copied into each Variant A usecase instead of shared.
@@ -52,7 +61,22 @@ feature set without yards' nested addresses and legacy `{items,total}` list shap
 
 Small admin-maintained lists — a code the user types, a label, active/inactive, a picker.
 
-**Reference: `UNDECIDED` — Haris to pick.** Surveyed 2026-10-09:
+**Reference — decided by Haris, 2026-10-09:**
+
+- **API: `industries`** (Variant C) — `apps/api/src/presentation/industries/`,
+  `usecase/industries/`, `service/industries/`: repository extends `BaseRepository` and wraps
+  `utility/reference-code-list.helpers.ts`. **Open:** its controller is unversioned
+  (`@Controller('industries')`) while the Variant B modules use `version: '1'` — whether a new
+  P2 module copies that is not decided; ask the developer, record it, and Haris updates this
+  line.
+- **Web: the shared manager** (W2) — `apps/web/src/features/settings/views/reference-code-manager.tsx`
+  with a ~40-line tab like `industry-codes-tab.tsx`, over `createReferenceCodeService` and the
+  hook factories in `features/employee-reference-codes/`. A new reference list is a new tab,
+  never a new manager.
+
+**Variant B (no `service/` layer) is not to be copied** — it breaks the layering rule.
+
+The variants as surveyed on 2026-10-09:
 
 | Layer | Variant | Modules | Shape |
 | --- | --- | --- | --- |
@@ -60,9 +84,9 @@ Small admin-maintained lists — a code the user types, a label, active/inactive
 | API | **C** | industries | Same contract as B, **with** a repository extending `BaseRepository` that wraps the reference-code helpers — the only P2 module that respects the layers. Not versioned (`@Controller('industries')`) |
 | Web | **W2** | industry-codes, union-codes, work-comp-codes, expense-gl-accounts, certificates tabs | One shared `features/settings/views/reference-code-manager.tsx`; ~40-line tab per entity; `createReferenceCodeService('/path')` + `use{Create,Update,Archive}ReferenceCodeMutation` factories |
 
-**Candidates** (not a recommendation): API **C** `industries` (layered) vs API **B**
-`expense-gl-accounts` (smallest, but skips the service layer — which the root `CLAUDE.md`
-layering rule forbids). Web **W2** `industry-codes-tab.tsx` + `reference-code-manager.tsx`.
+The Variant B modules, loss reasons' forked tab and the craft-codes screen are **siblings
+carrying consistency debt** (below): bring them to the reference as their own tickets, with
+a developer's yes — never in passing.
 
 **Known deviations:**
 - Every Variant B module skips the `service/` layer and injects Prisma into the controller.
