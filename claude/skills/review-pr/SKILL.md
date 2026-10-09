@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: Review a PR, branch or diff against the product record in the vault, the code conventions, the developer decisions behind its structure, the pattern registry, and the sibling features that should get the same change. Use when reviewing a pull request, a branch, uncommitted changes, or before merging.
+description: Review a PR, branch or diff against the product record in the vault, the code conventions, the developer decisions behind its structure, the pattern registry, the sibling features that should get the same change, and the thermo-nuclear and ponytail maintainability rubrics. Use when reviewing a pull request, a branch, uncommitted changes, or before merging.
 ---
 
 Review a change on five axes: **does it do what the product record says**, **is it built
@@ -192,6 +192,50 @@ the other instances of the same shape, which will now drift from this one.
 
 A sibling the developer said no to is not a finding. A sibling nobody mentioned is.
 
+## 4d. The maintainability pass — thermo-nuclear and ponytail
+
+Two vendored rubrics, run on **every** review (decided by Syed Haris, 2026-10-09):
+
+| Rubric | File | Asks |
+| --- | --- | --- |
+| Thermo-nuclear code quality (Cursor, MIT) | `references/thermo-nuclear.md` | Is the structure simpler than it could be? Code-judo restructurings, spaghetti branching, abstraction and boundary quality, files crossing 1,000 lines |
+| Ponytail review (DietrichGebert, MIT) | `references/ponytail-review.md` | Is it correct, safe, holds under load, fast — and is every line needed? Delete / reuse / stdlib / yagni / merge / split |
+
+**How to run them.** On Claude Code, spawn two subagents in parallel. Give each one its rubric
+file as **the complete rubric**, the diff (`git diff origin/<base>...HEAD`), the changed-file
+list, and this instruction: *report findings in the rubric's own format; change no code*. On
+other tools, read each rubric and apply it in turn. The rubrics are copied verbatim from a
+pinned upstream commit — never edit them here; re-syncing is a tooling change (Haris).
+
+**TCG rules win over the rubrics.** Where a rubric and this repo disagree, this repo decides:
+
+1. **The verdict is §7's, not the rubric's.** Thermo-nuclear's *approval bar* and
+   *presumptive blockers*, and ponytail's own `Verdict:` line, are inputs.
+   - **A source file this PR pushes from ≤1,000 lines to >1,000 lines caps the verdict at
+     ship with follow-ups.** Establish it with a command, not by eye:
+     ```bash
+     for f in $(git diff --name-only --diff-filter=AM origin/<base>...HEAD | grep -Ev '(\.spec\.|\.test\.|/e2e/|__tests__/|/migrations/|\.snap$)'); do
+       b=$(git show "origin/<base>:$f" 2>/dev/null | wc -l); h=$(wc -l < "$f")
+       [ "$b" -le 1000 ] && [ "$h" -gt 1000 ] && echo "$f: $b -> $h lines"
+     done
+     ```
+   - Ponytail **Must fix** findings (bug, security, data loss, breaks at load) are re-checked
+     under §8 and, if they survive, reported in CODE like any other finding — with their full
+     weight there.
+   - Everything else from both rubrics is **advisory**: listed under MAINTAINABILITY, never
+     changing the verdict on its own.
+2. **Never grow the PR.** Code-judo restructurings, decomposing existing files and cleanups
+   beyond the diff's own new code are **follow-ups — their own PR** (root `CLAUDE.md` → _One
+   unit, or one independent task, per PR_). Lean findings on code **this PR adds** may be
+   fixed in this PR — if the developer says so.
+3. **Structure is the developer's call.** Every suggestion to add, split, merge, extract or
+   delete a function, abstraction or file is a proposal. Present it with the options; do not
+   mark §4b decisions as made because a rubric preferred one.
+4. **Tests.** Ponytail's *Missing test* findings are reported, and cap nothing beyond what §5's
+   regression-coverage rule already caps.
+5. **Format.** Render findings in §7's shape with `file:line` and `[VERIFIED]` / `[INFERRED]`.
+   The rubrics' tone examples are not this review's tone.
+
 ## 5. The ripple pass — what else this change reaches
 
 Everything above asks whether the diff is right about **its own** feature. This asks the
@@ -284,6 +328,12 @@ RIPPLE — what already shipped that this reaches
       intended: <spec/ticket line | not mentioned anywhere — treated as Unsourced above>
   <or "none — the diff adds only new surfaces, established by: <command>">
 
+MAINTAINABILITY — §4d, advisory unless noted
+  1k-line crossings: <file: before -> after, caps verdict at ship with follow-ups | none — established by: <command>>
+  Thermo-nuclear: <finding — file:line — proposal for the developer | "no structural regression found">
+  Ponytail lean:  <delete | reuse <path> | stdlib | yagni | merge | split — file:line — -<n> lines possible>
+  Follow-ups (own PR): <restructurings beyond this diff>
+
 CODE — most consequential first
   [VERIFIED] <file:line> — <finding> — established by: <command>
   [INFERRED] <file:line> — <finding> — reasoned from: <what>
@@ -304,6 +354,9 @@ follow-ups**; an unintended one — an existing consumer whose behaviour changes
 source mentions — is **do not ship** until someone says it was meant to.
 
 **Over the size budget with no `size-exception` is do not ship** — the verdict is the split.
+
+**A source file pushed past 1,000 lines by this PR caps the verdict at ship with follow-ups**
+(§4d); the follow-up is its decomposition, as its own PR.
 
 **Undecided structure is do not ship** until a developer records the decision — one table
 row, not a rewrite; the developer may well keep exactly what was built. A **not-asked
