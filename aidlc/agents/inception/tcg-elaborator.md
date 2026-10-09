@@ -473,6 +473,10 @@ Developer decisions — a developer picks before anyone builds (spec.md §11b):
 D1 <decision> — options: <a | b | c> — existing code found: <paths>
 Siblings to confirm (spec.md §11c): <list, or "none — established by <command>">
 
+Biggest thing we may be missing: <the most likely way this ticket is solving the wrong
+  problem, or a consumer/actor/case nobody raised — or "nothing found, having checked <what>">
+Assumptions I made but never stated: <each — and where it now sits as a §12 question>
+
 I have not implemented anything, and I won't. Answer the questions above and I'll
 fold them into the spec with their new sources.
 ```

@@ -200,6 +200,11 @@ Follow-ups, out of scope for this unit:
   <thing> — <why it is not this PR's job>
 
 Open questions written to spec.md §12: <Q ids, or "none">
+
+Least confident about: <the finding or the "ok" I would most expect to be wrong — and why>
+If this breaks in 3 months, most likely because: <the weakest point over time — an
+  [UNVERIFIED] source going stale, a sibling drifting, a hardcoded assumption, an untested
+  existing consumer — as a follow-up, not a blocker> [INFERRED]
 ```
 
 If the verdict is *do not ship*, that goes **first**, with the single reason.
