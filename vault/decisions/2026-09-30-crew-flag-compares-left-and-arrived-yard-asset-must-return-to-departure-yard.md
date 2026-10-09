@@ -18,6 +18,16 @@ provenance_note: >-
   rule ("Asset not back at the yard it left from"). NOT ratified: "last engine shut-off of the day",
   which was not in the message. Status left at reference because that reading sits inside clause 2,
   and flipping the whole note to verified would claim more than she confirmed. Body unchanged.
+  REPLACED IN PART BY THE DEVELOPER'S LATER ANSWER, round 9, 2026-09-30 —
+  decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md, section Round 9,
+  F6–F7 and F11–F14 (reference, pending ratification). Clause 2's trigger "last engine shut-off of the day" is
+  replaced: the asset is judged once the ticket's end date has passed, against a 500 m geofence
+  around its departure yard. That trigger is in tension with Corrina's "shut off at address other
+  than" wording, and she ratifies it. The departure yard is derived from Samsara, as the yard whose
+  geofence the asset was inside when it first left that day; this replaces the example derivation in
+  clause 2. Scope is cranes only, and holdovers are skipped. Clause 1's still-open points are answered
+  by the developer: tickets are grouped by same job + same date, and there is one ticket-level flag.
+  Status still reference. Body unchanged.
 resolves:
   - "payroll/gaps.md#flagged-entries-go-to-payroll-not-the-crane-superintendent--who-corrects-them-who-the-payroll-admin-is-and-whether-send-back-survives (Q10 (a)(b) — developer-decided, pending ratification)"
   - "assets/gaps.md#asset-not-returned-to-its-home-yard-at-end-of-shift--a-requested-flag-with-no-owner-no-yard-geometry-and-no-shift-end (Q3, Q4 — developer-decided, pending ratification)"
