@@ -128,6 +128,7 @@ unenforced, and each has cost this codebase already.
 | **Test IDs** | Web UI in the diff: does every new control and state region carry a `data-testid`, and did any *existing* ID get renamed or dropped? `qa-automation/` binds to them, and nothing runs it — `grep -rn '<the-id>' qa-automation/e2e` is the only signal there is |
 | **Contract** | Did a DTO or response shape change? The frontends do not import API types, so nothing catches it at build time. Delegate to `tcg-contract-tracer` rather than eyeballing it |
 | **Undecided structure** | Every new table, column, enum member, relation, exported function/service/hook/component, endpoint or dependency traces to a `spec.md` §11b row with _Decided by_ filled by a developer. One that traces to nothing was chosen by the executor — a finding even if it looks right. Method: `review-pr` §4b |
+| **Maintainability** | Run `review-pr` §4d on the unit's diff — the thermo-nuclear and ponytail rubrics in `.ai/claude/skills/review-pr/references/`, under the same TCG overrides. A source file the unit pushes past 1,000 lines caps the verdict at **ship with follow-ups**; ponytail must-fix findings that survive §5 are findings at full weight; the rest is advisory. Restructuring beyond the unit's slice is a follow-up, never added to the unit |
 | **Pattern and siblings** | Built like its `.ai/claude/contexts/patterns.md` reference, not its neighbour? Every sibling in `spec.md` §11c that the developer said yes to is changed in the diff; any sibling the change would reach that §11c never mentions is a finding. Method: `review-pr` §4c |
 
 For a schema-touching unit, delegate the depth to `tcg-prisma-guardian` and report its
@@ -195,6 +196,10 @@ Unsourced decisions (§3):
 
 Scope:
   Complete: <yes/no>   Contained: <yes/no>   Demo works: <yes/no>
+
+Maintainability (review-pr §4d, advisory unless noted):
+  1k-line crossings: <file: before -> after — caps at ship with follow-ups | none — <command>>
+  Thermo-nuclear / ponytail: <finding — file:line — proposal for the developer, or follow-up>
 
 Follow-ups, out of scope for this unit:
   <thing> — <why it is not this PR's job>
