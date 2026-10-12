@@ -13,7 +13,7 @@ Date: 2026-10-12. Branch: `fix/TCG-73-my-labor-reliability`. Worktree: `/tmp/tcg
 ## Verification and analysis
 
 - **VERIFIED:** `git diff --check` passed in the implementation worktree. Prettier successfully formatted the changed files.
-- **VERIFIED:** Source diff contains 187 added/deleted lines across six files, below the approximately 400-line/25-file unit budget. Tests are excluded from that count.
+- **VERIFIED:** Initial source diff contains 187 added/deleted lines across six files, below the approximately 400-line/25-file unit budget. Tests are excluded from that count.
 - **INFERRED:** Independent `tcg73_analyst` review found no remaining static correctness blocker. Its verdict was “ship with validation follow-ups”; runtime readiness is not established.
 - **INFERRED:** Session isolation is supported by the existing login/logout cancellation and cache clearing, plus base-api epoch guards. Performance remains excluded from disk persistence.
 - Initial reviewer findings about AuthGate test providers and connectivity mismatch were fixed. Focused regression cases were authored for login query enablement, background HTTP requests, independent request states/retries, zero values, timestamp display, offline values and memory-cache retention.
@@ -27,3 +27,12 @@ When validation is authorized, run the targeted mobile tests and exercise field-
 ## AI DLC disposition
 
 U1 source implementation and independent static analysis are complete. Validation and demonstration remain pending. Ticket closure and shipped-behavior reflection are not claimed. User requested the branch push. Client commit `7b9f1d639` was pushed to `origin/fix/TCG-73-my-labor-reliability`. The user explicitly approved committing and pushing these AI DLC records to `devCodingcops/tcg-ai-layer` after the initial automatic approval rejection. The records are prepared for publication on the matching overlay branch; no ticket closure or deployment. Existing metric-definition questions and the quick-action specification remain outside this unit.
+
+
+## PR #763 review correction
+
+The PR review identified that My Labor's useSyncExternalStore omitted the server snapshot callback. The route is included in Expo static web output; it now supplies a constant online server snapshot (`() => true`) matching onlineManager's initial state. This avoids React's missing-server-snapshot error during prerendering; browser/native updates still use onlineManager. This outcome is inferred from source review; no build was run.
+
+D1–D3 now record the authorized existing-code choices explicitly. Named human attribution remains open without fabricated names. The integrated login/logout/delayed-response coverage remains a validation follow-up, not evidence of an account cache leak. Builds, tests and typechecking remain unrun under the user's constraint.
+
+Correction commit: `d51f75a69`. Required commit ESLint/Prettier checks passed; `git diff --check` passed. Build/prerender execution, tests and typechecking were not run.

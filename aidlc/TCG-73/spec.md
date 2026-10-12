@@ -9,7 +9,7 @@ Status: Reduced reliability scope authorized for implementation by the session u
 - Sources: TCG-73 description and technical comment; session user's scope correction; current code; field-ops vault index/conflict stub and KPI gap entry.
 - Source tags: ticket and code are [UNVERIFIED] per the spec template, even when inspected. The session instruction is an explicit scope direction; its speaker's human identity is not established for a named decision record.
 - Vault state: field-ops sources remain conflicted/unverified. Candidates: field-ops/frd-new-format-draft/INDEX.md, field-ops/field-ops-frd/INDEX.md, field-ops/atom-mobile-app-user-stories/INDEX.md. This plan adjudicates none of them.
-- Questions: §12 records Q3/Q5 still open; Q1 is resolved, Q2 retained pending a separate specification, and Q4 resolved by explicit session direction.
+- Questions: §12 records Q3 and named attribution in Q5 still open; Q1 is resolved, Q2 retained pending a separate specification, and Q4 resolved by explicit session direction.
 - Rules: .ai/aidlc/GUIDE.md §2; .ai/claude/AGENTS.md; contexts/mobile.md; contexts/patterns.md. No P1/P2 pattern applies.
 
 ## 1. Requirements ledger
@@ -50,7 +50,7 @@ Status: Reduced reliability scope authorized for implementation by the session u
 - Surface: mobile.
 - Sources: TCG-73 [UNVERIFIED], kind: ticket — technical AC7; BACKGROUND_REQUEST [UNVERIFIED], kind: repo — existing request intent.
 - Conflict: None.
-- Open question: None for sibling inclusion — Q4 resolved; D1 implementation details remain pending.
+- Open question: None for sibling inclusion — Q4 resolved; D1 reuse authorized by the implementation request recorded below.
 - Ripple: All performanceHttp.get callers (currently usePerformanceStats → My Labor).
 - Acceptance: Starting or refetching performance data does not increment global loader activity; errors still reach query/UI state.
 - Notes for executor: Propose passing existing BACKGROUND_REQUEST to api.get inside performanceHttp.get and laborHttp.get. Keep public service signature and response schema unchanged.
@@ -60,10 +60,10 @@ Status: Reduced reliability scope authorized for implementation by the session u
 - Surface: mobile.
 - Sources: Explicit session answers, 2026-10-12 — “No—keep them only for the current app session” and “We need to fetch them and retain them on new login and in case of offline mode we need to retain those.” These are scope instructions; named attribution remains Q5.
 - Conflict: None between these answers when retention is limited to the current app session. They do not authorize restoring KPI values from disk.
-- Open question: No numeric age cutoff stated. Retention is bounded by the app/login session; do not invent a maximum age. State presentation/retry choice remains Q5.
+- Open question: No numeric age cutoff stated. Retention is bounded by the app/login session; do not invent a maximum age. State presentation/retry and existing integration reuse are authorized by the implementation request below; named attribution remains Q5.
 - Ripple: Login/session lifecycle, existing performance query, My Labor display. Disk persistence remains unchanged. Do not reuse values from a previous login or another user/tenant.
 - Acceptance: A new login initiates a background performance fetch; a successful fetch records its values and timestamp. Going offline after success displays the retained values and timestamp with offline status. Logout/account switch clears the previous login’s KPI values. A fresh process without a successful fetch shows unavailable/loading state as appropriate, never fabricated zero values. A failed fetch is visibly reported without presenting older-session values as fresh.
-- Notes for executor: Reuse the existing performance query key/query client, existing session epoch/account cache-clearing machinery, and existing login/bootstrap integration where possible. The fetch must run on login, not wait for My Labor to mount. Resolve D3 before selecting the integration point. No KPI persistence allowlist expansion.
+- Notes for executor: Reuse the existing performance query key/query client, existing session epoch/account cache-clearing machinery, and existing login/bootstrap integration where possible. The fetch must run on login, not wait for My Labor to mount. D3 records authorized reuse of AuthGate as the integration point. No KPI persistence allowlist expansion.
 
 ### REQ-05 — Metric approval [OPEN]
 - Statement: OPEN — which current metrics and time periods crew should see is not approved by a named TCG person in the retrieved record.
@@ -141,9 +141,11 @@ Performance: background request must not contribute to touch-blocking global loa
 
 | ID | Decision | Options with existing candidates | AI proposal | Chosen | Decided by | Date |
 | --- | --- | --- | --- | --- | --- | --- |
-| D1 | Request implementation | Reuse BACKGROUND_REQUEST directly in existing performanceHttp.get and laborHttp.get; extend service signatures only if needed | Direct reuse avoids public-contract change | pending | pending | pending |
-| D2 | State presentation | Extend labor.tsx using existing primitives; new shared state component only if reuse is needed | Extend existing screen | pending | pending | pending |
-| D3 | Login fetch integration | Reuse existing authenticated bootstrap/session lifecycle and query client; do not create a new exported hook/provider without developer approval | Existing integration point, with session epoch protection | pending | pending | pending |
+| D1 | Request implementation | Reuse BACKGROUND_REQUEST directly in existing performanceHttp.get and laborHttp.get; extend service signatures only if needed | Direct reuse avoids public-contract change | Existing BACKGROUND_REQUEST in both existing HTTP methods; execution authorization below | pending | 2026-10-12 |
+| D2 | State presentation | Extend labor.tsx using existing primitives; new shared state component only if reuse is needed | Extend existing screen | Existing labor.tsx primitives, independent inline request states and retries; execution authorization below | pending | 2026-10-12 |
+| D3 | Login fetch integration | Reuse existing authenticated bootstrap/session lifecycle and query client; do not create a new exported hook/provider without developer approval | Existing integration point, with session epoch protection | AuthGate observes existing usePerformanceStats; existing session clearing/epoch guards retained; execution authorization below | pending | 2026-10-12 |
+
+D1–D3 choices were authorized by the session requester’s instruction to start implementation, recorded under Execution authorization. The remaining pending cells refer only to a named human attribution; the AI does not supply that name. These reuse choices are not pending implementation approval.
 
 ## 11c. Siblings
 
@@ -160,13 +162,13 @@ All questions belong to this ticket; no module gap entry is created.
 - Q2 — Quick actions: user selected “Keep quick actions pending a separate specification” on 2026-10-12. Status: scope resolved; product specification pending separately. No quick-action implementation in these fixes.
 - Q3 — Metrics: who at TCG approves weekly live-estimate hours, all-time completed tickets, and all-time personally filed incidents? No recalculation is proposed. Status: open.
 - Q4 — Sibling: user selected “Include both requests in the fixes” on 2026-10-12. Status: resolved by explicit session instruction. Include background fetching and visible failure states for /me/labor as well as /me/performance; calculations stay unchanged.
-- Q5 — Developer: confirm named attribution for scope, approve D1/D2 and state presentation/retry behavior and login integration D3. Status: open.
+- Q5 — Developer: confirm named attribution for the session requester’s scope and D1–D3 execution authorization. Reuse choices, state presentation/retry and login integration are authorized under Execution authorization; no further implementation choice is pending. Status: named attribution open.
 
 ## 13. Deliberately not specified
 
 New KPI formulas; payroll changes; safety scoring; target policy; on-time policy; quick-action behavior; unresolved caching thresholds; new endpoints/components/dependencies.
 
-## 14. Sign-off before build
+## 14. Planning sign-off snapshot — superseded by execution authorization below
 
 - [ ] Product questions answered or explicitly deferred by a named person.
 - [ ] Developer decisions D1/D2/D3 and sibling scope recorded.
@@ -174,11 +176,11 @@ New KPI formulas; payroll changes; safety scoring; target policy; on-time policy
 - [ ] Approved spec decomposed into vertical units (units.md).
 - [ ] One unit per branch/PR, within 400 changed source lines/25 source files or explicit size exception.
 
-Answered by: pending. Date: pending. No implementation authorized by this artifact.
+Answered by: pending. Date: pending. This historical planning snapshot preceded the implementation request; see execution authorization below for the current authorization.
 
 Session decisions above record the actual answers without inventing a named TCG approver or filling developer structural sign-off on the user’s behalf.
 
-Scope clarification recorded 2026-10-12: KPI cache persistence/freshness no longer blocks planning. Retention lasts within the current app/login session; the timestamp communicates data age. Developer integration/sign-off and named metric approval remain separately tracked.
+Scope clarification recorded 2026-10-12: KPI cache persistence/freshness no longer blocks planning. Retention lasts within the current app/login session; the timestamp communicates data age. Existing integration reuse is authorized below; named attribution and future metric approval remain separately tracked.
 
 ## Execution authorization — 2026-10-12
 
