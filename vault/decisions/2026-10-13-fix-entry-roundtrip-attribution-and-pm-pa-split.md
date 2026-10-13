@@ -65,9 +65,32 @@ the user clicked from:
 
 - Weekly Payroll → `Payroll Manager`
 - Returned Entries → `Payroll Admin`
+- Mobile reply / resubmit (employee leg) → `Employee`
 
 The server validates that the authenticated user actually holds the permission
 that role requires; it does not warn on role mismatch when a user holds both.
+
+### Enum (amendment, 2026-10-13, after original note was committed)
+
+The log row's `authorRole` is a Prisma enum, not a free string:
+
+```prisma
+enum AuthorRole {
+  PAYROLL_MANAGER
+  PAYROLL_ADMIN
+  EMPLOYEE
+}
+```
+
+The schema carries **both**: `authorRole AuthorRole` (for filtering) and
+`authorRoleLabel VARCHAR` (the human-readable string resolved at write time).
+PM/PA rows store `"Payroll Manager"` / `"Payroll Admin"` on `authorRoleLabel`;
+`EMPLOYEE` rows store the employee's **craft code label** at write time (e.g.
+`"Oiler"`, `"Rigger"`, `"Operator"`) rather than the generic `"Employee"`, so
+the Changes list reads naturally to a Payroll Admin reviewing a mobile reply.
+
+U1 writes PA/PM rows only; the `EMPLOYEE` branch lands with the employee
+write path (U2 or whichever unit wires the mobile-reply log).
 
 ## Changes list — cumulative across every round and every path
 
@@ -122,3 +145,18 @@ per-row attribution the earlier design left open.
 
 No existing vault file is superseded. This note stands alongside the 2026-10-06
 Returned Entries decision, which it extends rather than replaces.
+
+## Addendum (2026-10-13, after U1 implementation)
+
+The `AuthorRole` enum shipped with U1 carries a third member, `EMPLOYEE`, held
+in reserve for the crew's own replies on the unified timeline (REQ-01 across
+both paths). The enum backs filtering; the display string lives in a sibling
+column `authorRoleLabel` (VARCHAR), which stores:
+
+- `"Payroll Manager"` for `PAYROLL_MANAGER`,
+- `"Payroll Admin"` for `PAYROLL_ADMIN`,
+- the author's craft-code label (e.g. `"Oiler"`, `"Rigger"`) for `EMPLOYEE`.
+
+The label is snapshotted at write time, so later permission or craft-code
+changes do not rewrite history. U1 writes PM / PA rows only; the employee leg
+is a later unit.
