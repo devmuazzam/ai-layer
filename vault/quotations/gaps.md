@@ -2698,3 +2698,11 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Status:** open — see [../accounting/gaps.md → *Does the invoice carry exactly the quotation's lines*](../accounting/gaps.md#does-the-invoice-carry-exactly-the-quotations-lines--including-the-lines-hidden-inside-mobilizationdemobilization).
   ehtesham.anwar's 2026-10-01 11:34 assumption, unanswered by Joe Schacatano. Filed 2026-10-07;
   ported to overlay main 2026-10-09.
+
+## Email letterhead heading copy and dropped social icons — see admin
+
+- **Status:** open — pointer. The quotation approval, delivery and pre-quote emails are among those
+  affected by [../admin/gaps.md#email-letterhead-headings--who-owns-the-heading-text-each-email-shows](../admin/gaps.md#email-letterhead-headings--who-owns-the-heading-text-each-email-shows)
+  and [../admin/gaps.md#social-media-icon-rows-removed-from-ticket-and-pre-quote-emails--intended](../admin/gaps.md#social-media-icon-rows-removed-from-ticket-and-pre-quote-emails--intended).
+  Filed 2026-10-13 from tcg branch `fix/13-oct-uat` (TCG-37).
+- **Owner:** product team

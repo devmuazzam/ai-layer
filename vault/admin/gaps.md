@@ -1257,3 +1257,37 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [../uat/register-2026-09-18.md](../uat/register-2026-09-18.md) union-codes row. No other
   decision in `decisions/`.
 - **Owner:** Fouzan Shakil (raised it in UAT 6 and authored the register).
+
+## Email letterhead headings — who owns the heading text each email shows
+
+- **Status:** open
+- **Asked:** 2026-10-13 — review of tcg branch `fix/13-oct-uat`, commit `afe691bac` (TCG-37; no
+  `.ai/aidlc/` folder, so routed here — emails span modules; admin already owns email identity).
+- **Question:** every email now opens with a letterhead carrying its own heading in blue caps —
+  "Password Reset", "Ticket Assignment", "Quotation Approved", "Payroll", "Verification Code" and
+  the rest. The AI wrote all of them. Are these headings acceptable as built, and if not, who
+  supplies the list (and the matching subjects)?
+- **Built default:** the AI-written headings, one per email, passed to `buildEmailLetterhead`.
+- **Sources checked:** vault-wide grep for these strings and for email subjects — nothing names an
+  email heading. `brs.md` BRS-NOTIF-001 is titled *Ticket Assignment Notifications* (a
+  notification category, `unverified`, not email copy). The only written subject is UAT 4 #9,
+  *"Your New TCG Quotation"* (`uat/sessions/uat-session-4.md`, an unadjudicated ask).
+  `quotations/quotations.md:37` — *"Need to make proper email templates"* (punch list). Related:
+  [../quotations/gaps.md → *who signs off the send-email text?*](../quotations/gaps.md#is-pre-quote-being-retired-in-customer-facing-copy-and-who-signs-off-the-send-email-text).
+  Decision context: [../decisions/2026-10-13-quote-pdf-letterhead-page-one-and-one-email-letterhead.md](../decisions/2026-10-13-quote-pdf-letterhead-page-one-and-one-email-letterhead.md).
+  Jira unreachable (`403 suspended-payment`).
+- **Blocked:** nothing hard; customer-facing copy ships unreviewed until answered.
+- **Owner:** product team (Ryan Adams / Joe Schacatano for quotation emails).
+
+## Social-media icon rows removed from ticket and pre-quote emails — intended?
+
+- **Status:** open
+- **Asked:** 2026-10-13 — review of tcg branch `fix/13-oct-uat`, commit `afe691bac` (TCG-37).
+- **Question:** the ticket emails and the pre-quote forms email used to carry a row of
+  social-media icons in their header; the shared letterhead drops them. Should TCG emails carry
+  social links (yes → which networks and URLs, header or footer), or is removing them correct?
+- **Built default:** removed (they were inline SVG, which Gmail and Outlook strip).
+- **Sources checked:** vault-wide grep for `social` / `social media` / `social icon` — nothing on
+  email. No decision in `decisions/`. Jira unreachable.
+- **Blocked:** nothing hard.
+- **Owner:** product team.
