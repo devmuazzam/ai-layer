@@ -730,7 +730,8 @@ Enumerated by: `git grep -n -E 'toAdpWorkbookRows|findEmployeesMissingAdpFile|bu
 - **Blocked:** the entire U7 **web** slice. The U7 **API** slice (this PR) is independent of it and shipped. Proposed split: **U7a** = API (built, this branch); **U7b** = web tab, after this decision.
 - **Candidates:** (a) extend the shared W2 manager (opt-in props, like its existing `showValidityPeriod`/`showUnionKind`) — keeps one manager but distorts a `{code,label,description}`-typed, 868-line shared file over a very different entity and touches 6 sibling tabs' file; (b) a dedicated `features/payroll` ADP-map manager on the `payroll-premiums-manager` precedent (**recommended** — the ADP map is a payroll reference list like premiums, not a generic settings picklist; isolates the divergent shape, reuses the shared primitives, no sibling-file churn).
 - **Owner:** Ali Riaz.
-- **Status:** open — U7 web (U7b) is not built pending this.
+- **Resolution (Decided by: Ali Riaz, 2026-10-15):** option (b) — a dedicated `features/payroll` ADP-map manager modeled on `payroll-premiums-manager`, reusing shared primitives, touching none of the 6 W2 sibling tabs. Built as U7b (size-exception: 804 lines / 14 files, one cohesive CRUD modeling a >400-line sibling — label applied at PR time).
+- **Status:** resolved
 
 ## 12.5 Developer resolutions (2026-10-15)
 
