@@ -9,7 +9,7 @@
 | Type | UAT remediation |
 | Branch | `fixes/TCG-48` |
 | Captured on | `2026-10-15` |
-| Captured by | Claude Opus 5.5, session for Asad |
+| Captured by | Claude Opus 5.5, session for devmohsinakram |
 
 ## 2. Ticket text (as given)
 
