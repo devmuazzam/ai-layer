@@ -134,13 +134,24 @@ syed.haris messaged Micaela Dipane in the same Teams chat on 2026-10-15, verbati
 > payroll, could you send me a quick message just before, so I can check whether ADP lets us know it
 > was approved? Thanks!"*
 
-Plan, for **2026-10-16 8am PT**, no reply yet when written:
+Micaela Dipane replied the same day, verbatim:
+
+> *"Hi! Of course! Yes, I can do that tomorrow morning once you've uploaded it. This week's payroll
+> has already been approved, so the next payroll will be uploaded and approved on Tuesday. I'll set a
+> reminder to let you know once it's been approved in ADP!"*
+
+So the two halves split: the edit/delete test runs **2026-10-16 morning**, and the approval check
+waits for the next payroll, **uploaded and approved Tuesday 2026-10-20**. She will message **after**
+approving, not before. That is enough for polling: a queued message stays until it is `DELETE`d, so
+reading the queue after her message still catches anything ADP sent at approval.
+
+Plan:
 
 - **Changed / deleted:** post a test worksheet for `000288`, `000105`, `000459`; Micaela edits one
   line, then deletes it. This is the subscribe-and-edit test in
   [adp-event-notifications.md](adp-event-notifications.md) → *The test that settles it*.
-- **Approved:** the test worksheet is **not** approved (real employees would be paid). Instead
-  payroll gives a heads-up before approving the real weekly payroll, and the queue is watched then.
+- **Approved:** the test worksheet is **not** approved (real employees would be paid). Instead the
+  queue is read after Micaela confirms the real payroll of **2026-10-20** is approved.
 - **Delivery: polling, not webhook.** Polling is the project's active method; activating a webhook
   disables polling and needs a public, US-hosted endpoint
   ([gaps.md](gaps.md) → *Polling or webhooks*). Prerequisite: subscribe the *TCG ERP Integration*

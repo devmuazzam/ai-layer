@@ -1104,6 +1104,9 @@ someone has confirmed otherwise.
   payroll so the queue can be watched for an approval notice. Delivery by polling (the active
   method). Expected empty, per ADP. Plan and message:
   [adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §6. Still open until it runs.
+  Micaela Dipane agreed the same day: edit/delete on **2026-10-16 morning**; the approval check
+  moves to the next payroll, *"uploaded and approved on Tuesday"* (**2026-10-20**), and she will
+  message once it is approved in ADP.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires](gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires)
 
