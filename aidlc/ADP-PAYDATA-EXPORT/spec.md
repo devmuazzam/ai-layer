@@ -487,7 +487,8 @@ Enumerated by: `git grep -n -E 'toAdpWorkbookRows|findEmployeesMissingAdpFile|bu
 - **Candidates:** `adp-workbook-power-query-engine.md` §2; `adp-sop-v5.1.md` §6.2; `sources/EPI4RZ36.csv.md`, `EPI4RZ32.csv.md`.
 - **Owner:** Brian Petros (author of the workbook).
 - **Workaround, if any:** none.
-- **Status:** open
+- **Status:** open — §12.5 fixes the interim rule (ISO week of the Friday; Batch = YY+MM+WW); exact scheme still (→ Brian).
+- **Executor note (U2, 2026-10-15):** built the §12.5 interim rule in `apps/api/src/usecase/payroll/adp-batch.ts` (`deriveAdpBatch`, one isolated pure function). Concrete divergence for Brian to resolve: the pay week ending **Friday 2026-08-28** is **ISO week 35**, so the interim rule produces file name `EPI4RZ35` and Batch ID `260835`. The vault's recorded golden file for that same week is **`EPI4RZ36.csv`** (week 36) with Batch ID `260936` — a **one-week offset** and a **month digit difference** (08 vs 09). So the ISO rule as decided does **not** reproduce the observed file name. Three numbers are now in play for that week: PQ-engine 34, ISO 35, observed-file 36. Brian's confirmation changes only `deriveAdpBatch`. Until then the exported file name will not match the historical one.
 
 ### Q4 — File # in the CSV
 - **Question:** In the CSV, is File # the digits-only value ≥ 51 with or without leading zeros (ADP's regex), or up to 6 letters/digits (PAY-006 / crosswalk), and is it padded?
