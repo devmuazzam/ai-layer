@@ -145,6 +145,9 @@ waits for the next payroll, **uploaded and approved Tuesday 2026-10-20**. She wi
 approving, not before. That is enough for polling: a queued message stays until it is `DELETE`d, so
 reading the queue after her message still catches anything ADP sent at approval.
 
+syed.haris answered (2026-10-15): *"Perfect, I'll upload around same time like last week"* — i.e.
+about **7:30 AM PT / 7:30 PM PKT on 2026-10-16**, matching the 2026-10-09 post (7:29 PM PKT).
+
 Plan:
 
 - **Changed / deleted:** post a test worksheet for `000288`, `000105`, `000459`; Micaela edits one
