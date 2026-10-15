@@ -93,6 +93,8 @@ it depends on. This ticket has **no** `kind: foundation` unit: every schema chan
 
 ## U2 — Nested ("also brings along") settings per parent
 
+> **Split 2026-10-16 (Syed Haris, ticket owner):** built at 517 source lines (over ~400), so it ships as two stacked PRs — **U2a** schema + API (branch `feat/TCG-218-u2a-nested-association-settings-api`, from `origin/main`; safe alone: forms that send no `nestedSettings` keep what is stored) and **U2b** both web editors (branch `feat/TCG-218-u2b-nested-association-settings-web`, stacked on U2a). Window: until U2b merges, nested settings can be set only through the API. Measured at push: U2a 328 lines / 5 files vs main; U2b 473 / 6 vs U2a — over only because ~110 lines of U1's settings control moved to `association-quote-settings.tsx` (the tab file hit the 300-line lint limit); ~290 new. Ticket owner chose the `size-exception` label for U2b over a separate move PR (2026-10-16).
+
 - **Outcome:** Under a crane's association (e.g. Operator Load), an admin sets Hourly Show, Mob/Demob Show and Main/Sub for each of that association's own associations, separately per parent; the controls are disabled and cleared while the parent is hidden on that quote type.
 - **Kind:** vertical
 - **Requirements covered:** REQ-04 — fully (storage, editor, disabled-while-parent-hidden). The quote consuming it is U3.
