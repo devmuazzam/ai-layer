@@ -781,3 +781,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - [ ] Decomposed into vertical units — `units.md` (stacked PRs, each ≤ ~400 source lines)
 
 Answered by: ______________  Date: ______________
+
+### Q21 — U1 review: defaults and write paths (raised by tcg-analyst / tcg-prisma-guardian / tcg-contract-tracer on U1, 2026-10-15)
+- **Question:** (a) What Show settings does a *newly picked* association start with — hidden (unit U1 acceptance) or, for non-employee picks, shown as Main item (decisions/2026-10-06-association-quote-visibility-hourly-and-mob-demob-settings.md)? (b) Do the single-association add/update endpoints carry the settings? (c) Does re-picking an item on a row reset its settings? (d) What does Main/Sub mean while Mob/Demob Show is off?
+- **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** (a) "Hidden, like everything" — every newly picked association starts with Hourly Show off, Mob/Demob Show off, Main item, whatever its kind; web, API and seed agree. This departs from the 2026-10-06 decision note's "a direct non-employee association starts shown on both quote types, as a Main item" — the note needs updating (`tcg-scrum`, at close-ticket). (b) "Fix in U1" — single add/update carry and persist the three settings; PATCH leaves an omitted setting unchanged; a whole-list save treats an omitted setting as hidden. (c) "Reset (as built)". (d) Kept as built: Mob/Demob Show off keeps the stored Main/Sub value (control disabled), and the API does not reject it — **units reading the settings (U3 onward) must ignore Main/Sub while Mob/Demob Show is off.**
+- **Status:** answered by ticket owner 2026-10-15
