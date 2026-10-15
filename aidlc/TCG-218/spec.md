@@ -527,6 +527,7 @@ Options only. *Chosen* and *Decided by* are blank by design.
 | D11 | Quotation Type chip and layout rebuild | web builds rows (catalog in `lib/resource-catalog.ts`) and API stores; or API computes the layout | | Web builds the rows (as today, from the catalog in the Resources tab); the API stores them and computes totals. Stated by the ticket owner in session 2026-10-15. | Syed Haris (signed on his instruction "sign them", 2026-10-15) | 2026-10-15 |
 | D12 | Pattern | `patterns.md` has no sub-category/quotation entry — follow existing modules, or add a pattern entry (Haris only) | | Follow the existing modules (sub-category association editor, quotation Resources tab); a `patterns.md` entry, if any, comes from the reflection (Haris only). Stated by the ticket owner in session 2026-10-15. | Syed Haris (signed on his instruction "sign them", 2026-10-15) | 2026-10-15 |
 | D13 | How a crane-named group is tied to its crane (REQ-09) | name/label match (as `isGroupResourceLabel` matches by name); a stored link to the crane's quotation resource (`parentId` is already used for group children) | | A stored link on the group row to the crane line it belongs to (one nullable column on the quotation line); label, ordering (Q17) and dispatch read it. Stated by the ticket owner in session 2026-10-15. | Syed Haris (signed on his instruction "sign them", 2026-10-15) | 2026-10-15 |
+| D14 | Stored name of a crane-named group (REQ-09, D13) | (a) stored item name stays "Mobilization"/"Demobilization" and the crane name is prefixed for display from the D13 link; (b) store "90 Ton Crane – Mobilization" as the name and teach every group detector the new form | (a) keeps `isGroupResourceLabel`, totals and Crane Time detection unchanged (resolves the decomposer's U4/U7/U8 stop-and-ask). | (a): stored name stays "Mobilization"/"Demobilization"; display label "<crane> – Mobilization" from the D13 link on the Resources tab, PDF, print, email and signing. Answered "yes" by the ticket owner, 2026-10-15. | Syed Haris (answered in session, 2026-10-15) | 2026-10-15 |
 
 ## 11c. Siblings — same pattern, same change?
 
@@ -744,6 +745,17 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Workaround, if any:** none.
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "yes" — equipment a salesperson adds that is not in the crane's configuration (inside Mobilization, or as its own line) shows on the dispatch board to assign. Working assumption; Lisette not asked.
 - **Status:** answered by ticket owner as an assumption — to be reviewed by Lisette Anzaldo at the demo
+
+### Q20 — Allowed values for a group's visits (non-blocking; raised by the decomposer 2026-10-15)
+
+- **Question:** What values may a Mobilization/Demobilization group's visits (the group row `qty`, D4) take — whole numbers only or decimals, and is 0 allowed? (§9 lists "min/max/integer-only: NOT SPECIFIED"; a negative or fractional value changes money.)
+- **Why it cannot be answered from what is written:** the visits note says "number of visits" and the default is 1; no source states a lower bound or integer-only. The line quantities inside a group are 0-allowed and 2 dp (REQ-11), which must not be assumed to apply to the group's own quantity.
+- **Blocked:** the visits validation row of unit U7 only (REQ-10); every other part of U7 can proceed. Numbered Q20 because "TCG-218 Q19" is already an external Linear reference in §13.
+- **Candidates:** visits note (`decisions/2026-10-08-…` per REQ-10 sources); §9 Validation rules.
+- **Owner:** ticket owner (Syed Haris); Joe Schacatano if it is a product rule.
+- **Workaround, if any:** none; the executor stops at the validation row of U7 rather than pick a bound.
+- **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "agree but hours you can add 2.5" — a group's visits are whole numbers, at least 1; the lines inside a group keep two-decimal quantities (e.g. 2.5 hours, REQ-11).
+- **Status:** answered by ticket owner 2026-10-15
 
 ## 13. What this spec deliberately does not specify
 
