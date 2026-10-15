@@ -313,3 +313,21 @@ integration* but nothing in the turn pins it. "LW, LWBA" / "LABWB" were left: th
 name and Brian supplies LADWP in the next turn. Speaker labels are reproduced uncorrected. Left unchanged:
 the items listed in the file's own header note.
 
+# Pass 13 — 2026-10-15 (one new transcript only)
+
+Applied to `2026-10-13-accounting-and-safety-discussion.md`; no earlier file was touched. **19
+substitutions**, each pinned to its own turn, with the timestamps in that file's header note. In summary:
+"Harris" -> "Haris" (2, as pass 10); "Abrahman" -> "Abdulrehman" (1, as pass 9); "SAS" -> "SaaS" (1);
+"Euler" -> "oiler" (3, as pass 3); "payroll flat" -> "payroll flagged" (1); "build" -> "bill" (3, as pass
+12); "PU" -> "PO" (1); "ERB" -> "ERP" (1, as pass 9); "pitchers" -> "pictures" (1); "green super" / "train
+super" -> "crane super" (1 / 1, as pass 1); "D" -> "Dee" (3, as pass 9).
+
+New evidence rules used here: **"SAS" -> SaaS** only where the turn is about selling the product, pinned
+by abdulrehman's *"SaaS product"* half a minute earlier. **"payroll flat" -> payroll flagged** only beside
+*"needs to be finalized from payroll"*, pinned by "flagged" in the next two exchanges. "if this is black …
+the day is black" (14:47) reads the same way, but was left because "black" is not "flat". **"PU" -> PO**
+only where the next sentence says "A PO". **"D" -> Dee** only in ehtesham.anwar's turns naming the Safety
+Manager. IT Support's "log in as D" (43:07) was left, because it may be a login name. "the cost" / "our
+cost" (54:19, 54:41) names the document that requires a paper scope of work, and was left because nothing
+in the call resolves it. Speaker labels are reproduced uncorrected: Dee speaks on Brian Petros's
+microphone from 36:41, as in pass 9's file. Left unchanged: the items listed in the file's own header note.

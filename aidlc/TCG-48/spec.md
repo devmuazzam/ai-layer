@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Ticket | `TCG-48` — "Quotation: Show a Congratulations popup after Mark as Won" |
-| Elaborated on | `2026-10-15`, in a working session with Asad |
+| Elaborated on | `2026-10-15`, in a working session with devmohsinakram |
 | Product source | `.ai/vault/uat/sessions/uat-session-1-internal.md:61` — "When a quotation is won, a popup should automatically appear with a **Congratulations** message and options to **Create Project** or **Add to a Project**." Also `.ai/vault/uat/register-2026-09-18.md:225` (NOT DONE) |
 | Code read at | `fixes/TCG-48` @ `857caf850` |
 
@@ -28,7 +28,7 @@ The ticket listed four "blocked / needs decision" items. None blocks the build �
 
 ## 12. Open questions
 
-All decided 2026-10-15 by Asad (developer on the ticket), in session.
+All decided 2026-10-15 by devmohsinakram (developer on the ticket), in session.
 
 - **Q1 — Show after Mark as Signed too?** **Yes.** It is the same user-present, manual moment and ends in Won; UAT 1 says "when a quotation is won". **Status:** resolved.
 - **Q2 — Toast as well as the popup?** **No** — the popup replaces the toast. **Status:** resolved.
