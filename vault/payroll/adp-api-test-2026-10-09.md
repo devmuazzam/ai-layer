@@ -117,9 +117,38 @@ answered here.
    needs the same manual delete before the week is calculated.
 2. **Events.** No event was subscribed, so this test says nothing about notifications. ADP said on
    2026-10-07 that none fire for pay data ([adp-event-notifications.md](adp-event-notifications.md)).
+   A second test to settle it is requested (§6).
 3. **Untested code families:** `SUB` (earnings amount), foreman `FR*`, military `ML*`, lattice,
    `SIC`, holiday, and an override (`BASE_RATE_OVERRIDE`) row.
 4. **Batch totals** — what `ADP_Preview Batch Totals` sums, so the ERP can match it (§4).
+
+## 6. Second test requested — events (2026-10-15)
+
+syed.haris messaged Micaela Dipane in the same Teams chat on 2026-10-15, verbatim:
+
+> *"Hi Micaela, thanks again for last Friday's test! We'd like to run one more tomorrow at 8am with
+> the same three employees. Right now our system has no way to know when a worksheet is changed,
+> deleted or approved in ADP, so we want to check whether ADP sends us a notice when that happens.
+> After I post the worksheet, could you make one small edit on it (e.g. change 1 hour to 2), let me
+> know when you have, and then delete it? Also, when you're about to approve this week's real
+> payroll, could you send me a quick message just before, so I can check whether ADP lets us know it
+> was approved? Thanks!"*
+
+Plan, for **2026-10-16 8am PT**, no reply yet when written:
+
+- **Changed / deleted:** post a test worksheet for `000288`, `000105`, `000459`; Micaela edits one
+  line, then deletes it. This is the subscribe-and-edit test in
+  [adp-event-notifications.md](adp-event-notifications.md) → *The test that settles it*.
+- **Approved:** the test worksheet is **not** approved (real employees would be paid). Instead
+  payroll gives a heads-up before approving the real weekly payroll, and the queue is watched then.
+- **Delivery: polling, not webhook.** Polling is the project's active method; activating a webhook
+  disables polling and needs a public, US-hosted endpoint
+  ([gaps.md](gaps.md) → *Polling or webhooks*). Prerequisite: subscribe the *TCG ERP Integration*
+  project to `pay-data-input.modify` before posting, then poll
+  `GET /core/v1/event-notification-messages` and `DELETE` each message read.
+- **Expected:** nothing. ADP said no pay-data events fire (request `672204`), and the catalogue has
+  no *payroll approved / processed* event. An empty queue confirms the ERP must track worksheet
+  status by hand; a message would show ADP's answer is out of date.
 
 ---
 

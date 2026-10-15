@@ -1098,6 +1098,12 @@ someone has confirmed otherwise.
   catalogue's `pay-data-input.modify` entry. Treat the event as unavailable; the subscribe-and-edit
   test above would only show whether ADP's answer is out of date. **Output side:** ADP points to a
   WFN **Payroll Output API**. See the round-trip entry above.
+- Update 2026-10-15 (syed.haris, Teams message to Micaela Dipane): **the subscribe-and-edit test is
+  requested for 2026-10-16 8am PT**, on the same three live employees as the first POST. Micaela to
+  edit then delete a test worksheet; payroll to give a heads-up before approving the real weekly
+  payroll so the queue can be watched for an approval notice. Delivery by polling (the active
+  method). Expected empty, per ADP. Plan and message:
+  [adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §6. Still open until it runs.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires](gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires)
 
