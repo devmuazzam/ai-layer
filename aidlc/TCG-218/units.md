@@ -301,6 +301,8 @@ it depends on. This ticket has **no** `kind: foundation` unit: every schema chan
 - **Size estimate:** ~300 source lines, 13 source files. Within 400 / 25.
 - **Developer decisions implemented:** D5b (twin matched by name; on rename the previous name finds the twin), D9 (Price Adjustment = custom type with per-tenant code `PA`), D12, sibling 2.
 
+> **Added 2026-10-16 (Q30, Syed Haris):** U6 also removes the "In total" checkbox (`resource-row.group-include.tsx`) and the detail view's "Excluded" label from the web; new group lines are always counted; `isIncluded` column and totals maths unchanged; mobile untouched.
+
 ### Slice contents
 
 | Layer | Change | Notes |
