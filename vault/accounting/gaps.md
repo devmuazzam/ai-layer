@@ -85,6 +85,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   missing. **Still needs the client:** a tier per wishlist item (in particular OCR, predictions,
   the collections assistant and the portal), whether a Sage move is live or abandoned, and the
   `decisions/` note for the 2026-09-01 boundary.
+- **Update 2026-10-15 (decision, not a tiering).** Brent Wagstaff chose, on the 2026-10-13 call, a
+  collections worklist **per customer, not per invoice**:
+  [../decisions/2026-10-13-collections-worked-at-customer-level-not-invoice-level.md](../decisions/2026-10-13-collections-worked-at-customer-level-not-invoice-level.md)
+  (`verified`). That shows a manual collections check-in is wanted in the ERP. It does **not** tier
+  the wishlist's AI collections assistant (automated reminders and escalation), and nothing else in
+  this entry is answered. The entry stays open.
 
 ## Project detail Accounting tab — what it shows, and what it shows before the module exists
 
@@ -258,6 +264,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** the accounting module's AR scope; `SCRUM-478` (PO epic); whether the ERP's invoice
   entity requires a job FK.
 - **Owner:** Brian Petros (raised it); Melissa McNutt for the AR policy call.
+- **Update 2026-10-15: a related decision, which does not answer this.**
+  [../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md](../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md)
+  (`verified`, Brent Wagstaff) says accounting invoices ticketed job work by selecting whole days
+  of a job. A permit with no job has no day or ticket to select, and the 2026-10-13 call did not
+  mention one. Do not read the decision as "every invoice needs a job". Whether a job-less invoice
+  exists is still this entry's question. The entry stays open.
 
 ## Billable hours — the recordings say portal to portal, the Jira decision says boom time plus WTL
 
@@ -333,6 +345,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - Also: a late completion should show internally only, *"We don't want it on the customer's
     paperwork."*
   - TCG asked to hold these answers until an updated version is sent. Nothing here closes.
+- **Update 2026-10-15: a related decision, which does not settle the span.**
+  [../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md](../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md)
+  (`verified`, Brent Wagstaff) makes the invoice unit a whole day of a job and holds a day with a
+  payroll-flagged ticket. Melissa McNutt's reason (2026-10-13, 15:06): *"we charge based off the
+  hours. So if that one's flagged and it's an hour issue, we don't want to bill the customer and have
+  to rebill if the guy charged more hours."* So the invoice follows the ticket hours that payroll
+  settles. It says nothing about which span of those hours is billed (models i–iii) or how hours map
+  onto invoice lines. The entry stays open.
 
 
 ## Paper Job Tickets — pointer, owned by field-ops

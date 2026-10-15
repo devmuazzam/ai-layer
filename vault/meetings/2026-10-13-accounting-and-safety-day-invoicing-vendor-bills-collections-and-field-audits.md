@@ -274,7 +274,18 @@ left for a later session.
 2. **Collections are worked at customer level, not invoice level.** Brent Wagstaff, 28:01.
 3. **Vendor invoice attachments go to QuickBooks with the bill.** Brent Wagstaff, 22:17.
 
-None has been written. `tcg-scrum` decides whether each is clear enough to record.
+**All three written, 2026-10-15 (`tcg-scrum`, at syed.haris's request). None declined.** Each is
+`verified` on the folder's convention for a named TCG owner on a recorded call (*"Not confirmed in
+writing"* in its `decided_by:`), and each records only what was decided:
+
+1. [../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md](../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md).
+   **Holdover invoicing as a whole job is recorded as not decided**: ehtesham.anwar said it, and no
+   one at TCG confirmed it. Several days on one invoice is recorded as permitted, not required.
+2. [../decisions/2026-10-13-collections-worked-at-customer-level-not-invoice-level.md](../decisions/2026-10-13-collections-worked-at-customer-level-not-invoice-level.md).
+   Only the customer-level choice is decided. Promise-to-pay, weekly done/still-to-contact, the week
+   selector and the 30-day entry are design.
+3. [../decisions/2026-10-13-vendor-invoice-attachment-goes-to-quickbooks-with-the-bill.md](../decisions/2026-10-13-vendor-invoice-attachment-goes-to-quickbooks-with-the-bill.md).
+   The §4 bills-received blocker is recorded as **proposed, not agreed**.
 
 ## 10. Questions this raises (not yet filed)
 

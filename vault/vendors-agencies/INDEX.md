@@ -52,6 +52,7 @@ today.** Both are unverified and they disagree about PO types.
 - [2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md) — Brian Petros: Customer (inbound) vs Vendor (outbound) PO direction taxonomy
 - [2026-09-11-outbound-po-subtypes-and-modal-fields.md](../decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md) — Outbound PO subtypes Permit|Vendor|Asset; modal fields (Agency not Vendor); OPEN|CLOSED
 - [2026-10-08-po-fee-typed-by-user-approval-leaves-po-alone.md](../decisions/2026-10-08-po-fee-typed-by-user-approval-leaves-po-alone.md) — PO Fee typed by the user: permit approval no longer writes it and leaves a `CLOSED` PO untouched; PO total = line items − discount, no computation. Create-time fee default still open. Syed Haris, TCG-89. `reference`
+- [2026-10-13-vendor-invoice-attachment-goes-to-quickbooks-with-the-bill.md](../decisions/2026-10-13-vendor-invoice-attachment-goes-to-quickbooks-with-the-bill.md) — a vendor bill recorded against a PO sends the vendor's invoice document to QuickBooks with the bill. Brent Wagstaff (CFO), `verified`. When the PO closes is not touched
 
 ## Open questions
 

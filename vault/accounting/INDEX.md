@@ -36,6 +36,14 @@ Invoicing and accounting (module not yet built). Backend usecases: `billing, exp
 | [avalara-sales-tax-in-nexgen.md](avalara-sales-tax-in-nexgen.md) | **How sales tax is calculated on an invoice** — AvaTax setup, the fully-taxable default, the job-site address-validation gate, and the invoice-number lock | 11 |
 | [ap-ar-value-engine-and-whiteboard-flow.md](ap-ar-value-engine-and-whiteboard-flow.md) | **The AP and AR process end to end, as TCG drew it** — the Aug-2025 value-engine flowchart plus the whiteboard workbook with its swimlanes and the 90-day lien escalation | 12 |
 
+## Decisions that bind this module
+
+- [2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md](../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md) — invoices are built from whole days of a job, never from single tickets; a payroll-flagged ticket holds its day; days are independent; several days can share an invoice. Brent Wagstaff, `verified`. Holdover invoicing not decided
+- [2026-10-13-collections-worked-at-customer-level-not-invoice-level.md](../decisions/2026-10-13-collections-worked-at-customer-level-not-invoice-level.md) — the collections worklist is per customer, not per invoice. Brent Wagstaff, `verified`. The rest of the tab is design
+- [2026-10-13-vendor-invoice-attachment-goes-to-quickbooks-with-the-bill.md](../decisions/2026-10-13-vendor-invoice-attachment-goes-to-quickbooks-with-the-bill.md) — the vendor's invoice document goes to QuickBooks with the vendor bill. Brent Wagstaff, `verified`
+- [2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md](../decisions/2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md) — one invoice for a job with two cranes. Joe Schacatano, `verified`
+- [2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md) — the two PO types and where each sits in the quote-to-invoice flow. Brian Petros
+
 ## Open questions
 
 [gaps.md](gaps.md) — this module's live register (entry format inside). Ticket questions stay in that ticket's `spec.md` §12.
