@@ -4650,6 +4650,7 @@ somewhere it should not have. Settle that before touching either.
 - **Blocked:** both UAT 6 rows; any employee-type→craft-code filtering; the DAS allocation panel's field set.
 - **Owner:** Corrina Bustos / Brian Petros (they own who may set a day's craft) with Lisette Anzaldo for the DAS affordance.
 - **Pointer:** [../dispatch/gaps.md](../dispatch/gaps.md) → *Changing an employee's craft code in DAS — pointer, owned by payroll*.
+- Update 2026-10-15 — **(b) has a slot-type half nobody has answered.** Raised reviewing DAS work by Jahanzaib Nadeem (branch `fix/14-oct-uat`, no ticket). The DAS craft pill now shows on every employee slot, the employee's PRIMARY when the allocation stores none (what `pay-week-assembly.ts` prices the base rate under). Question for Corrina Bustos / Brian Petros, with Lisette Anzaldo for DAS: *"When dispatch seats an employee in a **non-Operator/Oiler** slot (rigger, third man, apprentice, driver), may dispatch set that day's craft to one of the employee's SECONDARY assignments — changing the day's pay — or is that only for Operator/Oiler seats, with the crane superintendent / payroll handling the rest?"* Clause 5 of [../decisions/2026-09-28-boom-union-follows-the-worked-craft.md](../decisions/2026-09-28-boom-union-follows-the-worked-craft.md) (`reference`, provisional) is silent on slot type. The `verified` [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) reasons through the rigger case the other way (*"a $70 operator stays $70 unless the super deliberately assigns otherwise"*), as does the resolved [*Pay rate follows the employee, not the role worked*](#pay-rate-follows-the-employee-not-the-role-worked--kyle-and-corrina-unrecorded). **Built meanwhile, developer decision (Jahanzaib Nadeem, 2026-10-15):** on those slots the pill is display-only; only Operator/Oiler seats open the change dialog. A "yes" is a small web change in `job-allocation-sections.tsx` — `canChangeCraft` drops its seat-role test, and the dialog's `requiredRole` needs a value for a seat with no craft role; the API already accepts any requested craft on those slots (`resolveCraftForSlot`).
 
 ## DAS dispatchability is an employee-type attribute — pointer, owned by dispatch
 
@@ -5879,3 +5880,58 @@ somewhere it should not have. Settle that before touching either.
 - **Blocked:** edit and complete permissions for anyone other than the worker and payroll; the
   approval-request flow; notification recipients for late completion.
 - **Owner:** Corrina Bustos (payroll) and Melissa McNutt, with Lisette Anzaldo for dispatch.
+
+## Payroll week overlay — which craft does a pending crew row show?
+
+- **Status:** open
+- **Asked:** 2026-10-16 — review of DAS craft-pill work by Jahanzaib Nadeem (tcg branch
+  `fix/14-oct-uat`, no ticket). Found while checking siblings; nothing was changed here.
+- **Question:** the week overlay (pending / sent / in-progress / rejected tickets) shows a
+  craft code on each row. Which craft should a crew member's row show? Today it shows
+  `ticket.allocation.craftCode` — **the ticket's one allocation**, so every member of a shared
+  crew ticket (SCRUM-CREW-TICKET) shows the same craft, the one stored for the slot the ticket
+  was sent from. And when the allocation stores no craft (every non-Operator/Oiler slot), the
+  row shows **none**, while DAS now shows the employee's PRIMARY for the same allocation.
+- **What the code does:** `apps/api/src/service/payroll/payroll.repository.ts`
+  `WEEK_OVERLAY_INCLUDE` selects `allocation.craftCode.code`; `expandRosterOverlay` copies the
+  ticket (allocation included) onto one row per roster member;
+  `apps/api/src/usecase/payroll/payroll-week-overlay.ts:162` reads
+  `ticket.allocation?.craftCode?.code ?? null`. The crew card and labor step use
+  `pickPayrollCraft` instead (`ticket-labor-entries.repository.ts`): the allocation's craft
+  only when it is one of **this member's** SECONDARY assignments, else this member's PRIMARY.
+- **Sources checked:** [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md)
+  (`verified`: the day's craft is the employee's, a different one only by a deliberate
+  secondary assignment). Nothing written says what the overlay should display; its decisions
+  (`2026-09-10-*`) cover which tickets appear, not the craft column.
+- **Proposal, not decided:** show `pickPayrollCraft(member.craftAssignments,
+  allocation.craftCodeId)` per member — what the crew sees and what pricing resolves for boom.
+  It changes what a crew teammate's row shows today, so it is its own PR.
+- **Owner:** Corrina Bustos (payroll).
+
+## When an employee's PRIMARY craft changes, do already-dispatched days follow it?
+
+- **Status:** open
+- **Asked:** 2026-10-16 — same review. Pre-existing behaviour, not introduced by it.
+- **Question:** an allocation either stores a craft (`job_resource_allocations.craft_code_id`)
+  or stores none. Operator/Oiler allocations **always** store one — the API writes the PRIMARY
+  explicitly when it matches the seat (`resolveCraftForSlot`,
+  `apps/api/src/usecase/das-allocations/das-allocations.service.ts`). Other slots store none.
+  If HR later changes the employee's PRIMARY (say G9 → G8), the days with **no stored craft**
+  price under the new G8, and the Operator/Oiler days that stored G9 **keep G9** — including
+  G9's union for the boom adder. Is that intended (the dispatched craft is a snapshot) or should
+  a stored craft that was only ever "the PRIMARY at the time" follow the change?
+- **Two rules already exist for "the day's craft":**
+  - base rate — `apps/api/src/usecase/payroll-pricing/pay-week-assembly.ts:506-507`:
+    `allocation craft ?? PRIMARY`. It trusts **any** stored craft, even one that is no longer
+    among the employee's assignments.
+  - boom union / crew card — `pickPayrollCraft` and `secondaryCraftCodeIdForRateResolve`
+    (`payroll-secondary-craft.ts`): the stored craft **only if it is a SECONDARY assignment**,
+    else the PRIMARY.
+
+  So after a PRIMARY change, one day can price its base rate under the old craft and its boom
+  under the new one.
+- **Sources checked:** [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md)
+  (`verified`) and [../decisions/2026-09-28-boom-union-follows-the-worked-craft.md](../decisions/2026-09-28-boom-union-follows-the-worked-craft.md)
+  clauses 1–3 (`reference`): both assume one craft per day; neither covers a PRIMARY changing
+  after dispatch.
+- **Owner:** Corrina Bustos / Brian Petros.
