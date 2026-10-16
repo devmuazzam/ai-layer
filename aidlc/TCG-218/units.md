@@ -195,6 +195,8 @@ it depends on. This ticket has **no** `kind: foundation` unit: every schema chan
 
 ## U4 — Hourly w/ Mob layout: crane-named, auto-filled Mobilization/Demobilization pairs
 
+> **Split 2026-10-16 (Syed Haris, ticket owner):** built at 510 source lines, so U4 ships as three stacked PRs — **U4a** schema + API + web types/payload/mapper + duplicate carries the link (safe alone: the web never sets the link), **U4b** building the pair in the web (stacked on U4a), **U4c** crane-named labels + multi-crane ordering (stacked on U4b). Merge each only after the next PR's base shows `main`. No deploy between U4 and U6 (Q32 window).
+
 - **Outcome:** On an Hourly w/ Mob quote the crane appears alone, its Main items follow, and each main crane gets its own crane-named Mobilization/Demobilization pair at the bottom, filled automatically with its Sub items (Demob twin at 0, new Mob lines at 0).
 - **Kind:** vertical
 - **Requirements covered:** REQ-07, REQ-08, REQ-09 (Resources tab; PDF/print in U8), REQ-11 (Demob lines at 0 on auto-fill; manual rules in U6), REQ-21 (groups last, in crane order — header/collapse in U5), REQ-22 — as named.
