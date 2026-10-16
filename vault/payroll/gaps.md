@@ -1126,7 +1126,9 @@ someone has confirmed otherwise.
   stand; the catalogue's `pay-data-input.modify` entry is never delivered for Workforce Now. The new
   lead above is also closed: **no event path in the 147 contains `payroll`** (all 10 domains searched),
   so there is no payroll-run, payroll-job-status or approval event on this project. The 2026-10-20
-  approval poll is a formality.
+  approval poll is a formality. **The delete was silent too:** Micaela Dipane deleted the worksheet
+  and the queue stayed 204 (polled 02:20 and 02:27 PKT). ADP has no *reject* for a worksheet — an
+  edit or a delete is what rejecting means — so a rejected entry is invisible to the ERP as well.
 - **Status:** resolved 2026-10-17 — no pay-data or payroll-status event reaches the ERP.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires](gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires)

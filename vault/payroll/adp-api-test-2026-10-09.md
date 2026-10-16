@@ -175,7 +175,8 @@ PKT; Pacific was 12 hours earlier, still 2026-10-16.
 | ~01:14 | `POST pay-data-input.modify`, batch **`TCGAPITEST20261016`** (named for Micaela's date, not the local one), the same week-41 figures as §2 → **HTTP 200**, the same bare echo as §3: no `confirmMessage`, no ADP batch name, no status. Queue straight after → **204** |
 | ~01:38 | **Micaela Dipane**, verbatim: *"I changed Brad #459 from 23.5 to 21.5 Regular hours and Travis #288 from 40 to 30 regular hours!"* — and, asked, confirmed she **saved** the worksheet (*"Yes I did!"*) |
 | 01:23 → 02:12 | Queue polled every ~5 minutes, plus on demand: **204 every time — 0 messages**, for ~35 minutes after the saved edit |
-| ~02:00 | syed.haris told the group chat (Brian Petros is in it) the result and asked Micaela to delete the worksheet. **Deletion not yet confirmed when written** |
+| ~02:00 | syed.haris told the group chat (Brian Petros is in it) the result and asked Micaela to delete the worksheet |
+| by 02:27 | **Micaela Dipane deleted the worksheet** (relayed by syed.haris). Queue polled at 02:20 and 02:27 → **204**: **a delete sends no event either** |
 
 **Result — the edit sends nothing.** A practitioner editing and saving an API-posted worksheet
 produces no event, even with `pay-data-input.modify` subscribed and polling active. That matches
@@ -207,7 +208,8 @@ whether any other API shows a worksheet's status or contents after posting, and 
 thread to Brian Petros.
 
 **What the ERP can know today:** that it posted (the 200). Nothing after — not an edit, not a
-delete, not a calculation, not an approval. Two process options remain, for Brian Petros and
+delete, not a calculation, not an approval. ADP has no *reject* for a worksheet: payroll rejecting
+an entry means editing or deleting it, and both were tested here — **neither produces an event**. Two process options remain, for Brian Petros and
 Corrina Bustos to choose (not decided): corrections are made **only in the ERP** and re-sent
 (`Append` updates an existing batch — point 1), or payroll **confirms or marks changes in the ERP**
 after approving in ADP. Recorded as open in [gaps.md](gaps.md).
