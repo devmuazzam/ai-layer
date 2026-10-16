@@ -247,6 +247,8 @@ it depends on. This ticket has **no** `kind: foundation` unit: every schema chan
 
 ## U5 — Group header rows and the type-switch confirmation
 
+> **Split 2026-10-16 (Syed Haris, ticket owner; Q35):** ~610 lines, so U5 ships as **U5a** — header rows, collapse, groups-last (`feat/TCG-218-u5-group-header-rows`, 362 lines) — and **U5b** — type-switch confirmation + re-layout (stacked on U5a). Until U5b lands the chip switches without asking.
+
 - **Outcome:** On an Hourly w/ Mob quote each Mobilization/Demobilization group is a header row showing its total, collapsed by default, with its lines nested underneath to expand and edit; switching Quotation Type asks for confirmation first.
 - **Kind:** vertical
 - **Requirements covered:** REQ-21 (header, total, collapse, nesting; visits shown read-only at 1 — editable in U7), REQ-05 (switch confirmation).
@@ -304,6 +306,8 @@ it depends on. This ticket has **no** `kind: foundation` unit: every schema chan
 - **Developer decisions implemented:** D5b (twin matched by name; on rename the previous name finds the twin), D9 (Price Adjustment = custom type with per-tenant code `PA`), D12, sibling 2.
 
 > **Added 2026-10-16 (Q30, Syed Haris):** U6 also removes the "In total" checkbox (`resource-row.group-include.tsx`) and the detail view's "Excluded" label from the web; new group lines are always counted; `isIncluded` column and totals maths unchanged; mobile untouched.
+
+> **Added 2026-10-16 (U1–U4 end-to-end test, Q34):** existing quotes already hold saved Mob/Demob lines at 0 (QUOT-00022/23 locally) and cannot be saved from the web today — U6's "0 allowed in groups" must accept saved lines too, not only new ones.
 
 ### Slice contents
 
