@@ -766,6 +766,32 @@ Enumerated by: `git grep -n -E 'toAdpWorkbookRows|findEmployeesMissingAdpFile|bu
 - **Owner:** Ali Riaz / Brian (ADP bound).
 - **Status:** open.
 
+### Q35 — Raised by the executor (P2): route shape once the export is per-employee (reverses Q16/Q23)
+
+- **Note on direction:** P2 (and P1 before it) implement **per-employee partial export**, which is the *opposite* of the direction written into this spec — Q16 (§12.5) resolved to **replace** per-employee export entirely with one all-or-nothing CSV, and U8/U9 shipped that. A later product decision (Ali Riaz 2026-10-16, cited in `payroll-export-status.ts` and the P1 commit) reversed it to per-employee partial export (PM/PA sends the clean employees now, the rest later). `units.md` has no P1/P2 units; the P-series is driven from outside the written plan. **The spec and `units.md` are now stale with respect to the export model and should be re-adjudicated.** This is the single biggest thing the executor stopped on.
+- **Question:** With the new `POST periods/:id/export` body `{ employeeIds: string[] }` (built in P2) as the partial-send route, what happens to `GET periods/:id/export.csv`? It is still the canonical all-or-nothing path the web Download button calls (`apps/web/.../payroll.service.ts downloadExport`), it still stamps the period EXPORTED, and — since P1 — it does **not** write per-employee `exportedAt`, so a GET export now stamps the period EXPORTED while leaving every week's `exportedAt` null (inconsistent with P1's model, and nothing is then frozen).
+- **Candidates:** (a) **keep GET as-is for now** (what P2 did — API-only; web is P3/P4) and converge later; (b) redefine GET to mean "export all currently-eligible, not-yet-sent employees" and route it through the same per-employee path so `exportedAt` is always written and both routes share one gate; (c) retire GET entirely, POST only — **breaks web until P3/P4**, and qa-automation has no payroll-export e2e today (checked), so only web breaks.
+- **Executor recommendation:** (b), so P1's per-employee tracking is never bypassed and the two routes cannot disagree; not done in P2 because it changes GET's observable behaviour (web) and was flagged as a stop.
+- **Blocked:** P3/P4 (web) depend on the final shape.
+- **Owner:** Ali Riaz.
+- **Resolution (Decided by Ali Riaz 2026-10-16):** Retire `GET periods/:id/export.csv`; `POST periods/:id/export { employeeIds }` is the single export path, where "export everything" = pass every eligible id. Applied in P2: the `GET export.csv` route (`exportCsv`) and the all-or-nothing `PayrollService.exportPaydata` + its `assertExportable` gate were removed; `staircase-seed.service.ts` stage 12 was rewired to the POST method with the two approved crew ids (its full eligible set). The one web consumer — `apps/web/.../payroll.service.ts` `downloadExport` → `use-payroll.ts useExportPeriod` → `use-payroll-worklist.ts confirmAdpSubmit` → `payroll-adp-submit-dialog.tsx`, plus the source-regex path test `payroll-api-paths.test.mjs` — is a **dangling GET reference, expected and handled by P3** (web rewired to POST); it is not touched in P2. tcg-contract-tracer verified: 1 web chain, 0 mobile, 0 qa-automation, no other api internal caller.
+- **Still needs re-adjudication (separate, not this executor's task — tcg-scrum vault decision):** the spec body and `units.md` still describe Q16's *removal* of per-employee export (U8/U9), which the P-series reverses. That contradiction remains and should be recorded as a vault decision.
+- **Status:** resolved.
+
+### Q36 — Raised by the executor (P2): period-wide vs per-employee gate scoping (reporting the choice made)
+
+- **Question:** For the per-employee partial send, which export holds are scoped to the selected employees and which stay period-wide? The executor made a choice (below) and is reporting it for confirmation, not blocking on it — the existing per-employee gate helpers (`assertNoOpenSendBacks`, `assertNoIncompleteTickets`, `openFlagsFor`, all already take an `employeeIds` filter) and the caller's own guidance made it reasonably clear.
+- **Choice made:** **Per-employee (scoped to the selection):** approval (week must be APPROVED), incomplete tickets, open payroll flags, open send-backs, missing ADP file number, already-exported. **Period-wide (block the whole send whatever the selection):** a recalculation hold (a failed recalc left unconfirmed) and a pending/owed recalculation — because a recalc reprices the *not-yet-exported* (i.e. selected) employees, so their figures are suspect until it settles.
+- **Owner:** Ali Riaz / Brian.
+- **Status:** open (confirm the split).
+
+### Q37 — Raised by the executor (P2): PAY-066 per-person freeze split out as P2b
+
+- **Question:** PAY-066 per person — an employee already exported must not be re-priced by a later calculate/recalc of the same period (their sent numbers are final). P2 does **not** implement this; it was split to **P2b** because it is large and risky: `calculate`/`calculateQueued` always open a **brand-new run** (`startRun`) and reprice the whole period from tickets, so freezing an exported employee means carrying their prior run's figures forward into each new run — an engine/persist-level change (`runCalculation`/`executeRun`/`persistRun`), not a gate tweak.
+- **Risk if P2b is not built:** a recalculate between two partial sends can move an already-exported employee's figures, so the period's later numbers diverge from the file ADP already received. Until P2b lands, the only thing stopping that is operational discipline (don't recalc mid-send).
+- **Owner:** Ali Riaz / Brian.
+- **Status:** open (P2b to be scheduled).
+
 ## 12.5 Developer resolutions (2026-10-15)
 
 All 18 §12 questions were answered by the developer. **Decided by: Ali Riaz, 2026-10-15.**
