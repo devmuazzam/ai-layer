@@ -602,7 +602,7 @@ Quote side lands first (U1–U8), dispatch side last (U9–U10).
 ### U11b — The Resources tab reads the snapshot once a quote has one
 - **Outcome:** on a quote with a snapshot, picking/re-picking an item, the auto-filled Mob/Demob lines and the Quotation Type switch use the snapshot's configuration instead of the live one; quotes without a snapshot unchanged.
 - **Branch:** `feat/TCG-218-u11b-config-snapshot-web` from `origin/main` (U11a is merged).
-- **Built 2026-10-16:** PR open (see the PR for TCG-218 U11b); also carries the Q61 one-line API ordering fix.
+- **Built 2026-10-16:** PR #828; also carries the Q61 one-line API ordering fix.
 
 ### (original U11 entry)
 
