@@ -629,4 +629,4 @@ Quote side lands first (U1–U8), dispatch side last (U9–U10).
 - **Outcome:** `jobs.configuration_snapshot` is removed (migration `drop_job_configuration_snapshot`); conversion no longer writes it; the DAS missing-components check reads `job.quotation.configurationSnapshot`; a job without a quote reads the live configuration. No behaviour change: the copy always equalled the quote's snapshot.
 - **Source:** spec §12 Q64.
 - **Branch:** `feat/TCG-218-u13-job-reads-quote-snapshot` from `origin/main`.
-- **Built 2026-10-17:** PR #830; migration applied locally on the developer's go-ahead.
+- **Shipped 2026-10-17:** #830 merged; migration applied locally on the developer's go-ahead.
