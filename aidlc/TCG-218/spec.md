@@ -1023,3 +1023,9 @@ Answered by: ______________  Date: ______________
 - **Owner:** Syed Haris.
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** "Snapshot on Mark as Won" — **A**: Mark as Won also takes the snapshot when the quote has none (same conditional write, never refreshed), in U11a-1. Verified locally: QUOT-00031 (a copy of QUOT-00027) was won from Draft, the 90 Ton configuration was changed, and converting it gave JOB-00019, which kept the 90 Ton Oiler from the snapshot.
 - **Status:** answered by ticket owner 2026-10-16
+
+### Q59 — Q58 sibling: a direct status edit to Won (raised while shipping U11a-2, 2026-10-16)
+- **Question:** `PATCH /quotations/:quoteNo` accepts `status: WON` (the update DTO allows every status; the service blocks only a move back to Draft and Lost). Nothing in the product sends it: the web edit form sends `DRAFT` for a draft and removes `status` otherwise (`create-quotation-save.ts`), mobile never sends a status, qa-automation and the seeders do not use it. A direct API call setting Won skips Mark as Won's award date, comments, evidence and snapshot (the snapshot is then taken at conversion). Options: block Won on PATCH like Lost ("Use the Mark as Won action"); add the snapshot hook to PATCH; leave it open.
+- **Owner:** Syed Haris.
+- **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** "no need, for now, we can add these guardrails later" — left open; no client sends it. Guardrail (block Won on PATCH) deferred to a later ticket.
+- **Status:** answered by ticket owner 2026-10-16 (guardrail deferred)
