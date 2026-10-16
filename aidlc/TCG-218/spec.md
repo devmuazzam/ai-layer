@@ -940,8 +940,8 @@ Answered by: ______________  Date: ______________
   > Hi Joe, following up on this: with visits in place, a Mobilization with 3 visits now prints on the customer's quote as one line, with the lines inside hidden: **100 Ton Crane – Mobilization | 3 | Each | $1,230.00 | $3,690.00**.
   > 1. Is that right: Qty = number of visits, Rate = one visit's total, Amount = Qty × Rate?
   > 2. If a line inside the Mobilization has a discount or price hike, should the Mobilization's Rate and Amount show the price **before** it, with the discount as its own row at the bottom (as it works for every other line today), or **after** it?
-  - **Joe's answer:** pending.
-- **Status:** answered by ticket owner 2026-10-16 — rate presentation pending Joe's confirmation
+  - **Joe's answer (relayed by Syed Haris, 2026-10-17):** "#1. Yes" / "#2. The rates would just show to the customer and the discount would need to be seen internally." — (1) confirms Qty = visits, Rate = one visit's total, Amount = Qty × Rate. (2) **Read by Syed Haris (ticket owner, 2026-10-17):** "Mob/Demob only, net" — on every customer document a Mobilization/Demobilization line prints its Rate and Amount **after** the discounts / price hikes of the lines inside it, and those inner adjustments are left out of the customer's Discount / Price Hike foot rows; internal screens keep showing them. Every other line keeps today's presentation (base amount, adjustment in the foot rows). Built as U12.
+- **Status:** answered 2026-10-17 (Joe confirmed (1); (2) read by the ticket owner, built as U12)
 
 ### Q46 — Unit cell of a Mobilization/Demobilization line on customer documents (supersedes Q44(1); raised by the ticket owner, 2026-10-16)
 - **Question:** Q44(1) chose "Visit"/"Visits"; FCC prints the Mobilization roll-up as "Each" (`vault/quotations/fcc-estimate-templates-by-job-type.md` §2: "Mobilization | 1.00 | Each").
