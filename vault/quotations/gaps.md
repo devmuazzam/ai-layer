@@ -1083,6 +1083,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   harmless. The UAT row also mis-names the thing it wants removed, so the request itself is not clean. **Do not treat
   this as a contradiction to resolve; treat it as one more reason to answer this entry.** Nothing adjudicated.
 
+- **Update 2026-10-17 (TCG-218 close-out) — the customer-document decision does not reach this entry.**
+  [../decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md](../decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md)
+  (`verified` for Joe Schacatano's rules 1–3) changes 09-11 rules 2–3 **for customer documents only** — the PDF and print show
+  every line net, with no Discount / Price Hike rows. It states that internal screens (create/edit, detail, approvals) keep
+  the 09-11 on-screen rules, so the create/edit hover tooltip, its *"Final Amount"* row and parts (a)–(c) here are untouched.
+  Do not read the 10-17 note as answering this entry. **Status unchanged: open.**
+
 ## Estimate defaults per resource type / job type / yard — FCC has them, TCG has no job type at all
 
 - **Status:** open
@@ -1190,6 +1197,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - Ryan has built a spreadsheet mob/demob tool, and Joe offered to show it on a separate call. The mob/demob walkthrough is deferred to the week of 2026-09-28.
 
   Source: [../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §1, §3, §4.
+
+- **Update 2026-10-17 (TCG-218 close-out) — (e) and (f): ticket-owner rulings exist; neither sub-question is closed.**
+  - **(f).** Syed Haris (TCG-218 ticket owner, CodingCops) ruled that the Quotation Type — *Hourly* / *Hourly w/ Mob*, FCC's `H` / `Z` — is chosen **once per quotation** (*"q17: once per quote"*, 2026-10-08): [../decisions/2026-10-06-quotation-type-hourly-or-hourly-with-mob.md](../decisions/2026-10-06-quotation-type-hourly-or-hourly-with-mob.md) point 2, `reference`. TCG-218 shipped it that way (Linear TCG-218, merged by 2026-10-17). Joe Schacatano was **not** asked whether one quote may mix an hourly crane with a mob/demob crane — which is (f). Stays open with its owners, as that note itself says.
+  - **(e).** [../decisions/2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md](../decisions/2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md) (`reference`, ticket owner) decides that a change to a sub-category's **asset configuration** — which TCG-218 now uses to auto-fill quote lines — reaches only quotes not yet gone out: a quote keeps a snapshot from its first send / Mark as Won / conversion, never refreshed. **It does not answer (e)**: (1) (e) asks about FCC's job-type estimate template, which TCG does not have; (2) it does not decide whether a saved quote's existing lines are re-seeded when the configuration changes — that they are not today is a code finding recorded in TCG-218 spec §12 Q51, not a decision; (3) the owners named here were not asked. It is the nearest precedent for whoever answers (e).
+  - **Status unchanged: open.**
 
 ## FCC estimate templates were already extracted — and the seeder flattened them to one FK
 
@@ -2048,7 +2060,7 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Owner:** product team — Ehtesham Anwar for the single- vs multi-tenant half (he owns it on the admin entry above), Brian Petros or Ryan Adams for whether a quote is raised under a company the salesperson picks.
 ## Branch fix/das-fixes — archive gate, rate-error precedence, discount and price-hike footer rows
 
-- **Status:** open, for (b), the printed-quote half of (c), and (d) only. (a) and the on-screen half of (c) were resolved 2026-09-11; see the next bullet.
+- **Status:** open, for (b) and (d) only. (a) and the on-screen half of (c) were resolved 2026-09-11; the printed-quote half of (c) was resolved 2026-10-17 — see decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md. See the next two bullets.
 - **Resolved in part 2026-09-11, by Fouzan Shakil (CodingCops, `reference`, not a TCG sign-off):**
   - **(a).** Settled by [../decisions/2026-09-11-quotation-archive-blocked-by-in-flight-jobs.md](../decisions/2026-09-11-quotation-archive-blocked-by-in-flight-jobs.md). Archive is blocked while any linked job is `ACTIVE` or `ON_HOLD`. It is allowed once every linked job is `COMPLETED`, `INVOICED` or `CANCELLED`, which covers the whole `JobStatus` enum. No other blocker was named, including a linked project.
   - **(c), on-screen half.** Settled by [../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md](../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md):
@@ -2057,8 +2069,9 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
     - The footer rows carry the adjustment money, so the Amount column sums to the Total.
   - **Still open:**
     - (b).
-    - Whether the **printed** quote carries the same rows (the second question of (c)).
+    - ~~Whether the **printed** quote carries the same rows (the second question of (c)).~~ Resolved 2026-10-17, next bullet.
     - (d), below.
+- **Resolved in part 2026-10-17 — the printed-quote half of (c):** no, the customer's copy carries neither row. **Discount row — Joe Schacatano** (TCG VP of Sales, an owner named for (c)), written Teams reply, `verified`: *"Discount kept internal. We don't want a discount line to show to the customer."* **Price Hike row — Syed Haris** (TCG-218 ticket owner, `reference`, not asked of Joe): price hikes are treated like discounts, every line prints net of both, and the Surcharge row stays. Internal screens keep the on-screen rules above. See [../decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md](../decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md) rules 2–4 and 7.
 - **(d), added 2026-09-11 and left open by the archive decision.** Should archiving a **WON** quotation remove its value from the WON revenue KPIs and from the customer's revenue figure, or should both keep counting it? As built, it removes it from the customer's figure. `apps/api/src/service/quotations/quotations.repository.ts` `findManyForCustomerMetrics` filters `archivedAt: null`. The field it feeds is named `revenueYtd` but holds all-time won revenue (`apps/api/src/usecase/customers/customer-quotation-metrics.ts`:9). The other WON-revenue KPIs were not checked. Blocks: nothing hard, only reporting correctness once won quotations start being archived. Owner: as for (a).
 - **Asked:** 2026-09-11 — PR review of branch `fix/das-fixes` (no ticket, no `.ai/aidlc/` folder); tcg-scrum escalation. Commits `b81f1b0b5`, `48d93f9f6`, `c11bba5c2`.
 - **Question:** three parts, each answerable in a line. **(a)** May a quotation be archived while it still has a linked project, or linked jobs that are not `ACTIVE`? The branch now blocks archive **only** on `ACTIVE` jobs (`archive-reference.service.ts`). A linked project, or a job in any other state, no longer blocks. **(b)** When a resource line has no billing code, should its Rate cell also show *"Rate must be greater than 0"*, or only *"Billing Code missing."*? The branch hides the rate message in that case. The row cannot be saved either way. **(c)** Should quote-level **Discount** and **Price Hike** rows sit in the Resources footer beside the Fuel & Insurance Surcharge row, on create/edit and on the detail tab? Each is summed from the lines and shows a shared percentage when the lines agree. If yes, should the printed quote carry the same rows?
@@ -2706,3 +2719,11 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   and [../admin/gaps.md#social-media-icon-rows-removed-from-ticket-and-pre-quote-emails--intended](../admin/gaps.md#social-media-icon-rows-removed-from-ticket-and-pre-quote-emails--intended).
   Filed 2026-10-13 from tcg branch `fix/13-oct-uat` (TCG-37).
 - **Owner:** product team
+
+## Should the API enforce billing codes and whole-dollar rates on quote lines?
+
+- **Status:** open
+- **Asked:** 2026-10-16 — raised by tcg-executor building TCG-218 U6 (spec §12 Q38c); deferred by the ticket owner (Syed Haris: "No, follow-up").
+- **Question:** today only the web blocks a quote line with no billing code ("Billing Code missing.") and rounds ordinary rates to whole dollars; the API (`create-quotation.dto.ts`, `quotations.service.ts` `syncResources`) accepts code-less lines and cents on any line, so another client (mobile, a script) can save what the web would refuse. Should the server enforce both? If so: (a) look the item's billing code up itself, or trust the client's `pricingSource`; (b) custom types only, or every resource type; (c) keep the TCG-218 exceptions — a "Price Adjustment" line inside a Mobilization/Demobilization group may be code-less with a cents rate (D9a, Q38b).
+- **Sources checked:** TCG-218 spec REQ-13, D9a, Q38; `units.md` U6 test row (which assumed server rejection).
+- **Owner:** ticket owner of a follow-up ticket (none yet).
