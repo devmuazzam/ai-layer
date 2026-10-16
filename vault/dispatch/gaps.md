@@ -975,6 +975,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register.
 - **Why it lands here too:** the DAS half of the pair is a **dispatch affordance** — UAT 6 asks for *"an option to change craft code in DAS"*, i.e. the dispatcher overriding a rate-bearing attribute on the board. The rate rule it collides with is payroll's: [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md) (`verified`) gives the day's craft to *"the crane superintendent or payroll — **never the employee**"*, and says nothing about a dispatcher.
 - **Read:** [../payroll/gaps.md → *Primary craft code constrained to the employee type, and changing a craft code in DAS*](../payroll/gaps.md#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das)
+- Update 2026-10-16: that entry now carries the slot-type half (may dispatch set a day's craft on a **non-Operator/Oiler** seat?). Built meanwhile: the DAS craft pill shows on every employee slot, editable only on Operator/Oiler seats (developer decision, Jahanzaib Nadeem).
 
 ## Support vehicle for an untracked crane — pointer, owned by assets
 
@@ -1693,3 +1694,52 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   a day where a held item is deliberately not sent.
 - **Blocked:** a held-only day where the yard holds the item back.
 - **Owner:** Lisette Anzaldo (dispatch); Dylan Masterson (yard) for the yard flow.
+
+## "Same resources" onto shift 2 drops the craft picked on shift 1
+
+- **Status:** open
+- **Asked:** 2026-10-16 — review of DAS craft-pill work by Jahanzaib Nadeem (tcg branch
+  `fix/14-oct-uat`, no ticket). Pre-existing behaviour.
+- **Question:** ticking *Same resources* copies shift 1's people onto shift 2 as drafts
+  (`buildShift2Copies`,
+  `apps/web/src/features/das/middle-section/jobs/hooks/use-sub-job-allocation-controller.helpers.ts`).
+  The copy carries the employee but **not the craft picked for shift 1** (no `craftCodeId`). So
+  an Oiler working an Operator seat on a secondary craft lands on shift 2 under their PRIMARY:
+  the shift-2 pill shows the PRIMARY, and Save then raises the role-mismatch popup again. Should
+  shift 2 inherit shift 1's picked craft?
+- **Sources checked:** [../decisions/2026-09-28-boom-union-follows-the-worked-craft.md](../decisions/2026-09-28-boom-union-follows-the-worked-craft.md)
+  clause 5 (`reference`, provisional): dispatch sets the day's craft when seating. Silent on a
+  second shift.
+- **Owner:** Lisette Anzaldo (dispatch).
+
+## Which state locks the DAS board — the web and the API disagree
+
+- **Status:** open
+- **Asked:** 2026-10-16 — same review. Pre-existing behaviour.
+- **Question:** the API refuses allocation edits when the sub-job is `TICKET_SENT` **or**
+  `ticketsLocked` (`das-allocations.service.ts:267` and `:688`), except a slot whose ticket was
+  REJECTED. The board only goes read-only when the job is cancelled or tickets are sent
+  (`job-list-item-expanded.tsx:81`, `isLocked = isCancelled || isTicketSent`). On a sub-job that
+  is `ticketsLocked` but not sent, the board accepts a drop or a craft change that the save then
+  refuses. Copy Allocation already treats `ticketsLocked` as locked
+  (`copy-allocation.utils.ts:70`). Should the board lock on `ticketsLocked` too?
+- **Sources checked:** nothing written defines `ticketsLocked` from the dispatcher's side; the
+  code is the only record.
+- **Owner:** Lisette Anzaldo (dispatch).
+
+## A craft picked on a draft is assigned to the employee at once — even if the draft is cancelled
+
+- **Status:** open
+- **Asked:** 2026-10-16 — same review. Pre-existing in the role-mismatch popup; the craft pill on
+  unsaved slots (same branch) reaches it too.
+- **Question:** both DAS craft pickers use the shared `CraftCodePickerModal`. Picking a craft the
+  employee does not hold **first saves it as their SECONDARY** craft assignment
+  (`apps/web/src/features/craft-codes/components/craft-code-picker-modal.tsx`, `handleSave`), and
+  only then hands it to the slot. On a saved slot that is one action. On an **unsaved draft**,
+  Cancel discards the draft but the employee keeps the new SECONDARY on their master record. Is
+  that acceptable, should cancelling undo it, or should a draft only offer crafts the employee
+  already holds?
+- **Sources checked:** [../decisions/2026-08-20-craft-locked-rate-override.md](../decisions/2026-08-20-craft-locked-rate-override.md)
+  (`verified`): the day's craft comes from a secondary assignment; it does not say who may
+  create one. [../payroll/gaps.md → *Primary craft code constrained to the employee type, and changing a craft code in DAS*](../payroll/gaps.md#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das).
+- **Owner:** Lisette Anzaldo (dispatch), with Corrina Bustos (craft assignments are payroll's).
