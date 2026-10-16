@@ -401,6 +401,19 @@ it depends on. This ticket has **no** `kind: foundation` unit: every schema chan
 
 ---
 
+## U4d — The item itself is the first line of its Mobilization/Demobilization pair
+
+- **Outcome:** On an Hourly w/ Mob quote, picking an item that gets a pair (Q32b: it has a Sub item) also puts that item as the first line of its Mobilization group at quantity 0, priced like any new group line, with its Demobilization twin at 0; the item stays as its own line on top.
+- **Kind:** vertical (web only)
+- **Requirements covered:** REQ-07 as amended by §12 **Q42**; REQ-08, REQ-11, REQ-22 for that line.
+- **Depends on:** U4 (merged), U6 (merged — twin rules). Independent of U7.
+- **Branch / PR base:** `feat/TCG-218-u4d-crane-in-mob` from `origin/main`.
+- **Size estimate:** ~60–120 source lines, 2–4 files (`resources-tab.mob-layout.ts` builder; type-switch re-layout if it builds groups separately).
+- **Reviewable as:** pick the 100 Ton crane on an Hourly w/ Mob quote → crane, Travel Permit under it, then Mobilization [100 Ton crane 0, Operator Load 0], Demobilization [100 Ton crane 0, Operator Load 0]; re-pick refills (Q33b); removing the crane removes the pair (Q31); Hourly → Hourly w/ Mob switch (U5b) builds the same; an item with no Sub items gets no pair (Q32b).
+- **Deliberately not in this unit:** FCC block comments; mobile (TCG-219); customer documents (U8).
+
+---
+
 ## U8 — Customer documents: Mob/Demob lines only
 
 - **Outcome:** The quote PDF, browser print, quotation email and signing flow show the main items and the Mobilization/Demobilization group lines (visits as Qty, per-visit rate, amount) and never the lines inside; discount, price-hike and surcharge foot lines still include the children's amounts; the in-app detail view still shows the lines.
@@ -485,6 +498,8 @@ it depends on. This ticket has **no** `kind: foundation` unit: every schema chan
 - **Behind a flag:** no.
 - **Touches existing data:** no — default `REQUIRED` equals today's behaviour for every existing job.
 - **Blast radius:** the dispatch board and every conversion; if wrong, a machine silently has no slot.
+
+> **U4d ripple (Q43, 2026-10-16):** a Mobilization group now starts with the crane itself (same `subCategoryId` as the crane line). Key "lines inside Mob/Demob -> `NONE`" on the parent group, never on the sub-category, so that line is not read as extra equipment or a second crane slot; cover it in this unit's checks.
 
 ### Ripple — what already works that this unit reaches
 

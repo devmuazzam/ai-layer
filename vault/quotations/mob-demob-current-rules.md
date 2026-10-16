@@ -3,7 +3,7 @@ title: Mob/Demob — current rules (index of decisions)
 source: generated/decision-index — tcg-scrum, 2026-10-09
 status: reference
 kind: index
-updated: 2026-10-09
+updated: 2026-10-16
 conflicts_with: []
 tags: [module/quotations, module/assets, module/dispatch, kind/reference, mob-demob, pricing]
 ---
@@ -31,7 +31,8 @@ Haris (CodingCops, Linear TCG-218/TCG-220) · **CodingCops** = another CodingCop
 | Same for Demobilization; only Mob/Demob multiply (Crane Time ×1); discount, surcharge, price hike scale × visits; one total on every surface; margin × visits | ticket owner | visits 4–8 |
 | A one-off cost that must not repeat per visit goes on its own line outside the group | ticket owner | visits 9 |
 | Only the "Price Adjustment" item (FCC `PA`) is hand-priced without a billing code inside Mob/Demob; may carry cents | ticket owner, confirmed 2026-10-09 "q13: yes" (client named the line) | [Price Adjustment](../decisions/2026-10-08-only-the-price-adjustment-custom-type-is-hand-priced-in-a-mob-demob-group.md) — supersedes [10-07 any custom type](../decisions/2026-10-07-unbilled-custom-type-in-a-mob-demob-group-is-a-price-adjustment.md) |
-| Quotation Type Hourly / Hourly w/ Mob, chosen once per quote; confirm before a switch that changes rows; existing quotes are Hourly | ticket owner | [type](../decisions/2026-10-06-quotation-type-hourly-or-hourly-with-mob.md) |
+| Quotation Type Hourly / Hourly w/ Mob, chosen once per quote; confirm before a switch that changes rows; existing quotes are Hourly | ticket owner | [type](../decisions/2026-10-06-quotation-type-hourly-or-hourly-with-mob.md) (point 3 amended 2026-10-16) |
+| Hourly w/ Mob: the item itself is the first line of its own Mobilization group (qty 0, priced like any new group line), Demob twin at 0; it also stays its own line on top; only an item with a Sub item gets a pair; no FCC per-block comments | ticket owner, 2026-10-16 (Q42) | [item in its pair](../decisions/2026-10-16-hourly-w-mob-item-is-first-line-of-its-own-mob-demob-pair.md) — amends type point 3 |
 | Two cranes on one job: one quote, a Mob/Demob per crane, labelled e.g. "100 Ton Crane – Mobilization"; one invoice | client (label form: ticket owner) | [two cranes](../decisions/2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md) 1–3 |
 | Alternative options and phases are separate quotes under one project | client | same, 5 |
 

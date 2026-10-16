@@ -14,9 +14,16 @@ decided_by: >-
   2026-10-07; ported to overlay main 2026-10-09. Built on branch feat/association-document-visibility,
   under review.
 status: reference
+provenance_note: >-
+  POINT 3 AMENDED 2026-10-16 by the same ticket owner (TCG-218 Q42) — see
+  decisions/2026-10-16-hourly-w-mob-item-is-first-line-of-its-own-mob-demob-pair.md (status:
+  reference). On Hourly w/ Mob the Mobilization and Demobilization groups now hold the item itself
+  (first line, quantity 0) then its Sub items, not its Sub items alone. Points 1, 2, 4 and 5 stand.
+  Status stays reference; the note is amended, not superseded. Point 3's original text is kept below.
 conflicts_with: []
 resolves: []
 related_decisions:
+  - 2026-10-16-hourly-w-mob-item-is-first-line-of-its-own-mob-demob-pair.md
   - 2026-10-01-mob-demob-lines-quantities-and-placement-on-the-quote.md
   - 2026-10-06-association-quote-visibility-hourly-and-mob-demob-settings.md
   - 2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md
@@ -40,6 +47,9 @@ Syed Haris (ticket owner):
      rows its parent shows).
    - **Hourly w/ Mob:** the item alone, then its Main items as their own lines, then the
      Mobilization and Demobilization groups (its Sub items) at the bottom.
+
+   > **Amended 2026-10-16 (Q42):** the groups hold **the item itself, then its Sub items** — see
+   > [Amendment — 2026-10-16](#amendment--2026-10-16) below.
 4. **Switching type rebuilds the rows.** The user confirms first **when the switch will change
    rows**; a switch with nothing to rebuild happens silently. Manual edits may be discarded only
    after that confirmation (Q15, refined 2026-10-07).
@@ -81,6 +91,19 @@ The ticket owner gave no stated reason for "once per quotation".
 *"Is Hourly vs Hourly w/ Mob chosen once for the whole quotation, or can one quotation mix an hourly
 crane with a mob/demob crane?"* The ticket owner answers **once per quotation**.
 
+## Amendment — 2026-10-16
+
+**Point 3, Hourly w/ Mob, amended by the same ticket owner** (Syed Haris, TCG-218 Q42, 2026-10-16,
+Claude Code session): picking an item on an Hourly w/ Mob quote also puts **the item itself as the
+first line of its own Mobilization group** (same item, priced like any new group line — customer
+price list, else billing code — at quantity 0), with its Demobilization twin at 0. The item also
+stays as its own line on top. Only an item with at least one Sub item gets a pair (Q32b unchanged).
+FCC's per-block comments are not adopted. Point 3 now reads, in effect: *the item, then its Main
+items as their own lines, then the Mobilization and Demobilization groups (the item itself, then its
+Sub items) at the bottom.* The text above is kept as it was decided. Full record:
+[2026-10-16-hourly-w-mob-item-is-first-line-of-its-own-mob-demob-pair.md](2026-10-16-hourly-w-mob-item-is-first-line-of-its-own-mob-demob-pair.md).
+
 ## Effect on the vault
 
 - No status flips. No register entry was closed.
+- 2026-10-16: point 3 amended (see above); this note stays `reference`, not superseded.
