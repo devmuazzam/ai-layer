@@ -2706,3 +2706,11 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   and [../admin/gaps.md#social-media-icon-rows-removed-from-ticket-and-pre-quote-emails--intended](../admin/gaps.md#social-media-icon-rows-removed-from-ticket-and-pre-quote-emails--intended).
   Filed 2026-10-13 from tcg branch `fix/13-oct-uat` (TCG-37).
 - **Owner:** product team
+
+## Should the API enforce billing codes and whole-dollar rates on quote lines?
+
+- **Status:** open
+- **Asked:** 2026-10-16 — raised by tcg-executor building TCG-218 U6 (spec §12 Q38c); deferred by the ticket owner (Syed Haris: "No, follow-up").
+- **Question:** today only the web blocks a quote line with no billing code ("Billing Code missing.") and rounds ordinary rates to whole dollars; the API (`create-quotation.dto.ts`, `quotations.service.ts` `syncResources`) accepts code-less lines and cents on any line, so another client (mobile, a script) can save what the web would refuse. Should the server enforce both? If so: (a) look the item's billing code up itself, or trust the client's `pricingSource`; (b) custom types only, or every resource type; (c) keep the TCG-218 exceptions — a "Price Adjustment" line inside a Mobilization/Demobilization group may be code-less with a cents rate (D9a, Q38b).
+- **Sources checked:** TCG-218 spec REQ-13, D9a, Q38; `units.md` U6 test row (which assumed server rejection).
+- **Owner:** ticket owner of a follow-up ticket (none yet).
