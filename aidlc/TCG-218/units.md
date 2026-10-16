@@ -587,3 +587,16 @@ Quote side lands first (U1–U8), dispatch side last (U9–U10).
 - **First unit to ship:** **U1.** It proves the plan's riskiest shared assumptions at the smallest size: a migration with a backfill over existing rows, an in-place DTO extension (D10) that reaches web and mobile contracts, both association writers (sibling 1) agreeing, and the contract-tracer and guardian reviews working on this ticket. Every later unit reads these flags.
 
 **Totals (estimates):** ~3,110 source lines across ~139 source files in 10 PRs (tests, migrations excluded). Five units flagged at risk of the 400-line budget (U2, U4, U7, U8, U9), each with a named split line above.
+
+---
+
+## U11 — Freeze the asset configuration with the quote (Q51)
+
+- **Outcome:** A quote stores the crane's asset configuration when it is saved; quote -> job conversion (materialization, U9 dispatch) and the dispatch board's missing-required-components check use that stored copy, so changing an asset configuration only affects quotes saved afterwards.
+- **Kind:** vertical
+- **Requirements covered:** §12 Q51.
+- **Depends on:** U9 (dispatch classification reads the configuration), U10.
+- **Branch / PR base:** `feat/TCG-218-u11-config-snapshot` from `origin/main`.
+- **Size estimate:** not estimated — shape open (Q51).
+- **Developer decisions needed before build:** snapshot shape, contents, refresh moment, job copy, legacy quotes/jobs (Q51 "Open for U11"). Schema change -> `tcg-prisma-guardian`; contract -> `tcg-contract-tracer`.
+
