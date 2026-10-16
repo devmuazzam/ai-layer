@@ -742,6 +742,30 @@ Enumerated by: `git grep -n -E 'toAdpWorkbookRows|findEmployeesMissingAdpFile|bu
 - **Resolution (Decided by: Ali Riaz, 2026-10-16):** candidate (a), narrowed to **per-entry/per-date** — the employee base rate is the **primary (home) craft rate for each job-day's own date**, NOT a weekly figure, so there is no weekly effective-date rule to decide. Built in U5a: `CraftRateResolverService.applyPrimaryRateFloor` now exposes the primary-craft rate it already resolves (independent of the floor-vs-worked choice) on `ResolvedRate.homeCraftRate`; it is carried on `PayrollJobDayInput.homeCraftRate`, echoed onto `CalculatedJobDay.homeCraftRate`, persisted on **`PayrollJobDay.home_craft_rate`** (nullable `Decimal(10,4)`, no backfill) alongside `applied_craft_rate`, and read back on rebuild. The `PayrollEmployeeWeek` column in the original candidate (a) is therefore NOT added — the comparison lives per job-day. U5c compares `applied_craft_rate != home_craft_rate` per entry. `tcg-prisma-guardian` verdict on both columns: SAFE (2026-10-16).
 - **Status:** resolved — see Resolution (Decided by Ali Riaz 2026-10-16).
 
+### Q32 — Raised by the executor (U5b): does a base-rate override apply to ALL the employee's hours, or carry an explicit scope?
+- **Question:** U5b stores a PM/PA manual base-rate override at the grain **(period, employee)** (grain Decided by Ali Riaz 2026-10-16) and the exporter (U5c) will pay that employee's hours at the override rate. U5b was built with the caller's stated default — the override applies to **all** of that employee's L12_FIELD hours for the period — and does **not** carry an "applies to all hours vs a subset" flag. Is always-all correct, or should the override carry an explicit scope (e.g. a craft, a job, or a per-entry selection)?
+- **Why it cannot be answered from what is written:** the SCRUM-928 "special agreement" concept is not specified at entry grain in the vault; U5's `units.md` explicitly deferred it ("no ERP field; not built"). The caller gave always-all as the build default but asked that it be surfaced, not decided.
+- **Blocked:** nothing in U5b (store + API shipped on the always-all model — no scope column). If the answer is "needs a scope", that is a new column + migration (a `tcg-prisma-guardian` change) and a change to U5c's emission.
+- **Candidates:** (a) always-all (built); (b) add an explicit scope column (craft / job / entry).
+- **Owner:** Ali Riaz.
+- **Status:** open.
+
+### Q33 — Raised by the executor (U5b): is the override's note/reason field required, and is there a length cap?
+- **Question:** U5b's `payroll_base_rate_override.note` was built as **optional** (`String? @db.Text`, per the caller's schema), and the Set DTO caps the input at **1000 characters** (`@MaxLength(1000)`) — a defensive guard the spec does not state. Should the "special agreement" memo be **required** (a special-agreement override arguably must say why), and is 1000 the right input cap (or unbounded, since the column is `TEXT`)?
+- **Why it cannot be answered from what is written:** nothing in the vault or the caller's note fixes whether the reason is mandatory or how long it may be; the 1000-char cap is the executor's unstated assumption.
+- **Blocked:** nothing (built optional + 1000-cap). Making it required is a DTO `@IsNotEmpty` + a NOT NULL migration; changing the cap is one decorator.
+- **Candidates:** (a) optional, 1000-char cap (built); (b) required; (c) different / no cap.
+- **Owner:** Ali Riaz.
+- **Status:** open.
+
+### Q34 — Raised by the executor (U5b): which bound does the override rate carry — the column bound or the ADP Temp-Rate bound?
+- **Question:** `override_rate` is `DECIMAL(10,4)` (max 999999.9999) and the Set DTO validates `> 0` and `<= 999999.9999` (the column bound, per the caller's "within the Decimal(10,4) bound"). But U5's `units.md`/v5.1 engine doc bounds the ADP **Temp Rate** at `0 < rate <= 999.9999`, and U5c will emit this value as a Temp Rate. Should U5b (or U5c's validation) tighten the accepted rate to `<= 999.9999` so an out-of-ADP-range override cannot be stored and then fail only at export?
+- **Why it cannot be answered from what is written:** the caller scoped U5b's validation to "positive + Decimal(10,4) bound"; the tighter ADP Temp-Rate bound lives in the U5 engine doc and governs U5c, not U5b. The two disagree on the cap and the executor must not silently pick the tighter one.
+- **Blocked:** nothing (built to the column bound). Tightening is one `@Max` change here, or a validation in U5c.
+- **Candidates:** (a) keep the column bound in U5b, let U5c enforce the ADP bound; (b) tighten U5b's DTO to `<= 999.9999` now.
+- **Owner:** Ali Riaz / Brian (ADP bound).
+- **Status:** open.
+
 ## 12.5 Developer resolutions (2026-10-15)
 
 All 18 §12 questions were answered by the developer. **Decided by: Ali Riaz, 2026-10-15.**
