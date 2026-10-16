@@ -590,7 +590,20 @@ Quote side lands first (U1–U8), dispatch side last (U9–U10).
 
 ---
 
-## U11 — Freeze the asset configuration with the quote (Q51)
+## U11 — Freeze the asset configuration with the quote (Q51) — split into U11a + U11b
+
+> **Split 2026-10-16 (Syed Haris):** U11a schema + API; U11b web, stacked on U11a. Shape decided in spec §12 Q51 ("U11 shape").
+
+### U11a — Snapshot taken, copied and used by the API
+- **Outcome:** a quote stores its items' asset configuration in `quotations.configuration_snapshot` when first sent to the client (or at conversion if never sent), never refreshed; conversion (materialization, U9 dispatch) uses it and copies it to `jobs.configuration_snapshot`; the board's missing-components check reads the job's copy; anything without a snapshot uses the live configuration.
+- **Branch:** `feat/TCG-218-u11a-config-snapshot-api` from `origin/main`. Schema -> `tcg-prisma-guardian`; contract -> `tcg-contract-tracer`.
+- **Shipped 2026-10-16:** as two stacked PRs — **U11a-1** #810 (schema, snapshot reader/taker, send hooks, conversion readers, copy to job) and **U11a-2** #811 (DAS board reads the job's copy, snapshot only on the quotation detail, Mark as Won takes it — Q58). Both merged to main.
+
+### U11b — The Resources tab reads the snapshot once a quote has one
+- **Outcome:** on a quote with a snapshot, picking/re-picking an item, the auto-filled Mob/Demob lines and the Quotation Type switch use the snapshot's configuration instead of the live one; quotes without a snapshot unchanged.
+- **Branch:** `feat/TCG-218-u11b-config-snapshot-web` from `origin/main` (U11a is merged).
+
+### (original U11 entry)
 
 - **Outcome:** A quote stores the crane's asset configuration when it is saved; quote -> job conversion (materialization, U9 dispatch) and the dispatch board's missing-required-components check use that stored copy, so changing an asset configuration only affects quotes saved afterwards.
 - **Kind:** vertical
