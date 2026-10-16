@@ -115,9 +115,8 @@ answered here.
 1. ~~Was the worksheet deleted?~~ **Yes** — confirmed by syed.haris on 2026-10-15 (deleted by
    payroll in the WFN UI; the API cannot delete or read a batch, request `672204`). Every future test
    needs the same manual delete before the week is calculated.
-2. **Events.** No event was subscribed, so this test says nothing about notifications. ADP said on
-   2026-10-07 that none fire for pay data ([adp-event-notifications.md](adp-event-notifications.md)).
-   A second test to settle it is requested (§6).
+2. ~~**Events.**~~ **Settled by the second test (§7): no event for an edit.** The approval half runs
+   on 2026-10-20.
 3. **Untested code families:** `SUB` (earnings amount), foreman `FR*`, military `ML*`, lattice,
    `SIC`, holiday, and an override (`BASE_RATE_OVERRIDE`) row.
 4. **Batch totals** — what `ADP_Preview Batch Totals` sums, so the ERP can match it (§4).
@@ -163,6 +162,55 @@ Plan:
 - **Expected:** nothing. ADP said no pay-data events fire (request `672204`), and the catalogue has
   no *payroll approved / processed* event. An empty queue confirms the ERP must track worksheet
   status by hand; a message would show ADP's answer is out of date.
+
+## 7. Second test — result (2026-10-16 PT / 2026-10-17 PKT)
+
+The agreed morning slot slipped. syed.haris asked Micaela Dipane whether she was still free that
+Friday (*"Hi! No worries! Yes I am!"*) and the test ran in the Pacific afternoon. Times below are
+PKT; Pacific was 12 hours earlier, still 2026-10-16.
+
+| When (PKT, 10/17) | What |
+| --- | --- |
+| before | *TCG ERP Integration* subscribed to **`pay-data-input.modify`** (API Central → project → APIs → **Events (1)**, the event shows *Included*); delivery **Polling — Active**, webhook untouched. Baseline `GET /core/v1/event-notification-messages` → **204** (empty). Dry run: open period **`2026-43`** (`2026-10-10` → `2026-10-16`, pay date `2026-10-22`), the same three file numbers, 6 / 8 / 7 lines |
+| ~01:14 | `POST pay-data-input.modify`, batch **`TCGAPITEST20261016`** (named for Micaela's date, not the local one), the same week-41 figures as §2 → **HTTP 200**, the same bare echo as §3: no `confirmMessage`, no ADP batch name, no status. Queue straight after → **204** |
+| ~01:38 | **Micaela Dipane**, verbatim: *"I changed Brad #459 from 23.5 to 21.5 Regular hours and Travis #288 from 40 to 30 regular hours!"* — and, asked, confirmed she **saved** the worksheet (*"Yes I did!"*) |
+| 01:23 → 02:12 | Queue polled every ~5 minutes, plus on demand: **204 every time — 0 messages**, for ~35 minutes after the saved edit |
+| ~02:00 | syed.haris told the group chat (Brian Petros is in it) the result and asked Micaela to delete the worksheet. **Deletion not yet confirmed when written** |
+
+**Result — the edit sends nothing.** A practitioner editing and saving an API-posted worksheet
+produces no event, even with `pay-data-input.modify` subscribed and polling active. That matches
+ADP's Known Issue (*"Event notification is not supported"*, Payroll Data Input guide, added May
+2020) and request `672204` point 8. The subscription itself is real (Events (1), *Included*); the
+queue answers 204, not an auth error. **The ERP cannot learn of a change made in ADP after it posts.**
+
+**No event exists for payroll status either.** The full catalogue (all 10 domains, 147 events) has
+**no event path containing `payroll` or `payroll-job`**; `job` matches only four Staffing events.
+`payroll-job-status.change`, which a third-party connector (StackOne) lists for Workforce Now, is not
+offered to this project. So the 2026-10-20 approval check is expected to be empty too; it is still
+worth one poll after Micaela's message.
+
+**The read side is closed as well.** Read-only probes on 2026-10-17 (`get.sh`, appendix):
+
+| Call | Result |
+| --- | --- |
+| `GET /payroll/v2/payroll-output` | **403** `Invalid Scope` |
+| `GET /payroll/v1/payroll-output` | **403** `Invalid Scope` |
+| `GET /payroll/v1/workers/{aoid}/pay-statements` | **403** `Invalid Scope` |
+
+and **Discover APIs** (intent *Read or Write*, all domains) finds nothing for `payroll-output`,
+`output`, `pay-statement` or `statement`. So ADP's point 9 (*"The Payroll Output API can be used
+for getting details for preview complete for final payrolls"*) is **not available on TCG's API
+Central project** — consistent with the 2026-08-18 finding that it is Marketplace-partner-only
+([adp-read-write-boundary-2026-08-18.md](adp-read-write-boundary-2026-08-18.md) §1). syed.haris
+replied to Nate on request `672204` (2026-10-17 1:57 AM PKT) asking whether it can be enabled, or
+whether any other API shows a worksheet's status or contents after posting, and forwarded the whole
+thread to Brian Petros.
+
+**What the ERP can know today:** that it posted (the 200). Nothing after — not an edit, not a
+delete, not a calculation, not an approval. Two process options remain, for Brian Petros and
+Corrina Bustos to choose (not decided): corrections are made **only in the ERP** and re-sent
+(`Append` updates an existing batch — point 1), or payroll **confirms or marks changes in the ERP**
+after approving in ADP. Recorded as open in [gaps.md](gaps.md).
 
 ---
 
@@ -288,4 +336,70 @@ doc = {'events': [{'data': {
 }}]}
 json.dump(doc, sys.stdout, indent=2)
 print()
+```
+
+### `poll-events.sh` (added 2026-10-17)
+
+```bash
+#!/usr/bin/env bash
+# Drain the ADP event-notification queue (polling delivery). Same credentials.conf as adp-test.sh.
+# Each GET returns ONE message (200 + adp-msg-msgid header) or 204 when empty.
+# Every message is saved to out/events/ and then acknowledged with DELETE so the queue advances.
+# KEEP=1 saves without deleting (re-read the same message).
+set -euo pipefail
+[ -f "$(dirname "$0")/credentials.conf" ] && { set -a; . "$(dirname "$0")/credentials.conf"; set +a; }
+: "${ADP_CLIENT_ID:?}" "${ADP_CLIENT_SECRET:?}" "${ADP_CERT:?}" "${ADP_KEY:?}"
+OUT=${OUT:-"$(dirname "$0")/out/events"}; mkdir -p "$OUT"
+MTLS=(--cert "$ADP_CERT" --key "$ADP_KEY")
+
+TOKEN=$(curl -sS "${MTLS[@]}" -X POST https://accounts.adp.com/auth/oauth/v2/token \
+  -u "$ADP_CLIENT_ID:$ADP_CLIENT_SECRET" -d grant_type=client_credentials | jq -r .access_token)
+[ "$TOKEN" != null ] || { echo "no token"; exit 1; }
+AUTH=(-H "Authorization: Bearer $TOKEN" -H "Accept: application/json")
+
+n=0
+while :; do
+  stamp=$(date +%Y%m%d-%H%M%S)
+  HTTP=$(curl -sS "${MTLS[@]}" "${AUTH[@]}" -D "$OUT/$stamp.headers" -o "$OUT/$stamp.json" \
+    -w '%{http_code}' https://api.adp.com/core/v1/event-notification-messages)
+  if [ "$HTTP" = 204 ]; then rm -f "$OUT/$stamp.headers" "$OUT/$stamp.json"; echo "queue empty (204) — $n message(s) read"; break; fi
+  if [ "$HTTP" != 200 ]; then echo "HTTP $HTTP"; cat "$OUT/$stamp.json"; echo; exit 1; fi
+  MSGID=$(grep -i '^adp-msg-msgid:' "$OUT/$stamp.headers" | cut -d' ' -f2 | tr -d '\r')
+  n=$((n+1))
+  echo "== message $n  id=$MSGID  saved $OUT/$stamp.json"
+  jq '[.events[]? | {event: .eventNameCode.codeValue, status: .eventStatusCode.codeValue, recorded: .recordDateTime, actor: .actor.formattedName}]' "$OUT/$stamp.json" || cat "$OUT/$stamp.json"
+  if [ "${KEEP:-0}" = 1 ]; then echo "KEEP=1: not acknowledging"; break; fi
+  [ -n "$MSGID" ] || { echo "no adp-msg-msgid header; stopping"; break; }
+  curl -sS "${MTLS[@]}" "${AUTH[@]}" -o /dev/null -w "DELETE %{http_code}\n" \
+    -X DELETE "https://api.adp.com/core/v1/event-notification-messages/$MSGID"
+  sleep 1
+done
+```
+
+### `get.sh` — read-only probe (added 2026-10-17)
+
+```bash
+#!/usr/bin/env bash
+# Read-only probe: GET one ADP path, save the body to out/probe/, print status + response shape only
+# (keys and array lengths, never values — payroll responses carry real pay data).
+# usage: ./get.sh '/payroll/v2/payroll-output?$filter=...'
+set -euo pipefail
+[ -f "$(dirname "$0")/credentials.conf" ] && { set -a; . "$(dirname "$0")/credentials.conf"; set +a; }
+: "${ADP_CLIENT_ID:?}" "${ADP_CLIENT_SECRET:?}" "${ADP_CERT:?}" "${ADP_KEY:?}"
+OUT=${OUT:-"$(dirname "$0")/out/probe"}; mkdir -p "$OUT"
+MTLS=(--cert "$ADP_CERT" --key "$ADP_KEY")
+TOKEN=$(curl -sS "${MTLS[@]}" -X POST https://accounts.adp.com/auth/oauth/v2/token \
+  -u "$ADP_CLIENT_ID:$ADP_CLIENT_SECRET" -d grant_type=client_credentials | jq -r .access_token)
+for path in "$@"; do
+  f="$OUT/$(date +%H%M%S)-$(echo "$path" | tr -c 'A-Za-z0-9' '_' | cut -c1-80).json"
+  # pass the path already URL-encoded (spaces as %20); -g stops curl globbing [] and {}
+  code=$(curl -sS -g "${MTLS[@]}" -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
+    -o "$f" -w '%{http_code}' "https://api.adp.com${path}")
+  echo "== $code  GET $path  -> $f"
+  if jq -e . "$f" >/dev/null 2>&1; then
+    # errors are safe to show in full; success bodies only as a shape
+    if [ "${code:0:1}" != 2 ]; then jq -c '.confirmMessage // . | {status: .requestStatusCode?, msgs: [.resourceMessages[]?.processMessages[]? | {id: .processMessageID?.idValue?, text: .userMessage?.messageTxt?}]} // .' "$f" | cut -c1-600
+    else jq -c '[paths(type != "object" and type != "array")] | map(map(if type=="number" then "[]" else . end) | join(".")) | unique | .[:40]' "$f"; fi
+  else head -c 300 "$f"; echo; fi
+done
 ```

@@ -564,7 +564,9 @@ what happens when a practitioner edits the batch — and right now neither draft
 8. ~~Confirm whether a payroll output / results API is available on TCG's product.~~ **Answered
    2026-10-07 (request `672204`):** ADP points to the WFN **Payroll Output API** ("preview complete"
    and final payrolls). This corrects §*So: can the ERP be the system of record?* item 3. Whether
-   it is entitled on the *TCG ERP Integration* project has not been checked.
+   it is entitled on the *TCG ERP Integration* project has not been checked. **Checked 2026-10-17: it
+   is not** — `403 Invalid Scope`, and absent from *Discover APIs*
+   ([adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §7). Enablement asked of ADP.
 
 Request `672204` also settled: no `workDate`; credentials can be limited by company code and
 employee; Batch ID is alphanumeric, and ADP appends its own characters to it. Item 5's
