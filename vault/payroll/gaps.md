@@ -799,6 +799,17 @@ someone has confirmed otherwise.
   above that only ADP Link has one. So the ERP may be able to read *what was paid* after the fact,
   even though it is never told about an edit. Not yet checked: whether that API is entitled on the
   *TCG ERP Integration* project, and what its responses contain. Owner: CodingCops.
+- Update 2026-10-17 ([adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §7): **checked — not entitled, and no event either.** The edit test
+  confirmed no event fires when payroll edits a posted worksheet. `GET /payroll/v2/payroll-output`,
+  `/payroll/v1/payroll-output` and `/payroll/v1/workers/{aoid}/pay-statements` all return **403
+  `Invalid Scope`**, and *Discover APIs* lists no payroll-output or pay-statement API in any domain —
+  the 2026-08-18 *Marketplace-partner-only* reading holds. syed.haris asked ADP (request `672204`,
+  2026-10-17) whether it can be enabled or what else shows a worksheet's status, and forwarded the
+  thread to Brian Petros. **Until ADP answers, the question as asked has no technical answer: the
+  ERP does not find out.** What remains is a **process decision for Brian Petros / Corrina Bustos,
+  not yet asked or made**: (a) corrections happen only in the ERP and are re-sent (`Append` updates
+  an existing batch, request `672204` point 1), or (b) payroll marks the week approved and records
+  any ADP-side change in the ERP after approving. Owner: syed.haris to put (a)/(b) to the client.
 
 ## Excel or API — the ADP submission path is not decided
 
@@ -1108,6 +1119,15 @@ someone has confirmed otherwise.
   moves to the next payroll, *"uploaded and approved on Tuesday"* (**2026-10-20**), and she will
   message once it is approved in ADP. syed.haris confirmed the upload for about the same time as
   the first test (~7:30 AM PT / 7:30 PM PKT, 2026-10-16).
+- Update 2026-10-17 (the test ran, [adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §7): **answered — no event fires on an edit.** With
+  `pay-data-input.modify` subscribed and polling active, batch `TCGAPITEST20261016` was posted and
+  Micaela Dipane edited and **saved** two lines (`000459` R 23.5 → 21.5, `000288` R 40 → 30); the queue
+  returned **204** on every poll for ~35 minutes after. ADP's Known Issue and request `672204` point 8
+  stand; the catalogue's `pay-data-input.modify` entry is never delivered for Workforce Now. The new
+  lead above is also closed: **no event path in the 147 contains `payroll`** (all 10 domains searched),
+  so there is no payroll-run, payroll-job-status or approval event on this project. The 2026-10-20
+  approval poll is a formality.
+- **Status:** resolved 2026-10-17 — no pay-data or payroll-status event reaches the ERP.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires](gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires)
 
