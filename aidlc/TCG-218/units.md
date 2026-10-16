@@ -615,8 +615,9 @@ Quote side lands first (U1–U8), dispatch side last (U9–U10).
 - **Developer decisions needed before build:** snapshot shape, contents, refresh moment, job copy, legacy quotes/jobs (Q51 "Open for U11"). Schema change -> `tcg-prisma-guardian`; contract -> `tcg-contract-tracer`.
 
 
-## U12 — Mob/Demob customer lines print net of their inner adjustments (Q45-2)
+## U12 — Customer documents print every line net of its discount and price hike (Q45-2, widened 2026-10-17)
 
 - **Outcome:** on the customer PDF, the browser print and the delivery email's line list, a Mobilization/Demobilization line's Rate (= Amount ÷ visits) and Amount are **after** the discounts / price hikes of the ticked lines inside it, and those inner adjustments no longer feed the customer's Discount / Price Hike foot rows; totals are unchanged. Internal screens (Resources tab, detail, approval-reason box) keep showing the inner adjustments. Crane Time and every other line are unchanged.
 - **Source:** spec §12 Q45 (Joe's 2026-10-17 reply, read by Syed Haris).
 - **Branch:** `feat/TCG-218-u12-mob-net-customer-lines` from `origin/main`.
+- **Widened 2026-10-17 (Syed Haris, after Joe's reply in Q45):** every line, not only Mob/Demob, prints net of discount and price hike with a net Rate; no Discount / Price Hike foot rows on customer documents; Surcharge row unchanged.
