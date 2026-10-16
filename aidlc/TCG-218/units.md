@@ -596,6 +596,7 @@ Quote side lands first (U1–U8), dispatch side last (U9–U10).
 
 ### U11a — Snapshot taken, copied and used by the API
 - **Outcome:** a quote stores its items' asset configuration in `quotations.configuration_snapshot` when first sent to the client (or at conversion if never sent), never refreshed; conversion (materialization, U9 dispatch) uses it and copies it to `jobs.configuration_snapshot`; the board's missing-components check reads the job's copy; anything without a snapshot uses the live configuration.
+- **Changed by U13 (2026-10-17, Q64):** `jobs.configuration_snapshot` is dropped; the board reads the job's quote's snapshot through `jobs.quotation_id` instead of a copy.
 - **Branch:** `feat/TCG-218-u11a-config-snapshot-api` from `origin/main`. Schema -> `tcg-prisma-guardian`; contract -> `tcg-contract-tracer`.
 - **Shipped 2026-10-16:** as two stacked PRs — **U11a-1** #810 (schema, snapshot reader/taker, send hooks, conversion readers, copy to job) and **U11a-2** #811 (DAS board reads the job's copy, snapshot only on the quotation detail, Mark as Won takes it — Q58). Both merged to main.
 
@@ -622,3 +623,10 @@ Quote side lands first (U1–U8), dispatch side last (U9–U10).
 - **Branch:** `feat/TCG-218-u12-mob-net-customer-lines` from `origin/main`.
 - **Widened 2026-10-17 (Syed Haris, after Joe's reply in Q45):** every line, not only Mob/Demob, prints net of discount and price hike with a net Rate; no Discount / Price Hike foot rows on customer documents; Surcharge row unchanged.
 - **Shipped 2026-10-17:** #829 merged (every customer line net of discount and price hike; approval box removed from the print).
+
+## U13 — The job reads its quote's configuration snapshot; drop the job copy (Q64)
+
+- **Outcome:** `jobs.configuration_snapshot` is removed (migration `drop_job_configuration_snapshot`); conversion no longer writes it; the DAS missing-components check reads `job.quotation.configurationSnapshot`; a job without a quote reads the live configuration. No behaviour change: the copy always equalled the quote's snapshot.
+- **Source:** spec §12 Q64.
+- **Branch:** `feat/TCG-218-u13-job-reads-quote-snapshot` from `origin/main`.
+- **Built 2026-10-17:** PR #830; migration applied locally on the developer's go-ahead.
