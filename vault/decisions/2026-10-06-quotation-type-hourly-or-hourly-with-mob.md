@@ -20,6 +20,14 @@ provenance_note: >-
   reference). On Hourly w/ Mob the Mobilization and Demobilization groups now hold the item itself
   (first line, quantity 0) then its Sub items, not its Sub items alone. Points 1, 2, 4 and 5 stand.
   Status stays reference; the note is amended, not superseded. Point 3's original text is kept below.
+  POINT 4 AMENDED 2026-10-16 by the same ticket owner (TCG-218 Q34, Q35; trigger answered 2026-10-15)
+  — see decisions/2026-10-16-quotation-type-switch-re-lays-out-and-keeps-edits.md (status:
+  reference). A switch now asks whenever the quote has lines (not only "when the switch will change
+  rows"), and re-lays out the automatic lines keeping their edits (not "may be discarded"). Points 1,
+  2 and 5 stand. Added 2026-10-17 by tcg-scrum (bookkeeping only).
+superseded_in_part_by:
+  - decisions/2026-10-16-hourly-w-mob-item-is-first-line-of-its-own-mob-demob-pair.md (point 3)
+  - decisions/2026-10-16-quotation-type-switch-re-lays-out-and-keeps-edits.md (point 4)
 conflicts_with: []
 resolves: []
 related_decisions:

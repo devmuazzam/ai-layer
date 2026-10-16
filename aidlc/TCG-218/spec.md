@@ -32,7 +32,7 @@ blanket "decision = VERIFIED" would launder that. Tags here:
 | Linear re-check | **Not done.** No Linear/Jira read was made in this run; the ticket text is quoted from `intent.md` (description last edited 2026-10-14). §8 of the agent rules says re-diff against the live ticket before sign-off — **the developer must do it** (§14). |
 | Elaborated on | 2026-10-14 |
 | Vault state at elaboration | Six `domain/` files verified (none relevant). Mob/Demob decisions read: 10-01 lines/quantities, 10-01 Operator Load, 10-06 ×3, 10-06 quotation type, 10-07 visits, 10-07 ticket-owner log, 10-07 two cranes, 10-08 Price Adjustment, 10-08 visit days, 09-11 footer (provenance note only). Conflict stub `quotations/mob-demob-INDEX.md` exists — see below. |
-| Open questions raised by this spec | **18** (Q1–Q18), all answered by the ticket owner (2026-10-14/15); Q12–Q16 and Q18 as assumptions pending Lisette's demo review; Q11 answered by Q18; decision notes pending, decision notes pending, all in §12 |
+| Open questions raised by this spec | **65** (Q1–Q65) at close, 2026-10-17: Q1–Q18 at elaboration, Q19–Q65 during the build; all answered except **Q59** (left open by the ticket owner). Q12–Q16 and Q18 are ticket-owner assumptions pending Lisette Anzaldo's review. Decision notes written at close-ticket (see each entry). |
 | Already-shipped behaviour reached | **9 consumer groups in §11a**; **5** (R1, R2, R5, R7, R8) are partly or wholly without a source for what happens to them |
 | Rules consulted | `.ai/claude/contexts/api.md`-class layering (via CLAUDE.md), `prisma.md` (tenant allowlist, migrations), `web.md` (feature-first), `patterns.md` (no entry for sub-categories/quotations), `mobile.md` (not built here) |
 
@@ -557,7 +557,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Workaround, if any:** none that avoids choosing a default.
 - **Answer (Syed Haris, ticket owner, 2026-10-14, Claude Code session):** "hidden" — existing non-employee associations (custom-type included) start hidden on both quote types when the settings arrive.
 
-- **Status:** answered by ticket owner 2026-10-14 — decision note pending (`tcg-scrum` writes it); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-14 — decision note written 2026-10-17 (below); not client-confirmed
+- **Decision note:** vault/decisions/2026-10-15-existing-associations-hidden-sub-items-auto-fill-at-zero-one-pair-per-crane.md
 
 ### Q2 — Existing saved quotes whose Mobilization group has a stored quantity other than 1
 - **Question:** Do saved quotes that already have a Mobilization/Demobilization group start being multiplied by that group's stored quantity (even though they open as Hourly), or does the visits rule apply only to quotes created after release?
@@ -568,7 +569,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Workaround, if any:** apply the multiplier only when the group's quantity was set by the new UI — **labelled workaround, not a decision**.
 - **Answer (Syed Haris, ticket owner, 2026-10-14, Claude Code session):** "reset to 1" — saved quotes whose Mobilization/Demobilization group has a stored qty other than 1 are reset to 1 visit, so their totals do not change unexpectedly.
 
-- **Status:** answered by ticket owner 2026-10-14 — decision note pending (`tcg-scrum` writes it); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-14 — decision note written 2026-10-17 (below); not client-confirmed
+- **Decision note:** vault/decisions/2026-10-16-visits-are-whole-numbers-and-saved-groups-reset-to-one.md
 
 ### Q3 — Do Sub-item associations fill the groups automatically?
 - **Question:** On an Hourly w/ Mob quote, are Sub-item associations added as lines inside Mobilization (and mirrored to Demobilization at 0) automatically when the crane is picked, or does the salesperson add them?
@@ -579,7 +581,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Workaround:** none.
 - **Answer (Syed Haris, ticket owner, 2026-10-14, Claude Code session):** "automatically" — Sub-item associations are added into Mobilization automatically (and mirrored into Demobilization at 0).
 
-- **Status:** answered by ticket owner 2026-10-14 — decision note pending (`tcg-scrum` writes it); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-14 — decision note written 2026-10-17 (below); not client-confirmed
+- **Decision note:** vault/decisions/2026-10-15-existing-associations-hidden-sub-items-auto-fill-at-zero-one-pair-per-crane.md
 
 ### Q4 — Initial quantity/hours/rate of Mobilization lines
 - **Question:** When a Sub-item line first appears inside Mobilization, what are its quantity, hours and rate (e.g. 1, price-list rate)?
@@ -592,7 +595,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Answer (Syed Haris, ticket owner, 2026-10-14, Claude Code session):** "demob is 0 if joe has mentioned" — Demobilization lines start at 0 (Joe 2026-10-01 30:21, already sourced in REQ-08/11). **The Mobilization starting value stays open, to be asked of Joe.**
 
 - **Answer (Syed Haris, ticket owner, 2026-10-14, Claude Code session):** "start at 0 we can present and if they want to change we can" — new lines inside Mobilization start at 0, like Demobilization. Ticket-owner decision, to be shown to Joe at the sprint review.
-- **Status:** answered by ticket owner 2026-10-14 — decision note pending (`tcg-scrum`); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-14 — decision note written 2026-10-17 (below); not client-confirmed
+- **Decision note:** vault/decisions/2026-10-15-existing-associations-hidden-sub-items-auto-fill-at-zero-one-pair-per-crane.md
 
 ### Q5 — Two main cranes on one Hourly w/ Mob quote before TCG-220
 - **Question:** Until TCG-220 gives one Mob/Demob pair per crane, what does an Hourly w/ Mob quote with two main cranes show — one shared pair, or block the second crane?
@@ -603,7 +607,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Workaround:** none.
 - **Answer (Syed Haris, ticket owner, 2026-10-14, Claude Code session):** "two pair of mob/demob 90 ton crane mob/demob 250 ton crane mob/demob and reflect on print as well" — each main crane gets its own crane-named Mobilization/Demobilization pair (e.g. "90 Ton Crane – Mobilization"), on the Resources tab and on the customer PDF and print. Client basis: Joe, `decisions/2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md`. **Scope change from `intent.md` §5:** the per-crane-pair part of TCG-220 is now in this run; the tab rename and activity log stay out. Follow-up: Q17 (group order).
 
-- **Status:** answered by ticket owner 2026-10-14 — decision note pending (`tcg-scrum` writes it); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-14 — decision note written 2026-10-17 (below); not client-confirmed
+- **Decision note:** vault/decisions/2026-10-15-existing-associations-hidden-sub-items-auto-fill-at-zero-one-pair-per-crane.md
 
 ### Q6 — "Sub-items its parent ticked" on Hourly
 - **Question:** On Hourly, does "plus any sub-items its parent ticked" mean the "also brings along" rows with Hourly Show ticked under that parent?
@@ -613,7 +618,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Owner:** ticket owner.
 - **Workaround:** build per the note's wording.
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "whatever is hidden it's hidden, what's shown is shown" — on Hourly, an association or "also brings along" row appears exactly when its Hourly Show is ticked; hidden ones never appear.
-- **Status:** answered by ticket owner 2026-10-15 — decision note pending (`tcg-scrum`); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-15 — decision note written 2026-10-17 (below); not client-confirmed
+- **Decision note:** vault/decisions/2026-10-15-existing-associations-hidden-sub-items-auto-fill-at-zero-one-pair-per-crane.md
 
 ### Q7 — What the group line prints in Qty / Unit / Rate on customer documents
 - **Question:** On the PDF and the print, does the Mobilization line show the visits as Qty and the per-visit rate, or "—" in Qty/Unit/Rate with only the amount?
@@ -623,7 +629,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Owner:** Joe Schacatano / ticket owner.
 - **Workaround:** keep each document's current cell content.
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "Visits × rate = amount" — on BOTH the customer PDF and the browser print the Mobilization/Demobilization line shows the visits as Qty, the per-visit rate and the amount (e.g. Mobilization 3 visit $1,995 $5,985).
-- **Status:** answered by ticket owner 2026-10-15 — decision note pending (`tcg-scrum`); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-15 — decision note below; **client-confirmed by Joe Schacatano 2026-10-17** ("#1. Yes": Qty = visits, Rate = one visit's total, Amount = Qty × Rate)
+- **Decision note:** vault/decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md
 
 ### Q8 — Twin edge rules (rename/delete)
 - **Question:** Confirm the build reading: a twin is left alone while another line in the source group still has its name, and a rename keeps the twin's quantity and re-prices it?
@@ -633,7 +640,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Owner:** ticket owner.
 - **Workaround:** implement only "the twin follows".
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "Only the basic rule" — renaming or deleting a line in Mobilization renames/deletes its Demobilization twin, and the reverse; no special handling for duplicate names and no quantity rule beyond that.
-- **Status:** answered by ticket owner 2026-10-15 — decision note pending (`tcg-scrum`); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-15 — decision note written 2026-10-17 (below); not client-confirmed
+- **Decision note:** vault/decisions/2026-10-16-mob-demob-twin-rule-is-symmetric.md
 
 ### Q9 — Mobile interim totals
 - **Question:** A quote saved from mobile (group totals ×1) and shown on web/server (×visits): is that accepted until TCG-219, or must the shared function stay ×1 for mobile?
@@ -644,7 +652,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Workaround:** none.
 - **Answer (Syed Haris, ticket owner, 2026-10-14, Claude Code session):** "don't do mobile changes for now" — mobile is out of scope; mobile may show 1-visit totals until TCG-219.
 
-- **Status:** answered by ticket owner 2026-10-14 — decision note pending (`tcg-scrum` writes it); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-14 — covered by the existing decision note below (its Q1 row: mobile at ×1 until TCG-219); not client-confirmed
+- **Decision note:** vault/decisions/2026-10-07-tcg-218-open-questions-answered-by-the-ticket-owner.md
 
 ### Q10 — Mobilization/Demobilization rows and their children on the job
 - **Question:** After conversion, are the Mobilization/Demobilization group rows and their children absent from the job entirely, kept as non-dispatch rows, or kept for job financials?
@@ -656,7 +665,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Answer (Syed Haris, ticket owner, 2026-10-14, Claude Code session):** "they're dispatched rows, what is in the asset configuration as required, they will show on the dispatch".
 - **Answer (Syed Haris, ticket owner, 2026-10-14, Claude Code session):** "dispatch comes from asset configuration, but let's say he added a support load which was not initially required then what? or added a new single asset" — **confirms the reading:** dispatch is driven by the asset configuration, and rows inside Mobilization/Demobilization do not add dispatch slots of their own. His follow-up is Q18.
 
-- **Status:** answered by ticket owner 2026-10-14 (reading confirmed) — decision note pending (`tcg-scrum`); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-14 (reading confirmed) — decision note written 2026-10-17 (below); not client-confirmed
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q11 — Which lines inside a group are dispatchable equipment
 - **Question:** Is a line inside a group dispatched exactly when it is backed by an asset sub-category that is not already a Main item on the quote (price lines, Price Adjustment, crew overtime never), and how is "same machine as the main item" decided?
@@ -667,6 +677,7 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Workaround:** none.
 - **Answered by Q18:** with the Q10 reading confirmed, whether a group-only or extra machine is dispatched is Q18, answered "yes" on 2026-10-15 (assumption pending Lisette). Q11 is not separately answered.
 - **Status:** answered by Q18 (ticket-owner assumption — to be reviewed by Lisette Anzaldo at the demo)
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q12 — Optional associations and the DAS (09-12 vs Q6/U8)
 - **Question:** Should every Optional associated asset become a DAS slot on the job, or only the ones the salesperson kept on the quote?
@@ -679,6 +690,7 @@ Options only. *Chosen* and *Decided by* are blank by design.
 
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "no" — an Optional association left off the quote does not show on dispatch. This takes the 2026-09-12 side (not on the quote → not a DAS slot). **Note:** this reverses his own earlier Q6/U8 ruling in the 2026-10-07 log; Lisette has not been asked.
 - **Status:** answered by ticket owner as an assumption — to be reviewed by Lisette Anzaldo at the demo
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q13 — Which days are the extra visits?
 - **Question:** With 3 visits, which calendar days is the group-only equipment required besides the first and last (user picks on the DAS, spread evenly, or every working day between)?
@@ -691,6 +703,7 @@ Options only. *Chosen* and *Decided by* are blank by design.
 
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "we don't restrict day, where dispatch add it can be sent" — no day restriction for equipment quoted only inside Mobilization/Demobilization; dispatch sends it on whichever days they allocate it. Working assumption; Lisette not asked.
 - **Status:** answered by ticket owner as an assumption — to be reviewed by Lisette Anzaldo at the demo
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q14 — One-day job
 - **Question:** On a one-day job, is group-only equipment required once (first day = last day) whatever the visits number?
@@ -703,6 +716,7 @@ Options only. *Chosen* and *Decided by* are blank by design.
 
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "then yes" — on a one-day job it is one trip. Working assumption; Lisette not asked.
 - **Status:** answered by ticket owner as an assumption — to be reviewed by Lisette Anzaldo at the demo
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q15 — Operator Load and Sub-item dispatch days
 - **Question:** Is Operator Load (and its tractor and operator) dispatched on the first and last day only like a build-only support load, or every day the crane works?
@@ -715,6 +729,7 @@ Options only. *Chosen* and *Decided by* are blank by design.
 
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "we don't restrict for now" — no first/last-day restriction for Operator Load or Sub items. Working assumption; Lisette not asked.
 - **Status:** answered by ticket owner as an assumption — to be reviewed by Lisette Anzaldo at the demo
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q16 — Holdover and crew for visit-days items
 - **Question:** For a holdover job, how do Make Holdover and Copy Allocations treat a visit-days item on the middle days, and does its crew follow the same days?
@@ -727,6 +742,7 @@ Options only. *Chosen* and *Decided by* are blank by design.
 
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** (1) "whoever is holdover can go to all days" — items marked holdover go to all days, as holdover works today; (2) "go with a" — a slot for equipment quoted only inside Mob/Demob that is NOT marked holdover is optional on the board: allocatable on any day, and an empty slot never blocks "allocation completed" / Send Tickets. Working assumption; Lisette not asked.
 - **Status:** answered by ticket owner as an assumption — to be reviewed by Lisette Anzaldo at the demo
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q17 — Order of the two cranes' groups (non-blocking)
 
@@ -737,7 +753,8 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Owner:** ticket owner.
 - **Workaround, if any:** none needed to start; ordering is cosmetic.
 - **Answer (Syed Haris, ticket owner, 2026-10-14, Claude Code session):** "90 Ton Mob, 90 Ton Demob, 250 Ton Mob, 250 Ton Demob" — each crane's pair sits together at the bottom, in the order of the cranes. He says it was discussed in the meeting; the 2026-10-07 transcript supports per-crane separation (Joe 45:24 "if we have two separate assets doing a job and they're both mobilizing, we would want to keep those separate"; Ehtesham 42:13 crane-named labels, Joe 42:33 "Yeah, I mean, you could do that") but states no order. The order is the ticket owner's decision.
-- **Status:** answered by ticket owner 2026-10-14 — decision note pending (`tcg-scrum`); not client-confirmed
+- **Status:** answered by ticket owner 2026-10-14 — decision note written 2026-10-17 (below); not client-confirmed
+- **Decision note:** vault/decisions/2026-10-15-existing-associations-hidden-sub-items-auto-fill-at-zero-one-pair-per-crane.md
 
 ### Q18 — Equipment added that is not in the crane's configuration
 
@@ -749,6 +766,7 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Workaround, if any:** none.
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "yes" — equipment a salesperson adds that is not in the crane's configuration (inside Mobilization, or as its own line) shows on the dispatch board to assign. Working assumption; Lisette not asked.
 - **Status:** answered by ticket owner as an assumption — to be reviewed by Lisette Anzaldo at the demo
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q20 — Allowed values for a group's visits (non-blocking; raised by the decomposer 2026-10-15)
 
@@ -760,6 +778,7 @@ Options only. *Chosen* and *Decided by* are blank by design.
 - **Workaround, if any:** none; the executor stops at the validation row of U7 rather than pick a bound.
 - **Answer (Syed Haris, ticket owner, 2026-10-15, Claude Code session):** "agree but hours you can add 2.5" — a group's visits are whole numbers, at least 1; the lines inside a group keep two-decimal quantities (e.g. 2.5 hours, REQ-11).
 - **Status:** answered by ticket owner 2026-10-15
+- **Decision note:** vault/decisions/2026-10-16-visits-are-whole-numbers-and-saved-groups-reset-to-one.md
 
 ## 13. What this spec deliberately does not specify
 
@@ -773,18 +792,18 @@ Options only. *Chosen* and *Decided by* are blank by design.
 
 ## 14. Sign-off before build
 
-- [ ] Re-diff this spec against the live Linear TCG-218 and TCG-202 text (not done in this run)
-- [ ] Every `[OPEN]` requirement is answered, or explicitly deferred by a named person
-- [ ] Every `[CONFLICT]` requirement has a decision note in `.ai/vault/decisions/` (REQ-15 / Q12)
-- [ ] Answers written back into `spec.md` with their new sources and flags
-- [ ] Every §12 question updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
-- [ ] Every §11a ripple row has a source for what happens to that consumer, or a §12 question
-- [ ] Every §11b row has _Chosen_ and _Decided by_ filled by a developer
-- [ ] Every §11c sibling has a developer's yes / no / follow-up
-- [ ] `tcg-prisma-guardian` and `tcg-contract-tracer` run (schema, response shape and `@tcg/shared` move)
-- [ ] Decomposed into vertical units — `units.md` (stacked PRs, each ≤ ~400 source lines)
+- [ ] Re-diff this spec against the live Linear TCG-218 and TCG-202 text — **not done**; not re-checked through the build (recorded at close, 2026-10-17)
+- [x] Every `[OPEN]` requirement is answered, or explicitly deferred by a named person
+- [x] Every `[CONFLICT]` requirement has a decision note in `.ai/vault/decisions/` (REQ-15 / Q12 → `2026-10-16-dispatch-slots-required-optional-none.md`; a ticket-owner position pending Lisette's review, not a client settlement)
+- [x] Answers written back into `spec.md` with their new sources and flags
+- [x] Every §12 question answered, with a decision note where a human ruled (close-ticket 2026-10-17) — except **Q59**, left open by the ticket owner as a later guardrail
+- [x] Every §11a ripple row has a source for what happens to that consumer, or a §12 question
+- [x] Every §11b row has _Chosen_ and _Decided by_ filled by a developer
+- [x] Every §11c sibling has a developer's yes / no / follow-up
+- [x] `tcg-prisma-guardian` and `tcg-contract-tracer` run (schema, response shape and `@tcg/shared` move) — per unit; not separately for U13 (a developer-requested column drop, data-checked)
+- [x] Decomposed into vertical units — `units.md` (stacked PRs, each ≤ ~400 source lines)
 
-Answered by: ______________  Date: ______________
+Answered by: **Syed Haris** (ticket owner) — signed by the §11b "sign them" instruction, 2026-10-15; checklist ticked at close-ticket, 2026-10-17 (Q65 b)
 
 ### Q21 — U1 review: defaults and write paths (raised by tcg-analyst / tcg-prisma-guardian / tcg-contract-tracer on U1, 2026-10-15)
 - **Question:** (a) What Show settings does a *newly picked* association start with — hidden (unit U1 acceptance) or, for non-employee picks, shown as Main item (decisions/2026-10-06-association-quote-visibility-hourly-and-mob-demob-settings.md)? (b) Do the single-association add/update endpoints carry the settings? (c) Does re-picking an item on a row reset its settings? (d) What does Main/Sub mean while Mob/Demob Show is off?
@@ -841,11 +860,13 @@ Answered by: ______________  Date: ______________
 - **Question:** Lines inside a Mobilization/Demobilization group carry an "In total" checkbox (`resource-row.group-include.tsx`, stored as `QuotationResource.isIncluded`; detail view shows "Excluded"), added 2026-07-07 (`a837101e2`) with no vault or spec source. In the TCG-218 model a line is a Sub item (rolls up) or a Main item, and price changes go through the Price Adjustment line (U6) — keep it?
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** "i don't think i need in total" → **hide it in the web only, in U6**: remove the checkbox and the "Excluded" label from the web; every new group line is counted. The `isIncluded` column and the totals maths stay, so a quote already saved with an excluded line keeps its total (local data has none). Mobile keeps its toggle until TCG-219 (Q9). Full removal (schema, API, PDF, approvals, mobile — ~20+ files) is not part of TCG-218.
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-quotation-type-switch-re-lays-out-and-keeps-edits.md
 
 ### Q31 — Removing a crane from an Hourly w/ Mob quote (raised before U4, 2026-10-16)
 - **Question:** When a salesperson removes a crane line from an Hourly w/ Mob quote, what happens to that crane's Mobilization/Demobilization pair?
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** "Removed with it" — the crane's pair and the lines in it are removed with the crane in the builder; re-picking the crane rebuilds it. (The DB link is SET NULL as a safety net, D13a — the builder does the removal.)
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-quotation-type-switch-re-lays-out-and-keeps-edits.md
 
 
 ### Q32 — U4 build: Main-item placement, which lines get a pair, edge cases (raised by tcg-executor on U4, 2026-10-16)
@@ -868,6 +889,7 @@ Answered by: ______________  Date: ______________
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (a) "Re-lay out, keep edits" — each crane's auto lines are re-arranged for the new type (Hourly→Mob: Sub items move into a new linked pair, Main items stay under the crane; Mob→Hourly: the crane's linked pair is removed and its Hourly children added); a line that exists in both layouts keeps its qty/rate/comments; hand-added lines stay where they are. The confirmation is asked whenever the quote already has lines; an empty quote switches without asking (U5 note, 2026-10-15). (b) "Leave untouched" — unlinked groups are ignored by the rebuild. (c) "Enforce in U5" — on Hourly w/ Mob new lines insert above the groups, lines can't be dragged among/below the groups nor groups above lines, and crane order of pairs is re-applied after any drag. (d) Proposed copy: title "Change Quotation Type?", body "Switching to <type> rebuilds this quote's lines for the new layout. Lines you added by hand are kept.", buttons "Cancel" / "Change type".
 - **Found in the U1–U4 end-to-end test (for U6):** QUOT-00022 and QUOT-00023 (local) each hold six pre-TCG-218 Mob/Demob lines at quantity 0, so the web cannot save those quotes at all today ("Quantity must be greater than 0"); U6's "0 allowed inside groups" must cover saved lines too.
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-quotation-type-switch-re-lays-out-and-keeps-edits.md
 
 ### Q35 — U5 build: split at the size cap; header-row choices; what the switch rebuild needs answered (raised by tcg-executor on U5, 2026-10-16)
 - **Size:** header rows, default collapse and groups-last measure **362 source lines in 14 files** against `origin/main`. The type-switch rebuild (Q34a) is estimated at **~250 more**: a relayout module (~110), dialog and hook (~55), and moving `ResourcesTab`'s catalog lookups into a hook to stay under the 200-line function limit (~85). Proposed split: **U5a** = header rows + collapse + groups-last (built); **U5b** = switch confirmation + re-layout, stacked on U5a's branch. The chip still switches without asking until U5b.
@@ -878,16 +900,19 @@ Answered by: ______________  Date: ______________
 - **Owner:** ticket owner.
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** Split "Yes, U5a + U5b" (U5b stacked on U5a). U5a (a)–(h) "OK all as built" (visits caption arrives with editable visits in U7). U5b: (i) "Dropped" — a hand-added line whose place the new layout removes (e.g. inside a linked pair on Mob→Hourly, or under an auto line that moves into a group) is dropped with it. (ii) "By name" — auto when its name is one of its parent's catalog associations or, inside a linked pair, one of the crane's Sub items. (iii)+(iv) "OK both" — lines deleted in the old layout stay deleted (a re-pick refills, Q33b); auto lines belonging to neither layout are dropped with their edits. (v)+(vi)+(vii)+(ix) "OK all" as proposed. (viii) "Reuse shared IDs" — `confirm-modal-confirm` / `confirm-modal-cancel`, found by the title. **Copy updated (supersedes Q34d body):** "Switching to <type> rebuilds this quote's lines for the new layout. Lines you added by hand are kept, except lines inside a Mobilization or Demobilization group the new layout removes."
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-quotation-type-switch-re-lays-out-and-keeps-edits.md
 
 ### Q36 — U5b build: quantity of lines leaving a group, button colour, and as-built details (raised by tcg-executor on U5b, 2026-10-16)
 - **Question:** (1) Mob→Hourly carries a Sub line back under the crane with its group quantity, usually 0, which the web cannot save. (2) "Change type" uses the shared modal's red danger style. (3) As built: a leftover linked pair on an Hourly quote (from a switch before U5b) is reused on Hourly→Mob; deleted-name rules (a name deleted only from Mobilization comes back on Mob→Hourly as the carried Demobilization twin); after a rebuild the new layout's lines come first, then hand-added ones; `ResourcesTab` sits at exactly its 200-line limit; names `relayoutForQuoteType` / `QuoteTypeRelayout` (`resources-tab.type-switch.ts`), `useQuotationTypeSwitch` (`hooks/use-quotation-type-switch.ts`), and four U4 builders now exported (`buildMobSubLineNodes`, `pairGroup`, `groupLine`, `shownNamesFor`).
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (1) "0 becomes 1" — a carried line keeps its quantity unless it is 0, then it gets 1 (a pick's default); its other fields are still carried. (2) "Keep red". (3) "OK all" as built.
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-quotation-type-switch-re-lays-out-and-keeps-edits.md
 
 ### Q37 — U5b review: same item name at two levels under one line (raised by tcg-analyst on U5b, 2026-10-16)
 - **Question:** (F1) The rebuild matches carried lines by name across the whole line, so when one name exists at two levels (Operator under the crane and Operator under Tractor) a slot can take the other level's line and its qty/rate/notes. (F2) Deleted names are collected line-wide, so a name deleted at one level stays deleted at the other levels too.
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (F1) "Fix: match by parent first" — a slot first takes a same-named old line from the same parent, then from anywhere under the line. (F2) "Accept as built" — deleted stays deleted line-wide; a re-pick refills.
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-quotation-type-switch-re-lays-out-and-keeps-edits.md
 
 ### Q38 — U6 build: twins on unlinked groups, Price Adjustment outside a group, server-side billing-code rule, as-built details (raised by tcg-executor on U6, 2026-10-16)
 - **Question:** (a) **Twins on unlinked groups.** The twin rule (add mirrors at 0; rename/delete follow, both directions) is built for a crane's **linked** pair only (D13 `craneResourceId`). Old quotes (QUOT-00022/23) and any quote with plain "Mobilization"/"Demobilization" groups have no link, and nothing says which Demobilization group is a Mobilization group's partner when there are several. Apply the rule there too (pair the first Mobilization with the first Demobilization when the quote has exactly one of each), or leave unlinked groups without twins (as Q34b left them out of the rebuild)? (b) **Price Adjustment outside a Mob/Demob group.** REQ-13 and the PA note make it the one hand-priced line *inside* a group; a PA line elsewhere (top level, under a crane, in Crane Time) is not addressed. As built it keeps today's rule there ("Billing Code missing.", whole-dollar rate). Keep, or exempt PA anywhere? (c) **Server-side billing-code rule.** units.md U6 lists an API check ("other code-less custom line rejected"), but the API today has no billing-code or whole-dollar check at all (only the web blocks). Not built: should the API reject a code-less line, and if so (i) by trusting the client's `pricingSource: 'none'` or by looking the custom type's billing codes/price-list items up on the server, (ii) custom types only (REQ-13's wording) or every type (the web flags every code-less type), and (iii) should it also start enforcing whole-dollar rates for ordinary lines? Mobile saves would be checked too. (d) **As built — confirm:** PA rate must still be greater than 0 (only the whole-dollar rule is lifted; is a 0 or negative "credit" PA wanted?); PA is recognised by the line's own name plus a custom-type FK (the name the line was picked under), not by re-reading the type's current title; on add, no twin is added when the partner group already has a line of that name, and the twin is appended last in Demobilization; a rename whose twin is missing does nothing; clearing a line's item leaves its twin; a renamed twin is re-priced like a pick (new item's rate) and keeps its quantity; a group-line quantity shows as typed ("0", "0.5", not "0.00"); API 400 text: `Quantity of "<item>" in a Mobilization or Demobilization group can have at most two decimal places.`; the demo seed's PA type has an empty description and also reaches the Crane Guys default-tenant seed (`seed-data.ts` reuses `DEMO_BILLING`); names `PRICE_ADJUSTMENT_LABEL`, `isPriceAdjustmentLabel` (`@tcg/shared`), `findGroupLineQuantityViolation` (API), `isHandPricedGroupLine`, `removeGroupLineTwin`, `createResourceUpdateWithTwins` (`resources-tab.group-twin.ts`), `applyCraneMobPair` now exported, props `fractional` / `allowCents`.
@@ -896,24 +921,28 @@ Answered by: ______________  Date: ______________
 - **Owner:** ticket owner.
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (a) "No, linked pairs only" — the twin rule mirrors only within a crane's linked pair; unlinked old groups behave as today. (b) "Inside groups only" — a Price Adjustment line is exempt from "Billing Code missing." and whole-dollar only inside a Mobilization/Demobilization group. (c) "No, follow-up" — the API keeps not checking billing codes or whole-dollar rates; logged in `vault/quotations/gaps.md`. (d) "OK all, sign D9a" — PA rate > 0; PA recognised by name + custom-type link; rename/delete mirror both ways (REQ-12/Q8 "and the reverse"), add mirrors Mob→Demob only; the API 400 text; the builder's names (`PRICE_ADJUSTMENT_LABEL`, `isPriceAdjustmentLabel`, `findGroupLineQuantityViolation`, `isHandPricedGroupLine`, `removeGroupLineTwin`, `createResourceUpdateWithTwins`, exported `applyCraneMobPair`, props `fractional` / `allowCents`).
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-mob-demob-twin-rule-is-symmetric.md
 
 ### Q39 — U6 end-to-end test and contract trace: PA twin rate, legacy "Excluded", seed scope, mobile (raised 2026-10-16)
 - **Question:** (1) The Demobilization twin of a Price Adjustment line is created with no rate (no billing code to price from), and "PA rate > 0" then blocks every save. (2) Removing "In total"/"Excluded" (Q30) also removed the detail view's cue on legacy lines saved as excluded (not counted, but now look included); Crane Time children lost the checkbox too. (3) The demo-billing seed also gives the Crane Guys seeded tenant a Price Adjustment type. (4) Mobile (untouched, Q9): a pasted group quantity with more than two decimals now gets the API 400; mobile cannot save a web quote that has group lines at 0 or a Price Adjustment with cents (its own validation rejects them).
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (1) "Twin copies the rate" — a Price Adjustment twin takes its Mobilization line's rate when created, and the source's rate when it is first entered if the twin's is still empty. (2) "Keep 'Excluded' badge for legacy" — the detail view shows "Excluded" on a line whose `isIncluded` is false; no checkbox anywhere on web. (3) "OK, keep". (4) "Note for TCG-219" — mobile follow-ups: clamp group quantities to two decimals; accept 0 inside Mob/Demob groups; accept a Price Adjustment cents rate inside groups.
 - **As built (U6, PR #802 — to confirm):** (1) the twin is not filled at creation, because the Mobilization line's rate is still 0 when its item is picked; instead the twin follows the Mobilization rate on each edit while the twin's rate is empty or still equal to the previous source rate, and stops once edited by hand. Verified in the browser 2026-10-16 (25.50 followed; twin hand-set to 40 stayed at 40 when Mobilization went to 60).
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-mob-demob-twin-rule-is-symmetric.md
 
 ### Q40 — U7 before build: reset migration, group-kind detection, visits enforcement, split (raised 2026-10-16)
 - **Question:** (1) The Q2 reset migration `reset_group_visits_to_one` is one-way: plain reset, snapshot old values first, or no migration? (2) How does the visits multiplier tell a Mob/Demob group from Crane Time — stored name, crane link, or name on Hourly w/ Mob quotes only? (3) Where is Q20 (whole visits, at least 1) enforced — web + API, or web only? (4) If U7 goes over 400 source lines?
 - **Why:** units.md U7 names (1) and (2) as the developer's call and (4) as the at-risk split line; (3) Q20 gives the rule but not where it is enforced.
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (1) "Plain reset" — UPDATE only Mob/Demob group rows with qty ≠ 1; Crane Time untouched; the PR carries a pre-deploy count query (local data: 0 rows to reset). (2) "Stored name, any quote type" — a group row named Mobilization/Demobilization (stored names unchanged, D14; same rule as U4a's API check), linked or not, on any quote type. (3) "Web + API 400" — the header input takes whole numbers ≥ 1; the API rejects a Mob/Demob group row qty that is not a whole number ≥ 1. (4) "Split U7b if needed" — approval margin (`quotation-resource-margins.ts` + approvals) moves to a stacked U7b.
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-visits-are-whole-numbers-and-saved-groups-reset-to-one.md
 
 ### Q41 — U7 review and end-to-end test: visits input, error copy, rename into a group, spec typing (raised 2026-10-16)
 - **Question:** (1) Typing "2.5" in the visits box gives 25 visits (the dot is dropped). (2) The web visits error reuses "Quantity must be greater than 0"; the API says "Visits of the "<group>" group must be a whole number of at least 1." — and the builder's new names (`getGroupVisits` in `@tcg/shared`, `findGroupVisitsViolation` in the API, `ResourceQuantityInputBlock` props `testId`/`ariaLabel`, `ResourceGroupHeaderGrid` props `fieldErrors`/`onFieldBlur`) have no row. (3) A line with quantity 8 or 2.5 whose item is changed to Mobilization/Demobilization becomes a group with 8 visits (or gets the 400), on web and mobile. (4) Making `resourceType`/`qty` required on `ResourceTotalRow` stops three API spec files from type-checking.
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (1) "Stop at the dot" — keystrokes after a "." are ignored, so "2.5" stays "2". (2) "Visits must be at least 1, OK names" — web text "Visits must be a whole number of at least 1"; the builder's names are accepted. (3) "Web now, mobile in TCG-219" — on web a row resets to quantity 1 when it becomes a Mob/Demob group (U7); mobile gets the same with its other visits items under Q9/TCG-219: cost basis x visits, a visits display and input on the group card and detail, the reset on rename. (4) "Add the fields to the fixtures" — the three spec files' sample rows get `resourceType`/`qty`; nothing is run.
 - **Follow-ups noted, not in U7:** approval margin and detail cost basis count unticked group lines (before U7 too, now x visits); the group-kind rule is kept in three copies (shared, API, web); an unlinked group on an Hourly quote multiplies by a quantity the user cannot edit there (locked cell; new groups are 1); QUOT-00017's list total ($2,589.44) differs from its stored total ($4,495.68) — no groups, not U7.
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-visits-are-whole-numbers-and-saved-groups-reset-to-one.md
 
 ### Q42 — The crane itself inside its Mobilization/Demobilization pair (raised by the ticket owner in U7 browser review, 2026-10-16)
 - **Question:** On an Hourly w/ Mob quote the crane is not inside its own Mobilization group — the groups hold only its Sub-item associations (REQ-07, type note point 3). FCC's Hourly w/ Mob template (`vault/quotations/fcc-estimate-templates-by-job-type.md` §2) puts the crane as the first line of both blocks ("Travel in and Build up" / "4 Hour Minimum Portal to Portal") as well as its own hours line. Should ours? And which items get a pair?
@@ -945,7 +974,8 @@ Answered by: ______________  Date: ______________
   > Thanks Joe, that helps. So on the customer's quote, a Mobilization or Demobilization line will show its price **after** any discount or price hike on the items inside it, with no separate discount line for it. For example, if the Operator Load inside a 3-visit Mobilization has 10% off: **100 Ton Crane – Mobilization | 3 | Each | $1,219.00 | $3,657.00**. The customer sees only that line. The $33 discount stays visible internally (in the quote itself and in approvals), not on the customer's copy.
   > One thing to confirm: lines **outside** Mob/Demob (for example the crane's hourly rate) still show the full rate on the customer's quote, with the discount as its own line near the total. Should those stay that way, or should they also show only the discounted rate, with the discount kept internal?
   - **Joe's answer (relayed by Syed Haris, 2026-10-17):** "Discount kept internal. We don't want a discount line to show to the customer." — so on the customer's documents **no line shows a discount row**: lines outside Mob/Demob also print the discounted rate, and discounts are internal only. This widens the U12 reading (Mob/Demob only). **Decided by Syed Haris (ticket owner, 2026-10-17):** widen **U12** (one PR): on the customer PDF and print, **every line** prints net of its discount **and price hike** (price hikes are internal too), with **no Discount and no Price Hike foot rows**; the **Rate column shows the net rate**, so Qty × Rate = Amount on every line; the Surcharge row stays. Supersedes the Mob/Demob-only reading for U12 and Q62(4).
-- **Status:** answered 2026-10-17 (Joe confirmed (1); (2) read by the ticket owner, built as U12; scope follow-up with Joe pending)
+- **Status:** answered 2026-10-17 (Joe confirmed (1); (2) read by the ticket owner, built as U12; Joe's scope follow-up answered 2026-10-17, U12 widened to every line, shipped #829)
+- **Decision note:** vault/decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md
 
 ### Q46 — Unit cell of a Mobilization/Demobilization line on customer documents (supersedes Q44(1); raised by the ticket owner, 2026-10-16)
 - **Question:** Q44(1) chose "Visit"/"Visits"; FCC prints the Mobilization roll-up as "Each" (`vault/quotations/fcc-estimate-templates-by-job-type.md` §2: "Mobilization | 1.00 | Each").
@@ -956,6 +986,7 @@ Answered by: ______________  Date: ______________
 - **Question:** (1) U9/U10 rest on ticket-owner assumptions Q10, Q12, Q18 that units.md sequenced after Lisette's demo review — build now or wait? (2) `job_resources.dispatch`: Prisma enum or VarChar (D7 does not say)? (3) D7's "equipment in a group that is not in the crane's configuration -> OPTIONAL": what is the configuration? (4) The crane's own first line inside its Mob/Demob (U4d, Q42) on the job?
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (1) "Build now" — on the recorded assumptions; Lisette reviews at the demo. (2) "Prisma enum" — `enum JobResourceDispatch { REQUIRED OPTIONAL NONE }`, NOT NULL, default `REQUIRED`. (3) "Any association of the crane" — every resource associated with the crane's sub-category (Always Included or Optional, including its "also brings along" rows); equipment inside a Mob/Demob group that is one of them -> `NONE` (its slot comes from the configuration); equipment that is not -> `OPTIONAL`; price lines (custom types, employee types) inside groups -> `NONE`. (4) "NONE" — the crane's own line inside its group is not a slot; the crane's top line is its one slot (REQ-16).
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q48 — U9 build: the board never shows a line under a group, unlinked groups, Optional Sub items, materialization under group lines (raised by tcg-executor on U9, 2026-10-16)
 - **Question:** (1) **An `OPTIONAL` line is not on the board.** The DAS allocation board builds its Sets from `GET /jobs/:jobId` in web `build-allocation-sets.ts` (and the API's loadout mirrors it in `das-loadout-catalog.util.ts`): it drops custom-type rows, then builds the tree from the roots, so every row under a Mobilization/Demobilization group row (a custom type) is dropped with it. The unconfigured support load (Q18) is therefore never assignable, while `getFillableJobResourceIds` still counts it, so that day can never reach "allocation completed". Make it a slot by (a) web + loadout catalog: a row whose parent is not a slot (`dispatch: NONE` or a custom row) becomes its own Set; (b) conversion re-parents `OPTIONAL` rows to the top level of the job (changes the copied tree, against D7's "copy as today"); or (c) another shape? (2) **Unlinked groups** (no `craneResourceId`: every group on QUOT-00019/22/23/24 locally) have no crane, so U9 leaves all their rows `REQUIRED` (today's behaviour). Keep that, or find the crane: (a) the quote's only top-level line that has associations; (b) a top-level line whose sub-category equals a line inside the group; (c) all their lines `NONE`, with no `OPTIONAL` check? (3) **An Optional association shown as a Sub item** is only inside the group, so Q47(3) makes it `NONE` ("its slot comes from the configuration"). Materialization skips Optional associations (REQ-15, Q12), so that machine ends up with no slot anywhere. Should it be `OPTIONAL`/`REQUIRED` on the job, or materialized under the crane? (4) **As built, confirm:** materialization does not walk `NONE` rows (otherwise the crane's own Mobilization/Demobilization line and each configured line in a group would get second Operator Load/tractor/operator rows, which are new slots against REQ-16); the children it creates under an `OPTIONAL` line are `REQUIRED` (U10 must decide whether they block completion); Crane Time groups and their lines stay `REQUIRED` (D7's "everything else"); "the crane's configuration" is two levels (associations plus their "also brings along" associations), so a deeper-level machine inside a group reads as `OPTIONAL`; a row kept on a save of the job's Resources tab keeps its `dispatch` value, and a row added there is `REQUIRED`; `GET /jobs/:jobId` now returns `dispatch` on each resource (an added field; web/mobile types not changed); the enum type is not `@@map`ped (71 of 72 enums are not). (5) **The Demobilization twin.** A support load added inside Mobilization gets its Demobilization twin (U6), so the job carries two `OPTIONAL` rows for one machine. REQ-16 says one slot per machine. Should only the Mobilization line be `OPTIONAL` and its twin `NONE`, or should both stay (as built)?
@@ -963,12 +994,14 @@ Answered by: ______________  Date: ______________
 - **Owner:** Syed Haris (ticket owner / developer).
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (1) "Own Set on the board" — in the web Sets builder (`build-allocation-sets.ts`) and the API loadout catalog (`das-loadout-catalog.util.ts`), a dispatchable row (not `NONE`) whose parent is not a slot becomes its own Set; the quote -> job copy stays as today (D7). (2)/(4) "Mob only, incl. Optional assoc" — equipment quoted only inside **Mobilization** is `OPTIONAL` (REQ-17 mob-only equipment): equipment not in the crane's configuration **and** an Optional association set as a Sub item; its **Demobilization twin is `NONE`** (one slot per machine); rows materialized under an `OPTIONAL` line are `OPTIONAL` too. (3)/(5) "Keep all five" — unlinked old groups are not classified (rows stay `REQUIRED`, as today); Crane Time stays `REQUIRED`; materialization does not walk `NONE` rows; rows added later on the job's Resources tab get `REQUIRED`; names `resolveQuotationLineDispatch`, `DispatchQuotationLine`, enum `JobResourceDispatch` accepted. Migration `add_job_resource_dispatch` applied to the local dev DB on the developer's instruction (163 rows, all `REQUIRED`).
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q49 — U9 after Q48: as built, confirm (raised by tcg-executor on U9, 2026-10-16; non-blocking)
 - **Question:** (1) **Own Set only for `OPTIONAL`.** Q48(1) says "a dispatchable row whose parent is not a slot becomes its own Set". Read literally, that also turns `REQUIRED` rows under a custom row into new Sets on existing jobs (Crane Time lines, lines in unlinked groups), which breaks "same Sets as today". As built, only an `OPTIONAL` row starts its own Set. Own Sets come after the top-level Sets, in the order of their groups and then their own order. (2) **Set root of an allocation.** The allocation save (`das-allocations.service.ts` `resolveSetRoot`) and loadout defer (`das-loadout-defer-allocation.util.ts`) use the same rule (`startsOwnSet` / `resolveSetRootId` in `das-loadout-catalog.util.ts`). Otherwise the support load's `setResourceId` would be its Mobilization group row, which tickets, payroll set assets, job progress and the Oiler check group on. (3) **"Optional association of the crane"** means the crane's own direct associations only. An Optional "also brings along" row inside a group stays `NONE`. If one sub-category is both an Optional direct association and Always Included further down a chain (so it is materialized under the crane), its Mobilization line is still `OPTIONAL`, which makes two slots. (4) **Recommended panel.** `use-das-recommended-resources.ts` still reads every job row, `NONE` included, so an employee line inside a group still feeds "Recommended". Not changed.
 - **Owner:** Syed Haris.
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (a) "Accept all" — only `OPTIONAL` rows start their own Set (REQUIRED rows under Crane Time / unlinked groups keep today's Sets); own Sets come after the crane Sets in group order; equipment only in Demobilization (no Mobilization twin) is `OPTIONAL`; names `startsOwnSet`, `resolveSetRootId`, `SetRootJobResource`, web `buildResourceTree(resources, allResources)` accepted. (b) "Match depth + nested Optional" — the crane's configuration is read as deep as materialization walks; an Optional association at any level quoted inside Mobilization -> `OPTIONAL` (like a direct one); a configured machine is `NONE` only if materialization would create it — reachable from the crane through Always Included links only; anything else quoted in Mobilization (unconfigured, Optional, or Always Included but only reachable through an Optional link) -> `OPTIONAL` (developer, 2026-10-16: "OPTIONAL" for the nested-under-Optional case, so no machine is left without a slot). (c) "Add it" — the association lookup adds `parentSubCategory: { tenantCompanyId }` (tenant-safe by construction). (d) "Log all three" as follow-ups, not U9: a sub-category both Optional (direct) and Always Included deeper gets two slots; the holdover picker and the board's Recommended panel still list `NONE` lines from inside Mob/Demob; stored dispatch values are not re-evaluated if the crane's configuration or Lisette's review changes the rules (no backfill). Also logged from the U9 contract trace (low): Dylen lift-information drops an `OPTIONAL` row's additional-info sections (reads the NONE-filtered card list); the defer-to-next-schedule "Set N" label counts top-level NONE/custom rows (differs from the board's numbering); a REQUIRED row added later under a NONE parent is unreachable on the board (only via the uncalled `PUT /jobs/:id/resources`); materialization can skip a slot under an OPTIONAL machine when a NONE child shares its sub-category.
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q50 — Twin rule both ways on add; auto-created lines with a missing billing code (raised by the ticket owner while testing U9, 2026-10-16)
 - **Question:** (1) U6 mirrors an **add** Mobilization -> Demobilization only (Q38d); rename/delete mirror both ways. Should adding a line in Demobilization also add it to Mobilization? (2) Lines created automatically (pair lines on the quote; materialized job rows) for an item with no active billing code: today materialization skips a non-billable association, so a machine can end up with no slot.
@@ -976,6 +1009,7 @@ Answered by: ______________  Date: ______________
 - **Twin quantity (Syed Haris, 2026-10-16):** "at 1, but the quantity is not identical, mob can have 8 hours and demob can have 5" — a twin added from Demobilization into Mobilization starts at quantity 1 (a Mob->Demob twin still starts at 0, REQ-11); each twin's quantity is independent and never mirrored.
 - **Billing codes (Syed Haris, 2026-10-16):** "an always included machine will not be quoted if it doesn't have a billing code so it's already reflected on the job — to be on quote it needs to have a billing code" — a line must have a billing code to be on a quote, so job materialization keeps skipping non-billable associations (no job-side change), and the U9 "Always Included but not billable" gap cannot occur. On the quote, the existing **New Billing Code** fan-out (`use-billing-code-fanout.ts`: re-prices every row of that type at any depth and clears its warning) should already clear both twins — to be verified in the browser in the Q50 unit.
 - **Status:** answered by ticket owner 2026-10-16 — follow-up unit after U9
+- **Decision note:** vault/decisions/2026-10-16-mob-demob-twin-rule-is-symmetric.md
 
 ### Q51 — Asset-configuration changes and existing quotes/jobs (raised by the ticket owner, 2026-10-16)
 - **Question:** If a quote is won and the asset configuration is changed afterwards, does it affect the won quote? Findings (code, 2026-10-16): saved/won quote lines and totals are stored and never change; the configuration is read (a) when an item is picked/re-picked or the Quotation Type is switched, (b) **at quote -> job conversion** (`materialize-job-resources.ts` auto-adds Always Included associations; U9 `job-resource-dispatch.ts` classifies dispatch), and (c) **live on every dispatch-board load** (`usecase/das/missing-required-components.util.ts` via `das.service.ts` / `das.repository.ts`), so a machine made Always Included after conversion shows as "missing" on existing jobs with no slot to fill. (b) and (c) predate TCG-218.
@@ -983,11 +1017,13 @@ Answered by: ______________  Date: ______________
 - **Open for U11 (developer decisions before build):** snapshot shape (JSON column on `quotations` / on the crane's quotation line vs a snapshot table), what is captured (associations at every depth with `isRequired`, Mob/Demob Show / Main-Sub settings, nested per-parent settings), when it refreshes (every save vs first save vs on Won), how jobs keep it (copied at conversion, so the board reads the job's own copy), and what existing quotes/jobs without a snapshot do (live config as today, or a backfill).
 - **U11 shape (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** precedent checked first — `PayrollRun.configurationSnapshot` (JSONB on the owning row, "a snapshot, not a pointer", `decisions/2026-09-24-payroll-run-records-configuration-and-source-data-used.md`) and `QuotationRevision.snapshot`. Decided: (1) **storage** — `quotations.configuration_snapshot JSONB NULL` and `jobs.configuration_snapshot JSONB NULL` (same name/shape as the payroll precedent); (2) **when** — taken when the quote is **first sent to the client** (any send path that moves it to Sent to Customer), or at conversion if it was never sent ("if created project, even job depend on quote"); **never refreshed** afterwards — "if client asks for changes, it will be on that snapshot not the config": a re-send keeps it, and edits to a quote that has a snapshot use the snapshot's configuration; (3) **jobs** — conversion uses the quote's snapshot (auto-added rows, U9 dispatch) and copies it onto the job; the board's missing-components check reads the job's copy; (4) **existing** quotes/jobs without a snapshot fall back to the live configuration (no backfill). **Shipped as two stacked PRs:** U11a (schema + API: take/copy/use the snapshot) and U11b (web: once a quote has a snapshot, the Resources tab's pick / auto-fill / type switch read the snapshot instead of the live configuration).
 - **Status:** answered by ticket owner 2026-10-16 (U11a, U11b)
+- **Decision note:** vault/decisions/2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md
 
 ### Q52 — U10 before build: how an OPTIONAL slot is shown (raised 2026-10-16; units.md U10 "presentation not specified — executor asks")
 - **Question:** (1) How does an `OPTIONAL` slot look on the dispatch board? (2) What do the job card's "Required Assets / Required Employees" counts include?
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (1) "\"Optional\" tag on the Set" — same drag-and-drop slots as today with a small "Optional" badge next to the Set title (e.g. "Set 2 (Support Load 1) · Optional"); empty optional slots never show as missing or red. (2) "Required only, + optional count" — the required counts include only `REQUIRED` slots (matching what blocks completion) and `OPTIONAL` slots are counted separately (e.g. "Required Assets: 2 · Optional: 2"). Rules from Q13–Q16 unchanged: no day restriction, one-day job is one trip, holdover items go to all days, an empty `OPTIONAL` slot never blocks "allocation completed" or Send Tickets.
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q53 — Q50 as built: Price Adjustment added in Demobilization, placement of a Mobilization twin (raised by tcg-executor on Q50, 2026-10-16; non-blocking)
 - **Question:** (1) A Price Adjustment line picked by hand in Demobilization now adds its Mobilization twin at quantity 1 with no rate (no billing code to price it; "PA rate > 0" then blocks the save until a rate is typed in Mobilization). Q39-1's rate-copy rule is built Mobilization -> Demobilization only. Should a Demobilization PA's rate also fill its Mobilization twin (same rule reversed), or stay as built? (2) A Mobilization twin added from Demobilization is appended last in Mobilization (as a Demobilization twin is appended last, Q38d) — also when its name is the crane's own item (Q42 puts the auto-added item line first; a hand-added one is not covered). OK?
@@ -996,18 +1032,21 @@ Answered by: ______________  Date: ______________
 - **Owner:** ticket owner.
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (1) "Both ways" — the Price Adjustment rate copy (Q39-1) works in both directions: a rate typed on either PA twin fills the other while it is empty or still equal to the previous source rate; a hand-edited twin is left alone. (2) "insert at the matching position in mob, and vice versa" — a twin added by hand is inserted at the **same position** in the other group as its source line in its own group (clamped to the end), in both directions (Mob->Demob as well as Demob->Mob); the crane's own auto line (U4d) stays first.
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-mob-demob-twin-rule-is-symmetric.md
 
 ### Q54 — U10 as built: other readers of the required counts, builder names and copy (raised by tcg-executor on U10, 2026-10-16; non-blocking)
 - **Question:** (1) **Other readers of `requiredAssets` / `requiredEmployees`.** Q52(2) is built at the source: the DAS API's `requiredAssets`/`requiredEmployees` now count `REQUIRED` slots only, and the DAS job card adds " · Optional: N". The same two fields also feed the board's **Pre-checklist** ("Assets"/"Employees" assigned of total, `build-pre-checklist-items.ts`), the **dispatch packet** PDF (Required vs Allocated, `das-dispatch-packet.service.ts`) and the **Dylen** card header and print (`dylen-job-card-header.tsx`, `dylen-print-job-block.tsx`). Their "assigned"/"allocated" counts still include allocations on optional slots, so with an optional slot filled they can read e.g. "Assets 3/2". Keep them as built (required only), make their totals required + optional, or show the optional count there too? Jobs without `OPTIONAL` rows are unaffected. (2) **Names, confirm:** response fields `optionalAssets`, `optionalEmployees` (DAS sub-job; sent only when the job has an `OPTIONAL` slot), web `DasCraneSet.isOptional`, test ids `das-set-optional-badge`, `das-job-card-optional-assets`, `das-job-card-optional-employees`; `getFillableJobResourceIds` keeps its name and now returns `REQUIRED` slots only. (3) **Badge tooltip copy (builder-chosen):** "Optional — leaving this Set empty does not block allocation completed or Send Tickets". (4) **Edge, as built:** completion still needs at least one required slot (`required > 0`, unchanged), so a day whose only fillable slots are `OPTIONAL` never completes; conversion cannot produce that (the crane's top line is `REQUIRED`), only a later edit of the job's Resources tab. (5) **Any day / visits:** no day restriction exists in the DAS code today (allocation, completion and Sets are built per job, not per day), and no DAS code reads a group's visits, so REQ-18/REQ-19 needed no change.
 - **Owner:** Syed Haris.
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (1) "Required x/y + Optional separately" — the board's Pre-checklist, the dispatch packet PDF and the Dylen card/print count only REQUIRED slots and REQUIRED allocations in their required numbers; optional is shown as its own "Optional a/b" where the screen has room (Pre-checklist, packet); Dylen shows required only. (2) "Accept" — names `optionalAssets` / `optionalEmployees`, `DasCraneSet.isOptional`, test ids `das-set-optional-badge`, `das-job-card-optional-assets`, `das-job-card-optional-employees`, and the badge tooltip copy as built. (3) "Completed" — a day with no REQUIRED slot (only OPTIONAL) counts as allocation completed; tickets can be sent.
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q55 — U10 review and end-to-end test: Pre-checklist source and labels, Dylen chip, completion recalculation, names (raised 2026-10-16)
 - **Question:** (1) The Pre-checklist fetches the full job per board card to know which slots are optional (extra request on collapsed cards, a brief old-count flash), while the DAS card data already carries each slot's `dispatch`; its row labels are cut off ("Asse…", "Empl…") next to the Optional text. (2) The Dylen "N unassigned" chip counts empty OPTIONAL slots. (3) Allocation completion is recalculated only on an allocation save/remove, so an only-OPTIONAL day stays Open until someone allocates; plus the builder's unconfirmed names.
 - **Answer (Syed Haris, ticket owner, 2026-10-16, Claude Code session):** (1) "Fix both in U10" — the Pre-checklist reads `dispatch` from the DAS card data (no per-card job fetch, no flash) and the Optional text is placed so the row labels show in full. (2) "Exclude optional" — the Dylen unassigned chip counts only empty REQUIRED slots. (3) "Recalc on conversion + accept names" — also run the completion check when a job's sub-jobs are created/scheduled, so an only-optional day starts as completed; names accepted: `DasSubJobResource.dispatch`, packet `optional` object, `ChecklistItem.optionalTotalCount`/`optionalAssignedCount`, params `assignedOptionalAssets`/`assignedOptionalEmployees`, `getFillableJobResourceIds(jobId, dispatch?)`, test id `das-pre-checklist-row-<id>-optional`.
 - **Follow-up answers (Syed Haris, 2026-10-16):** "Add the one-line mock" — `jobs-schedule-ticket-time-edit.spec.ts` gets `startsAllocationCompleted: jest.fn().mockResolvedValue(false)` in its allocations mock (not run). "Accept all" — names `DasAllocationsService.startsAllocationCompleted`, `DasAllocationSlot.isOptional`, Dylen row/summary `isOptional`, web `DasJobResource.dispatch` / `DasSubJobResource.dispatch`, `JobPreChecklistButton` `resources` prop accepted; noted, not changed: existing sub-jobs are not recalculated on a schedule save (only newly created ones start completed), `POST /sub-jobs` keeps its own stage, and the Dylen "Unassigned" placeholder row still shows for an empty optional slot (only the chip / needs-review list skip it).
 - **Status:** answered by ticket owner 2026-10-16
+- **Decision note:** vault/decisions/2026-10-16-dispatch-slots-required-optional-none.md
 
 ### Q56 — U11a as built: uncovered sub-categories, names, legacy quotes re-sent, response payload (raised by tcg-executor on U11a, 2026-10-16; non-blocking except (5))
 - **Question:** (1) **A sub-category the snapshot does not cover** — an item added to a quote after it was sent (Q51: "if client asks for changes, it will be on that snapshot"), or a line added on the job later — has no rows in the snapshot. Built: the snapshot records `subCategoryIds` (every sub-category it read, including ones with no associations) and anything outside that list reads the **live** configuration. Alternatives: treat it as having no associations, or add it to the snapshot once (append-only, never refreshing what is already there). (2) **Names** — the snapshot holds ids and settings only; the names of the brought-along items (materialized line text, the board's "missing" labels) are read live, like billing codes, so a rename shows on existing quotes/jobs. Keep live, or store names in the snapshot? (3) **Quotes sent before U11 shipped** have no snapshot; a re-send or a DocuSign status sync after deploy takes one then (the signature paths do not check the previous status; a status edit through PATCH does — only a move into Sent to Customer). Keep, or never snapshot a quote whose first send predates U11 (it then gets one only at conversion)? (4) **Create as Sent** — `POST /quotations` with `status: SENT_TO_CUSTOMER` is not hooked (it is not a send; the web always creates Draft); conversion still takes the snapshot. Confirm. (5) **Response shape (developer):** every quotation/job response that returns the full row (Prisma `include`, e.g. the quotations list `findAllPaginated` and the detail) now carries `configurationSnapshot` — up to tens of KB per sent quote on the list. Leave as is (U11b reads it from the detail), or omit it from list responses (`omit: { configurationSnapshot: true }`)? Contract trace pending.
@@ -1072,4 +1111,10 @@ Answered by: ______________  Date: ______________
 - **Question:** U11a added `quotations.configuration_snapshot` and `jobs.configuration_snapshot` (Q51 "copy to the job"). A quote's snapshot is never changed once set (conditional write; a converted quote is Won and locked), so the job's copy always equals it, and a job links to at most one quote (`jobs.quotation_id`, read-only after creation). Keep the copy, or have the job read its quote's snapshot?
 - **Owner:** Syed Haris.
 - **Answer (Syed Haris, ticket owner, 2026-10-17, Claude Code session):** "I want the best approach and no unnecessary tables" — drop `jobs.configuration_snapshot`; the DAS board reads `job.quotation.configurationSnapshot`; a job with no quote reads the live configuration, as before. Supersedes Q51's "copied to the job". Built as **U13**.
+- **Status:** answered by ticket owner 2026-10-17
+
+### Q65 — Close-out: test plan, sign-off checklist, stale "decision note pending" labels (raised by tcg-reflector, 2026-10-17)
+- **Question:** (a) §10's test plan was never built — every PR from #796 states "Not run: lint, build and tests, per the developer's instruction" and spec mocks were edited only to compile. Which of the §10 rows (settings persist/reload, type persists and duplicates, pre-existing quote reads Hourly, employee backfill, visits maths, snapshot never refreshed, Mark as Won takes the snapshot) land before TCG-218 closes, and which are deferred to a named ticket? (b) §14's sign-off checklist is entirely unticked and §0 still reads "18 open questions"; tick it as of today, or record that sign-off was by the §11b "sign them" instruction of 2026-10-15 and the checklist was waived. (c) Q1–Q18 status lines read "decision note pending (`tcg-scrum` writes it)" but `decisions/2026-10-07-tcg-218-open-questions-answered-by-the-ticket-owner.md` exists: confirm it covers Q1–Q18 so those lines can be flipped to `resolved — see decisions/…`. (d) Six answers owe decision notes (customer documents net — Joe 2026-10-17; configuration snapshot Q51/56-61/64; symmetric twin Q38d/50/53; type switch Q30/31/34/35; visits reset Q20/40; dispatch slots Q47-49/52/54/55) — see `reflection.md` §3; send to `tcg-scrum`.
+- **Owner:** Syed Haris.
+- **Answer (Syed Haris, ticket owner, 2026-10-17, Claude Code session):** (a) "Defer to a follow-up ticket" — §10's test rows (settings persist/reload, type persists and duplicates, pre-existing quote reads Hourly, employee backfill, visits maths, snapshot never refreshed, Mark as Won takes the snapshot, customer-lines netting and rounding) go to a follow-up ticket, to be raised; TCG-218 closes on the per-unit browser/DB runs recorded in each PR. (b) "Record as signed 2026-10-15" — sign-off was the §11b "sign them" instruction of 2026-10-15; §14 ticked as of today (the Linear re-diff is recorded as not done) and §0's count corrected. (c) The 2026-10-07 log covers only Q9; Q1–Q18 now point to the notes written at close (Q1/Q3–Q6/Q17 → `2026-10-15-existing-associations-hidden-sub-items-auto-fill-at-zero-one-pair-per-crane.md`). (d) All six owed notes written (`tcg-scrum`, 2026-10-17).
 - **Status:** answered by ticket owner 2026-10-17
