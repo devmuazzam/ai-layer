@@ -621,4 +621,4 @@ Quote side lands first (U1–U8), dispatch side last (U9–U10).
 - **Source:** spec §12 Q45 (Joe's 2026-10-17 reply, read by Syed Haris).
 - **Branch:** `feat/TCG-218-u12-mob-net-customer-lines` from `origin/main`.
 - **Widened 2026-10-17 (Syed Haris, after Joe's reply in Q45):** every line, not only Mob/Demob, prints net of discount and price hike with a net Rate; no Discount / Price Hike foot rows on customer documents; Surcharge row unchanged.
-- **Built 2026-10-17:** PR #829 (every customer line net of discount and price hike; approval box removed from the print).
+- **Shipped 2026-10-17:** #829 merged (every customer line net of discount and price hike; approval box removed from the print).
