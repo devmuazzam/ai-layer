@@ -1805,6 +1805,35 @@ grep -n '^### REQ-\|^### Q[0-9]' .ai/aidlc/PAYROLL-FLAGS/spec.md   # re-check be
     `provenance_note`, not a ticket question.
 - **Status:** resolved — see decisions/2026-10-06-payroll-calculate-runs-automatically.md
 
+### Q27 — REQ-22: is the retirement of `/v1/payroll-corrections` superseded by the restored Returned Entries page?
+
+- **Status:** open
+- **Asked:** 2026-10-19 — Jz-Nd (git user), Claude Code session fixing the failing test suite (no
+  ticket). `crane-supervisor-retired.spec.ts` failed because the controller REQ-22 removed is
+  served again.
+- **Question:** REQ-22 retires the `/v1/payroll-corrections/*` controller along with the Crane
+  Supervisor routing. `decisions/2026-10-06-returned-entries-correction-flow-and-send-back.md`
+  (Ali Riaz, developer direction, `status: reference`) restored the controller and the Returned
+  Entries page under `payroll` / `payroll-admin`, and `6ae1e4543` added routes to it. One line:
+  **"REQ-22 is amended — the route stays, only the `crane-supervisor` permission is retired"**, or
+  the route must go and Returned Entries moves elsewhere.
+- **Why it cannot be answered from what is written:** the 2026-10-06 note calls itself "a developer
+  direction, not a client-side product decision", and REQ-22 was never amended to match it. The
+  verified 2026-09-29 decision (Corrina Bustos) routes flags to Payroll Admin/Manager but says
+  nothing about this route either way.
+- **Blocked:** nothing. As built, the route is served with no `crane-supervisor` permission; on
+  2026-10-19 `crane-supervisor-retired.spec.ts` was updated to assert exactly that instead of the
+  route's absence. A "route must go" answer reverts that test and removes the controller.
+- **Candidates:**
+  - REQ-22 (this spec).
+  - `.ai/vault/decisions/2026-10-06-returned-entries-correction-flow-and-send-back.md` (reference).
+  - `.ai/vault/decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md`
+    (verified).
+  - `.ai/vault/decisions/2026-10-13-fix-entry-roundtrip-attribution-and-pm-pa-split.md`, which
+    lowers `/payroll-corrections/:id` to `payroll:edit`.
+- **Owner:** Syed Haris (PAYROLL-FLAGS owner); Corrina Bustos if it is treated as product intent.
+- **Workaround, if any:** as built.
+
 ---
 
 ## 13. What this spec deliberately does not specify
