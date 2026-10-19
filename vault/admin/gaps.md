@@ -1000,6 +1000,18 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [responsive-design-and-security-posture.md](responsive-design-and-security-posture.md)). All
   of this is background; still needed from TCG: the department list, the role list, and each
   role's capabilities.
+- **Update 2026-10-20 (whole ADP roster + FCC seed extract, counts only):** evidence for the
+  department and role list, **not a TCG answer**. ADP's twelve departments are not an org
+  structure: only `PPEDEP` (81 active — hourly field, shop, yard), `SADMIN` (26 — salaried office)
+  and `SALOFF` (4 — officers) hold anyone; the job title carries the function. FCC's populated
+  grouping is the **classification** (`FIELD EMP`, `MECH LABOR`, `YARD LABOR`, `ACCOUNTING`,
+  `SALES`, `DISPATCH`, `SAFETY DEP`, `HR`, `OFC ADMIN`, `MANAGEMENT`, `OWNER`); its employee
+  `department` field is empty on every record. Department heads are FCC type `Management` with
+  the classification naming their function, and the four `OWNER` records are ADP's four `SALOFF`
+  officers. Together with the 16 June 2026 org chart this supports a candidate list — Field
+  Operations, Shop, Yard, Dispatch, Sales, Accounting, Safety, HR, Management — but **what each
+  role may do is still unwritten**. Detail:
+  [../payroll/adp-api-responses/workers-departments-2026-10-20.md](../payroll/adp-api-responses/workers-departments-2026-10-20.md).
 
 ## Must a new nav entry be permission-gated, and who may see live vehicle locations?
 
