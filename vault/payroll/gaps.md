@@ -5802,7 +5802,7 @@ somewhere it should not have. Settle that before touching either.
 
 ## Holdover days 2+ — does paid time start on arrival at the job site, and where does each day end?
 
-- **Status:** open
+- **Status:** partially resolved — see [../decisions/2026-10-15-slot-driven-steps-floating-checklists-holdover-flow.md](../decisions/2026-10-15-slot-driven-steps-floating-checklists-holdover-flow.md) (H7, S3: step flow and payroll flag exemptions decided; the pay-start question — does pay start at arrival on site vs the verified yard-to-yard boundary — remains open with TCG)
 - **Asked:** 2026-10-07 — recording Melissa McNutt's provisional holdover answers
   ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
   `reference`, T4). TCG asked on 2026-10-06 to hold those answers until an updated version is sent.
@@ -5853,7 +5853,7 @@ somewhere it should not have. Settle that before touching either.
 
 ## Who may complete or correct a ticket on a worker's behalf, and who approves a late or post-submit edit — "manager" or payroll
 
-- **Status:** open
+- **Status:** resolved — see [../decisions/2026-10-15-late-and-incomplete-tickets.md](../decisions/2026-10-15-late-and-incomplete-tickets.md) (L5, L7: only the worker and payroll-admin:edit holders; no dispatcher or supervisor)
 - **Asked:** 2026-10-07 — recording Melissa McNutt's provisional incomplete-ticket answers
   ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
   `reference`, T2, T3, T13). TCG asked on 2026-10-06 to hold those answers until an updated version
