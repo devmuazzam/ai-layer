@@ -2,7 +2,7 @@
 title: Accounting — open questions
 status: reference
 kind: gaps
-updated: 2026-10-07
+updated: 2026-10-20
 tags: [module/accounting, kind/gaps, open-questions]
 ---
 
@@ -409,3 +409,255 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Joe Schacatano (what the customer is billed against the quote) with Corrina Bustos /
   TCG accounting (invoice presentation). Relayed by Brian Petros. Brian (2026-10-01, 1:04:34) named
   invoicing as the phase not yet covered.
+
+## Billing cadence — what sets monthly instead of weekly, what a billing week is, and what "billed daily" means
+
+- **Status:** open
+- **Asked:** 2026-10-19. Umer (CodingCops) asked Brent Wagstaff (cc Brian Petros, Melissa McNutt)
+  in the client thread how a long job is invoiced. Melissa McNutt answered on 2026-10-20, and her
+  answer settles most of it:
+  [../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md](../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md)
+  (`verified`). Her words: *"We like to bill holdovers weekly, there are times when customers only
+  want monthly billing. All other jobs are billed daily."* Filed by tcg-scrum on 2026-10-20 for what
+  her answer leaves open. No ticket owns invoicing.
+- **Settled (do not re-ask):** a holdover is **not** invoiced once at the end. It is billed
+  **weekly**, or **monthly** when the customer wants only that. Every other job is billed **daily**.
+  This answers item 1 of
+  [../meetings/2026-10-13-accounting-and-safety-day-invoicing-vendor-bills-collections-and-field-audits.md](../meetings/2026-10-13-accounting-and-safety-day-invoicing-vendor-bills-collections-and-field-audits.md)
+  §10, which was never filed here.
+- **Question:** *"When a customer wants monthly billing for holdovers, is that set once on the
+  customer (all their holdover jobs), or agreed per job or contract?"* Follow-ups, each a one-line
+  answer:
+  - **(a) The billing week and month.** Which day does a weekly holdover invoice close on: a
+    fixed weekday (which?), the payroll week, or every 7 days from the job's first day? Is monthly
+    the calendar month?
+  - **(b) "Billed daily".** On a non-holdover job that runs several days, does each working day
+    get its **own invoice**? Or are days billed as they complete, with several days allowed on one
+    invoice (the 2026-10-13 decision, point 4, *permitted*)?
+  - **(c) A payroll-flagged day inside a billing week.** A flagged day waits and days are
+    independent (2026-10-13, points 2–3). Does the weekly invoice wait for that day, or go out
+    without it, with the day billed on a later invoice?
+  - **(d) Monthly beyond holdovers.** Can a customer who wants monthly billing also have its
+    non-holdover jobs billed monthly, or does monthly apply only to holdovers?
+  - **(e) Which "holdover".** Is the job billed weekly the one with *Make Holdover* set
+    (`JobResource.isHoldover`), the one with payroll's subsistence holdover, or Joe's *"the
+    machine stays on site"* (2026-10-07 sprint review §6)? See the pointer in
+    [../dispatch/gaps.md → *Is the DAS holdover the same thing as payroll's subsistence holdover?*](../dispatch/gaps.md#is-the-das-holdover-the-same-thing-as-payrolls-subsistence-holdover).
+- **Sources checked:**
+  - [../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md](../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md)
+    (`verified`): the invoice unit is a whole day of a job. It left holdover invoicing open.
+  - [fcc-invoicing-in-nexgen.md](fcc-invoicing-in-nexgen.md) → *Recurring billing* (`unverified`):
+    FCC's `Frequency` (days, weeks or months) and `Next Bill` date per job. This is how the legacy
+    system does it, not a rule for the ERP.
+  - [2026-07-accounting-team-erp-wishlist.md](2026-07-accounting-team-erp-wishlist.md) → *Billing*
+    (`unverified`): *"hourly · daily · weekly · monthly rental …"* is a list of billing **methods**,
+    which may mean rate units rather than invoice frequency. It does not answer this.
+  - `meetings/2026-10-13-…` §2 and §10, and its transcript at 17:34–17:54. Tia's holdover remark
+    (*"I went bill each day individually"*) is unresolved in the transcript.
+  - The 2026-10-16 accounting demo (Collections, Cash Forecast) is CodingCops' proposal and
+    settles nothing here.
+- **Blocked:** invoice generation for holdover and multi-day jobs (when an invoice is due, which
+  days it carries); any per-customer billing-cadence setting; Cash Forecast dates that depend on
+  invoice dates.
+- **Owner:** Melissa McNutt / Brent Wagstaff, with Tia Brenneise (Accounts Receivable) for (a)–(c).
+
+## One job per invoice / PO — what are the exceptions to "typically"?
+
+- **Status:** open
+- **Asked:** 2026-10-19. This was Umer's question 3 (CodingCops, client thread): *"Can a customer
+  require split invoices for one job (per PO line / per location), or strictly one job, one
+  invoice?"* Melissa McNutt answered on 2026-10-20: *"We typically do 1 job per invoice / PO."*
+  ([../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md](../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md),
+  `verified`). Filed by tcg-scrum on 2026-10-20.
+- **Settled (do not re-ask):** an invoice normally covers one job and one customer PO. Because a
+  holdover is billed weekly, one job can still have several invoices over time.
+- **Question:** *"Apart from Joe's two cases (one crane stays longer than the other, or the customer
+  asks), does TCG ever split one job across invoices by PO line or by location, or put more than
+  one job on one invoice?"*
+  - Follow-up, a one-line answer: can one job carry **more than one customer PO**? If it can, does
+    each PO get its own invoice?
+- **Sources checked:**
+  - [../decisions/2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md](../decisions/2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md)
+    (`verified`, point 3). Joe Schacatano at 40:06: *"It should be all on one invoice, right, for
+    the same job. The only time you're going to see separate invoices is, let's say, if one machine
+    ends up staying longer than the other."* And at 40:32: *"Or if the customer just asked for
+    it."* He said this about two cranes on one job.
+  - [../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md)
+    (Brian Petros): the customer PO lives on the job / schedule tab and is printed on the final
+    invoice. It does not say whether a job can carry several POs.
+  - [invoice-packets-2026-04-worked-examples.md](invoice-packets-2026-04-worked-examples.md)
+    (`unverified`): six real packets. Each shows one job. That is consistent with the norm, but it
+    shows no exceptions.
+- **Blocked:** whether the invoice entity holds one job or several, and one PO or several; any
+  "split invoice" action.
+- **Owner:** Melissa McNutt / Brent Wagstaff, with Tia Brenneise (Accounts Receivable).
+
+## Vendor-bill flow — when is the QuickBooks bill created, and which bills wait for the customer's payment?
+
+- **Status:** open
+- **Asked:** 2026-10-16. Ehtesham Anwar (CodingCops) proposed a simplified vendor-bill flow to
+  Brent Wagstaff by e-mail, and asked whether it aligns with his process. **Unanswered.** Source:
+  [../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md](../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md)
+  §2. This entry also files two questions that had been listed but never filed: 2026-10-08 §9 Q6 and
+  2026-10-13 §10 Q2. Filed by tcg-scrum on 2026-10-20.
+- **Question:** *"Should the ERP create the QuickBooks bill only when a vendor bill is ready to
+  pay, as proposed? Or at receipt, as demoed on 10-08 and 10-13?"* Follow-ups, each a one-line
+  answer:
+  - **(a)** Which vendor bills wait until the customer pays TCG (Case 1): subcontractors only, or
+    every vendor bill, including permits and plans?
+  - **(b)** Which bills must be paid **before** the customer invoice is sent (Case 2)? Is it only
+    LADWP jobs' subcontractors?
+  - **(c)** In Case 2, must the ERP block the customer invoice until the vendor is paid?
+  - **(d)** Is it acceptable that a held bill is not in QuickBooks' AP, or its aging, until it is
+    released?
+- **The three timings on record. None is a TCG decision:**
+  1. **At receipt.** 2026-10-08 §4 and 2026-10-13 §3: *Create bill* sends it to QuickBooks at the
+     invoice amount.
+  2. **After the customer invoice is processed.** The prototype's statuses: Requested · To Verify ·
+     Ready to Bill · Held · Released · Paid.
+  3. **When ready to pay.** The proposal:
+     - Case 1: `PO Open → Invoice Received → Held → Released / Ready to Bill → Pending Payment → Paid`
+     - Case 2: `PO Open → Invoice Received → Requested → Ready to Bill → Pending Payment → Paid`
+- **Sources checked:**
+  - [../decisions/2026-10-13-vendor-invoice-attachment-goes-to-quickbooks-with-the-bill.md](../decisions/2026-10-13-vendor-invoice-attachment-goes-to-quickbooks-with-the-bill.md)
+    (`verified`). The document goes with the bill, whenever the bill is created. Its *What was not
+    decided* says the hold until the customer pays was not confirmed, and the bills-received blocker
+    was proposed, not agreed.
+  - `meetings/2026-10-08-…` §4 and §7 (`unverified`). ehtesham.anwar stated the subcontractor rule:
+    TCG is paid first, except LADWP, where subs are paid before TCG bills. Melissa asked for a
+    paid-job notification so the sub can be paid.
+  - `meetings/2026-10-13-…` §3 and *Against the vault* (`unverified`). The hold was shown on a
+    **permit** bill.
+  - [../vendors-agencies/purchase-orders-fcc/po-002-vendor-billing-and-customer-invoicing.md](../vendors-agencies/purchase-orders-fcc/po-002-vendor-billing-and-customer-invoicing.md)
+    (`unverified`, FCC draft SOP). The customer invoice is held *"Waiting on Sub"* until sub bills
+    are **received**. It says nothing about payment.
+  - [ap-ar-value-engine-and-whiteboard-flow.md](ap-ar-value-engine-and-whiteboard-flow.md)
+    (`unverified`). Shows a subcontractor branch and an LADWP path, with no timing for the bill.
+  - [../decisions/2026-09-11-po-closed-means-closed-out-not-cancelled.md](../decisions/2026-09-11-po-closed-means-closed-out-not-cancelled.md)
+    (`reference`, CodingCops). A PO auto-closes on an Invoice-category attachment. The 10-08 design
+    closes it when the bill is paid. The proposal does not say when.
+- **Blocked:** the vendor-bill status model, *Create Bill* timing, the customer-invoice blocker for
+  Case 2, and the AP figures read from QuickBooks.
+- **Owner:** Brent Wagstaff (CFO), with Melissa McNutt on the subcontractor and LADWP rule.
+
+## Invoice-approval reminders — what interval, and by what channel?
+
+- **Status:** open
+- **Asked:** 2026-10-16. Brent Wagstaff by e-mail: *"when invoices are waiting for approval what
+  kind of reminders are sent(interval)?"* Ehtesham Anwar replied that in-app notifications are
+  planned and e-mail is possible, and asked Brent what interval he wants. **Unanswered.** Source:
+  [../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md](../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md).
+  Filed by tcg-scrum on 2026-10-20.
+- **Question:** *"How long after an invoice is sent for sales approval should the first reminder
+  go out, how often after that, and in-app, e-mail, or both?"* Follow-up, a one-line answer: does a
+  reminder ever escalate to someone other than the approving salesperson?
+- **Related, never filed (2026-10-08 §9 Q5):** which salesperson approves (the quote's?), and is
+  every invoice routed for approval, or only some? Sales approval itself is CodingCops design
+  (2026-10-08 §3).
+- **Sources checked:**
+  - [../vendors-agencies/purchase-orders-fcc/po-002-vendor-billing-and-customer-invoicing.md](../vendors-agencies/purchase-orders-fcc/po-002-vendor-billing-and-customer-invoicing.md)
+    Step 4 (`unverified`). In FCC the salesperson runs a report of invoices awaiting approval. No
+    reminders are described.
+  - [2026-07-accounting-team-erp-wishlist.md](2026-07-accounting-team-erp-wishlist.md). It lists
+    approval routing (*"e.g. >$500 → PM → Accounting → Owner"*), and collection reminders at days
+    15/30/45. Neither is about invoice-approval reminders.
+- **Blocked:** the notification schedule and channel for *Pending Approval* invoices.
+- **Owner:** Brent Wagstaff.
+
+## "An AR tab like Accounts Payable v2" — what does Brent want on it?
+
+- **Status:** open
+- **Asked:** 2026-10-16. Brent Wagstaff by e-mail: *"Can we have a tab made for Accounts Receivable
+  like Accounts Payable v2?"* Ehtesham Anwar asked him which layout or features he means.
+  **Unanswered.** Source:
+  [../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md](../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md).
+  Filed by tcg-scrum on 2026-10-20.
+- **Question:** *"Which parts of AP v2 should the AR tab copy: the per-party view with owed / paid /
+  partial and totals that follow the filter, the layout, or something else?"*
+- **Sources checked:** `meetings/2026-10-13-…` §6 (`unverified`). AP per vendor with paid, unpaid
+  and partially paid, and totals that follow the filter. Brent (31:05) asked for *"paid and unpaid
+  per party"* and said it replaces a side spreadsheet. `meetings/2026-10-08-…` §4 (`unverified`):
+  the AR list design.
+- **Blocked:** the AR tab's design.
+- **Owner:** Brent Wagstaff.
+
+## AP payment marking — selecting bills for payment, "sent to bank", and partial payments: ERP or QuickBooks?
+
+- **Status:** open
+- **Asked:** 2026-10-16. Brent Wagstaff by e-mail, under *Accounts Payable v2*: *"Can we mark
+  invoices to be paid? We send for payment to bank and they are paid?"* and *"Can we mark invoices
+  for partial payment?"* Ehtesham Anwar replied:
+  - Bills are created and managed in QuickBooks, and their paid status syncs to the ERP.
+  - Selecting bills for payment and tracking *"Sent to Bank"* would be an additional workflow.
+  - A partial payment is recorded against the bill in QuickBooks, and the ERP shows the status and
+    the outstanding balance.
+
+  Source:
+  [../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md](../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md).
+  Filed by tcg-scrum on 2026-10-20.
+- **Question:** *"Does TCG want to select vendor bills for payment and mark them 'sent to bank' in
+  the ERP, or is QuickBooks' paid status, synced back, enough?"* Follow-up, a one-line answer: is
+  recording partial payments in QuickBooks, shown in the ERP, what Brent meant? Or does he want to
+  mark a partial payment in the ERP?
+- **Sources checked:**
+  - [accounting-team-quickbooks-and-spreadsheet-activities.md](accounting-team-quickbooks-and-spreadsheet-activities.md)
+    (`unverified`): *"Marking invoices paid"* (Kaitlin), *"Record payments"* (Tia), and bank
+    matching (Sammy), all in QuickBooks today. Nothing on how vendor payments are sent to the bank.
+  - The 2026-09-01 boundary: QuickBooks keeps the books. See
+    [*Wishlist vs committed scope*](#wishlist-vs-committed-scope--nobody-has-tiered-the-accounting-list).
+    A payment workflow in the ERP sits at that edge.
+  - `meetings/2026-10-13-…` §6 (`unverified`): AP shows paid, unpaid and partial from QuickBooks.
+- **Blocked:** the AP v2 actions, and whether the ERP holds any payment state of its own.
+- **Owner:** Brent Wagstaff.
+
+## Forecast vs actual cash flow — what it covers, how often, and from which balances
+
+- **Status:** open
+- **Asked:** 2026-10-16. Brent Wagstaff by e-mail: *"Can we have a Forecasted cashflow and actual
+  cashflow?"* Ehtesham Anwar said the page today compares forecast customer collections with actual
+  QuickBooks receipts, and asked four things back. **Unanswered.** Source:
+  [../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md](../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md).
+  Filed by tcg-scrum on 2026-10-20.
+- **Question:** *"Should the cash-flow view put forecast against actual for both money in and money
+  out, with the difference shown?"* Follow-ups, each a one-line answer:
+  - **(a) Scope.** Customer receipts and vendor payments only, or also payroll, overhead, taxes and
+    loans?
+  - **(b) Cadence.** Weekly, monthly, or both?
+  - **(c) Balances.** Opening and closing cash from QuickBooks bank data?
+  - **(d) A sample.** Can TCG send an existing cash-flow report?
+- **Sources checked:**
+  - [2026-07-accounting-team-erp-wishlist.md](2026-07-accounting-team-erp-wishlist.md)
+    (`unverified`, never tiered): *"Cash-flow forecasting — 13-week projected balance (payroll,
+    vendors, collections, loans, taxes)"*. This bears on (a)–(c) but is a wishlist, not an answer.
+  - [accounting-team-quickbooks-and-spreadsheet-activities.md](accounting-team-quickbooks-and-spreadsheet-activities.md):
+    the *Cashflow Tracker* (*"tracking all payments needed / payments received"*), *SCE cash
+    forecasting* and *AR cashflow daily check-in* sheets. These are the likely samples for (d).
+  - `meetings/2026-10-08-…` §6: Brent's AR movement (opening balance, plus billed, minus received)
+    and days-to-pay projection. `meetings/2026-10-13-…` §6: the overview design.
+- **Blocked:** the Cash Flow Overview's data model and the Cash Forecast report.
+- **Owner:** Brent Wagstaff.
+
+## Accounting reports — what breakdowns each View Reports report needs, and the days-to-pay bands
+
+- **Status:** open
+- **Asked:** 2026-10-16. Brent Wagstaff by e-mail: *"Are View reports buttons available for use?
+  Doesn't seem to work."* Ehtesham Anwar replied that they are now built (AR & AP Ageing, Cash
+  Forecast, Collections Performance), and asked which breakdowns each should include.
+  **Unanswered.** The same day's demo update added *Avg. days to pay* per customer, with bands green
+  ≤45, amber 46–60 and red >60. That was CodingCops' choice. Source:
+  [../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md](../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md).
+  Filed by tcg-scrum on 2026-10-20.
+- **Question:** *"For each report (AR & AP Ageing, Cash Forecast, Collections Performance), what
+  must it break down by: customer or vendor, job, ageing bucket, week, or something else?"*
+  Follow-up, a one-line answer: are 45 and 60 days the right thresholds for the days-to-pay colours?
+- **Sources checked:**
+  - `meetings/2026-10-08-…` §6: AR and AP totals in ageing buckets, *"as of a date"*, and AR by
+    service type (Brian, §7).
+  - `meetings/2026-10-13-…` §6: Brent asked that little time be spent loading past data for the
+    days-to-pay forecast.
+  - [../decisions/2026-10-13-collections-worked-at-customer-level-not-invoice-level.md](../decisions/2026-10-13-collections-worked-at-customer-level-not-invoice-level.md)
+    (`verified`): collections are per customer.
+  - The wishlist: *"payment history with average-days-outstanding"*. Nothing anywhere sets
+    thresholds.
+- **Blocked:** the report definitions, and the days-to-pay colour bands.
+- **Owner:** Brent Wagstaff.

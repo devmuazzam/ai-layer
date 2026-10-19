@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-10-08
+updated: 2026-10-20
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -350,3 +350,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## Pointer — leave-page warning and value rewriting on open (vendor, agency)
 
 - **Pointer (2026-09-28):** the leave-page "unsaved changes" warning sticking after a no-op edit, and forms rewriting stored values on open, is filed once in [customers/gaps.md](../customers/gaps.md) → *Leave-page warning — does undoing an edit count as a change, and may opening a record rewrite its stored values?* It covers the vendor form (due/discount defaults, address normalization) and the agency form (state normalization).
+
+## Vendor-bill flow and pay-when-paid — pointer, owned by accounting
+
+- **Status:** open
+- **Asked:** 2026-10-20. tcg-scrum, logging Brent Wagstaff's 2026-10-16 e-mail review of the
+  accounting prototype.
+- **Question:** **Pointer only. The question lives in
+  [../accounting/gaps.md → *Vendor-bill flow — when is the QuickBooks bill created, and which bills wait for the customer's payment?*](../accounting/gaps.md#vendor-bill-flow--when-is-the-quickbooks-bill-created-and-which-bills-wait-for-the-customers-payment).**
+  It is registered here because it decides the status chain of a vendor bill raised against a PO
+  (`PO Open → Invoice Received → …`), which vendor POs are paid only after the customer pays
+  (subcontractors, permits, plans), and the LADWP pay-before-bill case.
+- **Sources checked:** see the accounting entry.
+- **Blocked:** see the accounting entry.
+- **Owner:** Brent Wagstaff (accounting).

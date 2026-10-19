@@ -1313,6 +1313,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (subsistence rows); [../payroll/2026-08-20-payroll-rules-meeting-notes.md](../payroll/2026-08-20-payroll-rules-meeting-notes.md).
 - **Blocked:** any link between the two flags; PAY-049's calendar-day rule.
 - **Owner:** Lisette Anzaldo (dispatch) with Corrina Bustos (payroll).
+- **Update 2026-10-20: billing now depends on the holdover definition too. Pointer only, the entry
+  stays open.** Melissa McNutt wrote: *"We like to bill holdovers weekly … All other jobs are
+  billed daily"*
+  ([../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md](../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md),
+  `verified`). That makes invoicing a third consumer of "is this job a holdover". She did not say
+  which flag she means. That question is filed in
+  [../accounting/gaps.md → *Billing cadence*](../accounting/gaps.md#billing-cadence--what-sets-monthly-instead-of-weekly-what-a-billing-week-is-and-what-billed-daily-means),
+  item (e).
 
 ## Make Holdover — every unit of a line, who may set it, and at what stage?
 
