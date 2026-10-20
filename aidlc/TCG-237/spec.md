@@ -1486,6 +1486,20 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** answered 2026-10-20 (developer)
 
+
+### Q52 — The FCC seeder leaves the tenant with no roles
+
+*Raised 2026-10-20 by the U9 and U10 builds.*
+
+- **Question:** `apps/api/fcc-seeder/src/lib/reset-tenant.ts` (L104, L138) deletes every department and department role; `seed-all.ts` then posts only FCC's own departments and creates no roles. So the Q50 fixes post billing codes and sub-category associations with no role (every lookup misses), and employees seeded by FCC have no role. Where do the FCC tenant's roles come from?
+- **Options:**
+  - A. Re-run `seedSystemDepartments` (the nine and their 29 roles) right after the reset, before billing codes and associations.
+  - B. Leave it to U15's seeder rework.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
