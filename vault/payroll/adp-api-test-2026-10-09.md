@@ -214,6 +214,40 @@ Corrina Bustos to choose (not decided): corrections are made **only in the ERP**
 (`Append` updates an existing batch — point 1), or payroll **confirms or marks changes in the ERP**
 after approving in ADP. Recorded as open in [gaps.md](gaps.md).
 
+
+## 8. The approval check — week 43 processed (2026-10-20 PT / 2026-10-21 PKT)
+
+Micaela Dipane submitted the real week-43 payroll (period `2026-43`, `2026-10-10` → `2026-10-16`, pay
+date `2026-10-22`) — a worksheet **not** created by the API. Her ADP mobile app then showed, at
+4:15 PM PT (screenshot shared in the Teams chat):
+
+> *"Your payroll for company 4RZ, payroll week 43 was processed."*
+
+| Check (PKT, 10/21) | Result |
+| --- | --- |
+| `GET /core/v1/event-notification-messages` at 04:15, then every 5 minutes | **204 — empty**. `pay-data-input.modify` is still the only subscription; nothing fires on processing |
+| `GET /payroll/v1/pay-schedule/payroll-groups/4RZ` at 04:18 | `2026-43` still **`OPEN`** three minutes after "processed"; `2026-41`, `2026-42` show **`COMPLETE`**, `2026-44`+ `NOT_STARTED`. A watcher logs when `2026-43` changes (pending when written) |
+
+**So ADP knows payroll was processed and tells the practitioner in its app, but sends the
+integration nothing.** Whether the worksheet came from the API or not makes no difference: events
+depend on the subscription, not on who created the data.
+
+**One real event exists in ADP's documentation, not on this project.** The *Payroll Group List of
+Pay Periods API Guide for ADP Workforce Now NextGen* (Chapter 4, *Receive Notifications when a Pay
+Period Status Changes*) names
+`/payroll/payrollManagement/payrollProcessingScheduleManagement/payScheduleManagement/payrollGroup.payPeriodStatus.change.eventNotify`,
+fired *"When the status of a payroll period changes"*. The same guide's GET
+(`/payroll/v1/pay-schedule/payroll-groups/{group-code}`) **is** on this project (*Discover APIs* →
+*Payroll Group Pay Periods*, *Included*), and its data dictionary gives the status as *"open/close/
+skipped etc."* (observed codes: `NOT_STARTED`, `OPEN`, `COMPLETE`). But all 147 subscribable events
+were read page by page on 2026-10-21 (via Chrome): **`payrollGroup.payPeriodStatus.change` is not
+among them.** syed.haris asked Nate on request `672204` (2026-10-21) whether it can be enabled.
+
+**Fallback the ERP can build today, unconfirmed:** poll the pay-schedule GET and treat `OPEN` →
+`COMPLETE` as "week processed". It works only if the status flips at processing rather than at the
+pay date or a later close — the watcher above decides that. ADP has **not replied** to the
+2026-10-17 follow-up (Payroll Output enablement) as of 2026-10-21.
+
 ---
 
 ## Appendix — the test scripts, as run

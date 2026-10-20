@@ -1129,7 +1129,14 @@ someone has confirmed otherwise.
   approval poll is a formality. **The delete was silent too:** Micaela Dipane deleted the worksheet
   and the queue stayed 204 (polled 02:20 and 02:27 PKT). ADP has no *reject* for a worksheet — an
   edit or a delete is what rejecting means — so a rejected entry is invisible to the ERP as well.
-- **Status:** resolved 2026-10-17 — no pay-data or payroll-status event reaches the ERP.
+- Update 2026-10-21 (approval check, [adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §8):
+  week 43 was **processed** (ADP's app told Micaela Dipane at 4:15 PM PT, 2026-10-20) and the queue
+  stayed **204**. A documented event, `payrollGroup.payPeriodStatus.change`, exists in ADP's NextGen
+  pay-periods guide but is **not** among this project's 147; enablement asked of ADP (request
+  `672204`, 2026-10-21). Interim lead: poll `GET /payroll/v1/pay-schedule/payroll-groups/4RZ` for
+  `OPEN` → `COMPLETE` (timing of the flip unconfirmed). ADP has not answered the 2026-10-17 follow-up.
+- **Status:** resolved 2026-10-17 — no pay-data or payroll-status event reaches the ERP (reconfirmed
+  2026-10-21 at a real processing).
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires](gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires)
 
