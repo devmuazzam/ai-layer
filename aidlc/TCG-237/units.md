@@ -426,6 +426,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U8 — The quotation resource picker lists roles (web and mobile)
 
+> **Developer decision 2026-10-20 (Syed Haris): U8 = B — split.** API + web ship as U8; mobile ships as its own stacked PR (U8m) right after. No `size-exception`. Accepted consequence: quoting on mobile is broken between the two merges unless the double write covers it (pending).
+
 - **Outcome:** Adding a labour line to a quotation, on web and on mobile, picks from roles; existing quotations show the mapped role's name.
 - **Kind:** vertical
 - **Requirements covered:** REQ-10 (QuotationResource consumer) — fully; Q13 = B.
@@ -1050,6 +1052,8 @@ Deferred until Q27. Guardian **required**; tracer **required**; payroll provenan
 ---
 
 ## Sequencing
+
+> **Developer decisions 2026-10-20 (Syed Haris):** U8 split into U8 (API + web) and U8m (mobile) — no size-exception. **No feature flags** on U17 or U18; they ship with their tests. Double write U8→U11: **pending**. U19 dropped (Q27 = A).
 
 ```
 U1 ──┐
