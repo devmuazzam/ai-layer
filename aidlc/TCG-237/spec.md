@@ -1695,9 +1695,9 @@ Q9 plays the same role for REQ-06.
   - A. No adder (as built — matches Q21: no Dispatchable role, no adder).
   - B. Operator adder (old behaviour).
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — no boom adder when `role` is null. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ### Q67 — Layering of the Q64 system-departments endpoint
 
@@ -1708,9 +1708,9 @@ Q9 plays the same role for REQ-06.
   - A. Keep — follows `create()` in the same file.
   - B. Add a service layer (new exported service).
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — keep: the usecase calls `seedSystemDepartments` directly, as `create()` does. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 
 ### Q68 — "Can also fill" vs the DAS craft check on a slot
@@ -1750,9 +1750,9 @@ Q9 plays the same role for REQ-06.
   - C. The craft wins: main role comes from the primary craft's role.
   - D. Undo S2: FCC crafts stay roleless.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** B — type stays the main role; the mismatched FCC craft is posted as a SECONDARY craft. Syed Haris, 2026-10-20 (developer reading, open to TCG challenge). Not yet built — #891.
 - **Owner:** Syed Haris (developer); payroll may need TCG.
-- **Status:** open
+- **Status:** answered
 
 ### Q71 — Can-also-fill entries for roles DAS does not craft-check
 
@@ -1763,9 +1763,9 @@ Q9 plays the same role for REQ-06.
   - A. Leave them: DAS does not craft-check those slots.
   - B. DAS craft-checks every Dispatchable slot (refuses all 328 until crafts exist).
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — leave them; DAS does not craft-check those slots. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ## 13. What this spec deliberately does not specify
 
