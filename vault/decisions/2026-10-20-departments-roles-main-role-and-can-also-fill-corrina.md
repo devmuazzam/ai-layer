@@ -1,16 +1,21 @@
 ---
-title: "Departments and roles: nine departments; one main role per person plus a can-also-fill list, the main role decides access; Job Foreman is a per-job pick; only the Crane Superintendent joins field crew and HDRs on a ticket; Payroll Admin sits in HR; who may change roles (Corrina Bustos, 2026-10-20) — decision"
-source: decision/Corrina Bustos (TCG HR Manager) — Microsoft Teams reply to Syed Haris, 2026-10-20
+title: "Departments and roles: nine departments; one main role per person plus a can-also-fill list, the main role decides access; Job Foreman is a per-job pick; who goes on a job ticket (field crew, HDRs, the Crane Superintendent, and Local 12 managers, in the position they fill); Payroll Admin sits in HR; the Dispatcher assigns roles with Dispatch Manager approval, four named people edit what a role can do (Corrina Bustos, 2026-10-20, two replies) — decision"
+source: decision/Corrina Bustos (TCG HR Manager) — two Microsoft Teams replies to Syed Haris, 2026-10-20
 decided: 2026-10-20
 decided_by: >-
   Corrina Bustos (TCG, HR Manager per the unverified admin/engagement-directory-and-org-charts.md;
-  also the payroll owner in earlier decision notes), in writing, in a Microsoft Teams reply on
-  2026-10-20 to an eight-question message from Syed Haris (CodingCops), sent the same day. She
-  answered all eight, tersely. Clause 7 names a second approver, Lisette Anzaldo (Dispatch Manager),
-  who is not on record agreeing. Brian Petros, named on 2026-09-01 as assembling the role list with
-  her, has not commented. The questions and her reply were relayed to tcg-scrum verbatim by the
-  Claude Code session of Syed Haris on 2026-10-20; tcg-scrum did not see the Teams thread itself.
-  Recorded by tcg-scrum on 2026-10-20.
+  also the payroll owner in earlier decision notes), in writing, in two Microsoft Teams replies on
+  2026-10-20 to Syed Haris (CodingCops). The first answered an eight-question message sent the same
+  day, tersely. The second answered a four-question follow-up, also sent the same day. The
+  follow-up narrows clause 7: the Dispatcher assigns roles, and the Dispatch Manager (Lisette
+  Anzaldo) approves an assignment. Lisette Anzaldo is not on record agreeing to either role. The
+  follow-up's clause 2 also names "Melissa" and "Joe" as role editors, read as Melissa McNutt
+  (President) and Joe Schacatano; neither is on record agreeing. Follow-up clause 1 is deferred to Ryan Adams (Sales
+  Manager), who has not replied. Brian Petros, named on 2026-09-01 as assembling the role list with
+  her, has not commented. Both exchanges were relayed to tcg-scrum verbatim by the Claude Code
+  session of Syed Haris on 2026-10-20. tcg-scrum did not see the Teams thread itself. Recorded by
+  tcg-scrum on 2026-10-20. The follow-up was added the same day, after the first version was
+  committed (overlay 4530c79).
 status: verified
 conflicts_with: []
 resolves:
@@ -73,18 +78,56 @@ Corrina Bustos, Microsoft Teams, 2026-10-20, verbatim:
 
 Her first line carries no number. It is read as the answer to Q1, because her numbering starts at 2.
 
+### The follow-up, same day
+
+Syed Haris to Corrina Bustos, Microsoft Teams, 2026-10-20, exactly as sent:
+
+1. Can one person get extra access on top of their role, without changing it for everyone in that
+   role? (For example: one Sales Coordinator who can also approve quotes, while the others can't.)
+   If not, we'd make that a separate role.
+2. On who changes roles and permissions: is it the Dispatcher or the Dispatch Manager? Does it mean
+   assigning someone's role, editing what a role can do, or both? And does a change need both you
+   and Lisette to approve, or either one?
+3. When Jeff (crane superintendent) goes on a job ticket, what is he on it as? (Operator, rigger, or
+   as superintendent?)
+4. Can a manager who also operates go on a job ticket? (FCC has three managers who are also set up
+   as Operators.)
+
+Corrina Bustos, Microsoft Teams, 2026-10-20, verbatim:
+
+> ```
+> 1. I have asked Ryan about the sales coordinator. Will let you know when he responds.
+> 2. Dispatcher can assign someone's role. A change needs approval from Dispatch Manager. Editing what a role can do would be myself, Melissa, Joe, or Lisette.
+> 3. Crane super would be assigned in what position he was for that particular job.
+> 4. Yes. Reason being, Jeff Kelley and Kyle Harlow are managers but are also in the local 12 union so they are allowed to operate.
+> ```
+
+**Why this is the same note, not a second one.** Both replies came the same day, in the same
+thread. The follow-up only asks about what the first reply left open: Q3, Q5 and Q7. The first
+reply's readings stay in the table below as the record of what was said. Where the follow-up
+narrows or answers a row, that row says so and points to the follow-up table.
+
 ## Decision — each answer, her words beside the reading
 
 | Q | Her words | Reading | Settled? |
 | --- | --- | --- | --- |
 | 1 | *"yes"* | **The departments are the nine named:** Field Operations, Shop, Yard, Dispatch, Sales, Accounting, Safety, HR, Management. Her "yes" also accepts the examples given with the list: Operators, Oilers and Riggers under Field Operations; Mechanics under Shop; Wes and the owners under Management. | **Yes** — the department list. The full role list *within* each department was not asked, beyond those examples. |
 | 2 | *"yes to both"* | **One main role per person, plus a "can also fill" list of other positions.** The main role decides what the person can see in the system (portal access). The examples treat the "other positions" as entries of the same role list (Oiler, Rigger, 3rd Man), so a person's can-also-fill list is drawn from the roles. | **Yes.** How it is stored is a developer decision. |
-| 3 | *"yes sometimes. ex: HDR Mechanic can also be called out into the field to be a 3rd man or rigger. i am unsure about the sales coordinator part"* | Her example answers **slot filling, not access**. It extends Q2: an HDR mechanic's can-also-fill list may include **Rigger**, not only 3rd Man. Whether an individual can get access beyond their role's default is **not answered**. She said she was unsure about the Sales Coordinator quote-approval example. Her *"yes sometimes"* is not read as a yes to per-person access, because the example she gave for it is not about access. | **No.** Open in [../admin/gaps.md → *Per-person access beyond the role default*](../admin/gaps.md#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes). |
+| 3 | *"yes sometimes. ex: HDR Mechanic can also be called out into the field to be a 3rd man or rigger. i am unsure about the sales coordinator part"* | Her example answers **slot filling, not access**. It extends Q2: an HDR mechanic's can-also-fill list may include **Rigger**, not only 3rd Man. Whether an individual can get access beyond their role's default is **not answered**. She said she was unsure about the Sales Coordinator quote-approval example. Her *"yes sometimes"* is not read as a yes to per-person access, because the example she gave for it is not about access. | **No.** Open in [../admin/gaps.md → *Per-person access beyond the role default*](../admin/gaps.md#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes). **Follow-up F1:** still open; she has asked Ryan Adams. |
 | 4 | *"Job Foreman is something they are picked and assigned PER job"* | **Job Foreman is a per-job designation, not a role.** This agrees with [../payroll/foreman-and-military-premiums.md](../payroll/foreman-and-military-premiums.md) (`unverified`), *"The job foreman is chosen by the crane superintendent … per job"*. So FCC's `Job Foreman` employee type (id 15, created 2026-02-18 by `corrinab`, per [../payroll/fcc-employee-types-and-crafts.md](../payroll/fcc-employee-types-and-crafts.md)) **should not become a role**. Her reply does not say who does the picking. | **Yes** — designation, not role. |
-| 5 | *"only crane superintendent would also qualify to get a job ticket. NEVER yard techs."* | **Who may go on a job ticket:** field crew; HDRs (through their can-also-fill list, per Q2–Q3); and, besides those, **only the Crane Superintendent**. **Yard techs never.** By the same "only", nobody in Sales, Accounting, Safety, HR or Dispatch goes on a ticket. | **Yes**, with one remainder: see *What this does not settle*, item 2. |
+| 5 | *"only crane superintendent would also qualify to get a job ticket. NEVER yard techs."* | **Who may go on a job ticket:** field crew; HDRs (through their can-also-fill list, per Q2–Q3); and, besides those, **only the Crane Superintendent**. **Yard techs never.** By the same "only", nobody in Sales, Accounting, Safety, HR or Dispatch goes on a ticket. | **Yes.** **Follow-up F3–F4** settle what was left: the Crane Superintendent goes on the ticket in the position he fills on that job, and managers who are Local 12 members may also go on a ticket. The "only" above is therefore **narrowed**, not the whole rule. |
 | 6 | *"right now, Micaela's Payroll Admin is still under HR"* | **The Payroll Administrator role sits in the HR department**, "right now". The holder is Micaela Slykhuis per [2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md](2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md) clause 2. "Right now" and "still" say the placement may change. Nothing in the reply says when or how. | **Yes**, as the current placement. |
-| 7 | *"Sales Coordinator and Dispatch should be able to change roles and permissions, Dispatch Manager (Lisette) and myself approve."* | **Sales Coordinator and Dispatch may change roles and permissions. A change is approved by the Dispatch Manager (Lisette Anzaldo) and Corrina Bustos.** No request/approval flow exists in the ERP today, so this answer **implies one is built**. It matches an earlier ask: Ryan Adams (Sales Manager), 2026-03-19 roles demo 29:52–31:39, a request/approval step for extra access with a record of who approved what ([../meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md](../meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md) lines 156–164). | **Yes, as stated**, but it describes behaviour that does not exist, and four details are open (see *What this does not settle*, item 4). |
+| 7 | *"Sales Coordinator and Dispatch should be able to change roles and permissions, Dispatch Manager (Lisette) and myself approve."* | **Sales Coordinator and Dispatch may change roles and permissions. A change is approved by the Dispatch Manager (Lisette Anzaldo) and Corrina Bustos.** No request/approval flow exists in the ERP today, so this answer **implies one is built**. It matches an earlier ask: Ryan Adams (Sales Manager), 2026-03-19 roles demo 29:52–31:39, a request/approval step for extra access with a record of who approved what ([../meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md](../meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md) lines 156–164). | **Narrowed by follow-up F2.** Three of its four open details are answered there. The first reply's "Sales Coordinator" is not in F2. That is recorded as a tension, not resolved (see *What this does not settle*, item 4). |
 | 8 | *"yes and yes"* | **A temp fill-in uses the same role as a regular employee in that job:** the same pay setup and the same access. | **Yes.** |
+
+### Follow-up — each answer
+
+| F | Her words | Reading | Settled? |
+| --- | --- | --- | --- |
+| F1 | *"I have asked Ryan about the sales coordinator. Will let you know when he responds."* | Per-person access beyond the role default (Q3) is **deferred to Ryan Adams** (Sales Manager, per the unverified org chart). No answer yet. | **No.** Awaiting Ryan Adams. |
+| F2 | *"Dispatcher can assign someone's role. A change needs approval from Dispatch Manager. Editing what a role can do would be myself, Melissa, Joe, or Lisette."* | Two different actions, with two different sets of people. **(a) Assigning a person's role:** done by the **Dispatcher**, and the change **needs approval from the Dispatch Manager** (Lisette Anzaldo). That is one approver; Corrina is not a second one. **(b) Editing what a role can do** (its permissions): done by **Corrina Bustos, Melissa McNutt, Joe Schacatano or Lisette Anzaldo**. The surnames are our reading against the unverified [../admin/engagement-directory-and-org-charts.md](../admin/engagement-directory-and-org-charts.md). Melissa McNutt is the President. "Joe" is read as **Joe Schacatano**, of the executive tier, who is listed as VP of Operations in one table there and as VP of Sales on the 16 June 2026 chart. The directory also lists a **Joe Deitrick** (Sales Team), so the reading is ours, not her words. **No approval step was stated for role edits.** The question asked about "a change" generally, and her approval sentence sits with the assignment sentence. | **Yes**, for who assigns, who approves an assignment, and who edits a role. **Open:** whether Sales Coordinators still assign roles (the first reply named them); self-approval; whether role edits need any approval (none stated). |
+| F3 | *"Crane super would be assigned in what position he was for that particular job."* | **The Crane Superintendent goes on a ticket in the position he actually fills on that job**: Operator, Rigger, and so on. "Crane Superintendent" is **not a ticket slot type of its own**. In the role model, that means the positions he may fill are on his can-also-fill list. | **Yes.** |
+| F4 | *"Yes. Reason being, Jeff Kelley and Kyle Harlow are managers but are also in the local 12 union so they are allowed to operate."* | **A manager who operates may go on a job ticket.** She names **Jeff Kelley** (Crane Superintendent) and **Kyle Harlow** (VP of Fleet; VP of Fleet and Field Operations on the 16 June 2026 chart, both per the unverified org chart). **The basis she states is Local 12 union membership**: they are allowed to operate because they are in the union. This closes the Q5 "managers who operate" remainder. | **Yes**, for the two she named. FCC holds **three** `Management`-type employees with `Operator`. She named two, and the ADP file records counts only, not names, so the third is not identified. Whether the third qualifies is unconfirmed. |
 
 ## Why
 
@@ -110,35 +153,62 @@ handled. The written context she was answering against:
   role decides portal access (Q2). An HDR mechanic's list may hold 3rd Man and Rigger (Q2–Q3).
 - **Job Foreman** is chosen per job. It is not a role, and FCC's `Job Foreman` type is not migrated
   as one (Q4).
-- **Who may go on a job ticket**: field crew, HDRs through their can-also-fill list, and the Crane
-  Superintendent. Never yard techs (Q5).
+- **Who may go on a job ticket:**
+  - field crew;
+  - HDRs, through their can-also-fill list;
+  - the Crane Superintendent;
+  - managers who are Local 12 members and so may operate. She named Jeff Kelley and Kyle Harlow
+    (F4).
+
+  Never yard techs (Q5). Each person goes on a ticket **in the position they fill on that job**. The
+  Crane Superintendent is not a ticket slot type of his own (F3).
 - **Payroll Administrator** sits in HR, for now (Q6).
-- **Who may change roles and permissions**: Sales Coordinator and Dispatch, approved by Lisette
-  Anzaldo and Corrina Bustos (Q7, with the remainders below).
+- **Who changes roles and permissions** (Q7, narrowed by F2):
+  - **assigning a person's role:** the **Dispatcher**, with approval from the **Dispatch Manager**
+    (Lisette Anzaldo), one approver;
+  - **editing what a role can do:** Corrina Bustos, Melissa McNutt, Joe Schacatano or Lisette
+    Anzaldo. No approval step was stated for this.
 - **Temps** use the regular role for that job: same pay setup, same access (Q8).
 
 ## What this does not settle
 
-1. **Per-person access beyond the role default (Q3).** Whether two people with the same main role
-   can ever have different access. Her example was about slot filling, and she was unsure about the
-   Sales Coordinator quote-approval case. **Do not build per-person access from this reply.** Open in
+1. **Per-person access beyond the role default (Q3, F1).** Whether two people with the same main
+   role can ever have different access. Her first example was about slot filling. In the follow-up
+   she said she had **asked Ryan Adams** and would pass on his reply. **Do not build per-person
+   access from either reply.** Open in
    [../admin/gaps.md → *Per-person access beyond the role default*](../admin/gaps.md#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes).
-2. **Managers who operate (Q5 remainder).** The question offered *"a manager who operates"* as an
-   example, and her reply names only the Crane Superintendent. Read literally, "only" excludes
-   managers. But FCC holds **three `Management`-type employees who also hold `Operator`** (ADP file
-   §4), and she did not speak to them directly. Whether those three may go on a ticket is unconfirmed.
+2. **Managers who operate — closed by F4, with two remainders:**
+   - **The third manager.** FCC holds **three** `Management`-type employees who also hold
+     `Operator` (ADP file §4). She named two, Jeff Kelley and Kyle Harlow. The third is not
+     identified in the vault (the ADP file records counts only), and nothing says whether that
+     person is a Local 12 member.
+   - **Is union membership a rule the ERP checks?** Her stated reason is Local 12 membership. That
+     reason could become a check the ERP enforces, or simply explain whose can-also-fill list holds
+     `Operator`. That choice is not stated. Treating it as the second is the smaller build; it is a
+     developer decision, not a product rule.
 3. **What each role may do.** The capabilities of each role are still unwritten. So is the full role
    list inside each department, beyond the Q1 examples. This is the main remaining half of the admin
    gap.
-4. **The Q7 approval flow is unbuilt, and four details are open:**
-   - **"Dispatch":** the whole Dispatch department, the Dispatcher role (Liz Lopez per the
-     unverified org chart), or the Dispatch Manager?
-   - **"change roles and permissions":** assigning a person's role, editing what a role may do, or
-     both?
-   - **The approvers:** must both Lisette Anzaldo and Corrina Bustos approve, or does either one?
-   - **Self-approval:** does a change made by an approver also need the other's approval?
+4. **The Q7 approval flow is unbuilt.** The follow-up (F2) answers three of the four details the
+   first reply left open:
+   - ~~"Dispatch"~~: **the Dispatcher** assigns roles (Liz Lopez, per the unverified org chart).
+   - ~~"change roles and permissions"~~: **both**, split between two sets of people. The
+     Dispatcher assigns a person's role. Corrina Bustos, Melissa McNutt, Joe Schacatano or Lisette
+     Anzaldo edit what a role can do.
+   - ~~The approvers~~: an assignment needs approval from the **Dispatch Manager** alone. The first
+     reply's *"Dispatch Manager (Lisette) and myself approve"* is **narrowed** to one approver.
 
-   Lisette Anzaldo is not on record agreeing to be an approver.
+   **Still open:**
+   - **Tension — do Sales Coordinators still assign roles?** The first reply said *"Sales
+     Coordinator and Dispatch should be able to change roles and permissions"*. The follow-up names
+     only the Dispatcher for assignment and does not mention Sales Coordinators. The second reply
+     is not read as removing them silently. Recorded, not resolved; a confirmation has been sent.
+   - **Self-approval:** Lisette Anzaldo is both the assignment approver and a role editor. May she
+     approve an assignment she made, or one that touches her own role?
+   - **Do role edits need approval?** None was stated, and it was not asked separately.
+   - **"Joe"** is read as Joe Schacatano; the directory also has a Joe Deitrick.
+
+   Lisette Anzaldo, Melissa McNutt and Joe Schacatano are not on record agreeing to these duties.
 5. **Whether `CraftRoleType` derives from the role.** Not asked. The second half of
    [../payroll/gaps.md → *Employee types*](../payroll/gaps.md#employee-types--fcc-holds-several-per-employee-we-store-one)
    and the DAS craft-code entries that depend on it stay open.
@@ -161,10 +231,25 @@ No code is changed by this note. For the `EmployeeType` → `DepartmentRole` fol
   types (`seed-all.ts:666-675`, per the payroll gap). How the list is stored is a structural choice
   for the developer: a new table or relation.
 - `Job Foreman` (FCC type 15) is not seeded as a role.
-- **Ticket eligibility:** a field-crew role, an HDR with that position in their can-also-fill list,
-  or the Crane Superintendent. Yard roles never. Where this attribute lives is a developer decision.
-- Nothing grants access to an individual outside their role until Q3 is answered.
-- The Q7 approval flow is new behaviour. It is Path A work, not part of the fold.
+- **Ticket eligibility** (Q5, F3, F4) follows from the positions a person may fill, not from their
+  main role's name:
+  - A person goes on a ticket **in a position**: Operator, Oiler, Rigger, 3rd Man, and so on.
+    They are eligible if that position is their main role or is on their can-also-fill list.
+  - The Crane Superintendent and Local 12 managers (Jeff Kelley, Kyle Harlow) are eligible through
+    the field positions on their can-also-fill list. There is **no "Crane Superintendent" slot
+    type**.
+  - Yard roles are never eligible.
+  - Where this attribute lives is a developer decision.
+- Nothing grants access to an individual outside their role until Q3 / F1 is answered (awaiting
+  Ryan Adams).
+- **Two permissions, not one** (F2):
+  - *assign a person's role*, held by the Dispatcher, with each assignment waiting for the Dispatch
+    Manager's approval;
+  - *edit what a role can do*, held by Corrina Bustos, Melissa McNutt, Joe Schacatano and Lisette
+    Anzaldo, with no approval stated.
+
+  The assignment approval is new behaviour. It is Path A work, not part of the fold. Whether Sales
+  Coordinators also hold *assign* is open (item 4).
 
 ## Effect on the vault
 
@@ -187,11 +272,28 @@ Gap entries, done in the same pass:
 - [../dispatch/gaps.md → *Sales Persons in the DAS Employees tab*](../dispatch/gaps.md#sales-persons-in-the-das-employees-tab--dispatchability-is-an-employee-type-attribute-we-do-not-have):
   answered in substance; the mechanism is left to the developer. **Done.**
 
+The [../admin/INDEX.md](../admin/INDEX.md) *Decisions* row for this note was added by the developer
+session that committed the first version (overlay 4530c79).
+
+**Follow-up reply (same day), done in the same pass:**
+
+- [../admin/gaps.md → *Per-person access beyond the role default*](../admin/gaps.md#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes):
+  part 1 dated *asked Ryan Adams, awaiting*. Part 2(a)–(c) answered; (d) self-approval stays open.
+  The Sales Coordinator tension and the unstated approval for role edits are added. Still open.
+  **Done.**
+- [../admin/gaps.md → *Departments, roles and their capabilities*](../admin/gaps.md#departments-roles-and-their-capabilities--the-authorization-layer-is-unbuilt-and-the-list-is-unwritten):
+  dated line for who assigns roles and who edits them. Role capabilities stay open. **Done.**
+- [../dispatch/gaps.md → *Sales Persons in the DAS Employees tab*](../dispatch/gaps.md#sales-persons-in-the-das-employees-tab--dispatchability-is-an-employee-type-attribute-we-do-not-have):
+  the managers-who-operate remainder is closed (Local 12), and the superintendent's position is
+  answered. **Done.**
+
 Not done, because file bodies are outside the recording agent's write scope:
 
-- **[../admin/INDEX.md](../admin/INDEX.md) → *Decisions*:** needs a row for this note — *Nine
-  departments; one main role plus a can-also-fill list, the main role decides access; Job Foreman is
-  per job; only the Crane Superintendent joins field crew and HDRs on a ticket; Payroll Admin in HR;
-  Sales Coordinator and Dispatch change roles, Lisette Anzaldo and Corrina Bustos approve.
-  `status: verified` (Corrina Bustos, 2026-10-20). Role capabilities and per-person access are not
-  settled.*
+- **[../admin/INDEX.md](../admin/INDEX.md) → *Decisions*:** the row added with 4530c79 says only
+  the Crane Superintendent joins field crew and HDRs on a ticket, and that Sales Coordinator and
+  Dispatch change roles with Lisette Anzaldo and Corrina Bustos approving. Both are now **narrowed**
+  by the follow-up. The row needs to say:
+  - Local 12 managers may also go on a ticket, everyone in the position they fill;
+  - the Dispatcher assigns roles, approved by the Dispatch Manager;
+  - Corrina, Melissa, Joe or Lisette edit what a role can do;
+  - per-person access is awaiting Ryan Adams.

@@ -941,7 +941,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Sales Persons in the DAS Employees tab — dispatchability is an employee-type attribute we do not have
 
-- **Status:** open — **answered in substance 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `verified`, Q5). Who may go on a job ticket: field crew, HDRs through their can-also-fill list, and the Crane Superintendent. *"NEVER yard techs."* By her "only", Sales is not on that list. **Left to the developer:** where the attribute lives, now that the role is the job (role attribute, can-also-fill list, or both). See the dated line below. *(Was: open, 2026-09-19 – 2026-10-20.)*
+- **Status:** open — **answered in substance 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `verified`, Q5). Who may go on a job ticket: field crew, HDRs through their can-also-fill list, and the Crane Superintendent. *"NEVER yard techs."* By her "only", Sales is not on that list. **Same-day follow-up:** managers who are Local 12 members may go on a ticket too (Jeff Kelley, Kyle Harlow). Everyone goes on in **the position they fill on that job**; there is no Crane Superintendent slot. **Left to the developer:** where the attribute lives, now that the role is the job (role attribute, can-also-fill list, or both). See the dated line below. *(Was: open, 2026-09-19 – 2026-10-20.)*
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Raised in **UAT 1**, still not done.
 - **Question:** which employees appear in the DAS **Employees** tab? The UAT ask is narrow (*"Sales Persons should not be displayed"*) but the rule behind it is not: is **dispatchability** a property of the employee, of their **employee type**, or of a portal role — and where is it stored?
 - **Sources checked:**
@@ -976,13 +976,32 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     It is not read from a separate employee type.
   - **Left to the developer:** where the attribute is stored, and how the DAS query filters on it.
   - **Not settled:**
-    - **Managers who operate.** FCC holds three `Management`-type employees who also hold
-      `Operator`. Her "only" reads as excluding them, but she did not speak to that example
-      directly.
+    - ~~**Managers who operate.**~~ **Closed by the follow-up below.** FCC holds three
+      `Management`-type employees who also hold `Operator`. Her "only" read as excluding them,
+      but she did not speak to that example directly.
     - **Is the DAS Employees tab exactly the ticket-eligible set?** This entry reads it so.
       Lisette Anzaldo, the owner here, has not confirmed it.
     - **Work-order dispatchability.** FCC's `W` value is not covered: Q5 asked about job tickets
       only.
+- **Update 2026-10-20, later (Corrina Bustos's follow-up, Teams, in writing):** recorded in the
+  same decision note → *The follow-up, same day*, F3–F4.
+  - **F3, the Crane Superintendent's position — answered:** *"Crane super would be assigned in
+    what position he was for that particular job."* He goes on the ticket as Operator, Rigger and
+    so on, and **"Crane Superintendent" is not a slot type**. He is eligible through the field
+    positions on his can-also-fill list.
+  - **F4, managers who operate — answered, yes:** *"Jeff Kelley and Kyle Harlow are managers but
+    are also in the local 12 union so they are allowed to operate."* The stated basis is **Local
+    12 membership**. Like the superintendent, they go on in the position they fill.
+  - **What this means for this entry:** eligibility is read from **the positions a person may
+    fill**: their main role plus their can-also-fill list. A Sales Person has no field position on
+    either, so the UAT row's exclusion follows from the model, not from a hard-coded filter.
+  - **Remainders:**
+    - **The third manager.** FCC holds three `Management` + `Operator` employees. She named two,
+      and the third is not identified in the vault.
+    - **Local 12 as a check?** Is union membership a rule the ERP checks, or simply the reason
+      `Operator` is on those managers' can-also-fill lists? Not stated. It is a developer decision.
+    - **Unchanged:** whether the DAS Employees tab is exactly the ticket-eligible set (Lisette),
+      and work-order dispatchability.
 
 ## Job ticket code format — UAT 3 asks for the FCC pattern, and no FCC pattern is written anywhere
 

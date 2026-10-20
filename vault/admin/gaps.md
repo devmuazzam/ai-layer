@@ -950,7 +950,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Departments, roles and their capabilities — the authorization layer is unbuilt and the list is unwritten
 
-- **Status:** open — **partly answered 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `status: verified`). **Answered:** the department list (nine); the person-to-role shape (one main role plus a can-also-fill list, the main role decides access); who may change roles and permissions (Sales Coordinator and Dispatch, approved by Lisette Anzaldo and Corrina Bustos). **Still open:** what each role may do, and the full role list inside each department. Per-person access and the approval flow are split out to [*Per-person access beyond the role default*](#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes). *(Was: open, 2026-09-01 – 2026-10-20.)*
+- **Status:** open — **partly answered 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `status: verified`). **Answered:** the department list (nine); the person-to-role shape (one main role plus a can-also-fill list, the main role decides access); who may change roles and permissions. That last item was narrowed by her same-day follow-up: the Dispatcher assigns a person's role, approved by the Dispatch Manager; Corrina, Melissa, Joe or Lisette edit what a role can do. See the second dated line below. **Still open:** what each role may do, and the full role list inside each department. Per-person access and the approval flow are split out to [*Per-person access beyond the role default*](#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes). *(Was: open, 2026-09-01 – 2026-10-20.)*
 - **Asked:** 2026-09-01 — Abdul Rehman, in the accounting/onboarding call
   ([meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §3;
   transcript 29:54–30:31, 34:48).
@@ -1033,6 +1033,21 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - **Still open here:** **what each role may do**, and the full role list inside each department
     beyond the examples. The Blocked line above stands: no permission check can be written without
     the capabilities.
+- **Update 2026-10-20, later (Corrina Bustos's follow-up, Teams, in writing):** recorded in the
+  same decision note, section *The follow-up, same day*.
+  - **Who changes what:** *"Dispatcher can assign someone's role. A change needs approval from
+    Dispatch Manager. Editing what a role can do would be myself, Melissa, Joe, or Lisette."*
+    - **Assigning a person's role:** the Dispatcher, approved by the Dispatch Manager (Lisette
+      Anzaldo) alone.
+    - **Editing a role's permissions:** Corrina Bustos, Melissa McNutt, Joe Schacatano (our
+      reading of "Joe") or Lisette Anzaldo.
+  - **This narrows the first reply.** That reply said Sales Coordinators change roles and that
+    Corrina co-approves.
+  - **Open remainders** are in
+    [*Per-person access beyond the role default*](#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes):
+    the Sales Coordinator tension, self-approval, and whether role edits need approval.
+  - **Unchanged here:** what each role may do is still unwritten. The follow-up names who may
+    *edit* a role's capabilities, not what they are.
 
 ## Must a new nav entry be permission-gated, and who may see live vehicle locations?
 
@@ -1328,6 +1343,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## Per-person access beyond the role default, and the approval flow for role and permission changes
 
 - **Status:** open
+  - **Part 1:** asked again 2026-10-20. Corrina has passed it to Ryan Adams, and the answer is
+    awaited.
+  - **Part 2:** (a)–(c) answered by her same-day follow-up. (d) is open, and the follow-up adds
+    two new remainders. See the dated line below.
 - **Asked:** 2026-10-20 — split out of [*Departments, roles and their capabilities*](#departments-roles-and-their-capabilities--the-authorization-layer-is-unbuilt-and-the-list-is-unwritten)
   when Corrina Bustos answered Syed Haris's eight role questions
   ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)).
@@ -1377,3 +1396,29 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (who may save a change, and whether it waits for approval).
 - **Owner:** Corrina Bustos (both parts), with Lisette Anzaldo for part 2(c)–(d). Ryan Adams raised
   part 1.
+- **Update 2026-10-20, later (Corrina Bustos's follow-up, Teams, in writing):** recorded in
+  [../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)
+  → *The follow-up, same day* (`verified`).
+  - **Part 1, still open: asked Ryan, awaiting.** Her reply: *"I have asked Ryan about the sales
+    coordinator. Will let you know when he responds."* The owner for part 1 is now **Ryan Adams**
+    (Sales Manager), through Corrina.
+  - **Part 2.** Her reply: *"Dispatcher can assign someone's role. A change needs approval from
+    Dispatch Manager. Editing what a role can do would be myself, Melissa, Joe, or Lisette."*
+    - ~~(a)~~ **Answered:** the **Dispatcher** assigns roles.
+    - ~~(b)~~ **Answered: both, split.** The Dispatcher assigns a person's role. Corrina Bustos,
+      Melissa McNutt, Joe Schacatano or Lisette Anzaldo edit what a role can do. "Joe" is our
+      reading: the directory also lists a Joe Deitrick.
+    - ~~(c)~~ **Answered:** an assignment needs approval from the **Dispatch Manager** (Lisette
+      Anzaldo) **alone**. The first reply's *"Dispatch Manager (Lisette) and myself approve"* is
+      narrowed to one approver.
+    - **(d) Still open:** self-approval. Lisette is both the assignment approver and a role
+      editor.
+    - **New (e), a tension, recorded, not resolved:** the first reply said *"Sales Coordinator and
+      Dispatch should be able to change roles and permissions"*. The follow-up names only the
+      Dispatcher for assignment. **Do Sales Coordinators still assign roles?** A confirmation has
+      been sent to Corrina.
+    - **New (f):** **does editing what a role can do need approval?** None was stated. Her approval
+      sentence sits with the assignment sentence, and the question did not ask this separately.
+  - **Still true:** the ERP has no approval flow. Part 2's assignment approval is new behaviour
+    (Path A). Lisette Anzaldo, Melissa McNutt and Joe Schacatano are not on record agreeing to
+    these duties.
