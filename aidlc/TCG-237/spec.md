@@ -1496,9 +1496,9 @@ Q9 plays the same role for REQ-06.
   - A. Re-run `seedSystemDepartments` (the nine and their 29 roles) right after the reset, before billing codes and associations.
   - B. Leave it to U15's seeder rework.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — re-run `seedSystemDepartments` (the nine and their roles) right after the FCC reset, before billing codes and associations. Built in the restack fix-up. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 
 ### Q53 — A role holding both mobile modules: which app opens?
@@ -1511,9 +1511,9 @@ Q9 plays the same role for REQ-06.
   - B. Quotations first.
   - C. Offer a switcher between the two.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — Field tickets first, as built. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 
 ### Q54 — Web DAS craft pre-check still matches "Operator" / "Oiler" by slot label
@@ -1526,9 +1526,9 @@ Q9 plays the same role for REQ-06.
   - B. Drop the web pre-check and rely on the server's reply.
   - C. Leave the name match until U17.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — add `boomPay` to `role` on jobs-detail resources (additive) and key the web DAS pre-check on it. Built in the restack fix-up. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 
 ### Q55 — Employees with no role lose their department when U15 drops `employees.department_id`
@@ -1610,9 +1610,9 @@ Q9 plays the same role for REQ-06.
   - B. Refuse list entries for employees whose main role is not Dispatchable (also blocks the Crane Superintendent and managers who operate — contradicts REQ-05's superintendent case).
   - C. A new role setting "never on a ticket" (schema change).
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — accept: the can-also-fill list is HR's control. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ### Q61 — U17 refuses placements until can-also-fill lists are seeded
 
@@ -1623,9 +1623,9 @@ Q9 plays the same role for REQ-06.
   - A. Deploy U17 and run the U17b seed on each tenant in the same window, dry-run first.
   - B. Deploy U17 only after HR has filled the lists by hand.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — deploy U17 and run the U17b seed on each tenant in the same window, dry-run first. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ## 13. What this spec deliberately does not specify
 

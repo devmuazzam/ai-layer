@@ -1175,6 +1175,8 @@ Answered in one batch to build the rest without stops. Each row is the developer
 | U15 / Q28b | Notification-by-role permission is a post-demo follow-up on this ticket; `DEPT-DISP` / `SAFE` defaults unchanged |
 | U16 | Executor choices accepted: response field `canAlsoFillRoles`; duplicates de-duplicated silently; an already-listed role that lost Dispatchable is kept (only additions checked); no fixed order (U17 adds a stable `orderBy`); its error / label copy. Edited rows show the role without its department — leave as is (no response-shape change) |
 | U18 | Q57 A (shared helper, follow-up after restack), Q58 A (slot role first in the teammate labor-write check — built on U18), Q59 A (no cutover date) |
+| U17 | Q60 A, Q61 A (U17b seed runs in U17's deploy window, dry-run first). Restack fix-ups (bug fixes, not structural): explicit `tenantCompanyId` on role-code lookups (super admin skips the scoping extension — U16 `employee.repository.ts:148`, and the U7/U15 main-role lookups); qa `@DAS-001` fixture gets a UNION union code |
+| U12b / FCC seeder | Q52 A, Q53 A, Q54 A — built in the restack fix-up |
 
 ## Sequencing
 
