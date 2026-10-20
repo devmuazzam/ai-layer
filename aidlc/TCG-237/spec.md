@@ -1723,9 +1723,20 @@ Q9 plays the same role for REQ-06.
   - B. Adding a role to can-also-fill also requires (or auto-creates) a secondary craft for that role.
   - C. The slot's craft falls back to a craft linked to the slot role when the person has none (payroll picks it).
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — keep both checks: can-also-fill says *may* fill; a matching craft assignment (primary or secondary) is still needed. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer); product side may need TCG (payroll).
-- **Status:** open
+- **Status:** answered
+
+
+### Q69 — FCC seeder alignment with the nine departments and roles
+
+*Raised 2026-10-20 by the FCC seeder audit.*
+
+- **Question:** (S1) FCC's 10 FMS_DEPARTMENTS (asset/cost groupings, 0 employees); (S2) FCC craft codes have a guessed `roleType` but no `roleId`; (S3) can-also-fill from FCC secondary types lives only in the separate U17b script.
+- **Options:** S1 A stop seeding them / B keep as extra departments · S2 A `roleId` from roleType (OPERATOR→Operator, OILER→Oiler, THIRD_MAN→3rd Man, MECHANIC→Mechanic, LABORER→Rigger/Driver by label else none, ADMIN→none) / B leave roleless · S3 A post `canAlsoFillRoleCodes` on employee create with U17b's rules / B keep the separate script.
+- **Answer:** S1 A, S2 A, S3 A. Syed Haris, 2026-10-20.
+- **Owner:** Syed Haris (developer).
+- **Status:** answered
 
 ## 13. What this spec deliberately does not specify
 
