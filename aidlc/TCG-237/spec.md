@@ -1416,12 +1416,28 @@ Q9 plays the same role for REQ-06.
   - B. All four steps on day 1 only; on holdover days, what Oilers do (per decision 2026-10-15 H8).
   - C. Pre-Trip only (their vehicle / gear), no JSA or Compliance.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **Working assumption (developer, until TCG flags otherwise in testing):** 3rd Man and Driver do the same four inspection steps as the Oiler — Pre-Trip, JSA, Post-Trip, Compliance — on the same days, holdover days included per decision 2026-10-15. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Why it cannot be answered from what is written:** Melissa McNutt (2026-06-04 21:12, `meetings/transcripts/2026-06-04-mobile-app-job-lem-tickets.md` L173): *"All the third man do all their own pre-trips themselves"*; truck drivers do their own (2026-05-19 41:51); neither covers JSA, Compliance or holdover days.
 - **Blocked:** the 12-step STANDARD-plus-inspections flow (46b); built after U12.
 - **Owner:** Corrina Bustos with Lisette Anzaldo.
 - **Workaround, if any:** none — 3rd Man / Driver keep today's STANDARD ticket until answered.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer working assumption — revisit if TCG flags it in testing)
+
+
+### Q48 — How the system picks who does the crane inspection
+
+*Raised 2026-10-20 from Q46/Q47.*
+
+- **Question:** "Runs inspections" is on for Oiler, 3rd Man and Driver (F3), but only one slot in a set does the crane inspection and labor (FULL flow): the Oiler, or the Operator when the set has no Oiler. 3rd Man and Driver do their own inspections (Q47). How is the crane inspector identified without role names?
+- **Options:**
+  - A. A per-role **"Crane inspection order"** number (nullable integer, `DepartmentRole.craneInspectionOrder`); the slot in the set with the lowest order does the crane inspection; seeded Oiler = 1, Operator = 2; editor shows it only when the role is Dispatchable.
+  - B. Two booleans: "Does the crane inspection" and "Does it when no one else in the set can".
+  - C. Derive from the role's boom-pay setting (Oiler column first, Operator column second).
+  - X. Other — say what.
+- **Answer:** **A.** Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Consequences recorded:** step flow per slot — the lowest `craneInspectionOrder` in the set → FULL; a role with `isDispatchable && runsInspections` and no order (3rd Man, Driver) → STANDARD + Pre-Trip/JSA/Post-Trip/Compliance (the 12-step list, holdover variants per decision 2026-10-15 for the inspection steps); everyone else → STANDARD. No-slot fallback (U6): order 1 → FULL; `isDispatchable && runsInspections` → own inspections; else STANDARD.
+- **Owner:** Syed Haris (developer).
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ## 13. What this spec deliberately does not specify
 

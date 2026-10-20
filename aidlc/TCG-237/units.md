@@ -352,6 +352,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U6 — Field-ticket inspections follow a role setting
 
+> **Q47 / Q48 (2026-10-20, Syed Haris):** U6 adds `DepartmentRole.craneInspectionOrder` (nullable Int, `crane_inspection_order`; seed and migrate Oiler = 1, Operator = 2; editor shows it only when Dispatchable) and the no-slot fallback: order 1 → FULL, `isDispatchable && runsInspections` → own-inspections flow (STANDARD + the four inspection steps), else STANDARD. If the new own-inspections flow (step list, holdover variants, mobile rendering, submit guard) pushes U6 over budget, split it into **U6b**.
+
 > **Developer decision 2026-10-20 (Syed Haris), Q46:** U6 is **re-scoped to the no-slot fallback only** (viewer's role `isDispatchable && runsInspections` replaces the "Oiler" name check; `runsInspections` on `GET /users/me` in U5's shape and refetch rule). The set-level crane-inspection rule (46a) moves into **U12**; the 3rd Man / Driver own-inspection steps (46b) wait on Q47 and are built after U12.
 
 - **Outcome:** The Pre-Trip, JSA, Post-Trip and Compliance steps show on a field ticket for roles with "Runs inspections" (Oiler, 3rd Man, Driver), not only for an employee whose type is named Oiler.
@@ -682,6 +684,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U12 — DAS allocates by the slot's role
+
+> **Q48 (2026-10-20):** in the slot rule, the slot in the set with the **lowest `craneInspectionOrder`** → FULL; `isDispatchable && runsInspections` with no order → own-inspections flow; else STANDARD. Supersedes the "boomPay = OPERATOR" fallback written under Q46a.
 
 > **Added by Q46a (2026-10-20):** replace the name comparison in `resolveTicketStepFlow` (`packages/shared/src/constants/ticket-flow-steps.ts:153`): FULL for the slot whose role has `isDispatchable && runsInspections`; if none in the set, the Operator slot (role `boomPay = OPERATOR`); everyone else STANDARD.
 
