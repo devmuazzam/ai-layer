@@ -260,3 +260,4 @@ date        ticket      path  branch                              by    pr    no
 2026-10-20 | TCG-241 | A | feat/TCG-241-u2-upload-asset-photo | Akif (Claude Code session) | pr: - | U2: upload one asset photo on Edit; sharp → original/thumbnail/placeholder WebP at the asset-UUID S3 key; activity log 'uploaded'. Stacked on U1.
 2026-10-20 | TCG-241 | A | feat/TCG-241-u3-asset-photo-tiles | Akif (Claude Code session) | pr: - | U3: photo tiles on asset Edit — list + variant-stream endpoints, blur placeholder then thumbnail. Stacked on U2.
 2026-10-20 | TCG-241 | A | feat/TCG-241-u4-multi-photo-uploader | Akif (Claude Code session) | pr: - | U4: drag-and-drop + multi-select, per-file 0-100% progress then Processing, per-file errors, sequential upload in dropped order. Stacked on U3.
+2026-10-21 | TCG-241 | A | feat/TCG-241-u5-asset-photo-cover | Akif (Claude Code session) | pr: - | U5: first photo becomes cover, Set as cover, server-side 20-photo cap. Stacked on U4.

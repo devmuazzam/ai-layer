@@ -247,7 +247,7 @@ Counts: 18 total — 0 verified, 18 unverified, 0 conflicted, 0 open (REQ-14–1
 
 ### REQ-14 — Limits and image parameters `[UNVERIFIED]`
 
-- **Statement:** Browser downscales each pick to ≤ 2048 px JPEG before upload (picked file ≤ 50 MB; HEIC only where the browser decodes it, else rejected with a message); upload max 10 MB after downscale; server accepts JPEG/PNG/WebP only; max 20 photos per entity (uploader prop, default 20; API enforces 20 for assets). Original: longest side ≤ 2048 px, WebP q82, EXIF stripped after applying orientation, always re-encoded. Thumbnail: 160×160 WebP, cover-cropped. Placeholder: ~24 px wide blurred WebP. (Q1, Q2)
+- **Statement:** Browser downscales each pick to ≤ 2048 px JPEG before upload (picked file ≤ 50 MB; HEIC only where the browser decodes it, else rejected with a message); upload max 10 MB after downscale; server accepts JPEG/PNG/WebP only; ~~max 20 photos per entity (uploader prop, default 20; API enforces 20 for assets)~~ **superseded by D31: no photo limit (Akif 2026-10-21)**. Original: longest side ≤ 2048 px, WebP q82, EXIF stripped after applying orientation, always re-encoded. Thumbnail: 160×160 WebP, cover-cropped. Placeholder: ~24 px wide blurred WebP. (Q1, Q2)
 - **Surface:** api, shared, web
 - **Sources:** developer/product answer — Akif (2026-10-20, Claude Code session) (§12).
 - **Conflict:** none
@@ -331,7 +331,7 @@ Out of scope (Q9).
 | --- | --- | --- | --- |
 | Accepted types | PNG, JPG, WEBP | TCG-241 (design text) | `[UNVERIFIED]` |
 | Max upload size | 25 MB after in-browser downscale (D17; was 10 MB); picked file ≤ 50 MB | Q1, Q1b, Akif 2026-10-20 | `[UNVERIFIED]` |
-| Max photos per entity | 20 (uploader prop, default 20; API enforces 20 for assets) | Q2, Akif 2026-10-20 | `[UNVERIFIED]` |
+| Max photos per entity | ~~20 (uploader prop, default 20; API enforces 20 for assets)~~ **none — superseded by D31 (Akif 2026-10-21)** | Q2, Akif 2026-10-20; D31 | `[UNVERIFIED]` |
 | Original max dimensions / quality | longest side 2048 px, WebP q82 | Q1 | `[UNVERIFIED]` |
 | Thumbnail size | 160×160 WebP | Q1 | `[UNVERIFIED]` |
 | Placeholder size | ~24 px wide, blurred WebP | Q1 | `[UNVERIFIED]` |
@@ -403,13 +403,19 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 | D22 | Browser caching of presigned images | A. `ResponseCacheControl: 'private, max-age=3600'` on the presigned GET (not on `getObjectStream`, which attachments use). B. Leave S3 heuristics. | Objects were stored without Cache-Control | A | Akif | 2026-10-20 |
 | D8b | Uploader location and how it loads image bytes | A. `apps/web/src/components/organisms/entity-photos/` (precedent: `organisms/entity-notes/`); the feature passes an image-loading function as a prop (no `features/` import). B. New `components/media/` folder, same prop approach. | `useAttachmentImageUrl` lives in `features/` and cannot be imported from `components/` | A | Akif | 2026-10-20 |
 | D23 | U4 copy and row behaviour (Q20) | A. Keep the U4 proposal as built. B. Change named items. | Rejections: "Photo must be a JPEG, PNG or WebP image", "Photo must be 25 MB or smaller" (binding client limit until U9 = 25 MiB upload cap), "File is empty", "Limit of {maxFiles} photos reached", "Couldn't check your photo count"; upload failure = server message, fallback "Upload failed". Rows "Waiting" / "Uploading N%" / "Processing…", Retry (upload failures) and Dismiss (any error row). Helper "Up to {maxFiles} photos", button "Add photos", description "JPEG, PNG or WebP, up to 25 MB.". Drop zone, button and Retry disabled while a batch runs | A — copy exactly as proposed; analyst R4 applied: a new batch **keeps** earlier failed/rejected rows until dismissed and appends new rows; uploaded rows are cleared; rows keyed and test-IDed by a monotonic row id (`<prefix>-upload-<id>`) | Akif (2026-10-21) | 2026-10-21 |
-| D24 | Batch over the `maxFiles` cap | A. Valid files fill the free places in dropped order; the rest are refused on their own row. B. Refuse the whole batch | Client pre-check only; server cap is U5. Analyst R1/R2: the count is fetched fresh (`fetchQuery`, `staleTime: 0`) before each batch and each retry; if it cannot be fetched the files are refused with "Couldn't check your photo count" — 0 is never assumed; the list is re-fetched (awaited) after each upload | A | Akif (2026-10-21) | 2026-10-21 |
+| D24 | ~~Batch over the `maxFiles` cap~~ **Superseded by D31 (no limit, Akif 2026-10-21).** | A. Valid files fill the free places in dropped order; the rest are refused on their own row. B. Refuse the whole batch | Client pre-check only; server cap is U5. Analyst R1/R2: the count is fetched fresh (`fetchQuery`, `staleTime: 0`) before each batch and each retry; if it cannot be fetched the files are refused with "Couldn't check your photo count" — 0 is never assumed; the list is re-fetched (awaited) after each upload | A | Akif (2026-10-21) | 2026-10-21 |
 | D25 | Drop zone for the shared uploader | A. Reuse existing `components/atoms/inputs/dropzone-input.tsx` unchanged (outer chrome removed via `className`; zone test ID on a wrapper div). B. Drag handling written inside the uploader. C. Extend `DropzoneInput` with a zone test-ID prop | A adds nothing new; B duplicates drag logic; C changes a shared atom with two other consumers | A | Akif (2026-10-21) | 2026-10-21 |
 | D26 | Where the batch logic lives | A. `components/organisms/entity-photos/photo-batch.ts`, pure helpers exported for the uploader and its `node --test` file only, not from the barrel (precedent U3 `photo-tile-stage.ts`). B. Inline private helpers in the uploader (not unit-testable) | — | A | Akif (2026-10-21) | 2026-10-21 |
 | D27 | How per-file progress reaches the shared uploader | A. Optional `onProgress(loaded, total)` on `EntityPhotoUploadRequest`; the asset feature forwards axios `onUploadProgress`; `useUploadAssetPhoto`'s mutation argument becomes `{ file, onProgress }` | Analyst R5: "Processing…" only once `loaded >= total`; the percentage is floored (99.5% → "Uploading 99%") | A | Akif (2026-10-21) | 2026-10-21 |
 | D28 | Upload concurrency within a batch | A. Sequential, one at a time, in dropped order. B. Limited concurrency (e.g. 2–3 at once) | Sequential order is what makes the first dropped file the first created (Q3, U5 cover rule). B was considered and **rejected** by Akif | A | Akif (2026-10-21) | 2026-10-21 |
 | D29 | Toasts for photo uploads | A. Keep U2's per-file success/error toasts. B. No per-file toasts; the rows are the feedback | `useUploadAssetPhoto` was the only consumer of those toasts (`edit-asset-layout.tsx`); the toasts are removed from the hook | B | Akif (2026-10-21) | 2026-10-21 |
 | D30 | Keep `placeholder.webp` in S3 although the list serves the DB base64 (D5) and nothing reads the S3 copy | A. Keep writing it (matches the ticket AC "S3 has original, thumbnail and placeholder"). B. Stop writing it; S3 holds original + thumbnail only; ticket AC updated | ~300 bytes and one extra PutObject per photo; the S3 copy is unread | A | Akif (2026-10-21) | 2026-10-21 |
+| D31 | Photo limit per entity (supersedes Q2, REQ-14's "max 20 photos", D24, G-C) | A. Keep the cap of 20 (uploader prop, API cap, row lock). B. No limit at all | Reversed to avoid complexity: no `maxFiles` prop, no fresh-count pre-check, no "Limit of … photos reached" / "Couldn't check your photo count" copy, no row lock or count on upload; the photo list returns every photo, oldest first; `ENTITY_IMAGE_MAX_PER_ENTITY` removed. The 50 MiB pick limit (U9) and the 25 MiB upload cap (D17) stand | B | Akif (2026-10-21) | 2026-10-21 |
+| D32 | First cover on upload (Q21; supersedes G-C1) | A. Row lock + count + transaction. B. No lock: after the image row is created, one tenant-scoped conditional update `asset.updateMany({ where: { id, tenantCompanyId, coverImageId: null }, data: { coverImageId } })` — atomic in Postgres, so two parallel first uploads give exactly one cover; an asset with a cover keeps it | With no cap (D31) there is nothing left to count, so no lock is needed | B | Akif (2026-10-21) | 2026-10-21 |
+| D33 | Set-cover endpoint (Q22 A minus the cap) | `PUT asset-management/assets/:id/photos/:imageId/cover` → `200 { coverImageId }`; non-UUID `imageId` → 400; image missing / other tenant / other asset → 404 "Photo not found", nothing written (G-A1); already the cover → 200, no write, no log entry; archived assets allowed; activity log `photo.event: 'coverChanged'` ("changed the cover photo"); no lock, no 409 | | A (minus cap) | Akif (2026-10-21) | 2026-10-21 |
+| D34 | How the list marks the cover (Q23) | A. `isCover: boolean` on each `EntityImageListItem`; `findPhotoOwner` selects `coverImageId`. B. `{ coverImageId, items }` envelope. C. Asset detail prop | Additive, bare array kept (Q17 A) | A | Akif (2026-10-21) | 2026-10-21 |
+| D35 | Tile cover UI (Q24) | "Cover" badge (`components/ui/badge.tsx`); a "⋯" menu (`components/ui/dropdown-menu.tsx`) with "Set as cover", not offered on the cover tile; no optimistic move; error toast = server message, fallback "Couldn't set the cover photo"; test IDs `<prefix>-tile-<imageId>-cover-badge`, `-actions`, `-set-cover`; the automatic first cover writes no log entry | | A | Akif (2026-10-21) | 2026-10-21 |
+| D36 | Set-cover wiring (Q25) | A. Optional `setCoverFn` prop on the shared component, which invalidates its own list; feature hook `useSetAssetPhotoCover(assetId)` invalidates `['assets']`. B. No hook + `onCoverChanged` prop. C. Required prop | | A | Akif (2026-10-21) | 2026-10-21 |
 
 **From `tcg-prisma-guardian` (2026-10-20).** Executor must-dos, not decisions: add `'entityimage'` to `TENANT_SCOPED_MODELS` (`apps/api/src/orm/prisma.service.ts:26`); `createdAt @db.Timestamptz()`; `@@map("entity_images")`, `idx_entity_images_*`; cover re-pick orders by `createdAt, id`; upload, photo delete and asset delete each in one transaction; the assets list loads the cover with one `include`/batched query and selects `placeholderDataUrl` only there.
 
@@ -417,7 +423,7 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 | --- | --- | --- | --- | --- | --- | --- |
 | G-A | Cross-tenant cover integrity (guardian) | A1. App check: scoped lookup of the image by id + entityType + entityId before any cover write; spec test. A2. A1 + DB composite FK. | Guardian 2026-10-20 | A1 | Akif | 2026-10-20 |
 | G-B | Index on `assets.cover_image_id` | B1. None. B2. Plain `@@index([coverImageId], name: "idx_assets_cover_image_id")`. B3. B2 built CONCURRENTLY. | Without it, every photo delete scans `assets` for the SetNull | B2 | Akif | 2026-10-20 |
-| G-C | 20-cap and first-cover race | C1. Lock the asset row (`SELECT … FOR UPDATE` with explicit `tenant_company_id`) in the upload transaction. C2. Advisory lock. C3. Atomic cover only, soft cap. | Raw SQL is unscoped — must filter by tenant | C1 | Akif | 2026-10-20 |
+| G-C | ~~20-cap and first-cover race~~ **Superseded by D31/D32 (no cap; first cover by conditional update, no lock — Akif 2026-10-21).** | C1. Lock the asset row (`SELECT … FOR UPDATE` with explicit `tenant_company_id`) in the upload transaction. C2. Advisory lock. C3. Atomic cover only, soft cap. | Raw SQL is unscoped — must filter by tenant | C1 | Akif | 2026-10-20 |
 | G-D | Asset hard delete leaves photos | D1. Rows deleted in the asset-delete transaction + `entityImage.deleteMany` in `clear-tenant-data.ts`. D2. D1 + delete each image's three S3 objects after commit. D3. Real FK. | Paths: `sub-categories.repository.ts:607` `deleteAsset`, `clear-tenant-data.ts:202`, `assets.service.ts` `remove` | D2 (demo-tenant wipe deletes rows only) | Akif | 2026-10-20 |
 | G-E | S3 objects left after a failed post-commit delete | E1. Log and accept. E2. Reaper job. | | E1 | Akif | 2026-10-20 |
 | G-F | `Tool.coverAttachmentId` has no FK, `Asset.coverImageId` will | F1. Keep FK on Asset; Tool untouched. F2. Fix Tool in a separate PR. | D2 mirrors the name, not the integrity | F1 | Akif | 2026-10-20 |
@@ -467,7 +473,7 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 - **Candidates:** none: nothing written
 - **Owner:** product team
 - **Workaround, if any:** none
-- **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md
+- **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md. **Superseded 2026-10-21 by D31: no photo limit (Akif).**
 
 ### Q3 — Cover ordering rules
 
@@ -742,6 +748,95 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 - **Owner:** Akif
 - **Workaround, if any:** A (AI proposal — pending developer confirmation)
 - **Status:** resolved — see §11b D23–D29
+
+### Q21 — U5 API: where the upload lock, the cap and the first cover live (raised by the U5 executor, 2026-10-21)
+
+- **Question:** G-C1 fixes *that* the upload transaction locks the asset row (`SELECT … FOR UPDATE` with explicit `tenant_company_id`), counts against 20 and sets `Asset.coverImageId` only if null. No row fixes *where* that code lives. Today the controller calls the generic `EntityImagesService.upload` (`usecase/entity-images/entity-images.service.ts`), which writes three S3 objects then `EntityImagesRepository.create` (inherited `BaseRepository.create`) — no transaction. The generic service already holds one asset-specific map (`ENTITY_FOLDER: { ASSET: 'assets' }`).
+- **Options:**
+  - A. Generic, by a per-owner-type map. `EntityImagesRepository` gains one method, `createUnderOwnerLock(data)`: in one `$transaction` it locks the owner row (`SELECT id FROM assets WHERE id = $1::uuid AND tenant_company_id = $2::uuid FOR UPDATE`, table chosen from a `{ ASSET: … }` map like `ENTITY_FOLDER`), counts the owner's rows, refuses at 20, inserts, then `asset.updateMany({ where: { id, tenantCompanyId, coverImageId: null }, data: { coverImageId } })`. `EntityImagesService.upload` calls it instead of `create`; the controller is unchanged. Returns the image plus `becameCover`.
+  - B. Asset repo owns the asset side: `AssetsRepository.lockForPhotoWrite(tx, tenantId, assetId)` and `setCoverIfNone(tx, …)`; `EntityImagesService.upload` takes an optional `withinOwnerLock(tx)` callback the asset usecase supplies. Keeps `assets` SQL in the assets repo; two new exported asset-repo methods and a callback seam on the generic service.
+  - C. `AssetsService.uploadPhoto` owns the transaction and calls an entity-images "store objects" step plus `EntityImagesRepository.create(tx)`; the generic `upload` is split. Moves photo logic into the asset usecase (against D12's "asset routes call the entity-images module").
+  - X. Other — say what
+- **Recommendation:** A — one new repository method, the asset knowledge sits in one map beside `ENTITY_FOLDER`, the controller does not change.
+- **Sub-choice (any option):** cap checked **(i)** only under the lock, after processing and the S3 puts (the existing cleanup deletes the three objects on refusal), or **(ii)** also by a cheap unlocked count *before* processing so a 21st photo costs no sharp/S3 work, and again under the lock. Recommendation (ii).
+- **Answer:** Moot — no cap (D31). No row lock, count or transaction; the first cover is a tenant-scoped conditional `updateMany` after the row is created (D32) — Akif (2026-10-21)
+- **Why it cannot be answered from what is written:** a new repository method and where a transaction lives are structural (CLAUDE.md → Developers decide structure); G-C1 fixes the mechanism only.
+- **Blocked:** U5 upload change (lock, cap, first cover)
+- **Owner:** Akif
+- **Workaround, if any:** none — not built
+- **Status:** resolved — see §11b D31, D32
+
+### Q22 — U5 API: the cap refusal, and the set-cover endpoint's shape (raised by the U5 executor, 2026-10-21)
+
+- **Question:** units.md U5: "Cap error status/message NOT SPECIFIED — executor proposes." Route `PUT asset-management/assets/:id/photos/:imageId/cover` is fixed (units.md U5); its response, error statuses, behaviour on the current cover, and whether it takes the lock are not.
+- **Options (proposal, as one set):**
+  - A. As proposed:
+    - **21st upload:** **409 Conflict**, message **"Limit of 20 photos reached"** (number = `ENTITY_IMAGE_MAX_PER_ENTITY`; same words as the web pre-check, D23, so the row reads the same whichever side refuses). The S3 objects already written are deleted (D9).
+    - **Set cover response:** **200 `{ coverImageId }`**.
+    - **Errors:** asset missing / other tenant → 404 "Asset not found" (existing `findPhotoOwner`); `imageId` not a UUID → 400 (`ParseUUIDPipe`, as U3's stream route was); image missing, other tenant or other asset → **404 "Photo not found"** and nothing written (G-A1).
+    - **Already the cover:** 200, nothing written, **no** activity-log entry.
+    - **Lock:** set-cover takes the same asset-row lock as upload, so it serialises with U6's delete-and-re-pick (otherwise a cover set to a photo being deleted is nulled by `SetNull` while other photos remain).
+    - **Archived asset:** allowed, like upload today (`findPhotoOwner` does not check `archivedAt`).
+  - B. Keep A but change named items — e.g. 400 or 422 instead of 409 (assets use 422 for business rules, `assets.service.ts:380`; photo validation uses 400), `204` instead of `200 { coverImageId }`, log even when already the cover.
+  - X. Other — say what
+- **Answer:** A minus the cap: no 409, no lock on set-cover (D33) — Akif (2026-10-21)
+- **Why it cannot be answered from what is written:** a response shape and error status are structural (CLAUDE.md); §9 "Error message text: NOT SPECIFIED".
+- **Blocked:** U5 set-cover endpoint and the cap refusal
+- **Owner:** Akif
+- **Workaround, if any:** none — not built
+- **Status:** resolved — see §11b D33
+
+### Q23 — U5: how the photo list says which photo is the cover (raised by the U5 executor, 2026-10-21)
+
+- **Question:** units.md U5 says "List response carries `isCover`/asset `coverImageId`" — either, not which. The list is a bare array of `EntityImageListItem` (Q17 A) and the shared web component owns the list query (Q18 A).
+- **Options:**
+  - A. `isCover: boolean` on each `EntityImageListItem` (`packages/shared/src/types/entity-image.types.ts`). `findPhotoOwner` also selects `coverImageId`; the controller passes it to `EntityImagesService.list(owner, coverImageId)`. Bare array kept; the shared tile reads `photo.isCover`; no extra prop.
+  - B. Envelope `{ coverImageId, items }` — breaks the bare-array shape of Q17 A (U3/U4 consumers updated in this unit).
+  - C. List unchanged; the edit page passes `coverImageId` from the asset detail query (`['assets', assetId]`, already returns the column) as a prop. Two queries must then agree after every upload/set-cover.
+  - X. Other — say what
+- **Recommendation:** A — additive, one source of truth, generic.
+- **Answer:** A — `isCover` per item (D34) — Akif (2026-10-21)
+- **Why it cannot be answered from what is written:** a response shape is structural; the unit row names both shapes.
+- **Blocked:** U5 cover badge
+- **Owner:** Akif
+- **Workaround, if any:** none — not built
+- **Status:** resolved — see §11b D34
+
+### Q24 — U5 web: the cover badge and the "Set as cover" action on the tile (raised by the U5 executor, 2026-10-21)
+
+- **Question:** REQ-02 Edges: whether "Set as cover" is hidden, disabled or marked on the current cover is NOT SPECIFIED; the design file has no asset-photo screen (grep of `my-docs/asset-image-uploader.html` for `cover` finds only `objectFit: 'cover'`). Tiles are ~6rem squares, 3 per row; U6 adds View and Delete to the same tile.
+- **Options (proposal, as one set):**
+  - A. As proposed:
+    - **Current cover:** a **"Cover"** badge (existing `components/ui/badge.tsx`) at the tile's top-left; **"Set as cover" not offered** on that tile — the Tools sibling does the same (`tool-cover-photos-section.tsx:315`, "Cover" label replaces "Set as cover").
+    - **Where the action sits:** a "⋯" menu button on each tile (existing `components/ui/dropdown-menu.tsx`) holding "Set as cover" now, and View / Delete in U6 — three actions do not fit as buttons on a 6rem tile.
+    - **While saving:** the menu item is disabled; the badge moves when the refetched list arrives (no optimistic move).
+    - **Failure:** an error toast with the server's message, fallback **"Couldn't set the cover photo"** (D29 removed toasts only for per-file upload rows, which have their own row).
+    - **Test IDs:** `<prefix>-tile-<imageId>-cover-badge`, `<prefix>-tile-<imageId>-actions` (menu trigger), `<prefix>-tile-<imageId>-set-cover`.
+    - **Activity log:** only an explicit "Set as cover" logs `coverChanged`; the automatic first cover on upload writes no second entry (the upload already logs "added a photo").
+  - B. Keep A but change named items — e.g. "Set as cover" as a small overlay text button on hover/focus instead of a menu, or shown disabled on the cover, or an optimistic badge move, or also log the automatic first cover.
+  - X. Other — say what
+- **Answer:** A as proposed (D35) — Akif (2026-10-21)
+- **Why it cannot be answered from what is written:** REQ-02 Edges NOT SPECIFIED; §5 Copy NOT SPECIFIED beyond "Set as cover"; Q10/D14 fix the log shape but not whether the automatic cover is a "cover changed" event.
+- **Blocked:** U5 tile UI
+- **Owner:** Akif
+- **Workaround, if any:** none — not built
+- **Status:** resolved — see §11b D35
+
+### Q25 — U5 web: set-cover wiring between the asset feature and the shared component (raised by the U5 executor, 2026-10-21)
+
+- **Question:** D8 fixes "set-cover function passed in as a prop"; it does not fix the prop's shape, whether it is optional, or which side owns the mutation and the invalidation of the photo list **and** the asset list/detail queries (units.md U5).
+- **Options:**
+  - A. Shared component gains an **optional** prop `setCoverFn?: (request: EntityPhotoOwner & { imageId: string }) => Promise<unknown>` (no prop → no action, so other future entities need not have covers); after it resolves the component invalidates its own `entityPhotoKeys.list`. The asset feature adds an exported hook `useSetAssetPhotoCover(assetId)` (`features/assets/asset/hooks/`, mirrors `useUploadAssetPhoto`) whose `onSuccess` invalidates `['assets']` (covers the list `['assets','list',…]` and detail `['assets', assetId]`; the edit form is not reset by a refetch — `use-edit-asset.ts` seeds the form only while `unitCode` is empty), and `setAssetPhotoCover(assetId, imageId)` in `utils/asset-photos.ts`.
+  - B. Same prop, but no new hook: `setCoverFn={({ imageId }) => setAssetPhotoCover(assetId, imageId)}` plus a new `onCoverChanged` prop the feature uses to invalidate `['assets']`.
+  - C. Required `setCoverFn` prop.
+  - X. Other — say what
+- **Recommendation:** A.
+- **Answer:** A (D36) — Akif (2026-10-21)
+- **Why it cannot be answered from what is written:** a new exported hook and a new component prop are structural (CLAUDE.md).
+- **Blocked:** U5 web wiring
+- **Owner:** Akif
+- **Workaround, if any:** none — not built
+- **Status:** resolved — see §11b D36
 
 ## 13. What this spec deliberately does not specify
 

@@ -19,11 +19,11 @@
 | U2 | From an asset's Edit page, a user chooses one photo and it is stored as 3 WebP variants | REQ-01 (edit, one file, click-to-choose), REQ-04 (server side), REQ-05, REQ-06, REQ-15, REQ-17, REQ-14 (server size/type/image params), REQ-10 (upload) | api, web | U1 | ~330 lines / 14 files | built — feat/TCG-241-u2-upload-asset-photo |
 | U3 | The Edit page shows the asset's photos as tiles: blurred placeholder first, then the thumbnail | REQ-02 (tile only), REQ-09 (tiles), REQ-10 (list/view), REQ-11 (component extended) | api, web | U2 | ~300 lines / 12 files | in progress — feat/TCG-241-u3-asset-photo-tiles |
 | U4 | Drag-and-drop several photos at once with per-file progress and per-file errors | REQ-01 (full for edit), REQ-04 (full), REQ-14 (`maxFiles` prop, client pre-check) | web | U3 | ~190 lines / 6 files | committed — feat/TCG-241-u4-multi-photo-uploader (8205e4df7) |
-| U5 | First photo becomes cover; "Set as cover" changes it; 20-photo cap enforced | REQ-03 (first, change), REQ-02 (Set as cover), REQ-14 (cap 20), REQ-10 (set-cover) | api, web | U4 | ~230 lines / 9 files | not started |
+| U5 | First photo becomes cover; "Set as cover" changes it; no photo cap (D31, Akif 2026-10-21) — U4/U3 limit code removed | REQ-03 (first, change), REQ-02 (Set as cover), REQ-14 (cap removed, D31), REQ-10 (set-cover) | api, web | U4 | ~230 lines / 9 files | committed — feat/TCG-241-u5-asset-photo-cover (acab337af) |
 | U6 | Delete a photo (confirm, cover fallback, all 3 files) and View it large | REQ-07 (photo delete), REQ-03 (delete fallback, last photo), REQ-02 (View, Delete), REQ-09 (lightbox) | api, web | U5 | ~290 lines / 11 files | not started |
 | U7 | The Assets table shows each asset's cover thumbnail avatar (blur first), initials otherwise | REQ-08, REQ-09 (avatar), REQ-10 (list) | api, web | U5 (thumbnail stream from U3) | ~170 lines / 7 files | not started |
 | U8 | Photos can be picked on Create; uploaded after the asset saves; failures listed, retry on Edit | REQ-16, REQ-01 (create) | web | U5 (stacked on U7) | ~170 lines / 6 files | not started |
-| U9 | Large phone photos are downscaled in the browser; HEIC converted where decodable, else clearly rejected | REQ-14 (client downscale, 50 MB pick, 10 MB post-downscale), REQ-04 (HEIC message) | web | U8 | ~140 lines / 4 files | not started |
+| U9 | Large phone photos are downscaled in the browser; HEIC converted where decodable, else clearly rejected | REQ-14 (client downscale, 50 MB pick — still applies after D31 removed the photo-count cap, 10 MB post-downscale), REQ-04 (HEIC message) | web | U8 | ~140 lines / 4 files | not started |
 | U10 | Deleting an asset removes its photo rows and S3 files | REQ-07 (asset-delete entry), REQ-03 (asset archive keeps photos: test) | api | U6 | ~80 lines / 5 files | not started |
 
 - **Requirements covered:** REQ-01..REQ-18 counted against `spec.md` §2 on 2026-10-20: 18 in spec, 17 in units, 1 not covered. Recount whenever §2 gains a REQ.
@@ -225,11 +225,11 @@ Enumerated by: `git grep -ln "prisma.asset\." -- apps/api/src` (consumers read t
 
 ---
 
-## U5 — Cover photo: first is cover, change cover, cap of 20
+## U5 — Cover photo: first is cover, change cover, ~~cap of 20~~ no cap (D31)
 
-- **Outcome:** The first photo uploaded to an asset becomes its cover automatically (first file of a batch), a tile shows a cover badge, "Set as cover" moves it, and the 21st photo is refused.
+- **Outcome:** The first photo uploaded to an asset becomes its cover automatically (first file of a batch), a tile shows a cover badge, and "Set as cover" moves it. ~~The 21st photo is refused.~~ **No cap; Akif 2026-10-21 (D31)** — the U4 client limit and the U3 list cap are removed in this unit.
 - **Kind:** vertical
-- **Requirements covered:** REQ-03 (first photo; change cover — delete fallback → U6), REQ-02 (Set as cover), REQ-14 (cap 20 server-side), REQ-10 (set-cover), REQ-15 (set-cover), REQ-13
+- **Requirements covered:** REQ-03 (first photo; change cover — delete fallback → U6), REQ-02 (Set as cover), ~~REQ-14 (cap 20 server-side)~~ REQ-14 (cap removed — D31, Akif 2026-10-21; U4 client limit and U3 list cap removed here), REQ-10 (set-cover), REQ-15 (set-cover), REQ-13
 - **Depends on:** U4 (ordered sequential uploads)
 - **Branch / PR base:** `feat/TCG-241-u5-asset-photo-cover`, stacked on `feat/TCG-241-u4-multi-photo-uploader`.
 - **Size estimate:** ~230 source lines, 9 files.
@@ -239,19 +239,19 @@ Enumerated by: `git grep -ln "prisma.asset\." -- apps/api/src` (consumers read t
 | Layer | Change | Notes |
 | --- | --- | --- |
 | Schema | N/A (U1) | |
-| API | Upload transaction now locks the asset row (`SELECT … FOR UPDATE` with **explicit `tenant_company_id`** — raw SQL is unscoped; G-C1), enforces 20, sets `Asset.coverImageId` only if null (atomic). New `PUT :id/photos/:imageId/cover`: G-A1 scoped lookup by id + entityType + entityId before the write; logs "cover changed" (Q10). List response carries `isCover`/asset `coverImageId`. | Cap error status/message NOT SPECIFIED — executor proposes. |
-| Web | Tile: cover badge, "Set as cover" action (hidden/disabled/marked when already cover is NOT SPECIFIED — executor proposes, design file is reference; `my-docs/asset-image-uploader.html` is 2.8 MB, grep by anchor, never read whole); mutation + invalidation of photo list **and** asset list/detail queries. | testids on badge and action. |
-| Tests | Unit/integration: cover cases (first upload; batch of several first uploads → first file; change); two parallel uploads on an empty asset → exactly one cover; 21st upload refused; cross-tenant or other-asset `imageId` in set-cover → 404 and no write (G-A1); asset with cover keeps it when more are added. | |
+| API | ~~Upload transaction now locks the asset row (`SELECT … FOR UPDATE` with **explicit `tenant_company_id`** — raw SQL is unscoped; G-C1), enforces 20, sets `Asset.coverImageId` only if null (atomic).~~ **D32:** no lock, no count — the upload inserts the row and, in the same transaction, sets the first cover with one tenant-filtered conditional `asset.updateMany({ where: { id, tenantCompanyId, coverImageId: null } })`. List cap of 20 removed (D31). New `PUT :id/photos/:imageId/cover`: G-A1 scoped lookup by id + entityType + entityId before the write; logs "cover changed" (Q10) only when the conditional write (`coverImageId` null or different) changed it (D33, analyst R2). List response carries `isCover` (D34). | ~~Cap error status/message NOT SPECIFIED — executor proposes.~~ No cap (D31). |
+| Web | Tile: cover badge, "Set as cover" action (hidden/disabled/marked when already cover is NOT SPECIFIED — executor proposes, design file is reference; `my-docs/asset-image-uploader.html` is 2.8 MB, grep by anchor, never read whole); mutation + invalidation of photo list **and** asset list/detail queries. Shape fixed by D35/D36; U4's `maxFiles`, fresh-count pre-check and limit copy removed (D31). | testids on badge and action. |
+| Tests | Unit/integration: cover cases (first upload; batch of several first uploads → first file; change); two parallel uploads on an empty asset → exactly one cover; ~~21st upload refused~~ (no cap, D31: any number of valid files accepted); set-cover on the current cover → no write, no log; cross-tenant or other-asset `imageId` in set-cover → 404 and no write (G-A1); asset with cover keeps it when more are added. | |
 
 ### Reviewable as
 
-- **Demo:** new asset → drop 3 photos → first has the cover badge; click Set as cover on the second → badge moves; upload 21 → refused.
-- **Acceptance:** REQ-03 cases 1–2 of the four scripted cases; REQ-14 cap.
+- **Demo:** new asset → drop 3 photos → first has the cover badge; click Set as cover on the second → badge moves; ~~upload 21 → refused~~ upload 21+ → all accepted (D31).
+- **Acceptance:** REQ-03 cases 1–2 of the four scripted cases; ~~REQ-14 cap~~ no cap (D31).
 - **Reviewer can verify without:** delete, table.
 
 ### Risk
 
-- **Weakest source:** `[UNVERIFIED]`. Migration N/A. Blast radius: lock mistakes either deadlock uploads or leak across tenants (raw SQL) — run `tcg-prisma-guardian` on the raw query.
+- **Weakest source:** `[UNVERIFIED]`. Migration N/A. ~~Blast radius: lock mistakes either deadlock uploads or leak across tenants (raw SQL) — run `tcg-prisma-guardian` on the raw query.~~ No lock or raw SQL any more (D32); blast radius is the conditional cover update's tenant filter — run `tcg-prisma-guardian` on `createWithFirstCover` and `setCover`.
 - Existing consumers of `Asset.coverImageId`: none yet.
 
 ### Ripple
