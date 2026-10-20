@@ -1439,6 +1439,23 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
+### Q49 — U6b: how the own-inspections flow is carried, and its step order
+
+*Raised by tcg-executor after committing U6, 2026-10-20. Nothing built for U6b.*
+
+- **Question:** Q47 = A adds Pre-Trip, JSA, Post-Trip and Compliance to the STANDARD ticket of a Dispatchable role that runs inspections and has no crane inspection order (3rd Man, Driver). Two things are not fixed: (1) **how the flow is carried.** Every surface reads `TicketStepFlow = 'FULL' | 'STANDARD'` (`packages/shared/src/constants/ticket-flow-steps.ts`; the field ticket's `stepFlow`, the submit guard, job progress, crew grouping, `job-tickets.service.ts:1061` closing work time at Left Job). Installed mobile builds parse `stepFlow` with `z.enum(['FULL','STANDARD'])` (`apps/mobile/data/contracts/ticket.contract.ts:229`), so a third value sent to an old build fails its ticket parse. (2) **the step order**, which decision 2026-10-15 does not list for this flow.
+- **Options:**
+  - A. A third `TicketStepFlow` member (name it — e.g. `INSPECTIONS`) on `stepFlow` everywhere. Clean, but non-additive: old mobile builds reject it until they update (no minimum-app-version gate exists).
+  - B. Keep `stepFlow` two-valued and add an additive boolean on the field ticket (name it — e.g. `ownInspections`) that adds the four steps to a STANDARD ticket; the submit guard and progress read both. Old builds ignore the boolean and show plain STANDARD.
+  - X. Other — say what.
+- **Step order (AI derivation from the canonical order and DN-1 H8/H9 — confirm or correct):** non-holdover 12: pretrip, leftYard, driving, arriveJob, sig1, jsa, sig2, leftJob, arriveYard, posttrip, compliance, review · middle day Yard 10: pretrip, leftYard, driving, arriveJob, sig1, jsa, sig2, posttrip, leftJob, review · middle day Home 8: arriveJob, pretrip, sig1, jsa, sig2, posttrip, leftJob, review · last day Yard 12 (= non-holdover) · last day Home 10 (last day Yard without leftYard, driving). No Labor & Unit, no Start Work (Q47 names four steps).
+- **AI recommendation (not a decision):** B — it ships without breaking installed apps; and the order above.
+- **Why it cannot be answered from what is written:** Q47 says which steps, not where they sit or how the flow is sent; a new enum member or a new response field is the developer's structural call.
+- **Blocked:** U6b (all of it).
+- **Owner:** Syed Haris (developer).
+- **Workaround, if any:** none built — 3rd Man / Driver keep the STANDARD flow (8 steps) on slot-less tickets, as before U6.
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
