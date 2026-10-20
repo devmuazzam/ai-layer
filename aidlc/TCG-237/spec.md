@@ -1530,6 +1530,35 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** open
 
+
+### Q55 — Employees with no role lose their department when U15 drops `employees.department_id`
+
+*Raised 2026-10-20 by the U15 guardian (blocking).*
+
+- **Question:** U4's migration leaves an employee with no type or an unmapped type (Job Foreman, Apprentice, Default) and no prior role with `department_id` set but `role_id = NULL`. U15b's migration drops `department_id`, losing their department. Check first on the target DB: `SELECT count(*) FROM employees WHERE department_id IS NOT NULL AND role_id IS NULL;` — 0 means safe. Otherwise:
+- **Options:**
+  - A. Accept the loss (they are on the Q19 review list anyway).
+  - B. Backfill a role before the drop (which role is a product question).
+  - C. Guard: fail the U15b migration while such rows exist, so they are fixed by hand first.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
+### Q56 — FCC employees whose type maps to no role
+
+*Raised 2026-10-20 by the U15 build.*
+
+- **Question:** A non-DRAFT employee create now requires a role (REQ-03). FCC employees typed Job Foreman, Apprentice or Default get a 400 that aborts the seeder's `apiCreateMany`. How should the seeder handle them?
+- **Options:**
+  - A. Post them as DRAFT.
+  - B. Skip and list them.
+  - C. Relax the server rule.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
