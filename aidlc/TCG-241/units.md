@@ -16,7 +16,7 @@
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | U1 | `EntityImage` table, `Asset.coverImageId`, tenant scoping and shared limits exist (foundation) | REQ-14 (constants only), REQ-10 (scoping part) | schema, shared | — | ~80 lines / 6 files | not started |
-| U2 | From an asset's Edit page, a user chooses one photo and it is stored as 3 WebP variants | REQ-01 (edit, one file, click-to-choose), REQ-04 (server side), REQ-05, REQ-06, REQ-15, REQ-17, REQ-14 (server size/type/image params), REQ-10 (upload) | api, web | U1 | ~330 lines / 14 files | not started |
+| U2 | From an asset's Edit page, a user chooses one photo and it is stored as 3 WebP variants | REQ-01 (edit, one file, click-to-choose), REQ-04 (server side), REQ-05, REQ-06, REQ-15, REQ-17, REQ-14 (server size/type/image params), REQ-10 (upload) | api, web | U1 | ~330 lines / 14 files | built — feat/TCG-241-u2-upload-asset-photo |
 | U3 | The Edit page shows the asset's photos as tiles: blurred placeholder first, then the thumbnail | REQ-02 (tile only), REQ-09 (tiles), REQ-10 (list/view), REQ-11 (component extended) | api, web | U2 | ~300 lines / 12 files | not started |
 | U4 | Drag-and-drop several photos at once with per-file progress and per-file errors | REQ-01 (full for edit), REQ-04 (full), REQ-14 (`maxFiles` prop, client pre-check) | web | U3 | ~190 lines / 6 files | not started |
 | U5 | First photo becomes cover; "Set as cover" changes it; 20-photo cap enforced | REQ-03 (first, change), REQ-02 (Set as cover), REQ-14 (cap 20), REQ-10 (set-cover) | api, web | U4 | ~230 lines / 9 files | not started |
@@ -431,6 +431,9 @@ Enumerated by: `git grep -ln "prisma.asset\." -- apps/api/src` (consumers read t
 - Anything server-side.
 
 ---
+
+
+- **Amended 2026-10-20 (Akif, D15):** U9 also adds server-side HEIC decoding: `heic-decode` (+ lockfile) in `apps/api`, a decode step before `sharp` in `entity-image-processor.ts`, `image/heic` and `image/heif` added to `ENTITY_IMAGE_ALLOWED_MIME_TYPES`, and the uploader sends HEIC as is (no browser downscale). Replaces the earlier "reject HEIC in Chrome" behaviour. Tests: a real HEIC fixture decodes into the three WebP variants; HEIC upload works from Chrome.
 
 ## U10 — Deleting an asset removes its photos
 

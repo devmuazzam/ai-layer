@@ -150,3 +150,14 @@ every line below: `.ai/aidlc/TCG-241/spec.md` §11b, §11c and §12, Akif, 2026-
 ## Amendment 2026-10-20 — large phone photos (Akif)
 
 Recent iPhones produce 5–25 MB JPEGs (more for 48 MP / ProRAW) and `.heic` files on desktop. Decided (option A): the browser downscales each picked photo to ≤ 2048 px and re-saves it as JPEG with built-in APIs before upload (no new dependency). The 10 MB cap applies to the downscaled file; a picked file may be up to 50 MB. HEIC is accepted only where the browser can decode it (Safari) and is converted before upload; elsewhere it is rejected with a message asking for JPG or PNG. Server-side HEIC support (custom `sharp` build) was declined. Spec: `aidlc/TCG-241/spec.md` Q1, D13.
+
+## Amendment 2026-10-20 (later) — HEIC in every browser, activity log, timeout (Akif)
+
+- **HEIC:** reverses the "Safari only" part of the amendment above. HEIC/HEIF uploads are accepted from any browser; the API decodes them with `heic-decode` (ISC, depends on `libheif-js`, LGPL) and then runs the same `sharp` pipeline. HEIC files skip the browser downscale (they are already 2–5 MB). Spec D15; built in U9.
+- **Activity log:** photo events are logged as `UPDATED` with a `photo` payload (`uploaded`, `removed`, `coverChanged`) on a "Photos" tab, read as "added a photo", "removed a photo", "changed the cover photo". No new enum members. Spec Q14 / D14.
+- **Upload wait:** the browser waits up to 5 minutes for one upload. Upload progress 0–100% then "Processing…" ships with multi-upload (U4). Spec Q15.
+
+## Amendment 2026-10-20 (U2 review) — upload cap 25 MB (Akif)
+
+The upload cap after browser downscale is **25 MB** (was 10 MB), so it agrees with the app-wide "File is too large. Maximum allowed size is 25MB." message the API returns when a file is over the limit. Picked files stay ≤ 50 MB. Spec D17.
+

@@ -330,7 +330,7 @@ Out of scope (Q9).
 | Field | Rule | Source | Flag |
 | --- | --- | --- | --- |
 | Accepted types | PNG, JPG, WEBP | TCG-241 (design text) | `[UNVERIFIED]` |
-| Max upload size | 10 MB after in-browser downscale; picked file ≤ 50 MB | Q1, Q1b, Akif 2026-10-20 | `[UNVERIFIED]` |
+| Max upload size | 25 MB after in-browser downscale (D17; was 10 MB); picked file ≤ 50 MB | Q1, Q1b, Akif 2026-10-20 | `[UNVERIFIED]` |
 | Max photos per entity | 20 (uploader prop, default 20; API enforces 20 for assets) | Q2, Akif 2026-10-20 | `[UNVERIFIED]` |
 | Original max dimensions / quality | longest side 2048 px, WebP q82 | Q1 | `[UNVERIFIED]` |
 | Thumbnail size | 160×160 WebP | Q1 | `[UNVERIFIED]` |
@@ -392,6 +392,11 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 | D13 | Client-side downscale before upload (Q1b) | A. Private helper inside the uploader component using `createImageBitmap` + canvas `toBlob` (no dependency). B. Add a library (`browser-image-compression`). C. No client step. | Nothing in `apps/web` resizes images today; mobile `apps/mobile/lib/image-compression.ts` uses `expo-image-manipulator` and cannot be reused on web | A | Akif | 2026-10-20 |
 | D1a-null | Nullability of `EntityImage` columns | A. All NOT NULL except `uploadedById` (nullable, FK SetNull). B. Make metadata columns optional. | Every upload always produces name, size, dimensions and placeholder | A | Akif | 2026-10-20 |
 | D1a-enum | Name of the owner-type enum | A. `ImageOwnerType`. B. `ImageEntityType`. C. `EntityImageType`. | Originally `EntityImageEntityType` (redundant); column stays `entity_type`, value `ASSET` | A | Akif | 2026-10-20 |
+| D14 | Activity-log shape for photo events (Q14) | A. `UPDATED` + `photo` payload + renderer branch. B. Reuse `QUOT_RESOURCE_ADDED`. C. New enum members + migration. | Mirrors sub-categories' `logCustom('UPDATED', {linkedSubCategory})` | A | Akif | 2026-10-20 |
+| D15 | HEIC support everywhere (supersedes Q1b's "Safari only") | A. Server decodes HEIC with `heic-decode` (ISC; depends on `libheif-js`, LGPL) then `sharp` as usual; `image/heic`/`image/heif` added to the allowed types; HEIC skips the browser downscale (files are 2–5 MB). B. Browser converts with `libheif-js`. C. Keep Safari only. | New dependency; ~1–3 s CPU per HEIC on the server. Built in U9 with the MIME change; U2 keeps rejecting HEIC until then | A | Akif | 2026-10-20 |
+| D16 | U2 over the PR budget (559 source lines / 19 files) | A. One PR with the `size-exception` label (reason: smallest working slice; ~⅓ comments). B. Trim to under 400. | A backend-only split is not a unit | A — Akif adds the label on the PR | Akif | 2026-10-20 |
+| D17 | Upload cap after browser downscale (supersedes Q1's 10 MB) | A. 25 MB (matches the shared "Maximum allowed size is 25MB" message from `all-exceptions.filter.ts`). B. Keep 10 MB, accept up to 50 MB at multer so the service message shows. C. Fix the shared message app-wide. | Analyst U2 F1: multer `LIMIT_FILE_SIZE` returns the shared 25MB text, so a 10 MB cap told users the wrong limit | A — 25 MiB (`ENTITY_IMAGE_MAX_UPLOAD_BYTES`), service text "Photo must be 25 MB or smaller" | Akif | 2026-10-20 |
+| D18 | Tenant for a photo upload (analyst U2 F2) | Use the asset's `tenantCompanyId`, never the caller's context — a SUPER_ADMIN is unscoped and could otherwise file a photo under the wrong tenant | Bug fix, not a structural choice; recorded for traceability | asset's tenant | — (fix) | 2026-10-20 |
 | D8b | Uploader location and how it loads image bytes | A. `apps/web/src/components/organisms/entity-photos/` (precedent: `organisms/entity-notes/`); the feature passes an image-loading function as a prop (no `features/` import). B. New `components/media/` folder, same prop approach. | `useAttachmentImageUrl` lives in `features/` and cannot be imported from `components/` | A | Akif | 2026-10-20 |
 
 **From `tcg-prisma-guardian` (2026-10-20).** Executor must-dos, not decisions: add `'entityimage'` to `TENANT_SCOPED_MODELS` (`apps/api/src/orm/prisma.service.ts:26`); `createdAt @db.Timestamptz()`; `@@map("entity_images")`, `idx_entity_images_*`; cover re-pick orders by `createdAt, id`; upload, photo delete and asset delete each in one transaction; the assets list loads the cover with one `include`/batched query and selects `placeholderDataUrl` only there.
@@ -429,7 +434,7 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
   - C. Reuse the general attachment limit (50 MB)
   - X. Other — say what
   - Sub-questions in same reply: accept HEIC? keep or strip EXIF/GPS? how to treat an already-WebP upload (re-encode or store as is)?
-- **Answer:** Max upload **10 MB** per file (Akif's value). Rest accepted as proposed: original resized so the longest side is at most **2048 px**, WebP quality **82**; thumbnail **160×160** square (cover-cropped), WebP; placeholder about **24 px** wide, blurred, WebP. Accepted input JPEG/PNG/WebP only; **HEIC rejected**. EXIF (incl. GPS) **stripped**, orientation applied first. **Always re-encode**, including WebP uploads — Akif (2026-10-20, Claude Code session) **Q1b (Akif 2026-10-20, option A):** the browser first downscales every picked photo to ≤ 2048 px longest side and re-saves it as JPEG (~0.9) using built-in browser APIs only (`createImageBitmap` + canvas `toBlob`; no new dependency); the **10 MB** cap applies to that downscaled file; a picked file may be up to **50 MB** before downscaling. HEIC works where the browser can decode it (Safari) and is converted to JPEG before upload; where it cannot (e.g. Chrome), the file is rejected with a clear message asking for JPG or PNG. The server still accepts JPEG/PNG/WebP only and does the WebP/thumbnail/placeholder work with `sharp`.
+- **Answer:** Max upload **10 MB** per file (Akif's value). Rest accepted as proposed: original resized so the longest side is at most **2048 px**, WebP quality **82**; thumbnail **160×160** square (cover-cropped), WebP; placeholder about **24 px** wide, blurred, WebP. Accepted input JPEG/PNG/WebP only; **HEIC rejected**. EXIF (incl. GPS) **stripped**, orientation applied first. **Always re-encode**, including WebP uploads — Akif (2026-10-20, Claude Code session) **[HEIC part superseded by D15, Akif 2026-10-20: HEIC is accepted in every browser and decoded on the server.]** **Q1b (Akif 2026-10-20, option A):** the browser first downscales every picked photo to ≤ 2048 px longest side and re-saves it as JPEG (~0.9) using built-in browser APIs only (`createImageBitmap` + canvas `toBlob`; no new dependency); the **10 MB** cap applies to that downscaled file; a picked file may be up to **50 MB** before downscaling. HEIC works where the browser can decode it (Safari) and is converted to JPEG before upload; where it cannot (e.g. Chrome), the file is rejected with a clear message asking for JPG or PNG. The server still accepts JPEG/PNG/WebP only and does the WebP/thumbnail/placeholder work with `sharp`.
 - **Why it cannot be answered from what is written:** intent §11 lists all as NOT ON TICKET; the FCC 2 MB figure is flagged "not a requirement"; profile-picture and general limits belong to other features.
 - **Blocked:** REQ-04, 05, 06, 14
 - **Candidates:** `assets/asset-record-requested-additions.md` (35 KB, 2026-09-04); `assets/tool-and-rigging.md` ("size limit", no value); `packages/shared/src/constants/profile-picture.ts`, `attachments.ts` (code, descriptive)
@@ -606,6 +611,54 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 - **Blocked:** none (units U2, U5, U6 build option A and are re-checked when answered)
 - **Owner:** Akif
 - **Workaround, if any:** A
+- **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md
+
+### Q14 — Activity-log entry for "photo uploaded": which action and payload (raised by the U2 executor, 2026-10-20)
+
+- **Question:** Q10 says the asset's activity log records "photo uploaded" (and later "photo removed", "cover changed"). `ActivityLogAction` has no photo member, and the web renderer (`features/activity-logs/components/activity-log-sentence.ts`, `activity-log-utils.ts`) words entries by action + `changes` shape. Which shape should the upload entry use?
+- **Options:**
+  - A. `QUOT_RESOURCE_ADDED` with `{ attachment: true, fileLabel: <originalName>, imageId, tabName: 'Photos' }` — reuses the attachment rendering (file chip, "Tab: Photos"), but the sentence reads "added a file to **Attachments**" (`fileOrResourceSentence` hard-codes it), which contradicts Q10 unless the renderer is changed
+  - B. `UPDATED` via `logCustom` with `{ fields: {}, photo: { imageId, originalName }, tabName: 'Photos' }` — renders "updated this record in Photos"; no enum or renderer change
+  - C. New `ActivityLogAction` members (`PHOTO_ADDED`, `PHOTO_REMOVED`, `COVER_CHANGED`) — a migration plus renderer/label/icon entries in `features/activity-logs`; outside U2's slice, so it would become its own unit or be added to U5/U6
+  - X. Other — say what
+- **Answer:** A — log as `UPDATED` via `logCustom` with `changes: { photo: { event: 'uploaded' | 'removed' | 'coverChanged', id, name }, tabName: 'Photos' }`; the web sentence renderer gains a branch reading "added a photo", "removed a photo", "changed the cover photo". No migration. U5/U6 use the same shape — Akif (2026-10-20, Claude Code session)
+- **Why it cannot be answered from what is written:** Q10 fixes *that* an entry is written, not its action or payload; every option changes what users read in the activity log.
+- **Blocked:** U2's activity-log call (not built; the upload works without it). U5 (cover changed) and U6 (photo removed) need the same answer.
+- **Owner:** Akif
+- **Workaround, if any:** none — U2 writes no entry until answered
+- **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md
+
+### Q15 — U2 copy and small values the spec does not fix (raised by the U2 executor, 2026-10-20)
+
+- **Question:** U2 had to put concrete text and values in code. units.md says "Toast copy NOT SPECIFIED: executor proposes"; these are the proposals as built. Confirm or replace.
+- **Options:**
+  - A. Keep all as built:
+    - API errors (400): no file → "File is required" (existing copy); not JPEG/PNG/WebP, unreadable, 0-byte, HEIC/GIF/SVG → "Photo must be a JPEG, PNG or WebP image"; over 10 MiB reaching the service → "Photo must be 10 MB or smaller". Over 10 MiB at the HTTP layer → Nest's multer default **413 "File too large"**
+    - Web: card title "Photos", description "JPEG, PNG or WebP, up to 10 MB.", button "Add photo" / "Uploading...", success toast "Photo uploaded", error toast = server message, fallback "Failed to upload photo"
+    - Values: thumbnail WebP quality = sharp default (80); placeholder blur = sharp's default 3×3 box blur; placeholder WebP quality = sharp default (80); `originalName` truncated to 255 chars (column length) rather than rejected; client request timeout 120 s (same as attachment uploads)
+    - Layout: photos card is a right-hand column from the `xl` breakpoint, 20rem wide; below `xl` it stacks **under** the Main tab form
+  - B. Keep A but change the listed items — say which and to what
+  - X. Other — say what
+- **Answer:** Accepted as built, with one change: client upload timeout is **5 minutes** (300 000 ms), not 120 s. Upload progress 0–100% then "Processing…" is built in U4 (already in scope there), not U2 — Akif (2026-10-20, Claude Code session)
+- **Why it cannot be answered from what is written:** §9 "Error message text: NOT SPECIFIED"; Q1 fixes only original quality (82), thumbnail size and placeholder width; D8 says "right-hand card, per design" but the design file has no asset-photo screen.
+- **Blocked:** nothing — built as A, reversible copy/constants
+- **Owner:** Akif
+- **Workaround, if any:** A (AI proposal — pending developer confirmation)
+- **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md
+
+### Q16 — Response of `POST asset-management/assets/:id/photos` (raised by the U2 executor, 2026-10-20)
+
+- **Question:** D4 B fixes the route; no row fixes what the upload returns. U2 returns `201 { id }` (the new image UUID) — the smallest shape; fields can be added later without breaking callers.
+- **Options:**
+  - A. `{ id }` (as built)
+  - B. The photo as the U3 list will show it, e.g. `{ id, originalName, width, height, sizeBytes, placeholderDataUrl, createdAt }`
+  - C. Nothing (`204`)
+  - X. Other — say what
+- **Answer:** Accepted — `201 { id }` — Akif (2026-10-20, Claude Code session)
+- **Why it cannot be answered from what is written:** a response shape is a developer decision (CLAUDE.md → Developers decide structure); §11b has no row for it.
+- **Blocked:** nothing — built as A
+- **Owner:** Akif
+- **Workaround, if any:** A (AI proposal — pending developer confirmation)
 - **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md
 
 ## 13. What this spec deliberately does not specify
