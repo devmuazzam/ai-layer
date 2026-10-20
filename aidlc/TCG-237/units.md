@@ -1152,6 +1152,18 @@ Answered in one batch to build the rest without stops. Each row is the developer
 | — | U6b | Q49 = B (boolean on the field ticket adds the four inspection steps) |
 | — | Demo | **Demo U1–U6 on production tonight**: gate the U4–U6 stack, dry run on a production copy, then merge and deploy U4–U6 ahead of U7+ (knowingly bends 6B: saves on quotes / jobs / billing / sub-categories rewrite rows without the role until U8–U11 land; reads unchanged). Remaining units build in parallel lanes. |
 
+
+### Second batch — 2026-10-20 night (Syed Haris, "all ★")
+
+| Unit | Decision |
+| --- | --- |
+| U7 | Craft-form role list: drop the Dispatchable filter on that form only (Mechanic must be pickable). C1 Department pick before Role (not saved); C2 Role Type stays; C3 role required except LABORER / ADMIN (form only); C4 `CraftCodesRepository.findRole`; C5 craft form sends `roleId` |
+| U6b | E1 flag `ownInspections`; E2 applies on slotted tickets too (worker's role) until U12; E3 last Home day: Arrive Job first; E4 "Continue to Review" when no Labor step; E5 existing Pre-Trip / JSA / Post-Trip checklists. **In the demo** |
+| U9 | F1 wrong-tenant role → 404 `Role "<id>" not found`; F2 updating an Employees code leaves the old type value; F3 roleless old codes show "Employees", saving requires a role; F4 Mechanic/Shop share a role, resolve picks the first. Q50 seeder fix (billing codes) |
+| U10 | Q51 keep the snapshot backfill; Q50 seeder fix (associations) |
+| U13 | S1 quote-approval setting checked before the salesperson grant; **S2 add `isSalesperson` to `GET /users/me`** so admins who hold the grant auto-fill; S3 `salesperson` ≥ edit counts; **S4 add `salesperson` to the qa-automation departments `PERMISSION_MODULES` list** |
+| U8 | `size-exception` (511 / 53, mechanical rename; overrides the earlier "no exception"); **keep accepting `employeeTypeId` on quotation save, mapped to the role, deprecated until U20** (installed mobile builds); **copy `roleId` in `projects.service.ts:416`** on quote → job; **update qa fixtures / types** (`das.fixtures.ts`, `support/api/types/quotation.ts`, `price-listing-api.ts`); confirm `ROLE` kind rename, the tenant error text, archived-department roles listed, staircase seed throws on a missing role |
+
 ## Sequencing
 
 > **Developer decisions 2026-10-20 (Syed Haris):** U8 split into U8 (API + web) and U8m (mobile) — no size-exception. **No feature flags** on U17 or U18; they ship with their tests. Double write U8→U11: **B — no double write**; U4 through U15 (U8m included) merge together as **one release train**. Deploy window for the rename/drop migrations (U1, U2 and later): **A — accepted**, deploy at low traffic. U19 dropped (Q27 = A).

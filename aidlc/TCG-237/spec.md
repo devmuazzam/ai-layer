@@ -1467,10 +1467,10 @@ Q9 plays the same role for REQ-06.
   - A. Fix it in U9: map the FCC type to the role with the Q3 mapping inside the seeder and post `roleId`.
   - B. A small follow-up unit after U9.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **A** — fix the FCC seeder: map FCC types to roles with the Q3 mapping and post `roleId` (billing codes, in U9) and `associatedRoleId` (sub-category associations, in U10). Syed Haris (developer), 2026-10-20 ("all ★") — open to TCG challenge.
 - **Blocked:** re-running the FCC seed for billing codes.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer)
 
 
 ### Q51 — U10 backfills `associatedRoleId` / `nestedRoleId` into stored quotation snapshots
@@ -1482,9 +1482,9 @@ Q9 plays the same role for REQ-06.
   - A. Keep the JSON backfill in U10; dry-run it on the production copy before deploy.
   - B. Drop it; readers fall back to the legacy `associatedEmployeeTypeId` in old snapshots until U20.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **A** — keep U10's JSON backfill of quotation snapshots; dry-run it on the production copy before deploy. Syed Haris (developer), 2026-10-20 ("all ★") — open to TCG challenge.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer)
 
 ## 13. What this spec deliberately does not specify
 
