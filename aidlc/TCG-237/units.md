@@ -434,6 +434,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U8 — The quotation resource picker lists roles (web and mobile)
 
+> **Acceptance added from the U4 guardian review (2026-10-20):** the new role FKs are not tenant-composite — every writer in this unit must check the role belongs to the current tenant before saving.
+
 > **Developer decision 2026-10-20 (Syed Haris): U8 = B — split.** API + web ship as U8; mobile ships as its own stacked PR (U8m) right after. No `size-exception`. Accepted consequence: quoting on mobile is broken between the two merges unless the double write covers it (pending).
 
 - **Outcome:** Adding a labour line to a quotation, on web and on mobile, picks from roles; existing quotations show the mapped role's name.
@@ -491,6 +493,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U9 — Billing codes and price-listing resolve use roles
 
+> **Acceptance added from the U4 guardian review (2026-10-20):** the new role FKs are not tenant-composite — every writer in this unit must check the role belongs to the current tenant before saving.
+
 - **Outcome:** A billing code is tied to a role; price-listing resolution takes a role.
 - **Kind:** vertical
 - **Requirements covered:** REQ-10 (BillingCode, price listings consumer).
@@ -541,6 +545,10 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U10 — Sub-category associated resources use roles
 
+> **Q37 = A:** the nested setting column is `nested_role_id` (not `associated_role_id`); U4 already merged Mechanic/Shop duplicates (Q40 = A), so the (parent, role) unique can be added.
+
+> **Acceptance added from the U4 guardian review (2026-10-20):** the new role FKs are not tenant-composite — every writer in this unit must check the role belongs to the current tenant before saving.
+
 - **Outcome:** A sub-category's associated labour resources, and its nested association setting, pick a role.
 - **Kind:** vertical
 - **Requirements covered:** REQ-10 (SubCategoryAssociatedResource, SubCategoryNestedAssociationSetting).
@@ -589,6 +597,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U11 — A job's resources name a role
+
+> **Acceptance added from the U4 guardian review (2026-10-20):** the new role FKs are not tenant-composite — every writer in this unit must check the role belongs to the current tenant before saving.
 
 - **Outcome:** Resources on a job (created from a quotation or by hand) carry a role; the job screens and the project resource tabs show and edit it.
 - **Kind:** vertical
@@ -640,6 +650,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U12 — DAS allocates by the slot's role
+
+> **Acceptance added from the U4 guardian review (2026-10-20):** the new role FKs are not tenant-composite — every writer in this unit must check the role belongs to the current tenant before saving.
 
 - **Outcome:** DAS slots, loadout, allocation save and the dispatch packet read the slot's role; no DAS code compares a type or department **name**.
 - **Kind:** vertical

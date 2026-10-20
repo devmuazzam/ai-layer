@@ -1268,7 +1268,8 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `apps/api/src/utility/seed-data.ts` on `main` (`SYSTEM_DEPARTMENTS`, `CRANE_GUYS_DEPARTMENTS`); `utility/demo-data/data/organisation.ts` on `main`.
 - **Owner:** Syed Haris (developer); Corrina Bustos to challenge.
 - **Workaround, if any:** none — the migration refuses to run instead.
-- **Status:** open
+- **Answer:** **A** — Accounts → Accounting · Admin → Management · Dispatch → Dispatch · HR → HR · Sales → Sales · Safety → Safety · Yard, Storage → Yard · Operated & Maintained, Rigging, Trucking, legacy Operations → Field Operations · Mechanics, Shop, Customer Repair, Internal Damage, Fleet, legacy Shop & Maintenance → Shop · any tenant-created department → Management, listed for review. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q36 — Old roles that merge into one new role but hold different permissions (Q26b)
 
@@ -1281,7 +1282,8 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `tcg237_role_permissions` in the U4 migration.
 - **Owner:** Syed Haris (developer).
 - **Workaround, if any:** option A.
-- **Status:** open
+- **Answer:** **A** — an old role named "Manager" goes to its department's manager role (Dispatch → Dispatch Manager, Sales → Sales Manager, Shop → Shop Manager, Yard → Facility Manager, Safety → Safety Manager, HR → HR Manager, else → Management / Manager); where roles still merge, each module takes the **highest** level any merged role had (union), whether the target is new or reused. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q37 — Names and delete rules of the six new role columns (structural)
 
@@ -1294,7 +1296,8 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `units.md` U4, U7, U8, U9, U10, U11 (the later units' names).
 - **Owner:** Syed Haris (developer).
 - **Workaround, if any:** option A.
-- **Status:** open
+- **Answer:** **A** — names accepted: `role_id` on billing_codes, quotation_resources, job_resources, craft_codes; `associated_role_id` and `nested_role_id` on the two sub-category tables (U10 text to follow). **RESTRICT** on all six FKs, plus a "role in use" guard in `DepartmentsService.removeRole` that refuses deletion with a clear message. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q38 — Readings U4 took where two answers meet (confirm or correct)
 
@@ -1307,7 +1310,47 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `units.md` U4 slice row "Migration steps"; Q19, Q26.
 - **Owner:** Syed Haris (developer).
 - **Workaround, if any:** option A.
-- **Status:** open
+- **Answer:** (a), (b), (c), (d), (f) **confirmed as built**; (e) **changed:** an employee type missing from the Q3 list gives that employee **no role** and puts them on the review list (as Q19), instead of aborting. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
+
+
+### Q39 — Reused roles: do they take the seeded settings?
+
+*Raised from the U4 prisma-guardian review, 2026-10-20.*
+
+- **Question:** When a tenant already has a role the migration reuses (e.g. Operator in a department named Field Operations), it updated only `runs_inspections` and `quote_approval`. Should reused roles take all seeded settings?
+- **Options:**
+  - A. Force the seeded settings onto reused roles — `is_dispatchable`, `boom_pay`, `runs_inspections`, `quote_approval`, `role_type`, `locked_permissions`; permissions follow Q36.
+  - B. Keep them as they are; the dry run lists them.
+  - X. Other — say what.
+- **Answer:** **A**. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Owner:** Syed Haris (developer).
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
+
+### Q40 — Mechanic and Shop both become Mechanic: duplicate sub-category rows
+
+*Raised from the U4 prisma-guardian review, 2026-10-20.*
+
+- **Question:** A sub-category holding both a Mechanic and a Shop association (or nested setting) ends up with two rows on one role, blocking U10's (parent, role) unique.
+- **Options:**
+  - A. Merge duplicates in the U4 migration (one row per parent and role) and list them in the dry run.
+  - B. Leave them; the dry run lists them; U10 handles them.
+  - X. Other — say what.
+- **Answer:** **A**. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Owner:** Syed Haris (developer).
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
+
+### Q41 — Deploying U4: locks, connection, failed-migration recovery
+
+*Raised from the U4 prisma-guardian review, 2026-10-20.*
+
+- **Question:** The migration holds strong locks on quotation_resources, job_resources, billing_codes, craft_codes and the sub-category tables for its whole run, needs a direct (non-pooled) connection with TEMP privilege, and a RAISE leaves it recorded as failed until `prisma migrate resolve --rolled-back`.
+- **Options:**
+  - A. Maintenance window with the app quiesced, duration measured on a production copy; write the steps into a deploy runbook.
+  - X. Other — say what.
+- **Answer:** **A**. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Owner:** Syed Haris (developer).
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ## 13. What this spec deliberately does not specify
 
