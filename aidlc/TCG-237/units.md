@@ -1178,6 +1178,7 @@ Answered in one batch to build the rest without stops. Each row is the developer
 | U17 | Q60 A, Q61 A (U17b seed runs in U17's deploy window, dry-run first). Restack fix-ups (bug fixes, not structural): explicit `tenantCompanyId` on role-code lookups (super admin skips the scoping extension — U16 `employee.repository.ts:148`, and the U7/U15 main-role lookups); qa `@DAS-001` fixture gets a UNION union code |
 | U12b / FCC seeder | Q52 A, Q53 A, Q54 A — built in the restack fix-up |
 | Fix-ups | `feat/tcg-237-fixups` from U20d: Q54 A `e2e3cdffa` (47/8; web pre-check keys on `boomPay` only — not `isDispatchable`), tenant filter `cb9624b2a` (33/3: employee main role + can-also-fill, resource-catalog `roleWhere`, role-name suggestions; main-branch `findByCode` / `findByCodeWithCounts` / `resolveRoleCode` / `subCategoryWhere` / `customTypeWhere` left for a follow-up), qa UNION fixture `138f6ba77` (18/2). Q52 not built — Q64 open. Q65 raised |
+| Fix-ups (2) | Q62 B, Q63 A, Q64 B (**new endpoint** `POST /admin/tenants/:id/system-departments`, super admin), Q65 A; full gate goes now, in parallel (Syed Haris, "all your leans"). FCC NexGenFMS-Test counts 2026-10-20: 114 active; every type maps by Q3; 1 active with no type; FCC departments hold no employees; 67 active with secondary types (4 Oiler→Yard Man skipped by U17b); **3 active non-union Operators would be refused by U17 (Q30 A)** — check before U17 goes live |
 
 ## Sequencing
 

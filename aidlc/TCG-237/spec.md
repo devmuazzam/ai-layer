@@ -1638,9 +1638,9 @@ Q9 plays the same role for REQ-06.
   - B. Add `role: { name, boomPay }`, key the mobile adder on `boomPay`, and drop `employeeTypeName` once builds have updated.
   - C. Leave `employeeTypeName` until a minimum-app-version gate exists.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** B — add `role: { name, boomPay }` to ticket labor entries; mobile keys the boom adder on `boomPay`; `employeeTypeName` stays deprecated until installed builds have updated. Syed Haris, 2026-10-20 ("all your leans").
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ### Q63 — U20 migration refuses to run while a row names only an employee type
 
@@ -1652,9 +1652,9 @@ Q9 plays the same role for REQ-06.
   - B. Delete those rows in the migration.
   - C. Keep the rows with an empty role.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — the U20d migration refuses while any row names only a type; fix by hand, then re-run. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 
 ### Q64 — How the FCC seeder reaches `seedSystemDepartments` (Q52 = A)
@@ -1668,9 +1668,9 @@ Q9 plays the same role for REQ-06.
   - C. Move `SYSTEM_DEPARTMENTS` / `seedSystemDepartments` into an alias-free module re-exported by `seed-data.ts`; still needs A's `rootDir` and spawn-path change.
   - D. `reset-tenant.ts` stops deleting `isSystem` departments and their roles, so nothing needs re-seeding (departs from Q52 A's wording).
   - X. Other — say what.
-- **Answer:**
+- **Answer:** B — new super-admin endpoint `POST /admin/tenants/:id/system-departments` calling `seedSystemDepartments`; the FCC seeder calls it right after `resetTenantData`. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ### Q65 — Super admin editing another tenant's employee after the role-lookup tenant filter
 
@@ -1681,9 +1681,9 @@ Q9 plays the same role for REQ-06.
   - A. Yes — super admins act in the target tenant's context; the filter stands.
   - B. No — resolve the lookup's tenant from the employee being edited, not the caller.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — super admins act in the target tenant's context; the role-lookup tenant filter stands. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ## 13. What this spec deliberately does not specify
 
