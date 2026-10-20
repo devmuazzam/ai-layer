@@ -1767,6 +1767,21 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** answered
 
+
+### Q72 — Types U4 mapped to no role, found on staging by U20d's guard
+
+*Raised 2026-10-21 by the staging deploy (99 sub-category association rows).*
+
+- **Question:** Job Foreman, Apprentice and Default map to no role (Q3), so rows naming only those types block U20d. Map them to roles?
+- **Options:**
+  - A. Apprentice → Oiler, Job Foreman → Operator, Default → Rigger (tenant's Field Operations role), merge duplicates Q40-style — built in #893.
+  - B. Delete those rows.
+  - C. Fix by hand per environment (Q63 A).
+  - X. Other — say what.
+- **Answer:** A built as **AI proposal — pending developer confirmation** (developer asked the AI to choose using industry knowledge, 2026-10-21).
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.

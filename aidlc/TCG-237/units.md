@@ -1185,6 +1185,7 @@ Answered in one batch to build the rest without stops. Each row is the developer
 | Merge | Syed Haris 2026-10-20: "merge go, and deploy" (developer deploys). #872 size-exception. Main merged into fixups-b as `de541b861` — 3 conflicts with TCG-218 resolved keeping both (holdover `roleId` + `dispatch`/NONE; mobile review-step frontier rule + `ownInspections`); API build ✅, web typecheck ✅, mobile app code ✅ (stale test files only). Plan: retarget open TCG-237 PRs to main, merge #890 (merge commit), #891 stays open for Q70 B. **No production dry run was run before the merge** |
 | Merged | 2026-10-20: Syed Haris merged #890 to main (`ae597a108`, merge commit); #847, #850, #851, #855, #857, #864–#889 marked merged with it. Only #891 (FCC seeder, Q70 B unbuilt) open. Deploy: developer, pending |
 | Merged (2) | 2026-10-20: #891 FCC seeder merged by Syed Haris (head 78be66fe9: Q70 B secondary-craft fallback + main merge bee27713d). All TCG-237 PRs merged. Demo-data seed check in progress |
+| Staging deploy | 2026-10-21 run 39478132636 on `tcg_staging`: U4–U16 applied, U20d failed its guard (99 type-only associations: Job Foreman/Apprentice/Default). Fix #893 (`fix/tcg-237-u20d-map-unroled-types` b17b3c6d0) maps them before the guard (Q72, AI proposal pending); tested on scratch DB `tcg_u20d_scratch2`. Old API ran on the new schema until redeploy |
 
 ## Sequencing
 
