@@ -1454,7 +1454,8 @@ Q9 plays the same role for REQ-06.
 - **Blocked:** U6b (all of it).
 - **Owner:** Syed Haris (developer).
 - **Workaround, if any:** none built — 3rd Man / Driver keep the STANDARD flow (8 steps) on slot-less tickets, as before U6.
-- **Status:** open
+- **Answer:** **B** — an additional boolean on the field ticket adds Pre-Trip, JSA, Post-Trip and Compliance to the STANDARD flow (installed builds ignore it); step order as derived in this question. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Status:** answered 2026-10-20 (developer)
 
 ## 13. What this spec deliberately does not specify
 

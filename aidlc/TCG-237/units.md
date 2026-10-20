@@ -1112,6 +1112,46 @@ Deferred until Q27. Guardian **required**; tracer **required**; payroll provenan
 
 ---
 
+
+## Batch developer decisions — 2026-10-20 evening (Syed Haris, "all ★")
+
+Answered in one batch to build the rest without stops. Each row is the developer's choice.
+
+| # | Unit | Decision |
+| --- | --- | --- |
+| 0a | all | Over budget → split along the natural line or `size-exception`, recorded per unit |
+| 0b | all | Guardian on schema changes (blocking findings only); tracer only for non-additive shape changes; no per-unit lint/build (full gate once at the end) |
+| 1 | U7 | Role dropdown reuses the existing roles list endpoint with a Dispatchable filter |
+| 2 | U7 | Web role picker: reuse an existing role select, else a new `DepartmentRoleSelect` on the `vendor-select` shape |
+| 3 | U7 | `craft_codes.role_id` stays nullable (LABORER / ADMIN crafts have no role) |
+| 4 | U8 | Extend `resource-catalog` to return roles where it returned types |
+| 5 | U8 | `quotation_resources.role_id` stays nullable |
+| 6 | U8m | Replace `employee-type.contract.ts` with a role contract `{id, roleCode, name}` |
+| 7 | U8m | Offline drafts from before the upgrade: clear only the old type field, keep the draft |
+| 8 | U9 | Mirror any (tenant, type) unique on billing codes as (tenant, role) |
+| 9 | U11 | Mobile field-ticket slot-type readers change in U11 |
+| 10 | U12 | DAS card field `role: {id, name}` replaces `employeeType` |
+| 11 | U13 | Permission key `salesperson`, label "Salesperson", granted to Salesperson and Sales Coordinator roles via seed + migration |
+| 12 | U14 | Module keys `mobile-field-tickets`, `mobile-quotations` |
+| 13 | U14 | Remove the unused mobile `(dispatch)` route group |
+| 14 | U14 | `GET /users/me` adds the `permissions` map and drops `employeeTypeName`; build on the Q23 developer reading |
+| 15a | U15 | "Field employee" = role `isDispatchable` |
+| 15b | U15 | Employee create/update send `roleCode` |
+| 15c | U15 | `?department=` filters through the role's department |
+| 16a | U16 | Table `employee_can_also_fill_roles`, model `EmployeeCanAlsoFillRole`, UUID, no business code |
+| 16b | U16 | Nullable `approvedById` / `approvedAt` |
+| 16c | U16 | Request field `canAlsoFillRoleCodes: string[]`; response lists the roles |
+| 16d | U16 | Web: repeated role-select rows |
+| 17a | U17 | New exported `PlacementEligibilityService` used by every allocation writer |
+| 17b | U17 | Refused placement → 400 with a clear message |
+| 17c | U17 | Seed can-also-fill for the TCG tenant from FCC secondary types (`employee-type-assignments.json` via the Q3 map), one-off script |
+| 17d | U17 | DAS Employees request passes the slot position |
+| 18 | U18 | Payroll-engine input / resolver shape may change; provenance entry quotes Corrina 2026-08-13 54:22; tests skipped per standing instruction |
+| 19 | U20 | Role → craft-classification link derived from `CraftCode.roleId` + `roleType`; no new field |
+| — | U6 | 509 lines / 36 files vs U5b → **`size-exception`** |
+| — | U6b | Q49 = B (boolean on the field ticket adds the four inspection steps) |
+| — | Demo | **Demo U1–U6 on production tonight**: gate the U4–U6 stack, dry run on a production copy, then merge and deploy U4–U6 ahead of U7+ (knowingly bends 6B: saves on quotes / jobs / billing / sub-categories rewrite rows without the role until U8–U11 land; reads unchanged). Remaining units build in parallel lanes. |
+
 ## Sequencing
 
 > **Developer decisions 2026-10-20 (Syed Haris):** U8 split into U8 (API + web) and U8m (mobile) — no size-exception. **No feature flags** on U17 or U18; they ship with their tests. Double write U8→U11: **B — no double write**; U4 through U15 (U8m included) merge together as **one release train**. Deploy window for the rename/drop migrations (U1, U2 and later): **A — accepted**, deploy at low traffic. U19 dropped (Q27 = A).
