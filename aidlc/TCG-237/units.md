@@ -226,6 +226,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U4 — Existing tenants move to the nine; main role backfilled; consumers get a `role_id` (foundation)
 
+> **Developer decisions after the U4 re-review, 2026-10-20 (Syed Haris — accepted the stated lean on each item):** (1) "Operations and Maintenance" spelling added beside "Operated & Maintained" → Field Operations: accepted; (2) a new role that old roles merge into **starts from its template, then takes the highest level per module from each merged role**; (3) Q38e reading — unmapped type: no role *from the type*, existing role kept, review list: accepted; (4) Q40 stop when a deleted duplicate association has nested settings: accepted; (5) backfilled rows keep their `updated_at`: accepted; (6) shorten the 409 "role in use" message so it stays under the 180-character sanitiser cap (count + kinds); (7) the backfill decays when sub-category / quotation-resource / job-resource saves rewrite rows without the role — accepted because U4–U15 ship as one release train (6B); U8–U11 must write the role on save; (8) locked modules are not reconciled with the union — accepted (`lockedPermissions` restricts nothing, decision 2026-09-04); (9) map the FK violation (P2003) on a racing `removeRole` to the same 409; plus a JSDoc note that `countDepartmentRoleReferences` needs a tenant-resolved roleId.
+
 - **Outcome:** After this ships, every existing tenant shows the nine departments; every employee that had a type has the Q3 role as main role; every table that points at an Employee Type also points at a role. (Nothing reads the new columns yet; each later unit switches one consumer.)
 - **Kind:** **foundation, schema/data-only.** Justification (template exception): the units **U5, U6, U7, U8, U9, U10, U11, U12, U15** all depend on one backfill; split per unit it would repeat the type→role mapping in nine migrations against the same tables (D4 = A puts the mapping table *in the migration file*, once).
 - **Requirements covered:** REQ-01, REQ-02, REQ-03 (backfill), REQ-07, REQ-08, REQ-10 (data), REQ-12.
@@ -444,6 +446,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U8 — The quotation resource picker lists roles (web and mobile)
 
+> **From the U4 re-review (2026-10-20):** this unit's save path must write the role, or the U4 backfill is erased on the next save.
+
 > **Acceptance added from the U4 guardian review (2026-10-20):** the new role FKs are not tenant-composite — every writer in this unit must check the role belongs to the current tenant before saving.
 
 > **Developer decision 2026-10-20 (Syed Haris): U8 = B — split.** API + web ship as U8; mobile ships as its own stacked PR (U8m) right after. No `size-exception`. Accepted consequence: quoting on mobile is broken between the two merges unless the double write covers it (pending).
@@ -503,6 +507,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U9 — Billing codes and price-listing resolve use roles
 
+> **From the U4 re-review (2026-10-20):** this unit's save path must write the role, or the U4 backfill is erased on the next save.
+
 > **Acceptance added from the U4 guardian review (2026-10-20):** the new role FKs are not tenant-composite — every writer in this unit must check the role belongs to the current tenant before saving.
 
 - **Outcome:** A billing code is tied to a role; price-listing resolution takes a role.
@@ -554,6 +560,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U10 — Sub-category associated resources use roles
+
+> **From the U4 re-review (2026-10-20):** this unit's save path must write the role, or the U4 backfill is erased on the next save.
 
 > **Q37 = A:** the nested setting column is `nested_role_id` (not `associated_role_id`); U4 already merged Mechanic/Shop duplicates (Q40 = A), so the (parent, role) unique can be added.
 
@@ -607,6 +615,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U11 — A job's resources name a role
+
+> **From the U4 re-review (2026-10-20):** this unit's save path must write the role, or the U4 backfill is erased on the next save.
 
 > **Acceptance added from the U4 guardian review (2026-10-20):** the new role FKs are not tenant-composite — every writer in this unit must check the role belongs to the current tenant before saving.
 
