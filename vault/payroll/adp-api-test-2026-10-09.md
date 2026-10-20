@@ -226,7 +226,7 @@ date `2026-10-22`) — a worksheet **not** created by the API. Her ADP mobile ap
 | Check (PKT, 10/21) | Result |
 | --- | --- |
 | `GET /core/v1/event-notification-messages` at 04:15, then every 5 minutes | **204 — empty**. `pay-data-input.modify` is still the only subscription; nothing fires on processing |
-| `GET /payroll/v1/pay-schedule/payroll-groups/4RZ` at 04:18 | `2026-43` still **`OPEN`** three minutes after "processed"; `2026-41`, `2026-42` show **`COMPLETE`**, `2026-44`+ `NOT_STARTED`. A watcher logs when `2026-43` changes (pending when written) |
+| `GET /payroll/v1/pay-schedule/payroll-groups/4RZ` at 04:18 | `2026-43` still **`OPEN`** three minutes after "processed"; `2026-41`, `2026-42` show **`COMPLETE`**, `2026-44`+ `NOT_STARTED`. Re-checked every 10 minutes until 04:38 PKT: **still `OPEN`** (watcher stopped there). The flip to `COMPLETE` was not caught — check the period again after the 2026-10-22 pay date to learn when it changes |
 
 **So ADP knows payroll was processed and tells the practitioner in its app, but sends the
 integration nothing.** Whether the worksheet came from the API or not makes no difference: events
