@@ -1627,6 +1627,35 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** answered
 
+
+### Q62 — Ticket labor entries still return `employeeTypeName`
+
+*Raised 2026-10-20 by the U20 build.*
+
+- **Question:** The field now carries the role name. Installed mobile builds require it (`ticket-labor-entry.contract.ts:80`), and mobile `LaborBody.tsx:175` picks the Oiler / Operator boom adder by that name, which contradicts U18's position-filled rule. What replaces it?
+- **Options:**
+  - A. Rename it to `roleName`; installed builds' Labor step breaks until they update.
+  - B. Add `role: { name, boomPay }`, key the mobile adder on `boomPay`, and drop `employeeTypeName` once builds have updated.
+  - C. Leave `employeeTypeName` until a minimum-app-version gate exists.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
+### Q63 — U20 migration refuses to run while a row names only an employee type
+
+*Raised 2026-10-20 by the U20 build (an executor choice, not specified).*
+
+- **Question:** Dropping the type columns would silently orphan an association, nested setting or resource row that has a type but no role. U20 refuses to run in that case so the rows get fixed by hand. Accept?
+- **Options:**
+  - A. Accept: refuse, fix by hand, then re-run.
+  - B. Delete those rows in the migration.
+  - C. Keep the rows with an empty role.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
