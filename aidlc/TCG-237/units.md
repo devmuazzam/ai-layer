@@ -929,6 +929,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U18 — Boom pay follows the position filled on the job
 
+> **Carried from the U2 review (2026-10-20):** Q21 makes hidden role settings *kept but ignored* — a non-Dispatchable role can still hold a stored `boomPay` / `runsInspections`. Every reader built here (and in U6) must gate on `isDispatchable`, or boom premium is paid on a role the editor shows as off. Add it to this unit's acceptance.
+
 - **Outcome:** The boom column (operator/oiler adder) a person is paid comes from the role of the position they filled on that job, not the craft's role.
 - **Kind:** vertical (pay engine)
 - **Requirements covered:** REQ-10 (pay read), F2 = B, D12a (read side).
