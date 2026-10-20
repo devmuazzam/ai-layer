@@ -714,17 +714,18 @@ blocks. _AI note_ gives trade-offs only.
 | D9 | PR / unit structure given ~330 files and the 400-line budget | **A.** stacked PRs sliced by surface (schema → API → web → mobile). **B.** stacked PRs sliced by feature (picker by picker). **X.** Other — say what. | Decomposer's job; recorded so the sign-off box is not forgotten. | **B** | Syed Haris | 2026-10-20 |
 | D10 | API contract for the 138/108/69 consumers: endpoint, response field, `GET /users/me` shape | **A.** keep `employeeTypeId` / `employeeTypeName` as aliases of the role during transition. **B.** replace outright. **C.** repoint `GET /employee-types` to return roles. **X.** Other — say what. | A lets the 14 qa-automation specs and mobile cached sessions survive a step; it leaves two names for one thing. Pattern: P2 `UNDECIDED` details apply to any new list endpoint. | **B** — "it's a cleanup task as well" | Syed Haris | 2026-10-20 |
 | D11 | Fate of the `EmployeeType` table, its six FKs and the `employee-types` module / web feature | **A.** drop after data migration. **B.** freeze read-only. **C.** keep until D10's aliases are gone. **X.** Other — say what. | With D10 = B there are no aliases, so C reads as: keep the table until the last slice has moved every consumer, then drop it. **Pending:** which "enum" the developer means — the closest match is `packages/shared/src/constants/employee-types.ts` (name constants incl. `CRAFT_ROLE_TYPE_EMPLOYEE_TYPE_NAMES`, which payroll's `craftRoleTypeForEmployeeTypeName` reads). | **C**, plus remove both name maps: the shared name constants in `packages/shared/src/constants/employee-types.ts` (the craft-classification → type-name map must be *replaced* by a role → craft-classification link, not deleted — payroll reads it) and mobile `PERSONA_BY_EMPLOYEE_TYPE` | Syed Haris | 2026-10-20 |
+| D12 | How a role relates to craft codes (needed by D2's craft check and by D11's removal of the craft-classification → type-name map) | **A.** one craft classification per role (new optional field on the role). **B.** several classifications per role (link table). **C.** reuse `boomPay`. **D.** *(developer, 2026-10-20)* each **craft code** points at one **role**; a role can have many craft codes. **X.** Other — say what. | With D, "can this person fill role R" can be read from their craft assignments (crafts whose role is R), which overlaps D2's separate list — see the D2/D12 follow-up. `CraftCode.roleType` (`RoleType` enum, read by payroll for the boom modifier) still exists; whether it stays beside the new role link is pending. | **D** — wherever an Employee Type dropdown was used (employee create, craft code form, everywhere) it becomes a Role dropdown; each craft code gets one role, one role can be on many craft codes. **Pending:** fate of `CraftCode.roleType`. | Syed Haris | 2026-10-20 |
 
 ## 11c. Siblings — same pattern, same change?
 
 | Sibling | Pattern | Same change? | Decided by | Enumerated by |
 | --- | --- | --- | --- | --- |
-| `EmployeeCraftAssignment` (primary / secondary craft per employee) | none — closest precedent for D2 | `NOT SPECIFIED` — payroll scope, out of ticket | | `grep -n 'model EmployeeCraft' apps/api/prisma/schema.prisma` |
+| `EmployeeCraftAssignment` (primary / secondary craft per employee) | none — closest precedent for D2 | **No change** — only read by D2's craft check | Syed Haris, 2026-10-20 | `grep -n 'model EmployeeCraft' apps/api/prisma/schema.prisma` |
 | Craft code "role type" (`roleType RoleType`, `schema.prisma:2793`) and `CraftRoleType` | none | no — pay derivation is out of scope by instruction; the vault leaves it open (`payroll/gaps.md`) | | `git grep -n CraftRoleType packages apps` |
-| Other name-matched role checks (`Sales Coordinator`, `Sales Manager`, `Salesperson`) | none | yes — REQ-11 covers them; developer to confirm | | the REQ-11 grep |
+| Other name-matched role checks (`Sales Coordinator`, `Sales Manager`, `Salesperson`) | none | **Yes** — replaced by role settings in this ticket (REQ-11) | Syed Haris, 2026-10-20 | the REQ-11 grep |
 | `Asset.department` / `departmentId` | none | follow Q14 / D5 | | `git grep -n 'departmentId' apps/api/src/service/asset-management` |
-| Other reference lists on the employee form (union codes, work-comp codes, craft codes) | P2 | no — not retired by this ticket | | `ls apps/api/src/presentation \| grep employee-` |
-| Mobile and web picker implementations (`employee-type-select`, `resource-catalog`) | none | yes — both must change together | | `git grep -il employeeType apps/web/src/features/employee-types apps/mobile/data` |
+| Other reference lists on the employee form (union codes, work-comp codes, craft codes) | P2 | **No change** — not retired by this ticket | Syed Haris, 2026-10-20 | `ls apps/api/src/presentation \| grep employee-` |
+| Mobile and web picker implementations (`employee-type-select`, `resource-catalog`) | none | **Yes** — web and mobile pickers change together in the same slice | Syed Haris, 2026-10-20 | `git grep -il employeeType apps/web/src/features/employee-types apps/mobile/data` |
 
 ## 12. Open questions — the stop-and-ask list
 
@@ -1059,7 +1060,7 @@ Q9 plays the same role for REQ-06.
   - B. Yes, but warn instead of refuse.
   - C. No — it only explains those managers; no check.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** X — Syed Haris (developer), 2026-10-20: not Local 12 specifically; union membership is what lets a person fill a position, and if another union comes later its members can fill too; do not restrict the check to Operator — it applies to every operating/field position. **Developer reading of a product question — pending Corrina Bustos's ratification.**
 - **Why it cannot be answered from what is written:** the decision note records the reason for two people; no source states a general rule.
 - **Blocked:** D8's build.
 - **Candidates:** decision note 2026-10-20 follow-up Q4 (verbatim: "Jeff Kelley and Kyle Harlow are managers but are also in the local 12 union so they are allowed to operate"); Corrina 2026-09-28: "field is all union people".
@@ -1074,7 +1075,7 @@ Q9 plays the same role for REQ-06.
   - A. Yes — same access on web and mobile.
   - B. No — mobile quotations only for roles that also have a separate mobile switch.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** X — Syed Haris (developer), 2026-10-20: "some use web, some use mobile, so it has two different permissions" — mobile features get their **own** permission modules, separate from the web modules (e.g. mobile quotations ≠ web `quotations`). Refines D7. **Developer reading — pending client ratification.**
 - **Why it cannot be answered from what is written:** today mobile shows quotations only to the `sales` persona (type names Salesmen / Sales Admin); no source says office staff with quotation access should or should not get it on mobile.
 - **Blocked:** the mobile slice of D7.
 - **Candidates:** Wes Staley, 2026-06-16 49:14 (the mobile app is for "the field employee, the salesperson, …").
@@ -1089,7 +1090,7 @@ Q9 plays the same role for REQ-06.
   - A. No — remove it.
   - B. Yes — say who and for what.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** asked of Brian Petros by Syed Haris, 2026-10-20 — awaiting reply.
 - **Why it cannot be answered from what is written:** code shows only a label and a list filter; usage is not observable from code.
 - **Blocked:** the asset slice of D5 (removal is irreversible for the stored values).
 - **Candidates:** `assets/fcc-units-and-schedule-types.md` (FCC distribution: FL 252, RG 56, OM 37 …).
