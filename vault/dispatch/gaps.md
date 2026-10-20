@@ -1513,6 +1513,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   every date. The side panels now offer such an asset for a non-overlapping shift when it also
   has bookings that day. The field is unused locally (0 of 21 assets) and undocumented in the
   vault. What is it for?
+  *2026-10-20, TCG-235 (branch `fix/tcg-235-das-asset-assigned-without-allocation`):* the DAS
+  no longer reads `Asset.jobCode`. Asset status and the assigned job come only from that date's
+  allocations on active intervals (`daily-allocation-system.md` L51). The column, DTO and form
+  are unchanged. The field's purpose is **still open**. It has no input on the asset form, and
+  the FCC seeder lists it as "TCG has field — not in FCC".
   (g) **A shift longer than a day** (allowed since 2026-09-30, see *Schedule times on a later
   day*) blocks its crane and crew for its whole window at drop and Copy time: the check now
   also reads earlier rows whose stored end day reaches the target. But the board's side panels
