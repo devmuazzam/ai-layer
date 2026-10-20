@@ -1179,6 +1179,7 @@ Answered in one batch to build the rest without stops. Each row is the developer
 | U12b / FCC seeder | Q52 A, Q53 A, Q54 A — built in the restack fix-up |
 | Fix-ups | `feat/tcg-237-fixups` from U20d: Q54 A `e2e3cdffa` (47/8; web pre-check keys on `boomPay` only — not `isDispatchable`), tenant filter `cb9624b2a` (33/3: employee main role + can-also-fill, resource-catalog `roleWhere`, role-name suggestions; main-branch `findByCode` / `findByCodeWithCounts` / `resolveRoleCode` / `subCategoryWhere` / `customTypeWhere` left for a follow-up), qa UNION fixture `138f6ba77` (18/2). Q52 not built — Q64 open. Q65 raised |
 | Fix-ups (2) | Q62 B, Q63 A, Q64 B (**new endpoint** `POST /admin/tenants/:id/system-departments`, super admin), Q65 A; full gate goes now, in parallel (Syed Haris, "all your leans"). FCC NexGenFMS-Test counts 2026-10-20: 114 active; every type maps by Q3; 1 active with no type; FCC departments hold no employees; 67 active with secondary types (4 Oiler→Yard Man skipped by U17b); **3 active non-union Operators would be refused by U17 (Q30 A)** — check before U17 goes live |
+| Fix-ups b | `feat/tcg-237-fixups-b` from fixups `138f6ba77`: Q62 B `0a0e038a3` (95/6 + 9 test files; `role` = slot role else main role, `boomPay` NONE when not Dispatchable; `employee-types.ts` constants removed; crew card label still reads `employeeTypeName` ~LaborBody.tsx:800), Q64 B `864e1cabf` (40/3; 201 empty body; FCC SHOP/YARD 409-skipped against system Shop/Yard). Tracer clean. Raises Q66, Q67 |
 
 ## Sequencing
 

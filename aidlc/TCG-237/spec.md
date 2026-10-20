@@ -1685,6 +1685,33 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** answered
 
+
+### Q66 — Mobile Labor card when the API sends `role: null`
+
+*Raised 2026-10-20 by the Q62 build.*
+
+- **Question:** With no slot and no main role, the labor crew member's `role` is null. The new mobile code shows **no** boom adder; the old code showed the **operator** adder in that case. Which?
+- **Options:**
+  - A. No adder (as built — matches Q21: no Dispatchable role, no adder).
+  - B. Operator adder (old behaviour).
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
+### Q67 — Layering of the Q64 system-departments endpoint
+
+*Raised 2026-10-20 by the Q64 build.*
+
+- **Question:** `AdminTenantsService` (usecase) calls the `@utility/seed-data` `seedSystemDepartments` function directly, as the same file's `create()` already does with `seedUniversalTenantDefaults` — no service/repository step. Keep, or add a new exported service?
+- **Options:**
+  - A. Keep — follows `create()` in the same file.
+  - B. Add a service layer (new exported service).
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
