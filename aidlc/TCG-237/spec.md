@@ -1541,9 +1541,9 @@ Q9 plays the same role for REQ-06.
   - B. Backfill a role before the drop (which role is a product question).
   - C. Guard: fail the U15b migration while such rows exist, so they are fixed by hand first.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — but first run the count on the target DB; 0 means nothing to decide. If non-zero, accept the loss (those employees are on the Q19 review list). Syed Haris, 2026-10-20 ("I agree with all your leans").
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ### Q56 — FCC employees whose type maps to no role
 
@@ -1555,9 +1555,9 @@ Q9 plays the same role for REQ-06.
   - B. Skip and list them.
   - C. Relax the server rule.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — the FCC seeder posts roleless employees as DRAFT. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 
 ### Q57 — One shared "boom pay counts only on a Dispatchable role" helper
@@ -1569,9 +1569,9 @@ Q9 plays the same role for REQ-06.
   - A. One exported helper in `packages/shared`; switch all four callers in a follow-up after U17 restacks.
   - B. Leave the four private copies.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — one exported helper in `packages/shared`, all four callers switched, as a follow-up after the restack. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ### Q58 — Oiler writing labor for a teammate placed in a boom slot
 
@@ -1582,9 +1582,9 @@ Q9 plays the same role for REQ-06.
   - A. The slot role first, then the person's own role (closes the gap).
   - B. Keep the person's own role (today's behaviour).
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — slot role first, then the person's own role. Built on U18. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ### Q59 — Unsettled pay periods recalculated after the U18 deploy
 
@@ -1595,9 +1595,9 @@ Q9 plays the same role for REQ-06.
   - A. Yes — unsettled periods re-price under the new rule.
   - B. No — add a cutover date; tickets before it keep the craft-role column.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** A — unsettled periods re-price under the position-filled rule; no cutover date. Syed Haris, 2026-10-20.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered
 
 ## 13. What this spec deliberately does not specify
 

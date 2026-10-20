@@ -1166,6 +1166,16 @@ Answered in one batch to build the rest without stops. Each row is the developer
 | U13 | S1 quote-approval setting checked before the salesperson grant; **S2 add `isSalesperson` to `GET /users/me`** so admins who hold the grant auto-fill; S3 `salesperson` ≥ edit counts; **S4 add `salesperson` to the qa-automation departments `PERMISSION_MODULES` list** |
 | U8 | `size-exception` (511 / 53, mechanical rename; overrides the earlier "no exception"); **keep accepting `employeeTypeId` on quotation save, mapped to the role, deprecated until U20** (installed mobile builds); **copy `roleId` in `projects.service.ts:416`** on quote → job; **update qa fixtures / types** (`das.fixtures.ts`, `support/api/types/quotation.ts`, `price-listing-api.ts`); confirm `ROLE` kind rename, the tenant error text, archived-department roles listed, staircase seed throws on a missing role |
 
+
+### Third batch — 2026-10-20 night (Syed Haris, "I agree with all your leans")
+
+| Unit | Decision |
+| --- | --- |
+| U15 | Q55 A (run the count first), Q56 A. Executor choices accepted: SMS invite eligibility = main role isDispatchable; Department picker filters Role only, not saved; edit may clear the role; D2c only when the craft has a role; copy "Role is required" / "<craft> is a <Role> craft; the main role must be <Role>"; deprecated `typeName` (Salesmen → salespersonOnly) and ticket-labor-entries `employeeTypeName` carry the role name until U20; list Role filter reuses `roleName`. **U15b `size-exception`** (451 / 15; one migration and its code; Syed adds the label) |
+| U15 / Q28b | Notification-by-role permission is a post-demo follow-up on this ticket; `DEPT-DISP` / `SAFE` defaults unchanged |
+| U16 | Executor choices accepted: response field `canAlsoFillRoles`; duplicates de-duplicated silently; an already-listed role that lost Dispatchable is kept (only additions checked); no fixed order (U17 adds a stable `orderBy`); its error / label copy. Edited rows show the role without its department — leave as is (no response-shape change) |
+| U18 | Q57 A (shared helper, follow-up after restack), Q58 A (slot role first in the teammate labor-write check — built on U18), Q59 A (no cutover date) |
+
 ## Sequencing
 
 > **Developer decisions 2026-10-20 (Syed Haris):** U8 split into U8 (API + web) and U8m (mobile) — no size-exception. **No feature flags** on U17 or U18; they ship with their tests. Double write U8→U11: **B — no double write**; U4 through U15 (U8m included) merge together as **one release train**. Deploy window for the rename/drop migrations (U1, U2 and later): **A — accepted**, deploy at low traffic. U19 dropped (Q27 = A).
