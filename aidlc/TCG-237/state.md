@@ -43,3 +43,5 @@ Decomposed 2026-10-20 into 20 stacked units (`units.md`); nothing is built. Firs
 - **2026-10-20 — pushed for review (Syed Haris):** stacked PRs #841 (U1 → main), #842 (U2), #843 (U3a), #845 (U3b), #846 (U3c), #847 (U4, `size-exception`). API build and web typecheck passed at the top of the stack. U4 merges only with U5–U15 (6B); run its dry run on a production copy first. Next unit to build: U5.
 
 - **2026-10-20 — merged (Syed Haris reviewed):** #841 U1, #842 U2, #843 U3a, #845 U3b, #846 U3c into `main` with merge commits, in order. U3a–U3c each had `origin/main` merged in first (one trivial conflict in `seed-data.ts` with ADP-PAYDATA-EXPORT's `seedAdpEarningCodeMap`; API build green after each). #847 U4 left open — merges with U5–U15 (6B).
+
+- **2026-10-20 — U4 held (Syed Haris, A):** #847 stays open, retargeted to `main` with `origin/main` merged in (`f7aeb46f8`, API build green). U4–U15 merge together after the production-copy dry run (6B). U5 starts stacked on U4.
