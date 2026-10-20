@@ -1515,6 +1515,21 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** open
 
+
+### Q54 — Web DAS craft pre-check still matches "Operator" / "Oiler" by slot label
+
+*Raised 2026-10-20 by the U12 build.*
+
+- **Question:** `requiredCraftRoleForSlot(slot.label)` (`apps/web/src/features/das/middle-section/jobs/utils/allocation-helpers.ts:94-95`) warns before Save when the dragged employee lacks the Operator/Oiler craft; it still compares labels. The server check is role-based (`CRAFT_ROLE_MISMATCH`). How should the web pre-check work?
+- **Options:**
+  - A. Add `boomPay` to `role` on jobs-detail resources (additive) and key the check on it.
+  - B. Drop the web pre-check and rely on the server's reply.
+  - C. Leave the name match until U17.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.

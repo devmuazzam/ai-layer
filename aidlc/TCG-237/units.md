@@ -34,10 +34,10 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 | U9 | Billing codes pick a role; price-listing resolve takes a role | REQ-10 | schema, api, web | U4 | ~190 lines / 15 files | built — feat/tcg-237-u9-billing-codes-role (needs U8/U8m for the picker) |
 | U10 | Sub-category associated resources (and nested setting) pick a role | REQ-10 | schema, api, web | U4 | ~150 lines / 11 files | built — feat/tcg-237-u10-sub-category-resources-role (needs U8 for the picker) |
 | U11 | A job's resources and a project's resources name a role | REQ-10 | schema, api, web | U8, U9, U10 | ~330 lines / 22 files | built — feat/tcg-237-u11-job-resources-role (U9 + U10 merged in) |
-| U12 | DAS shows and allocates by the slot's role; no type-name matching in DAS | REQ-10, REQ-11 | api, web | U7, U11 | ~380 lines / 24 files | in progress — feat/tcg-237-u12-das-slot-role (U7 + U6b merged in) |
+| U12 | DAS shows and allocates by the slot's role; no type-name matching in DAS | REQ-10, REQ-11 | api, web | U7, U11 | ~380 lines / 24 files | built — U12a feat/tcg-237-u12-das-slot-role + U12b feat/tcg-237-u12b-das-slot-role-web (merge together) |
 | U13 | The salesperson pickers (customer, asset sold-by, quotation, employee list) follow the Q29 answer | REQ-11 | api, web, mobile | U5 | ~250 lines / 14 files | built — feat/tcg-237-u13-salesperson-permission |
 | U14 | Mobile features are gated by their own permission modules; persona and `RoleAppPersona` are removed | REQ-14, REQ-11 | schema, api, web, mobile, shared | U6, U13 | ~390 lines / 25 files | built — A feat/tcg-237-u14-mobile-permissions, B …-u14b-remove-dispatch-group, C …-u14c-mobile-permission-gating, D …-u14d-users-me-drop-employee-type |
-| U15 | One main role on the employee form; department comes from the role; the Employee's type and department columns go | REQ-03, REQ-09, REQ-10, REQ-11 | schema, api, web, mobile, shared | U7, U12, U13, U14 | ~390 lines / 25 files | not started — **size-exception? possible** |
+| U15 | One main role on the employee form; department comes from the role; the Employee's type and department columns go | REQ-03, REQ-09, REQ-10, REQ-11 | schema, api, web, mobile, shared | U7, U12, U13, U14 | ~390 lines / 25 files | in progress — feat/tcg-237-u15-employee-main-role (U14 merged in) |
 | U16 | An employee has a "can also fill" list | REQ-04 | schema, api, web | U15 | ~260 lines / 12 files | not started |
 | U17 | Only eligible people can be placed on a ticket; DAS Employees tab shows exactly them | REQ-05, REQ-06 | api, web | U12, U16 | ~340 lines / 16 files | not started — union part **blocked on Q30** |
 | U18 | Boom pay is read from the role of the position filled on the job | REQ-10 (pay read) | api, payroll-engine, vault | U11, U12 | ~220 lines / 9 files | not started |
@@ -986,6 +986,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U18 — Boom pay follows the position filled on the job
+
+> **From U12 (2026-10-20):** `job-tickets/crew-roster.ts:69-74` and `ticket-labor-entries.service.ts:32, 602-604` still compare against "Oiler" / "Operator" — move them to the role here (boom / crew role).
 
 > **Carried from the U2 review (2026-10-20):** Q21 makes hidden role settings *kept but ignored* — a non-Dispatchable role can still hold a stored `boomPay` / `runsInspections`. Every reader built here (and in U6) must gate on `isDispatchable`, or boom premium is paid on a role the editor shows as off. Add it to this unit's acceptance.
 
