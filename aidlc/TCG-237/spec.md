@@ -1123,6 +1123,92 @@ Q9 plays the same role for REQ-06.
 - **Workaround, if any:** none.
 - **Status:** superseded 2026-10-20
 
+### Q26 — Old departments, old roles and unmapped types: where do they go?
+
+*Raised by `tcg-decomposer` 2026-10-20 while slicing. Q3 maps employee **types** to roles; nothing maps what already exists on the other side.*
+
+- **Question:** (a) The fifteen seeded departments hold roles with employees on them today (Account Manager, Payroll Manager, Company Admin, per-department Managers, FLEET, INTERNAL DAMAGE, CUSTOMER REPAIR …). When the nine replace the fifteen (D5 = A), which new department and role does each old role become, and what happens to an employee whose existing role is not in the Q1 list? (b) Which old department's permission template seeds which new role (the REQ-15 / Q5 workaround needs this)? (c) Quotation, job, billing-code and sub-category rows whose type is Job Foreman, Default or Apprentice (Q19 covers employees only): what do they show after migration? (d) Do tenants other than TCG's (demo, dev) get migrated, or only new ones (Q15)?
+- **Options:** free answer — a table: old department → new department; old role → new role; old template → new role; unmapped-type rows → a role or "stay empty".
+- **Why it cannot be answered from what is written:** Q3 and Q1 list the target; no source lists what happens to the existing roles, and Q20 makes the answer take effect on migration day.
+- **Blocked:** the data migration (U4), and therefore every unit after it.
+- **Candidates:** `apps/api/src/utility/seed-data.ts` `SYSTEM_DEPARTMENTS` (the fifteen); `admin/gaps.md` → *Departments, roles and their capabilities*.
+- **Owner:** Syed Haris (developer) proposes, Corrina Bustos to challenge.
+- **Workaround, if any:** none — a guess here changes what existing users can see on migration day (Q20).
+- **Status:** open
+
+### Q27 — Removing `CraftCode.roleType` (D12a = B): what replaces its other uses?
+
+*Raised by `tcg-decomposer` 2026-10-20.*
+
+- **Question:** `CraftCode.roleType` has six values (OPERATOR, OILER, THIRD_MAN, LABORER, ADMIN, MECHANIC). Besides the boom column, payroll reads it for the pay group (MECHANIC → L12 mechanic group, `packages/shared/src/utils/payroll-group.ts`), the guarantee exemption (ADMIN, `packages/payroll-engine/src/guarantee.ts:46`), the premium filter `PayrollPremium.craftRoleType` (`schema.prisma:6028`), the wage-group setup warnings (`payroll-setup-warnings.ts`) and the craft-selection step in `das-allocations.service.ts:1383-1433`. D12a says payroll reads the boom classification from the role's `boomPay`, which has only OPERATOR / OILER / NONE. (a) How are the MECHANIC, ADMIN, LABORER and THIRD_MAN uses derived once the column is gone? (b) Which role does each existing craft code point at, for LABORER and ADMIN crafts that have no role in the Q1 list? (c) For an employee whose primary craft's role differs from the role Q3 gave them (D2c), at migration: refuse, list for review, or re-point?
+- **Options:**
+  - A. Keep `CraftCode.roleType` for payroll classification; only the boom column moves (revisits D12a).
+  - B. Add a payroll-classification setting to the role (developer names it); craft code reads it through its role.
+  - C. Derive each use from the department / role (Mechanic role → mechanic group; an Admin department → guarantee exempt).
+  - X. Other — say what.
+- **Why it cannot be answered from what is written:** D12a names only the boom use; the others are code facts found by `git grep -n 'roleType' -- apps/api/src packages`.
+- **Blocked:** U19 (removal of the column). The pay-engine rule order and results must not change (`contexts/payroll-engine.md`).
+- **Candidates:** `vault/payroll/payroll-rules-provenance.md`; `payroll/gaps.md` (craft classification entries).
+- **Owner:** Syed Haris (developer); Corrina Bustos for any pay-group consequence.
+- **Workaround, if any:** option A — nothing is removed, U19 is cut.
+- **Status:** open
+
+### Q28 — Codes for the nine departments and their roles, and the notification departments
+
+*Raised by `tcg-decomposer` 2026-10-20.*
+
+- **Question:** REQ-01 leaves the `DEPT-…` / `ROLE-…` codes `NOT SPECIFIED`. (a) Keep the existing codes where a name survives (`DEPT-SALES`, `DEPT-DISPATCH`, `DEPT-HR`, `DEPT-SHOP`, `DEPT-YARD`) and mint the rest, or mint all nine fresh? (b) Dispatch and HR notifications resolve a department by code from `notifications.config.ts`: the defaults are `DEPT-DISP` and `SAFE`, but the seeded codes are `DEPT-DISPATCH` and `DEPT-HR`, so the defaults match nothing today. Which codes should dispatch and HR notifications use after D5?
+- **Options:** A. keep surviving codes, mint the rest from `entity_sequences`; B. mint all fresh; X. other.
+- **Why it cannot be answered from what is written:** a coded entity's prefix and codes are a developer decision (`CLAUDE.md` → Identity); (b) is an existing mismatch the spec only touches through D5.
+- **Blocked:** U3 (seed codes), U4 (migration), the notification part of U15.
+- **Candidates:** `apps/api/src/config/notifications.config.ts:28-29`; `seed-data.ts` `SYSTEM_DEPARTMENTS`.
+- **Owner:** Syed Haris (developer).
+- **Workaround, if any:** none.
+- **Status:** open
+
+### Q29 — What replaces "type Salesmen / Sales Admin or role Salesperson" in the salesperson pickers?
+
+*Raised by `tcg-decomposer` 2026-10-20.*
+
+- **Question:** Four pickers (customer salesperson, asset sold-by, quotation salesperson, employee list "salespeople" filter) and the SALESPERSON stage of quote-approval routing decide "is a salesperson" by type or role **name** (`SALESPERSON_TYPE_NAME`, `SALESPERSON_ROLE_NAME`). None of the five role settings covers it; Q11 answered inspections (F3) and approval pools (F4) only. What decides it after the change?
+- **Options:**
+  - A. A permission per responsibility, following `payroll-admin` (D13 = A): a role is a salesperson when it holds that permission.
+  - B. A new "Can be a salesperson" setting on the role.
+  - C. The role's department is Sales.
+  - X. Other — say what.
+- **Why it cannot be answered from what is written:** the choice adds a permission module or a column (structural, `CLAUDE.md` → Developers decide structure).
+- **Blocked:** U13, and U8's salesperson reads.
+- **Candidates:** `git grep -n 'SALESPERSON_TYPE_NAME\|SALESPERSON_ROLE_NAME' -- apps packages`.
+- **Owner:** Syed Haris (developer).
+- **Workaround, if any:** none.
+- **Status:** open
+
+### Q30 — The union check (D8 = C, Q22): what is checked, against what, and where?
+
+*Raised by `tcg-decomposer` 2026-10-20.*
+
+- **Question:** Q22 says union membership is what lets a person fill an operating position, for any union, in every field position. Not stated: (a) which roles are "field positions" (every Dispatchable role; the Field Operations department; a new setting)? (b) What counts as membership (`Employee.unionCodeId` of a union kind; `unionStatus`)? (c) Which writers enforce it — DAS allocation save, job resources replace, and the can-also-fill list entry itself? (d) Does the main role need it too (a non-union Operator)?
+- **Options:** free answer, or a letter per sub-question once the developer lists them.
+- **Why it cannot be answered from what is written:** Q22 gives the principle (Wes Staley 2026-03-19 52:32-53:25), no rule.
+- **Blocked:** the union part of U17 only.
+- **Candidates:** `schema.prisma:4252-4253`; `EmployeeUnionCode`.
+- **Owner:** Syed Haris (developer); Corrina Bustos or Brian Petros to confirm.
+- **Workaround, if any:** U17 ships without the union check.
+- **Status:** open
+
+### Q31 — Mobile permission modules: names, which features, and who has them on day one
+
+*Raised by `tcg-decomposer` 2026-10-20. Refines Q23 (open).*
+
+- **Question:** D7 + Q23 say mobile features are gated by their own permission modules. (a) Which modules (for example field tickets, quotations, approvals, dispatch) and what do they gate? (b) Today mobile access follows the type-name persona; after migration it follows these modules, and Q20 applies the new role's permissions at once. Which roles start with which mobile module, so no current mobile user is locked out and no office user gains access? (c) Mobile sign-in rule — "role has at least one mobile feature" (D7): what do users with none see?
+- **Options:** free answer; a table role → mobile modules.
+- **Why it cannot be answered from what is written:** a new permission module is a structural addition; the starting levels decide who can sign in to the app.
+- **Blocked:** U14.
+- **Candidates:** `apps/mobile/data/contracts/identity.contract.ts`; `apps/mobile/app-shell/registry.ts`; `packages/shared/src/constants/permissions.ts`.
+- **Owner:** Syed Haris (developer); Corrina Bustos or Brian Petros (Q23) to ratify.
+- **Workaround, if any:** none.
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
