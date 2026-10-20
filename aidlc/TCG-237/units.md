@@ -1177,6 +1177,7 @@ Answered in one batch to build the rest without stops. Each row is the developer
 | U18 | Q57 A (shared helper, follow-up after restack), Q58 A (slot role first in the teammate labor-write check — built on U18), Q59 A (no cutover date) |
 | U17 | Q60 A, Q61 A (U17b seed runs in U17's deploy window, dry-run first). Restack fix-ups (bug fixes, not structural): explicit `tenantCompanyId` on role-code lookups (super admin skips the scoping extension — U16 `employee.repository.ts:148`, and the U7/U15 main-role lookups); qa `@DAS-001` fixture gets a UNION union code |
 | U12b / FCC seeder | Q52 A, Q53 A, Q54 A — built in the restack fix-up |
+| Fix-ups | `feat/tcg-237-fixups` from U20d: Q54 A `e2e3cdffa` (47/8; web pre-check keys on `boomPay` only — not `isDispatchable`), tenant filter `cb9624b2a` (33/3: employee main role + can-also-fill, resource-catalog `roleWhere`, role-name suggestions; main-branch `findByCode` / `findByCodeWithCounts` / `resolveRoleCode` / `subCategoryWhere` / `customTypeWhere` left for a follow-up), qa UNION fixture `138f6ba77` (18/2). Q52 not built — Q64 open. Q65 raised |
 
 ## Sequencing
 

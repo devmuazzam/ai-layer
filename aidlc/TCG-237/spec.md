@@ -1656,6 +1656,35 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** open
 
+
+### Q64 — How the FCC seeder reaches `seedSystemDepartments` (Q52 = A)
+
+*Raised 2026-10-20 by the restack fix-up executor (structural).*
+
+- **Question:** The seeder runs as a separate process (ts-node in dev, a compiled `fcc-seeder` build in staging/prod) that resolves none of the API's path aliases, and inserts through the API. How does it re-seed the nine departments after the reset?
+- **Options:**
+  - A. Import `seedSystemDepartments` from `apps/api/src/utility/seed-data` directly (tsconfig-paths on the ts-node run, widened `rootDir`, a new compiled spawn path; pulls Nest checklist services into the seeder).
+  - B. New super-admin endpoint, e.g. `POST /admin/tenants/:id/system-departments`, calling `seedSystemDepartments` inside the API; the seeder calls it right after `resetTenantData` (`seed-all.ts:146`).
+  - C. Move `SYSTEM_DEPARTMENTS` / `seedSystemDepartments` into an alias-free module re-exported by `seed-data.ts`; still needs A's `rootDir` and spawn-path change.
+  - D. `reset-tenant.ts` stops deleting `isSystem` departments and their roles, so nothing needs re-seeding (departs from Q52 A's wording).
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
+### Q65 — Super admin editing another tenant's employee after the role-lookup tenant filter
+
+*Raised 2026-10-20 by the restack fix-up executor.*
+
+- **Question:** Role-code lookups now filter on the request context's tenant. A super admin whose JWT tenant is PLATFORM, editing another tenant's employee, gets "Role not found" for that tenant's role codes. Is a super admin expected to act inside the target tenant's context?
+- **Options:**
+  - A. Yes — super admins act in the target tenant's context; the filter stands.
+  - B. No — resolve the lookup's tenant from the employee being edited, not the caller.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
