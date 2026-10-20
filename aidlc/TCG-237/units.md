@@ -24,7 +24,7 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | U1 | Assets no longer carry a department (form, list, filter, sort, stored values) | REQ-01 (asset consumer, D5b) | schema, api, web | — | ~260 lines / 17 files | built — feat/tcg-237-u1-remove-asset-department |
-| U2 | Role editor says "Dispatchable" and shows boom pay / inspections only for such roles | REQ-13 | schema, api, web | — | ~210 lines / 13 files | not started |
+| U2 | Role editor says "Dispatchable" and shows boom pay / inspections only for such roles | REQ-13 | schema, api, web | — | ~210 lines / 13 files | built — feat/tcg-237-u2-role-dispatchable |
 | U3 | A new tenant gets the nine departments with their roles | REQ-01, REQ-02, REQ-07, REQ-08, REQ-15 (workaround) | api (seeds), web (Departments screen) | U2 | ~360 lines / 9 files | not started — **Q28 pending** |
 | U4 | Existing tenants are moved to the nine; every employee has a main role; all consumers carry a `role_id` | REQ-01, REQ-02, REQ-03 (backfill), REQ-07, REQ-08, REQ-10 (data), REQ-12 | schema (foundation) | U1, U3 | ~40 lines / 3 files (+ large migration) | **blocked — Q26, Q28** |
 | U5 | Quotation approval pools and the coordinator/manager checks follow a role setting | REQ-11 (approval part; F4) | api, web, mobile, shared | U4 | ~330 lines / 14 files | not started |

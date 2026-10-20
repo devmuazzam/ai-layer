@@ -3,7 +3,7 @@
 > Where this ticket is in the loop. Progress only: per-unit status stays in the `units.md`
 > ledger and open questions in `spec.md` §12.
 
-**Path:** A · **Branch(es):** U1 `feat/tcg-237-u1-remove-asset-department` (local commit, not pushed) · **Last updated:** 2026-10-20 by tcg-executor
+**Path:** A · **Branch(es):** U1 `feat/tcg-237-u1-remove-asset-department`, U2 `feat/tcg-237-u2-role-dispatchable` (local commits, not pushed) · **Last updated:** 2026-10-20 by tcg-executor
 
 ## Phases
 
@@ -11,7 +11,7 @@
 - [?] Spec — `spec.md` (`tcg-elaborator`) — written and revised against the 2026-10-20 template; 21 questions open in §12
 - [?] Sign-off — `spec.md` §14 checked by *named developer* — blocked on Q1–Q21 (21 open) and the empty §11b rows D1–D11
 - [x] Units — `units.md` (`tcg-decomposer`) — 20 stacked units; U4, U13, U14, U17 (union part), U19 blocked on Q26–Q31
-- [-] Build — unit by unit; status per unit in the `units.md` ledger (`tcg-executor`) — U1 built (local commit on `feat/tcg-237-u1-remove-asset-department`, not pushed, no PR)
+- [-] Build — unit by unit; status per unit in the `units.md` ledger (`tcg-executor`) — U1 and U2 built (local commits on `feat/tcg-237-u1-remove-asset-department` and `feat/tcg-237-u2-role-dispatchable`, not pushed, no PR)
 - [ ] Analyse — verdict per unit (`tcg-analyst`)
 - [ ] Merged — PR #…
 - [ ] Reflect — `reflection.md` (`tcg-reflector`)
@@ -22,3 +22,5 @@
 Decomposed 2026-10-20 into 20 stacked units (`units.md`); nothing is built. First to build: **U1** (remove department from assets; independent) and **U2** (role editor "Dispatchable"; independent of U1) — both can start from `origin/main`. U3 follows U2. **U4 (the data migration) is blocked** on new questions **Q26** (what the fifteen old departments, roles and unmapped-type rows become) and **Q28** (department/role codes, notification codes); **U13** on Q29, **U14** on Q23 + Q31, **U17**'s union check on Q30, **U19** on Q27. Q5 (role permissions, workaround = editable templates), Q6 (out of scope) and Q23 stay open. Before U4 is built: TCG should see the Q1 role list and the Q3 mapping (developer answers, not yet challenged), and a production-copy dry run is needed. Developer to confirm: the U8 size-exception, the U8→U11 transitional double write, and a possible flag for U17/U18.
 
 **U1 execute (2026-10-20, tcg-executor):** built and committed locally on `feat/tcg-237-u1-remove-asset-department` (worktree `.worktrees/tcg-237-u1`, from `origin/main` a0f49009b); not pushed, no PR. Migration `20261020120000_drop_asset_department`. Gates: eslint on touched files 0 errors (warnings pre-existing); web tsc pass; API tsc no new errors vs `origin/main` (isolated Prisma client); no build, no tests (developer instruction). Size 237 lines / 25 files (CI-style count). Guardian: no blocking finding; two developer calls open — single-release drop vs two-step (old API tasks 500 on asset reads during the rolling deploy) and confirming D5b covers UI-entered department values (only FCC values are recoverable). Next: developer review + push; then U2 (independent) or U3.
+
+**U2 execute (2026-10-20, tcg-executor):** built and committed locally on `feat/tcg-237-u2-role-dispatchable` (worktree `.worktrees/tcg-237-u2`, from `origin/main` a0f49009b); not pushed, no PR. Migration `20261020130000_rename_department_role_is_dispatchable` (rename column + index, lossless). Editor label "Dispatchable"; Boom pay and Runs inspections shown only when on, Quote approval only when off; hidden values kept and resubmitted (Q21). Role-card badge copy changed to "Dispatchable" and the name-suggestion meta to "dispatchable" (same label, Q16 via the Ripple row — developer to confirm). Test id `departments-role-used-as-employee-type` → `departments-role-dispatchable` (no qa reference); `departments-role-card-employee-type-badge` kept. Gates: eslint on touched files 0 errors (2 API warnings pre-existing); web tsc pass; API tsc no new errors vs origin/main schema (isolated Prisma client in scratchpad); no build, no tests written or run (developer instruction; existing `role-name-suggestions.spec.ts` renamed mechanically). Size 276 lines / 17 files. Guardian: no blocking finding; developer call open on the rolling-deploy window (old API pods error on `department_roles` between migrate and pod swap — accept vs expand/contract). Tracer: 0 breaking consumers; historical activity-log rows keep the old key label "Used As Employee Type". Next: developer review + push; then U3 (stacked on U2).
