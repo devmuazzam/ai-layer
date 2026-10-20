@@ -1257,6 +1257,58 @@ Q9 plays the same role for REQ-06.
 - **Answer:** **C** — field (Dispatchable) roles start with **no web access**: an explicit `none` on every web module, so the empty-map USER baseline does not apply; their mobile access arrives with U14 (Q31). Other roles keep the as-built starting templates (Q5 still open). With Q33 = B this includes Crane Superintendent. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
+### Q35 — The "closest new department" for each old department whose roles are kept (Q26a)
+
+*Raised by `tcg-executor` 2026-10-20 while building U4.*
+
+- **Question:** Q26a keeps an old role whose name matches no new role and moves it "to the closest new department", but no source says which new department is closest to each old one. Which of the nine does each of these become: Accounts (Account Manager, Payroll Manager), Admin (Company Admin), Operations (Crane Operator — legacy seed), Shop & Maintenance (Yard Man — legacy seed), Customer Repair, FLEET, INTERNAL DAMAGE, MECHANICS, OPERATIONS AND MAINTENANCE, RIGGING, STORAGE, TRUCKING (the last eight hold only `Manager` roles, which merge into Management → Manager, so they matter only if a tenant added roles there) — and what of a department a tenant created itself?
+- **Options:** A. a table, one line each: `old department → new department` (for example `Accounts → Accounting, Admin → Management, Operations → Field Operations, Shop & Maintenance → Shop, …`), plus one rule for tenant-made departments. B. every unmatched department → Management. C. no automatic move: the migration aborts per tenant until an admin moves those roles by hand. X. other.
+- **Why it cannot be answered from what is written:** Q26a names the rule ("closest") but not the pairs; picking them decides where Company Admin and Payroll Manager holders sit on migration day.
+- **Blocked:** U4's migration — it aborts, naming tenant, department and role, for every kept role in a department that is not one of the nine (the `tcg237_department_map` table in the migration is left empty). The dry run (`apps/api/prisma/scripts/dry-run-nine-departments-migration.ts`) lists exactly which departments need a pair, per tenant.
+- **Candidates:** `apps/api/src/utility/seed-data.ts` on `main` (`SYSTEM_DEPARTMENTS`, `CRANE_GUYS_DEPARTMENTS`); `utility/demo-data/data/organisation.ts` on `main`.
+- **Owner:** Syed Haris (developer); Corrina Bustos to challenge.
+- **Workaround, if any:** none — the migration refuses to run instead.
+- **Status:** open
+
+### Q36 — Old roles that merge into one new role but hold different permissions (Q26b)
+
+*Raised by `tcg-executor` 2026-10-20 while building U4.*
+
+- **Question:** Under Q26a several old roles can move into the same new role — every old department has a role named `Manager`, and all of them match Management → Manager. Q26b says the new role copies "the permissions of the old role it replaces". When those old roles' permission maps differ (an admin edited one), whose does the new role take?
+- **Options:** A. none — the migration aborts and lists them until the maps agree (as built). B. the most permissive level per module across them. C. the map of the old role with the most holders. D. the new role's template, and the role is listed for review. X. other.
+- **Why it cannot be answered from what is written:** Q26b assumes one old role per new role; the seeded data has thirteen `Manager` roles. (Seeded maps are identical, so this bites only where an admin edited one.) Also confirm: a new role that already exists in the tenant (reused by name) keeps its own permissions and is not overwritten by the roles merging into it (as built).
+- **Blocked:** U4's migration, only for a tenant where the merging maps differ (it aborts, naming them).
+- **Candidates:** `tcg237_role_permissions` in the U4 migration.
+- **Owner:** Syed Haris (developer).
+- **Workaround, if any:** option A.
+- **Status:** open
+
+### Q37 — Names and delete rules of the six new role columns (structural)
+
+*Raised by `tcg-executor` 2026-10-20 while building U4. `units.md` U4: "New column names are a structural choice — the executor proposes names and stops for the developer".*
+
+- **Question:** U4 built these as **AI proposal — pending developer confirmation** (all nullable `uuid` → `department_roles.id`, each with an index): `billing_codes.role_id` (index `(tenant_company_id, role_id)`, ON DELETE SET NULL), `quotation_resources.role_id` (SET NULL), `job_resources.role_id` (SET NULL), `sub_category_associated_resources.associated_role_id` (RESTRICT), `sub_category_nested_association_settings.nested_role_id` (RESTRICT), `craft_codes.role_id` (SET NULL). Each delete rule mirrors the `employee_type_id` beside it; `craft_codes` has none, so SET NULL follows `Employee.role`. No unique constraint was added beside `uq_sc_assoc_res_parent_employee_type` / `uq_sc_nested_assoc_parent_employee_type`, because Mechanic and Shop both map to Mechanic and a parent holding both would collide. Confirm, or name the change.
+- **Options:** A. as built. B. as built, but the nested column is `associated_role_id` (U10's wording "associated_role_id … on both tables"). C. `craft_codes.role_id` ON DELETE RESTRICT (a role in use by a craft cannot be deleted). D. add the unique `(parent, role)` constraints now and decide what a Mechanic + Shop collision becomes. X. other.
+- **Why it cannot be answered from what is written:** the slice row names `role_id` / `associated_role_id` only loosely and leaves names to the developer; U10 says `associated_role_id` on both tables, the existing nested column is `nested_employee_type_id`.
+- **Blocked:** nothing until push — a rename on an unpushed branch is cheap; after U4 merges it is a migration.
+- **Candidates:** `units.md` U4, U7, U8, U9, U10, U11 (the later units' names).
+- **Owner:** Syed Haris (developer).
+- **Workaround, if any:** option A.
+- **Status:** open
+
+### Q38 — Readings U4 took where two answers meet (confirm or correct)
+
+*Raised by `tcg-executor` 2026-10-20 while building U4.*
+
+- **Question:** U4 is built on these readings; each is reversible on the branch, none after the migration runs. (a) **Q19 vs Q26a:** an employee whose type maps to no role (Job Foreman, Apprentice, Default) gets no role *from the type* but keeps the role they already hold, re-pointed by Q26a — not stripped to "no main role" (stripping would remove, say, a Default-typed Company Admin's access on migration day). (b) An old role that matches no new role is kept even if nobody holds it (Q26a "otherwise it is kept"), although `units.md` step 6 says "delete … the roles that emptied" — only merged roles are deleted. (c) Names match case-insensitively (`SHOP` is reused as `Shop` and renamed to the nine's spelling, per REQ-01 acceptance "case as written"); only active departments are reused; archived ones are dissolved. (d) "Every existing tenant" (Q26d) includes the `PLATFORM` (Super Admin) tenant, which also gets the nine. (e) An employee type absent from the Q3 list (no source maps it) aborts the migration and is named. (f) An employee with no role keeps their department only if it is one of the nine; otherwise it becomes empty (D1 = B).
+- **Options:** A. all as built. B. as built except (list the letters and the change). X. other.
+- **Why it cannot be answered from what is written:** each pair of sources (Q19/Q26a, Q26a/units step 6, Q26d/the platform tenant) can be read two ways; the rest is not addressed.
+- **Blocked:** nothing in the build; all six take effect on migration day (Q20 = A).
+- **Candidates:** `units.md` U4 slice row "Migration steps"; Q19, Q26.
+- **Owner:** Syed Haris (developer).
+- **Workaround, if any:** option A.
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
