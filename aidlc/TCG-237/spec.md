@@ -1134,6 +1134,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `apps/api/src/utility/seed-data.ts` `SYSTEM_DEPARTMENTS` (the fifteen); `admin/gaps.md` → *Departments, roles and their capabilities*.
 - **Owner:** Syed Haris (developer) proposes, Corrina Bustos to challenge.
 - **Workaround, if any:** none — a guess here changes what existing users can see on migration day (Q20).
+- **Answer:** (a) **A** — an old role whose name matches a new role moves to it; otherwise it is kept, moved to the closest new department, and listed for review. (b) **A** — a new role copies the permissions of the old role it replaces; a role replacing nothing starts from the matching quick-start template. (c) **A** — quotation, job, billing-code and sub-category rows typed Job Foreman, Apprentice or Default get no role and are listed for review. (d) **A** — every existing tenant is migrated. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q27 — Removing `CraftCode.roleType` (D12a = B): what replaces its other uses?
@@ -1151,6 +1152,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `vault/payroll/payroll-rules-provenance.md`; `payroll/gaps.md` (craft classification entries).
 - **Owner:** Syed Haris (developer); Corrina Bustos for any pay-group consequence.
 - **Workaround, if any:** option A — nothing is removed, U19 is cut.
+- **Answer:** **A** — `CraftCode.roleType` stays for payroll classification; only the boom column moves to the role of the position filled (F2). Reverses D12a = B; U19 dropped. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q28 — Codes for the nine departments and their roles, and the notification departments
@@ -1164,6 +1166,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `apps/api/src/config/notifications.config.ts:28-29`; `seed-data.ts` `SYSTEM_DEPARTMENTS`.
 - **Owner:** Syed Haris (developer).
 - **Workaround, if any:** none.
+- **Answer:** (a) **B** — mint all nine department codes (and role codes) fresh (developer: "it makes no sense that I create a department with DEPT-SALES"). (b) **B** — dispatch and HR notifications go to roles holding a permission for them (D13 pattern), not to a department code; the `notifications.config.ts` department-code defaults are retired. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q29 — What replaces "type Salesmen / Sales Admin or role Salesperson" in the salesperson pickers?
@@ -1181,6 +1184,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `git grep -n 'SALESPERSON_TYPE_NAME\|SALESPERSON_ROLE_NAME' -- apps packages`.
 - **Owner:** Syed Haris (developer).
 - **Workaround, if any:** none.
+- **Answer:** **A** — "is a salesperson" is a permission a role holds (D13 / `payroll-admin` pattern); drives the four salesperson pickers and the SALESPERSON stage of quote-approval routing. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q30 — The union check (D8 = C, Q22): what is checked, against what, and where?
@@ -1194,6 +1198,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `schema.prisma:4252-4253`; `EmployeeUnionCode`.
 - **Owner:** Syed Haris (developer); Corrina Bustos or Brian Petros to confirm.
 - **Workaround, if any:** U17 ships without the union check.
+- **Answer:** **A** — field positions = every Dispatchable role; membership = the employee's union code is of kind UNION; enforced on DAS allocation save, job-resources save, and adding a can-also-fill entry; a Dispatchable main role needs membership too. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q31 — Mobile permission modules: names, which features, and who has them on day one
@@ -1207,7 +1212,47 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `apps/mobile/data/contracts/identity.contract.ts`; `apps/mobile/app-shell/registry.ts`; `packages/shared/src/constants/permissions.ts`.
 - **Owner:** Syed Haris (developer); Corrina Bustos or Brian Petros (Q23) to ratify.
 - **Workaround, if any:** none.
+- **Answer:** **A** — two modules, "Mobile: Field tickets" and "Mobile: Quotations"; day one: Operator, Oiler, 3rd Man, Rigger, Driver, Crane Superintendent get Field tickets; Sales Coordinator and Salesperson get Quotations; a user with no mobile module is refused sign-in with "Your role doesn't include mobile access — ask your admin." Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Status:** answered 2026-10-20 (developer, open to TCG challenge)
+
+### Q32 — Does the seeded Payroll Admin role hold the `payroll-admin` permission?
+
+*Raised by `tcg-executor` 2026-10-20 while building U3.*
+
+- **Question:** The U3 brief says the seeded HR → Payroll Admin role "holds the existing `payroll-admin` permission", but `units.md` U3 does not say so, D13 = A only says responsibilities are permissions, and the shipped rule is the opposite: no seeded role holds `payroll-admin` by default; a tenant admin grants it by hand (PAYROLL-FLAGS REQ-01, decision 2026-09-30 build-plan item E2; enforced by `seed-data.ts` `FULL_PERMISSIONS` and `payroll-admin-permission.spec.ts`). Which applies to the new Payroll Admin role?
+- **Options:** A. keep REQ-01: seeded with `payroll-admin: none`, granted by hand (as built in U3). B. seed it with `payroll-admin: edit` (approve and export). C. seed it with `payroll-admin: full`. X. other.
+- **Why it cannot be answered from what is written:** the brief and a shipped, tested rule disagree; picking one changes who can approve and export payroll in every new tenant.
+- **Blocked:** nothing; U3 built option A, which is reversible in the role editor.
+- **Candidates:** `apps/api/src/utility/seed-data.ts` (`FULL_PERMISSIONS`); `apps/api/src/presentation/payroll/payroll-admin-permission.spec.ts`.
+- **Owner:** Syed Haris (developer); Corrina Bustos for the payroll consequence.
+- **Workaround, if any:** option A.
+- **Status:** open
+
+### Q33 — Is the Crane Superintendent role dispatchable?
+
+*Raised by `tcg-executor` 2026-10-20 while building U3.*
+
+- **Question:** `units.md` U3's API row (and the U3 brief) put `isDispatchable` on Crane Superintendent, but REQ-05's acceptance (from the `[VERIFIED]` decision 2026-10-20, F3) says "No ticket slot type named Crane Superintendent exists", and U3's own *Deliberately not in this unit* says "Crane Superintendent as a ticket slot — it is not; only a role". A dispatchable role is offered wherever an employee type is picked (quotation, job and billing-code resources). Should Crane Superintendent be dispatchable?
+- **Options:** A. not dispatchable — a Crane Superintendent fills Operator or Rigger through the can-also-fill list (as built in U3). B. dispatchable (it becomes a resource / slot type). X. other.
+- **Why it cannot be answered from what is written:** the unit row contradicts a verified acceptance line in the same spec.
+- **Blocked:** nothing; U3 built option A (the schema default), reversible in the role editor.
+- **Candidates:** REQ-05; `units.md` U3.
+- **Owner:** Syed Haris (developer).
+- **Workaround, if any:** option A.
+- **Status:** open
+
+### Q34 — Which template does each seeded role start from (Q26b), and record Q26 / Q28
+
+*Raised by `tcg-executor` 2026-10-20 while building U3.*
+
+- **Question:** (a) Q26 and Q28 are marked answered but carry no **Answer** line; U3 was built on Q28a = **B** (mint all department and role codes fresh) as relayed in the U3 brief — please record it, and Q26's answers. (b) Q26b (which old department's template seeds which new role) has no recorded answer. U3 seeded every role from the template the old system departments all used — `manager`, every module `full` except `payroll-admin` — except Sales Coordinator (`admin`, full) and Salesperson (`contributor`, empty), which keep their old templates. Consequence: in a new tenant, and in the demo, an Operator, Oiler, Rigger, 3rd Man or Driver with a portal login gets full web access (the old demo gave field roles the plain USER baseline). Keep that?
+- **Options:** A. keep as built. B. Field Operations, Shop and Yard roles start from the USER baseline (as the old demo's field roles did); office roles as built. C. a per-role template list (free answer).
+- **Why it cannot be answered from what is written:** Q5 is open and the REQ-15 workaround names "the department's existing template", which two existing seeds (system and demo) answer differently for the field roles.
+- **Blocked:** nothing in U3 (editable defaults); U4 applies the same templates to existing users on migration day (Q20 = A), so it should be settled before U4.
+- **Candidates:** `apps/api/src/utility/seed-data.ts` `SYSTEM_DEPARTMENTS`; `apps/web/src/features/departments/constants/role-permissions.ts` `TEMPLATE_PERMISSION_CONFIG`.
+- **Owner:** Syed Haris (developer); Q5's four editors to challenge.
+- **Workaround, if any:** option A.
+- **Status:** open
 
 ## 13. What this spec deliberately does not specify
 
