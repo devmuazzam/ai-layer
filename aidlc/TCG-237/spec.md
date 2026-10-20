@@ -1352,6 +1352,40 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
+### Q42 — The quotation's Sales Coordinator picker and self-default still match the role name
+
+*Raised by tcg-executor building U5, 2026-10-20.*
+
+- **Question:** U5 moves the API check on a quotation's Sales Coordinator field (`quotations.controller.ts` `validateSalesCoordinatorCode`, `quotations.service.ts` `resolveSalesCoordinatorId`) onto the role's *Quote approval* = Coordinator, as its slice rows say. The pickers and the self-default that feed that field are not in U5's rows and still match the role **name** "Sales Coordinator": web `features/quotations/components/organisms/main-tab.tsx:587` (`EmployeeSelect roleName={SALES_COORDINATOR_ROLE_NAME}` → `GET /employee?roleName=`, matched by name in `employee-list.helpers.ts:78-79`), mobile `components/sales/quote-create-main-info.tsx:96` (`roleName: 'Sales Coordinator'`), and the "fill me in as Sales Coordinator" default in web `views/resolve-quotation-employee-defaults.ts:117-118` and `views/use-apply-quotation-employee-defaults.ts:51-52`. After a rename the picker lists nobody and the default stops filling, while the API would accept a Coordinator-setting employee. Where should these move?
+- **Options:**
+  - A. Add them to U5: the two web defaults read `user.quoteApproval` (no shape change); the pickers need the employee list to filter by the setting — a new `GET /employee` query parameter (structural: name and shape for the developer), web and mobile together (§11c).
+  - B. A follow-up unit stacked on U5 (same content as A), so U5 stays as built.
+  - C. Leave them on the name until U20 removes the constant; accept the drift after a rename.
+  - X. Other — say what.
+- **Answer:** —
+- **Why it cannot be answered from what is written:** U5's slice rows list the API checks, `auth-provider.tsx` and `identity.contract.ts` only; its Shared row says "users in this unit's reach", which does not say whether the quotation form is in reach. No REQ names the picker.
+- **Blocked:** nothing built in U5 depends on it; the drift exists only after a role is renamed.
+- **Owner:** Syed Haris (developer).
+- **Workaround, if any:** none built — the four sites are unchanged.
+- **Status:** open
+
+### Q43 — U5's structural choices, built on the AI's reading (confirm or correct)
+
+*Raised by tcg-executor building U5, 2026-10-20. AI proposal — pending developer confirmation.*
+
+- **Question:** U5 was built with these choices, none fixed by a slice row or §11b. Confirm each, or say which to change.
+  - (a) `GET /users/me` field is named `quoteApproval` (the row's word), value `COORDINATOR | MANAGER | NONE`, **`null` when the user has no employee or no role** (mirrors `departmentRoleName`); mobile parses it `nullish` so a profile without the field still loads.
+  - (b) `employee-assignment.util.ts`: the option `requiredRoleName` (used only by the two Sales Coordinator checks) is **replaced** by `requiredQuoteApproval`; the 400 text stays "is not a sales coordinator" via `ROLE_QUOTE_APPROVAL_LABELS`.
+  - (c) `users.repository.ts` `findApproverPoolByRoles` / `findApproverPoolByRole` keep their names and take quote-approval values instead of role names (the singular one has no caller).
+  - (d) `approval-routing.ts`: `poolRoleNamesForStage` renamed `poolQuoteApprovalsForStage`; new exported type `QuoteApprovalSetting` (string-compatible with the Prisma enum, as the file's other types are).
+- **Options:**
+  - A. Keep all four as built.
+  - B. Change some — say which (e.g. b: keep `requiredRoleName` beside the new option; c: rename the repository methods).
+  - X. Other — say what.
+- **Answer:** —
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.

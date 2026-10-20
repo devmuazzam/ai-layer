@@ -27,7 +27,7 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 | U2 | Role editor says "Dispatchable" and shows boom pay / inspections only for such roles | REQ-13 | schema, api, web | — | ~210 lines / 13 files | built — feat/tcg-237-u2-role-dispatchable |
 | U3 | A new tenant gets the nine departments with their roles | REQ-01, REQ-02, REQ-07, REQ-08, REQ-15 (workaround) | api (seeds), web (Departments screen) | U2 | ~360 lines / 9 files | built — feat/tcg-237-u3a-tenant-departments, feat/tcg-237-u3b-demo-departments, feat/tcg-237-u3c-legacy-seed-departments |
 | U4 | Existing tenants are moved to the nine; every employee has a main role; all consumers carry a `role_id` | REQ-01, REQ-02, REQ-03 (backfill), REQ-07, REQ-08, REQ-10 (data), REQ-12 | schema (foundation) | U1, U3 | ~40 lines / 3 files (+ large migration) | built — feat/tcg-237-u4-migrate-existing-tenants |
-| U5 | Quotation approval pools and the coordinator/manager checks follow a role setting | REQ-11 (approval part; F4) | api, web, mobile, shared | U4 | ~330 lines / 14 files | not started |
+| U5 | Quotation approval pools and the coordinator/manager checks follow a role setting | REQ-11 (approval part; F4) | api, web, mobile, shared | U4 | ~330 lines / 14 files | built — feat/tcg-237-u5-quote-approval-role-setting |
 | U6 | Field-ticket inspection steps follow a role setting (Oiler, 3rd Man, Driver) | REQ-11 (inspections part; F3) | api, shared, mobile | U4 | ~230 lines / 12 files | not started |
 | U7 | A craft code points at one role; the craft form has a Role dropdown | REQ-10 (craft code), REQ-12 | schema, api, web | U4 | ~260 lines / 14 files | **blocked — Q27(b)** for the LABORER/ADMIN backfill only |
 | U8 | The quotation resource picker (web and mobile) lists roles | REQ-10 | schema, api, web, mobile | U4 | ~380 lines / **~48 files** | not started — **size-exception? yes** |
@@ -225,6 +225,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U4 — Existing tenants move to the nine; main role backfilled; consumers get a `role_id` (foundation)
+
+> **Runbook check added from U5 (2026-10-20):** after the dry run on the production copy, confirm every role that approves quotes today carries the matching setting — `SELECT name, quote_approval FROM department_roles WHERE lower(name) IN ('sales coordinator','sales manager');` — a Sales Coordinator / Sales Manager left at NONE would drop its holders from every approval pool once U5 ships.
 
 > **Developer decision 2026-10-20 (Syed Haris):** U4 is 408 source lines / 5 files vs U3c (8 over ~400) and cannot be split cleanly (guard needs the columns; RESTRICT without the guard turns deletes into 500s; dry run reads the migration) — **A: ship as one PR with the `size-exception` label**, reason stated in the PR description.
 
