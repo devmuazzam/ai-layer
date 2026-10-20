@@ -27,7 +27,7 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 | U2 | Role editor says "Dispatchable" and shows boom pay / inspections only for such roles | REQ-13 | schema, api, web | — | ~210 lines / 13 files | built — feat/tcg-237-u2-role-dispatchable |
 | U3 | A new tenant gets the nine departments with their roles | REQ-01, REQ-02, REQ-07, REQ-08, REQ-15 (workaround) | api (seeds), web (Departments screen) | U2 | ~360 lines / 9 files | built — feat/tcg-237-u3a-tenant-departments, feat/tcg-237-u3b-demo-departments, feat/tcg-237-u3c-legacy-seed-departments |
 | U4 | Existing tenants are moved to the nine; every employee has a main role; all consumers carry a `role_id` | REQ-01, REQ-02, REQ-03 (backfill), REQ-07, REQ-08, REQ-10 (data), REQ-12 | schema (foundation) | U1, U3 | ~40 lines / 3 files (+ large migration) | built — feat/tcg-237-u4-migrate-existing-tenants |
-| U5 | Quotation approval pools and the coordinator/manager checks follow a role setting | REQ-11 (approval part; F4) | api, web, mobile, shared | U4 | ~330 lines / 14 files | built — feat/tcg-237-u5-quote-approval-role-setting |
+| U5 | Quotation approval pools and the coordinator/manager checks follow a role setting | REQ-11 (approval part; F4) | api, web, mobile, shared | U4 | ~330 lines / 14 files | in progress — feat/tcg-237-u5-quote-approval-role-setting |
 | U6 | Field-ticket inspection steps follow a role setting (Oiler, 3rd Man, Driver) | REQ-11 (inspections part; F3) | api, shared, mobile | U4 | ~230 lines / 12 files | not started |
 | U7 | A craft code points at one role; the craft form has a Role dropdown | REQ-10 (craft code), REQ-12 | schema, api, web | U4 | ~260 lines / 14 files | **blocked — Q27(b)** for the LABORER/ADMIN backfill only |
 | U8 | The quotation resource picker (web and mobile) lists roles | REQ-10 | schema, api, web, mobile | U4 | ~380 lines / **~48 files** | not started — **size-exception? yes** |
@@ -293,6 +293,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U5 — Quotation approval follows a role setting
+
+> **Developer decisions after the U5 follow-up, 2026-10-20 (Syed Haris):** (1) **split** — U5 = `351e70e8e` + Q43/Q44/Q45; **U5b** stacked on U5 = Q42 (the `GET /employee` `quoteApproval` filter, web and mobile Sales Coordinator pickers, self-defaults, form seed, mobile mock, CC suggestions); (2) **keep accepting `roleName` on `GET /employee` until U20**, treating "Sales Coordinator" as `quoteApproval = COORDINATOR`, so installed mobile builds keep working (no minimum-app-version gate exists); U20 removes it; (3) an approver who starts the app **offline** with a profile cached before the upgrade sees the non-approver view until reconnecting — **accepted**.
 
 > **Developer decisions 2026-10-20 (Syed Haris):** Q42 A (all remaining name matches fixed in U5 via a `quoteApproval` filter on `GET /employee`); Q43 A (names accepted, unused `findApproverPoolByRole` deleted); **Q44 A** — fix `apps/mobile/data/contracts/identity.contract.test.ts` minimally so mobile typecheck passes, leave the other failing specs for the test owner; **Q45 A** — check whether mobile caches the identity profile; if it does, refetch it once after the upgrade so `quoteApproval` is present.
 
