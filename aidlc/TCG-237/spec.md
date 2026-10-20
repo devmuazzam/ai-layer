@@ -707,9 +707,9 @@ blocks. _AI note_ gives trade-offs only.
 | D2 | Shape of "can also fill", and whether it carries a primary flag | **A.** new join model Employee↔DepartmentRole. **B.** JSON / array column on `Employee`. **C.** generalise `EmployeeCraftAssignment`'s primary/secondary pattern (`:2861`). **D.** join model plus the main role stored in it as `PRIMARY`, with `Employee.roleId` removed. **X.** Other — say what. | A join table matches the one-to-many test in the template and must go into the tenant-scope allowlist. The main role is already `Employee.roleId` (REQ-03 says exactly one), so a primary flag would duplicate it unless D. **Added option E (2026-10-20):** separate table + a check that the person holds a craft code of the matching classification. Developer first chose C, then E after the AI trade-off against C: payroll reads every `EmployeeCraftAssignment` row as payable, crafts have no Rigger/Driver classification, owners differ (payroll vs Dispatcher). **Sub-choice pending:** whether the new row also stores a craft code. | **E**, sub-choice **B**: the row holds employee + role + audit fields (added by / when, approved by — Dispatch Manager approval per the 2026-10-20 decision note); **no craft code stored** — the craft check reads `EmployeeCraftAssignment` live when a role is added or the person is put in a slot | Syed Haris | 2026-10-20 |
 | D3 | Keep column name `usedAsEmployeeType` with a new UI label, or rename it | **A.** keep the column, change the label only (`:4545`, migration-free). **B.** rename the column to `isDispatchable` via migration. **C.** keep both during transition. **X.** Other — say what. | The column name will keep describing a concept the ticket retires; B costs a rename across ~8 API / web files written by `c6b0d3dcc`. Label copy is Q16, not this decision. | **B** | Syed Haris | 2026-10-20 |
 | D4 | Where the type → role mapping lives, and what happens to FCC types that are not roles | **A.** mapping table in the migration file. **B.** mapping by name at migration time (precedent: `findNameSuggestions` merges by lower-cased name). **C.** leave unmapped employees without a role. **X.** Other — say what. | Mapping **content** is product (Q3, Q19); this row is only *where it lives*. | **A** | Syed Haris | 2026-10-20 |
-| D5 | Replace the 15 seeded cost-code departments with the nine, and where cost-code use moves | **A.** replace. **B.** keep fifteen and add nine. **C.** keep both and mark the old as cost codes. **D.** move cost-coding to a separate field on `Asset`. **X.** Other — say what. | `Asset.departmentId` and a string `Asset.department` both exist (`assets.repository.ts:163,338`). Product side is Q14. | | | |
+| D5 | Replace the 15 seeded cost-code departments with the nine, and where cost-code use moves | **A.** replace. **B.** keep fifteen and add nine. **C.** keep both and mark the old as cost codes. **D.** move cost-coding to a separate field on `Asset`. **X.** Other — say what. | `Asset.departmentId` and a string `Asset.department` both exist (`assets.repository.ts:163,338`). Product side is Q14. **After discussion (2026-10-20):** git history shows the asset's department was copied from FCC's unit record — a free-text `department` predates April 2026, and `487790d2c` (2026-04-07, "feat: asset managment") added the `Department` FK beside it; no meeting, ticket or vault requirement asks for it. FCC's code does three jobs the ERP already covers: equipment kind → asset categories (sub-category required on non-draft assets); accounting bucket → accounting module (`ExpenseGlAccount`); responsibility → `EmployeeAsset` "managed by" + yard. | **A** for departments (the nine replace the fifteen) **and** remove department from assets entirely — both `Asset.departmentId` and the text `Asset.department` go; no cost-centre field. Department-addressed notifications (`DEPT-DISP`, `SAFE` in `notifications.config.ts`) move to the new departments. | Syed Haris | 2026-10-20 |
 | D6 | ADP export department (PPEDEP / SADMIN / SALOFF): store on the role, or derive | **A.** column on `DepartmentRole`. **B.** derive from pay type / department. **C.** defer to the ADP export ticket (`.ai/aidlc/ADP-PAYDATA-EXPORT/`). **X.** Other — say what. | `workers-departments-2026-10-20.md` "Not established here": a developer decision for the ticket removing `EmployeeType`. No export code reads these values today. | **C** | Syed Haris | 2026-10-20 |
-| D7 | `RoleAppPersona` options vs the five kinds of mobile user (enum change) | **A.** keep four values (`FIELD_CREW`, `SALES`, `DISPATCH`, `OFFICE`). **B.** add values. **C.** replace the enum with a per-role app list. **X.** Other — say what. | Product input is Q12. Mobile `AppPersona` has only three values and `appPersona` on the role is read by no mobile code. **After choice:** developer states only two mobile apps are in use — the field-worker app and the quotation (sales) app; mobile still has a `(dispatch)` route group and a `dispatcher` persona. | **B** (changed from A, 2026-10-20): replace the persona with per-role app access — "Can use field app" / "Can use quotation app"; neither = portal only; both = mobile offers a switch; field app may default on when the role is Dispatchable. Developer: "when we create new modules on mobile we can expand it." **Sub-choice pending:** two boolean columns vs one list-of-apps column. | Syed Haris | 2026-10-20 |
+| D7 | `RoleAppPersona` options vs the five kinds of mobile user (enum change) | **A.** keep four values (`FIELD_CREW`, `SALES`, `DISPATCH`, `OFFICE`). **B.** add values. **C.** replace the enum with a per-role app list. **X.** Other — say what. | Product input is Q12. Mobile `AppPersona` has only three values and `appPersona` on the role is read by no mobile code. **After choice:** developer states only two mobile apps are in use — the field-worker app and the quotation (sales) app; mobile still has a `(dispatch)` route group and a `dispatcher` persona. | **Gate mobile features by the existing role permissions** (changed from A, then B, 2026-10-20; developer: it is one mobile app whose features are modules — "it's the crud"). Mobile shows a feature when the role's permission for that module is at least view (quotations → `quotations`); field tickets get their own permission module; a new mobile feature = a new permission module; mobile sign-in allowed when the role has at least one mobile feature. `RoleAppPersona` is removed. | Syed Haris | 2026-10-20 |
 | D8 | Local 12 membership: checked by the ERP, or only explains a manager's can-also-fill entry | **A.** explanation only (no new field). **B.** a membership flag on `Employee` (`unionCodeId` / `unionStatus` exist at `:4252-4253`). **C.** rule check at assignment. **X.** Other — say what. | Decision note: treating it as explanation is "the smaller build"; developer's call. **After choice:** C enforces a product rule nobody has stated in general form ("only Local 12 members may fill an operating position") — Corrina gave union membership as the reason for two managers, not as a rule for everyone; needs a §12 confirmation before build. | **C** | Syed Haris | 2026-10-20 |
 | D9 | PR / unit structure given ~330 files and the 400-line budget | **A.** stacked PRs sliced by surface (schema → API → web → mobile). **B.** stacked PRs sliced by feature (picker by picker). **X.** Other — say what. | Decomposer's job; recorded so the sign-off box is not forgotten. | **B** | Syed Haris | 2026-10-20 |
 | D10 | API contract for the 138/108/69 consumers: endpoint, response field, `GET /users/me` shape | **A.** keep `employeeTypeId` / `employeeTypeName` as aliases of the role during transition. **B.** replace outright. **C.** repoint `GET /employee-types` to return roles. **X.** Other — say what. | A lets the 14 qa-automation specs and mobile cached sessions survive a step; it leaves two names for one thing. Pattern: P2 `UNDECIDED` details apply to any new list endpoint. | **B** — "it's a cleanup task as well" | Syed Haris | 2026-10-20 |
@@ -1049,6 +1049,52 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** none: nothing written.
 - **Owner:** product team.
 - **Workaround, if any:** option B (loses nothing); labelled workaround.
+- **Status:** open
+
+### Q22 — Only Local 12 members may fill an operating position?
+
+- **Question:** Developer decision D8 = C enforces union membership when someone is put in an operating slot. Corrina gave Local 12 membership as the *reason* Jeff Kelley and Kyle Harlow may operate (decision note 2026-10-20, follow-up Q4) — not as a rule for everyone. Is it a rule for everyone?
+- **Options:**
+  - A. Yes — only Local 12 members may fill Operator, Oiler, 3rd Man or Rigger; the system refuses anyone else.
+  - B. Yes, but warn instead of refuse.
+  - C. No — it only explains those managers; no check.
+  - X. Other — say what.
+- **Answer:**
+- **Why it cannot be answered from what is written:** the decision note records the reason for two people; no source states a general rule.
+- **Blocked:** D8's build.
+- **Candidates:** decision note 2026-10-20 follow-up Q4 (verbatim: "Jeff Kelley and Kyle Harlow are managers but are also in the local 12 union so they are allowed to operate"); Corrina 2026-09-28: "field is all union people".
+- **Owner:** Corrina Bustos.
+- **Workaround, if any:** none — D8 stays unbuilt until answered.
+- **Status:** open
+
+### Q23 — Quotations on mobile for everyone with quotation permission?
+
+- **Question:** Developer decision D7 gates mobile features by role permissions, so anyone whose role can view quotations sees quotations in the mobile app, not only salespeople. Is that intended?
+- **Options:**
+  - A. Yes — same access on web and mobile.
+  - B. No — mobile quotations only for roles that also have a separate mobile switch.
+  - X. Other — say what.
+- **Answer:**
+- **Why it cannot be answered from what is written:** today mobile shows quotations only to the `sales` persona (type names Salesmen / Sales Admin); no source says office staff with quotation access should or should not get it on mobile.
+- **Blocked:** the mobile slice of D7.
+- **Candidates:** Wes Staley, 2026-06-16 49:14 (the mobile app is for "the field employee, the salesperson, …").
+- **Owner:** Corrina Bustos or Brian Petros.
+- **Workaround, if any:** none.
+- **Status:** open
+
+### Q24 — Does anyone use the asset department today?
+
+- **Question:** Developer decision D5 removes the department from assets (it was copied from FCC's unit record; no requirement asks for it). Does anyone at TCG filter or report assets by department in the ERP today?
+- **Options:**
+  - A. No — remove it.
+  - B. Yes — say who and for what.
+  - X. Other — say what.
+- **Answer:**
+- **Why it cannot be answered from what is written:** code shows only a label and a list filter; usage is not observable from code.
+- **Blocked:** the asset slice of D5 (removal is irreversible for the stored values).
+- **Candidates:** `assets/fcc-units-and-schedule-types.md` (FCC distribution: FL 252, RG 56, OM 37 …).
+- **Owner:** Brian Petros.
+- **Workaround, if any:** keep the columns until answered; build everything else.
 - **Status:** open
 
 ## 13. What this spec deliberately does not specify
