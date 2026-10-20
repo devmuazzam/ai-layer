@@ -28,7 +28,7 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 | U3 | A new tenant gets the nine departments with their roles | REQ-01, REQ-02, REQ-07, REQ-08, REQ-15 (workaround) | api (seeds), web (Departments screen) | U2 | ~360 lines / 9 files | built — feat/tcg-237-u3a-tenant-departments, feat/tcg-237-u3b-demo-departments, feat/tcg-237-u3c-legacy-seed-departments |
 | U4 | Existing tenants are moved to the nine; every employee has a main role; all consumers carry a `role_id` | REQ-01, REQ-02, REQ-03 (backfill), REQ-07, REQ-08, REQ-10 (data), REQ-12 | schema (foundation) | U1, U3 | ~40 lines / 3 files (+ large migration) | built — feat/tcg-237-u4-migrate-existing-tenants |
 | U5 | Quotation approval pools and the coordinator/manager checks follow a role setting | REQ-11 (approval part; F4) | api, web, mobile, shared | U4 | ~330 lines / 14 files | built — feat/tcg-237-u5-quote-approval-role-setting, feat/tcg-237-u5b-quote-approval-pickers |
-| U6 | Field-ticket inspection steps follow a role setting (Oiler, 3rd Man, Driver) | REQ-11 (inspections part; F3) | api, shared, mobile | U4 | ~230 lines / 12 files | **blocked — Q46** |
+| U6 | Field-ticket inspection steps follow a role setting (Oiler, 3rd Man, Driver) | REQ-11 (inspections part; F3) | api, shared, mobile | U4 | ~230 lines / 12 files | in progress — re-scoped by Q46 |
 | U7 | A craft code points at one role; the craft form has a Role dropdown | REQ-10 (craft code), REQ-12 | schema, api, web | U4 | ~260 lines / 14 files | **blocked — Q27(b)** for the LABORER/ADMIN backfill only |
 | U8 | The quotation resource picker (web and mobile) lists roles | REQ-10 | schema, api, web, mobile | U4 | ~380 lines / **~48 files** | not started — **size-exception? yes** |
 | U9 | Billing codes pick a role; price-listing resolve takes a role | REQ-10 | schema, api, web | U4 | ~190 lines / 15 files | not started |
@@ -351,6 +351,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U6 — Field-ticket inspections follow a role setting
+
+> **Developer decision 2026-10-20 (Syed Haris), Q46:** U6 is **re-scoped to the no-slot fallback only** (viewer's role `isDispatchable && runsInspections` replaces the "Oiler" name check; `runsInspections` on `GET /users/me` in U5's shape and refetch rule). The set-level crane-inspection rule (46a) moves into **U12**; the 3rd Man / Driver own-inspection steps (46b) wait on Q47 and are built after U12.
 
 - **Outcome:** The Pre-Trip, JSA, Post-Trip and Compliance steps show on a field ticket for roles with "Runs inspections" (Oiler, 3rd Man, Driver), not only for an employee whose type is named Oiler.
 - **Kind:** vertical
@@ -680,6 +682,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U12 — DAS allocates by the slot's role
+
+> **Added by Q46a (2026-10-20):** replace the name comparison in `resolveTicketStepFlow` (`packages/shared/src/constants/ticket-flow-steps.ts:153`): FULL for the slot whose role has `isDispatchable && runsInspections`; if none in the set, the Operator slot (role `boomPay = OPERATOR`); everyone else STANDARD.
 
 > **Acceptance added from the U4 guardian review (2026-10-20):** the new role FKs are not tenant-composite — every writer in this unit must check the role belongs to the current tenant before saving.
 

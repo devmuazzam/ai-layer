@@ -1402,6 +1402,25 @@ Q9 plays the same role for REQ-06.
 - **Blocked:** all of U6 (every API, shared and mobile row reads the step-flow decision).
 - **Owner:** Syed Haris (developer) — the 2026-10-15 direction is his; TCG for which steps a 3rd Man / Driver must do.
 - **Workaround, if any:** none built — the Oiler-name fallback and the slot-name rule are unchanged.
+- **Answer:** **46a = A:** the crane inspection (FULL flow) is done by the slot in the set whose role has `isDispatchable && runsInspections`; if no slot in the set has it, the Operator slot does — the Operator is identified by the role's `boomPay = OPERATOR`, not by name. Built in **U12**, once the slot carries a role. **46b = A:** 3rd Man and Driver get their **own** Pre-Trip, JSA, Post-Trip and Compliance steps added to the STANDARD ticket (a new 12-step list) — **pending Corrina Bustos / Lisette Anzaldo confirmation (Q47)**, and the holdover-day variants must be specified before it is built. **U6 = A:** U6 now moves only the **no-slot fallback** — the viewer's role `isDispatchable && runsInspections` replaces the employee-type name "Oiler"; `runsInspections` on `GET /users/me` in U5's shape with U5's refetch rule. The slot rule keeps comparing names until U12. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
+
+
+### Q47 — Do 3rd Man and Driver do their own Pre-Trip, JSA, Post-Trip and Compliance on every ticket?
+
+*Raised 2026-10-20 from Q46b.*
+
+- **Question:** The shipped slot-driven flow (decision 2026-10-15) gives 3rd Man and Driver tickets no inspection steps; the developer (Q46b = A) would add Pre-Trip, JSA, Post-Trip and Compliance to their ticket. Confirm which of those steps they must do, and whether on holdover days 2+ too.
+- **Options:**
+  - A. All four steps, every day, including holdover days.
+  - B. All four steps on day 1 only; on holdover days, what Oilers do (per decision 2026-10-15 H8).
+  - C. Pre-Trip only (their vehicle / gear), no JSA or Compliance.
+  - X. Other — say what.
+- **Answer:**
+- **Why it cannot be answered from what is written:** Melissa McNutt (2026-06-04 21:12, `meetings/transcripts/2026-06-04-mobile-app-job-lem-tickets.md` L173): *"All the third man do all their own pre-trips themselves"*; truck drivers do their own (2026-05-19 41:51); neither covers JSA, Compliance or holdover days.
+- **Blocked:** the 12-step STANDARD-plus-inspections flow (46b); built after U12.
+- **Owner:** Corrina Bustos with Lisette Anzaldo.
+- **Workaround, if any:** none — 3rd Man / Driver keep today's STANDARD ticket until answered.
 - **Status:** open
 
 ## 13. What this spec deliberately does not specify
