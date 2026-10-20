@@ -1559,6 +1559,46 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** open
 
+
+### Q57 — One shared "boom pay counts only on a Dispatchable role" helper
+
+*Raised 2026-10-20 by the U18 build.*
+
+- **Question:** The rule now exists as four private copies: `craftRoleForSlotRole` (das-allocations.service.ts), `boomColumnRole` (craft-rate-resolver), `seatOf` (job-tickets.service.ts), `boomPayOf` (ticket-labor-entries.service.ts). Merge them?
+- **Options:**
+  - A. One exported helper in `packages/shared`; switch all four callers in a follow-up after U17 restacks.
+  - B. Leave the four private copies.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
+### Q58 — Oiler writing labor for a teammate placed in a boom slot
+
+*Raised 2026-10-20 by the U18 build.*
+
+- **Question:** A Rigger placed in an Operator slot is folded onto the Oiler's ticket by the slot role, but the Oiler's labor write for them returns 403, because that check reads the person's own main role (a gap that predates U18). Which should decide?
+- **Options:**
+  - A. The slot role first, then the person's own role (closes the gap).
+  - B. Keep the person's own role (today's behaviour).
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
+### Q59 — Unsettled pay periods recalculated after the U18 deploy
+
+*Raised 2026-10-20 by the U18 build.*
+
+- **Question:** Q21 says completed tickets keep their boom pay. U18 relies on settled (approved / exported) periods already being left out. A period that is not settled but is recalculated after deploy is re-priced under the position-filled rule. Is that acceptable?
+- **Options:**
+  - A. Yes — unsettled periods re-price under the new rule.
+  - B. No — add a cutover date; tickets before it keep the craft-role column.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
