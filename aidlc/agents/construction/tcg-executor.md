@@ -285,8 +285,8 @@ Slice delivered:
   schema  <migration name, or N/A>
   api     <files>
   web     <files>
-  tests   one line per item in the unit's Tests row:
-          <level> <built — <file>: asserts <x> | not built — <reason>>
+  tests   <not requested | asked: one line per test — <file>: asserts <x>>
+  checked <existing tests run: <command → result>; manual checks: <what you ran>>
 
 Demo: <the exact thing to click or call>
 
@@ -312,8 +312,9 @@ Assumed: <each value or behaviour I decided without a source — what, and where
 Least confident about: <the one part most likely to be wrong, and what would show it>
 ```
 
-A promised test level or row that was not built is reported on its own `tests` line, never
-folded into one prose line. **A unit with a `not built` row is not complete.**
+Do not write new tests unless the developer asked (root `CLAUDE.md`). Run the existing ones
+and name every manual check on the `checked` line — a unit whose existing consumers nobody
+checked is not complete.
 
 The last two are **self-reports, not findings** — what you list is worth checking; what you
 miss is still invisible, which is why the analyst checks mechanically. Never leave them

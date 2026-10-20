@@ -14,13 +14,12 @@ src/orm/                      PrismaService, BaseRepository
 
 **Never import upward.** A repository must not import a controller.
 
-One sanctioned exception: a usecase **module** imports its controller, because that is how
-NestJS registers it (`controllers: [XController]`). That applies to `*.module.ts` only —
-a `*.service.ts` importing from `@presentation/` is a real violation.
-
-Nothing enforces this. There is no `import/no-restricted-paths` or `boundaries/*` rule in
-`eslint.config.mjs`, so the layering is convention, and it is currently violated in places.
-Do not take existing code as licence.
+**Enforced by lint** (`@typescript-eslint/no-restricted-imports`, error — PRs #899/#900):
+no runtime import from a higher layer, by alias or relative path. Allowed: `import type`
+(no runtime dependency), `*.module.ts` (Nest module registration), `*.spec.ts`, and a usecase
+service injecting a presentation `*.gateway` — keep that a value import: with
+`emitDecoratorMetadata`, `import type` of an injected class breaks DI silently. A helper a
+repository needs lives in `service/` or `utility/`, never `usecase/`.
 
 ## File patterns
 
@@ -130,8 +129,6 @@ type to both in the same commit.
 
 ## Testing
 
-A unit that changes a provider constructor, or a module's `providers` or `imports`, runs a
-Nest module-compile test — `Test.createTestingModule({ imports: [AppModule] }).compile()` —
-so a DI break fails a test instead of the boot. No such spec exists in the repo yet; until one
-does, and until anything runs tests on a PR, this is a gate you run by hand (TICKET-FLOW-
-SLOTS-HOLDOVER).
+No new tests unless the developer asks (root `CLAUDE.md`). A unit that changes a provider
+constructor, or a module's `providers` or `imports`, boots the API once (`pnpm api:dev`) so a
+DI break shows before the PR, not after (TICKET-FLOW-SLOTS-HOLDOVER).

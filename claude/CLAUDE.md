@@ -45,10 +45,14 @@ decisions_ table. A developer reviews it in the PR. Stop only at:
 
 - **G1** client-facing behaviour nobody specified → §12 question to the owner, batched
 - **G2** destroying or rewriting existing data → developer approval + guard run on a copy of staging data
-- **G3** tenant data → `tcg-prisma-guardian` + an isolation test
+- **G3** tenant data → `tcg-prisma-guardian`; a new tenant model goes in `TENANT_SCOPED_MODELS` (`prisma.service.spec.ts` fails otherwise)
 - **G4** pay rules → source in `vault/payroll/payroll-rules-provenance.md`, same commit
 - **G5** new dependency → ask; changed response shape → `tcg-contract-tracer`, callers fixed in the same unit
 - **G6** push to `main`, secrets → blocked by hooks and permissions
+
+**No new tests unless the developer asks** (Haris, 2026-10-21). Run the existing ones; do not
+write new spec files or test cases — in a unit, a fix or a sweep — unless the prompt or the
+ticket asks for them. Where a template has a tests row, it reads `not requested` by default.
 
 ## Siblings get the same change
 
@@ -115,7 +119,7 @@ pnpm affected                   # lint + build + test for projects changed vs ma
 ```
 
 **Nothing runs these automatically** — pre-push keeps only the `main` guard and CI only
-deploys and checks PR size. Run them yourself. On an 8 GB machine the API's lint and build
+deploys (the PR size check goes with #897). Run them yourself. On an 8 GB machine the API's lint and build
 need `NODE_OPTIONS=--max-old-space-size=4096`. As of 2026-10-21 lint has 0 errors on every
 project; a lint error is yours.
 

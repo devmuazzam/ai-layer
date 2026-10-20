@@ -121,7 +121,8 @@ Repeat this block per requirement. Keep the field order.
   - **Reached by:** *every action, endpoint, job or path that can reach the state this
     requirement keys on, one line each. A path this requirement does not hook gets a §12 line.*
   - **Does not apply when:** *the cases the rule must leave alone (other flows, kinds,
-    statuses, floating vs sequential). Each one becomes a negative test row in `units.md`.*
+    statuses, floating vs sequential). Each one is checked in `units.md` — by a test only if
+    the developer asked for tests.*
   - **When an input is absent:** *the behaviour for a missing or empty input, slot, field or
     relation.*
   - **Trust boundary:** *who supplies each input and whether the server believes it (client
@@ -275,6 +276,9 @@ consumers. Detail in `.ai/claude/contexts/web.md`.
 Invented validation is still invention. A max length nobody wrote down is `NOT SPECIFIED`.
 
 ## 10. Tests
+
+`not requested` unless the developer or the ticket asked for tests (root `CLAUDE.md`). If
+asked:
 
 | Level | What it proves | Req |
 | --- | --- | --- |

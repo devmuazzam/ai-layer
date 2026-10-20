@@ -197,13 +197,12 @@ being anyone's.
 
 Three rules, and they are the ones that have been broken:
 
-- **The regression test for an existing consumer belongs to the unit that touches it.** A
+- **The regression check for an existing consumer belongs to the unit that touches it.** A
   unit that extracts, renames, retypes or re-filters something with pre-existing callers is
-  not complete when the new call site is tested. The old one has no coverage and never did —
-  that is precisely why it breaks silently. Put the regression row in *Slice contents →
-  Tests*, naming the existing consumer. This is the SCRUM-900 defect: `units.md` asked for an
-  extraction and asked for coverage only of the new caller (`reflections/INDEX.md`
-  `SCRUM-900 SD-1`).
+  not complete when the new call site works. The old one breaks silently. Name the existing
+  consumer and how it gets checked — an existing test, or a route/request/screen run by hand;
+  a new test only if the developer asked (root `CLAUDE.md`). This is the SCRUM-900 defect
+  (`reflections/INDEX.md` `SCRUM-900 SD-1`).
 - **A ripple that crosses surfaces either lives in one unit or the gap is stated.** If a unit
   changes a `packages/shared` export or a response shape that web or mobile already consume,
   either the consumer updates land in the same unit, or *Sequencing* names the window in
@@ -215,12 +214,13 @@ Three rules, and they are the ones that have been broken:
   ledger must say so.
 
 Fill the **Ripple** block in each unit's *Risk* section from the spec's, narrowed to what
-this slice actually touches — existing consumer, how it is reached, what test proves it
-still works, and the source that says what should happen to it. `none — new surface only` is
+this slice actually touches — existing consumer, how it is reached, how we know it still
+works (existing test or a named manual check), and the source that says what should happen
+to it. `none — new surface only` is
 a valid entry when it is true and you ran the grep that shows it.
 
-A unit whose ripple rows have no test and no source is not ready to hand to an executor. Say
-that in the ledger rather than sizing it `M` and moving on.
+A unit whose ripple rows have no check and no source is not ready to hand to an executor.
+Say that in the ledger.
 
 ---
 

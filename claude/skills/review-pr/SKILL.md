@@ -222,11 +222,11 @@ pinned upstream commit — never edit them here; re-syncing is a tooling change 
    beyond the diff's own new code are **follow-ups — their own PR** (root `CLAUDE.md` → _One
    unit, or one independent task, per PR_). Lean findings on code **this PR adds** may be
    fixed in this PR — if the developer says so.
-3. **Structure is the developer's call.** Every suggestion to add, split, merge, extract or
-   delete a function, abstraction or file is a proposal. Present it with the options; do not
-   mark §4b decisions as made because a rubric preferred one.
-4. **Tests.** Ponytail's *Missing test* findings are reported, and cap nothing beyond what §5's
-   regression-coverage rule already caps.
+3. **Structure is judged on merit.** The AI decided it and recorded it (§4b); a rubric's
+   suggestion to add, split, merge, extract or delete is a review comment against that record.
+4. **Tests.** New tests are written only when the developer asks (root `CLAUDE.md`). Ponytail's
+   *Missing test* findings are suggestions, never a cap on the verdict; an existing consumer
+   nobody **checked** (by an existing test or by hand) is still a finding.
 5. **Format.** Render findings in §7's shape with `file:line` and `[VERIFIED]` / `[INFERRED]`.
    The rubrics' tone examples are not this review's tone.
 

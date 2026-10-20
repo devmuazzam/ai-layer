@@ -97,12 +97,13 @@ was green before the work started.
 | Web (`apps/web`) | | *route + components; reuse before creating* |
 | Mobile (`apps/mobile`) | | |
 | Shared (`packages/shared`) | | |
-| Tests | | *unit / integration / e2e — one row per test promised, see below* |
+| Tests | | *`not requested` — new tests only when the developer asks (root `CLAUDE.md`)* |
 
-**Tests the slice must carry**, beyond its happy path: one **negative test** per *Does not
-apply when* item (`spec.md` → the REQ's **Edges**) of every REQ the unit covers, asserting the
-rule does **not** fire there; one **API-level test** per uniqueness or window constraint,
-asserting the response code (not the index); one test per §12 **Workaround** the unit builds.
+**If the developer asks for tests**, these are the ones that pay: a negative test per *Does
+not apply when* item (`spec.md` → the REQ's **Edges**), asserting the rule does **not** fire
+there; an API-level test per uniqueness or window constraint, asserting the response code;
+one per §12 **Workaround** the unit builds. Unasked, check those cases by hand and say how in
+_Reviewable as_.
 
 ### Reviewable as
 
@@ -124,12 +125,13 @@ asserting the response code (not the index); one test per §12 **Workaround** th
 From `spec.md` §11a, narrowed to what this slice actually touches. `none — new surface only`
 is a valid row when the grep that establishes it is named.
 
-| Existing consumer | Reached via | Regression proof in this unit | Source for what happens to it |
+| Existing consumer | Reached via | How we know it still works | Source for what happens to it |
 | --- | --- | --- | --- |
-| *file / screen / endpoint* | shared export / DTO / schema field / component / filter / config | *test path, or* **none — unbuilt** | `spec.md` REQ-nn / `<path>` / **OPEN — Q**n |
+| *file / screen / endpoint* | shared export / DTO / schema field / component / filter / config | *existing test path, or the check you ran (route, request, screen)* | `spec.md` REQ-nn / `<path>` / **OPEN — Q**n |
 
-**A pre-existing consumer with no regression proof is an unbuilt part of this unit, not a
-follow-up.** A test written for the new call site does not cover the old one — that is the
+**A pre-existing consumer nobody checked is an unbuilt part of this unit, not a follow-up.**
+Check it with an existing test or by hand and name the check — a new test only if the
+developer asked. A check of the new call site does not cover the old one — that is the
 `refactor-untested` defect (`reflections/INDEX.md`, SCRUM-900 SD-1), and it is invisible to
 every gate. If a consumer's fix genuinely belongs to another unit, that unit is a dependency
 of this one and the ledger says so; it never lands in *Deliberately not in this unit*.
