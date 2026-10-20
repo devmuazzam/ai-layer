@@ -32,7 +32,7 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 | U7 | A craft code points at one role; the craft form has a Role dropdown | REQ-10 (craft code), REQ-12 | schema, api, web | U4 | ~260 lines / 14 files | built — feat/tcg-237-u7-craft-code-role (Mechanic vs Dispatchable filter pending) |
 | U8 | The quotation resource picker (web and mobile) lists roles | REQ-10 | schema, api, web, mobile | U4 | ~380 lines / **~48 files** | not started — **size-exception? yes** |
 | U9 | Billing codes pick a role; price-listing resolve takes a role | REQ-10 | schema, api, web | U4 | ~190 lines / 15 files | built — feat/tcg-237-u9-billing-codes-role (needs U8/U8m for the picker) |
-| U10 | Sub-category associated resources (and nested setting) pick a role | REQ-10 | schema, api, web | U4 | ~150 lines / 11 files | not started |
+| U10 | Sub-category associated resources (and nested setting) pick a role | REQ-10 | schema, api, web | U4 | ~150 lines / 11 files | built — feat/tcg-237-u10-sub-category-resources-role (needs U8 for the picker) |
 | U11 | A job's resources and a project's resources name a role | REQ-10 | schema, api, web | U8, U9, U10 | ~330 lines / 22 files | not started |
 | U12 | DAS shows and allocates by the slot's role; no type-name matching in DAS | REQ-10, REQ-11 | api, web | U7, U11 | ~380 lines / 24 files | not started |
 | U13 | The salesperson pickers (customer, asset sold-by, quotation, employee list) follow the Q29 answer | REQ-11 | api, web, mobile | U5 | ~250 lines / 14 files | built — feat/tcg-237-u13-salesperson-permission |

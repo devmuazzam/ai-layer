@@ -1462,13 +1462,27 @@ Q9 plays the same role for REQ-06.
 
 *Raised 2026-10-20 by the U9 build.*
 
-- **Question:** `apps/api/fcc-seeder/src/seed-all.ts` (~L1490) posts `employeeTypeId` when it seeds employee billing codes; after U9 (D10 = B, no alias, `forbidNonWhitelisted`) that request is a 400. No unit owns the seeder. Who fixes it, and how?
+- **Question:** `apps/api/fcc-seeder/src/seed-all.ts` (~L1490) posts `employeeTypeId` when it seeds employee billing codes (and `associatedEmployeeTypeId` for sub-category associations, found by U10); after U9 (D10 = B, no alias, `forbidNonWhitelisted`) that request is a 400. No unit owns the seeder. Who fixes it, and how?
 - **Options:**
   - A. Fix it in U9: map the FCC type to the role with the Q3 mapping inside the seeder and post `roleId`.
   - B. A small follow-up unit after U9.
   - X. Other — say what.
 - **Answer:**
 - **Blocked:** re-running the FCC seed for billing codes.
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
+
+### Q51 — U10 backfills `associatedRoleId` / `nestedRoleId` into stored quotation snapshots
+
+*Raised 2026-10-20 by the U10 build.*
+
+- **Question:** U10's migration step 3 rewrites every `quotations.configuration_snapshot` JSON to add the role ids (per-tenant type→role map from U4's backfilled rows; ambiguous types → null). Without it, quotes snapshotted before U10 lose their labour items in the DAS required-components check and the quote Resources tab. Keep it?
+- **Options:**
+  - A. Keep the JSON backfill in U10; dry-run it on the production copy before deploy.
+  - B. Drop it; readers fall back to the legacy `associatedEmployeeTypeId` in old snapshots until U20.
+  - X. Other — say what.
+- **Answer:**
 - **Owner:** Syed Haris (developer).
 - **Status:** open
 
