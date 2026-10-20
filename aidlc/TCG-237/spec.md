@@ -974,7 +974,7 @@ Q9 plays the same role for REQ-06.
   - C. The conditional fields only.
   - D. Neither — the editor stays as it is.
   - X. Other — say what (a different label, for example).
-- **Answer:** **A** — rename the label and show boom pay and inspections only when the role is Dispatchable. Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
+- **Answer:** **A** — rename the label and show boom pay and inspections only when the role is Dispatchable. Confirmed after the U2 build: Quote approval is also hidden for Dispatchable roles; badge and suggestion-hint copy follow the label. Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** the proposals come from the developer session; no source specifies UI copy or conditional rules. FCC's term is `Dispatchable on` (`payroll/fcc-employee-master-reference-data.md` §2, unverified, via the gap entries).
 - **Blocked:** REQ-13.
 - **Candidates:** `role-behaviour.section.tsx` (code); `payroll/fcc-employee-master-reference-data.md` §2.

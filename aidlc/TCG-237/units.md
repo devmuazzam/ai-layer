@@ -58,6 +58,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U1 — Remove department from assets
 
+> **Developer decisions 2026-10-20 (Syed Haris):** deploy window accepted (A); layout gap fixed by widening Company/Owner to `lg:col-span-8` (A) — commit `2b4d75a04`.
+
 - **Outcome:** An asset is created, edited, listed, filtered and sorted without a department; nothing asks for one.
 - **Kind:** vertical
 - **Requirements covered:** REQ-01 — fully for the asset consumer (D5 / D5b = A, Q14, Q24). Not REQ-01's nine departments (U3).
@@ -111,6 +113,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 ---
 
 ## U2 — Role editor: "Dispatchable"
+
+> **Developer decisions 2026-10-20 (Syed Haris):** deploy window accepted (A); Quote approval hidden for Dispatchable roles (A); badge "Dispatchable" and suggestion hint "dispatchable" accepted (A); old activity-log rows keep "Used As Employee Type" (A).
 
 - **Outcome:** An administrator opening a role sees a "Dispatchable" switch; boom pay and inspections appear only when it is on; quote approval is hidden when it is on.
 - **Kind:** vertical
@@ -1055,7 +1059,7 @@ Deferred until Q27. Guardian **required**; tracer **required**; payroll provenan
 
 ## Sequencing
 
-> **Developer decisions 2026-10-20 (Syed Haris):** U8 split into U8 (API + web) and U8m (mobile) — no size-exception. **No feature flags** on U17 or U18; they ship with their tests. Double write U8→U11: **pending**. U19 dropped (Q27 = A).
+> **Developer decisions 2026-10-20 (Syed Haris):** U8 split into U8 (API + web) and U8m (mobile) — no size-exception. **No feature flags** on U17 or U18; they ship with their tests. Double write U8→U11: **B — no double write**; U4 through U15 (U8m included) merge together as **one release train**. Deploy window for the rename/drop migrations (U1, U2 and later): **A — accepted**, deploy at low traffic. U19 dropped (Q27 = A).
 
 ```
 U1 ──┐
