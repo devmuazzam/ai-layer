@@ -3,7 +3,7 @@
 > Written to `.ai/aidlc/SCRUM-###/units.md` from the approved `spec.md` beside it.
 > Consumed by the decomposer and then by an executor, one unit at a time.
 >
-> **Skeleton only in this run** — the decomposer agent that fills it does not exist yet.
+> Filled by `tcg-decomposer` (`.ai/aidlc/agents/inception/tcg-decomposer.md`).
 > The field list is the contract; treat it as fixed.
 
 ## What a unit is

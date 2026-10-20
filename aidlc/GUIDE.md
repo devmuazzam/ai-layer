@@ -304,9 +304,10 @@ breadth matters more than judgement and the failure mode is *missing* something 
 | `commit` | Branch naming, rebase from `origin/main` at start **and on resume**, conventional commits |
 | `close-ticket` | A PR merged — the writeback that merging does not do by itself |
 | `review-pr` | Ad-hoc PR review — **against the vault as well as the code** |
-| `lint-triage` | Which failures are mine vs the ~14 pre-existing |
+| `lint-triage` | Which failures are mine vs the pre-existing ones (37 in `apps/web` as of 2026-08-19) |
 | `find-component` | Search all nine `components/` directories before creating |
 | `debug-api` | Failing endpoint — four global guards, tenancy checked early |
+| `demo-walkthrough` | Fresh tenant → calculated payroll; kept true by `close-ticket` step 5 |
 
 Skills are procedures the current session follows. Agents get their own context and model
 tier. Cheap mechanical work belongs in a skill; judgement belongs in an agent.
@@ -319,7 +320,11 @@ built through the loop; the skill is the ad-hoc path for a PR with no unit behin
 ## 10. Where things live
 
 ```
-.ai/aidlc/SCRUM-###/
+.ai/aidlc/SCRUM-###/   (also TCG-### and named folders — sweep them as .ai/aidlc/[A-Z]*/)
+  state.md        where the ticket is in the loop: one row per phase, and a Resume
+                  paragraph the next session reads first. Progress only — it points at
+                  units.md and §12, never copies them. Every phase agent updates it once,
+                  at the end of its run
   intent.md       ticket capture, before elaboration
   spec.md         the elaborator's output — what an executor builds from
   units.md        the decomposer's output — vertical slices
@@ -335,8 +340,9 @@ built through the loop; the skill is the ad-hoc path for a PR with no unit behin
                   across tickets, and the queue for proposed rule changes
 
 .ai/vault/        product knowledge — INDEX.md first, always
-.ai/vault/gaps.md the open-question register, product half — read by section
-.ai/vault/payroll/gaps.md   the payroll and ADP half — same format, same rules
+.ai/vault/<module>/gaps.md  open questions belonging to no ticket, one register per
+                  module (payroll included) — read by section. The root vault/gaps.md
+                  and payroll/gaps-2026-08-20-retired.md are retired and frozen
 .ai/vault/decisions/  what a named human settled, and why
 .ai/claude/contexts/  how to build, per surface
 ```
@@ -385,9 +391,10 @@ mode with eight people filling them.
 
 ## 12. Running it for real — what to expect
 
-**Only the elaborator and scrum have ever been run.** The other four are written against the
-current context layer but have never executed. The first pass is as much a test of the
-agents as of the ticket.
+Every phase agent has now run on real tickets (`reflections/INDEX.md` holds defects from nine
+of them). What has not run is the **third-occurrence escalation**: classes such as
+`missing-requirement` and `gate-illusion` are far past three rows with nothing escalated, so
+proposals pile up as `proposed`. Treat that queue as the loop's main open debt.
 
 Expect, in rough order of likelihood:
 
@@ -489,7 +496,9 @@ question is right now — before the code exists.
   likeliest origin of the ~593 hardcoded colour values.
 - **Mechanical rails** — nothing enforces module boundaries, duplication, reuse, or
   hardcoded colour. Every one of those is currently a reminder, and the reflector is written
-  to escalate when a reminder fails three times.
+  to escalate when a reminder fails three times. The only rules enforced mechanically are in
+  `.claude/hooks/guard-edits.mjs` (Claude Code, Edit/Write only): no client-repo edit on
+  `main`, and no tooling edit unless the overlay email is Haris's.
 
 ---
 

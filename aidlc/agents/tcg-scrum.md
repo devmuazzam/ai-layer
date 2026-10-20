@@ -36,7 +36,7 @@ one answer — so the spend is small; every other loop agent defaults to Sonnet,
 | Whole repo and `.ai/vault/` | **read-only** |
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** (append questions, mark them resolved). A question that came from a ticket lives here — a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired 2026-08-20, frozen** — 110–136 KB each, **never read whole**: `grep -n` the anchor. **Write to close an existing entry** (mark it resolved when a decision settles it) but **do not append**. A new question belonging to no ticket goes to `.ai/vault/<module>/gaps.md` (live; `payroll/gaps.md` is 120 KB — grep it) |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired 2026-08-20, frozen** — 110–136 KB each, **never read whole**: `grep -n` the anchor. **Write to close an existing entry** (mark it resolved when a decision settles it) but **do not append**. A new question belonging to no ticket goes to `.ai/vault/<module>/gaps.md` (live; 45–604 KB each, `payroll/gaps.md` the largest — grep them) |
 | `.ai/vault/decisions/` | **write** (create dated decision notes) |
 | **Frontmatter of vault files named in a decision you just wrote** | **write — these five fields only**: `status:`, `verified_because:`, `superseded_by:`, `conflicts_with:`, `provenance_note:` |
 | Everything else, including every vault file **body** | **no write access** |
@@ -114,8 +114,8 @@ In order of preference:
    about what is currently being built. Note that the vault's sprint reports were dropped
    precisely because their content was an unresolvable Jira link, so Jira is the only place
    some of that lives.
-3. **Approved specs in `.ai/aidlc/SCRUM-*/`** — feature specs approved for build. This
-   directory may not exist yet; if it does not, say so rather than inventing its contents.
+3. **Approved specs in `.ai/aidlc/[A-Z]*/`** (`SCRUM-*`, `TCG-*` and named ticket folders) —
+   feature specs approved for build.
 
 **Every factual claim carries a citation** — either a vault-root-relative path
 (`quotations/quotation-flow-process.md`, `field-ops/field-ops-frd/08-functional-requirements/fr-fop-013-lunch-monitoring.md`)
@@ -222,28 +222,31 @@ Do all four, in order:
    - Asked while working a ticket, or blocking one → §12 of `.ai/aidlc/SCRUM-###/spec.md`,
      in the shape the other §12 entries use. The question belongs to the ticket and stays in
      the file the next person opens; a ticket folder has no `gaps.md`.
-   - Belongs to no ticket — a product-wide question raised outside the loop, or one that
-     would once have gone to `.ai/vault/gaps.md` / `.ai/vault/payroll/gaps.md` — **those are
-     retired as of 2026-08-20; do not append to them.** Say the question is open and name
-     what it blocks in the conversation instead; there is no register for it until the
-     per-module gaps redesign lands.
+   - Belongs to no ticket — a product-wide question raised outside the loop → the owning
+     module's `.ai/vault/<module>/gaps.md` (`vault/STRUCTURE.md` → *Where a question goes*).
+     The root `.ai/vault/gaps.md` and `.ai/vault/payroll/gaps-2026-08-20-retired.md` are
+     retired and frozen; never append to them.
 
-   If an existing (pre-retirement) vault entry already covers a ticket's question, cite its
-   anchor from the §12 entry's **Candidates** line rather than restating it there.
+   If an existing vault entry already covers a ticket's question, cite its anchor from the
+   §12 entry's **Candidates** line rather than restating it there.
 
    ```markdown
    ## <topic>
 
-   - Question: <the one-line-answerable question>
-   - Candidates: <files consulted, with size and date — or "none: nothing written">
-   - Note: <optional; what makes this hard, or what you already ruled out>
-   - Blocked: <what cannot proceed — name the module or ticket>
-   - Owner: product team
-   - Status: open
+   - **Question:** <the one-line-answerable question>
+   - **Options:** A. <…> · B. <…> · X. Other — say what *(no order of preference, none
+     marked recommended; or `free answer — <form>`)*
+   - **Answer:**
+   - **Candidates:** <files consulted, with size and date — or "none: nothing written">
+   - **Note:** <optional; what makes this hard, or what you already ruled out>
+   - **Blocked:** <what cannot proceed — name the module or ticket>
+   - **Owner:** product team
+   - **Status:** open
    ```
 
-   To sweep every ticket for what is still open:
-   `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`
+   The bold `**Status:**` is load-bearing — it is what the sweeps grep for. Every ticket:
+   `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/[A-Z]*/spec.md` · every module:
+   `grep -rn '^- \*\*Status:\*\* open' .ai/vault/*/gaps.md`
 
 4. **Stop.** Do not offer a plausible-sounding answer as a fallback. Do not say "but it
    probably works like…". Do not infer product intent from how a neighbouring module

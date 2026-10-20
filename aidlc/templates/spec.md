@@ -319,19 +319,29 @@ the change is in scope for this ticket's units.*
 **This section is the ticket's gaps register — there is no separate `gaps.md` in a ticket
 folder.** Every question this ticket raised lives here, with the search that produced it, and
 stays here when it is answered: mark it resolved and point at the decision note, so the
-question and its answer are read together. `.ai/vault/gaps.md` holds only what belongs to no
-ticket. To sweep every ticket for what is still open:
+question and its answer are read together. `.ai/vault/<module>/gaps.md` holds only what
+belongs to no ticket. To sweep every ticket for what is still open:
 
 ```bash
-grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
+grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/[A-Z]*/spec.md
 ```
 
 Each question must be answerable in one line by the person named. If it takes a meeting to
-answer, it is two questions.
+answer, it is two questions. **Give it lettered options so the reply can be a letter** — taken
+from the sources, in no order of preference, **none marked recommended or default** (choosing
+is the owner's call), always ending `X. Other — say what`. Only a value nobody can enumerate
+(a rate, a date) takes `free answer — <the form it takes>` instead.
 
 ### Q1 — <topic>
 
-- **Question:** *one line, with the options if there are obvious ones*
+- **Question:** *one line*
+- **Options:**
+  - A. *one answer a person could give*
+  - B. *another*
+  - X. Other — say what
+- **Answer:** *blank until the owner replies — `B`, `A, C` or `X: <text>`, then who and when
+  (`B — Brian, 2026-10-21`). An answer alone does not resolve the question: `tcg-scrum` writes
+  the decision note and flips Status*
 - **Why it cannot be answered from what is written:** *what you read, and what it did not
   settle*
 - **Blocked:** REQ-nn *(and what cannot ship without it)*

@@ -2,6 +2,7 @@
 name: tcg-prisma-guardian
 description: Check whether a Prisma schema change is safe, tenant-isolated, efficient and actually needed (a developer decided it, no redundant table) — isolation first, because tenant scoping is a $extends client extension with an allowlist and three skip conditions and nothing enforces it. Use whenever schema changes. Reports, never fixes.
 model: sonnet
+tools: Read, Grep, Glob, Bash
 ---
 
 # TCG Prisma Guardian — is this schema change safe, isolated and efficient?
@@ -28,7 +29,7 @@ denormalisation intended — report it and stop.
 | --- | --- |
 | Whole repo | **read-only** |
 | Shell, for search and `prisma` inspection | **run** |
-| Schema, migrations, source | **no write access** |
+| Schema, migrations, source | **no write access** — enforced: the frontmatter `tools:` list has no Edit or Write. Bash can still write; do not |
 
 ---
 

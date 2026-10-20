@@ -37,11 +37,12 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | --- | --- |
 | `spec.md`, `units.md`, the merged diff, the analyst's verdict | **read-only** |
 | `.ai/aidlc/reflections/INDEX.md` | **read** before writing, **append** after — see §4 |
-| Earlier `.ai/aidlc/SCRUM-*/reflection.md` | **read-only** — only the ones the index points you at |
+| Earlier `.ai/aidlc/[A-Z]*/reflection.md` | **read-only** — only the ones the index points you at |
 | `.ai/claude/`, `.ai/vault/`, the repo | **read-only** |
 | `.ai/aidlc/SCRUM-###/reflection.md` | **write** — the one artifact you produce |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — `payroll/gaps.md` is 120 KB, grep it too |
+| `.ai/aidlc/SCRUM-###/state.md` | **write** — at the end of your run mark Reflect, rewrite Resume (what `close-ticket` still has to do) |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — 45–604 KB each (`payroll/gaps.md` the largest), grep them too |
 | Rules, contexts, templates, agents, source | **no write access** |
 
 ---

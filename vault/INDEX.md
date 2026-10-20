@@ -51,7 +51,7 @@ to be read whole.
 Full entries with candidates, sizes and dates in [gaps.md](gaps.md). Payroll and ADP questions are
 in [payroll/gaps.md](payroll/gaps.md). **Read either by section** (`grep -n '^## '`), never whole.
 Questions a ticket raised are not here — they live in §12 of that ticket's
-`.ai/aidlc/SCRUM-###/spec.md` (`grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`).
+`.ai/aidlc/SCRUM-###/spec.md` (`grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/[A-Z]*/spec.md`).
 
 | Conflict | Sources | Stub |
 | --- | --- | --- |

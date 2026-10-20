@@ -90,7 +90,8 @@ by `close-ticket` once opened), one-line note. This is the only record that a bu
 change ever entered the loop at all, since paths B and C never get a `SCRUM-###/` folder.
 Do this once per branch, at creation — not on resume.
 
-**Resuming one — the next morning, or after any break:**
+**Resuming one — the next morning, or after any break:** if the ticket has a folder, read
+its `state.md` → **Resume** first; it says what was last done and what is next.
 
 ```bash
 git stash list                                    # anything set aside last session?

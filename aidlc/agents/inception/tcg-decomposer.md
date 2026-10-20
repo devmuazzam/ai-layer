@@ -42,7 +42,8 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/units.md` | **write** — the one artifact you produce |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — `payroll/gaps.md` is 120 KB, grep it too |
+| `.ai/aidlc/SCRUM-###/state.md` | **write** — at the end of your run mark Units, rewrite Resume (the first unit to build, or what blocks it) |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — 45–604 KB each (`payroll/gaps.md` the largest), grep them too |
 | Everything else | **no write access** |
 
 You do not edit the spec. If the spec is wrong, say so and stop — do not fix it while

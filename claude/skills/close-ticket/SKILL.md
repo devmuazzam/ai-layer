@@ -88,7 +88,7 @@ flipped to point at it.
 ```bash
 git -C .ai diff origin/main -- aidlc/SCRUM-###/spec.md
 git -C .ai diff origin/main -- vault/gaps.md vault/payroll/gaps.md   # should be empty for a ticket
-grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md                # everything still open, all tickets
+grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/[A-Z]*/spec.md               # everything still open, all tickets
 ```
 
 ## 5. Keep the demo walkthrough true
@@ -130,6 +130,11 @@ No hits, no edit. Say so in the hand-back rather than leaving it ambiguous.
 Find this ticket's row in `.ai/aidlc/processed.log` (written by `commit` at branch
 creation) and fill in the `pr` column with the merged PR number — that row is the only
 proof, for a path B/C ticket, that it ever ran the loop. Never edit any other column.
+
+If the ticket has a folder, mark **Merged** (with the PR number) and **Closed** in its
+`state.md` and rewrite **Resume** to `closed — nothing pending`, or to whatever this run left
+open. A folder without a `state.md` predates the file; create one from
+`.ai/aidlc/templates/state.md` only if work on the ticket is still pending.
 
 ## 7. Push the overlay
 

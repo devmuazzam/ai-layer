@@ -26,8 +26,9 @@ where several documents disagree. If a file's `conflicts_with` is non-empty, do 
 one and answer from it — read the conflict stub.
 
 **Read the vault and ticket folders by section, never whole.** Several files there are
-80–220 KB (`SCRUM-926/spec.md`, `payroll/gaps.md`, `payroll/legacy-payroll-app-db-extract/`,
-`meetings/transcripts/`). One whole-file read of those is 20–55k tokens and is why sessions
+80–220 KB (`SCRUM-926/spec.md`, `payroll/legacy-payroll-app-db-extract/`,
+`meetings/transcripts/`), and the module `gaps.md` registers run 45–600 KB (`payroll/gaps.md`
+is the largest). One whole-file read of those is 20–55k tokens and is why sessions
 hit _prompt too long_. Before opening anything under `.ai/vault/` or `.ai/aidlc/`, check its
 size (`wc -c`); over ~40 KB, `grep -n` for the heading or anchor and read only that range
 (`sed -n`, or `Read` with offset/limit). Never read a meeting transcript or a retired
@@ -36,7 +37,9 @@ size (`wc -c`); over ~40 KB, `grep -n` for the heading or anchor and read only t
 
 **A question a ticket raised belongs to that ticket** — §12 of `.ai/aidlc/SCRUM-###/spec.md`,
 the section that also blocks its sign-off. A ticket folder has no `gaps.md`. To see what is
-open across every ticket: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`.
+open across every ticket: `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/[A-Z]*/spec.md` —
+`[A-Z]*`, not `SCRUM-*`: ticket folders are also `TCG-###` and named (`PAYROLL-FLAGS`), and a
+`SCRUM-*` sweep misses most open questions. Where a ticket is in the loop: its `state.md`.
 
 That redesign landed 2026-08-24: the vault is organized as one folder per product module
 (`vault/STRUCTURE.md` — module set, tag facets, routing protocol, migration map), and **a
@@ -142,8 +145,11 @@ The AI layer is changed by **Haris (Syed Haris — git `syed.haris@codingcops.co
 `git -C .ai config user.email`; if it is not Haris's, it **refuses the edit** and writes the
 proposed change out for the developer to send to Haris instead. Everything else in `.ai/` —
 `vault/`, ticket folders, `reflections/INDEX.md`, `processed.log` — stays open to every
-developer under its owner in the table below. This is enforced by agents only: nothing on
-GitHub blocks a hand edit, so `review-pr` flags any tooling change authored by someone else. Decision for this section
+developer under its owner in the table below. On Claude Code a `PreToolUse` hook
+(`.claude/hooks/guard-edits.mjs`) refuses an Edit/Write to a tooling path when the overlay
+email is not Haris's, and refuses any client-repo edit while it is on `main`. Shell edits,
+other tools and hand edits bypass it, and nothing on GitHub blocks them, so `review-pr` still
+flags any tooling change authored by someone else. Decision for this section
 and the two above: `vault/decisions/2026-10-09-developers-decide-structure-siblings-and-haris-only-tooling.md`.
 
 ## One memory, every tool

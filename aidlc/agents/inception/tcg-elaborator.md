@@ -48,7 +48,8 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | `.ai/aidlc/SCRUM-###/intent.md` | **read-only** — it is the ticket capture, not your draft |
 | `.ai/aidlc/SCRUM-###/spec.md` | **write** — the one artifact you produce |
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — `payroll/gaps.md` is 120 KB, grep it too |
+| `.ai/aidlc/SCRUM-###/state.md` | **write** — create it from `.ai/aidlc/templates/state.md` if missing; at the end of your run mark Intent and Spec, mark Sign-off `[?]` naming the blocking §12 questions, rewrite Resume |
+| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — 45–604 KB each (`payroll/gaps.md` the largest), grep them too |
 | Everything else | **no write access** |
 
 Two write paths. That is the whole surface.
@@ -190,7 +191,8 @@ In order of preference:
 
 1. **`.ai/vault/`** — migrated Confluence content. The default source.
 2. **Jira via MCP** — ticket state, acceptance criteria, sprint contents.
-3. **Approved specs in `.ai/aidlc/SCRUM-*/`** — features already elaborated and answered.
+3. **Approved specs in `.ai/aidlc/[A-Z]*/`** (`SCRUM-*`, `TCG-*` and named ticket folders) —
+   features already elaborated and answered.
 4. **The repo** — current behavior only, per above.
 
 **Every requirement carries its sources, and every source carries a status tag.** The
@@ -320,9 +322,9 @@ Do all five, in order:
    blocked, and name the owner where a vault open question already names one.
 4. **Write it into §12 of the spec, and nowhere else.** §12 is the ticket's gaps register —
    a ticket folder has no `gaps.md`. A question raised by a ticket belongs to that ticket, so
-   it stays in the file the next person opens. **Do not append it to `.ai/vault/gaps.md`** —
-   that file is only for questions belonging to no ticket (the migrated Confluence backlog,
-   and product-wide questions raised outside the loop). If an existing vault entry already
+   it stays in the file the next person opens. **Do not append it to a vault `gaps.md`** —
+   `vault/<module>/gaps.md` is only for questions belonging to no ticket, and the root
+   `vault/gaps.md` is retired and frozen. If an existing vault entry already
    covers your question, cite its anchor from **Candidates** rather than restating it. Carry
    the whole search into the entry, so nobody repeats it:
 
@@ -330,6 +332,11 @@ Do all five, in order:
    ### Q<n> — <topic>
 
    - **Question:** <the one-line-answerable question>
+   - **Options:**
+     - A. <one answer a person could give>
+     - B. <another>
+     - X. Other — say what
+   - **Answer:**
    - **Why it cannot be answered from what is written:** <what you read, what it did not settle>
    - **Blocked:** REQ-nn <and what cannot ship without it>
    - **Candidates:** <files consulted, with size and date — or "none: nothing written">
@@ -338,10 +345,17 @@ Do all five, in order:
    - **Status:** open
    ```
 
+   **Options** let the owner reply with a letter. Take them from the sources — the values the
+   conflicting documents give, the behaviours the candidates describe — and list them in no
+   order of preference: **never mark one recommended or default**, because picking is the
+   owner's call. Always end with `X. Other — say what`. Where the answer is a value nobody
+   can enumerate (a rate, a date), write `Options: free answer — <the form it takes>`.
+   Leave **Answer** blank; whoever relays the reply fills it (`B — Brian, 2026-10-21`).
+
    Append only. Do not resolve an entry — not one of yours, and not a vault one. Only
    `tcg-scrum` flips a `Status:` line, and only in the same pass as a decision note.
 
-   Sweep every ticket for what is still open with `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md`.
+   Sweep every ticket for what is still open with `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/[A-Z]*/spec.md`.
 5. **Stop.** Do not offer a plausible answer as a fallback. Do not say "but it probably
    works like…". Do not infer product intent from a neighbouring module or from existing
    code. If something must move today, name the smallest slice that does not depend on the
