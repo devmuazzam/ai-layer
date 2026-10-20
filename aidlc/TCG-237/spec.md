@@ -1738,6 +1738,35 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** answered
 
+
+### Q70 — FCC employee type vs the role of their primary craft
+
+*Raised 2026-10-20 by the FCC seeder build (Q69 S2). Payroll fact — developer reading, open to TCG challenge.*
+
+- **Question:** With crafts carrying a role (S2), 57 of the 87 FCC employees who get a primary payroll craft have a type whose role differs from the craft's role (e.g. 23 "3rd Man" on Operator crafts L12-G3–G8, 7 on Oiler crafts, 8 Operators on Oiler crafts G1/G2 — Local 12 crafts are wage groups). U15's rule refuses the create; the seeder re-posts them craftless as HOURLY_NON_CRAFT, 50 at a $0 hourly rate. Which wins?
+- **Options:**
+  - A. As built: drop the craft (craftless, HOURLY_NON_CRAFT).
+  - B. Type stays the main role; the mismatched craft is posted as a SECONDARY craft (keeps pay data; closes some Q68 gaps).
+  - C. The craft wins: main role comes from the primary craft's role.
+  - D. Undo S2: FCC crafts stay roleless.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer); payroll may need TCG.
+- **Status:** open
+
+### Q71 — Can-also-fill entries for roles DAS does not craft-check
+
+*Raised 2026-10-20 by the FCC seeder build.*
+
+- **Question:** All 474 seeded can-also-fill entries lack a matching craft. 146 (Operator/Oiler) are refused by DAS `CRAFT_ROLE_MISMATCH` (Q68 A). The other 328 (3rd Man, Rigger, Driver) place fine because DAS does not craft-check those slots, though Q68 A says a craft is needed.
+- **Options:**
+  - A. Leave them: DAS does not craft-check those slots.
+  - B. DAS craft-checks every Dispatchable slot (refuses all 328 until crafts exist).
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
