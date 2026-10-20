@@ -1500,6 +1500,21 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** open
 
+
+### Q53 — A role holding both mobile modules: which app opens?
+
+*Raised 2026-10-20 by the U14 build.*
+
+- **Question:** The mobile shell runs one app per user. A role (or an admin whose role grants both) holding `mobile-field-tickets` and `mobile-quotations` currently lands in Field tickets because it is first in the module list. Which should open?
+- **Options:**
+  - A. Field tickets first (as built).
+  - B. Quotations first.
+  - C. Offer a switcher between the two.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
