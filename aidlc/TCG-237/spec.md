@@ -704,7 +704,7 @@ blocks. _AI note_ gives trade-offs only.
 | ID | Decision | Options (existing code found) | AI note | Chosen | Decided by | Date |
 | --- | --- | --- | --- | --- | --- | --- |
 | D1 | Does `Employee.departmentId` stay, or does department derive from the role? | **A.** keep the column (`schema.prisma:4258`-area; `Department` relation at `:4321`). **B.** drop it and read `role.department`. **C.** keep it nullable and validate it equals `role.department`. **X.** Other — say what. | B removes a way for the two to disagree, which the ticket's "they overlap" complains about; cost is every `employee.department` reader (`das.repository.ts:51`, `employee.repository.ts:499,888`, `deletion-reference.service.ts:75`). A is smallest. | **B** | Syed Haris | 2026-10-20 |
-| D2 | Shape of "can also fill", and whether it carries a primary flag | **A.** new join model Employee↔DepartmentRole. **B.** JSON / array column on `Employee`. **C.** generalise `EmployeeCraftAssignment`'s primary/secondary pattern (`:2861`). **D.** join model plus the main role stored in it as `PRIMARY`, with `Employee.roleId` removed. **X.** Other — say what. | A join table matches the one-to-many test in the template and must go into the tenant-scope allowlist. The main role is already `Employee.roleId` (REQ-03 says exactly one), so a primary flag would duplicate it unless D. **Added option E (2026-10-20):** separate table + a check that the person holds a craft code of the matching classification. Developer first chose C, then E after the AI trade-off against C: payroll reads every `EmployeeCraftAssignment` row as payable, crafts have no Rigger/Driver classification, owners differ (payroll vs Dispatcher). **Sub-choice pending:** whether the new row also stores a craft code. | **Separate "can also fill" list** — **F1 = C (2026-10-20), reverting D2b = B** after meeting evidence: Brian 2026-08-13 24:32 *"any secondary must be a higher rate than the primary"* (Kyle agreed) would stop an Operator holding a lower-paid Oiler/Rigger/3rd-Man secondary, and Kyle 23:57 keeps pay at the person's own rate when filling a different position — eligibility and pay are separate, as in FCC (type list gates allocation, Corrina 2026-06-02 1:02:18). Crafts stay pay-only. The list row holds employee + role + audit fields (added by/when, approved by), as in the earlier sub-choice B. **Pending:** whether the craft check from option E survives, and whether D2c still applies | Syed Haris | 2026-10-20 |
+| D2 | Shape of "can also fill", and whether it carries a primary flag | **A.** new join model Employee↔DepartmentRole. **B.** JSON / array column on `Employee`. **C.** generalise `EmployeeCraftAssignment`'s primary/secondary pattern (`:2861`). **D.** join model plus the main role stored in it as `PRIMARY`, with `Employee.roleId` removed. **X.** Other — say what. | A join table matches the one-to-many test in the template and must go into the tenant-scope allowlist. The main role is already `Employee.roleId` (REQ-03 says exactly one), so a primary flag would duplicate it unless D. **Added option E (2026-10-20):** separate table + a check that the person holds a craft code of the matching classification. Developer first chose C, then E after the AI trade-off against C: payroll reads every `EmployeeCraftAssignment` row as payable, crafts have no Rigger/Driver classification, owners differ (payroll vs Dispatcher). **Sub-choice pending:** whether the new row also stores a craft code. | **Separate "can also fill" list** — **F1 = C (2026-10-20), reverting D2b = B** after meeting evidence: Brian 2026-08-13 24:32 *"any secondary must be a higher rate than the primary"* (Kyle agreed) would stop an Operator holding a lower-paid Oiler/Rigger/3rd-Man secondary, and Kyle 23:57 keeps pay at the person's own rate when filling a different position — eligibility and pay are separate, as in FCC (type list gates allocation, Corrina 2026-06-02 1:02:18). Crafts stay pay-only. The list row holds employee + role + audit fields (added by/when, approved by), as in the earlier sub-choice B. **D2d = A:** no craft check — the list is managed on its own; crafts are pay-only. **D2c = A (re-confirmed after F1):** the main role must equal the primary craft's role; a mismatch is refused; applies only when the employee has a primary craft — so a manager who operates (Jeff Kelley, Kyle Harlow) needs a manager-role primary craft and Operator on the can-also-fill list | Syed Haris | 2026-10-20 |
 | D3 | Keep column name `usedAsEmployeeType` with a new UI label, or rename it | **A.** keep the column, change the label only (`:4545`, migration-free). **B.** rename the column to `isDispatchable` via migration. **C.** keep both during transition. **X.** Other — say what. | The column name will keep describing a concept the ticket retires; B costs a rename across ~8 API / web files written by `c6b0d3dcc`. Label copy is Q16, not this decision. | **B** | Syed Haris | 2026-10-20 |
 | D4 | Where the type → role mapping lives, and what happens to FCC types that are not roles | **A.** mapping table in the migration file. **B.** mapping by name at migration time (precedent: `findNameSuggestions` merges by lower-cased name). **C.** leave unmapped employees without a role. **X.** Other — say what. | Mapping **content** is product (Q3, Q19); this row is only *where it lives*. | **A** | Syed Haris | 2026-10-20 |
 | D5 | Replace the 15 seeded cost-code departments with the nine, and where cost-code use moves | **A.** replace. **B.** keep fifteen and add nine. **C.** keep both and mark the old as cost codes. **D.** move cost-coding to a separate field on `Asset`. **X.** Other — say what. | `Asset.departmentId` and a string `Asset.department` both exist (`assets.repository.ts:163,338`). Product side is Q14. **After discussion (2026-10-20):** git history shows the asset's department was copied from FCC's unit record — a free-text `department` predates April 2026, and `487790d2c` (2026-04-07, "feat: asset managment") added the `Department` FK beside it; no meeting, ticket or vault requirement asks for it. FCC's code does three jobs the ERP already covers: equipment kind → asset categories (sub-category required on non-draft assets); accounting bucket → accounting module (`ExpenseGlAccount`); responsibility → `EmployeeAsset` "managed by" + yard. | **A** for departments (the nine replace the fifteen) **and** remove department from assets entirely — **D5b = A** (after Brian Petros's three replies, Q24): remove now, stored values included; FCC codes remain recoverable from the FCC seed files — both `Asset.departmentId` and the text `Asset.department` go; no cost-centre field. Department-addressed notifications (`DEPT-DISP`, `SAFE` in `notifications.config.ts`) move to the new departments. | Syed Haris | 2026-10-20 |
@@ -763,13 +763,13 @@ Q9 plays the same role for REQ-06.
   - C. "HDR" and "Mechanic" are two different roles.
   - X. Other — say what (including what "HDR" stands for, which no file writes out).
 - **Meeting evidence (tcg-scrum search, 2026-10-20):** Brian Petros, `meetings/transcripts/2026-07-09-adp-and-data-migration.md` 1:04:47 (L462): *"this HDR… it's heavy duty repair. That's the mechanics"*; 57:40 (L422): *"HDR is not used anymore"* (craft codes). Supports A (HDR = Local 12 mechanic, one Shop role).
-- **Answer:**
+- **Answer:** **A** — HDR means heavy duty repair, the Local 12 mechanics; one **Mechanic** role in Shop, no separate HDR role. Accepted on the meeting evidence above (Brian Petros 2026-07-09 1:04:47, 57:40). Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Why it cannot be answered from what is written:** The expansion of the acronym is written nowhere in the vault. The 2026-09-10 payroll call is the only place that defines the word, and meeting material is retrospective and is not a source for a requirement (`tcg-elaborator.md` §4), so it cannot close this. What it says, as context: Corrina Bustos 43:33 — *"So Local 12 mechanics, or HDRs is what they call them, they follow the same payroll logic as the Local 12 rules"*; 50:23–50:48 — *"Mechanics are always Local 12 … We don't have non-union mechanic … it's only Local 12 Mechanic and then Yard Tech"*; Corrina 49:07 / Kyle Harlow 49:39 — an HDR "in the shop" may go third man on a job. The curated notes (`meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md`, ~lines 153–157) say "mechanics/HDRs (Local 12 …)". Craft codes `HDR-%` are L12 in `payroll/gaps.md` lines 2648, 4091. All point the same way (HDR = Local 12 mechanic), but a role list needs the owner's word, and the decision note uses "HDR mechanic" as if it were a qualifier on Mechanic. *Correction:* the earlier draft of this spec said a grep for HDR in the vault returned nothing; that was wrong.
 - **Blocked:** REQ-02, REQ-05.
 - **Candidates:** `vault/meetings/transcripts/2026-09-10-payroll-rate-buckets-work-orders-paper-tickets.md` (60 KB) lines 1188, 1309–1322 (not a source); `vault/meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md` (16 KB, 2026-09-10, unverified); `vault/payroll/gaps.md` lines 2648, 4091; `vault/decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md`.
 - **Owner:** Corrina Bustos.
 - **Workaround, if any:** none.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q3 — What each existing employee type becomes
 
@@ -867,13 +867,13 @@ Q9 plays the same role for REQ-06.
   - B. No — the tab differs from the eligible set (say how).
   - X. Other — say what.
 - **Meeting evidence (tcg-scrum search, 2026-10-20):** Melissa, `meetings/transcripts/2026-07-02-mobile-app-dispatch.md` 14:16 (L112): in FCC it is *"your primary function and then all… your secondary"*; Corrina, `meetings/transcripts/2026-06-02-mobile-app-sales-dispatch.md` 1:02:18 (L453): *"if they don't have it in their employee profile, it stops Dispatch from being able to assign them in a certain position."* FCC gated by employee type.
-- **Answer:**
+- **Answer:** **A** — the DAS Employees tab and allocation pickers show the people who may fill the position: main role equals it, or it is on their can-also-fill list. Accepted on the meeting evidence above (Melissa 2026-07-02 14:16; Corrina 2026-06-02 1:02:18). Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Why it cannot be answered from what is written:** `dispatch/gaps.md` reads the tab as the eligible set but says its owner has not confirmed; the UAT row only says Sales Persons should not appear.
 - **Blocked:** REQ-06.
 - **Candidates:** `vault/dispatch/gaps.md` lines 942–1010 (existing entry); `vault/uat/register-2026-09-18.md` (UAT 1).
 - **Owner:** Lisette Anzaldo.
 - **Workaround, if any:** none.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q10 — The third manager who also operates
 
@@ -988,13 +988,13 @@ Q9 plays the same role for REQ-06.
   - A. Yes, as written.
   - B. No — say what changed.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **A** — answered by the developer's §11c sibling decision (name-matched role checks are replaced by role settings in this ticket) and D11 = C (name maps removed). Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Why it cannot be answered from what is written:** the ticket restates a developer's goal; no vault file or decision note says it. The repo only shows five unread settings on `DepartmentRole`.
 - **Blocked:** REQ-11.
 - **Candidates:** `TCG-237` (Linear, `updatedAt` 2026-10-20T00:20Z, re-read this run, unchanged); `apps/api/prisma/schema.prisma:4545-4560` (code, descriptive).
 - **Owner:** product team (Syed Haris to relay to Corrina Bustos).
 - **Workaround, if any:** none.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q18 — People already allocated who would not be eligible
 
@@ -1050,13 +1050,13 @@ Q9 plays the same role for REQ-06.
   - A. It is cleared.
   - B. It is kept but ignored.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **Split by time:** tickets already completed keep the boom pay they were calculated with (history unchanged); from then on a hidden stored setting is **kept but ignored** (B) — the value stays and returns if the role is made Dispatchable again. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Why it cannot be answered from what is written:** no source; only relevant if Q16 answers A or C.
 - **Blocked:** REQ-13.
 - **Candidates:** none: nothing written.
 - **Owner:** product team.
 - **Workaround, if any:** option B (loses nothing); labelled workaround.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q22 — Only Local 12 members may fill an operating position?
 
@@ -1067,13 +1067,13 @@ Q9 plays the same role for REQ-06.
   - C. No — it only explains those managers; no check.
   - X. Other — say what.
 - **Meeting evidence (tcg-scrum search, 2026-10-20):** Wes Staley, `meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md` 52:32–53:25 (L274–280): *"different types of union employees… pipe fitters… iron workers… We'll need the ability to expand yards and unions."* Supports the developer reading (any union).
-- **Answer:** X — Syed Haris (developer), 2026-10-20: not Local 12 specifically; union membership is what lets a person fill a position, and if another union comes later its members can fill too; do not restrict the check to Operator — it applies to every operating/field position. **Developer reading of a product question — pending Corrina Bustos's ratification.**
+- **Answer:** X — Syed Haris (developer), 2026-10-20: not Local 12 specifically; union membership is what lets a person fill a position, and if another union comes later its members can fill too; do not restrict the check to Operator — it applies to every operating/field position. **Accepted 2026-10-20 on Wes Staley's evidence (2026-03-19 52:32–53:25: "different types of union employees… We'll need the ability to expand yards and unions"); open to TCG challenge.**
 - **Why it cannot be answered from what is written:** the decision note records the reason for two people; no source states a general rule.
 - **Blocked:** D8's build.
 - **Candidates:** decision note 2026-10-20 follow-up Q4 (verbatim: "Jeff Kelley and Kyle Harlow are managers but are also in the local 12 union so they are allowed to operate"); Corrina 2026-09-28: "field is all union people".
 - **Owner:** Corrina Bustos.
 - **Workaround, if any:** none — D8 stays unbuilt until answered.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, on meeting evidence; open to TCG challenge)
 
 ### Q23 — Quotations on mobile for everyone with quotation permission?
 
@@ -1114,13 +1114,13 @@ Q9 plays the same role for REQ-06.
   - C. No to (1) — the Dispatcher must control who can fill a position.
   - X. Other — say what.
 - **Meeting evidence (tcg-scrum search, 2026-10-20):** `meetings/transcripts/2026-08-13-payroll-process.md`: Corrina 24:27 (L187) *"But then they couldn't be added to a job as a rigger"*; Brian 24:32 (L188) *"any secondary must be a higher rate than the primary"*, Kyle 24:42 *"Yes, yes. Correct."*; Kyle 23:57 (L177) *"Even if they fill a different position, we have to keep it at that rate."* Wes, `meetings/transcripts/2026-09-02-erp-job-tickets-and-payroll.md` 50:17 (L195): rigging *"doesn't change anything for pay."* Led to F1 = C (D2 reverted to a separate list).
-- **Answer:**
+- **Answer:** **Superseded 2026-10-20 by F1 = C:** who-can-fill is a separate list again, not derived from craft codes, so part (1) no longer arises; part (2) (Rigger / Driver craft codes) matters only for pay, which stays at the person's own rate when filling another position (Kyle 2026-08-13 23:57; Wes 2026-09-02 50:17).
 - **Why it cannot be answered from what is written:** the decision note gives the role-assignment process, not fill eligibility; no source lists a Rigger or Driver craft code.
 - **Blocked:** D2b's build; REQ-04, REQ-05.
 - **Candidates:** decision note 2026-10-20 (Q2, follow-up Q2); `schema.prisma` `enum RoleType`.
 - **Owner:** Corrina Bustos.
 - **Workaround, if any:** none.
-- **Status:** open
+- **Status:** superseded 2026-10-20
 
 ## 13. What this spec deliberately does not specify
 
