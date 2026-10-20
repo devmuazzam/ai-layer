@@ -657,7 +657,7 @@ Per endpoint:
 - **Candidates:** `decisions/2026-09-14-one-job-ticket-per-asset-group-oiler-fills-it.md` (14.4 KB, `verified`, 2026-09-14); `decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md` (31.8 KB, `reference`, 2026-10-06) T1 at line 243; `field-ops/gaps.md:905` (existing entry, **cite, do not restate**).
 - **Owner:** Melissa McNutt (T1 source), with Lisette Anzaldo for dispatch (named on the 09-14 note). Registered owner on the gaps entry: not re-read.
 - **Workaround, if any:** build as the verified rule reads today. Labelled workaround, not a decision.
-- **Status:** open
+- **Status:** open — workaround shipped in PR #831 (2026-10-20); real path deferred, see decisions/2026-10-20-ship-q1-q4-ticket-flow-workarounds-defer-real-behaviour.md. Question remains open and owned.
 
 ### Q2 — T12: an employee leaves with incomplete tickets
 
@@ -667,7 +667,7 @@ Per endpoint:
 - **Candidates:** `field-ops/gaps.md:927` (existing entry, cite); `field-ops/fcc-e-ticket-and-atom-guides.md` (unverified); `decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md` (7.6 KB, `verified`, 2026-09-30).
 - **Owner:** Melissa McNutt, with Corrina Bustos for payroll (per the gaps entry).
 - **Workaround, if any:** none. Do not build a departed-employee path.
-- **Status:** open
+- **Status:** open — workaround shipped in PR #831 (2026-10-20): no departed-employee path built; real path deferred, see decisions/2026-10-20-ship-q1-q4-ticket-flow-workarounds-defer-real-behaviour.md. Question remains open and owned.
 
 ### Q3 — T14: how strictly is the previous ticket enforced
 
@@ -677,7 +677,7 @@ Per endpoint:
 - **Candidates:** `field-ops/gaps.md:987` (existing entry, cite); `brs.md` (unverified); Melissa note T14.
 - **Owner:** Melissa McNutt, with Lisette Anzaldo for dispatch (per the gaps entry).
 - **Workaround, if any:** no gate beyond today's `isFutureFieldTicket` date-order guard. Labelled workaround.
-- **Status:** open
+- **Status:** open — workaround shipped in PR #831 (2026-10-20); real path deferred, see decisions/2026-10-20-ship-q1-q4-ticket-flow-workarounds-defer-real-behaviour.md. Question remains open and owned.
 
 ### Q4 — D3: two Operator slots and no Oiler
 
@@ -687,7 +687,7 @@ Per endpoint:
 - **Candidates:** `field-ops/gaps.md:1032` (existing entry, filed 2026-10-15, cite); DN-1 D3; none: nothing else written.
 - **Owner:** TCG field-ops owner, with Kyle Harlow (per the gaps entry).
 - **Workaround, if any:** leave both FULL. Labelled workaround.
-- **Status:** open
+- **Status:** open — workaround shipped in PR #831 (2026-10-20): both Operators FULL; real path deferred, see decisions/2026-10-20-ship-q1-q4-ticket-flow-workarounds-defer-real-behaviour.md. Question remains open and owned.
 
 ### Q5 — Home start versus the yard-to-yard paid-time boundary
 
@@ -695,7 +695,7 @@ Per endpoint:
 - **Answer (Haris, 2026-10-16):** Home-start holdover days: paid time = Arrive Job Site to Left Job Site (no yard step, so yard-to-yard does not apply). STANDARD ticket meal fallback ships as-is without payroll sign-off.
 - **Unblocked:** REQ-09, REQ-15, REQ-02.
 - **Note:** This is a pay-rule change for Home-start holdover days. The `WORK_TIME` entry on those days starts at `arriveJob` and ends at submit (or at `leftJob` for STANDARD). A provenance entry in `payroll/payroll-rules-provenance.md` is required per `contexts/payroll-engine.md`.
-- **Status:** resolved
+- **Status:** resolved — see decisions/2026-10-16-home-start-holdover-paid-time-boundary.md
 
 ### Q6 — Payroll Manager gains `payroll-admin:edit`: is the wider reach intended?
 
