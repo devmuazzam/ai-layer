@@ -1457,6 +1457,21 @@ Q9 plays the same role for REQ-06.
 - **Answer:** **B** — an additional boolean on the field ticket adds Pre-Trip, JSA, Post-Trip and Compliance to the STANDARD flow (installed builds ignore it); step order as derived in this question. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Status:** answered 2026-10-20 (developer)
 
+
+### Q50 — The FCC seeder still posts `employeeTypeId` for employee billing codes
+
+*Raised 2026-10-20 by the U9 build.*
+
+- **Question:** `apps/api/fcc-seeder/src/seed-all.ts` (~L1490) posts `employeeTypeId` when it seeds employee billing codes; after U9 (D10 = B, no alias, `forbidNonWhitelisted`) that request is a 400. No unit owns the seeder. Who fixes it, and how?
+- **Options:**
+  - A. Fix it in U9: map the FCC type to the role with the Q3 mapping inside the seeder and post `roleId`.
+  - B. A small follow-up unit after U9.
+  - X. Other — say what.
+- **Answer:**
+- **Blocked:** re-running the FCC seed for billing codes.
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.

@@ -31,7 +31,7 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 | U6 | Field-ticket inspection steps follow a role setting (Oiler, 3rd Man, Driver) | REQ-11 (inspections part; F3) | api, shared, mobile | U4 | ~230 lines / 12 files | built — feat/tcg-237-u6-inspections-role-setting (PR #855) |
 | U7 | A craft code points at one role; the craft form has a Role dropdown | REQ-10 (craft code), REQ-12 | schema, api, web | U4 | ~260 lines / 14 files | built — feat/tcg-237-u7-craft-code-role (Mechanic vs Dispatchable filter pending) |
 | U8 | The quotation resource picker (web and mobile) lists roles | REQ-10 | schema, api, web, mobile | U4 | ~380 lines / **~48 files** | not started — **size-exception? yes** |
-| U9 | Billing codes pick a role; price-listing resolve takes a role | REQ-10 | schema, api, web | U4 | ~190 lines / 15 files | not started |
+| U9 | Billing codes pick a role; price-listing resolve takes a role | REQ-10 | schema, api, web | U4 | ~190 lines / 15 files | built — feat/tcg-237-u9-billing-codes-role (needs U8/U8m for the picker) |
 | U10 | Sub-category associated resources (and nested setting) pick a role | REQ-10 | schema, api, web | U4 | ~150 lines / 11 files | not started |
 | U11 | A job's resources and a project's resources name a role | REQ-10 | schema, api, web | U8, U9, U10 | ~330 lines / 22 files | not started |
 | U12 | DAS shows and allocates by the slot's role; no type-name matching in DAS | REQ-10, REQ-11 | api, web | U7, U11 | ~380 lines / 24 files | not started |
