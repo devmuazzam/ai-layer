@@ -26,7 +26,7 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 | U1 | Assets no longer carry a department (form, list, filter, sort, stored values) | REQ-01 (asset consumer, D5b) | schema, api, web | — | ~260 lines / 17 files | built — feat/tcg-237-u1-remove-asset-department |
 | U2 | Role editor says "Dispatchable" and shows boom pay / inspections only for such roles | REQ-13 | schema, api, web | — | ~210 lines / 13 files | built — feat/tcg-237-u2-role-dispatchable |
 | U3 | A new tenant gets the nine departments with their roles | REQ-01, REQ-02, REQ-07, REQ-08, REQ-15 (workaround) | api (seeds), web (Departments screen) | U2 | ~360 lines / 9 files | built — feat/tcg-237-u3a-tenant-departments, feat/tcg-237-u3b-demo-departments, feat/tcg-237-u3c-legacy-seed-departments |
-| U4 | Existing tenants are moved to the nine; every employee has a main role; all consumers carry a `role_id` | REQ-01, REQ-02, REQ-03 (backfill), REQ-07, REQ-08, REQ-10 (data), REQ-12 | schema (foundation) | U1, U3 | ~40 lines / 3 files (+ large migration) | in progress — feat/tcg-237-u4-migrate-existing-tenants |
+| U4 | Existing tenants are moved to the nine; every employee has a main role; all consumers carry a `role_id` | REQ-01, REQ-02, REQ-03 (backfill), REQ-07, REQ-08, REQ-10 (data), REQ-12 | schema (foundation) | U1, U3 | ~40 lines / 3 files (+ large migration) | built — feat/tcg-237-u4-migrate-existing-tenants |
 | U5 | Quotation approval pools and the coordinator/manager checks follow a role setting | REQ-11 (approval part; F4) | api, web, mobile, shared | U4 | ~330 lines / 14 files | not started |
 | U6 | Field-ticket inspection steps follow a role setting (Oiler, 3rd Man, Driver) | REQ-11 (inspections part; F3) | api, shared, mobile | U4 | ~230 lines / 12 files | not started |
 | U7 | A craft code points at one role; the craft form has a Role dropdown | REQ-10 (craft code), REQ-12 | schema, api, web | U4 | ~260 lines / 14 files | **blocked — Q27(b)** for the LABORER/ADMIN backfill only |
@@ -265,6 +265,16 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 | `recipient-resolver.service.ts:189` (dispatch, HR notifications) | `employee.department` code | migration test: dispatcher employees land in the Dispatch department; **Q28** for the config code | D5 |
 | `das.repository.ts:51-52` (Sales exclusion by department name) | `employee.department` | migration test: Sales Coordinator / Salesperson employees land in Sales | REQ-06 (replaced in U17) |
 | Quotation/job/billing/sub-category pickers | `employee_type_id` | unchanged; `role_id` filled but unread | Q13 = B |
+
+### Deploy runbook (Q41 = A, Syed Haris 2026-10-20)
+
+1. **Rehearse on a production copy.** Restore a recent copy, run the dry run against it (`DATABASE_URL=… npx ts-node --transpile-only -r tsconfig-paths/register prisma/scripts/dry-run-nine-departments-migration.ts --snapshot before.csv`, from `apps/api`), have the developer read the review sections, then run `prisma migrate deploy` on the copy and **time it** — that time sizes the window.
+2. **Keep the snapshot.** `before.csv` is the only record of today's `(employee, role, department, type)`; it holds names and is **PII** — store it with restricted access, never in the repo or a PR.
+3. **Maintenance window, app quiesced.** Stop API pods and workers (cron, queues) so nothing writes; the migration takes strong locks on `employees`, `department_roles`, `departments`, `billing_codes`, `quotation_resources`, `job_resources`, `craft_codes` and both sub-category tables for its whole run. U4–U15 ship as one release train (6B).
+4. **Connection.** A direct, non-pooled `DATABASE_URL` (not a transaction-mode pooler) whose role may create TEMP tables; Postgres 13 or later (`gen_random_uuid()`).
+5. **Run** `pnpm --filter @tcg/api prisma:deploy` (`migrate-deploy.sh`). The migration is one transaction: a guard RAISE rolls everything back.
+6. **On failure:** read the RAISE text, fix the cause, then `prisma migrate resolve --rolled-back 20261020140000_migrate_tenants_to_nine_departments_and_role_ids` before redeploying — otherwise every later deploy stops on P3009.
+7. **After:** Departments screen shows nine per tenant; spot-check the users the dry run listed under Q20.
 
 ### Deliberately not in this unit
 
@@ -560,7 +570,7 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 | Layer | Change | Notes |
 | --- | --- | --- |
-| Schema | `associated_role_id` (U4) read/written on both tables. | |
+| Schema | `associated_role_id` (associated resources) and `nested_role_id` (nested settings), both added in U4, read/written. | |
 | API | `asset-management/sub-categories` usecase/service/presentation DTOs (`sub-category-associated-resource.dto.ts`), `das/missing-required-components.util.ts:44` (`associatedEmployeeTypeId` comparison). | Tracer. |
 | Web | `features/assets/sub-category/utils/associated-resources.ts` and the sub-category association form. | |
 | Mobile/Shared | N/A | |
