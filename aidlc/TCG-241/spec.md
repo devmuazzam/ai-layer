@@ -402,6 +402,14 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 | D21 | Presigned link lifetime | A. Sign per 1 h window (date floored to the hour), expiry 7200 s: every link has 1–2 h left and the URL is identical within the hour. B. Exactly 1 h per link with a short 5-min window (URL changes every 5 min). | Executor deviation from "3600 s" in the D20 brief: an hour window with 3600 s would leave a link issued at hh:59 with 1 s | A | Akif | 2026-10-20 |
 | D22 | Browser caching of presigned images | A. `ResponseCacheControl: 'private, max-age=3600'` on the presigned GET (not on `getObjectStream`, which attachments use). B. Leave S3 heuristics. | Objects were stored without Cache-Control | A | Akif | 2026-10-20 |
 | D8b | Uploader location and how it loads image bytes | A. `apps/web/src/components/organisms/entity-photos/` (precedent: `organisms/entity-notes/`); the feature passes an image-loading function as a prop (no `features/` import). B. New `components/media/` folder, same prop approach. | `useAttachmentImageUrl` lives in `features/` and cannot be imported from `components/` | A | Akif | 2026-10-20 |
+| D23 | U4 copy and row behaviour (Q20) | A. Keep the U4 proposal as built. B. Change named items. | Rejections: "Photo must be a JPEG, PNG or WebP image", "Photo must be 25 MB or smaller" (binding client limit until U9 = 25 MiB upload cap), "File is empty", "Limit of {maxFiles} photos reached", "Couldn't check your photo count"; upload failure = server message, fallback "Upload failed". Rows "Waiting" / "Uploading N%" / "Processing…", Retry (upload failures) and Dismiss (any error row). Helper "Up to {maxFiles} photos", button "Add photos", description "JPEG, PNG or WebP, up to 25 MB.". Drop zone, button and Retry disabled while a batch runs | A — copy exactly as proposed; analyst R4 applied: a new batch **keeps** earlier failed/rejected rows until dismissed and appends new rows; uploaded rows are cleared; rows keyed and test-IDed by a monotonic row id (`<prefix>-upload-<id>`) | Akif (2026-10-21) | 2026-10-21 |
+| D24 | Batch over the `maxFiles` cap | A. Valid files fill the free places in dropped order; the rest are refused on their own row. B. Refuse the whole batch | Client pre-check only; server cap is U5. Analyst R1/R2: the count is fetched fresh (`fetchQuery`, `staleTime: 0`) before each batch and each retry; if it cannot be fetched the files are refused with "Couldn't check your photo count" — 0 is never assumed; the list is re-fetched (awaited) after each upload | A | Akif (2026-10-21) | 2026-10-21 |
+| D25 | Drop zone for the shared uploader | A. Reuse existing `components/atoms/inputs/dropzone-input.tsx` unchanged (outer chrome removed via `className`; zone test ID on a wrapper div). B. Drag handling written inside the uploader. C. Extend `DropzoneInput` with a zone test-ID prop | A adds nothing new; B duplicates drag logic; C changes a shared atom with two other consumers | A | Akif (2026-10-21) | 2026-10-21 |
+| D26 | Where the batch logic lives | A. `components/organisms/entity-photos/photo-batch.ts`, pure helpers exported for the uploader and its `node --test` file only, not from the barrel (precedent U3 `photo-tile-stage.ts`). B. Inline private helpers in the uploader (not unit-testable) | — | A | Akif (2026-10-21) | 2026-10-21 |
+| D27 | How per-file progress reaches the shared uploader | A. Optional `onProgress(loaded, total)` on `EntityPhotoUploadRequest`; the asset feature forwards axios `onUploadProgress`; `useUploadAssetPhoto`'s mutation argument becomes `{ file, onProgress }` | Analyst R5: "Processing…" only once `loaded >= total`; the percentage is floored (99.5% → "Uploading 99%") | A | Akif (2026-10-21) | 2026-10-21 |
+| D28 | Upload concurrency within a batch | A. Sequential, one at a time, in dropped order. B. Limited concurrency (e.g. 2–3 at once) | Sequential order is what makes the first dropped file the first created (Q3, U5 cover rule). B was considered and **rejected** by Akif | A | Akif (2026-10-21) | 2026-10-21 |
+| D29 | Toasts for photo uploads | A. Keep U2's per-file success/error toasts. B. No per-file toasts; the rows are the feedback | `useUploadAssetPhoto` was the only consumer of those toasts (`edit-asset-layout.tsx`); the toasts are removed from the hook | B | Akif (2026-10-21) | 2026-10-21 |
+| D30 | Keep `placeholder.webp` in S3 although the list serves the DB base64 (D5) and nothing reads the S3 copy | A. Keep writing it (matches the ticket AC "S3 has original, thumbnail and placeholder"). B. Stop writing it; S3 holds original + thumbnail only; ticket AC updated | ~300 bytes and one extra PutObject per photo; the S3 copy is unread | A | Akif (2026-10-21) | 2026-10-21 |
 
 **From `tcg-prisma-guardian` (2026-10-20).** Executor must-dos, not decisions: add `'entityimage'` to `TENANT_SCOPED_MODELS` (`apps/api/src/orm/prisma.service.ts:26`); `createdAt @db.Timestamptz()`; `@@map("entity_images")`, `idx_entity_images_*`; cover re-pick orders by `createdAt, id`; upload, photo delete and asset delete each in one transaction; the assets list loads the cover with one `include`/batched query and selects `placeholderDataUrl` only there.
 
@@ -713,6 +721,27 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 - **Owner:** Akif
 - **Workaround, if any:** none — uncommitted, waiting
 - **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md
+
+### Q20 — U4 copy and small behaviours the spec does not fix (raised by the U4 executor, 2026-10-21)
+
+- **Question:** U4 had to put concrete text and behaviour in the multi-photo uploader. units.md says "Copy NOT SPECIFIED: executor proposes"; REQ-04 Edges leaves the empty file NOT SPECIFIED. Confirm or replace.
+- **Options:**
+  - A. Keep all as built:
+    - Per-file rejection text (client pre-check): not JPEG/PNG/WebP (incl. HEIC, GIF, SVG, PDF, unknown type) → "Photo must be a JPEG, PNG or WebP image" (same as the server's); over 25 MiB → "Photo must be 25 MB or smaller" (same as D17's server text); 0-byte file → "File is empty"; beyond the free places → "Limit of 20 photos reached" (number = `maxFiles`); upload failure → the server's message, fallback "Upload failed"
+    - Size pre-check: until U9 adds the downscale, the picked file is the uploaded file, so the binding client limit is the **25 MiB upload cap** (`ENTITY_IMAGE_MAX_UPLOAD_BYTES`); the 50 MiB pick limit becomes active in U9
+    - Row texts: "Waiting", "Uploading 45%" with a thin progress bar, "Processing…" once 100% of bytes are sent; buttons "Retry" (upload failures only, not pre-check rejections) and "Dismiss" (any error row); a row disappears when its file has uploaded (it is now a tile)
+    - `maxFiles` (default 20) counts the photos already listed: valid files take the free places in dropped order, later valid files get the limit message on their own row; invalid files take no place. If the list has not loaded yet, 0 existing is assumed (server cap in U5)
+    - Drop zone: the existing `DropzoneInput` (`components/atoms/inputs/dropzone-input.tsx`) reused unchanged, its outer chrome removed via `className`; helper text "Up to 20 photos"; the U2 button stays (ID `-add` kept), relabelled "Add photos"; card description now "JPEG, PNG or WebP, up to 25 MB."
+    - While a batch is uploading, the drop zone, button and Retry are disabled; a new batch replaces the previous batch's rows
+    - The asset feature's existing toasts stay as U2 built them: one "Photo uploaded" / error toast **per file**, in addition to the row
+  - B. Keep A but change the listed items — say which and to what (e.g. one summary toast per batch, or no toast since rows show the result)
+  - X. Other — say what
+- **Answer:** A for copy (D23), with B for toasts (D29: no per-file toasts); cap per file (D24), `DropzoneInput` reused (D25), `photo-batch.ts` (D26), `onProgress` (D27), sequential uploads (D28). Analyst R1/R2/R4/R5 applied (D23, D24, D27) — Akif (2026-10-21)
+- **Why it cannot be answered from what is written:** §9 "Error message text: NOT SPECIFIED"; REQ-04 Edges "empty file (0 bytes) — NOT SPECIFIED"; REQ-14 fixes the cap (20) but not whether a partly-over batch is refused per file or whole; nothing fixes drop-while-busy, row lifetime or per-file toasts.
+- **Blocked:** nothing
+- **Owner:** Akif
+- **Workaround, if any:** A (AI proposal — pending developer confirmation)
+- **Status:** resolved — see §11b D23–D29
 
 ## 13. What this spec deliberately does not specify
 
