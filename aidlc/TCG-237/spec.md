@@ -776,13 +776,13 @@ Q9 plays the same role for REQ-06.
 - **Question:** For each of the 16 seeded types (3rd Man, Accounting Admin, Dispatch Admin, Driver, Management, Mechanic, Oiler, Operator, Rigger, Safety Admin, Sales Admin, Salesmen, Shop, Yard Man, Default, Apprentice), which role does an employee holding it get as their main role?
 - **Options:** free answer — a table of type → role (and department).
 - **Meeting evidence (tcg-scrum search, 2026-10-20):** Corrina, `meetings/transcripts/2026-06-25-cc-tcg-erp-system.md` 18:22 (L167): Sales Admin's job title *"is sales coordinator."*
-- **Answer:**
+- **Answer:** **A** — Operator, Oiler, 3rd Man, Rigger, Driver → same-named roles in Field Operations; Mechanic and Shop → Mechanic (Shop); Yard Man → Yard Tech (Yard); Dispatch Admin → Dispatcher (Dispatch); Sales Admin → Sales Coordinator (Sales); Salesmen → Salesperson (Sales); Accounting Admin → Accounting (Accounting); Safety Admin → Safety (Safety); Management → Manager (Management); Job Foreman, Apprentice, Default → no role (Q19). Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** The decision settles the shape and maps nothing. No document pairs a type with a role. (Employees whose only type is Job Foreman, Default or Apprentice are Q19.)
 - **Blocked:** REQ-12, REQ-10.
 - **Candidates:** `vault/payroll/fcc-employee-types-and-crafts.md` (5.5 KB; read §2 this run, §1 not); `payroll/gaps.md` lines 2171–2300; `seed-data.ts:31-48`.
 - **Owner:** Corrina Bustos.
 - **Workaround, if any:** none; mapping by lower-cased name equality (as `findNameSuggestions` does) would settle only names that already match.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q4 — Do FCC's secondary types load into can-also-fill as they are?
 
@@ -835,13 +835,13 @@ Q9 plays the same role for REQ-06.
   - A. Dispatcher only.
   - B. Dispatcher and Sales Coordinators.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **A** — the Dispatcher only assigns roles (Corrina's follow-up answer). Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** her first reply said Sales Coordinators; the follow-up names only the Dispatcher. The decision note records the tension as unresolved and a confirmation has been sent.
 - **Blocked:** the role-change flow (out of this ticket); REQ-15 only through who holds "assign".
 - **Candidates:** existing vault entry `admin/gaps.md` Part 2(e) (same anchor as Q6).
 - **Owner:** Corrina Bustos.
 - **Workaround, if any:** none needed here; the flow is out of scope.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q8 — Who may set a role and the can-also-fill list until the approval flow exists
 
@@ -851,13 +851,13 @@ Q9 plays the same role for REQ-06.
   - B. Nobody — they are not editable until the flow is built.
   - C. Only named people (say who).
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **A** — until the approval flow exists, whoever can edit employees today sets a person's role and can-also-fill list. Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** the decision describes the end state; the flow is "new behaviour (Path A), not part of the fold"; nothing says what applies in between.
 - **Blocked:** REQ-03, REQ-04 write permissions.
 - **Candidates:** `decisions/2026-10-20-…-corrina.md` ("Build impact", last bullets); `admin/gaps.md` Part 2.
 - **Owner:** Corrina Bustos (with Lisette Anzaldo as the named approver).
 - **Workaround, if any:** option A changes nothing in permissions; labelled workaround.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q9 — Is the DAS Employees tab exactly the ticket-eligible set?
 
@@ -882,13 +882,13 @@ Q9 plays the same role for REQ-06.
   - A. Yes — name the person.
   - B. No — only Jeff Kelley and Kyle Harlow.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **A** — not needed: the can-also-fill list decides who fills operating positions, so the third manager need not be identified. Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** the ADP file records counts only.
 - **Blocked:** REQ-05 for that one person.
 - **Candidates:** `decisions/2026-10-20-…-corrina.md` "What this does not settle" item 2; `workers-departments-2026-10-20.md` §4.
 - **Owner:** Corrina Bustos.
 - **Workaround, if any:** give the two named managers `Operator` on their lists; leave the third without.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q11 — Is today's name-based behaviour preserved exactly?
 
@@ -925,13 +925,13 @@ Q9 plays the same role for REQ-06.
   - B. They show the name of the role the type became.
   - C. It differs by record type (say which).
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **B** — existing quotations, jobs and billing codes show the mapped role's name after migration. Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** nothing addresses historical records.
 - **Blocked:** REQ-10 and every ripple row marked Q13.
 - **Candidates:** none: nothing written.
 - **Owner:** product team.
 - **Workaround, if any:** option A changes no displayed text; labelled workaround.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q14 — Do the fifteen FCC cost-code departments still need to exist?
 
@@ -956,13 +956,13 @@ Q9 plays the same role for REQ-06.
   - A. Yes — every new tenant gets them.
   - B. Only TCG's tenant has them.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **A** — every new tenant starts with the nine departments and their roles, editable. Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** existing open vault entry; the 2026-09-04 decision records that an admin-created tenant comes up with zero of both and that `isSystem` is true only in two tenants.
 - **Blocked:** REQ-01, REQ-02 provisioning; `EmployeeType` being global means other tenants get no replacement rows otherwise.
 - **Candidates:** `admin/gaps.md#what-a-newly-created-tenant-must-contain--provisioned-defaults-or-an-empty-portal` (existing, open); `tenant-seed.service.ts` (code).
 - **Owner:** product team.
 - **Workaround, if any:** option B (TCG's tenant only); labelled workaround.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q16 — Role editor label and conditional fields
 
@@ -973,13 +973,13 @@ Q9 plays the same role for REQ-06.
   - C. The conditional fields only.
   - D. Neither — the editor stays as it is.
   - X. Other — say what (a different label, for example).
-- **Answer:**
+- **Answer:** **A** — rename the label and show boom pay and inspections only when the role is Dispatchable. Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** the proposals come from the developer session; no source specifies UI copy or conditional rules. FCC's term is `Dispatchable on` (`payroll/fcc-employee-master-reference-data.md` §2, unverified, via the gap entries).
 - **Blocked:** REQ-13.
 - **Candidates:** `role-behaviour.section.tsx` (code); `payroll/fcc-employee-master-reference-data.md` §2.
 - **Owner:** product team (Syed Haris to confirm with Corrina Bustos).
 - **Workaround, if any:** option D changes nothing; labelled workaround.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q17 — Confirm REQ-11: behaviour keys on role settings, not on names
 
@@ -1004,13 +1004,13 @@ Q9 plays the same role for REQ-06.
   - B. They stay but are flagged for dispatch to review.
   - C. They are removed at migration.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **A** — existing allocations are left as they are; the eligibility check applies to new allocations. Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** nothing speaks to existing allocations.
 - **Blocked:** REQ-05 (Read time), the `JobResourceAllocation` ripple row.
 - **Candidates:** none: nothing written.
 - **Owner:** Lisette Anzaldo.
 - **Workaround, if any:** option A; labelled workaround. The executor must not silently remove allocations.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q19 — Employees whose only type is Job Foreman, Default or Apprentice
 
@@ -1020,13 +1020,13 @@ Q9 plays the same role for REQ-06.
   - B. TCG names a role for each such person (say who gets which).
   - X. Other — say what.
 - **Meeting evidence (tcg-scrum search, 2026-10-20):** Brian, `meetings/transcripts/2026-08-13-payroll-process.md` 1:06:25 (L452): foreman is a $3 premium when designated; Brian, `meetings/transcripts/2026-07-09-adp-and-data-migration.md` 1:04:07 (L458): apprentice steps 1–6 are craft-code levels. Neither is a role; no source names their main role.
-- **Answer:**
+- **Answer:** **A** — no main role until set by hand; listed for review after migration. Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** the decision excludes Job Foreman as a role and maps nothing; Default and Apprentice are not addressed.
 - **Blocked:** REQ-03 (absent input), REQ-07, REQ-10, REQ-12.
 - **Candidates:** `decisions/2026-10-20-…-corrina.md`; `seed-data.ts:31-48`.
 - **Owner:** Corrina Bustos.
 - **Workaround, if any:** option A; labelled workaround.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q20 — Existing users' access on the day their role changes at migration
 
@@ -1035,13 +1035,13 @@ Q9 plays the same role for REQ-06.
   - A. The new role's permissions apply at once (REQ-03: the role decides access).
   - B. Each user keeps their current permissions until TCG reviews.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **A** — on migration day each user gets their new role's permissions immediately. Syed Haris (developer), 2026-10-20 — developer decision, open to TCG challenge.
 - **Why it cannot be answered from what is written:** REQ-03 says the role decides access; nothing says whether that applies retroactively at migration.
 - **Blocked:** REQ-15, REQ-12.
 - **Candidates:** `admin/gaps.md` (same anchor as Q1).
 - **Owner:** Corrina Bustos.
 - **Workaround, if any:** option B; labelled workaround.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q21 — A stored role setting whose field is hidden
 
