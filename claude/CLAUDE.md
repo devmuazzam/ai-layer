@@ -60,46 +60,42 @@ it per `.ai/aidlc/GUIDE.md` §2, and state the path:
 | **B** | Bug — the behaviour is specified, or the bug _is_ the deviation   | repro → `tcg-executor` → `tcg-analyst`             |
 | **C** | Small, stated change — copy, spacing, a column, a variant         | `find-component` if UI, build, self-review         |
 
-**Any path becomes A the moment you must decide something nobody specified** — a sort
-order, a default, a threshold, one side of a vault conflict. Schema, tenancy or an API
-shape calls `tcg-prisma-guardian` / `tcg-contract-tracer` on every path.
+**A path becomes A only when the work needs client-facing behaviour nobody specified (G1
+below) or one side of a vault conflict.** A sort order, a default, a page size or a
+structure is not a reason to escalate: decide it, record it, carry on. Schema, tenancy or an
+API shape calls `tcg-prisma-guardian` / `tcg-contract-tracer` on every path.
 
 Questions, debugging, reviews and exploration do not enter the loop. On Claude Code a
 `UserPromptSubmit` hook repeats this on every prompt; on other tools this section is the
 only trigger. Decision: `vault/decisions/2026-10-09-build-prompts-enter-aidlc-through-triage.md`.
 
-## Developers decide structure — the AI proposes, on every path
+## The AI decides how; it stops only at the guardrails
 
-**AI is a tool here, not the builder of record.** The vault answers _what_ to build; a
-**developer** answers _how it is structured_. On a structural choice the AI lays out the
-options and stops — it does not pick one and carry on. A developer who asks "what would you
-do?" gets a recommendation with its trade-offs, and still has to state the choice; an AI
-suggestion becomes a decision only when the developer says so.
+**Capability first, guardrails at the edges.** The vault answers _what_ to build. _How_ —
+tables, columns, functions versus reuse, endpoints, shapes, defaults, sort orders — the AI
+decides, following `.ai/claude/contexts/patterns.md` and the nearest existing code, and
+**records every choice** where a developer will review it: Path A in `spec.md` §11b, Paths B
+and C in the PR description's _AI decisions_ table (`commit` skill §6). A developer reviews
+that table in the PR; overturning a choice is a review comment, not a blocker raised
+mid-build.
 
-**Structural — stop and ask:**
+**The AI stops only at these** — everything else is decide, record, continue:
 
-- a new **table**, **column**, **enum member** or **relation** — and what it holds, its type,
-  nullability and default
-- a new **exported** function, service, repository method, hook or component **versus reusing
-  or extending** an existing one (name the existing candidates you found, with paths)
-- a new **endpoint** or a changed **request/response shape**
-- a new **dependency**
-- following a different shape than the reference in `.ai/claude/contexts/patterns.md`, or
-  building something whose pattern entry is `UNDECIDED`
+1. **G1 — Client-facing behaviour nobody specified**: a business rule, eligibility, money,
+   what a customer sees → a §12 question to the owner, batched.
+2. **G2 — Destroying or rewriting existing data** → developer approval, plus the migration's
+   guard run against a copy of staging data.
+3. **G3 — Tenant data** (a new tenant-scoped model, a query outside the scoping extension) →
+   `tcg-prisma-guardian` and an isolation test.
+4. **G4 — Pay rules** → a source in `vault/payroll/payroll-rules-provenance.md`, same commit.
+5. **G5 — A new dependency** → ask. **A changed response shape** → `tcg-contract-tracer`,
+   callers fixed in the same unit.
+6. **G6 — Push to `main`, secrets** → blocked by hooks and permissions.
 
-**Not structural — just build:** private helpers inside one file, local variables, test
-fixtures, anything the spec or the pattern reference already fixes.
+A choice made but not recorded is the `review-pr` finding — not a choice made without asking.
+Decision: `vault/decisions/2026-10-21-capability-first-ai-decides-structure-guardrails-only.md`.
 
-**Record every answer** — Path A: `spec.md` → _Developer decisions_; Paths B and C: the
-PR description's _Developer decisions_ table (`commit` skill §6). Each row names the
-developer who decided. **An AI never fills the _Decided by_ column**, and never records its
-own suggestion as decided. A structural change with no recorded decider is a `review-pr`
-finding. **A structural choice cannot be delegated to the AI** (Haris, 2026-10-20): "you
-decide" is recorded as `AI proposal — pending developer confirmation`, not as a decision. The
-cost of deciding is one letter — the AI lists lettered options, and a reply of `B` makes the
-developer the decider.
-
-## Siblings get the same change — with the developer's say-so
+## Siblings get the same change — recorded, not asked
 
 **Same job, same build.** Recurring shapes (a CRUD, a reference-code list, an archive flow)
 have a reference implementation in `.ai/claude/contexts/patterns.md` — follow it. When you
@@ -107,37 +103,27 @@ change one instance of a pattern, the others are its **siblings**:
 
 1. **Name them** — every sibling, with paths and what the same change would be in each
    (`patterns.md` lists the instances; confirm with `git grep`).
-2. **Ask the developer** whether they get the change too. Never apply it silently, never
-   skip mentioning it.
-3. **On a yes, apply it in the same PR.** On a no, record why in _Developer decisions_
-   ("intentionally different because…" or "follow-up ticket <id>").
+2. **Apply the same change** in the same PR, or list it as a follow-up when it is a separate
+   job.
+3. **Record every sibling** in the _AI decisions_ table with what happened to it — a
+   developer who disagrees says so in review.
 
 The goal is that no developer is surprised by drift: four CRUDs either change together or
-someone decided, in writing, that they should not.
+the PR says, in writing, why they did not.
 
 ## One unit, or one independent task, per PR
 
-**A PR is one AI-DLC unit (Path A) or one independent task (Paths B/C) — and at most ~400
-changed source lines in 25 source files.** Tests, migrations, lockfiles and snapshots do
-not count. Measure before you push:
-
-```bash
-git diff --numstat origin/main...HEAD | grep -Ev '(\.spec\.|\.test\.|/e2e/|__tests__/|^qa-automation/|/migrations/|pnpm-lock\.yaml$|\.snap$)' \
-  | awk '{l+=$1+$2; f++} END{print l+0" lines, "f+0" files"}'
-```
+**A PR is one AI-DLC unit (Path A) or one independent task (Paths B/C).** There is **no
+line or file budget** (removed by Haris, 2026-10-21 — not worth its cost); a unit is sized
+by the job it does, not by a count.
 
 - **Dependent units ship as stacked PRs**, not one PR: U2 branches from U1's branch and its
   PR targets U1's branch; when U1 merges, GitHub retargets U2 to `main`. Nobody waits.
 - **Sweeps are their own PR**: lint/format autofixes, import reordering, dependency or SDK
   upgrades, unrelated fixes. Never inside a feature PR. `lint-staged` reformats whole files
   you touch — if that balloons the diff, commit the reformat separately as its own PR first.
-- **"Same branch, one PR for all units" is not a developer choice any more.** It overrode
-  the rule on PAYROLL-FLAGS (#709: 21 units, 35,108 source lines, 784 files). The only way
-  over the budget is per PR: a developer adds the `size-exception` label and writes why in
-  the description.
-- **Enforced by** `.github/workflows/pr-size.yml` (red check + a comment listing the commits
-  to split along — the free plan cannot block the merge) and by the executor, `commit` and
-  `review-pr`, which measure and stop.
+- `.github/workflows/pr-size.yml` in the client repo still posts a size check; it is not an
+  AI-layer rule any more and nothing here acts on it.
 
 ## Tooling is Haris-only
 
@@ -238,7 +224,7 @@ whether a failure is yours before chasing it — `lint-triage` skill. **Nothing 
 or build automatically right now** — `.husky/pre-push` keeps only the branch guard (the
 `nx affected` gates are commented out in the file, not deleted), and `.github/workflows/`
 holds `deploy.yml`, which deploys and checks nothing, and `pr-size.yml`, which checks only
-PR size (see _One unit, or one independent task, per PR_). Every lint/test/build gate in
+PR size. Every lint/test/build gate in
 this file is a command you run by hand until those are restored. Verified 2026-10-09.
 
 ## Architecture invariants

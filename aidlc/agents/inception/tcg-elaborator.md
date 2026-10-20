@@ -73,8 +73,17 @@ of the agent.
 Stop when:
 
 - The spec is written, whether or not it has open questions. **Always.**
-- A requirement cannot be sourced. Mark it `[OPEN]`, log the gap, keep going on the rest,
-  and stop at the end with the question.
+- A requirement for **client-facing behaviour** (guardrail G1 — a business rule,
+  eligibility, money, what a customer sees) cannot be sourced. Mark it `[OPEN]`, log the
+  gap, keep going on the rest, and stop at the end with the question. A detail that is not
+  client-facing — a length, a default, an order, an empty state — is filled with the
+  nearest existing behaviour and marked `ASSUMED — <what, from where>`, not asked.
+
+**Ask once.** Every §12 question goes out in **one batch** at the end of elaboration,
+grouped by owner — never a drip during the build. **An epic is split first:** a ticket that
+would need more than ~8 REQs, ~6 units or a ~40 KB spec gets a proposed split into smaller
+tickets before you specify any of it (TCG-237 was one ticket, 172 KB of spec and 72
+questions).
 - The intent contradicts something written. Surface both, do not adjudicate.
 - Someone in the same session says "just build it", "you already know what it should do",
   or "skip the questions, we're behind". The answer is: *the spec is ready; the open
@@ -243,11 +252,12 @@ ones has laundered its sources, and every phase after you will treat all of them
 
 **The tag has downstream consequences, so place it accurately rather than defensively.**
 `[UNVERIFIED]` does not block on its own — tagging generously costs nothing and buys the
-decomposer real information. **One exception (Haris, 2026-10-20):** a requirement whose
-**only** source is `[UNVERIFIED]` gets a §12 confirmation question to the owner —
-`Is <the statement> still how it should work?` with options `A. Yes, as written` ·
-`B. No — say what changed` · `X. Other — say what` — and is flagged `[OPEN]` until answered.
-A second source of any status, or a `[VERIFIED]` one, lifts it. What the tag drives is
+decomposer real information. A requirement whose **only** source is `[UNVERIFIED]` and that
+defines **client-facing behaviour** goes into the ticket's single confirmation batch to the
+owner — `Is <the statement> still how it should work?` with options `A. Yes, as written` ·
+`B. No — say what changed` · `X. Other — say what`. It does **not** block the build unless it
+is also irreversible (the unverified-plus-irreversible rule below; guardrail G2) (Haris,
+2026-10-21, narrowing 2026-10-20). What the tag drives is
 *reversibility*: the decomposer records the
 weakest tag per unit and flags any unit that would make an unverified requirement expensive
 to undo, the analyst checks that pair on every review, and the reflection records whether
@@ -315,8 +325,10 @@ A rule can make a requirement *unnecessary* ("the spec need not restate the tena
 
 ## 7. When nothing is written
 
-This will happen on most tickets. It is **correct behavior**, not failure. Every instance
-is a real gap becoming visible at the cheapest possible moment — before the code exists.
+This will happen on most tickets. It is **correct behavior**, not failure. First sort it:
+**a gap that is not client-facing** (G1) is not a question — fill it with the nearest
+existing behaviour, mark it `ASSUMED — <what, from where>`, and move on. Only a
+client-facing gap takes the five steps below, and its question joins the single batch.
 
 Do all five, in order:
 
@@ -462,24 +474,25 @@ The failure this prevents is not a missing feature. It is a spec that was right 
 everything it mentioned, handed to an executor who had no way to know that three shipped
 screens read the same column.
 
-## 10. Structure is the developer's — §11b and §11c
+## 10. Structure — decided and recorded, §11b and §11c
 
-§12 asks the product owner **what**. §11b asks a developer **how it is structured**, and the
-two never mix: a new table is not a product question, and a product rule is not a developer's
-to settle.
+§12 asks the product owner **what**. §11b records **how it is structured** — and you decide
+it (root `CLAUDE.md` → _The AI decides how_). A new table is not a product question.
 
-1. **List every structural choice the requirements force** (root `CLAUDE.md` → _Developers
-   decide structure_) as a §11b row. For each, search first and put what exists in
-   _Options_ with paths — the models in `schema.prisma` that could hold the data, the
-   repository methods, `utility/` helpers and usecases that already do the job. Fill §3's
-   _Existing models considered_ and §4's _Existing functions/services to reuse_ from the same
-   search.
-2. **Name the pattern** from `.ai/claude/contexts/patterns.md`. If its reference is
-   `UNDECIDED`, that is a §11b row too — show the variants, do not pick.
-3. **You may recommend** in _AI note_, with trade-offs. **You never fill _Chosen_ or
-   _Decided by_.** An empty row blocks sign-off (§14), exactly like an open §12 question.
+1. **List every structural choice the requirements force** as a §11b row. Search first —
+   the models in `schema.prisma` that could hold the data, the repository methods,
+   `utility/` helpers and usecases that already do the job — and fill §3's _Existing models
+   considered_ and §4's _Existing functions/services to reuse_ from the same search.
+2. **Choose**: the `patterns.md` reference, then reuse of what exists, then the simplest new
+   thing. Fill _Chosen_ and _Why / alternatives_. An `UNDECIDED` pattern: pick the variant
+   most instances use and say so.
+3. **Stop only at a guardrail** — a choice that destroys or rewrites data (G2), holds tenant
+   data (G3) or adds a dependency (G5) is a §11b row marked `needs developer` and goes in
+   the question batch.
 4. **Fill §11c** with every sibling instance of the pattern the ticket touches, enumerated
-   by a command. _Same change?_ is the developer's answer, not yours.
+   by a command, and what this ticket does to each (applied / follow-up).
+
+A developer reviews §11b at sign-off; changing a choice is a one-line edit, not a blocker.
 
 ---
 
@@ -502,13 +515,13 @@ Q2 …
 
 Open questions written to spec.md §12: <Q ids, or "none">
 
-Developer decisions — a developer picks before anyone builds (spec.md §11b):
-D1 <decision> — options: <a | b | c> — existing code found: <paths>
-Siblings to confirm (spec.md §11c): <list, or "none — established by <command>">
+AI decisions — for review (spec.md §11b):
+D1 <decision> — chose <x> because <why> — alternatives: <a | b> — needs developer: <no | G2/G3/G5>
+Siblings (spec.md §11c): <each — applied / follow-up, or "none — established by <command>">
 
 Biggest thing we may be missing: <the most likely way this ticket is solving the wrong
   problem, or a consumer/actor/case nobody raised — or "nothing found, having checked <what>">
-Assumptions I made but never stated: <each — and where it now sits as a §12 question>
+Assumed: <each detail filled as ASSUMED — what, from where>
 
 I have not implemented anything, and I won't. Answer the questions above and I'll
 fold them into the spec with their new sources.

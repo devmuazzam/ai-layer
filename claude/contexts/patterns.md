@@ -10,17 +10,16 @@ file, and never treats the nearest module as the reference because no entry exis
 
 ## How an agent uses this file
 
-1. **Building something that matches an entry?** Follow its reference. A deviation is a
-   developer decision (root `CLAUDE.md` → _Developers decide structure_), recorded with its
-   reason — never a silent improvement.
-2. **The entry says `UNDECIDED`?** Stop before writing the structure. Show the developer the
-   variants below with their trade-offs, ask which one this feature follows, and record the
-   answer as a developer decision. Do not choose "the cleanest one".
-3. **No entry fits, but the thing will clearly repeat?** Say so, and propose an entry to the
-   developer. Haris adds it.
+1. **Building something that matches an entry?** Follow its reference. A deviation is
+   recorded with its reason in the decisions table (root `CLAUDE.md` → _The AI decides how_) —
+   never a silent improvement.
+2. **The entry says `UNDECIDED`?** Pick the variant most existing instances use, and record
+   the choice and the alternatives. The developer reviews it in the PR.
+3. **No entry fits, but the thing will clearly repeat?** Say so in the PR, and propose an
+   entry. Haris adds it.
 4. **Changing an instance of a pattern?** The other instances are its **siblings**. Name them,
-   ask the developer whether they get the same change, and apply it in the same PR on a yes
-   (root `CLAUDE.md` → _Siblings get the same change — with the developer's say-so_).
+   apply the same change when it fits the PR budget, otherwise list it as a follow-up — and
+   record every one (root `CLAUDE.md` → _Siblings get the same change_).
 
 The **Known deviations** list under each entry is consistency debt. Do not fix it in passing
 inside an unrelated ticket; it is sibling work and needs the developer's yes like any other.
@@ -67,8 +66,8 @@ Small admin-maintained lists — a code the user types, a label, active/inactive
   `usecase/industries/`, `service/industries/`: repository extends `BaseRepository` and wraps
   `utility/reference-code-list.helpers.ts`. **Open:** its controller is unversioned
   (`@Controller('industries')`) while the Variant B modules use `version: '1'` — whether a new
-  P2 module copies that is not decided; ask the developer, record it, and Haris updates this
-  line.
+  P2 module copies that is not decided; follow the versioned Variant B modules (the
+  majority), record it, and Haris updates this line.
 - **Web: the shared manager** (W2) — `apps/web/src/features/settings/views/reference-code-manager.tsx`
   with a ~40-line tab like `industry-codes-tab.tsx`, over `createReferenceCodeService` and the
   hook factories in `features/employee-reference-codes/`. A new reference list is a new tab,

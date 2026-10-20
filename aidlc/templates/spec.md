@@ -115,8 +115,9 @@ Repeat this block per requirement. Keep the field order.
   where true. `OPEN — see Q<n>` where nothing says what the existing consumers should do.*
 - **Acceptance:** *how a reviewer checks this is done. Concrete enough to fail.*
 - **Edges** *(required on every requirement that has behaviour; `N/A — <reason>` only for pure
-  copy or styling. `NOT SPECIFIED` is not allowed here: a field nobody can source becomes
-  `OPEN — see Q<n>`, and the requirement is `[OPEN]` until it is answered)*:
+  copy or styling. A field nobody can source takes `ASSUMED — <value, from where>` (the
+  nearest existing behaviour), unless it is client-facing (guardrail G1), which becomes
+  `OPEN — see Q<n>` and makes the requirement `[OPEN]` until answered)*:
   - **Reached by:** *every action, endpoint, job or path that can reach the state this
     requirement keys on, one line each. A path this requirement does not hook gets a §12 line.*
   - **Does not apply when:** *the cases the rule must leave alone (other flows, kinds,
@@ -308,30 +309,28 @@ should happen to each consumer is a product fact and needs a source, or an open 
   it — an absent grep result is a finding, an unrun grep is not*
 - **Consumers with no source for what happens to them:** *list them; each is a §12 question*
 
-## 11b. Developer decisions — structure is the developer's call
+## 11b. AI decisions — reviewed by a developer
 
-*§12 asks the product owner what to build. This section asks a **developer** how it is
-structured* — every choice root `CLAUDE.md` → _Developers decide structure_ lists: a new
-table/column/enum/relation, new exported function vs reuse, a new endpoint or shape, a new
-dependency, a pattern choice or deviation.
+*§12 asks the product owner what to build. This section records **how it is structured** —
+decided by the AI* (root `CLAUDE.md` → _The AI decides how_): a new table/column/enum/relation,
+new exported function vs reuse, a new endpoint or shape, a pattern choice or deviation.
 
-**The agent writes the options; a developer writes the choice.** An agent fills _Decision_
-and _Options_, may add its recommendation with trade-offs under _AI note_, and leaves
-_Chosen_ and _Decided by_ blank. A blank row blocks sign-off exactly like an open §12 question.
-Options are lettered so a developer can reply with one letter. "You decide" is not a choice:
-the row's _Chosen_ reads `AI proposal — pending developer confirmation` and still blocks.
+The AI fills every column except _Reviewed by_: what it chose, why, and what it passed over
+(with the existing code it found). A developer reviews the table at sign-off and edits any
+row they would choose differently. Only a guardrail row — destroying data (G2), tenant data
+(G3), a new dependency (G5) — is marked `needs developer` and waits for an answer.
 
-| ID | Decision | Options (with existing code found) | AI note | Chosen | Decided by | Date |
+| ID | Decision | Chosen | Why / alternatives (with existing code found) | Needs developer | Reviewed by | Date |
 | --- | --- | --- | --- | --- | --- | --- |
-| D1 | *e.g. where boom adders live* | *new `CraftModifierRate` table; columns on `CraftModifier` (`schema.prisma:2597`)* | *recommendation + why, optional* | | | |
+| D1 | *e.g. where boom adders live* | *columns on `CraftModifier`* | *one-to-one, no history → columns; rejected a new `CraftModifierRate` table (`schema.prisma:2597`)* | no | | |
 
 ## 11c. Siblings — same pattern, same change?
 
 *Features built on the same `patterns.md` entry as this one, or doing the same job by another
-name. For each: would this ticket's change apply there too? The developer answers; on a yes
-the change is in scope for this ticket's units.*
+name. For each: what this ticket does there — applied in a unit, or a follow-up when it is a
+separate job. The AI decides; the developer reviews.*
 
-| Sibling | Pattern | Same change? | Decided by | Enumerated by |
+| Sibling | Pattern | Same change? | Reviewed by | Enumerated by |
 | --- | --- | --- | --- | --- |
 | *module / screen* | P1 / P2 / none | yes — unit U*n* / no — *reason* / follow-up *ticket* | | `git grep -rn '<term>' <paths>` |
 
@@ -394,10 +393,9 @@ exists so nobody mistakes the spec's silence for the feature's simplicity.
 - [ ] Every `[CONFLICT]` requirement has a decision note in `.ai/vault/decisions/`
 - [ ] Answers written back into `spec.md` with their new sources and flags
 - [ ] Every §12 question updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
-- [ ] Every requirement's **Edges** fields are filled or point at a §12 question
+- [ ] Every requirement's **Edges** fields are filled (`ASSUMED` allowed) or point at a §12 question
 - [ ] Every §11a ripple row has a source for what happens to that consumer, or a §12 question
-- [ ] Every §11b row has _Chosen_ and _Decided by_ filled by a developer
-- [ ] Every §11c sibling has a developer's yes / no / follow-up
+- [ ] A developer has reviewed §11b and §11c (_Reviewed by_), and answered every `needs developer` row
 - [ ] Decomposed into vertical units — `units.md`
 
 Answered by: ______________  Date: ______________

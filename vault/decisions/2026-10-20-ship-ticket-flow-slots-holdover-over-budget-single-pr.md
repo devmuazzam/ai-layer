@@ -15,6 +15,10 @@ related_tickets:
   - PR #831
 jira: []
 tags: [module/field-ops, kind/decision, pr-size, process]
+provenance_note: >-
+  The ~400-line / 25-file PR size budget this decision made an exception to no longer
+  exists in the AI layer as of 2026-10-21 (decisions/2026-10-21-capability-first-ai-decides-structure-guardrails-only.md §8).
+  The decision stays as the record of how PR #831 shipped. Body unchanged.
 ---
 
 # Ship PR #831 as one over-budget PR, not split

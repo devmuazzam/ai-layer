@@ -104,8 +104,9 @@ decomposer that adds to it has made the review that approved it meaningless.
 `[OPEN]` means nobody has answered. `[UNVERIFIED]` means someone answered and nobody has
 confirmed the answer is still current — and it applies to **almost every requirement you
 will ever slice**, so treating it as a blocker would stop all work. Build on it. (A
-requirement resting on a **single** `[UNVERIFIED]` source arrives from the elaborator as
-`[OPEN]` with a §12 confirmation question, and is handled as `[OPEN]` under §2.)
+client-facing requirement resting on a **single** `[UNVERIFIED]` source is in the owner's
+confirmation batch; it still gets a unit, unless it is also irreversible — then §2b's rule
+below applies.)
 
 What it changes is **reversibility**. Record the weakest source tag across each unit's
 requirements in its *Risk* block, and then apply one rule:
@@ -178,28 +179,14 @@ your plan:
 
 A rule can make a unit unnecessary. It can never make one shippable.
 
-## 6. Size honestly
+## 6. Size by the job, not by a count
 
-Size is `~<n> source lines, <n> files` against the ~400 / 25 budget — a reviewer-load
-estimate, not a time estimate. A unit estimated over ~350 lines is split now, or carries
-`size-exception? yes — <reason>` for the developer to confirm. A big unit is usually two units
-that share a migration.
+There is no line or file budget (removed 2026-10-21). A unit is one behaviour a person can
+see working; size it by that. Write a rough estimate (`~<n> source lines, <n> files`) so the
+reviewer knows what is coming — it is information, not a gate.
 
-**Every unit is one PR, and one PR has a budget: ~400 changed source lines, 25 source files**
-(tests, migrations, lockfiles and snapshots excluded — root `CLAUDE.md` → _One unit, or one
-independent task, per PR_). Estimate each unit against it from its slice-contents rows and
-write the estimate in the unit. A unit that will not fit is two units — split it now; an
-executor that discovers it mid-build has to stop.
-
-**Never write a "same branch, one PR" git layout.** PAYROLL-FLAGS' three `units*.md` files
-declared U1–U21 "same branch, same PR … developer's choice", and it shipped as #709: 958
-files, 35,108 source lines, reviewed in name only. If a developer asks for that, the answer
-is stacked PRs (each unit branches from the one it depends on — `commit` skill §1); if they
-still want one PR, that is a per-PR `size-exception` they set themselves, not a layout this
-file declares.
-
-A unit nobody can review in one sitting will be reviewed in name only, which converts the
-analyst step into a formality and puts the defect into `main`.
+**Every unit is one PR.** Never write a "same branch, one PR" git layout: dependent units
+stack (`commit` skill §1).
 
 ## 7. A unit carries its own ripple
 

@@ -42,8 +42,8 @@ cut is recorded in *Deliberately not in this unit*.
 
 An `[UNVERIFIED]` requirement is different and much weaker: it **does not** block a unit.
 Almost every requirement carries it. It constrains *how* the unit is built, not whether —
-see **Risk** below. The exception is a requirement whose only source is `[UNVERIFIED]`: the
-spec marks it `[OPEN]` until the owner answers its §12 confirmation question.
+see **Risk** below. A client-facing requirement whose only source is `[UNVERIFIED]` is in the
+ticket's confirmation batch to the owner, but builds meanwhile unless it is also irreversible.
 
 ---
 
@@ -85,8 +85,8 @@ was green before the work started.
 - **Depends on:** *unit ids, or `—`*
 - **Branch / PR base:** *`<type>/SCRUM-###-u<n>-<slug>` from `origin/main`, or stacked on
   `<U<n>'s branch>` while that PR is open. One unit, one branch, one PR — always.*
-- **Size estimate:** *~<n> source lines, <n> source files — must be within ~400 / 25
-  (tests, migrations, lockfiles excluded). Over it → this is two units.*
+- **Size estimate:** *~<n> source lines, <n> source files — information for the reviewer,
+  not a gate (no budget since 2026-10-21).*
 
 ### Slice contents
 

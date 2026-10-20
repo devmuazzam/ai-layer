@@ -25,8 +25,7 @@ not `add-model-and-endpoint`.
 **One unit per branch, one branch per PR.** Two units on one branch is one unreviewed unit,
 which defeats the point of slicing them. Not even as "one commit per unit" on a shared
 branch — PAYROLL-FLAGS shipped 21 units that way as #709 (958 files). A `units.md` that
-declares "same branch, one PR" is overruled by this rule; the only exception is per PR, via
-the `size-exception` label and a written reason (§7).
+declares "same branch, one PR" is overruled by this rule.
 
 **A unit that depends on an unmerged unit stacks on it.** Branch from the dependency's
 branch, not from `main`, and open the PR **against that branch**:
@@ -221,41 +220,29 @@ description is the only record — and `review-pr` reads it. Every PR carries th
 sections, even when they say "none":
 
 ```markdown
-## Developer decisions
-| Decision | Options considered | Chosen | Decided by |
+## AI decisions
+| Decision | Chosen | Why | Alternatives |
 | --- | --- | --- | --- |
-| New column `foo.bar` vs reuse `foo.baz` | new column; reuse existing; derived value | reuse `foo.baz` | <developer name> |
+| New column `foo.bar` vs reuse `foo.baz` | reuse `foo.baz` | same value, one source | new column; derived value |
 
 ## Siblings
 | Sibling (pattern) | Same change? | Done here / follow-up / why not |
 | --- | --- | --- |
 | `apps/api/src/usecase/agencies` (P1) | yes | done in this PR |
-| `apps/api/src/usecase/yards` (P1) | no | intentionally different — <reason>, per <developer name> |
+| `apps/api/src/usecase/yards` (P1) | yes | follow-up — separate job, own ticket |
 ```
 
-- **Structural** means what root `CLAUDE.md` → _Developers decide structure_ lists. Private
-  helpers do not go here.
-- **_Decided by_ is a developer's name.** An AI drafting the description leaves that cell
-  for the developer to fill — never its own suggestion, never "Claude". A developer who said
-  "you decide" has not decided: write `AI proposal — pending developer confirmation`.
+- **Structural** means a new table/column/enum/relation, a new exported function vs reuse, a
+  new endpoint or shape, a pattern choice or deviation. Private helpers do not go here.
+- **The AI fills the table**, including its own choices — every one, with why. **The
+  reviewer approves the table by approving the PR**; a choice they would make differently is
+  a review comment. A guardrail item (root `CLAUDE.md` → G1–G5) is not decided here — it was
+  asked before the build.
 - **Siblings** come from `.ai/claude/contexts/patterns.md` plus a `git grep`. "None — no
   pattern entry and no other instance found by `<command>`" is a valid row; an empty
   section is not.
 
-## 7. Size — measure before every push
+## 7. Size
 
-Budget per PR: **~400 changed source lines, 25 source files** (root `CLAUDE.md` → _One
-unit, or one independent task, per PR_). Tests, migrations, lockfiles and snapshots do not
-count. `.github/workflows/pr-size.yml` runs the same count on the PR.
-
-```bash
-git diff --numstat origin/main...HEAD | grep -Ev '(\.spec\.|\.test\.|/e2e/|__tests__/|^qa-automation/|/migrations/|pnpm-lock\.yaml$|\.snap$)' \
-  | awk '{l+=$1+$2; f++} END{print l+0" lines, "f+0" files"}'
-```
-
-For a stacked branch, measure against its base branch, not `main`.
-
-Over budget → **stop and propose a split to the developer**: which commits or files form
-each PR, which stack on which, and which sweep comes out first. The developer decides. If
-they decide it stays one PR, they add the `size-exception` label and the reason goes in the
-PR description — never set by an AI on its own.
+No line or file budget (removed 2026-10-21). Before pushing, check only that the diff holds
+this unit or task and nothing else — a sweep or an unrelated fix comes out into its own PR.

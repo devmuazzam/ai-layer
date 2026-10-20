@@ -116,10 +116,12 @@ Units are sized to be reviewable in one sitting; two units in one PR is one unre
 Do not implement the parts of a later unit that this one makes obvious. The plan sequenced
 them for a reason, and the reason is usually that something between them needs checking.
 
-## 2. Stop on `[OPEN]`. Do not choose a sensible default.
+## 2. Stop on `[OPEN]` and the guardrails. Decide the rest.
 
-If building requires something the spec marked `[OPEN]`, or something it never addressed at
-all:
+Stop only when building requires something the spec marked `[OPEN]`, or one of the
+guardrails in root `CLAUDE.md` → _The AI decides how_ (G1 client-facing behaviour nobody
+specified, G2 destroying or rewriting data, G3 tenant data, G4 pay rules, G5 a new
+dependency):
 
 1. **Stop that part.** Build everything in the unit that does not depend on it.
 2. **Say which requirement blocked you**, and what specifically you needed.
@@ -129,51 +131,18 @@ all:
    `.ai/vault/payroll/gaps-2026-08-20-retired.md` are retired and frozen; the live
    product-wide registers are `.ai/vault/<module>/gaps.md`, but a question *this ticket*
    raised never goes there — §12, always.
-4. **Report it.** Do not bury it in a code comment — a `// TODO: confirm threshold` is a
-   decision that already shipped.
+4. **Report it.** Do not bury it in a code comment — a `// TODO: confirm threshold` on a
+   guardrail item is a decision that already shipped.
 
-The things that most often look too small to ask about, and are not: field lengths, default
-values, status enum members, sort order, pagination size, timeout, retry count, error copy,
-whether a field is nullable, what happens on the empty state.
+### Everything else: decide, then record
 
-**`NOT SPECIFIED` is a complete answer.** Handing back a unit that is 80% built with a
-named blocker is a better outcome than a unit that is 100% built on four invented details.
-
-### How to know you have hit one — by lookup, not by judgement
-
-"Notice when you are guessing" is the hardest thing asked of you, and it is unreliable
-precisely when it matters: an invented default feels like knowledge. So do not rely on
-noticing. **Check a list.**
-
-Your authorised surface is exactly two things:
-
-1. the rows of this unit's **slice-contents table**, and
-2. the `REQ-nn` items under its **Requirements covered**, as written in the spec.
-
-Anything you need in order to proceed that is not traceable to one of those is out of scope
-**by rule** — regardless of how obvious, how small, or how confident you feel. That is a
-lookup with a yes/no answer, and it does not depend on you correctly assessing your own
-certainty.
-
-Run it at the moment you are about to write a concrete value — a length, a default, a sort
-order, an enum member, a piece of copy. Ask *which row or which REQ is this from?* If the
-answer is "it's standard" or "it matches the neighbouring module", you have found a gap, and
-§2's four steps apply.
-
-### Structural choices stop too — they are the developer's
-
-§2 is about product values. The same stop applies to **structure**, and the lookup is the
-same: is this choice already fixed by a slice-contents row, a `spec.md` §11b row with
-_Decided by_ filled, or the reference in `.ai/claude/contexts/patterns.md`? If not, and it is
-on root `CLAUDE.md` → _Developers decide structure_'s list — a new table, column, enum member
-or relation; a new exported function/service/hook/component instead of reusing one; a new
-endpoint or shape; a new dependency; a deviation from the pattern reference — **stop that
-part and ask the developer**, with the options and the existing code you found (paths). You
-may recommend; the developer chooses. Then build what they chose.
-
-On Path B or C there is no spec: ask in the conversation, and put the answer in the PR
-description's _Developer decisions_ table (`commit` skill §6) with the developer's name.
-Never write your own name, or your suggestion, as the decider.
+A value or structure no REQ fixes — a length, a default, a sort order, a page size, an
+empty state, a new function versus reuse, a column, an endpoint — take it from
+`.ai/claude/contexts/patterns.md`, then the nearest existing code, then the simplest option.
+**Do not stop for these, and do not raise §12 questions for them.** Record each one under
+**Assumed** in your output and in the decisions table — `spec.md` §11b on Path A, the PR
+description's _AI decisions_ table (`commit` skill §6) on B and C — with what you chose and
+where it came from. The developer reviews the table in the PR; that review is the check.
 
 ## 2b. `[UNVERIFIED]` is not a stop — but it caps what you may make permanent
 
@@ -249,17 +218,18 @@ and same-named methods in sibling modules. Copying a private helper into your mo
 way `formatInternalId` and `mapWriteError` were copied) is the duplication this rule exists
 to stop. Reuse vs new is a developer decision (§2) — show what you found.
 
-## 4b. Follow the pattern; offer the change to the siblings
+## 4b. Follow the pattern; carry the change to the siblings
 
 If the unit builds a shape listed in `.ai/claude/contexts/patterns.md`, build it the way the
-**reference** is built — not the way the nearest module is. `UNDECIDED` reference: stop and
-ask (§2). Then, for any change to an instance of a pattern:
+**reference** is built — not the way the nearest module is. `UNDECIDED` reference: pick the
+variant the most instances use and record it. Then, for any change to an instance of a
+pattern:
 
 1. **Name every sibling** the same change would apply to (`patterns.md` + `git grep`).
-2. **Ask the developer** — unless `spec.md` §11c already answered it.
-3. **On a yes, apply it in this unit**; on a no, record the reason where the decision lives.
+2. **Apply it in this unit**, or list it as a follow-up when it is a separate job.
+3. **Record every sibling** and what happened to it in the decisions table.
 
-Never apply a sibling change silently, and never finish without having mentioned them.
+Never finish without the siblings recorded.
 
 ## 5. The surface rules bind you
 
@@ -285,16 +255,10 @@ Scheme, the prop pattern and the worked examples are in `contexts/web.md` → *T
 If the unit changes a screen that already has IDs, `grep -rn '<the-id>' qa-automation/e2e`
 before renaming, and update the spec in the same unit. That is in scope, not a follow-up.
 
-## 6. Finish means the gates ran — and the unit fits one PR
+## 6. Finish means the gates ran
 
-Measure the diff against the branch base with the `commit` skill §7 command. Over ~400
-source lines or 25 source files, the unit was sliced too large: **stop, report the number,
-and propose the split** (which slice-contents rows become their own stacked unit). Do not
-trim the unit on your own and do not carry on — the developer decides, and the decomposer's
-`units.md` gets the new unit. Each part of a proposed split must pass the ships-alone test
-(`templates/units.md` → *What a unit is*). A split along API / web, or one whose PR would say
-"nothing deploys until U*n*", is not a split: re-slice by behaviour, or say it cannot be
-split.
+There is no line or file budget (removed 2026-10-21). Keep the diff to this unit: a sweep or
+an unrelated fix you made on the way goes into its own commit and PR.
 
 Before you hand back: `pnpm lint` and `pnpm build`, plus the unit's tests (`pnpm affected`
 covers all three for the projects your branch touched; the surface commands —
@@ -327,23 +291,23 @@ Demo: <the exact thing to click or call>
 
 Gates (vs units.md Gate baseline): lint <pass | fail: N pre-existing, M mine>  build <pass|fail>  tests <n passed>
 Rule sources checked: <command> → <hits, or "none">
-Size: <n> source lines, <n> source files vs <base branch> — <within budget | OVER: proposed split>
+Size: <n> source lines, <n> source files vs <base branch> (information, not a gate)
 Branch: <name> — base: <origin/main | stacked on <unit branch>>
 
 Stopped on:
   <requirement / detail I needed and could not source — or "nothing">
   Open questions written to spec.md §12: <Q ids, or "none">
 
-Developer decisions: <each structural choice — chosen by <developer>, or "waiting on developer: <options>">
+AI decisions: <each structural choice — what I chose, why, the alternatives>
 Pattern: <patterns.md entry followed, or "none">
-Siblings: <each — applied (developer said yes) | not applied — <reason> | asked, waiting>
+Siblings: <each — applied | follow-up — <reason>>
 
 Not in this unit: <what I deliberately left, and which unit it belongs to>
 Deviations: <where I followed the context against the surrounding code, and where I didn't>
 
-Assumptions I never stated: <each thing I took as given that no slice row, REQ or decision
-  says — a default, an order, an existing behaviour I relied on. Each one is a §12 question
-  or a §11b decision the developer hasn't seen yet. "none" only after checking>
+Assumed: <each value or behaviour I decided without a source — what, and where it came from
+  (patterns.md / <nearest file> / simplest option). The developer reviews these in the PR.
+  "none" only after checking>
 Least confident about: <the one part most likely to be wrong, and what would show it>
 ```
 

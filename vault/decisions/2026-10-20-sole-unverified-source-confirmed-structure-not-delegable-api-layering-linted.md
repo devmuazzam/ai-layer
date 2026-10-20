@@ -13,6 +13,14 @@ resolves: >-
   `.ai/aidlc/reflections/INDEX.md`: SCRUM-252 SD-1, TICKET-FLOW-SLOTS-HOLDOVER ED-11,
   TICKET-FLOW-SLOTS-HOLDOVER ED-12
 tags: [module/all, kind/decision, architecture, sprint-planning]
+superseded_by: decisions/2026-10-21-capability-first-ai-decides-structure-guardrails-only.md  # §2 only
+provenance_note: >-
+  §2 (structure not delegable) is superseded and §1 is amended by decisions/2026-10-21-capability-first-ai-decides-structure-guardrails-only.md:
+  a sole-[UNVERIFIED] client-facing requirement is confirmed in the batched questions and
+  does not block the build unless also irreversible. §3 stands. Its open item on the order
+  of the sweep PRs "under the ~400-line PR budget" no longer has a budget to fit: the
+  budget was removed 2026-10-21 (same note, §8), so only the type-only exemption stays
+  open. Body unchanged.
 ---
 
 ## Decision
