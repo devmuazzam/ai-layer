@@ -41,7 +41,9 @@ gh pr list --state merged --search 'SCRUM-###'        # which PRs, and when
 
 Name the units that shipped, and the ones that did not. A unit that was cut, abandoned, or
 partly built is the most valuable line in the reflection and the easiest to forget once the
-branch is deleted.
+branch is deleted. In `units.md`'s ledger, flip each merged unit's Status from `built — <branch>`
+to `merged — PR #<n>` (the executor writes the cell up to `built`; this is the only other
+writer).
 
 If units are still open, this is not a close — it is a checkpoint. Do steps 4, 6 and 7 and
 stop.

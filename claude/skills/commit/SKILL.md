@@ -37,8 +37,11 @@ git switch -c feat/SCRUM-757-u2-<slug> origin/feat/SCRUM-757-u1-<slug>
 gh pr create --base feat/SCRUM-757-u1-<slug> ...
 ```
 
-When U1 merges (this repo merges with merge commits) and its branch is deleted, GitHub
-retargets U2's PR to `main` by itself. If U1 changes under review, `git rebase
+Open a stacked PR as **draft**. Before merging a parent, run
+`gh pr list --base <parent-branch>` and retarget each result with
+`gh pr edit <n> --base main` **first** — GitHub closes a PR whose base branch is deleted
+unless it was retargeted (TCG-218). Mark the child ready only once its base shows `main`.
+If U1 changes under review, `git rebase
 origin/feat/SCRUM-757-u1-<slug>` in U2. Each PR's diff shows only its own unit.
 
 **Sweeps never ride along.** Lint/format autofixes, import reordering, dependency or SDK
@@ -151,12 +154,13 @@ Never rebase a branch someone else has checked out, and never force-push `main`.
 After a rebase, updating your own PR branch needs `git push --force-with-lease` — never a
 bare `--force`, which discards a teammate's push to that branch without telling you.
 
-**One of these is now enforced, by the client repo itself.** Since the Nx merge (PR #363)
-the hooks are tracked files in `.husky/` and run in the main checkout and every linked worktree
-(`pnpm install` sets `core.hooksPath=.husky`). `pre-push` refuses a direct push of `main`, then
-runs `nx affected` lint (web excluded), typecheck (mobile excluded) and build against
-`origin/main`. `SKIP_GATES=1 git push` skips the gates, never the branch guard; `--no-verify`
-skips everything — treat that as a decision, not a habit. **The rebase-behind check is not
+**Only the branch guard is enforced.** Since the Nx merge (PR #363) the hooks are tracked
+files in `.husky/` and run in the main checkout and every linked worktree (`pnpm install` sets
+`core.hooksPath=.husky`). `pre-push` refuses a direct push of `main` — and nothing else: its
+`nx affected` lint/typecheck/build block is commented out, `SKIP_GATES=1` is a no-op, and the
+hook's own comment "CI runs them on the PR instead" is false — CI runs only `deploy.yml` and
+`pr-size.yml`. **Run the gates yourself before you push.** `--no-verify` skips the branch
+guard too — treat that as a decision, not a habit. **The rebase-behind check is not
 enforced by anything any more** — `.ai/setup.sh` no longer installs its own hook, because two
 `core.hooksPath` values cannot coexist and the tracked hooks won — so *rebase before you push*
 is back to being your discipline. Branch naming is not checked either.

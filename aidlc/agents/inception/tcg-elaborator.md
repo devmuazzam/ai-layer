@@ -204,6 +204,11 @@ filename, never `../`, never "the FRD says".
 
 **A claim you cannot cite is a claim you do not write.**
 
+For a requirement that defines a layout, document or workflow, `ls` the module's vault folder
+for an existing client template of the same artefact (`*template*`, `*-by-*`, `*sop*`) and
+list it under Sources. Any difference is written as **`Differs from <file> §n because
+<source>`** or becomes a §12 question — never a silent choice.
+
 If the vault and Jira disagree, say so and cite both. Do not silently prefer either — and
 note that Jira is where an unsourced decision is most likely to be found already in flight.
 
@@ -319,7 +324,10 @@ Do all five, in order:
    resolves it**. Not "can you clarify the quotation approval process" but "Does a
    quotation above $X require a second approver, or is the salesperson's approval
    sufficient?" Name the decision, give the options if there are obvious ones, say what is
-   blocked, and name the owner where a vault open question already names one.
+   blocked, and name the owner where a vault open question already names one. A client
+   question about what a customer-facing document shows asks the **scope first** ("does the
+   customer ever see X, on any line?") before the narrow case ("on this line?"); the narrow
+   reading is not built until the scope reply is in.
 4. **Write it into §12 of the spec, and nowhere else.** §12 is the ticket's gaps register —
    a ticket folder has no `gaps.md`. A question raised by a ticket belongs to that ticket, so
    it stays in the file the next person opens. **Do not append it to a vault `gaps.md`** —
@@ -396,6 +404,12 @@ quoting a snapshot is not quoting the source. SCRUM-926 shipped with one REQ who
 acceptance line contradicted its own executor note, and another that quoted a ticket's text
 that had since changed; neither was caught because nothing re-read the ticket or the note a
 second time (`.ai/aidlc/SCRUM-926/reflection.md` SD-1, SD-2).
+
+Re-check every citation mechanically, not by memory. A `kind: rule` citation
+`File → Heading` must resolve with `grep -n '^#.*<Heading>' <file>`, or it is removed. A grep
+cited as evidence of a caller is read for *where* it matched: matches only inside the
+function's own definition file mean **no external caller (dead code)**, never "the existing
+single gate". State which case applies next to the citation.
 
 ## 9. Ripple — what already ships that this requirement reaches
 

@@ -46,14 +46,31 @@ see **Risk** below.
 
 ---
 
+## Gate baseline
+
+**Gate baseline:** *`YYYY-MM-DD`, `origin/main` at `<sha>` — lint: `<n>` errors (`apps/web`
+`<n>`), typecheck: pass / fail, build: pass / fail, test: pass / fail.* Written by the
+decomposer from a real run, not copied from `CLAUDE.md`. The executor reports its gates
+**vs this baseline**, so a new failure cannot hide among old ones. Nothing runs these gates
+on a PR (no CI job, pre-push gates commented out) — this line is the only record of what
+was green before the work started.
+
 ## Unit ledger
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | | REQ-01, REQ-03 | schema, api, web | — | S / M / L | not started |
+| U1 | | REQ-01, REQ-03 | schema, api, web | — | ~<n> lines / <n> files | not started |
 | U2 | | | | U1 | | |
 
-- Requirements not covered by any unit: *list them, with why — usually `[OPEN]`*
+- **Status** takes exactly one of: `not started` · `in progress — <branch>` · `built — <branch>`
+  · `merged — PR #<n>` · `cut — <reason>`. **Never a commit SHA**: rebases and squashes
+  rewrite them. `tcg-executor` writes this cell for its own unit at the end of every run (its
+  only write to `units.md`); `close-ticket` §1 flips `built` to `merged — PR #<n>`. A ledger
+  that says `not started` for a unit with a merged PR is a stale reference.
+- Requirements covered: REQ-01..REQ-nn, counted against `spec.md` §2 on *date*. **Recount
+  whenever §2 gains a REQ.** A REQ added after this file was written is not built until the
+  decomposer gives it a unit row, never as a ride-along in another unit's PR. Not covered:
+  *list, with why — usually `[OPEN]`*
 - Units blocked on an open question: *list them, with the `spec.md` §12 question id*
 
 ---
@@ -79,7 +96,12 @@ see **Risk** below.
 | Web (`apps/web`) | | *route + components; reuse before creating* |
 | Mobile (`apps/mobile`) | | |
 | Shared (`packages/shared`) | | |
-| Tests | | *unit / integration / e2e* |
+| Tests | | *unit / integration / e2e — one row per test promised, see below* |
+
+**Tests the slice must carry**, beyond its happy path: one **negative test** per *Does not
+apply when* item (`spec.md` → the REQ's **Edges**) of every REQ the unit covers, asserting the
+rule does **not** fire there; one **API-level test** per uniqueness or window constraint,
+asserting the response code (not the index); one test per §12 **Workaround** the unit builds.
 
 ### Reviewable as
 

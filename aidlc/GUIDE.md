@@ -392,9 +392,11 @@ mode with eight people filling them.
 ## 12. Running it for real — what to expect
 
 Every phase agent has now run on real tickets (`reflections/INDEX.md` holds defects from nine
-of them). What has not run is the **third-occurrence escalation**: classes such as
-`missing-requirement` and `gate-illusion` are far past three rows with nothing escalated, so
-proposals pile up as `proposed`. Treat that queue as the loop's main open debt.
+of them). The **third-occurrence escalation** first ran on 2026-10-20, after
+`missing-requirement` had reached 19 rows and `gate-illusion` 14: each became one structural
+rule (the spec template's **Edges** block; the units template's **Gate baseline**) and 41
+queued proposals were applied in one pass. Keep the queue short — a proposal left `proposed`
+for weeks is how a class reaches 19.
 
 Expect, in rough order of likelihood:
 

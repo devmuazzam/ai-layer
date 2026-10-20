@@ -141,6 +141,11 @@ The ledger carries every requirement in the spec. Before you finish:
 Count the requirements in the spec and count them in the ledger. If the numbers differ,
 find out why before writing anything else.
 
+**Write the Gate baseline** (`templates/units.md`) from a real `pnpm lint`, typecheck, build
+and test run on `origin/main` before the first unit — never copied from `CLAUDE.md`. Nothing
+else records what was already red, so without it the executor cannot tell its failures from
+the ones it inherited.
+
 ## 4. Sequencing must be falsifiable
 
 "These can run in parallel" is a claim about files and tables, so state them.
@@ -149,6 +154,9 @@ find out why before writing anything else.
   collide. Two units both touching `apps/api/prisma/schema.prisma` are not parallel, however
   different their features are.
 - **Merge order constraint:** migrations land in unit order; say so where it binds.
+- **Shared providers:** if two units name the same provider, constructor or module in Slice
+  contents, one `Depends on` the other, or the ledger says why not. Find them with
+  `git grep -ln '<ProviderName>' -- apps/api/src`.
 - **First unit to ship:** and what it proves about the rest of the plan. If the first unit
   proves nothing, the ordering is wrong — lead with the slice that tests the riskiest
   assumption, not the easiest one.
@@ -170,8 +178,10 @@ A rule can make a unit unnecessary. It can never make one shippable.
 
 ## 6. Size honestly
 
-`S / M / L` is a reviewer-load estimate, not a time estimate. If a unit is `L`, ask whether
-it is actually two units that share a migration. Most are.
+Size is `~<n> source lines, <n> files` against the ~400 / 25 budget — a reviewer-load
+estimate, not a time estimate. A unit estimated over ~350 lines is split now, or carries
+`size-exception? yes — <reason>` for the developer to confirm. A big unit is usually two units
+that share a migration.
 
 **Every unit is one PR, and one PR has a budget: ~400 changed source lines, 25 source files**
 (tests, migrations, lockfiles and snapshots excluded — root `CLAUDE.md` → _One unit, or one

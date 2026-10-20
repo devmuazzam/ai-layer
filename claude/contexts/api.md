@@ -113,3 +113,25 @@ constant is `PICKER_PAGE_SIZE` and stays well below it.
 
 Pagination `orderBy` must end on a unique key — see `contexts/prisma.md` (*Picker
 pagination sorts on a unique last key*).
+
+## Reading frozen or copied data
+
+A reader of a frozen copy (snapshot, history, revision) imports the **same exported
+`orderBy` constant** as the live read of the same data and adds no tie-break of its own. If
+the live order needs a unique last key, add it to the shared constant, so both reads change
+together (TCG-218).
+
+## Notifications
+
+Every key in the notification catalog is a member of `NOTIFICATION_TYPES` in `@tcg/shared`
+(`packages/shared/src/types/notification.types.ts`). The catalog is keyed by plain string, so
+tsc does not catch a miss (`payroll.entry_corrected`, PAYROLL-FLAGS, fixed in #735). Add a
+type to both in the same commit.
+
+## Testing
+
+A unit that changes a provider constructor, or a module's `providers` or `imports`, runs a
+Nest module-compile test — `Test.createTestingModule({ imports: [AppModule] }).compile()` —
+so a DI break fails a test instead of the boot. No such spec exists in the repo yet; until one
+does, and until anything runs tests on a PR, this is a gate you run by hand (TICKET-FLOW-
+SLOTS-HOLDOVER).

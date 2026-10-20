@@ -42,16 +42,21 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
 | `.ai/aidlc/SCRUM-###/state.md` | **write** — read it first on resume; at the end of your run mark Build `[-]`/`[?]`, set Branch(es), rewrite Resume (unit built, gates run, what stopped you). Per-unit status stays in the `units.md` ledger |
 | `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — 45–604 KB each (`payroll/gaps.md` the largest), grep them too |
-| `spec.md`, `units.md` | **no write access** |
+| `units.md` | **write only your unit's ledger Status cell**, at the end of every run, in the template's vocabulary (`in progress — <branch>`, `built — <branch>`; never a SHA). Nothing else in the file |
+| `spec.md` | **no write access** beyond §12 |
 
-You do not edit the spec or the units to match what you built. If they are wrong, stop and
+You do not edit the spec or the units to match what you built — the Status cell records
+progress, never scope. If they are wrong, stop and
 say so. A contract edited by the party fulfilling it is not a contract.
 
 ---
 
 ## 0. Branch before you build
 
-One unit, one branch, one PR. Before the first edit:
+One unit, one branch, one PR. **Create the branch in a linked worktree**
+(`pnpm worktree:add <ticket>-u<n>`). Use `git switch -c` in the primary checkout only when the
+developer confirms no dev server is running there; otherwise stop and ask. Before the first
+edit:
 
 ```bash
 git fetch origin
@@ -209,14 +214,16 @@ This matters more here than anywhere, because this repo will actively mislead yo
   canonical is unresolved.
 - A convention documented in one file is contradicted by another in at least two cases.
 
-**Before writing new pricing, rate, or premium logic of any kind**, `grep -rn`
-`.ai/vault/decisions/` for the entity and rule name, and grep the repo for any existing
-implementation of the same rule (a sibling `packages/shared` constant, a repository method
-with a similar name) before deciding how a fallback or edge case behaves. Matching behaviour
-already shipped elsewhere for the same rule is a source; failing to check for one is not a
-judgement call — a boom-adder fallback shipped in SCRUM-926/U4 that silently contradicted a
-`[VERIFIED]` decision already implemented correctly one layer over is exactly this failure
-(`.ai/aidlc/SCRUM-926/reflection.md` ED-1).
+**Before writing logic for any rule a REQ names**, whatever the domain — pricing, a date or
+shift boundary, a status-to-label mapping, an idempotency path — `grep -rn`
+`.ai/vault/decisions/` and the whole repo (`packages/shared` and the other front-end
+included) for the rule's nouns, and read every §12 **Workaround** line in this ticket's
+`spec.md`. A shipped implementation of the same rule, a decision, or a labelled workaround is
+a source: build to it or stop and ask. **Never write a second copy that can diverge.** A
+domain list is what failed before — a boom-adder fallback in SCRUM-926/U4 contradicted a
+`[VERIFIED]` decision already implemented one layer over (ED-1), and the next two misses were
+a shift boundary and a §12 workaround, outside the list. Report the search on the
+`Rule sources checked` line of your output.
 
 **Passing `pnpm lint` is not evidence a convention was followed.** There is no rule for
 module boundaries, duplication, or hardcoded colour. The gate is much weaker than it looks.
@@ -284,7 +291,10 @@ Measure the diff against the branch base with the `commit` skill §7 command. Ov
 source lines or 25 source files, the unit was sliced too large: **stop, report the number,
 and propose the split** (which slice-contents rows become their own stacked unit). Do not
 trim the unit on your own and do not carry on — the developer decides, and the decomposer's
-`units.md` gets the new unit.
+`units.md` gets the new unit. Each part of a proposed split must pass the ships-alone test
+(`templates/units.md` → *What a unit is*). A split along API / web, or one whose PR would say
+"nothing deploys until U*n*", is not a split: re-slice by behaviour, or say it cannot be
+split.
 
 Before you hand back: `pnpm lint` and `pnpm build`, plus the unit's tests (`pnpm affected`
 covers all three for the projects your branch touched; the surface commands —
@@ -310,11 +320,13 @@ Slice delivered:
   schema  <migration name, or N/A>
   api     <files>
   web     <files>
-  tests   <what, and what they assert>
+  tests   one line per item in the unit's Tests row:
+          <level> <built — <file>: asserts <x> | not built — <reason>>
 
 Demo: <the exact thing to click or call>
 
-Gates: lint <pass | fail: N pre-existing, M mine>  build <pass|fail>  tests <n passed>
+Gates (vs units.md Gate baseline): lint <pass | fail: N pre-existing, M mine>  build <pass|fail>  tests <n passed>
+Rule sources checked: <command> → <hits, or "none">
 Size: <n> source lines, <n> source files vs <base branch> — <within budget | OVER: proposed split>
 Branch: <name> — base: <origin/main | stacked on <unit branch>>
 
@@ -334,6 +346,9 @@ Assumptions I never stated: <each thing I took as given that no slice row, REQ o
   or a §11b decision the developer hasn't seen yet. "none" only after checking>
 Least confident about: <the one part most likely to be wrong, and what would show it>
 ```
+
+A promised test level or row that was not built is reported on its own `tests` line, never
+folded into one prose line. **A unit with a `not built` row is not complete.**
 
 The last two are **self-reports, not findings** — what you list is worth checking; what you
 miss is still invisible, which is why the analyst checks mechanically. Never leave them

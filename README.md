@@ -386,10 +386,13 @@ Honest state, so nobody rediscovers them.
 - **The loop runs end to end; its learning step does not (re-audited 2026-10-20).** The
   2026-08-24 audit found the tail had never run and path A unexercised. Since then 18 ticket
   folders have a `units.md`, 9 have a `reflection.md`, and `reflections/INDEX.md` holds 64
-  defect rows. What still does not happen is the **third-occurrence escalation**:
-  `missing-requirement` (19 rows) and `gate-illusion` (14) are far past three with nothing
-  `escalated`, and 47 proposals sit `proposed`. Ledger rows are still sometimes backfilled
-  at close (4 rows say so) rather than written by `commit` at branch creation.
+  defect rows. The **third-occurrence escalation** had never run until 2026-10-20, when
+  `missing-requirement` (19 rows) and `gate-illusion` (14) were escalated into template rules
+  and 41 queued proposals applied; 9 rows remain for Haris (6 to withdraw, 3 policy calls).
+  **`gate-illusion` is only partly fixed**: nothing runs lint, typecheck, build or test on a
+  PR, and the proposed `.github/workflows/gates.yml` awaits a decision. Ledger rows are still
+  sometimes backfilled at close (4 rows say so) rather than written by `commit` at branch
+  creation.
 - **`apps/web` does not glob its tests** — `package.json` passes 14 filenames explicitly, so
   a web test not hand-added never runs and nothing says so. Fix before trusting web coverage.
 - [`aidlc/context-restructure-plan.md`](aidlc/context-restructure-plan.md) is **partly
