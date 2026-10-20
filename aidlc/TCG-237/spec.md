@@ -1712,6 +1712,21 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** open
 
+
+### Q68 — "Can also fill" vs the DAS craft check on a slot
+
+*Raised 2026-10-20 by the local DEMO-237 test.*
+
+- **Question:** Owen (main role Operator, primary craft OPR, Oiler on his can-also-fill list) passes U17's eligibility check for an Oiler slot, but DAS then refuses with `CRAFT_ROLE_MISMATCH` ("The Oiler slot for this employee must have an Oiler craft code") because he has no Oiler craft assignment. With a SECONDARY OIL craft added, the placement is accepted. Should a can-also-fill entry be enough on its own?
+- **Options:**
+  - A. Keep both checks: can-also-fill says *may* fill; a matching craft assignment (primary or secondary) is still needed so payroll has a craft to pay under.
+  - B. Adding a role to can-also-fill also requires (or auto-creates) a secondary craft for that role.
+  - C. The slot's craft falls back to a craft linked to the slot role when the person has none (payroll picks it).
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer); product side may need TCG (payroll).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
