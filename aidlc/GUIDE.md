@@ -347,6 +347,25 @@ built through the loop; the skill is the ad-hoc path for a PR with no unit behin
 .ai/claude/contexts/  how to build, per surface
 ```
 
+**Where a fact goes, and who writes it.** Never in a tool's own memory, rules or saved
+prompts — a fact kept there is invisible to the other developers and tools, and nothing
+reports the divergence. If deleting your tool's local state would lose it, it is not memory
+yet.
+
+| What you learned | Where it goes | Who writes it |
+| --- | --- | --- |
+| A named human decided something | `.ai/vault/decisions/` | `tcg-scrum` |
+| An open question raised by a ticket | `.ai/aidlc/<TICKET>/spec.md` §12 | any agent, append |
+| An open question belonging to no ticket | `.ai/vault/<module>/gaps.md` (`vault/STRUCTURE.md` → _Where a question goes_) | any agent, append |
+| How we build — a convention, a rail | `.ai/claude/contexts/` (recurring shapes: `patterns.md`) | Haris only |
+| A defect the loop made | `.ai/aidlc/reflections/INDEX.md` | `tcg-reflector` |
+
+Sweeps: every ticket `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/[A-Z]*/spec.md` · every
+module `grep -rn '^- \*\*Status:\*\* open' .ai/vault/*/gaps.md`. A fact reaches the team only
+once the overlay is pushed — in a linked worktree, once `pnpm worktree:done` merges its
+branch into overlay `main`. Skills and subagents are Claude Code features; on other tools,
+open `.ai/claude/skills/<name>/SKILL.md` and `.ai/aidlc/agents/` by path.
+
 **Three memories, three clocks, and they are not interchangeable.** `vault/` is what the
 product should do and only a human changes it. `contexts/` is how we build and only an
 accepted reflection changes it. `aidlc/SCRUM-###/` is one ticket and goes inert when it

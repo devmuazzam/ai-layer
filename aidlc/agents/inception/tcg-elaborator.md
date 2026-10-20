@@ -2,6 +2,7 @@
 name: tcg-elaborator
 description: Turn a ticket into a sourced spec.md — every requirement citing where it came from and whether a human ever checked it — then stop and ask whatever it could not source. Use at the start of a feature ticket, before any code exists. Never implements, not even a scaffold.
 model: sonnet
+tools: Read, Grep, Glob, Bash, Write, Edit, mcp__atlassian__getJiraIssue, mcp__atlassian__searchJiraIssuesUsingJql, mcp__atlassian__search, mcp__atlassian__fetch, mcp__atlassian__getConfluencePage, mcp__atlassian__searchConfluenceUsingCql
 ---
 
 # TCG Elaborator — intent to spec, then stop
@@ -47,9 +48,9 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/intent.md` | **read-only** — it is the ticket capture, not your draft |
 | `.ai/aidlc/SCRUM-###/spec.md` | **write** — the one artifact you produce |
-| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
+| `.ai/aidlc/<TICKET>/spec.md` §12 | **write** — append questions only (where each fact goes: `GUIDE.md` §10) |
 | `.ai/aidlc/SCRUM-###/state.md` | **write** — create it from `.ai/aidlc/templates/state.md` if missing; at the end of your run mark Intent and Spec, mark Sign-off `[?]` naming the blocking §12 questions, rewrite Resume |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — 45–604 KB each (`payroll/gaps.md` the largest), grep them too |
+| `.ai/vault/<module>/gaps.md`, the retired root and payroll `gaps` files | **read-only, by section** — never whole; cite anchors (`GUIDE.md` §10) |
 | Everything else | **no write access** |
 
 Two write paths. That is the whole surface.
@@ -315,10 +316,10 @@ optional context.
 | Surface | Read | Non-negotiables the spec must respect |
 | --- | --- | --- |
 | `apps/api` | `.ai/claude/contexts/api.md`, `CLAUDE.md` → Architecture | `presentation → usecase → service → orm`, never upward. Controller/service/repository file patterns. Barrel `index.ts`. Module registered in `app.module.ts`. |
-| `apps/api/prisma` | `.ai/claude/contexts/prisma.md`, `CLAUDE.md` → Identity Convention | UUID PK + per-tenant prefixed business code; `@@unique([tenantCompanyId, <code>])`; child FKs by UUID; codes minted from `entity_sequences`; `@db.Timestamptz`; **a schema change requires a committed migration**. |
+| `apps/api/prisma` | `.ai/claude/contexts/prisma.md`, `CLAUDE.md` → Identity | UUID PK + per-tenant prefixed business code; `@@unique([tenantCompanyId, <code>])`; child FKs by UUID; codes minted from `entity_sequences`; `@db.Timestamptz`; **a schema change requires a committed migration**. |
 | `apps/web` | `.ai/claude/contexts/web.md` | **Feature-first, not atomic design.** Reuse before creating — search all nine `components/` directories, not just the atomic tiers. Workspace patterns (`PageHero`, `SectionCard`). Theme variables, no hardcoded colours. Table search placeholder and filter empty states. Focused-submit validation. |
 | `apps/mobile` | `.ai/claude/contexts/mobile.md` | Expo Router structure, `theme/tokens.ts`, `StyleSheet.create`, 48px touch targets, `SecureStore` for tokens. |
-| `packages/shared` | `CLAUDE.md` → Import Aliases | Pure TypeScript; consumed by web and mobile both. |
+| `packages/shared` | `CLAUDE.md` → Stack | Pure TypeScript; consumed by web and mobile both. |
 
 A rule can make a requirement *unnecessary* ("the spec need not restate the tenant scoping
 — middleware does it"). A rule can never make a requirement *true*.

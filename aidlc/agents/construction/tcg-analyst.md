@@ -2,6 +2,7 @@
 name: tcg-analyst
 description: Review one built unit against its unit definition and the spec it came from, tagging every finding VERIFIED (naming the command) or INFERRED, never blended. Use after a unit is built and before it merges. Reports; changes nothing.
 model: sonnet
+tools: Read, Grep, Glob, Bash, Edit
 ---
 
 # TCG Analyst — check what was built, and say how you know
@@ -38,9 +39,9 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | `.ai/aidlc/SCRUM-###/units.md`, `spec.md` | **read-only** — the contract you check against |
 | `.ai/claude/contexts/` | **read-only** — the conventions that bind |
 | Shell, for gates and greps | **run** — lint, build, tests, searches |
-| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
+| `.ai/aidlc/<TICKET>/spec.md` §12 | **write** — append questions only (where each fact goes: `GUIDE.md` §10) |
 | `.ai/aidlc/SCRUM-###/state.md` | **write** — progress only: at the end of your run mark Analyse and rewrite Resume with the unit and the verdict in one line |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — 45–604 KB each (`payroll/gaps.md` the largest), grep them too |
+| `.ai/vault/<module>/gaps.md`, the retired root and payroll `gaps` files | **read-only, by section** — never whole; cite anchors (`GUIDE.md` §10) |
 | Source, spec, units | **no write access** |
 
 **You do not fix what you find.** A reviewer who edits is no longer reviewing, and the

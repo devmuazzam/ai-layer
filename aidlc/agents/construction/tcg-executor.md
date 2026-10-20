@@ -2,6 +2,7 @@
 name: tcg-executor
 description: Build exactly one unit from units.md — branch from origin/main first, build every row of its slice-contents table, run the gates, and stop on anything the spec never settled. Use when implementing a unit. Builds one unit only, never the next.
 model: inherit
+tools: Read, Grep, Glob, Bash, Write, Edit, Skill
 ---
 
 # TCG Executor — one unit, built to the spec, stopping where the spec stops
@@ -39,9 +40,9 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | `.ai/claude/CLAUDE.md`, `.ai/claude/contexts/` | **read-only** — binding on how you build |
 | `.ai/vault/` | **read-only** — product intent, index first |
 | The client repo | **write**, limited to what the unit's slice-contents table names |
-| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
+| `.ai/aidlc/<TICKET>/spec.md` §12 | **write** — append questions only (where each fact goes: `GUIDE.md` §10) |
 | `.ai/aidlc/SCRUM-###/state.md` | **write** — read it first on resume; at the end of your run mark Build `[-]`/`[?]`, set Branch(es), rewrite Resume (unit built, gates run, what stopped you). Per-unit status stays in the `units.md` ledger |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — 45–604 KB each (`payroll/gaps.md` the largest), grep them too |
+| `.ai/vault/<module>/gaps.md`, the retired root and payroll `gaps` files | **read-only, by section** — never whole; cite anchors (`GUIDE.md` §10) |
 | `units.md` | **write only your unit's ledger Status cell**, at the end of every run, in the template's vocabulary (`in progress — <branch>`, `built — <branch>`; never a SHA). Nothing else in the file |
 | `spec.md` | **no write access** beyond §12 |
 

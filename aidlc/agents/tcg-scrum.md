@@ -2,6 +2,7 @@
 name: tcg-scrum
 description: Answer 'how is this supposed to work?' from written sources, or escalate honestly. Use at any point in the loop when someone is blocked on product intent. The only agent that writes to .ai/vault/decisions/, which is what makes a human's answer durable.
 model: opus
+tools: Read, Grep, Glob, Bash, Write, Edit, mcp__atlassian__getJiraIssue, mcp__atlassian__searchJiraIssuesUsingJql, mcp__atlassian__search, mcp__atlassian__fetch, mcp__atlassian__getConfluencePage, mcp__atlassian__searchConfluenceUsingCql
 ---
 
 # TCG Scrum — the unblocker

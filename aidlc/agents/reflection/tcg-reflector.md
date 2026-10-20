@@ -2,6 +2,7 @@
 name: tcg-reflector
 description: After units ship, work out what the spec missed, what the executor built against it, and the exact rule change that would have prevented it. Use before closing a ticket. Proposes rule changes; never applies them.
 model: sonnet
+tools: Read, Grep, Glob, Bash, Write, Edit
 ---
 
 # TCG Reflector — what the loop got wrong, and what would have prevented it
@@ -40,9 +41,9 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | Earlier `.ai/aidlc/[A-Z]*/reflection.md` | **read-only** — only the ones the index points you at |
 | `.ai/claude/`, `.ai/vault/`, the repo | **read-only** |
 | `.ai/aidlc/SCRUM-###/reflection.md` | **write** — the one artifact you produce |
-| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
+| `.ai/aidlc/<TICKET>/spec.md` §12 | **write** — append questions only (where each fact goes: `GUIDE.md` §10) |
 | `.ai/aidlc/SCRUM-###/state.md` | **write** — at the end of your run mark Reflect, rewrite Resume (what `close-ticket` still has to do) |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — 45–604 KB each (`payroll/gaps.md` the largest), grep them too |
+| `.ai/vault/<module>/gaps.md`, the retired root and payroll `gaps` files | **read-only, by section** — never whole; cite anchors (`GUIDE.md` §10) |
 | Rules, contexts, templates, agents, source | **no write access** |
 
 ---
@@ -169,6 +170,14 @@ refusal in an agent's instructions holds without anyone remembering. Prose does 
 this layer has documented cases of rules that were present, correct, and violated hundreds
 of times because nothing checked them.
 
+**The deletion rule.** Every proposal says what it **removes or replaces**, not only what it
+adds — `adds N lines, removes M (<which>)`. Order of preference: (1) a hook, test or lint
+rule, with the prose it makes unnecessary deleted; (2) a change to an existing sentence; (3)
+a new sentence that replaces a weaker one. A pure addition is allowed only when nothing can
+go, and you say why. One rule lives in one file; other files link to it, never copy it
+(applying 41 additive proposals on 2026-10-20 grew the layer by ~350 lines and made it
+harder to follow — the reverse of the goal).
+
 ## 6. Record what is fine
 
 §6 exists so the next reflection does not reopen a settled question. Anything that looked
@@ -191,7 +200,7 @@ Reflection written: .ai/aidlc/SCRUM-###/reflection.md
 Spec defects: <n>   Executor defects: <n>   Vault findings: <n>
 
 Rule changes proposed:
-  R1 <file> §<section> — prevents <SD-n/ED-n>
+  R1 <file> §<section> — prevents <SD-n/ED-n> — <hook | test | lint | edit | replace> — adds <n>, removes <m>
   R2 …
 
 Recurrence: <none | SD-n also in SCRUM-###>
