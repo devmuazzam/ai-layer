@@ -1599,6 +1599,34 @@ Q9 plays the same role for REQ-06.
 - **Owner:** Syed Haris (developer).
 - **Status:** answered
 
+
+### Q60 — Yard techs and the can-also-fill list (REQ-05 "never yard techs")
+
+*Raised 2026-10-20 by the U17 build.*
+
+- **Question:** REQ-05 holds only because Yard Tech is not Dispatchable and lists start empty. HR can still add Operator to a yard tech's can-also-fill list, making them placeable. How is "never yard techs" held?
+- **Options:**
+  - A. Accept: the list is HR's control.
+  - B. Refuse list entries for employees whose main role is not Dispatchable (also blocks the Crane Superintendent and managers who operate — contradicts REQ-05's superintendent case).
+  - C. A new role setting "never on a ticket" (schema change).
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
+### Q61 — U17 refuses placements until can-also-fill lists are seeded
+
+*Raised 2026-10-20 by the U17 build.*
+
+- **Question:** After U17 deploys, placement needs a UNION union code on Dispatchable slots and a main-role or can-also-fill match. U4 leaves lists empty, so an Operator who fills Oiler today is refused until HR adds Oiler or U17b's seed (`pnpm --filter @tcg/api fcc:seed-can-also-fill -- --tenant <code>`, `FCC_ALLOW_REMOTE_DB=1` for a remote DB) runs. How does U17 go live?
+- **Options:**
+  - A. Deploy U17 and run the U17b seed on each tenant in the same window, dry-run first.
+  - B. Deploy U17 only after HR has filled the lists by hand.
+  - X. Other — say what.
+- **Answer:**
+- **Owner:** Syed Haris (developer).
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - The role list per department, and HDR — Q1, Q2.
