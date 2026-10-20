@@ -974,6 +974,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U19 — Remove `CraftCode.roleType`
 
+> **Dropped 2026-10-20:** Q27 = A (Syed Haris) keeps `CraftCode.roleType` for payroll classification. Nothing in this unit is built.
+
 - **Outcome:** Craft codes carry a role and no separate role-type.
 - **Kind:** vertical
 - **Requirements covered:** REQ-10 (D12a = B).

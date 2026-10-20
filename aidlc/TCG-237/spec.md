@@ -714,7 +714,7 @@ blocks. _AI note_ gives trade-offs only.
 | D9 | PR / unit structure given ~330 files and the 400-line budget | **A.** stacked PRs sliced by surface (schema → API → web → mobile). **B.** stacked PRs sliced by feature (picker by picker). **X.** Other — say what. | Decomposer's job; recorded so the sign-off box is not forgotten. | **B** | Syed Haris | 2026-10-20 |
 | D10 | API contract for the 138/108/69 consumers: endpoint, response field, `GET /users/me` shape | **A.** keep `employeeTypeId` / `employeeTypeName` as aliases of the role during transition. **B.** replace outright. **C.** repoint `GET /employee-types` to return roles. **X.** Other — say what. | A lets the 14 qa-automation specs and mobile cached sessions survive a step; it leaves two names for one thing. Pattern: P2 `UNDECIDED` details apply to any new list endpoint. | **B** — "it's a cleanup task as well" | Syed Haris | 2026-10-20 |
 | D11 | Fate of the `EmployeeType` table, its six FKs and the `employee-types` module / web feature | **A.** drop after data migration. **B.** freeze read-only. **C.** keep until D10's aliases are gone. **X.** Other — say what. | With D10 = B there are no aliases, so C reads as: keep the table until the last slice has moved every consumer, then drop it. **Pending:** which "enum" the developer means — the closest match is `packages/shared/src/constants/employee-types.ts` (name constants incl. `CRAFT_ROLE_TYPE_EMPLOYEE_TYPE_NAMES`, which payroll's `craftRoleTypeForEmployeeTypeName` reads). | **C**, plus remove both name maps: the shared name constants in `packages/shared/src/constants/employee-types.ts` (the craft-classification → type-name map must be *replaced* by a role → craft-classification link, not deleted — payroll reads it) and mobile `PERSONA_BY_EMPLOYEE_TYPE` | Syed Haris | 2026-10-20 |
-| D12 | How a role relates to craft codes (needed by D2's craft check and by D11's removal of the craft-classification → type-name map) | **A.** one craft classification per role (new optional field on the role). **B.** several classifications per role (link table). **C.** reuse `boomPay`. **D.** *(developer, 2026-10-20)* each **craft code** points at one **role**; a role can have many craft codes. **X.** Other — say what. | With D, "can this person fill role R" can be read from their craft assignments (crafts whose role is R), which overlaps D2's separate list — see the D2/D12 follow-up. `CraftCode.roleType` (`RoleType` enum, read by payroll for the boom modifier) still exists; whether it stays beside the new role link is pending. | **D** — wherever an Employee Type dropdown was used (employee create, craft code form, everywhere) it becomes a Role dropdown; each craft code gets one role, one role can be on many craft codes. **F2 = B (2026-10-20):** the boom column comes from the role of the **position filled on the job** (the allocation's role), not the craft's role — Corrina Bustos, `meetings/transcripts/2026-08-13-payroll-process.md` 54:22–55:05 (L358–366): *"if they're on the job as an oiler or an operator, they can qualify for boom pay… it's not a lifetime rule… it's per job"*; that quote is to be the `payroll-rules-provenance.md` entry. **D12a = B:** `CraftCode.roleType` (`RoleType` enum) is removed in this ticket; payroll reads the boom classification from the craft's role (`DepartmentRole.boomPay`). **Constraint:** this touches the pay engine — `contexts/payroll-engine.md` requires the change to be behaviour-preserving with same-result tests, and any pay-rule change needs its source in `vault/payroll/payroll-rules-provenance.md` in the same commit. | Syed Haris | 2026-10-20 |
+| D12 | How a role relates to craft codes (needed by D2's craft check and by D11's removal of the craft-classification → type-name map) | **A.** one craft classification per role (new optional field on the role). **B.** several classifications per role (link table). **C.** reuse `boomPay`. **D.** *(developer, 2026-10-20)* each **craft code** points at one **role**; a role can have many craft codes. **X.** Other — say what. | With D, "can this person fill role R" can be read from their craft assignments (crafts whose role is R), which overlaps D2's separate list — see the D2/D12 follow-up. `CraftCode.roleType` (`RoleType` enum, read by payroll for the boom modifier) still exists; whether it stays beside the new role link is pending. | **D** — wherever an Employee Type dropdown was used (employee create, craft code form, everywhere) it becomes a Role dropdown; each craft code gets one role, one role can be on many craft codes. **F2 = B (2026-10-20):** the boom column comes from the role of the **position filled on the job** (the allocation's role), not the craft's role — Corrina Bustos, `meetings/transcripts/2026-08-13-payroll-process.md` 54:22–55:05 (L358–366): *"if they're on the job as an oiler or an operator, they can qualify for boom pay… it's not a lifetime rule… it's per job"*; that quote is to be the `payroll-rules-provenance.md` entry. **D12a reversed by Q27 = A (2026-10-20): `roleType` stays; U19 dropped.** ~~**D12a = B:** `CraftCode.roleType` (`RoleType` enum) is removed in this ticket; payroll reads the boom classification from the craft's role (`DepartmentRole.boomPay`). **Constraint:** this touches the pay engine — `contexts/payroll-engine.md` requires the change to be behaviour-preserving with same-result tests, and any pay-rule change needs its source in `vault/payroll/payroll-rules-provenance.md` in the same commit.~~ | Syed Haris | 2026-10-20 |
 | D13 | How the system knows a role is a manager or holds a responsibility (no role-name checks — D11) | **A.** a permission per responsibility, granted to whichever role TCG chooses in Departments, following the existing `payroll-admin` module (`packages/shared/src/constants/permissions.ts`); no manager flag. **B.** A plus a "Department manager" checkbox on the role (one per department) for routing to "this department's manager". **C.** a Manager field on the department pointing at a person. **X.** Other — say what. | Nothing in TCG-237 routes to "a department's manager". Role-change approval (Dispatch Manager, decision note 2026-10-20) is a permission that arrives with the approval-flow ticket; department-head timesheet approval (yard → Dylan, Melissa 2026-05-28 43:55) would be the first user of B. | **A** | Syed Haris | 2026-10-20 |
 
 ## 11c. Siblings — same pattern, same change?
@@ -1134,7 +1134,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `apps/api/src/utility/seed-data.ts` `SYSTEM_DEPARTMENTS` (the fifteen); `admin/gaps.md` → *Departments, roles and their capabilities*.
 - **Owner:** Syed Haris (developer) proposes, Corrina Bustos to challenge.
 - **Workaround, if any:** none — a guess here changes what existing users can see on migration day (Q20).
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q27 — Removing `CraftCode.roleType` (D12a = B): what replaces its other uses?
 
@@ -1151,7 +1151,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `vault/payroll/payroll-rules-provenance.md`; `payroll/gaps.md` (craft classification entries).
 - **Owner:** Syed Haris (developer); Corrina Bustos for any pay-group consequence.
 - **Workaround, if any:** option A — nothing is removed, U19 is cut.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q28 — Codes for the nine departments and their roles, and the notification departments
 
@@ -1164,7 +1164,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `apps/api/src/config/notifications.config.ts:28-29`; `seed-data.ts` `SYSTEM_DEPARTMENTS`.
 - **Owner:** Syed Haris (developer).
 - **Workaround, if any:** none.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q29 — What replaces "type Salesmen / Sales Admin or role Salesperson" in the salesperson pickers?
 
@@ -1181,7 +1181,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `git grep -n 'SALESPERSON_TYPE_NAME\|SALESPERSON_ROLE_NAME' -- apps packages`.
 - **Owner:** Syed Haris (developer).
 - **Workaround, if any:** none.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q30 — The union check (D8 = C, Q22): what is checked, against what, and where?
 
@@ -1194,7 +1194,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `schema.prisma:4252-4253`; `EmployeeUnionCode`.
 - **Owner:** Syed Haris (developer); Corrina Bustos or Brian Petros to confirm.
 - **Workaround, if any:** U17 ships without the union check.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q31 — Mobile permission modules: names, which features, and who has them on day one
 
@@ -1207,7 +1207,7 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `apps/mobile/data/contracts/identity.contract.ts`; `apps/mobile/app-shell/registry.ts`; `packages/shared/src/constants/permissions.ts`.
 - **Owner:** Syed Haris (developer); Corrina Bustos or Brian Petros (Q23) to ratify.
 - **Workaround, if any:** none.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ## 13. What this spec deliberately does not specify
 
