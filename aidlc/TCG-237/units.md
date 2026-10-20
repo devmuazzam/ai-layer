@@ -25,7 +25,7 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 | --- | --- | --- | --- | --- | --- | --- |
 | U1 | Assets no longer carry a department (form, list, filter, sort, stored values) | REQ-01 (asset consumer, D5b) | schema, api, web | — | ~260 lines / 17 files | built — feat/tcg-237-u1-remove-asset-department |
 | U2 | Role editor says "Dispatchable" and shows boom pay / inspections only for such roles | REQ-13 | schema, api, web | — | ~210 lines / 13 files | built — feat/tcg-237-u2-role-dispatchable |
-| U3 | A new tenant gets the nine departments with their roles | REQ-01, REQ-02, REQ-07, REQ-08, REQ-15 (workaround) | api (seeds), web (Departments screen) | U2 | ~360 lines / 9 files | built — feat/tcg-237-u3-seed-departments-roles |
+| U3 | A new tenant gets the nine departments with their roles | REQ-01, REQ-02, REQ-07, REQ-08, REQ-15 (workaround) | api (seeds), web (Departments screen) | U2 | ~360 lines / 9 files | built — feat/tcg-237-u3a-tenant-departments, feat/tcg-237-u3b-demo-departments, feat/tcg-237-u3c-legacy-seed-departments |
 | U4 | Existing tenants are moved to the nine; every employee has a main role; all consumers carry a `role_id` | REQ-01, REQ-02, REQ-03 (backfill), REQ-07, REQ-08, REQ-10 (data), REQ-12 | schema (foundation) | U1, U3 | ~40 lines / 3 files (+ large migration) | **blocked — Q26, Q28** |
 | U5 | Quotation approval pools and the coordinator/manager checks follow a role setting | REQ-11 (approval part; F4) | api, web, mobile, shared | U4 | ~330 lines / 14 files | not started |
 | U6 | Field-ticket inspection steps follow a role setting (Oiler, 3rd Man, Driver) | REQ-11 (inspections part; F3) | api, shared, mobile | U4 | ~230 lines / 12 files | not started |
@@ -218,7 +218,7 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 - Existing tenants' departments/roles/employees — **U4**.
 - Any permission matrix per role — **Q5**.
-- `Crane Superintendent` as a ticket slot — it is not (REQ-05 acceptance); only a role.
+- ~~`Crane Superintendent` as a ticket slot — it is not (REQ-05 acceptance); only a role.~~ Overridden by **Q33 = B** (Syed Haris, 2026-10-20): every Field Operations role is Dispatchable, Crane Superintendent included, so it can be picked as a slot; REQ-05's acceptance line no longer holds for it.
 
 ---
 
