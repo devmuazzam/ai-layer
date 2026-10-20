@@ -294,6 +294,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U5 — Quotation approval follows a role setting
 
+> **Developer decisions 2026-10-20 (Syed Haris):** Q42 A (all remaining name matches fixed in U5 via a `quoteApproval` filter on `GET /employee`); Q43 A (names accepted, unused `findApproverPoolByRole` deleted); **Q44 A** — fix `apps/mobile/data/contracts/identity.contract.test.ts` minimally so mobile typecheck passes, leave the other failing specs for the test owner; **Q45 A** — check whether mobile caches the identity profile; if it does, refetch it once after the upgrade so `quoteApproval` is present.
+
 - **Outcome:** Who approves a quotation (coordinator stage, manager stage) is decided by the role's *Quote approval* setting; renaming "Sales Coordinator" no longer breaks approvals.
 - **Kind:** vertical
 - **Requirements covered:** REQ-11 — the approval-pool part only (F4 = A, Q11, Q17). The salesperson-detection part is **U13** (Q29).

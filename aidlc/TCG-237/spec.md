@@ -1362,12 +1362,12 @@ Q9 plays the same role for REQ-06.
   - B. A follow-up unit stacked on U5 (same content as A), so U5 stays as built.
   - C. Leave them on the name until U20 removes the constant; accept the drift after a rename.
   - X. Other — say what.
-- **Answer:** —
+- **Answer:** **A** — fix every remaining name match in U5: the quotation Sales Coordinator picker (web `main-tab.tsx`, mobile `quote-create-main-info.tsx`), the self-default helpers, `use-create-quotation-form-seed.ts`, the shared employee picker role filter (`employee-select.tsx`, `get-employees.ts`), the mobile mock, the stale mobile comments, and the email CC suggestions that match "coordinator" in the designation — all via a new `quoteApproval` filter on `GET /employee`. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Why it cannot be answered from what is written:** U5's slice rows list the API checks, `auth-provider.tsx` and `identity.contract.ts` only; its Shared row says "users in this unit's reach", which does not say whether the quotation form is in reach. No REQ names the picker.
 - **Blocked:** nothing built in U5 depends on it; the drift exists only after a role is renamed.
 - **Owner:** Syed Haris (developer).
 - **Workaround, if any:** none built — the four sites are unchanged.
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q43 — U5's structural choices, built on the AI's reading (confirm or correct)
 
@@ -1382,9 +1382,9 @@ Q9 plays the same role for REQ-06.
   - A. Keep all four as built.
   - B. Change some — say which (e.g. b: keep `requiredRoleName` beside the new option; c: rename the repository methods).
   - X. Other — say what.
-- **Answer:** —
+- **Answer:** **A** — (a)–(d) accepted as built; the unused `findApproverPoolByRole` is deleted. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
 - **Owner:** Syed Haris (developer).
-- **Status:** open
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ## 13. What this spec deliberately does not specify
 
