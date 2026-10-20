@@ -2170,7 +2170,7 @@ someone has confirmed otherwise.
 - **Owner:** see the owning entry.
 ## Employee types — FCC holds several per employee; we store one
 
-- **Status:** open
+- **Status:** open — **first half answered 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `verified`): one main role per person plus a can-also-fill list (*"yes to both"*). **The second half is still open:** whether `CraftRoleType` derives from the role. It was not asked. *(Was: open in full, 2026-08-31 – 2026-10-20.)*
 - **Asked:** 2026-08-31 — reading `OneDrive_1_8-31-2026` into the vault
 - **Question:** `FMS_EMPLOYEE_TYPE_DETAILS` is a join table — 781 rows over ~354
   employees, `EmpID` × `EmpTypeID` with a `PrimaryType` flag (EmpID 5073 is Operator
@@ -2208,10 +2208,25 @@ someone has confirmed otherwise.
   constrain a picker by until it is answered. Also downstream of this entry:
   [../dispatch/gaps.md → *Sales Persons in the DAS Employees tab…*](../dispatch/gaps.md#sales-persons-in-the-das-employees-tab--dispatchability-is-an-employee-type-attribute-we-do-not-have),
   which needs the per-type `Dispatchable on` attribute this entry's 2026-09-04 update describes.
+- **Update 2026-10-20 (Corrina Bustos, Teams, in writing — first half answered):** see
+  [../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)
+  (`verified`). Asked whether each person can have *"one main role, plus a list of other positions
+  they're allowed to fill"* (examples: an Operator who can also fill Oiler, Rigger or 3rd Man; an
+  HDR mechanic who can also fill 3rd Man), she replied *"yes to both"*. To a later question she
+  added that an HDR mechanic *"can also be called out into the field to be a 3rd man or rigger"*.
+  - **Answered:** the ERP holds **one main role per employee plus a can-also-fill list** of other
+    positions. That is FCC's primary-plus-secondary model, now adopted by the client.
+  - **For the work that folds `EmployeeType` into `DepartmentRole`:** the list draws on the same
+    role list. How it is stored is a developer decision.
+  - **Also answered:** FCC's `Job Foreman` type (id 15) is **not** a role. *"Job Foreman is
+    something they are picked and assigned PER job."*
+  - **Still open:** the second half, whether `CraftRoleType` derives from the role. It was not
+    asked. [*Primary craft code constrained to the employee type…*](#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das)
+    still waits on it.
 
 ## Field role vs portal role — one list in FCC, three representations in TCG
 
-- **Status:** open
+- **Status:** open — **partly answered 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `verified`): the person's main role is their job, **and it decides what they can see**. So the field role and the portal role are one thing, which supports folding `EmployeeType` into `DepartmentRole`. **Still open:** how `CraftRoleType` relates to that role. It was not asked. *(Was: open in full, 2026-08-31 – 2026-10-20.)*
 - **Asked:** 2026-08-31 — departments-and-roles discussion, plus the FCC employees report
 - **Question:** FCC's `FMS_EMPLOYEE_TYPES` is one flat list mixing field roles (Operator,
   Oiler, Mechanic, Yard Man, Rigger, Driver, Shop) with portal roles (Management, Sales
@@ -2244,6 +2259,20 @@ someone has confirmed otherwise.
   are the incumbent's fields and the client's asks — evidence, **not a decision** on which of
   `DepartmentRole`, `EmployeeType`, `CraftRoleType` (or SCRUM-914's sub-categories) is the source
   of truth. Still needs the client.
+- **Update 2026-10-20 (Corrina Bustos, Teams, in writing — partly answered):** see
+  [../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)
+  (`verified`). The question put to her said a person's main role *"would also decide what they
+  can see in the system"*. She answered *"yes to both"*.
+  - **Answered:** in TCG, a person's **main role is their job and also their portal access**. There
+    are not two lists. That settles `DepartmentRole` vs `EmployeeType`: they are one concept.
+  - **Departments answered:** the nine departments a role belongs to are Field Operations, Shop,
+    Yard, Dispatch, Sales, Accounting, Safety, HR and Management.
+  - **Still open:**
+    - how `CraftRoleType` relates to the role (not asked);
+    - SCRUM-914's sub-categories;
+    - whether the DAS card colour resolver keeps substring-matching a name.
+
+    The `CraftRoleType` relationship is the same open half as the [*Employee types*](#employee-types--fcc-holds-several-per-employee-we-store-one) entry.
 
 ## Premium catalog CRUD — the engine reads six literal codes, not the catalog
 
@@ -4975,6 +5004,7 @@ somewhere it should not have. Settle that before touching either.
 - **Questions**, each phrased so a one-line reply settles it:
   1. ~~**Who corrects a flagged entry?**~~ **Answered:** *"Payroll Admin/Manager adjusts"*. Payroll corrects directly.
   2. ~~**Who is the "payroll admin"?**~~ **Answered:** *"Right now the Payroll Administrator is Micaela Slykhuis"*. The assignment must be adjustable, so it is a role, not a hardcoded person. Both roles *"need to get all of the flags and be able to adjust"*. **Left open:** whether it is a new ERP role/permission beside `ROLE-ACCOUNTS-PM`, which is design work, not a client question. Also who Micaela Slykhuis is (C5).
+     - **Update 2026-10-20 — which department the role sits in: answered.** Corrina Bustos, Teams, in writing: *"right now, Micaela's Payroll Admin is still under HR"* ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `verified`). The Payroll Administrator role belongs to the **HR** department, not Accounting, for now. "Right now" and "still" say the placement may change. Whether it is a new role beside `ROLE-ACCOUNTS-PM` is still design work. C5 (Slykhuis vs Dipane) is **not** settled: her reply says only "Micaela".
   3. **Does Send Back survive?** Now that payroll corrects directly, is there still any send-back? If yes, to whom: the worker on mobile (Confluence US-03 AC 3 and 10; Ehtesham Anwar 2026-08-04 20:24 and 34:11)? **→ Answered 2026-09-30** ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)): yes. The target is **the worker**, with a reminder after 3 hours. Payroll may also fix any time itself. **Open:** the worker's mobile screen and edit rights, who the reminder goes to, and whether it repeats. **→ Answered 2026-09-30 as mechanics** (developer, items C3–C4 of [../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md)): the worker **edits the ticket times on mobile and resubmits**, and payroll recalculates. The reminder goes **to the worker, every 3 h, until they respond**. **Q3 is answered.** The one exception is the crew extension, a shared ticket sent back to every worker on it. That is pending Corrina under [*Send Back of a multi-crew ticket*](#send-back-of-a-multi-crew-ticket--does-sending-a-ticket-back-also-return-it-for-the-other-crew-members-on-that-ticket).
   4. **Does "all flags" include the field-ops ticket progress *Flagged*** (incident / deficiency / customer unavailable), or only payroll review flags? — **open**
   5. **The rest of the first 2026-09-29 message:**

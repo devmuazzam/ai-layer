@@ -941,7 +941,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Sales Persons in the DAS Employees tab — dispatchability is an employee-type attribute we do not have
 
-- **Status:** open
+- **Status:** open — **answered in substance 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `verified`, Q5). Who may go on a job ticket: field crew, HDRs through their can-also-fill list, and the Crane Superintendent. *"NEVER yard techs."* By her "only", Sales is not on that list. **Left to the developer:** where the attribute lives, now that the role is the job (role attribute, can-also-fill list, or both). See the dated line below. *(Was: open, 2026-09-19 – 2026-10-20.)*
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Raised in **UAT 1**, still not done.
 - **Question:** which employees appear in the DAS **Employees** tab? The UAT ask is narrow (*"Sales Persons should not be displayed"*) but the rule behind it is not: is **dispatchability** a property of the employee, of their **employee type**, or of a portal role — and where is it stored?
 - **Sources checked:**
@@ -954,6 +954,35 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** the UAT 1 row itself; anything that needs to know which employees are dispatchable — DAS employee panel, allocation search, the dispatch packet.
 - **Owner:** Lisette Anzaldo (who should see whom on the board) with Brian Petros for where the attribute lives on the employee record.
 - **Pointer:** [../payroll/gaps.md](../payroll/gaps.md) → *DAS dispatchability is an employee-type attribute — pointer, owned by dispatch*.
+- **Update 2026-10-20 (Corrina Bustos, Teams, in writing — answered in substance):** see
+  [../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)
+  (`verified`). Asked *"Apart from field crew and HDRs, does anyone else ever go on a job ticket?"*
+  (examples: yard techs as driver or 3rd man, the crane superintendent, a manager who operates),
+  she replied *"only crane superintendent would also qualify to get a job ticket. NEVER yard
+  techs."*
+  - **Who is ticket-eligible:**
+    - field crew;
+    - HDR mechanics, through their can-also-fill list (*"can also be called out into the field to
+      be a 3rd man or rigger"*);
+    - the Crane Superintendent.
+
+    Yard techs are never eligible, and nor, by her "only", are Sales, Accounting, Safety, HR or
+    Dispatch staff. That covers this UAT row's *"Sales Persons should not be displayed"*, as a
+    rule rather than a one-off exclusion.
+  - **The upstream model is now answered:** a person has one main role plus a can-also-fill list
+    ([../payroll/gaps.md → *Employee types*](../payroll/gaps.md#employee-types--fcc-holds-several-per-employee-we-store-one)),
+    and the role is the job ([../payroll/gaps.md → *Field role vs portal role*](../payroll/gaps.md#field-role-vs-portal-role--one-list-in-fcc-three-representations-in-tcg)).
+    Dispatchability is therefore read from the **role**, and from the positions a person may fill.
+    It is not read from a separate employee type.
+  - **Left to the developer:** where the attribute is stored, and how the DAS query filters on it.
+  - **Not settled:**
+    - **Managers who operate.** FCC holds three `Management`-type employees who also hold
+      `Operator`. Her "only" reads as excluding them, but she did not speak to that example
+      directly.
+    - **Is the DAS Employees tab exactly the ticket-eligible set?** This entry reads it so.
+      Lisette Anzaldo, the owner here, has not confirmed it.
+    - **Work-order dispatchability.** FCC's `W` value is not covered: Q5 asked about job tickets
+      only.
 
 ## Job ticket code format — UAT 3 asks for the FCC pattern, and no FCC pattern is written anywhere
 

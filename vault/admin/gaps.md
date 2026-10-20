@@ -950,7 +950,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Departments, roles and their capabilities — the authorization layer is unbuilt and the list is unwritten
 
-- **Status:** open
+- **Status:** open — **partly answered 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `status: verified`). **Answered:** the department list (nine); the person-to-role shape (one main role plus a can-also-fill list, the main role decides access); who may change roles and permissions (Sales Coordinator and Dispatch, approved by Lisette Anzaldo and Corrina Bustos). **Still open:** what each role may do, and the full role list inside each department. Per-person access and the approval flow are split out to [*Per-person access beyond the role default*](#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes). *(Was: open, 2026-09-01 – 2026-10-20.)*
 - **Asked:** 2026-09-01 — Abdul Rehman, in the accounting/onboarding call
   ([meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §3;
   transcript 29:54–30:31, 34:48).
@@ -1012,6 +1012,27 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Operations, Shop, Yard, Dispatch, Sales, Accounting, Safety, HR, Management — but **what each
   role may do is still unwritten**. Detail:
   [../payroll/adp-api-responses/workers-departments-2026-10-20.md](../payroll/adp-api-responses/workers-departments-2026-10-20.md).
+- **Update 2026-10-20 (Corrina Bustos, Teams, in writing — partly answered):** Syed Haris asked
+  eight questions; her answers are recorded verbatim in
+  [../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)
+  (`verified`).
+  - **Departments — answered:** *"yes"* to Field Operations, Shop, Yard, Dispatch, Sales,
+    Accounting, Safety, HR, Management. Her "yes" also accepts the examples given with the list:
+    Operators, Oilers and Riggers under Field Operations; Mechanics under Shop; Wes and the owners
+    under Management.
+  - **Roles — shape answered:** *"yes to both"*. One main role per person, plus a can-also-fill
+    list of other positions. The main role decides what the person can see. A temp fill-in uses
+    the regular role for that job, with the same pay setup and the same access (*"yes and yes"*).
+    The Payroll Administrator role sits in HR, *"right now"*.
+  - **Who may change roles and permissions — answered as stated:** *"Sales Coordinator and Dispatch
+    should be able to change roles and permissions, Dispatch Manager (Lisette) and myself
+    approve."* This describes a request/approval flow the ERP does not have. That flow, and
+    whether one person's access can differ from their role's (her *"i am unsure about the sales
+    coordinator part"*), are now in
+    [*Per-person access beyond the role default*](#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes).
+  - **Still open here:** **what each role may do**, and the full role list inside each department
+    beyond the examples. The Blocked line above stands: no permission check can be written without
+    the capabilities.
 
 ## Must a new nav entry be permission-gated, and who may see live vehicle locations?
 
@@ -1303,3 +1324,56 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   email. No decision in `decisions/`. Jira unreachable.
 - **Blocked:** nothing hard.
 - **Owner:** product team.
+
+## Per-person access beyond the role default, and the approval flow for role and permission changes
+
+- **Status:** open
+- **Asked:** 2026-10-20 — split out of [*Departments, roles and their capabilities*](#departments-roles-and-their-capabilities--the-authorization-layer-is-unbuilt-and-the-list-is-unwritten)
+  when Corrina Bustos answered Syed Haris's eight role questions
+  ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)).
+  No ticket. Raised by the `EmployeeType` → `DepartmentRole` fold (Syed Haris, CodingCops).
+- **Question:** two parts, each answerable in one line.
+  1. **Can one person get access beyond their main role's default?** For example, two Sales
+     Coordinators where only one may approve quotes. Yes means the ERP holds per-person grants on
+     top of the role. No means anyone who needs different access gets a different role.
+  2. **How does a role or permission change get approved?** Corrina's rule is *"Sales Coordinator
+     and Dispatch should be able to change roles and permissions, Dispatch Manager (Lisette) and
+     myself approve."* Four details are open:
+     - (a) Is "Dispatch" the whole department, the Dispatcher role, or the Dispatch Manager?
+     - (b) Is "change roles and permissions" assigning a person's role, editing what a role may do,
+       or both?
+     - (c) Must both Lisette Anzaldo and Corrina Bustos approve, or does either one?
+     - (d) Does a change made by an approver also need the other's approval?
+- **Candidates:**
+  - Corrina Bustos, Teams, 2026-10-20, to the Q3 example (two people, same job, different
+    access): *"yes sometimes. ex: HDR Mechanic can also be called out into the field to be a 3rd man
+    or rigger. i am unsure about the sales coordinator part"*. Her example is about **filling a
+    slot**, which the can-also-fill list already covers. It is **not** about access. Part 1 is
+    therefore unanswered, and she said she was unsure.
+  - Ryan Adams (Sales Manager), 2026-03-19 roles demo 29:52–31:39
+    ([../meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md](../meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md)
+    lines 156–164): default access by checkbox, plus a way for an employee to *request extra
+    access*, with *"a tractable asset there to who approved"* and an email to the executive team
+    to approve. Ehtesham Anwar (CodingCops): *"Right now it's not there, but we can have this
+    functionality of change request … request permissions"*. Ryan asked for per-person extra
+    access; Corrina was unsure about it. **Nobody has decided it.** A meeting is a record, not a
+    commitment.
+  - [../decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md](../decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md)
+    (`reference`, developer): any role-editing user may edit any role today. There is no approval
+    step.
+  - [../erp-review-log.md](../erp-review-log.md) → *Employees, HR and permissions*: *"maintain the
+    department/role permission structure, configurable"*. That covers the structure, not
+    per-person grants.
+- **Note:** the ERP has **no** request/approval flow for role or permission changes today. Part 2
+  is new behaviour (Path A), not a setting. Lisette Anzaldo is not on record agreeing to be an
+  approver. Related: [*Deleting the last admin-capable role can lock a tenant out*](#deleting-the-last-admin-capable-role-can-lock-a-tenant-out--is-a-floor-required).
+  An approval step changes who can cause that lockout.
+- **Sources checked:** the 2026-10-20 decision note; the 2026-03-19 transcript lines above; the
+  2026-09-04 decision; this register's departments/roles and lockout entries;
+  `quotations/sales-operating-system/03-sales-coordinator-operations-manual.md` §2 (the Sales
+  Coordinator authority-limit table: it limits what the role may approve, and is silent on
+  changing roles).
+- **Blocked:** any per-user permission override in the role model; the role/permission edit screens
+  (who may save a change, and whether it waits for approval).
+- **Owner:** Corrina Bustos (both parts), with Lisette Anzaldo for part 2(c)–(d). Ryan Adams raised
+  part 1.
