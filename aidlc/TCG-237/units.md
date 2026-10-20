@@ -169,6 +169,8 @@ The executor reports its gates against this. The `@tcg/api:build` failure is the
 
 ## U3 — The nine departments and their roles for new tenants
 
+> **Developer decisions 2026-10-20 (Syed Haris):** split into **U3a** (every new tenant gets the nine — commit `cb58b88d3`) and **U3b** (demo tenant uses the nine — `f80089a09`, stacked on U3a); `SYSTEM_DEPARTMENTS` shared export accepted; Q32 A (Payroll Admin seeded without `payroll-admin`); Q33 B (Crane Superintendent Dispatchable); Q34 C (Dispatchable roles: explicit `none` on every web module); **fix** the two broken specs (`crane-supervisor-retired.spec.ts`, `payroll-admin-permission.spec.ts`) minimally; **sibling yes:** legacy `GET /seed/run` (`CRANE_GUYS_DEPARTMENTS`) also uses the nine.
+
 - **Outcome:** A newly created tenant (and the demo tenant) opens Departments and sees exactly Field Operations, Shop, Yard, Dispatch, Sales, Accounting, Safety, HR and Management, each with the Q1 roles, editable.
 - **Kind:** vertical
 - **Requirements covered:** REQ-01, REQ-02 (Q1 list), REQ-07 (Job Foreman is not seeded), REQ-08 (Payroll Admin under HR), REQ-15 (workaround only; **Q5 open**). Q15 = A.

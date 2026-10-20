@@ -1226,7 +1226,8 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `apps/api/src/utility/seed-data.ts` (`FULL_PERMISSIONS`); `apps/api/src/presentation/payroll/payroll-admin-permission.spec.ts`.
 - **Owner:** Syed Haris (developer); Corrina Bustos for the payroll consequence.
 - **Workaround, if any:** option A.
-- **Status:** open
+- **Answer:** **A** — follow the shipped PAYROLL-FLAGS rule (decision 2026-09-30 E2): no seeded role holds `payroll-admin`; a tenant admin grants it by hand. The Payroll Admin role is seeded without it. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q33 — Is the Crane Superintendent role dispatchable?
 
@@ -1239,7 +1240,8 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** REQ-05; `units.md` U3.
 - **Owner:** Syed Haris (developer).
 - **Workaround, if any:** option A.
-- **Status:** open
+- **Answer:** **B** — Crane Superintendent is Dispatchable. Developer: "let use one rule only for all, no exceptions" — every Field Operations role is Dispatchable. **Consequence recorded:** this overrides REQ-05's acceptance line "No ticket slot type named Crane Superintendent exists"; Corrina's verified answer ("assigned in what position he was for that particular job") still holds for how he is usually placed, but he can now also be picked as a Crane Superintendent slot. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ### Q34 — Which template does each seeded role start from (Q26b), and record Q26 / Q28
 
@@ -1252,7 +1254,8 @@ Q9 plays the same role for REQ-06.
 - **Candidates:** `apps/api/src/utility/seed-data.ts` `SYSTEM_DEPARTMENTS`; `apps/web/src/features/departments/constants/role-permissions.ts` `TEMPLATE_PERMISSION_CONFIG`.
 - **Owner:** Syed Haris (developer); Q5's four editors to challenge.
 - **Workaround, if any:** option A.
-- **Status:** open
+- **Answer:** **C** — field (Dispatchable) roles start with **no web access**: an explicit `none` on every web module, so the empty-map USER baseline does not apply; their mobile access arrives with U14 (Q31). Other roles keep the as-built starting templates (Q5 still open). With Q33 = B this includes Crane Superintendent. Syed Haris (developer), 2026-10-20 — open to TCG challenge.
+- **Status:** answered 2026-10-20 (developer, open to TCG challenge)
 
 ## 13. What this spec deliberately does not specify
 
