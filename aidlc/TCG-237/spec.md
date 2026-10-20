@@ -1090,13 +1090,13 @@ Q9 plays the same role for REQ-06.
   - A. No — remove it.
   - B. Yes — say who and for what.
   - X. Other — say what.
-- **Answer:** asked of Brian Petros by Syed Haris, 2026-10-20 — awaiting reply.
+- **Answer:** **A** — Brian Petros, 2026-10-20 (relayed by Syed Haris), verbatim: *"Not that I know of. Just "The Crane Guys" OM (Operated and Maintained). I can't think of any filtering by department today. Would be nice, however, to have some type of filtering of assets because of all the different types of assets (like iPads, cell phones, etc.)"* Reading: no department filtering in use; remove it. His second point is a separate ask — the asset list **already** filters by category and sub-category (`assets/asset/hooks/use-assets-list-state.ts:12-13`), so asset-type filtering works if iPads/phones are set up as categories; not in this ticket's scope. Removing asset department also removes the list's `department` filter and sort column (`assets-list-view.config.ts:16`, `use-assets-list-state.ts`).
 - **Why it cannot be answered from what is written:** code shows only a label and a list filter; usage is not observable from code.
 - **Blocked:** the asset slice of D5 (removal is irreversible for the stored values).
 - **Candidates:** `assets/fcc-units-and-schedule-types.md` (FCC distribution: FL 252, RG 56, OM 37 …).
 - **Owner:** Brian Petros.
 - **Workaround, if any:** keep the columns until answered; build everything else.
-- **Status:** open
+- **Status:** answered 2026-10-20 (Brian Petros)
 
 ## 13. What this spec deliberately does not specify
 
