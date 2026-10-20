@@ -242,8 +242,13 @@ heading. A spec where the unverified requirements are indistinguishable from the
 ones has laundered its sources, and every phase after you will treat all of them as settled.
 
 **The tag has downstream consequences, so place it accurately rather than defensively.**
-`[UNVERIFIED]` never blocks anything — tagging generously costs nothing and buys the
-decomposer real information. What it drives is *reversibility*: the decomposer records the
+`[UNVERIFIED]` does not block on its own — tagging generously costs nothing and buys the
+decomposer real information. **One exception (Haris, 2026-10-20):** a requirement whose
+**only** source is `[UNVERIFIED]` gets a §12 confirmation question to the owner —
+`Is <the statement> still how it should work?` with options `A. Yes, as written` ·
+`B. No — say what changed` · `X. Other — say what` — and is flagged `[OPEN]` until answered.
+A second source of any status, or a `[VERIFIED]` one, lifts it. What the tag drives is
+*reversibility*: the decomposer records the
 weakest tag per unit and flags any unit that would make an unverified requirement expensive
 to undo, the analyst checks that pair on every review, and the reflection records whether
 unverified sources actually turned out wrong. That last count is the only evidence the layer

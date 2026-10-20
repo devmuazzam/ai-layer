@@ -388,9 +388,11 @@ Honest state, so nobody rediscovers them.
   folders have a `units.md`, 9 have a `reflection.md`, and `reflections/INDEX.md` holds 64
   defect rows. The **third-occurrence escalation** had never run until 2026-10-20, when
   `missing-requirement` (19 rows) and `gate-illusion` (14) were escalated into template rules
-  and 41 queued proposals applied; 9 rows remain for Haris (6 to withdraw, 3 policy calls).
+  and 41 queued proposals applied; of the rest, 6 were withdrawn and 3 decided by Haris
+  (`vault/decisions/2026-10-20-sole-unverified-source-confirmed-structure-not-delegable-api-layering-linted.md`)
+  — the API layering lint is decided but not built (client-repo sweep, then the rule).
   **`gate-illusion` is only partly fixed**: nothing runs lint, typecheck, build or test on a
-  PR, and the proposed `.github/workflows/gates.yml` awaits a decision. Ledger rows are still
+  PR; a `.github/workflows/gates.yml` was proposed and is parked (client repo). Ledger rows are still
   sometimes backfilled at close (4 rows say so) rather than written by `commit` at branch
   creation.
 - **`apps/web` does not glob its tests** — `package.json` passes 14 filenames explicitly, so

@@ -318,6 +318,8 @@ dependency, a pattern choice or deviation.
 **The agent writes the options; a developer writes the choice.** An agent fills _Decision_
 and _Options_, may add its recommendation with trade-offs under _AI note_, and leaves
 _Chosen_ and _Decided by_ blank. A blank row blocks sign-off exactly like an open §12 question.
+Options are lettered so a developer can reply with one letter. "You decide" is not a choice:
+the row's _Chosen_ reads `AI proposal — pending developer confirmation` and still blocks.
 
 | ID | Decision | Options (with existing code found) | AI note | Chosen | Decided by | Date |
 | --- | --- | --- | --- | --- | --- | --- |

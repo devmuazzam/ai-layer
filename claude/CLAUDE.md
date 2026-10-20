@@ -94,7 +94,10 @@ fixtures, anything the spec or the pattern reference already fixes.
 PR description's _Developer decisions_ table (`commit` skill §6). Each row names the
 developer who decided. **An AI never fills the _Decided by_ column**, and never records its
 own suggestion as decided. A structural change with no recorded decider is a `review-pr`
-finding.
+finding. **A structural choice cannot be delegated to the AI** (Haris, 2026-10-20): "you
+decide" is recorded as `AI proposal — pending developer confirmation`, not as a decision. The
+cost of deciding is one letter — the AI lists lettered options, and a reply of `B` makes the
+developer the decider.
 
 ## Siblings get the same change — with the developer's say-so
 

@@ -236,7 +236,8 @@ sections, even when they say "none":
 - **Structural** means what root `CLAUDE.md` → _Developers decide structure_ lists. Private
   helpers do not go here.
 - **_Decided by_ is a developer's name.** An AI drafting the description leaves that cell
-  for the developer to fill — never its own suggestion, never "Claude".
+  for the developer to fill — never its own suggestion, never "Claude". A developer who said
+  "you decide" has not decided: write `AI proposal — pending developer confirmation`.
 - **Siblings** come from `.ai/claude/contexts/patterns.md` plus a `git grep`. "None — no
   pattern entry and no other instance found by `<command>`" is a valid row; an empty
   section is not.

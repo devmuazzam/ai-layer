@@ -103,7 +103,9 @@ decomposer that adds to it has made the review that approved it meaningless.
 
 `[OPEN]` means nobody has answered. `[UNVERIFIED]` means someone answered and nobody has
 confirmed the answer is still current — and it applies to **almost every requirement you
-will ever slice**, so treating it as a blocker would stop all work. Build on it.
+will ever slice**, so treating it as a blocker would stop all work. Build on it. (A
+requirement resting on a **single** `[UNVERIFIED]` source arrives from the elaborator as
+`[OPEN]` with a §12 confirmation question, and is handled as `[OPEN]` under §2.)
 
 What it changes is **reversibility**. Record the weakest source tag across each unit's
 requirements in its *Risk* block, and then apply one rule:

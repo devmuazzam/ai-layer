@@ -42,7 +42,8 @@ cut is recorded in *Deliberately not in this unit*.
 
 An `[UNVERIFIED]` requirement is different and much weaker: it **does not** block a unit.
 Almost every requirement carries it. It constrains *how* the unit is built, not whether —
-see **Risk** below.
+see **Risk** below. The exception is a requirement whose only source is `[UNVERIFIED]`: the
+spec marks it `[OPEN]` until the owner answers its §12 confirmation question.
 
 ---
 
