@@ -1778,7 +1778,7 @@ Q9 plays the same role for REQ-06.
   - B. Delete those rows.
   - C. Fix by hand per environment (Q63 A).
   - X. Other — say what.
-- **Answer:** A built as **AI proposal — pending developer confirmation** (developer asked the AI to choose using industry knowledge, 2026-10-21).
+- **Answer:** Mapping (Apprentice → Oiler, Job Foreman → Operator, Default → Rigger) built in #893 as **AI proposal — pending developer confirmation**. Leftovers (types outside Q3, 98 rows on staging): **delete** — Syed Haris, 2026-10-21 ("delete those, client tenants get a fresh FCC sync and demo seed"); built in #894.
 - **Owner:** Syed Haris (developer).
 - **Status:** open
 

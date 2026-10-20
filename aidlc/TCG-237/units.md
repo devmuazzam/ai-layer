@@ -1186,6 +1186,7 @@ Answered in one batch to build the rest without stops. Each row is the developer
 | Merged | 2026-10-20: Syed Haris merged #890 to main (`ae597a108`, merge commit); #847, #850, #851, #855, #857, #864–#889 marked merged with it. Only #891 (FCC seeder, Q70 B unbuilt) open. Deploy: developer, pending |
 | Merged (2) | 2026-10-20: #891 FCC seeder merged by Syed Haris (head 78be66fe9: Q70 B secondary-craft fallback + main merge bee27713d). All TCG-237 PRs merged. Demo-data seed check in progress |
 | Staging deploy | 2026-10-21 run 39478132636 on `tcg_staging`: U4–U16 applied, U20d failed its guard (99 type-only associations: Job Foreman/Apprentice/Default). Fix #893 (`fix/tcg-237-u20d-map-unroled-types` b17b3c6d0) maps them before the guard (Q72, AI proposal pending); tested on scratch DB `tcg_u20d_scratch2`. Old API ran on the new schema until redeploy |
+| Staging deploy (2) | Run 39481704608 (main 332fccfc9 with #893): U20d rolled back and retried; mapping fixed 1 row, guard failed on 98 rows naming types outside Q3 (U4 leaves unknown consumer types unmapped). #894 (`fix/tcg-237-u20d-delete-unmapped` a2e97c089) deletes remaining type-only associations / nested settings (Syed Haris); tested on scratch DB `tcg_u20d_scratch3` |
 
 ## Sequencing
 
