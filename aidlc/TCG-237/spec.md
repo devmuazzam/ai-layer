@@ -789,13 +789,13 @@ Q9 plays the same role for REQ-06.
   - B. No — migrate main roles only; TCG fills the lists by hand afterwards.
   - C. Load them as a draft that TCG reviews per employee before it takes effect.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **Superseded 2026-10-20 by developer decision D2b = B:** fill eligibility comes from craft assignments, not employee types, so FCC secondary types are not loaded into a fill list. What remains is Q25.
 - **Why it cannot be answered from what is written:** Evidence, not a decision: in the 2026-10-20 ADP/FCC extract, 56 of 67 active field crew hold all five field types (Operator, 3rd Man, Oiler, Driver, Rigger) and only the primary distinguishes them (`payroll/adp-api-responses/workers-departments-2026-10-20.md` §4); FCC's secondary types "mean can fill any field slot" there, and `payroll/fcc-employee-types-and-crafts.md` §2 says the seeder extracts all 781 assignment rows and drops the secondaries. Corrina's examples in the decision note are narrower (Operator → Oiler, Rigger, 3rd Man; HDR mechanic → 3rd Man, Rigger). Loading as-is therefore gives most field crew five positions. No source says whether TCG wants that.
 - **Blocked:** REQ-04 backfill, REQ-12.
 - **Candidates:** `vault/payroll/adp-api-responses/workers-departments-2026-10-20.md` (6 KB, 2026-10-20); `vault/payroll/fcc-employee-types-and-crafts.md` (5.5 KB, 2026-09-04); `payroll/gaps.md` → *Employee types*.
 - **Owner:** Corrina Bustos with Lisette Anzaldo (who dispatches).
 - **Workaround, if any:** option B is the smallest build (main roles only, lists empty); labelled as a workaround, not a recommendation.
-- **Status:** open
+- **Status:** superseded 2026-10-20
 
 ### Q5 — What each role may see and do
 
@@ -904,13 +904,13 @@ Q9 plays the same role for REQ-06.
 
 - **Question:** For the field employee, salesperson, crane superintendent, maintenance team and safety (and dispatch): which app experience does each get, given the app has Field, Sales and Dispatcher and nothing for the rest?
 - **Options:** free answer — for each kind of user, one of: Field, Sales, Dispatcher, a new experience (describe), no mobile access.
-- **Answer:**
+- **Answer:** **Superseded 2026-10-20 by developer decision D7:** mobile features are gated by their own permission modules per role (Q23 reading), so there is no per-persona app choice to make.
 - **Why it cannot be answered from what is written:** the 2026-06-16 recording (Wes Staley 49:14) says five kinds of user will use the app; no decision follows it. Meetings are not sources.
 - **Blocked:** REQ-14.
 - **Candidates:** `vault/meetings/transcripts/2026-06-16-field-ops-mobile-app-demo.md` (67 KB) line 368; `field-ops/field-ops-mobile-INDEX.md` conflict stub (3 sources, none verified — not read this run).
 - **Owner:** Wes Staley (said it); product team to decide.
 - **Workaround, if any:** unmapped roles keep `persona = null`, as the code comment says.
-- **Status:** open
+- **Status:** superseded 2026-10-20
 
 ### Q13 — Do existing quotations, jobs and billing codes keep showing the same resource name?
 
@@ -936,13 +936,13 @@ Q9 plays the same role for REQ-06.
   - B. The fifteen stay and the nine are added.
   - C. Cost coding moves to a separate field; the nine are the org structure.
   - X. Other — say what.
-- **Answer:**
+- **Answer:** **Answered 2026-10-20:** Brian Petros (Q24) — no department filtering in use; developer decisions D5 / D5b = A remove department from assets and replace the fifteen with the nine.
 - **Why it cannot be answered from what is written:** `admin/gaps.md` Update 2026-09-04 point (4) says "in FCC, department is cost coding, not org structure"; the decision note does not address them.
 - **Blocked:** REQ-01 ripple; D5.
 - **Candidates:** `payroll/tcg-rawfms-staging-database/data/fcc-job-status-type-and-department-codes.md` and `assets/fcc-units-and-schedule-types.md` (named in the admin gap; not read this run); `seed-data.ts` `SYSTEM_DEPARTMENTS`.
 - **Owner:** Corrina Bustos / Brian Petros.
 - **Workaround, if any:** option B retires nothing; labelled workaround.
-- **Status:** open
+- **Status:** answered 2026-10-20
 
 ### Q15 — Does every new tenant get the nine departments and roles?
 
