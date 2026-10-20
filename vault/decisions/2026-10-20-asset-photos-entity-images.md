@@ -161,3 +161,7 @@ Recent iPhones produce 5–25 MB JPEGs (more for 48 MP / ProRAW) and `.heic` fil
 
 The upload cap after browser downscale is **25 MB** (was 10 MB), so it agrees with the app-wide "File is too large. Maximum allowed size is 25MB." message the API returns when a file is over the limit. Picked files stay ≤ 50 MB. Spec D17.
 
+## Amendment 2026-10-20 (U3) — presigned URLs instead of streaming (Akif)
+
+Replaces "stream each variant through the API" (D5 B). The photo list returns a short-lived presigned S3 link for the thumbnail and the original, plus the inline blurred placeholder. The browser loads images directly from S3 with plain `<img>` tags, so a page makes one API request instead of one per photo. Links live 1 hour, are signed per time window so the browser can cache them, and are refreshed in the background before they expire. The bucket stays private. New dependency: `@aws-sdk/s3-request-presigner`. Spec D20.
+

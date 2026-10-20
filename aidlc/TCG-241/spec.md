@@ -397,6 +397,10 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 | D16 | U2 over the PR budget (559 source lines / 19 files) | A. One PR with the `size-exception` label (reason: smallest working slice; ~⅓ comments). B. Trim to under 400. | A backend-only split is not a unit | A — Akif adds the label on the PR | Akif | 2026-10-20 |
 | D17 | Upload cap after browser downscale (supersedes Q1's 10 MB) | A. 25 MB (matches the shared "Maximum allowed size is 25MB" message from `all-exceptions.filter.ts`). B. Keep 10 MB, accept up to 50 MB at multer so the service message shows. C. Fix the shared message app-wide. | Analyst U2 F1: multer `LIMIT_FILE_SIZE` returns the shared 25MB text, so a 10 MB cap told users the wrong limit | A — 25 MiB (`ENTITY_IMAGE_MAX_UPLOAD_BYTES`), service text "Photo must be 25 MB or smaller" | Akif | 2026-10-20 |
 | D18 | Tenant for a photo upload (analyst U2 F2) | Use the asset's `tenantCompanyId`, never the caller's context — a SUPER_ADMIN is unscoped and could otherwise file a photo under the wrong tenant | Bug fix, not a structural choice; recorded for traceability | asset's tenant | — (fix) | 2026-10-20 |
+| D19 | Asset lookup on photo reads (list + stream) | A. New light usecase/repository method returning only the asset's `id` and `tenantCompanyId` (scoped lookup, 404 when missing). B. Keep `assetsService.findById` (`findOneWithRelations`) per request. | U3 executor: up to 21 full-asset loads per Edit page (list + 20 thumbnails) | A | Akif | 2026-10-20 |
+| D20 | How the browser gets thumbnail/original bytes (supersedes D5 B) | A. Presigned S3 GET URLs: the photo list returns `placeholderDataUrl` + `thumbnailUrl` + `originalUrl`; plain `<img src>` loads straight from S3; the per-image stream route is removed. B. Keep streaming through the API (D5 B). | A needs `@aws-sdk/s3-request-presigner` (same AWS SDK v3 family already used). Link lifetime 1 h; links signed per fixed time window so the URL is stable inside it and the browser cache works; the list refetches every ~50 min and on window focus, and a tile whose image fails refetches the list once. D19's light lookup stays for list + upload | A | Akif | 2026-10-20 |
+| D21 | Presigned link lifetime | A. Sign per 1 h window (date floored to the hour), expiry 7200 s: every link has 1–2 h left and the URL is identical within the hour. B. Exactly 1 h per link with a short 5-min window (URL changes every 5 min). | Executor deviation from "3600 s" in the D20 brief: an hour window with 3600 s would leave a link issued at hh:59 with 1 s | A | Akif | 2026-10-20 |
+| D22 | Browser caching of presigned images | A. `ResponseCacheControl: 'private, max-age=3600'` on the presigned GET (not on `getObjectStream`, which attachments use). B. Leave S3 heuristics. | Objects were stored without Cache-Control | A | Akif | 2026-10-20 |
 | D8b | Uploader location and how it loads image bytes | A. `apps/web/src/components/organisms/entity-photos/` (precedent: `organisms/entity-notes/`); the feature passes an image-loading function as a prop (no `features/` import). B. New `components/media/` folder, same prop approach. | `useAttachmentImageUrl` lives in `features/` and cannot be imported from `components/` | A | Akif | 2026-10-20 |
 
 **From `tcg-prisma-guardian` (2026-10-20).** Executor must-dos, not decisions: add `'entityimage'` to `TENANT_SCOPED_MODELS` (`apps/api/src/orm/prisma.service.ts:26`); `createdAt @db.Timestamptz()`; `@@map("entity_images")`, `idx_entity_images_*`; cover re-pick orders by `createdAt, id`; upload, photo delete and asset delete each in one transaction; the assets list loads the cover with one `include`/batched query and selects `placeholderDataUrl` only there.
@@ -659,6 +663,55 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 - **Blocked:** nothing — built as A
 - **Owner:** Akif
 - **Workaround, if any:** A (AI proposal — pending developer confirmation)
+- **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md
+
+### Q17 — U3 values and copy the spec does not fix (raised by the U3 executor, 2026-10-20)
+
+- **Question:** U3 had to put concrete behaviour, text and values in code. Confirm or replace.
+- **Options:**
+  - A. Keep all as built:
+    - List response: a **bare JSON array** of `{ id, originalName, width, height, placeholderDataUrl, createdAt }` (shared type `EntityImageListItem`), not `{ items: [...] }`
+    - Stream route: unknown variant → **404** "Photo not found" (same as a missing/foreign photo, nothing revealed); image id not a UUID → **400** (Nest `ParseUUIDPipe`); `Content-Type: image/webp`, `Content-Length` from S3, **no `Cache-Control`** header (attachments send `private, max-age=60`); a row whose S3 object is missing → S3 error surfaces as **500** (not mapped)
+    - Tile fallback (REQ-09 Edges, NOT SPECIFIED): thumbnail fails → **keep the blurred placeholder**; placeholder fails → **plain tile** (theme `bg-secondary`), thumbnail still fades in if it loads; no retry button, no error icon
+    - List fails → inline text **"Could not load photos."** (`<prefix>-list-error`); while loading and with zero photos → nothing but the Add button (REQ-02 "zero photos → empty drop zone only")
+    - Tiles: 3 per row in the 20rem card, square, `object-cover`, 300 ms opacity fade; placeholder upscaled with an extra CSS `blur-sm`; `alt` = `originalName`
+    - Query caching: app defaults (`staleTime`, `retry: 1`); the list refetches after each upload
+  - B. Keep A but change the listed items — say which and to what
+  - X. Other — say what
+- **Answer:** A — keep as built (3 tiles per row, 300 ms fade, placeholder kept if the thumbnail fails, plain tile if the placeholder fails, "Could not load photos." on list failure). — Akif (2026-10-20, Claude Code session)
+- **Why it cannot be answered from what is written:** REQ-09 Edges "placeholder missing/failed → fall back (initials or plain tile): NOT SPECIFIED"; units.md U3 Risk says "executor shows a plain tile and records it as a developer decision"; §5 "Copy: NOT SPECIFIED"; the U3 slice row lists the item fields, not the envelope or error statuses.
+- **Blocked:** nothing — built as A, all reversible (no stored data, no migration)
+- **Owner:** Akif
+- **Workaround, if any:** A (AI proposal — pending developer confirmation)
+- **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md
+
+### Q18 — U3 structure inside the shared photo card (raised by the U3 executor, 2026-10-20)
+
+- **Question:** D8/D8b fix "functions as props, no `features/` imports". They do not fix where the list query lives. Since D20 the tiles use the presigned `thumbnailUrl` directly (`loadImageFn` and the blob→`data:` URL path are removed), so only list-query ownership remains. U3 built option A; units.md's slice row had said "Feature-side: list query hook", which A does not have.
+- **Options:**
+  - A. (as built) The shared component owns the list query: `listFn(owner)` is a plain async function from the feature (`features/assets/asset/utils/asset-photos.ts`); the key is exported as `entityPhotoKeys.list` from `components/organisms/entity-photos/` so U5/U6 can invalidate; the component invalidates it after an upload, refetches it every 50 min and on window focus, and once when a tile's presigned link fails (D20).
+  - B. A feature hook (`useAssetPhotos(assetId)`) owns the list query and passes `photos` data into the component; `listFn` is dropped; the feature also owns the 50-min/focus refetch and the tile-error refetch.
+  - C. (withdrawn — moot after D20: no blob/object URLs remain)
+  - X. Other — say what
+- **Answer:** A — the shared component owns the photo-list query (as built); `loadImageFn` was removed by D20. — Akif (2026-10-20, Claude Code session)
+- **Why it cannot be answered from what is written:** a new exported key object and query ownership are structural (CLAUDE.md → Developers decide structure); D8b names only function props; D20 removed the image-loading function.
+- **Blocked:** nothing — built as A
+- **Owner:** Akif
+- **Workaround, if any:** A (AI proposal — pending developer confirmation)
+- **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md
+
+### Q19 — U3 is over the PR budget (raised by the U3 executor, 2026-10-20)
+
+- **Question:** U3 measures **477 source lines / 18 files** (after D19) against `feat/TCG-241-u2-upload-asset-photo` (budget ~400 / 25; roughly a third is JSDoc). Split or label?
+- **Options:**
+  - A. One PR with the `size-exception` label (as D16 for U2): the list, tiles and thumbnail stream are one visible behaviour.
+  - B. Split into stacked units that each ship alone: **U3a** `GET :id/photos` + shared type + grid/tiles showing the blurred placeholder only (~260 lines); **U3b** `GET :id/photos/:imageId/:variant` + `loadImageFn` + thumbnail fade-in over the placeholder (~200 lines). An API/web split is not offered (it would not ship alone).
+  - X. Other — say what
+- **Answer:** A — U3 stays one PR with the `size-exception` label (as D16 for U2). — Akif (2026-10-20, Claude Code session)
+- **Why it cannot be answered from what is written:** the executor may not trim a unit or re-slice it on its own (`tcg-executor` §6).
+- **Blocked:** pushing U3
+- **Owner:** Akif
+- **Workaround, if any:** none — uncommitted, waiting
 - **Status:** resolved — see decisions/2026-10-20-asset-photos-entity-images.md
 
 ## 13. What this spec deliberately does not specify
