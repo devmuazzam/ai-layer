@@ -21,6 +21,7 @@
 | U4 | Drag-and-drop several photos at once with per-file progress and per-file errors | REQ-01 (full for edit), REQ-04 (full), REQ-14 (`maxFiles` prop, client pre-check) | web | U3 | ~190 lines / 6 files | committed — feat/TCG-241-u4-multi-photo-uploader (8205e4df7) |
 | U5 | First photo becomes cover; "Set as cover" changes it; no photo cap (D31, Akif 2026-10-21) — U4/U3 limit code removed | REQ-03 (first, change), REQ-02 (Set as cover), REQ-14 (cap removed, D31), REQ-10 (set-cover) | api, web | U4 | ~230 lines / 9 files | committed — feat/TCG-241-u5-asset-photo-cover (acab337af) |
 | U6 | Delete a photo (confirm, cover fallback, all 3 files) and View it large | REQ-07 (photo delete), REQ-03 (delete fallback, last photo), REQ-02 (View, Delete), REQ-09 (lightbox) | api, web | U5 | ~290 lines / 11 files | committed — feat/TCG-241-u6-asset-photo-delete-view (1e30d0096) |
+| U6b | Photo card redesign: cover hero, corner ✕, hover Preview + lightbox, 6-tile limit (+N) on every screen, detail-page cover card | REQ-02, REQ-09, REQ-11, REQ-13 | web | U6 | ~300 lines / 8 files | committed — feat/TCG-241-u6b-photo-card-redesign (769aec73f) |
 | U7 | The Assets table shows each asset's cover thumbnail avatar (blur first), initials otherwise | REQ-08, REQ-09 (avatar), REQ-10 (list) | api, web | U5 (thumbnail stream from U3) | ~170 lines / 7 files | not started |
 | U8 | Photos can be picked on Create; uploaded after the asset saves; failures listed, retry on Edit | REQ-16, REQ-01 (create) | web | U5 (stacked on U7) | ~170 lines / 6 files | not started |
 | U9 | Large phone photos are downscaled in the browser; HEIC converted where decodable, else clearly rejected | REQ-14 (client downscale, 50 MB pick — still applies after D31 removed the photo-count cap, 10 MB post-downscale), REQ-04 (HEIC message) | web | U8 | ~140 lines / 4 files | not started |
@@ -307,6 +308,39 @@ Enumerated by: `git grep -ln "prisma.asset\." -- apps/api/src` (consumers read t
 ### Deliberately not in this unit
 
 - Asset hard delete cleanup — U10.
+
+---
+
+## U6b — Photo card redesign: cover hero, corner delete, hover preview, 6-tile limit
+
+- **Outcome:** The Photos card shows the cover large on top (16:9), tiles are small capped squares (max 6, then "+N" expands, on every screen size), each tile has a corner ✕ to delete, hover shows "Preview" and opens a lightbox gallery of originals, and the asset detail page shows the cover as a read-only "Asset Image" card.
+- **Kind:** vertical (web only; no API change)
+- **Requirements covered:** REQ-02, REQ-09, REQ-11, REQ-13 (refines U3/U5/U6 UI per Akif's review 2026-10-21, D41–D43)
+- **Depends on:** U6
+- **Branch / PR base:** `feat/TCG-241-u6b-photo-card-redesign`, stacked on `feat/TCG-241-u6-asset-photo-delete-view`.
+- **Size estimate:** ~300 source lines, ~8 files.
+
+### Slice contents
+
+| Layer | Change | Notes |
+| --- | --- | --- |
+| API / Schema / Shared | N/A | list already returns `isCover`, `originalUrl`, `placeholderDataUrl` |
+| Web (generic `components/organisms/entity-photos/`) | Cover hero: 16:9 rounded, `object-cover`, placeholder then original, above the tiles. Tiles: square, capped size (~96–120 px), responsive wrap; max 6 shown on every screen size, the 6th shows "+N" and expands to all, with "Show less". Cover badge: small, brand blue (`--color-bg-brand-solid`, white text), not shadcn `primary`. Remove the ⋯ menu: corner ✕ (half outside, `translate(50%,-50%)`) → existing confirm; hover overlay "👁 Preview" → lightbox; "Set as cover" button on hover (non-cover tiles), and in the lightbox toolbar for touch devices. Lightbox: `yet-another-react-lightbox` (D42), dark translucent backdrop, originals, zoom, swipe/arrows/keyboard, opens at the clicked photo; replaces `entity-photo-viewer.tsx`; on an expired presigned link refetch once (keep D20 behaviour). | test IDs: keep existing tile IDs; new `-hero`, `-tile-<id>-remove`, `-tile-<id>-preview`, `-more`, `-lightbox`; drop `-actions`/`-view` (no qa-automation refs — grep first). |
+| Web (asset feature) | Asset detail view (`asset-detail-view.tsx`): read-only "Asset Image" card with the cover hero (no upload/delete); empty state when no cover. | reuse the hero component; no new endpoint (uses the list endpoint). |
+| Tests | `node --test` pure helpers: visible-tiles/+N logic (0, 6, 7, 20 photos; expanded), lightbox start index. | no React renderer in web tests |
+
+### Reviewable as
+
+- **Demo:** Edit page with 8 photos → cover large on top, 6 tiles with "+2", click → all 8, "Show less"; hover → Preview → lightbox with arrows and zoom; ✕ → confirm → deleted; Set as cover on hover; phone width → same 6-tile limit, no stretched tiles. Asset detail page → cover card.
+
+### Risk
+
+- New dependency (`yet-another-react-lightbox` ^3.32.2, React 19 peer OK) — D42.
+- Touch devices have no hover: Set as cover lives in the lightbox toolbar there.
+
+### Deliberately not in this unit
+
+- Table avatar — U7. Photos on Create — U8.
 
 ---
 
