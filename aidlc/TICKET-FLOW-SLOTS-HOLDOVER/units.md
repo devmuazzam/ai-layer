@@ -47,41 +47,41 @@ A unit is a vertical shippable slice, reviewable alone. Three kinds appear here:
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | Crews get the Start Work time adjustment controls in every EAS build | REQ-06 | mobile (config, test) | — | S | not started |
-| U2 | Roster and ticket seat follow the DAS slot; `GET /field/tickets` returns `stepFlow` per caller | REQ-01, REQ-05 (crew grouping) | shared, api | — | M | not started |
-| U3 | A 3rd man's Left Job ends their on-site time; labor writes, submit evidence and web job-progress use the slot | REQ-02 (API), REQ-04 (evidence), REQ-05 (guard, labor, progress) | api | U2 | M | not started |
-| U4 | A Rigger in an Oiler slot sees 14 steps, an Oiler in a STANDARD slot sees 8 | REQ-01, REQ-02, REQ-05 (mobile) | mobile | U3 | M | not started |
-| U5 | Pre-Trip, Post-Trip and JSA no longer block the next step; Submit lists what is missing | REQ-03, REQ-04 (mobile), REQ-05 (web progress) | mobile, web | U4 | M | not started |
-| U6 | The API refuses a submit with required steps missing | REQ-04 (API) | deploy config | U3, U5, H4, M6 + build on phones | S | not started |
-| H1 | Shared holdover step lists and types exist for every consumer | REQ-08 (shared), REQ-09 and REQ-10 (types) | shared | U5 | M | not started |
-| H2 | `GET /field/tickets` says "Day 2 of 3" and what state the crane was left in | REQ-07 (API), REQ-10, REQ-09 (columns) | schema, api | H1 | M | not started |
-| H3 | A worker's Yard / Home day start is stored and idempotent | REQ-09 (endpoint) | api | H2 | S | not started |
-| H4 | End Work closes the boom on holdover tickets; the submit guard knows holdover lists | REQ-11 (API), REQ-14 (API), REQ-04 (holdover), REQ-17 | api | H3 | M | not started |
-| H5 | Open yard time on a middle day raises no payroll flag | REQ-15 | api | H2 | S | not started |
-| H6 | Web job-progress shows each holdover day's real steps | REQ-16 | api, web | H2 | M | not started |
-| M1 | Mobile shows the Holdover badge and the right step list per day | REQ-07 (mobile), REQ-08 (mobile), REQ-11 (kind, fixtures, drain), REQ-17 | mobile | H1 | M | not started |
-| M2 | A worker picks Yard or Home on Day 2+, offline too | REQ-09 (mobile) | mobile | M1 (+ H3 deployed) | M | not started |
-| M3 | A worker records End Work on a holdover ticket | REQ-11 (record step, bounds) | mobile | M2 (+ H4 deployed) | M | not started |
-| M4 | End Work shows the day summary: work time, boom sessions, lunch, other | REQ-11 (summary) | mobile | M3 | M | not started |
-| M5 | Start Work on a held day starts the boom; unknown crane state offers Start or Skip Build Up | REQ-12, REQ-14 (boom start) | mobile | M4 | M | not started |
-| M6 | End Work asks Leave set up or Start Breakdown; last day requires break-down | REQ-13, REQ-14 (`closeBillableWindow` guards) | mobile | M5 | M | not started |
-| LT1 | Shared window helper and constants exist | REQ-18 (helper) | shared | — | S | not started |
-| LT2 | Edit-request table, `completedAt`, six audit actions exist | REQ-18 (column), REQ-21 (model), REQ-24 (members) | schema, api | LT1 | S | not started |
-| LT3 | Payroll Manager can use `payroll-admin:edit` routes | REQ-22 | api (seed, data migration) | — | S | not started |
-| LT4 | Writes after the window return 409, comments pass; offline ops use capture time | REQ-19 (window, comments, reject), REQ-27 (API), REQ-28 (server rule) | api | LT2 | M | not started |
-| LT5 | Submit stamps `completedAt`, locks the ticket, logs late completion | REQ-18 (stamp), REQ-20 (API), REQ-24 (late row) | api | LT4, rebase after U5 | M | not started |
-| LT6 | A worker can request approval; payroll can approve or deny; approved week is never touched | REQ-21 (API), REQ-19 (lock, actors), REQ-24 (request rows) | api | LT5 | M | not started |
-| LT7 | Payroll admins and workers get the request notices | REQ-23 (notices) | api | LT6 | M | not started |
-| LT8 | Requests expire on schedule; +12h and +20h reminders go out | REQ-23 (reminders), REQ-21 (expiry), REQ-24 (expired row) | api | LT7 | M | not started |
-| LT9 | Every edit made under approval writes a field-level audit row | REQ-24 (edited-under-approval) | api | LT6 | S | not started |
-| LT10 | `GET /field/tickets` carries the `incomplete` bucket, window, request and server time | REQ-26 (API), REQ-18 (read), REQ-21 (read) | api | LT6, after H3 | M | not started |
-| LT11 | Payroll can list late tickets; job-day payload carries `completedAt` / `completedLate` | REQ-25 (API), REQ-18 (late flag, not the NULL branch) | api | LT6 | M | not started |
-| LT12 | Payroll week overlay uses business-time scheduled end | REQ-29 | api | LT1 | S | not started |
-| LT13 | Payroll admin opens `/payroll/late-tickets` and sees three tabs | REQ-25 (page) | web | LT11 | M | not started |
-| LT14 | Payroll admin approves or denies from the page; Late badge, sidebar, notification link | REQ-25 (badge), REQ-21 (web), REQ-23 (web nav) | web | LT13 (+ LT6, LT7 deployed) | M | not started |
-| LT15 | Mobile Home shows an "Incomplete" section with countdowns | REQ-26 (view) | mobile | LT10 | M | not started |
-| LT16 | A worker requests approval from the card and sees the state | REQ-21 (mobile), REQ-26 (states) | mobile | LT15 (+ LT6 deployed) | M | not started |
-| LT17 | Mobile edits an approved or in-window ticket; offline ops carry capture time; 409 shows a call to action | REQ-20, 27, 28, 19 (mobile), REQ-23 (tap) | mobile | LT16, after U5 / M6 (+ LT4, LT5 deployed) | M | not started |
+| U1 | Crews get the Start Work time adjustment controls in every EAS build | REQ-06 | mobile (config, test) | — | S | merged — #831 |
+| U2 | Roster and ticket seat follow the DAS slot; `GET /field/tickets` returns `stepFlow` per caller | REQ-01, REQ-05 (crew grouping) | shared, api | — | M | merged — #831 |
+| U3 | A 3rd man's Left Job ends their on-site time; labor writes, submit evidence and web job-progress use the slot | REQ-02 (API), REQ-04 (evidence), REQ-05 (guard, labor, progress) | api | U2 | M | merged — #831 |
+| U4 | A Rigger in an Oiler slot sees 14 steps, an Oiler in a STANDARD slot sees 8 | REQ-01, REQ-02, REQ-05 (mobile) | mobile | U3 | M | merged — #831 |
+| U5 | Pre-Trip, Post-Trip and JSA no longer block the next step; Submit lists what is missing | REQ-03, REQ-04 (mobile), REQ-05 (web progress) | mobile, web | U4 | M | merged — #831 |
+| U6 | The API refuses a submit with required steps missing | REQ-04 (API) | deploy config | U3, U5, H4, M6 + build on phones | S | merged — #831 |
+| H1 | Shared holdover step lists and types exist for every consumer | REQ-08 (shared), REQ-09 and REQ-10 (types) | shared | U5 | M | merged — #831 |
+| H2 | `GET /field/tickets` says "Day 2 of 3" and what state the crane was left in | REQ-07 (API), REQ-10, REQ-09 (columns) | schema, api | H1 | M | merged — #831 |
+| H3 | A worker's Yard / Home day start is stored and idempotent | REQ-09 (endpoint) | api | H2 | S | merged — #831 |
+| H4 | End Work closes the boom on holdover tickets; the submit guard knows holdover lists | REQ-11 (API), REQ-14 (API), REQ-04 (holdover), REQ-17 | api | H3 | M | merged — #831 |
+| H5 | Open yard time on a middle day raises no payroll flag | REQ-15 | api | H2 | S | merged — #831 |
+| H6 | Web job-progress shows each holdover day's real steps | REQ-16 | api, web | H2 | M | merged — #831 |
+| M1 | Mobile shows the Holdover badge and the right step list per day | REQ-07 (mobile), REQ-08 (mobile), REQ-11 (kind, fixtures, drain), REQ-17 | mobile | H1 | M | merged — #831 |
+| M2 | A worker picks Yard or Home on Day 2+, offline too | REQ-09 (mobile) | mobile | M1 (+ H3 deployed) | M | merged — #831 |
+| M3 | A worker records End Work on a holdover ticket | REQ-11 (record step, bounds) | mobile | M2 (+ H4 deployed) | M | merged — #831 |
+| M4 | End Work shows the day summary: work time, boom sessions, lunch, other | REQ-11 (summary) | mobile | M3 | M | merged — #831 |
+| M5 | Start Work on a held day starts the boom; unknown crane state offers Start or Skip Build Up | REQ-12, REQ-14 (boom start) | mobile | M4 | M | merged — #831 |
+| M6 | End Work asks Leave set up or Start Breakdown; last day requires break-down | REQ-13, REQ-14 (`closeBillableWindow` guards) | mobile | M5 | M | merged — #831 |
+| LT1 | Shared window helper and constants exist | REQ-18 (helper) | shared | — | S | merged — #832 |
+| LT2 | Edit-request table, `completedAt`, six audit actions exist | REQ-18 (column), REQ-21 (model), REQ-24 (members) | schema, api | LT1 | S | merged — #832 |
+| LT3 | ~~Payroll Manager can use `payroll-admin:edit` routes~~ **DEFERRED** (seed + data migration dropped) | REQ-22 | api (seed, data migration) | — | S | deferred — L5 held, E2 kept (see vault/decisions/2026-10-21-defer-l5-payroll-admin-edit-default-holder.md; §12 Q30) |
+| LT4 | Writes after the window return 409, comments pass; offline ops use capture time | REQ-19 (window, comments, reject), REQ-27 (API), REQ-28 (server rule) | api | LT2 | M | merged — #832 |
+| LT5 | Submit stamps `completedAt`, locks the ticket, logs late completion | REQ-18 (stamp), REQ-20 (API), REQ-24 (late row) | api | LT4, rebase after U5 | M | merged — #832 |
+| LT6 | A worker can request approval; payroll can approve or deny; approved week is never touched | REQ-21 (API), REQ-19 (lock, actors), REQ-24 (request rows) | api | LT5 | M | merged — #832 |
+| LT7 | Payroll admins and workers get the request notices | REQ-23 (notices) | api | LT6 | M | merged — #832 |
+| LT8 | Requests expire on schedule; +12h and +20h reminders go out | REQ-23 (reminders), REQ-21 (expiry), REQ-24 (expired row) | api | LT7 | M | merged — #832 |
+| LT9 | Every edit made under approval writes a field-level audit row | REQ-24 (edited-under-approval) | api | LT6 | S | merged — #832 |
+| LT10 | `GET /field/tickets` carries the `incomplete` bucket, window, request and server time | REQ-26 (API), REQ-18 (read), REQ-21 (read) | api | LT6, after H3 | M | merged — #832 |
+| LT11 | Payroll can list late tickets; job-day payload carries `completedAt` / `completedLate` | REQ-25 (API), REQ-18 (late flag, not the NULL branch) | api | LT6 | M | merged — #832 |
+| LT12 | Payroll week overlay uses business-time scheduled end | REQ-29 | api | LT1 | S | merged — #832 |
+| LT13 | Payroll admin opens `/payroll/late-tickets` and sees three tabs | REQ-25 (page) | web | LT11 | M | merged — #832 |
+| LT14 | Payroll admin approves or denies from the page; Late badge, sidebar, notification link | REQ-25 (badge), REQ-21 (web), REQ-23 (web nav) | web | LT13 (+ LT6, LT7 deployed) | M | merged — #832 |
+| LT15 | Mobile Home shows an "Incomplete" section with countdowns | REQ-26 (view) | mobile | LT10 | M | merged — #832 |
+| LT16 | A worker requests approval from the card and sees the state | REQ-21 (mobile), REQ-26 (states) | mobile | LT15 (+ LT6 deployed) | M | merged — #832 |
+| LT17 | Mobile edits an approved or in-window ticket; offline ops carry capture time; 409 shows a call to action | REQ-20, 27, 28, 19 (mobile), REQ-23 (tap) | mobile | LT16, after U5 / M6 (+ LT4, LT5 deployed) | M | merged — #832 |
 
 **Counts.** 35 units: 3 foundation (H1, LT1, LT2), 32 vertical or behaviour slices. By prefix: U 6, H 6, M 6, LT 17 = 35.
 

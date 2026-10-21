@@ -279,3 +279,83 @@ Haris-only files (`.ai/claude/**`, `.ai/aidlc/agents/**`, `.ai/aidlc/templates/*
 - **A usecase module importing its controller** — the sanctioned NestJS registration exception.
 - **Idempotent bare resubmit (Q22 workaround)** — preserves outbox U7; keep it, and close Q22 as resolved.
 - **Q13 Option C (pure extract plus bare repository)** — consistent with `JobTicketsModule` injecting `TicketTimeEntriesRepository` bare. The choice is fine; only its recorded author is queried (ED-11).
+
+---
+
+## 7. Part 3 addendum (LT1-LT17), written 2026-10-21
+
+> Extends the Parts 1+2 reflection above. Part 3 is merged as PR #832 (`9623d8225`, `feat/ticket-flow-lt-series`); the
+> "pending merge" header and the two-base note (ED-6, withdrawn) are superseded. All LT own-specs pass. Findings come from the
+> code review the caller summarised; I did not re-run the diff. Attribution is to artifacts.
+> Remaining api/mobile/web test failures in the repo are **pre-existing on main** (TCG-237 refactor), not from this ticket; not recorded as defects.
+
+### ED-13 — Incomplete-ticket reminder scan is bounded but unordered and does not exclude already-reminded rows
+
+- **What:** `notification-scheduled-jobs.service.ts:716` — the `jobTicket.findMany` has `take: 200`, no `orderBy`, no exclusion of tickets already reminded. Above 200 cross-tenant matches Postgres returns an arbitrary 200; the same rows can win every run and others never get their +12h/+20h reminder. Silent: no error, no log.
+- **Spec or executor?** Executor. The spec (REQ-26 reminders) needs "every matching ticket is reminded"; the sibling `expireElapsedApproved` in the same file already has a deterministic order, so the reference was in front of the executor. Not a spec gap.
+- **Caught by:** code review. Not by tests (fixtures have <200 rows).
+- **Class:** `unbounded-scan` (new, see §5). **Fix:** R11.
+
+### ED-14 — Seven new `ActivityLogAction` members missing from the web and mobile sentence maps
+
+- **What:** `TICKET_EDIT_*`, `TICKET_LATE_COMPLETED`, `TICKET_EDITED_UNDER_APPROVAL` exist in `schema.prisma` and are written by `job-tickets.service.ts`; `apps/web/src/features/activity-logs/components/activity-log-utils.ts` and `apps/mobile/data/contracts/activity-log.contract.ts` do not know them, so those audit rows render blank. The audit trail is the reason REQ-24 gives for the members at all.
+- **Spec or executor?** Both, split: units.md LT9 listed the migration and the enum, and the spec's "Ripple" for it names no front-end map (spec defect, small); the repo already documents the same shape for notifications (`api.md` → Notifications), so the executor had the rule one section away from the one it read.
+- **Class:** `contract-drift` — **3rd occurrence** (SCRUM-877 ED-2, SCRUM-817 SD-1, this). Escalated, §5.
+- **Fix:** R12.
+
+### ED-15 — Specs pass `now` in the holdover slot after the rebase merged the signature
+
+- **What:** `field-ticket.mapper.spec.ts:441,453` pass `now` as 4th argument; the merged signature is `(..., holdover, now)`. Two independently-added params (Part 2 `holdover`, Part 3 `now`) met at the rebase. Own-specs "pass", so the assertions are no longer testing what they say.
+- **Spec or executor?** Executor (rebase artifact). Why tsc/jest did not stop it is **not verified** by me; if `holdover` and `now` are both loosely typed or jest runs without type-check, that is the gate gap.
+- **Class:** `gate-illusion` (15th row; 14 prior). Already escalated in §5; R13 is the narrow mechanical piece.
+
+### SD-8 — claimed: spec §11b D1-D6 Chosen/Decided by blank — WITHDRAWN, not true
+
+- Read of `spec.md` §11b (lines 618-640): D1-D10 all have **Chosen** and **Decided by: Syed Haris** with dates (2026-10-15/16). The sentence "This section leaves Chosen and Decided by blank" in the §11b preamble is the stale artifact — it was written at elaboration and never removed. That is the same `stale-reference` shape as SD-7, not an `undecided-structure` defect.
+- Real residue, no new row: **D8 says "six new enum members"; seven shipped** (Q10 added `TICKET_LATE_CAPTURE_ACCEPTED`, answer only in §12). **D7 ("seed `payroll-admin:edit` for PM")** was not built (LT3 deferral below), so its row now describes something that does not exist. Both rows should be re-stated by Haris; I cannot edit a decided row.
+- If the caller's review saw a blank cell on a different file (PR description _Developer decisions_ table), that is a separate check I did not do.
+
+### Added to §3 (vault and source findings), Part 3
+
+- **Sources wrong or stale:** `spec.md` §11b preamble (blank-cells sentence) and D7/D8 as above. `[UNVERIFIED]` tag: REQ-18..29 all carry it; none of ED-13/14/15 trace to a false source, so the tag still carries no signal (0 of 3). Same conclusion as Part 1+2.
+- **Answered by a named human during build, and written to `decisions/`?** **LT3 deferred**: seeding a default `payroll-admin:edit` holder (L5/REQ-22) was dropped because main's TCG-237 refactor removed the ROLE-ACCOUNTS-PM role it targeted; seed grant and data migration dropped, E2 (the guard on new routes) kept. Handed to `tcg-scrum` as a decision note; **not written yet** (`ls vault/decisions` shows no matching 2026-10-2x note). I do not duplicate it here. Count of build-time decisions not yet in `decisions/`: **1** (this one) on top of Q5, Q9, Q10, Q13, Q21 from Parts 1+2.
+- **Consequence of LT3 to flag:** until some role holds `payroll-admin:edit`, the new approval routes have no default approver; a tenant admin must grant it by hand. REQ-22 (spec line 704, "Unblocked: REQ-22; LT3") is therefore only partly met. Needs a spec §12 question (Q30, below).
+- **Conflicts that surfaced only in build:** TCG-237 (a main refactor landing mid-ticket) vs. spec L5/D7. Nobody found it by reading; the executor hit it.
+- **Open questions closed:** none by this part. **Raised:** Q30.
+
+### Part 3 rule changes (continue the numbering of §4)
+
+Haris-only files; `git -C .ai config user.email` is `abdulmuazzam@codingcops.org`, so I edited none of them.
+
+| # | File | Section | Exact change | Prevents | Removes / adds |
+| --- | --- | --- | --- | --- | --- |
+| R11 | `.ai/claude/contexts/api.md` | new `## Cron scans` before `## Notifications` | "A cron or batch `findMany` with `take` must (1) carry an `orderBy` ending in a unique key, and (2) exclude rows already handled in its `where` (the dedup column), so the next run reaches the rest. Copy `expireElapsedApproved` in `notification-scheduled-jobs.service.ts`. A scan that can exceed `take` loops pages until empty." **Mechanical:** add to the cron service spec a test that spies `findMany` and fails if any call has `take` and no `orderBy`. | ED-13 | adds ~5 prose lines + 1 test, removes 0 — nothing to replace; no existing sentence covers scans |
+| R12 | `packages/shared` + `.ai/claude/contexts/api.md` § Notifications | rename to `## Contract enums` | **Mechanical:** export `ActivityLogAction` as a union from `@tcg/shared` and type both front-end maps `Record<ActivityLogAction, string>` so a new member fails `tsc` on web and mobile. **Prose, replacing the Notifications paragraph:** "Every enum or key list shared across API, web and mobile (`NOTIFICATION_TYPES`, `ActivityLogAction`) is exported from `@tcg/shared` and every consumer map is typed `Record<Type, …>`; adding a member is not done until `pnpm typecheck` passes on web and mobile." | ED-14 (and the PAYROLL-FLAGS SD-1 shape) | replaces 4 lines with 4; removes the type-only-by-hand Notifications reminder |
+| R13 | `.ai/aidlc/agents/construction/tcg-executor.md` | §3 after rebase/merge | Replace the line on conflicts with: "After any rebase or merge that touches a function signature, run `git grep -n '<fn>(' -- '*.spec.ts' '*.ts'` and the typecheck for every call site, specs included, before reporting the unit done." If tsc already catches this and did not, fix the param types (`Date` vs holdover object) instead — I did not verify. | ED-15 | replaces 1 sentence, adds 1 |
+| R14 | `.ai/aidlc/templates/spec.md` | §11b preamble | Delete "This section leaves _Chosen_ and _Decided by_ blank, per the elaborator's rules"; replace with "Rows are blank until a developer fills them; the build starts when none are." | SD-8 (stale-reference) | replaces 1 sentence |
+
+- **Tested against the defect.** R11 prose alone would not have stopped ED-13 (the executor had a working sibling) — the spy test would, because the fixture can be asserted on the call args, not the row count. R12's type is what holds; the prose is there only for the next enum. R13 may be decoration if tsc was not run; stated above.
+- **Rejected:** a rule "add a Ripple line for front-end maps to every enum unit" in the decomposer — R12's tsc failure does this without anyone remembering.
+
+### §5 addendum — recurrence
+
+| Defect | Class | Prior rows | Occurrence | Why the previous fix did not hold |
+| --- | --- | --- | --- | --- |
+| ED-13 | `unbounded-scan` (new) | 0 | 1st | N/A. Note ED-8 (same cron file, dedup order) is a neighbour in `gate-illusion`; two defects in one service suggest the next cron change should be offered R11 |
+| ED-14 | `contract-drift` | 2 (SCRUM-877 ED-2, SCRUM-817 SD-1) | **3rd** | SCRUM-817's fix (`api.md` → Notifications) is `applied` but covers **one** list by name; it is prose, names `NOTIFICATION_TYPES` only, and nothing checks any other enum. Written, narrow, and unchecked. |
+| ED-15 | `gate-illusion` | 14 | 15th | Already escalated at ED-5..10; nothing in CI runs `pnpm test` or `typecheck`, so a stale call site surfaces only in review |
+| SD-8 | `stale-reference` | 5 | withdrawn | N/A |
+
+- **ESCALATION — `contract-drift`, 3rd occurrence.** Not a reminder problem. Two earlier "applied" fixes were a single prose paragraph for a single list. Mechanism: **a shared type with `Record<Type, …>` consumer maps (R12)**, so the compiler is the checker. This needs Opus-tier judgement for the type placement, which is why I flagged it to Haris and did not draft the code.
+- **New class added to the index table:** `unbounded-scan` — a batch or cron query with a row cap and no deterministic order or progress marker, so which rows get processed is arbitrary. Row added to INDEX.md class table.
+- **Rows appended to `reflections/INDEX.md`:** 4 (ED-13, ED-14, ED-15, SD-8-withdrawn).
+
+### §6 addendum — kept as-is
+
+- **LT3 deferral** — a decision, not a defect: TCG-237 removed the target role. Do not reopen as a missed requirement; Q30 tracks the consequence.
+- **Remaining test failures in api/mobile/web** — pre-existing on main (TCG-237). Not recorded against this ticket.
+- **`expireElapsedApproved`'s ordering** — correct; it is the reference for R11.
+
+### Spec §12 — appended
+
+- **Q30** — With LT3 dropped, who holds `payroll-admin:edit` by default after TCG-237? Appended to `spec.md` §12.

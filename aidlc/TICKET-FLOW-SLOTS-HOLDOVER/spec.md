@@ -936,3 +936,9 @@ Per endpoint:
 - [ ] Decomposed into vertical units — `units.md`
 
 Answered by: ______________  Date: ______________
+
+### Q30 — Who holds `payroll-admin:edit` by default now that LT3 is dropped?
+- **Raised by:** tcg-reflector, 2026-10-21, Part 3 close-out.
+- **Asked:** LT3 (seed a default `payroll-admin:edit` holder, L5/REQ-22) was dropped because main's TCG-237 refactor removed the ROLE-ACCOUNTS-PM role it targeted. The new late-ticket approval routes still require `payroll-admin:edit`. Which role(s) get it by default after TCG-237, or is manual grant by a tenant admin the intended state?
+- **Blocks:** REQ-22 sign-off.
+- **Status:** open
