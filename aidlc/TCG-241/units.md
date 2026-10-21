@@ -26,7 +26,7 @@
 | U7 | The Assets table shows each asset's cover thumbnail avatar (blur first), initials otherwise | REQ-08, REQ-09 (avatar), REQ-10 (list) | api, web | U5 (thumbnail stream from U3) | ~170 lines / 7 files | committed — feat/TCG-241-u7-assets-table-cover-avatar |
 | U8 | Photos can be picked on Create; uploaded after the asset saves; failures listed, retry on Edit | REQ-16, REQ-01 (create) | web | U5 (stacked on U7) | ~170 lines / 6 files | committed — feat/TCG-241-u8-asset-photos-on-create |
 | U9 | Large phone photos are downscaled in the browser; HEIC converted where decodable, else clearly rejected | REQ-14 (client downscale, 50 MB pick — still applies after D31 removed the photo-count cap, 10 MB post-downscale), REQ-04 (HEIC message) | web | U8 | ~140 lines / 4 files | committed — feat/TCG-241-u9-browser-photo-downscale |
-| U10 | Deleting an asset removes its photo rows and S3 files | REQ-07 (asset-delete entry), REQ-03 (asset archive keeps photos: test) | api | U6 | ~80 lines / 5 files | not started |
+| U10 | Deleting an asset removes its photo rows and S3 files | REQ-07 (asset-delete entry), REQ-03 (asset archive keeps photos: test) | api | U6 | ~80 lines / 5 files | committed — feat/TCG-241-u10-asset-delete-removes-photos |
 
 - **Requirements covered:** REQ-01..REQ-18 counted against `spec.md` §2 on 2026-10-20: 18 in spec, 17 in units, 1 not covered. Recount whenever §2 gains a REQ.
 - **Not covered:** REQ-18 (Mobile) — its statement is "out of scope; cover shows in the web Assets table only" (Q9 A). There is nothing to build; every unit carries a regression note that `apps/mobile` is untouched. REQ-12 (Tools unchanged) is a constraint, carried as a negative check in U2, U3, U5, U6, not a build item.
