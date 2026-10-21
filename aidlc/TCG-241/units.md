@@ -22,6 +22,7 @@
 | U5 | First photo becomes cover; "Set as cover" changes it; no photo cap (D31, Akif 2026-10-21) — U4/U3 limit code removed | REQ-03 (first, change), REQ-02 (Set as cover), REQ-14 (cap removed, D31), REQ-10 (set-cover) | api, web | U4 | ~230 lines / 9 files | committed — feat/TCG-241-u5-asset-photo-cover (acab337af) |
 | U6 | Delete a photo (confirm, cover fallback, all 3 files) and View it large | REQ-07 (photo delete), REQ-03 (delete fallback, last photo), REQ-02 (View, Delete), REQ-09 (lightbox) | api, web | U5 | ~290 lines / 11 files | committed — feat/TCG-241-u6-asset-photo-delete-view (1e30d0096) |
 | U6b | Photo card redesign: cover hero, corner ✕, hover Preview + lightbox, 6-tile limit (+N) on every screen, detail-page cover card | REQ-02, REQ-09, REQ-11, REQ-13 | web | U6 | ~300 lines / 8 files | committed — feat/TCG-241-u6b-photo-card-redesign (769aec73f) |
+| U6c | Photos stored in `attachments` (placeholder column, category Photo, `coverAttachmentId`); `entity_images` dropped; routes → `/attachments/photos` | REQ-05, REQ-07, REQ-10 (storage), D48–D51 | schema, api, shared, web | U6b | ~500 lines | committed — feat/TCG-241-u6c-photos-on-attachments (f6631b770) |
 | U7 | The Assets table shows each asset's cover thumbnail avatar (blur first), initials otherwise | REQ-08, REQ-09 (avatar), REQ-10 (list) | api, web | U5 (thumbnail stream from U3) | ~170 lines / 7 files | not started |
 | U8 | Photos can be picked on Create; uploaded after the asset saves; failures listed, retry on Edit | REQ-16, REQ-01 (create) | web | U5 (stacked on U7) | ~170 lines / 6 files | not started |
 | U9 | Large phone photos are downscaled in the browser; HEIC converted where decodable, else clearly rejected | REQ-14 (client downscale, 50 MB pick — still applies after D31 removed the photo-count cap, 10 MB post-downscale), REQ-04 (HEIC message) | web | U8 | ~140 lines / 4 files | not started |
@@ -341,6 +342,30 @@ Enumerated by: `git grep -ln "prisma.asset\." -- apps/api/src` (consumers read t
 ### Deliberately not in this unit
 
 - Table avatar — U7. Photos on Create — U8.
+
+---
+
+## U6c — Store photos in `attachments` instead of `entity_images`
+
+- **Outcome:** Asset photos live in the existing `attachments` table (`category = 'Photo'`, new `placeholder_data_url`), the cover is `Asset.coverAttachmentId`, `entity_images` is dropped, and the photo routes are under `/attachments/photos`. Every photo behaviour from U2–U6b works exactly as before, and existing attachment screens are unchanged.
+- **Kind:** refactor (schema + api + thin web URL change), per D48–D51
+- **Depends on:** U6b
+- **Branch / PR base:** `feat/TCG-241-u6c-photos-on-attachments`, stacked on `feat/TCG-241-u6b-photo-card-redesign`.
+- **Size estimate:** ~500 source lines (mostly moved code); migration does not count.
+
+### Slice contents
+
+| Layer | Change | Notes |
+| --- | --- | --- |
+| Schema | Forward migration: add `attachments.placeholder_data_url` Text NULL; rename `assets.cover_image_id` → `cover_attachment_id`, FK → `attachments(id)` ON DELETE SET NULL, index kept/renamed; drop `entity_images` + enum `ImageOwnerType`; remove `'entityimage'` from `TENANT_SCOPED_MODELS` (`attachment` already scoped). | `tcg-prisma-guardian` before commit. Do not reformat the schema (only the touched lines). |
+| API | Move the photo service/repository logic onto attachments (generic over `featureType`, asset is the only owner now): upload (sharp → 3 WebP, S3 keys unchanged shape with the attachment id), list (category Photo, oldest first, `isCover`, presigned thumbnail/original, inline placeholder; no width/height), set-cover, delete (+ re-pick), `deleteStoredFiles` for U10. Routes in `attachments.controller.ts` per D50; remove `/asset-management/assets/:id/photos*`. Owner check: resolve the asset by UUID within the tenant (404), activity log on the asset by `unitCode` as before. Generic `GET /attachments` excludes photo rows; generic `DELETE /attachments/:id` routes photo rows through the photo delete; meter-evidence validation rejects photo rows (D51). | keep tenant explicit filters (D18); keep D32 conditional first-cover, D37 delete semantics, P2025/P2003 → 404 |
+| Shared | `EntityImageListItem` loses `width`/`height`; constants kept (rename only if trivial). | |
+| Web | Feature utils call the new URLs; lightbox derives the aspect ratio from the placeholder image (no width/height). Generic component otherwise unchanged. | |
+| Tests | Move/adapt U2–U6 specs to the new service/routes; add: generic list excludes photos, generic delete of a photo removes 3 objects + re-picks cover, meter evidence rejects a photo id. Full gates run after this unit. | |
+
+### Deliberately not in this unit
+
+- Table avatar (U7). Asset hard-delete cleanup (U10, reuses `deleteStoredFiles`).
 
 ---
 
