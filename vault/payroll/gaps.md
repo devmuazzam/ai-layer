@@ -5890,7 +5890,7 @@ somewhere it should not have. Settle that before touching either.
 
 ## Who may complete or correct a ticket on a worker's behalf, and who approves a late or post-submit edit — "manager" or payroll
 
-- **Status:** resolved — see [../decisions/2026-10-15-late-and-incomplete-tickets.md](../decisions/2026-10-15-late-and-incomplete-tickets.md) (L5, L7: only the worker and payroll-admin:edit holders; no dispatcher or supervisor)
+- **Status:** resolved — see [../decisions/2026-10-15-late-and-incomplete-tickets.md](../decisions/2026-10-15-late-and-incomplete-tickets.md) (L5, L7: only the worker and payroll-admin:edit holders; no dispatcher or supervisor). **Update 2026-10-21:** the *approver* answer still holds — a `payroll-admin:edit` holder approves — but L5's **seeded default holder** is deferred and E2 kept during the TICKET-FLOW-SLOTS-HOLDOVER Part 3 rebase: no role gets the permission by default; it is granted by hand in Departments until a TCG-237 role is chosen to hold it. See [../decisions/2026-10-21-defer-l5-payroll-admin-edit-default-holder.md](../decisions/2026-10-21-defer-l5-payroll-admin-edit-default-holder.md).
 - **Asked:** 2026-10-07 — recording Melissa McNutt's provisional incomplete-ticket answers
   ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
   `reference`, T2, T3, T13). TCG asked on 2026-10-06 to hold those answers until an updated version
