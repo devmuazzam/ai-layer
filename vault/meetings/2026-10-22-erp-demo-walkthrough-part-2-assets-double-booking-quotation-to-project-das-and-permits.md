@@ -400,7 +400,13 @@ Nothing else on the call was a TCG owner choosing between alternatives.
    that **ended on premium time**. The decline of a note on the **trigger** stands, because the trigger is
    contested. The April exchange is a separate candidate: **Kyle chose to manage the entitlement in the
    system, not manually, with offers and refusals recorded**. That was a choice between named options and
-   is decision-grade on the folder's convention. It has not been written.
+   is decision-grade on the folder's convention. **Written 2026-10-23, dated 2026-04-09:**
+   [../decisions/2026-04-09-last-crew-entitlement-managed-in-the-system-offers-and-refusals-recorded.md](../decisions/2026-04-09-last-crew-entitlement-managed-in-the-system-offers-and-refusals-recorded.md)
+   (`verified`, hedged; recording offers and refusals is agreed in principle only). It decides only
+   *in the system, not manual* and *record accepted and refused offers*. The trigger, next-shift
+   overtime, who holds the right, the pay owed when the crew is passed over (no pay rule; G4) and the
+   DAS form (rank, warn or block) are recorded there as not decided. The dispatch gap stays open, with
+   an *Update 2026-10-23* line.
 2. **Written, scheduling half only:** [../decisions/2026-10-22-back-to-back-jobs-scheduled-without-overlap-overlap-is-billing-only.md](../decisions/2026-10-22-back-to-back-jobs-scheduled-without-overlap-overlap-is-billing-only.md).
    It is `verified` on the folder's convention for a named TCG owner on a recorded call (*"Not
    confirmed in writing"* in its `decided_by:`). ehtesham.anwar put the choice to TCG: allowing double
