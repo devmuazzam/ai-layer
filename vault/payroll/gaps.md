@@ -810,6 +810,12 @@ someone has confirmed otherwise.
   not yet asked or made**: (a) corrections happen only in the ERP and are re-sent (`Append` updates
   an existing batch, request `672204` point 1), or (b) payroll marks the week approved and records
   any ADP-side change in the ERP after approving. Owner: syed.haris to put (a)/(b) to the client.
+- Update 2026-10-22 (Nate, ADP, request `672204`; [adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §9):
+  **Payroll Output and Pay Statements can be enabled — by ADP support only, never in API Central** —
+  once the ticket has a clear "Yes", **a TCG security master on it (Corrina Bustos or Melissa
+  McNutt)**, and the project name (*TCG ERP Integration*). Both return all payroll data unfiltered,
+  executive pay included. That would give the ERP the read side (what was calculated/paid) and so a
+  way to detect ADP-side edits by comparison. **TCG's decision; not yet asked.**
 
 ## Excel or API — the ADP submission path is not decided
 
