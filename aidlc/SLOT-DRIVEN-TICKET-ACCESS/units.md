@@ -1,6 +1,6 @@
 # Proposed units — SLOT-DRIVEN-TICKET-ACCESS
 
-The requesting user authorized construction on 2026-10-22: "start the implementation using AI DLC". U1 is built locally and independently reviewed; U2 remains a separate unit. One unit per PR; no commit/push was requested.
+The requesting user authorized construction on 2026-10-22: "start the implementation using AI DLC". U1 and U2 are built locally and independently reviewed. The user subsequently requested a new U2 branch on top of U1 and completion; local checkpoints establish that stack. One unit per PR; no push or deployment requested.
 
 ## Gate baseline
 
@@ -13,7 +13,7 @@ New tests: **not requested**. Run existing suites and named manual checks. Do no
 | Unit | Outcome | Requirements | Surfaces | Depends on | Estimate | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | U1 | Operator assigned Oiler can fully complete the shared ticket; paired Operator stays read-only, online/offline | 1–3,5,6 | api, mobile, shared/progress as needed for resolution | None; reproduction precedes edits | 12–20 files; 200–450 source lines, tentative until reproduction | built — fix/SLOT-DRIVEN-TICKET-ACCESS-u1-cross-role-crew |
-| U2 | Any employee assigned another slot sees/finishes STANDARD without checklist extras | 1,4,5,6 regression | shared, api, mobile, office-progress consumers | U1 | 8–14 files; 120–300 source lines, tentative | not started |
+| U2 | Any employee assigned another slot sees/finishes STANDARD without checklist extras | 1,4,5,6 regression | shared, api, mobile, office-progress consumers | U1 | 8–14 files; 120–300 source lines, tentative | built — fix/SLOT-DRIVEN-TICKET-ACCESS-u2-standard-slots |
 
 Coverage: 6 core requirements, 6 covered. No executable unit includes Q1 historical repair, Q2 changed vacancy semantics or Q3 changed legacy fallback. A follow-up repair unit may be defined only after Q1 is answered and a concrete safe repair is reviewed.
 
@@ -102,7 +102,7 @@ API: `usecase/job-tickets/crew-roster.spec.ts`, `ticket-step-flow.spec.ts`, `job
 - **Kind:** Vertical.
 - **Requirements covered:** REQ-01, REQ-04, REQ-05 and REQ-06 regression.
 - **Depends on:** U1's common assignment policy and current-context handling.
-- **Branch / PR base:** Proposed `fix/SLOT-DRIVEN-TICKET-ACCESS-u2-standard-slots`; stack on U1 while open, then use merged base. No branch created.
+- **Branch / PR base:** `fix/SLOT-DRIVEN-TICKET-ACCESS-u2-standard-slots`, created directly atop U1 commit cf09fae27. A future U2 PR should target U1 while open.
 - **Size estimate:** 8–14 files, 120–300 source lines; refine after shared consumer trace.
 
 ### Slice contents
@@ -124,7 +124,7 @@ API: `usecase/job-tickets/crew-roster.spec.ts`, `ticket-step-flow.spec.ts`, `job
 
 ### Existing suites and manual checks
 
-Run existing shared flow suites (locate via shared package scripts), API slot-flow/mapper/submit/progress suites and mobile composition/total/progress/store/verify suites. Manually confirm known assigned other slots never gain extras from a main Oiler role or runsInspections setting; verify sig1/sig2 remain. Cover normal day plus existing holdover Yard/Home middle/last-day variants. Confirm a valid Oiler and solo Operator remain FULL. No full gate was run during this plan.
+Run existing shared flow suites (locate via shared package scripts), API slot-flow/mapper/submit/progress suites and mobile composition/total/progress/store/verify suites. Manually confirm known assigned other slots never gain extras from a main Oiler role or runsInspections setting; verify sig1/sig2 remain. Cover normal day plus existing holdover Yard/Home middle/last-day variants. Confirm a valid Oiler and solo Operator remain FULL. Final implementation gates and limits are recorded in implementation-u2.md and analyst-u2.md.
 
 ### Risk
 
