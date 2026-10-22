@@ -270,7 +270,11 @@ Key points, his words where quoted:
 
 **This is a TCG decision, not CodingCops'.** Enabling it exposes all 4RZ payroll — salaried and
 executive pay included, unfilterable — to the integration's credentials. Owner: Brian Petros /
-Corrina Bustos (security master). Not yet asked when written.
+Corrina Bustos (security master). Asked in the Teams group 2026-10-23; TCG replied the same day,
+verbatim: *"Corrina is out today. She should be back tomorrow. I would put Melissa on the ticket to
+approve. I'll send Melissa a message to let her know to look out for it."* So **Melissa McNutt**
+(President) is the approver; syed.haris adds her to request `672204` for her "Yes", project
+*TCG ERP Integration*. Approval itself still pending.
 
 **First check after the event was added (2026-10-23 04:12 PKT, Pacific still 10-22):** queue
 **204**, and `2026-43` still **`OPEN`** on its own pay date (`2026-42` `COMPLETE`, `2026-44`
