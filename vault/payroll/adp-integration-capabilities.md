@@ -360,6 +360,19 @@ fields, three *Bad Request* cases), 4 rehire, 1 terminate, 17 pay-data samples (
 temp rate, FLSA work week), codelists, validation tables, workers, pay schedule. Reference only —
 not a statement of what TCG has decided to build.
 
+**Onboarding templates on 4RZ (read 2026-10-23, `GET /hcm/v2/applicant.onboard/meta`):**
+`14495_6403` *HR + Payroll (System)*, `9204592297352_1` *HR + Payroll TCG*, `15336_7354` *HR Only
+(System)*. Template meta is read with
+`?$filter=meta/applicantOnboarding/onboardingTemplateCode/code eq '<code>'`. **The TCG template
+returns 403** — *"You do not have security access to use this template"* — so the API user needs
+that template granted in WFN security before TCG's own required fields can be read. The System
+template returns 193 fields, **26 required** for a complete hire: hire date, company code, pay
+group, pay cycle, hire reason, federal filing status, worked-in-state, SUI state, SSN (type,
+status, number), first/last and payroll name, ACA eligibility, gender, birth date, legal address
+(country, line 1, city, state, zip), plus integration settings (onboarding status, experience,
+I-9 option). An *in-progress* start needs only five: template, company code, first and last
+name, hire date. Not yet compared field-by-field against the ERP's employee form in writing.
+
 **Calling** onboard, rehire or terminate changes a real `4RZ` worker (no sandbox); none has been
 called. Whether onboarding starts in the ERP or in ADP is open — *Where the employee lifecycle
 starts* in [gaps.md](gaps.md).
