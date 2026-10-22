@@ -729,6 +729,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     have nowhere to live*.
 - **Blocked:** invoice lines for back-to-back jobs; whether DAS ever needs an intentional-overlap flag.
 - **Owner:** Melissa McNutt with Brent Wagstaff (billing); Kyle Harlow for the crew side.
+- **Update 2026-10-23:** (d) is answered for the schedule only. Back-to-back jobs are scheduled without overlap, and DAS needs no intentional-overlap flag ([../decisions/2026-10-22-back-to-back-jobs-scheduled-without-overlap-overlap-is-billing-only.md](../decisions/2026-10-22-back-to-back-jobs-scheduled-without-overlap-overlap-is-billing-only.md), Melissa McNutt with Kyle Harlow, `verified`). (a)–(c), what the second job's invoice bills and whether each job carries its full minimum, stay open.
 
 ## Fuel cost per job — where the fuel figure comes from, and whether the ERP reports profit per job
 

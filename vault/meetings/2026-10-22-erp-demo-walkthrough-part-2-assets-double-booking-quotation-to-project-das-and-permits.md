@@ -343,16 +343,59 @@ Checked 2026-10-23 against every vault file except this note. Most of what was s
    CodingCops had from Lisette: it applies only when the crew ended on overtime and the crane goes out again
    before 6 AM. He stated it as an existing rule, not as a choice between options. He also said it *"is very
    specific … we'll probably have to like refine that"*, and his times are garbled once (*6 P.m.* / *6
-   A.m.* / *4 P.m.*). **Recommend: not yet a decision.** It is filed as a gap with his words as evidence.
-   It can be written once he confirms the trigger and who holds the right.
+   A.m.* / *4 P.m.*). It is filed as a gap with his words as evidence.
 2. **Back-to-back jobs: no overlap on the schedule, bill from ticket times** (§5). Melissa McNutt
    (President), 40:03: *"we'll just have to do our start end times where they will allow it to double book
    without really double booking it … the ticket times will be the actual times."* Kyle agreed it belongs
    on the billing side. That supports the built no-overlap rule, but ehtesham.anwar left it to *"dive deeper
-   into"*, and it doesn't say what the invoice bills. **Recommend: not yet a decision**; it is filed as a
-   gap.
+   into"*, and it doesn't say what the invoice bills. It is filed as a gap.
 
 Nothing else on the call was a TCG owner choosing between alternatives.
+
+**One declined, one written, 2026-10-23 (`tcg-scrum`, at syed.haris's request).**
+
+1. **Declined.** Under the folder's convention
+   ([../decisions/2026-10-13-collections-worked-at-customer-level-not-invoice-level.md](../decisions/2026-10-13-collections-worked-at-customer-level-not-invoice-level.md);
+   Part 1's decline), a note records only a point where a TCG owner **chose between named
+   alternatives**. Kyle did not choose. He corrected the facts of an existing rule that ehtesham.anwar
+   had described as a legal obligation (57:13). The narrowing on its own (*"not every next day, only
+   after overtime"*) was considered and also declined, because its condition is the unclear part:
+   - Asked *"Overtime for them, or overtime as a general?"* (1:08:45), Kyle answered *"for the machine
+     … think of it as like the machine gets paid"* (1:08:58). Whose overtime triggers the rule is still
+     open.
+   - The cut-off time is transcribed three ways (1:08:40, 1:08:58, 1:09:17).
+   - Kyle twice said the rule needs refining (1:09:32, 1:09:58).
+   - Where the rule comes from (the union agreement, a contract or practice) is unknown. If it is a
+     contract clause, that clause is the authority, not a paraphrase of it.
+
+   **G4 does not apply as stated.** The rule decides who is offered the next day's crane, not what
+   anyone is paid, so it has no place in
+   [../payroll/payroll-rules-provenance.md](../payroll/payroll-rules-provenance.md). It *reads* a payroll
+   fact, whether the shift ended on overtime. Any check would take that from payroll's
+   classification and leave it unchanged. G4 would apply only if the source turns out to attach pay to
+   the right, for example pay owed when the crew is passed over. Nobody said that.
+
+   The entry [../dispatch/gaps.md](../dispatch/gaps.md) *First right of refusal on the next day's
+   crane* stays open and unedited. Its question (a)–(f) already holds Kyle's words, including the
+   narrowing, so nobody should build the broad *"always ask yesterday's crew"* version from it. A note
+   can be written once Kyle (or Corrina Bustos, if it is a union rule) confirms the trigger in writing
+   or picks between stated options on a call.
+2. **Written, scheduling half only:** [../decisions/2026-10-22-back-to-back-jobs-scheduled-without-overlap-overlap-is-billing-only.md](../decisions/2026-10-22-back-to-back-jobs-scheduled-without-overlap-overlap-is-billing-only.md).
+   It is `verified` on the folder's convention for a named TCG owner on a recorded call (*"Not
+   confirmed in writing"* in its `decided_by:`). ehtesham.anwar put the choice to TCG: allowing double
+   booking in the system would make an intentional overlap look the same as an error, so *"how would you
+   guys like to handle this within the operational system?"* (39:40). Melissa chose: set the start and
+   end times so the jobs do not overlap (40:03–40:23). Kyle agreed: *"they won't be actually double
+   booked on the schedule, right?"*, and the overlap is *"done on the billing side"* (40:36–40:47). Both
+   hedged (*"I think"*), and the note says so. ehtesham.anwar's *"dive deeper into"* (40:31, 41:14) was
+   about the billing calculation, so the following are recorded as not decided:
+   - what the second job's invoice bills (from the yard, or from the end of job one);
+   - whether each job bills its full minimum;
+   - whether DAS warns or blocks;
+   - tentative jobs.
+
+   [../accounting/gaps.md](../accounting/gaps.md) *Back-to-back jobs billed portal to portal* stays open,
+   with an *Update 2026-10-23* line: (d) is answered for the schedule, and (a)–(c) are open.
 
 ## 13. Questions this raises — filed 2026-10-23
 
