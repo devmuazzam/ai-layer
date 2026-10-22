@@ -248,6 +248,37 @@ among them.** syed.haris asked Nate on request `672204` (2026-10-21) whether it 
 pay date or a later close — the watcher above decides that. ADP has **not replied** to the
 2026-10-17 follow-up (Payroll Output enablement) as of 2026-10-21.
 
+
+## 9. ADP's answer — status event added; Payroll Output needs a security master (2026-10-22)
+
+Nate (ADP API Central Support, request `672204`), received 2026-10-23 PKT, answering both follow-ups.
+Key points, his words where quoted:
+
+- **Pay-period status event: added.** *"I added the "payPeriodStatus.change" notification to your
+  project and notified our dev team to add it for clients."* Delivery is the project's existing
+  **polling** queue.
+- **Payroll Output and Pay Statements: available, but never through API Central.** *"can only be
+  activated by our support team and is NOT ever visible within API-Central."* Payroll Output
+  *"return[s] all raw payroll data (including sensitive personal and executive data) without
+  filtering"*; Pay Statements (WFN only) returns hours, earnings and statement data/images and
+  *"cannot be limited by masking settings"*.
+- **ADP's conditions to activate them:** (1) a clear **"Yes"** on the ticket; (2) **a TCG security
+  master on the ticket** — he names Corrina Bustos or Melissa McNutt; (3) the **API Central project
+  names** to assign them to (ours: *TCG ERP Integration*).
+- Docs: the Payroll Output (Turbo) guide and the WFN Pay Statements API in API Explorer; a paid
+  consultation is offered.
+
+**This is a TCG decision, not CodingCops'.** Enabling it exposes all 4RZ payroll — salaried and
+executive pay included, unfilterable — to the integration's credentials. Owner: Brian Petros /
+Corrina Bustos (security master). Not yet asked when written.
+
+**First check after the event was added (2026-10-23 04:12 PKT, Pacific still 10-22):** queue
+**204**, and `2026-43` still **`OPEN`** on its own pay date (`2026-42` `COMPLETE`, `2026-44`
+`NOT_STARTED`). So the period does not close at processing (§8) nor, so far, on the pay date. Lead,
+unconfirmed: it flips when the next week is opened — which would make `payPeriodStatus.change` a
+*"next week started"* signal rather than *"this week processed"*. The next poll after Micaela starts
+week 44 settles it.
+
 ---
 
 ## Appendix — the test scripts, as run

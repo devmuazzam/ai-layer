@@ -1135,8 +1135,12 @@ someone has confirmed otherwise.
   pay-periods guide but is **not** among this project's 147; enablement asked of ADP (request
   `672204`, 2026-10-21). Interim lead: poll `GET /payroll/v1/pay-schedule/payroll-groups/4RZ` for
   `OPEN` → `COMPLETE` (timing of the flip unconfirmed). ADP has not answered the 2026-10-17 follow-up.
-- **Status:** resolved 2026-10-17 — no pay-data or payroll-status event reaches the ERP (reconfirmed
-  2026-10-21 at a real processing).
+- Update 2026-10-22 (Nate, ADP, request `672204`; [adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §9):
+  **`payPeriodStatus.change` added to the *TCG ERP Integration* project** (polling). Not yet
+  observed firing: at the first poll (2026-10-23 PKT) `2026-43` was still `OPEN` on its pay date,
+  so whether it signals *processed* or *next week opened* is open.
+- **Status:** resolved 2026-10-17 — no pay-data event reaches the ERP; a pay-period status event is
+  now subscribed (2026-10-22), timing unconfirmed.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires](gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires)
 
