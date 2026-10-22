@@ -3,7 +3,7 @@ title: ERP Demo Walkthrough Part 1 — test tenant and login, yards, departments
 source: user-supplied/meeting-transcript — curated
 original_file: "2026-10-21_ERP DEMO-WALKTHROUGH Part 1 - transcript.docx"
 migrated: 2026-10-22
-updated: 2026-10-22
+updated: 2026-10-23
 status: unverified
 conflicts_with: []
 jira: []
@@ -207,7 +207,7 @@ Specialist), **Micaela Dipane**. CodingCops: ehtesham.anwar, abdulrehman. Roles 
 
 ## 11. Next
 
-- **2026-10-22 (Thursday):** continue from **asset management**. Melissa asked for **Jeff Stricker** on
+- **2026-10-22 (Thursday):** continue from **asset management** — held; see [2026-10-22 Part 2](2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md). Melissa asked for **Jeff Stricker** on
   the call (58:00).
 - **Lisette is away until November 3** (58:10–58:19). Whoever runs dispatch now stands in, and she gets
   the recording (58:20–58:34).

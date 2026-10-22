@@ -543,6 +543,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   The build matches the review log (*"charging above standard rate is fine"*) and the SOP's unconditional
   approval; **the documentation's wording overstates it**. Nothing on the call answered the
   inclusive/exclusive question. The wording is CodingCops' to correct, not a question for TCG.
+- **Update 2026-10-23 (10-22 walkthrough part 2):** ehtesham.anwar repeated the documentation's wording
+  on the call: internal approval when the quote is *"50,000 and above"* and on *"any change from the billing
+  code that we have added"* (41:34). It is still broader than the build (a rate **below** the reference
+  rate, or the total over the threshold), and *"and above"* is inclusive where the code is exclusive
+  (`totalAmount > approvalThreshold`). Nobody from TCG commented. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §6.
 
 ## Does "Valid until <date>" mean end of that day, or the instant of midnight?
 
@@ -2655,6 +2660,12 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   - (a) Ryan Adams (quotation send) with Joe Schacatano (sales), because it decides what a signed quote legally showed.
   - (b) Joe Schacatano.
   - (c) Brian Petros, who owns template field identity in the assets entry.
+- **Update 2026-10-23 (10-22 walkthrough part 2):** ehtesham.anwar (41:34) said the sub-category
+  attributes on a quote line had two intended uses — details of the asset, and lift information like
+  FCC's — and that lift planning *"now … we need to figure out … separately, so we might want to change
+  this structure."* If lift information leaves the attributes, (a) and (b) here cover asset details only.
+  Where lift information lives is not decided: FCC holds it per job quote
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md), `unverified`). Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §6.
 
 ## Editing a quotation — should opening it re-apply the customer's price list, and re-price a draft?
 
@@ -2752,6 +2763,11 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Question:** today only the web blocks a quote line with no billing code ("Billing Code missing.") and rounds ordinary rates to whole dollars; the API (`create-quotation.dto.ts`, `quotations.service.ts` `syncResources`) accepts code-less lines and cents on any line, so another client (mobile, a script) can save what the web would refuse. Should the server enforce both? If so: (a) look the item's billing code up itself, or trust the client's `pricingSource`; (b) custom types only, or every resource type; (c) keep the TCG-218 exceptions — a "Price Adjustment" line inside a Mobilization/Demobilization group may be code-less with a cents rate (D9a, Q38b).
 - **Sources checked:** TCG-218 spec REQ-13, D9a, Q38; `units.md` U6 test row (which assumed server rejection).
 - **Owner:** ticket owner of a follow-up ticket (none yet).
+- **Update 2026-10-23 (10-22 walkthrough part 2, CodingCops describing the build):** a quote on a
+  sub-category with no billing code shows *"billing code missing"* to **users with the right access, and
+  salespeople do not see it** (ehtesham.anwar, 27:44). The role-based hiding is not in the vault, and it
+  sits against [../erp-review-log.md](../erp-review-log.md) *Quotations, jobs and projects (9)*: *"do not
+  show quoteable items without valid pricing"*. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §3.
 
 ## Price-list discount plus the quote's own discount or price hike — added, compounded, or exclusive?
 

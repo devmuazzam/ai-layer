@@ -688,3 +688,74 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** vendor import for production; any QuickBooks write of billing codes.
 - **Owner:** Brent Wagstaff (CFO) with Melissa McNutt; Micaela Dipane for the billing-code maintenance
   she does today.
+
+## Back-to-back jobs billed portal to portal — billed time overlaps, crew time must not
+
+- **Status:** open
+- **Asked:** 2026-10-22 — ERP demo walkthrough part 2. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §5;
+  transcript [2026-10-22-erp-demo-walkthrough-part-2.md](../meetings/transcripts/2026-10-22-erp-demo-walkthrough-part-2.md). Filed 2026-10-23.
+  - Brian Petros (37:00): FCC's scheduling board shows the same vehicle in up to three cities at the same
+    minute. ehtesham.anwar (37:41): the ERP allows **no overlapping allocation** of an asset or employee.
+  - **Melissa McNutt (38:21):** billing is portal to portal from the yard, not from job one to job two.
+    *"For the 22 tons, they have three hour minimums, but we have to pay the guys 4 hours."* Small cranes
+    are **doubled up** on back-to-back jobs to recover that, *"so they look like they're in the same place
+    at the same time, but they're not."*
+  - **Kyle Harlow (38:57–40:55):** it is a billing matter. Each job bills its own three-hour minimum; the
+    crew is never in two places, is paid only for time worked, and the contract forbids working two jobs
+    at once.
+  - **Melissa (40:03):** set the jobs' start and end times so they do not overlap; the customer is billed
+    from the **ticket times**.
+  - ehtesham.anwar (41:34): start, onsite and estimated end all need setting on both jobs, without
+    overcomplicating dispatch or billing. *"Another thing that we need to dive deeper into."*
+- **Question:** **(a)** On the second of two back-to-back jobs, what does the invoice bill: portal to
+  portal from the **yard** (so the two invoices together bill more hours than the crew worked), or from
+  the end of job one? **(b)** Does each job's **billing minimum** (3 h for a 22-ton, 4 h otherwise) apply
+  in full to each job, even when the jobs share a trip? **(c)** If the invoice is built from ticket times,
+  where does the extra billed travel come from — a separate line, an adjusted time, or the minimum alone?
+  **(d)** Is Melissa's answer (schedule without overlap, bill from ticket times) the rule, so nothing in
+  DAS changes?
+- **Sources checked:**
+  - [*Billable hours — the recordings say portal to portal, the Jira decision says boom time plus WTL*](#billable-hours--the-recordings-say-portal-to-portal-the-jira-decision-says-boom-time-plus-wtl)
+    — the span billed on one job. This entry is the two-job case.
+  - [../customers/new-customer-packet.md](../customers/new-customer-packet.md) (`unverified`) — *"22 Ton
+    Boom Truck: 3 hour"*, the one exception to a 4-hour minimum. [../payroll/payroll-rules-provenance.md](../payroll/payroll-rules-provenance.md)
+    PAY-040 — the crew's daily 4-hour minimum.
+  - [../meetings/2026-08-12-sell-side-workflow-and-scheduling.md](../meetings/2026-08-12-sell-side-workflow-and-scheduling.md)
+    (`unverified`) — *"support double booking when short jobs allow the same crane to perform multiple
+    jobs in one day"*. Read on 10-22 as billing-only overlap.
+  - [../dispatch/admin-to-field-communication.md](../dispatch/admin-to-field-communication.md) (`unverified`)
+    — *"Double stack jobs"* is TCG's term for it.
+  - [../quotations/gaps.md](../quotations/gaps.md) *Billable hour minimums and maximums are contractual but
+    have nowhere to live*.
+- **Blocked:** invoice lines for back-to-back jobs; whether DAS ever needs an intentional-overlap flag.
+- **Owner:** Melissa McNutt with Brent Wagstaff (billing); Kyle Harlow for the crew side.
+
+## Fuel cost per job — where the fuel figure comes from, and whether the ERP reports profit per job
+
+- **Status:** open
+- **Asked:** 2026-10-22 — ERP demo walkthrough part 2. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §4. Filed 2026-10-23.
+  - Brian Petros (34:28, 35:01): track fuel per vehicle (fuel card, unit number, mileage) to give a **P&L
+    per job**, and add the crane's cost and interest for a P&L per job per day. **Brent Wagstaff (CFO),
+    35:17:** *"details on the cost for each job is super helpful."*
+  - Melissa McNutt (35:25–35:42): trucks fill at the yard the night before, so fuel is not always tied to
+    the next day's job; fuel is delivered on site (*"wet fuel"*) sometimes, on holdovers.
+  - Brian (35:44): a keypad on the yard pump asking for a code, unit number and miles. Jeff Stricker
+    (36:07): Samsara already tracks fuel (the asset showed 88%). Kyle Harlow (36:22): the shop needs a
+    better system; a daily entry of mileage and job number is the only accurate record.
+  - ehtesham.anwar (34:43, 36:45): can be added to the ERP and the mobile app; how the sources connect is
+    not worked out.
+- **Question:** **(a)** Which record of fuel is the source: Samsara's fuel level, fuel-card transactions,
+  a yard-pump entry, a mobile entry, or several? **(b)** How is fuel bought the night before allocated to
+  the next day's job, and wet fuel on a holdover? **(c)** Is a per-job (or per-job-per-day) profit report
+  in scope for the ERP, and with which costs — fuel, crane ownership cost, interest, labour?
+- **Sources checked:**
+  - [2026-07-accounting-team-erp-wishlist.md](2026-07-accounting-team-erp-wishlist.md) (`unverified`) —
+    *"every dollar should tie back to a job: crane costs, truck costs, fuel…"*.
+  - [../assets/asset-record-requested-additions.md](../assets/asset-record-requested-additions.md)
+    (`unverified`) — *"App to be used at the fueling station … to track fuel usage"*, upper and lower
+    engines separately.
+  - [*Wishlist vs committed scope — nobody has tiered the accounting list*](#wishlist-vs-committed-scope--nobody-has-tiered-the-accounting-list)
+    — Brent (09-01): P&L and balance-sheet accounts stay in QuickBooks. A per-job profit **report** is not
+    ruled out by that.
+- **Blocked:** any fuel capture on mobile or at the yard; job costing.
+- **Owner:** Brent Wagstaff (CFO) for scope; Jeff Stricker and Kyle Harlow for how fuel is captured.

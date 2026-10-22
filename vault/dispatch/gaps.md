@@ -1396,6 +1396,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Schedule tab anyway; built as designed. See
   [../meetings/2026-09-22-erp-live-demo-02-project-schedule-permits-das-allocation-and-vendors.md](../meetings/2026-09-22-erp-live-demo-02-project-schedule-permits-das-allocation-and-vendors.md) §1.
 - **Owner:** Lisette Anzaldo (dispatch).
+- **Update 2026-10-23 (10-22 walkthrough part 2) — bears on (b):** ehtesham.anwar (57:13): dispatch
+  managers can add a day or make a holdover on the job schedule, which changes the schedule that came from
+  the quote; *"If we want to make sure that our quotation schedule is the only schedule that should be
+  followed … then we can remove this functionality for them."* Nobody from TCG answered. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §8.
 
 ## Schedule times on a later day — Start and On Site, shifts of 24 hours or more, and the minute step
 
@@ -1545,6 +1549,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the 2026-04-07 demo transcript (24-hour operations). No vault decision covers the allocation
   window.
 - **Owner:** Lisette Anzaldo (dispatch).
+- **Update 2026-10-23 (10-22 walkthrough part 2):** ehtesham.anwar confirmed to TCG that no asset or
+  employee can be double-booked; allocations are time-based (37:41). Melissa McNutt and Kyle Harlow said
+  TCG deliberately books small cranes back to back for billing, never with crew time overlapping. The
+  billing question is filed in [../accounting/gaps.md](../accounting/gaps.md) *Back-to-back jobs billed
+  portal to portal — billed time overlaps, crew time must not*. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §5.
 
 ## Shifts that run past their own day — what is built, what is still missing
 
@@ -1805,3 +1814,39 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (`verified`): the day's craft comes from a secondary assignment; it does not say who may
   create one. [../payroll/gaps.md → *Primary craft code constrained to the employee type, and changing a craft code in DAS*](../payroll/gaps.md#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das).
 - **Owner:** Lisette Anzaldo (dispatch), with Corrina Bustos (craft assignments are payroll's).
+
+## First right of refusal on the next day's crane — Kyle's overtime-before-6-AM rule, written nowhere
+
+- **Status:** open
+- **Asked:** 2026-10-22 — ERP demo walkthrough part 2. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §9;
+  transcript [2026-10-22-erp-demo-walkthrough-part-2.md](../meetings/transcripts/2026-10-22-erp-demo-walkthrough-part-2.md). Filed 2026-10-23.
+  - ehtesham.anwar (57:13) said the DAS recommendations will change after the last session with Lisette:
+    if a person works a job one day, *"we are legally obliged to ask them first"* for the next day.
+  - **Kyle Harlow (VP of Fleet), 1:08:22–1:10:01, narrowed it:** *"That's only for premium time, if they
+    ended on a premium time … and they're going to start before the next day premium time."* If the
+    crew ended on overtime and the crane goes out again before 6 AM, *"that crew has first right of
+    refusal for that crane"*; if it leaves *"at 6 or later … We can put anybody in that machine."* He
+    framed it as the **machine** being paid, and said the rule *"is very specific … we'll probably have
+    to like refine that."* His times were transcribed as *"6 P.m."* (1:08:40), *"6 A.m."* (1:08:58) and
+    *"4 P.m."* (1:09:17); the notes read 6 AM.
+  - ehtesham.anwar: *"Adds another check to our recommendation engine"* (1:09:45).
+- **Question:** **(a)** Confirm the trigger: the crew's **previous shift ended in overtime** (premium
+  time) **and** the same crane's next start is **before 6:00 AM**. Is 6:00 AM fixed, or the start of the
+  next straight-time window? **(b)** Who holds the right — the operator only, or the whole crew (oiler,
+  rigger, driver) that was on the crane? **(c)** Is it per **crane** (that unit) or per job? **(d)** Where
+  does the rule come from — the union agreement, a contract, or TCG practice — and does it apply to
+  non-union crews? **(e)** What should DAS do: rank that crew first in *Recommended*, warn when another
+  crew is dropped on the crane, or block until the refusal is recorded? **(f)** Does a refusal need to
+  be recorded, and where?
+- **Sources checked:**
+  - Nothing in the vault states this rule. Searched *right of refusal*, *first refusal*, *same crew*,
+    *next day*, *legally*, *obliged*, including the MLA files (vault check, 2026-10-23).
+  - [daily-allocation-system.md](daily-allocation-system.md) (read through
+    [daily-allocation-INDEX.md](daily-allocation-INDEX.md), `unverified`) — a *"Previous Night"* tag on
+    employees who worked the previous night shift. Adjacent, not this rule.
+  - [*Shifts that run past their own day — what is built, what is still missing*](#shifts-that-run-past-their-own-day--what-is-built-what-is-still-missing)
+    item (d), what *Previous Night* means; [*Default crew per unit, overridable per job*](#default-crew-per-unit-overridable-per-job).
+  - The payroll 06:00 overtime window: [../payroll/client-message-findings.md](../payroll/client-message-findings.md) (`reference`).
+- **Blocked:** the recommendation-engine check; any DAS warning or block on the next day's crew.
+- **Owner:** Kyle Harlow (stated it) with Lisette Anzaldo (dispatch, raised the first version); Corrina
+  Bustos if the source is the union agreement.

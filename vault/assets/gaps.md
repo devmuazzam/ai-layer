@@ -1415,6 +1415,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Brian Petros to route — he has said the Fleet Manager owns the underlying data, and
   TCG has offered to wait for that rather than press (2026-09-22). (b)–(d) are dispatch
   knowledge, not master data, so a cleanup will not produce them.
+- **Update 2026-10-23 (10-22 walkthrough part 2):** Brian Petros (12:18–13:12) is now checking, with
+  **Jeff Stricker** (Fleet Manager), that every asset migrates cleanly (VIN, serial and model numbers) and
+  **which assets have trackers**, at syed.haris's request. He repeated that some European cranes carry
+  the tracker on the **tractor** because it does not work with the crane's electrical system. Kyle Harlow
+  (11:10–11:21): **trailers have no trackers**. abdulrehman (10:26–10:57): the test tenant's assets are
+  linked to the Samsara vehicles, and a link can be changed by hand. No list was given. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §1.
 
 ## A Samsara link that has gone silent — three 200-ton-plus cranes have not reported in 8–13 months
 

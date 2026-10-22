@@ -359,3 +359,31 @@ the 10-21 call. "200 ton queen" was left — "queen" is not in pass 1's crane li
 reproduced uncorrected: "Brian Petros" is the conference-room microphone, carrying Dee (10-20) and Ryan
 Adams (10-21 51:59–55:18), each file's header gives the evidence. Left unchanged: the items listed in
 each file's own header note.
+
+# Pass 15 — 2026-10-23 (one new transcript only)
+
+Applied to `2026-10-22-erp-demo-walkthrough-part-2.md` (63); no earlier file was touched. **63
+substitutions**, each pinned to its own turn, with the timestamps in the file's header note. In summary:
+"screen" -> "crane" (6), "train(s)" / "brains" -> "crane(s)" (14) and "green" -> "crane" (1, as pass 1);
+"done" / "then" -> "ton" (1 / 1, as pass 11); "Eiler" / "boiler" / "Euler" / "ailer" -> "oiler" (6, as
+pass 11); "one" -> "won" (5, as pass 11 and 13); "Harris" -> "Haris" (4, as pass 10); "Quoted To" /
+"Report To" for "Ported 2" / "ported 2" / "report 2" / "report tool" (4); "belly code" / "billing board" /
+"billing date" -> "billing code" (3, as pass 14); "left information" / "left planning" -> "lift …" (3);
+"early" -> "hourly" (2, as pass 11); "Sam Sarah" -> "Samsara" (2, as pass 7); and one each: "wet field" ->
+"wet fuel", "ERB" -> "ERP" (as pass 9), "building purposes" -> "billing purposes", "search jars" ->
+"surcharges", "customer PU" -> "customer PO" (as pass 13), "tools and ratings" -> "tools and riggings" (as
+pass 14), "DL allocation system" -> "daily allocation system", "Doss" -> "DAS", "free checklist" -> "pre
+checklist", "Ed Shawn" -> "Ehtesham" (as pass 12), "approved format" -> "approved permit".
+
+New evidence rules used here: **"screen" -> crane** only in *"<N> ton screen"*, *"done screen"*, *"mobile
+screen"* (the category) and *"send with the screen whenever the screen is going on a job"*, all in
+ehtesham.anwar's asset turns, pinned by *"that train is a mobile train"* in the next sentence. It does not
+license "screen" elsewhere: *"share my screen"*, *"My screen is visible"* and *"display on the screen"* are
+genuine. **"Ported 2" / "report 2" -> Quoted To / Report To** only in the quotation-form turn where both
+fields add contacts to the customer profile; the pin is the two field labels in the web app, which were on
+the shared screen. **"left" -> lift** only beside *information* or *planning*, pinned by *"We need to
+figure out the lift planning separately"* in the same turn. **"Doss" -> DAS** only in the turn presenting
+the daily allocation system. "plane(s)", "frame", "cream" and "turn clean" were **not** read as crane —
+none is in pass 1's list — and are listed in the file's header note. Speaker labels are reproduced
+uncorrected: "IT Support" is Patrick McKiernan; the header gives the evidence. Left unchanged: the items
+listed in the file's own header note.
