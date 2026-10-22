@@ -661,3 +661,30 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     thresholds.
 - **Blocked:** the report definitions, and the days-to-pay colour bands.
 - **Owner:** Brent Wagstaff.
+
+## QuickBooks direction for vendors and billing codes — does the ERP pull vendors, and push billing codes?
+
+- **Status:** open
+- **Asked:** 2026-10-21 — ERP demo walkthrough part 1. Source: [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §9 and
+  *Against the vault*. Filed 2026-10-22.
+  - Melissa McNutt (47:02): *"Will it sync like FCC syncs right now? So when we're connected to QuickBooks,
+    will the vendors auto populate and it'll all match?"* ehtesham.anwar: not discussed yet; if the
+    vendors are in QuickBooks, *"we will create a functionality to fetch that"*.
+  - Micaela Dipane (56:00): if a billing code changes in the ERP, does QuickBooks change too? Melissa
+    (56:22): in FCC *"if we update a billing code, we have to go manually do it in QuickBooks too"*; she
+    wants both updated. ehtesham.anwar: no QuickBooks link for billing codes yet; planned once it is known
+    where they live in QuickBooks.
+  - Melissa (57:08): QuickBooks holds **no cranes**; *"it's not set up like the assets are set up in FCC"*.
+- **Question:** **(a)** Which system is the master for **vendors** — does the ERP read them from
+  QuickBooks, or create them and push them (as the FCC connector mapping says)? **(b)** Should a billing-code
+  change in the ERP update a **QuickBooks item**, and which QuickBooks list holds them today?
+- **Sources checked:**
+  - [nexgen-quickbooks-integration/01-fcc-connector-field-mapping.md](nexgen-quickbooks-integration/01-fcc-connector-field-mapping.md)
+    (`unverified`) — *"Direction is NexGen → QuickBooks throughout"*, Vendor pushed in the same shape as
+    Customer; invoice lines go as GL-coded amounts, with no item. **This contradicts (a) as Melissa
+    described FCC**, and makes (b) new.
+  - [*GL codes — FCC/ERP chart vs QuickBooks, and who owns the mapping*](#gl-codes--fccerp-chart-vs-quickbooks-and-who-owns-the-mapping)
+    — the GL side of the same mapping.
+- **Blocked:** vendor import for production; any QuickBooks write of billing codes.
+- **Owner:** Brent Wagstaff (CFO) with Melissa McNutt; Micaela Dipane for the billing-code maintenance
+  she does today.

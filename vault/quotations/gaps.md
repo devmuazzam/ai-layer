@@ -534,6 +534,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   is sent ([tcg-creating-quotes-sop.md](tcg-creating-quotes-sop.md) §7) — a different regime from a
   threshold altogether. Still needs the client: "at or above" vs "above", stated as a rule about the
   comparison.
+- **Update 2026-10-22 (10-20 call and the code):** the documentation CodingCops handed TCG on 2026-10-20
+  says a quotation needs approval when it is **above 50K** or when *"there is an amount that is changed
+  from the billing code"* (ehtesham.anwar, 7:01 — [2026-10-20-erp-documentation-portal-set-up-order-test-login-and-staging.md](../meetings/2026-10-20-erp-documentation-portal-set-up-order-test-login-and-staging.md) §1). The build is
+  narrower: `apps/api/src/usecase/quotation-approvals/quotation-approvals.service.ts` computes
+  `RATE_BELOW_MINIMUM` (a rate **below** the reference rate), `TOTAL_EXCEEDS_LIMIT`, `BOTH`, or else
+  `MANDATORY` — so every quote is routed for approval, and a rate changed **upwards** is not a trigger.
+  The build matches the review log (*"charging above standard rate is fine"*) and the SOP's unconditional
+  approval; **the documentation's wording overstates it**. Nothing on the call answered the
+  inclusive/exclusive question. The wording is CodingCops' to correct, not a question for TCG.
 
 ## Does "Valid until <date>" mean end of that day, or the instant of midnight?
 
@@ -2502,6 +2511,12 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This row asks for a definition rather than a change, so there is nothing here to build from and nothing to verify against; that is the finding.
 - **Blocked:** verification of the Flags and Surcharge panel (QA has no expected behaviour); the per-line surcharge opt-out question above.
 - **Owner:** Melissa McNutt (she owns the surcharge rule) with Joe Schacatano.
+- **Update 2026-10-22 (10-21 walkthrough, CodingCops describing the build, `unverified`):** ehtesham.anwar
+  showed the edit form with **taxable** and **apply surcharge**. With apply surcharge **off**, the line
+  takes **no** surcharge — neither the general one nor a customer price list's — and his example was the
+  **operator** (36:55). That is the build's meaning, consistent with
+  [../decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md);
+  no TCG owner confirmed it or said what **taxable** gates. Source: [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §7.
 
 ## A billing code rate may never be zero — shipped and enforced at every layer, adjudicated by nobody
 
@@ -2609,6 +2624,16 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** before TCG-51, the PDF was the only surface that added tax. It printed a Sales Tax row on every quote ($0.00 for web-created ones), on a base that counted grouped lines two or three times ($1,448 → $231.61 at 9.5% instead of $137.56). `isTaxable` has no web writer, so only API, seed, import or migration quotes could be taxable. Related open entries, not re-raised here: [*"Final Amount" means two different numbers*](#per-row-surcharge-now-has-no-ui-on-createedit-and-final-amount-means-two-different-numbers) and [Q-24](#q-24--list-and-summary-disagree-on-resource-less-quotation-totals).
 - **Blocked:** printing any tax on the quotation PDF or showing it on screens; the meaning of the stored `tax` column (send no longer rewrites it, and see [*Quotation duplicate*](#quotation-duplicate--what-a-copy-carries-and-what-a-fresh-copy-resets) (c)); product sign-off of TCG-51.
 - **Owner:** Joe Schacatano (sales, quotation pricing) with Melissa McNutt, and Ryan Adams (quotation send). Accounting should be consulted if invoice tax must match.
+- **Update 2026-10-22 (10-21 walkthrough, `unverified`) — new evidence for (a), not an answer.** Ryan
+  Adams (Sales Manager, speaking on the room microphone labelled "Brian Petros", 51:59–52:41): materials
+  going to a site are taxed at **that city's rate**; he wants the tax set **on the quote, editable**, and
+  carried through to the invoice — *"if we were going to buy something, it would go into the quote, but
+  we would need somewhere where we could change the amount of tax"*. ehtesham.anwar: not possible now,
+  *"We'll update the functionality while adding in the quotations"* (52:57). The billing code and the
+  vendor in the build both carry a **taxable** flag (§7, §9), against TCG's *"Taxable: Not needed"* on
+  the FCC slides. Sources: [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §9 and *Against the vault*; transcript
+  [2026-10-21-erp-demo-walkthrough-part-1.md](../meetings/transcripts/2026-10-21-erp-demo-walkthrough-part-1.md). This is the second TCG manager (after Kyle, 2026-07-28) to want tax by
+  job-site location, so (a) leans **yes, on taxable lines**; Joe has still not ruled.
 
 ## Additional Information on a quotation — does a sent quote freeze it, and what is the PDF heading called?
 
@@ -2727,3 +2752,31 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Question:** today only the web blocks a quote line with no billing code ("Billing Code missing.") and rounds ordinary rates to whole dollars; the API (`create-quotation.dto.ts`, `quotations.service.ts` `syncResources`) accepts code-less lines and cents on any line, so another client (mobile, a script) can save what the web would refuse. Should the server enforce both? If so: (a) look the item's billing code up itself, or trust the client's `pricingSource`; (b) custom types only, or every resource type; (c) keep the TCG-218 exceptions — a "Price Adjustment" line inside a Mobilization/Demobilization group may be code-less with a cents rate (D9a, Q38b).
 - **Sources checked:** TCG-218 spec REQ-13, D9a, Q38; `units.md` U6 test row (which assumed server rejection).
 - **Owner:** ticket owner of a follow-up ticket (none yet).
+
+## Price-list discount plus the quote's own discount or price hike — added, compounded, or exclusive?
+
+- **Status:** open
+- **Asked:** 2026-10-21 — ERP demo walkthrough part 1. Brian Petros (41:33–41:53): *"there's a difference
+  between a price list that is applied for specific billing codes and a general type of discount because
+  … the quote itself … has an option to give a general discount on the entire quote or a price hike … So
+  when there's a price list selected and then we also apply that general discount or price hike, it's going
+  to combine both of those things together, right?"* ehtesham.anwar answered only on **surcharge**
+  precedence (42:09–42:30). Source: [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §8. Filed 2026-10-22.
+- **Question:** when a customer's price list carries a **discount %** and the quote also has a
+  **quote-level discount or price hike**, which applies? **(a)** both, added (10% + 5% = 15%); **(b)**
+  both, in sequence (price-list discount first, then the quote's); **(c)** only one — and if so, which
+  wins? Follow-up: is the price-list discount on **its own codes only**, or on the whole quote?
+- **Sources checked:**
+  - [../decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md)
+    (`verified`) — settles surcharge only: the price list's surcharge, else the general one.
+  - [../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md](../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md)
+    (`reference`) — the quote-level rows; says nothing of a price-list discount.
+  - [fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md) (`unverified`) — FCC's price
+    list has a blanket Sales Discount % and per-code rates, and *"does not say how they interact"*.
+  - [../erp-review-log.md](../erp-review-log.md) (`unverified`) — *"price list discounts and price hikes
+    apply only to items in that list"*: bears on the follow-up, not on the combination.
+  - [*Billing-code and price-list rules the E2E suite asserts with no written source — PR #488*](#billing-code-and-price-list-rules-the-e2e-suite-asserts-with-no-written-source--pr-488)
+    item (e) — whether the quote's discount and price hike are mutually exclusive. Answer them together.
+- **Blocked:** the quote total whenever a price-list customer is also given a quote-level discount.
+- **Owner:** Melissa McNutt (pricing) with Joe Schacatano (quotations); Kaitlin Kiesel can check against
+  Edison's current pricing.

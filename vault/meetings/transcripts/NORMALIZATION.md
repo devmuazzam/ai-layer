@@ -331,3 +331,31 @@ Manager. IT Support's "log in as D" (43:07) was left, because it may be a login 
 cost" (54:19, 54:41) names the document that requires a paper scope of work, and was left because nothing
 in the call resolves it. Speaker labels are reproduced uncorrected: Dee speaks on Brian Petros's
 microphone from 36:41, as in pass 9's file. Left unchanged: the items listed in the file's own header note.
+
+# Pass 14 — 2026-10-22 (two new transcripts only)
+
+Applied to `2026-10-20-erp-documentation-and-guides.md` (10) and `2026-10-21-erp-demo-walkthrough-part-1.md`
+(42); no earlier file was touched. **52 substitutions**, each pinned to its own turn, with the timestamps in
+each file's header note. In summary: "Harris" -> "Haris" (3, as pass 10); "graph code(s)" / "graph
+board(s)" / "graph ports" / "draft boards" -> "craft code(s)" (18) and "draft based hourly" -> "craft
+based hourly", "graph modifiers" -> "craft modifiers" (1 / 1, as pass 1); "union ports" -> "union codes"
+(3); "train(s)" -> "crane(s)" (4, as pass 1); "Abdul Rahman" / "Abdur Rahman" / "Abiraman" ->
+"Abdulrehman" (3, as pass 9 and 12); "ERB" -> "ERP" (1, as pass 9); "code" -> "quote" (2, as pass 11);
+"550 time frame" -> "550 ton crane" (1, "time" -> "ton" as pass 11); "tools and writings" / "tools and
+draggings" -> "tools and riggings" (2); "billing boards" / "Belling codes" -> "billing codes" (1 / 1);
+"departments and rules" / "rules" -> "roles" (1 / 2); "Bess" -> "Wes" (1); "CD data" -> "seed data" (1);
+"asserts" -> "assets" (2); "bentress" -> "vendors" (1); "default DL expense account" -> "default GL
+expense account" (1); "early" -> "hourly" and "code invoice" -> "quote/invoice" (1 / 1, as pass 11).
+
+New evidence rules used here: **"union ports" -> union codes and "graph ports" -> craft codes** only in
+the 10-21 19:34 turn, which opens with *"union codes, graph codes"*. **"rules" -> roles** only where the
+sentence is about departments and their access, never for payroll rules. **"Bess" -> Wes** only where the
+next turn by the same speaker says *"Wes and Melissa"*. **"CD data" -> seed data** pinned by *"we have
+just seeded this information"* in the same call. **"DL" -> GL** only in *"default DL expense account …
+of the general ledger"*; "the DL" meaning a distribution list (10-20 14:51) was left, as pass 13. "Perez"
+was **not** read as Haris here (pass 10 did), because the same sentence names *"Harris"* separately.
+"Edison" addressing ehtesham.anwar (10-20 24:39) was left because Edison is also a TCG customer, named in
+the 10-21 call. "200 ton queen" was left — "queen" is not in pass 1's crane list. Speaker labels are
+reproduced uncorrected: "Brian Petros" is the conference-room microphone, carrying Dee (10-20) and Ryan
+Adams (10-21 51:59–55:18), each file's header gives the evidence. Left unchanged: the items listed in
+each file's own header note.

@@ -147,6 +147,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   job, or must every Permit PO carry one?* The answer decides which side changes: the web edit page
   (if jobless is valid) or the Generate PO path (if not). Same question as the standalone half above,
   narrowed to one PO type.
+- **Update 2026-10-22 (10-21 walkthrough, `unverified`) — the quotation level, again from Ryan.** Ryan
+  Adams (on the room microphone labelled "Brian Petros", 53:42–55:18) wants a **vendor line on the
+  quote** — service and price — that **creates the PO automatically**, hidden from the customer and tied
+  to the same job, *"so we could get everything sent off at one time"*. Sammy Garrett compared it to
+  *"what Hayley does"* today when a job is subbed out (54:17). The build has the **dispatch** level only:
+  allocating a vendor's asset in DAS **opens a purchase order** that must be created to complete the
+  allocation (ehtesham.anwar, 54:54), and a quote cannot take a vendor in its resources (52:57). Melissa:
+  the dispatch side *"is pretty good … we just might need to add it to the quotes"* (55:38). Ryan named lift
+  plans through third parties and trucking as PO services, and will settle the path with Melissa and
+  Brent. Still open: the quotation-level PO, and whether it replaces or joins the DAS allocation PO.
+  Sources: [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §9; transcript [2026-10-21-erp-demo-walkthrough-part-1.md](../meetings/transcripts/2026-10-21-erp-demo-walkthrough-part-1.md).
 
 ## PO and vendor/agency rules the E2E suite asserts with no written source — PR #488
 
@@ -229,6 +240,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** product team — Joe Schacatano and Ryan Adams for the PO lifecycle (they own the related
   entry above), Liz Lopez for the permit-driven PO path, Melissa McNutt for the vendor type and
   billing terms she raised on 2026-06-17.
+- **Update 2026-10-22:** the vendor **category** half of (f) is partly settled — a vendor can carry
+  several categories ([../decisions/2026-10-21-a-vendor-can-carry-several-categories-multi-select.md](../decisions/2026-10-21-a-vendor-can-carry-several-categories-multi-select.md),
+  Sammy Garrett, `verified`). The category **values**, and the rest of (f), stay open; the build still
+  stores one nullable `Vendor.vendorCategory`.
 
 ## The PO sidebar flattens to one leaf — and the two things "tracking" could have meant are both unbuilt
 

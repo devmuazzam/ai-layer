@@ -1233,6 +1233,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - `decisions/` has no note on authentication method.
 - **Blocked:** onboarding TCG users onto the mobile app; any SSO work; whether the employee profile must require a work cell phone.
 - **Owner:** Patrick McKiernan (TCG IT) for (a); Brian Petros / Kyle Harlow for (b) and (c); CodingCops for scope.
+- **Update 2026-10-22 (10-20 and 10-21 calls, `unverified`):** still open. On 2026-10-20 Brian Petros
+  asked *when* TCG users would sign in with their own e-mail through **Entra ID** instead of a general test
+  login. ehtesham.anwar: to be planned once staging is done ([2026-10-20-erp-documentation-portal-set-up-order-test-login-and-staging.md](../meetings/2026-10-20-erp-documentation-portal-set-up-order-test-login-and-staging.md) §5). On
+  2026-10-21 abdulrehman described the build: TCG tests on a shared admin login in a test tenant;
+  employees are **invited by e-mail**; and the **work cell phone is required** because the mobile app
+  signs in with an **OTP** to it ([2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §1). That is CodingCops' build, not an
+  answer to (a)–(c): the build has made (b) the default without an owner's answer.
 
 ## Accessibility standard — WCAG 2.1 AA, or only the de-facto 44px lines?
 

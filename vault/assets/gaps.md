@@ -1571,3 +1571,21 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Brian Petros, with Kyle Harlow (VP Fleet & Field Ops) and Jeff Stricker (Fleet Manager) when fleet maintenance is scoped.
 - **Update 2026-10-20 (Brian Petros, third message, same thread), verbatim:** *"The Repair Guys has many assets that will need to be put into the system. Equipment/machines/tools for repair... but that will most likely be its own org/company instead of a separate department."* Reading: The Repair Guys' assets will be separated **by company (tenant)**, not by department — consistent with the vault's existing record of TRG as a second company ([../admin/fcc-nexgen-administration-and-security.md](../admin/fcc-nexgen-administration-and-security.md):293, [../field-ops/safety-compliance/06-safety-data-platform-requirements-spec.md](../field-ops/safety-compliance/06-safety-data-platform-requirements-spec.md):68). It removes one candidate reason for asset departments; the fleet-maintenance question above stays open.
 - **Update 2026-10-20 (Brian Petros, fourth message, same thread), verbatim:** *"Sounds good. The Category/Sub Category should work. We will add "Devices" category... good idea. My main focus after tomorrow's demo will be to get the assets inventoried properly. Still needing to do that and get coordination with Jeff Stricker on that. Been difficult to do, but I think it would be best to just fill in the data myself in the ERP after demo and then ask Jeff to review what I entered. How will we add pictures of assets? I recently took pictures of most of the main cranes and tractors... will I be able to upload pictures of them and get like a "profile" picture of the asset that shows in the ERP?"* Recorded: (a) device-type filtering is covered by categories — TCG adds a "Devices" category itself; (b) asset inventory plan — Brian enters the assets in the ERP after the 2026-10-21 demo, Jeff Stricker (Fleet Manager) reviews; (c) a **profile picture per asset** is asked for again. Today an asset takes photos only as attachments (categories General, Product Guide, Owner Manuals, Load Chart, Equipment Drawing — `apps/web/src/features/assets/asset/components/asset-attachment-categories.ts`), and the asset list shows initials, not a picture (`assets-list-view.columns.tsx:63`). The ask matches TCG's own slide note *"Profile Pictures for Asset"* ([asset-record-requested-additions.md](asset-record-requested-additions.md) §`*** Profile Pictures for Asset ***`). No Linear ticket exists for it as of 2026-10-20.
+
+## The "storage" loop after accounting — what does it cover?
+
+- **Status:** open
+- **Asked:** 2026-10-21 — ERP demo walkthrough part 1. ehtesham.anwar (6:06): after invoicing, *"we are
+  going to focus on two bigger loops … we have the storage. And after storage, we have another loop and
+  that is for maintenance"* (inventories and the maintenance workflow). Brian Petros named **inventory and
+  fleet maintenance** (Jeff Stricker) as the one area the first pass left out (4:18). Source:
+  [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §2. Filed 2026-10-22.
+- **Question:** is "storage" the storage of **customers' equipment** in TCG's yards (billed to them), of
+  **TCG's own** equipment and parts, or both? And is it its own loop, or part of maintenance and inventory?
+- **Sources checked:**
+  - [storage-and-warehouse-operations.md](storage-and-warehouse-operations.md) (`unverified`, FCC reference)
+    — background only; no TCG scope.
+  - [../gaps.md](../gaps.md) *Phased rollout — no vault coverage* (frozen register, still open) — the
+    phase order was never written.
+- **Blocked:** discovery for the next loop.
+- **Owner:** Melissa McNutt and Kyle Harlow (yards), Jeff Stricker (fleet); CodingCops for the roadmap.
