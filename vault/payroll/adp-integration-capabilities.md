@@ -365,7 +365,10 @@ not a statement of what TCG has decided to build.
 (System)*. Template meta is read with
 `?$filter=meta/applicantOnboarding/onboardingTemplateCode/code eq '<code>'`. **The TCG template
 returns 403** — *"You do not have security access to use this template"* — so the API user needs
-that template granted in WFN security before TCG's own required fields can be read. The System
+that template granted in WFN security before TCG's own required fields can be read. **TCG
+onboards with *HR + Payroll TCG*, not the System template** (syed.haris, 2026-10-23), so the
+System list below is indicative only; TCG's real required fields are unknown until access is
+granted. The System
 template returns 193 fields, **26 required** for a complete hire: hire date, company code, pay
 group, pay cycle, hire reason, federal filing status, worked-in-state, SUI state, SSN (type,
 status, number), first/last and payroll name, ACA eligibility, gender, birth date, legal address
