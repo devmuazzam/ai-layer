@@ -326,7 +326,8 @@ Checked 2026-10-23 against every vault file except this note. Most of what was s
   (`reference`). That note exempts annual (purple) travel permits, which the demo did not mention.
   Picking an *auto-generated* PO, and recording the submission method at submission, are not in the vault.
 - **New, not in the vault:**
-  - the first-right-of-refusal rule (§9);
+  - Kyle's **overtime** trigger for the first-right-of-refusal rule (§9). The rule itself was in the
+    vault already, as **last-crew entitlement**; see the correction under *Candidates*;
   - several customers per project, and the project's customer as the default on a new quote (§7). The
     code does not pre-fill it;
   - project tabs gather every job's POs, permits and attachments (§7);
@@ -376,10 +377,30 @@ Nothing else on the call was a TCG owner choosing between alternatives.
    the right, for example pay owed when the crew is passed over. Nobody said that.
 
    The entry [../dispatch/gaps.md](../dispatch/gaps.md) *First right of refusal on the next day's
-   crane* stays open and unedited. Its question (a)–(f) already holds Kyle's words, including the
+   crane* stays open. Its question (a)–(f) already holds Kyle's words, including the
    narrowing, so nobody should build the broad *"always ask yesterday's crew"* version from it. A note
    can be written once Kyle (or Corrina Bustos, if it is a union rule) confirms the trigger in writing
    or picks between stated options on a call.
+   **Correction, 2026-10-23 (syed.haris asked for earlier transcripts to be searched).** The rule was
+   not new. The vault holds it as **last-crew entitlement**, which the first check missed:
+   - Melissa McNutt's e-mail of **2026-04-08**, sent with the union agreements, recorded in
+     [../erp-review-log.md](../erp-review-log.md) #4: *"The last crew on the equipment on straight time is
+     entitled to the overtime work"*, next shift only, and if dispatch does not offer it, *"we could be
+     liable to pay all 4 employees."*
+   - The **2026-04-09** dispatch demo
+     ([transcript](transcripts/2026-04-09-dispatch-scheduling-figma-demo.md), 1:17:12–1:22:40):
+     ehtesham.anwar asked *"Do you want to manage that within the system or do you want it to be just
+     manual?"*, Kyle answered that it must be in the system so dispatch knows *"I have to call that crew
+     first"*, and agreed to dispatch recording who accepted or refused.
+
+   This changes two of the reasons above. **The source is known**: a union rule, per Melissa. **G4 may
+   apply**: passing the crew over carries pay (*"liable to pay all 4"*, *"another pay for that shift"*),
+   so if the ERP must compute that pay, it needs a row in the payroll provenance file. It also exposes a
+   **conflict**: Melissa's trigger is a crew on **straight time**, Kyle's (in April and on 10-22) a crew
+   that **ended on premium time**. The decline of a note on the **trigger** stands, because the trigger is
+   contested. The April exchange is a separate candidate: **Kyle chose to manage the entitlement in the
+   system, not manually, with offers and refusals recorded**. That was a choice between named options and
+   is decision-grade on the folder's convention. It has not been written.
 2. **Written, scheduling half only:** [../decisions/2026-10-22-back-to-back-jobs-scheduled-without-overlap-overlap-is-billing-only.md](../decisions/2026-10-22-back-to-back-jobs-scheduled-without-overlap-overlap-is-billing-only.md).
    It is `verified` on the folder's convention for a named TCG owner on a recorded call (*"Not
    confirmed in writing"* in its `decided_by:`). ehtesham.anwar put the choice to TCG: allowing double
@@ -403,7 +424,8 @@ No ticket covers these, so each went to a module register: a new entry where non
 *Update 2026-10-23* on the open entry.
 
 1. **First right of refusal** (§9). New: [../dispatch/gaps.md](../dispatch/gaps.md) *First right of
-   refusal on the next day's crane — Kyle's overtime-before-6-AM rule, written nowhere*.
+   refusal on the next day's crane — last-crew entitlement: Melissa's straight-time rule (2026-04-08) vs
+   Kyle's overtime rule (2026-10-22)*.
 2. **Back-to-back jobs and billing minimums** (§5). New: [../accounting/gaps.md](../accounting/gaps.md)
    *Back-to-back jobs billed portal to portal — billed time overlaps, crew time must not*. There is a
    pointer update on [../dispatch/gaps.md](../dispatch/gaps.md) *Allocating by shift time (TCG-186)*.

@@ -1815,38 +1815,73 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   create one. [../payroll/gaps.md → *Primary craft code constrained to the employee type, and changing a craft code in DAS*](../payroll/gaps.md#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das).
 - **Owner:** Lisette Anzaldo (dispatch), with Corrina Bustos (craft assignments are payroll's).
 
-## First right of refusal on the next day's crane — Kyle's overtime-before-6-AM rule, written nowhere
+## First right of refusal on the next day's crane — last-crew entitlement: Melissa's straight-time rule (2026-04-08) vs Kyle's overtime rule (2026-10-22)
 
 - **Status:** open
 - **Asked:** 2026-10-22 — ERP demo walkthrough part 2. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §9;
-  transcript [2026-10-22-erp-demo-walkthrough-part-2.md](../meetings/transcripts/2026-10-22-erp-demo-walkthrough-part-2.md). Filed 2026-10-23.
-  - ehtesham.anwar (57:13) said the DAS recommendations will change after the last session with Lisette:
-    if a person works a job one day, *"we are legally obliged to ask them first"* for the next day.
-  - **Kyle Harlow (VP of Fleet), 1:08:22–1:10:01, narrowed it:** *"That's only for premium time, if they
-    ended on a premium time … and they're going to start before the next day premium time."* If the
-    crew ended on overtime and the crane goes out again before 6 AM, *"that crew has first right of
-    refusal for that crane"*; if it leaves *"at 6 or later … We can put anybody in that machine."* He
-    framed it as the **machine** being paid, and said the rule *"is very specific … we'll probably have
-    to like refine that."* His times were transcribed as *"6 P.m."* (1:08:40), *"6 A.m."* (1:08:58) and
-    *"4 P.m."* (1:09:17); the notes read 6 AM.
-  - ehtesham.anwar: *"Adds another check to our recommendation engine"* (1:09:45).
-- **Question:** **(a)** Confirm the trigger: the crew's **previous shift ended in overtime** (premium
-  time) **and** the same crane's next start is **before 6:00 AM**. Is 6:00 AM fixed, or the start of the
-  next straight-time window? **(b)** Who holds the right — the operator only, or the whole crew (oiler,
-  rigger, driver) that was on the crane? **(c)** Is it per **crane** (that unit) or per job? **(d)** Where
-  does the rule come from — the union agreement, a contract, or TCG practice — and does it apply to
-  non-union crews? **(e)** What should DAS do: rank that crew first in *Recommended*, warn when another
-  crew is dropped on the crane, or block until the refusal is recorded? **(f)** Does a refusal need to
-  be recorded, and where?
+  transcript [2026-10-22-erp-demo-walkthrough-part-2.md](../meetings/transcripts/2026-10-22-erp-demo-walkthrough-part-2.md). Filed 2026-10-23;
+  rewritten the same day once the earlier sources were found (the first vault check searched *right of
+  refusal* and missed the vault's own term, **last-crew entitlement**).
+  - **Melissa McNutt's e-mail, 2026-04-08** (sent with the Master Labor Agreement and the Local 12 Truck
+    Crane Agreement as *"sample union rules we need incorporated into the system"*), recorded in
+    [../erp-review-log.md](../erp-review-log.md) **#4 — Union rules to enforce** (`unverified`):
+    *"The last crew on the equipment on straight time is entitled to the overtime work."* Bob and Tom on
+    Crane 9001 for a day job 06:00–11:00; a night job comes in for the same crane at 19:00 — they are
+    entitled to it. Dispatch must offer it to them first, or *"we could be liable to pay all 4
+    employees."* Friday carries entitlement to Saturday; **next shift only** (not Sunday). The ask: the
+    system notifies dispatch that an action is required before scheduling.
+  - **Dispatch scheduling demo, 2026-04-09** ([transcript](../meetings/transcripts/2026-04-09-dispatch-scheduling-figma-demo.md),
+    1:17:12–1:22:40). Kyle Harlow: *"some type of way of knowing who was last on premium time and who
+    has the right to that machine next."* ehtesham.anwar restated Melissa's e-mail — for a second shift
+    on the same crane, the last crew is entitled first, and if not offered, *"by the union rules … they
+    are entitled to get another pay for that shift even though they did not work"* (Kyle: *"Yes"*) — and
+    asked *"Do you want to manage that within the system or do you want it to be just manual?"* (1:18:50).
+    **Kyle: in the system** — when Lisette is away *"somebody else decides to make a judgment … Those
+    charges can be extremely expensive"*; dispatch must know *"I have to call that crew first"* (1:18:56).
+    ehtesham.anwar proposed that dispatch **records which entitled people accepted or refused**, as a data
+    point *"we can later on show to the relevant authorities"*; Kyle: *"Yep … that would be very
+    helpful"* (1:19:46–1:20:45). Kyle doubted that system notifications would reach people at midnight
+    (1:21:25).
+  - **2026-10-22.** ehtesham.anwar (57:13): the DAS recommendations will change after the last session
+    with Lisette — if a person works a job one day, *"we are legally obliged to ask them first"* for the
+    next day. **Kyle Harlow, 1:08:22–1:10:01:** *"That's only for premium time, if they ended on a
+    premium time … and they're going to start before the next day premium time."* If the crew ended on
+    overtime and the crane goes out again before 6 AM, *"that crew has first right of refusal for that
+    crane"*; if it leaves *"at 6 or later … We can put anybody in that machine."* Framed as the
+    **machine** being paid; *"we'll probably have to like refine that."* Times transcribed *"6 P.m."*
+    (1:08:40), *"6 A.m."* (1:08:58), *"4 P.m."* (1:09:17). ehtesham.anwar: *"Adds another check to our
+    recommendation engine"* (1:09:45).
+- **What the three agree on:** the entitlement is to the **next shift on the same crane**, and only when
+  that next work is **overtime** (Melissa: *"entitled to the overtime work"*; Kyle: anyone may take a
+  6 AM-or-later start). It is a **union rule** with a **pay consequence** for passing the crew over.
+- **Question:** **(a) The trigger conflicts.** Melissa's e-mail: the crew was on **straight time**
+  (her example ends at 11:00). Kyle, both in April (*"last on premium time"*) and on 10-22: the crew
+  **ended on premium time**. Which is it — or is the trigger only that the next shift is overtime,
+  whatever the last one was? **(b)** What counts as the "next shift" overtime: before 06:00, after 17:00,
+  a weekend (Melissa's Friday → Saturday), or all of these? **(c)** Who holds the right — the whole crew
+  on the crane (Melissa: *"Bob and Tom"*, the operator and oiler) — and does it extend to a driver or
+  rigger? **(d)** The pay consequence — *"liable to pay all 4"*, *"another pay for that shift"*: is it a
+  full shift at the overtime rate, and is it a payroll rule the ERP must compute? If yes, it needs a row
+  in [../payroll/payroll-rules-provenance.md](../payroll/payroll-rules-provenance.md) (G4). **(e)** What
+  DAS does: rank the entitled crew first, warn on another crew, or block until an offer is recorded.
+  Kyle chose "in the system" over manual on 04-09; the form is open. **(f)** Recording offers and
+  refusals: agreed in principle on 04-09 (ehtesham.anwar proposed, Kyle *"Yep"*); where and by whom is
+  open.
 - **Sources checked:**
-  - Nothing in the vault states this rule. Searched *right of refusal*, *first refusal*, *same crew*,
-    *next day*, *legally*, *obliged*, including the MLA files (vault check, 2026-10-23).
+  - [../erp-review-log.md](../erp-review-log.md) #4 (`unverified`) — the rule as Melissa sent it, above.
+  - [dispatch-value-engine-and-playbooks.md](dispatch-value-engine-and-playbooks.md) (`unverified`) —
+    *"The playbook says dispatch performs this check; the review log says what the check is. Neither
+    says how the system should enforce it, and no decision has been taken."*
+  - [../payroll/hr-onboarding-and-employee-forms.md](../payroll/hr-onboarding-and-employee-forms.md) —
+    points at the same review-log entry.
   - [daily-allocation-system.md](daily-allocation-system.md) (read through
     [daily-allocation-INDEX.md](daily-allocation-INDEX.md), `unverified`) — a *"Previous Night"* tag on
     employees who worked the previous night shift. Adjacent, not this rule.
   - [*Shifts that run past their own day — what is built, what is still missing*](#shifts-that-run-past-their-own-day--what-is-built-what-is-still-missing)
     item (d), what *Previous Night* means; [*Default crew per unit, overridable per job*](#default-crew-per-unit-overridable-per-job).
   - The payroll 06:00 overtime window: [../payroll/client-message-findings.md](../payroll/client-message-findings.md) (`reference`).
-- **Blocked:** the recommendation-engine check; any DAS warning or block on the next day's crew.
-- **Owner:** Kyle Harlow (stated it) with Lisette Anzaldo (dispatch, raised the first version); Corrina
-  Bustos if the source is the union agreement.
+- **Blocked:** the recommendation-engine check; any DAS warning or block on the next day's crew; any
+  payroll line for a passed-over crew.
+- **Owner:** Kyle Harlow and Melissa McNutt (they stated different triggers); Corrina Bustos for the
+  union-agreement clause and the pay consequence; Lisette Anzaldo (dispatch) for how the offer is
+  recorded.
