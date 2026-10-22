@@ -1138,3 +1138,9 @@ Answered by: **Syed Haris** (ticket owner) — signed by the §11b "sign them" i
 - **Owner:** Syed Haris.
 - **Developer note:** Fouzan Shakil, 2026-10-20, Claude Code session. The AI proposal is A, as its own change, not inside the holdover fix. No developer choice recorded yet.
 - **Status:** open
+
+### Q69 — Mob/Demob pair with nothing to show: still create the group, or none at all? (raised by the ticket owner, 2026-10-23)
+- **Question:** Q42's answer kept Q32b: an item with no Sub item configured to show gets no pair at all — `withItemLineFirst` returns `[]` when `subLines` is empty, so `applyCraneMobPair`'s `withLines` (`lines.length === 0 → return rows`) never creates the Mobilization/Demobilization group rows. A crane with every association's Mob/Demob Show off (or no associations) shows as a single line item on Hourly w/ Mob, with no groups at all. Should the groups always be created for a linked item, holding at least the item's own line (Q42), or does an item with nothing to show keep getting no pair?
+- **Owner:** Syed Haris.
+- **Answer (Syed Haris, ticket owner, 2026-10-23, Claude Code session):** "still the mob demob row have to be created" — **reverses Q32b/Q42's "Keep Q32b"**: a linked item (one with a `subCategoryId`, `roleId` or `customTypeId`) always gets its Mobilization/Demobilization pair on Hourly w/ Mob, holding at least its own line (Q42), even with no Sub item to show alongside it. An item with no catalog link still gets no line and no pair (Q43, unchanged). Built by removing `withItemLineFirst`'s early return on an empty `subLines`.
+- **Status:** answered by ticket owner 2026-10-23
