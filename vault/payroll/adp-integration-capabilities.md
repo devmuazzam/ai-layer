@@ -335,6 +335,35 @@ defined as *"manage access and roles for internal and external users"*. CodingCo
 developers to the tenant without a procurement step, a licensing question, or a TCG approval
 cycle.
 
+### Project scope as of 2026-10-23 — *TCG ERP Integration*
+
+One project, deliberately (syed.haris, 2026-10-23: one set of credentials while testing; split
+HR into its own project before go-live if least privilege is wanted). Added on 2026-10-23 via
+*Add more APIs* (all 10 domains, all 245 sub-categories — narrower filters hide `applicant.onboard`):
+
+| Added | Purpose |
+| --- | --- |
+| `POST /hcm/v2/applicant.onboard` + `GET …/meta` | hire / onboard from the ERP (WFN's API hire path — the direct `worker.hire` POST is **not offered**) |
+| `POST /events/hr/v1/worker.rehire` + `GET …/meta` | rehire (ADP bundles the two) |
+| `POST /events/hr/v1/worker.work-assignment.terminate` | offboard — ends the work assignment |
+| events `worker.hire`, `worker.rehire`, `worker.terminate` | learn of hires / rehires / terminations made in ADP |
+
+Already there: Payroll Input (pay data, validation tables, workers read, codelists), the
+pay-schedule GET, event `pay-data-input.modify`, and `payPeriodStatus.change` (added by ADP
+2026-10-22). **Not** there: Payroll Output and Pay Statements — support-only, need TCG
+security-master consent ([adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §9).
+
+ADP's Postman collection for the project, exported 2026-10-23 (credentials are ADP placeholders):
+[sources/adp-postman-tcg-erp-integration-2026-10-23.json](sources/adp-postman-tcg-erp-integration-2026-10-23.json)
+— 24 onboard samples (US minimal/full, **in-progress vs complete hire**, pre-hire, custom
+fields, three *Bad Request* cases), 4 rehire, 1 terminate, 17 pay-data samples (incl. *Append*,
+temp rate, FLSA work week), codelists, validation tables, workers, pay schedule. Reference only —
+not a statement of what TCG has decided to build.
+
+**Calling** onboard, rehire or terminate changes a real `4RZ` worker (no sandbox); none has been
+called. Whether onboarding starts in the ERP or in ADP is open — *Where the employee lifecycle
+starts* in [gaps.md](gaps.md).
+
 ## Where to get credentials, from this account
 
 The path starts inside the WFN session in the screenshot.
