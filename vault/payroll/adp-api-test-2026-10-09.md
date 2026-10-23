@@ -317,7 +317,9 @@ and its meta now reads (162 fields, 27 required — [adp-integration-capabilitie
 
 **Open after 2026-10-23:**
 
-1. Melissa McNutt's "Yes" on `672204` → ADP enables Payroll Output and Pay Statements.
+1. ~~Melissa McNutt's "Yes" on `672204`~~ **given 2026-10-23**, verbatim: *"You have my approval to
+   proceed."* Now waiting on ADP support to enable Payroll Output and Pay Statements on *TCG ERP
+   Integration*; then re-run the read probes (both returned `403 Invalid Scope` before).
 2. ~~Nate: the grant for the TCG onboarding template~~ answered (above). Now: a TCG WFN admin
    assigns the API Central profiles to *HR + Payroll TCG* → re-read the template list (the code
    may change) → read its required fields and compare with the ERP's employee form.
