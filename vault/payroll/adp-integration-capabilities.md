@@ -376,7 +376,9 @@ returns 403** — *"You do not have security access to use this template"* — s
 that template granted in WFN security before TCG's own required fields can be read. **TCG
 onboards with *HR + Payroll TCG*, not the System template** (syed.haris, 2026-10-23), so the
 System list below is indicative only; TCG's real required fields are unknown until access is
-granted. The System
+granted. **Fix, per ADP (Nate, 2026-10-23):** a WFN admin opens *Setup → Template Management →
+Hire/Rehire → HR + Payroll TCG → Assign Users*, ticks the **API Central profiles**, and submits;
+the template code may change afterwards, so re-read it. The System
 template returns 193 fields, **26 required** for a complete hire: hire date, company code, pay
 group, pay cycle, hire reason, federal filing status, worked-in-state, SUI state, SSN (type,
 status, number), first/last and payroll name, ACA eligibility, gender, birth date, legal address
