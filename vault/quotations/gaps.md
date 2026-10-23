@@ -2796,3 +2796,12 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Blocked:** the quote total whenever a price-list customer is also given a quote-level discount.
 - **Owner:** Melissa McNutt (pricing) with Joe Schacatano (quotations); Kaitlin Kiesel can check against
   Edison's current pricing.
+
+## Branch fixes/TCG-22-OCT-UAT (PR #926) — quotation hero Subtotal and workspace KPIs now show money in full, not compact
+
+- **Status:** resolved — see [../decisions/2026-10-23-pr-926-won-popup-craneguys-domain-full-money-as-built.md](../decisions/2026-10-23-pr-926-won-popup-craneguys-domain-full-money-as-built.md). Asad Amanullah decided on 2026-10-23 (`reference`). Four figures show the full amount, 2 decimals, no K/M: Total Amount and Subtotal on the quotation detail hero, and Won value and Pipeline value on the workspace KPIs. Tables, the pipeline board and the other compact (`qmoney`) displays are not covered by this decision.
+- **Asked:** 2026-10-23, in the PR #926 review (tcg-scrum escalation). Path C, no ticket.
+- **Question:** On the quotation detail hero (Subtotal) and the quotations workspace KPI ribbon (Won value, Pipeline value), should money show in full to the cent ($267,580.00) or compact ($267.58K)? The branch leaves tables and the pipeline board compact. Is that split intended?
+- **Sources checked:** A vault-wide grep outside `meetings/transcripts/` for compact money, K/M, abbreviated amounts, `Won value` and `Pipeline value` finds nothing on display format. [*Resources Total Value — UAT asks for exact decimals*](#resources-total-value--uat-asks-for-exact-decimals-the-code-deliberately-strips-cents) covers a different surface (the Resources Total Value field, UAT 3) and is a pricing question. [../projects-jobs/job-project-das.md](../projects-jobs/job-project-das.md):36 (`unverified`, punch list) asks only for consistent *naming* of budget, pipeline and won value. `uat/sessions/` has no 2026-10-22 session. `.ai/aidlc/processed.log:245` records "UAT feedback 2026-10-22" with no written source.
+- **Blocked:** nothing. The change is display-only and reversible. The UAT ask still needs writing down (who asked, and where), or the next formatter change may revert it.
+- **Owner:** whoever raised it at the 2026-10-22 UAT. Otherwise Joe Schacatano / Ryan Adams (sales).

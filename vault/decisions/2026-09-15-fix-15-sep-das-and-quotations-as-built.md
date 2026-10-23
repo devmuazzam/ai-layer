@@ -18,6 +18,12 @@ provenance_note: >-
   Shakil, `reference`). A held asset (Make Holdover) is refused to other jobs for the whole planned
   hold, before it is loaded out too; its allocation is not taken over with "Reassign anyway?".
   Item 4 stands for every asset that is not held. The rest of this note is unchanged.
+  Item 12 SUPERSEDED FOR THE EMAIL AND WEBSITE ROWS ONLY, 2026-10-23, by
+  decisions/2026-10-23-pr-926-won-popup-craneguys-domain-full-money-as-built.md (Asad
+  Amanullah, `reference`). The fallback website is now www.craneguys.com (bare host,
+  lowercase), not www.CraneGuys.com. Contact emails use @craneguys.com: quotes@ for
+  quotations (was quotes@thecraneguys.com), plus permits@, dispatch@ and hello@. The other
+  rows of item 12 and the letterhead layout stand.
 supersedes_partial:
   - 2026-09-14-yard-unassigned-slots-not-loadable.md (Q3 employees-as-loadable; Q7(a) copy; REQ-04 assigned-row pre-tick)
 resolves:

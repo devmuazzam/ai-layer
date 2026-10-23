@@ -37,6 +37,16 @@ All decided 2026-10-15 by devmohsinakram (developer on the ticket), in session.
 - **Q5 — Confetti?** **Yes, keep it.** **Status:** resolved.
 - **Exact copy and button names** (ticket: open with Ryan Adams / Joe Schacatano) — not a blocker. Built with the UAT 1 names; a rename is a label change and test IDs do not depend on labels. **Status:** resolved for build; copy may change in review.
 
+### Q6 — Won popup redesigned after merge, on branch `fixes/TCG-22-OCT-UAT` (PR #926 review, tcg-scrum, 2026-10-23)
+
+- **Question:** Does the Won popup keep **Add to a Project**, with its open-project count, next to Create Project, as UAT 1 asked and REQ-03/04/05 build? Or is it now one **Convert to Project** step (Convert to Job when a project exists) with a **Later** button, no ✕, a star badge instead of trophy + ring pulse (confetti kept), and **Job site** and **Quote total** shown?
+- **Options:** (A) keep TCG-48 as specified and revert the redesign; (B) adopt PR #926's redesign, which supersedes REQ-03, REQ-04, REQ-05, REQ-08, REQ-10 and Q4; (C) mixed. Name the parts kept.
+- **Candidates:** `vault/uat/sessions/uat-session-1-internal.md:61` (`unverified`): "options to Create Project or Add to a Project". `vault/uat/register-2026-09-18.md:225` (`unverified`, NOT DONE). This section's Q3–Q5 (devmohsinakram, 2026-10-15). **Nothing is written for the redesign.** There is no 2026-10-22 session in `vault/uat/sessions/` and no `decisions/` note. `aidlc/processed.log:245` says only "UAT feedback 2026-10-22".
+- **Note:** The relabels (Create Project → Convert to Project, "I'll do this later" → Later) fall under the "copy may change in review" line above. These changes do not: removing an option, dropping Q4's count, removing the ✕ (REQ-03), changing the animation (REQ-08) and dropping the REQ-10 test IDs `quotations-won-celebration-close` and `-add-to-project`. A grep of `qa-automation/e2e` on 2026-10-23 found no use of either ID. Job site and Quote total have no source; REQ-03 names only the quote number and the customer.
+- **Blocked:** merging PR #926 commit `99365758b` as a change to TCG-48.
+- **Owner:** whoever gave the 2026-10-22 UAT feedback (give their name and where they said it). Otherwise Ryan Adams / Joe Schacatano, the ticket's named copy owners. devmohsinakram decided Q4 and can confirm reversing it.
+- **Status:** resolved — see [decisions/2026-10-23-pr-926-won-popup-craneguys-domain-full-money-as-built.md](../../vault/decisions/2026-10-23-pr-926-won-popup-craneguys-domain-full-money-as-built.md). Option (B), decided by Asad Amanullah on 2026-10-23 (`reference`; he did not name who approved the redesign). The redesign stands as built in `99365758b`, and `30798b9ca` makes Quote total the computed total (TCG-255). **Superseded:** REQ-03, REQ-04, REQ-05, the ring pulse in REQ-08, the REQ-10 test IDs `quotations-won-celebration-close` and `-add-to-project`, and Q4. **Still in force:** REQ-01, REQ-02, REQ-06, REQ-07, REQ-09, the rest of REQ-08 and REQ-10, Q1–Q3 and Q5.
+
 ## 13. Deliberately out of scope
 
 - **DocuSign-completed signing** — the quote turns Won from a webhook with no user on the page; there is no moment to show a popup.
