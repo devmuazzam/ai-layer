@@ -292,10 +292,10 @@ Everything else that happened on the ADP thread and in API Central that day, in 
 | --- | --- |
 | Teams message to the TCG group explaining Nate's §9 answer and asking whether to enable Payroll Output / Pay Statements, naming Corrina **or** Melissa as the security master | sent |
 | TCG's reply (sender not recorded): Corrina out until the next day; *"I would put Melissa on the ticket to approve. I'll send Melissa a message to let her know to look out for it."* | received — §9 |
-| Reply to Nate on `672204`: Melissa McNutt added as security master to confirm, project *TCG ERP Integration*. Melissa's address in the vault is `melissa@craneguys.com` — from a 2026-02-09 invite, unverified | drafted; whether sent and whether Melissa has said "Yes" — **not recorded** |
+| Reply to Nate on `672204`: Melissa McNutt added as security master to confirm, project *TCG ERP Integration*. Melissa's address in the vault is `melissa@craneguys.com` — from a 2026-02-09 invite, unverified | **sent 2026-10-23**; Melissa's "Yes" not yet recorded |
 | syed.haris plans to run **onboarding and offboarding** from the ERP too. Added to the same project (one project while testing): `applicant.onboard` (+meta), `worker.rehire` (+meta), `worker.work-assignment.terminate`, events `worker.hire` / `worker.rehire` / `worker.terminate`; ADP's Postman collection exported and stored | done — [adp-integration-capabilities.md](adp-integration-capabilities.md) → *Project scope as of 2026-10-23* |
 | Onboarding templates read: TCG uses **HR + Payroll TCG** (`9204592297352_1`); its meta returns **403** for the API user; the *System* template's 26 required fields recorded as a guide | done — same section |
-| Teams request to TCG to grant the API user access to the *HR + Payroll TCG* template in WFN security | drafted; not confirmed sent |
+| Teams request to TCG to grant the API user access to the *HR + Payroll TCG* template in WFN security | drafted, **not sent** — the question went to ADP instead (next row) |
 | **Email to Nate on `672204` (sent):** quoted the 403, and asked (1) which WFN user the *TCG ERP Integration* project runs as, (2) what the security master must grant so it can use *HR + Payroll TCG* | **sent 2026-10-23** |
 | Queue polled after the worker events were added: **204** | 04:45 PKT |
 
