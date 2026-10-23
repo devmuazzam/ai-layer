@@ -325,6 +325,14 @@ for the *not-yet-submitted-to-ADP* filter in the
 [5 Aug review](../meetings/2026-08-05-payroll-module-design-review.md). The people holding the API
 keys are the same people holding the unanswered payroll questions.
 
+**Unchanged on 2026-10-23** (Members page): Corrina Bustos `CBustos@blsr1`, Ehtesham Anwar
+`EAnwar@blsr1`, Melissa Mcnutt `MMcNutt@blsr1`, each with `P`/`C`/`M`. CodingCops (syed.haris)
+works in API Central through **Ehtesham's** login. Note the boundary: these roles govern the
+**API Central portal** only. API calls run as the project's own **API system user** in WFN
+(the Client ID/Secret), and *that* user's WFN security decides which data and onboarding templates
+it can reach — e.g. the 403 on *HR + Payroll TCG* (*Project scope as of 2026-10-23*) is a WFN
+security grant, not a portal role.
+
 ### The remaining access gap is narrow, and CodingCops can close it alone
 
 The PM has access; **the implementing developers do not**. Nobody who will actually write the
