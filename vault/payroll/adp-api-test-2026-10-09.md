@@ -311,7 +311,9 @@ assigned access within Workforce Now"*. A WFN admin does it:
 *"This may change the template code so you should make a new meta request to get the updated
 code."* He also points to the [Applicant Onboard V2 API guide for WFN](https://developers.adp.com/guides/api-guides/applicant-onboard-v2-api-guide-for-workforce-now)
 for other prerequisites. Needs a TCG WFN admin: syed.haris sent the four steps to the TCG Teams
-group on 2026-10-23, asking whoever has ADP admin access to do it and confirm.
+group on 2026-10-23, asking whoever has ADP admin access to do it and confirm. **Micaela Dipane
+did it the same day** (*"This has been done!"*); the template code changed to `9205018681610_1`
+and its meta now reads (162 fields, 27 required — [adp-integration-capabilities.md](adp-integration-capabilities.md)).
 
 **Open after 2026-10-23:**
 
