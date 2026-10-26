@@ -299,11 +299,30 @@ Everything else that happened on the ADP thread and in API Central that day, in 
 | **Email to Nate on `672204` (sent):** quoted the 403, and asked (1) which WFN user the *TCG ERP Integration* project runs as, (2) what the security master must grant so it can use *HR + Payroll TCG* | **sent 2026-10-23** |
 | Queue polled after the worker events were added: **204** | 04:45 PKT |
 
+**Nate's answer on the template (request `672204`, received 2026-10-23):** the 403 is because
+*HR + Payroll TCG* is a **custom hire template**, which *"requires the API user to be explicitly
+assigned access within Workforce Now"*. A WFN admin does it:
+
+1. *Setup → Template Management → Hire/Rehire*
+2. open the template (*HR + Payroll TCG*)
+3. *Assign Users* step → tick the **API Central profiles**
+4. *Next* through each step → *Submit*
+
+*"This may change the template code so you should make a new meta request to get the updated
+code."* He also points to the [Applicant Onboard V2 API guide for WFN](https://developers.adp.com/guides/api-guides/applicant-onboard-v2-api-guide-for-workforce-now)
+for other prerequisites. Needs a TCG WFN admin: syed.haris sent the four steps to the TCG Teams
+group on 2026-10-23, asking whoever has ADP admin access to do it and confirm. **Micaela Dipane
+did it the same day** (*"This has been done!"*); the template code changed to `9205018681610_1`
+and its meta now reads (162 fields, 27 required — [adp-integration-capabilities.md](adp-integration-capabilities.md)).
+
 **Open after 2026-10-23:**
 
-1. Melissa McNutt's "Yes" on `672204` → ADP enables Payroll Output and Pay Statements.
-2. Nate: which WFN user the API runs as, and the grant for the TCG onboarding template → then
-   read *HR + Payroll TCG*'s required fields and compare with the ERP's employee form.
+1. ~~Melissa McNutt's "Yes" on `672204`~~ **given 2026-10-23**, verbatim: *"You have my approval to
+   proceed."* Now waiting on ADP support to enable Payroll Output and Pay Statements on *TCG ERP
+   Integration*; then re-run the read probes (both returned `403 Invalid Scope` before).
+2. ~~Nate: the grant for the TCG onboarding template~~ answered (above). Now: a TCG WFN admin
+   assigns the API Central profiles to *HR + Payroll TCG* → re-read the template list (the code
+   may change) → read its required fields and compare with the ERP's employee form.
 3. `payPeriodStatus.change` (added 2026-10-22): first firing not yet seen; `2026-43` still
    `OPEN` on 10-23 PKT. Poll after Micaela opens week 44.
 4. Who starts onboarding — ERP or ADP (or ERP starts *in progress*, ADP completes): Brian
