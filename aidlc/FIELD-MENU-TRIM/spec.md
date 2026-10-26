@@ -115,10 +115,10 @@ only; executor to confirm `grep -rn "menu/" apps/mobile/app`).
 ### Q1 — When may the API endpoints go? (blocks U2 only)
 Installed field apps will break on Labor after U2. Options: A) ship U2 after U1 is the
 minimum supported build, B) ship U1 and U2 together, accepting broken old builds, C) keep
-the endpoints (U2 dropped). Recommended: A. **Answer:** _pending_
+the endpoints (U2 dropped). Recommended: A. **Answer:** No issue (haris, 2026-10-26): ship U1 and U2 together.
 
 ### Q2 — Is "My Labour" the "My Labor" row?
-Assumed yes (D1). **Answer:** _pending_ (veto only)
+Assumed yes (D1). **Answer:** Yes, remove (haris, 2026-10-26).
 
 ## 13. What this spec deliberately does not specify
 - Vault edits: pages `vault/field-ops/field-app-demo-2026-06.md`,
@@ -128,4 +128,4 @@ Assumed yes (D1). **Answer:** _pending_ (veto only)
 - Whether the in-ticket Labor step keeps its hours display.
 
 ## 14. Sign-off before build
-- [ ] Q1 answered by a named developer.
+- [x] Q1 answered by a named developer.
