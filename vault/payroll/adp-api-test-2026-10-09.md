@@ -329,6 +329,39 @@ and its meta now reads (162 fields, 27 required — [adp-integration-capabilitie
    Petros / Ehtesham Anwar, open in [gaps.md](gaps.md).
 5. No onboard, rehire or terminate call has been made; each would change a live `4RZ` worker.
 
+
+## 11. Payroll Output enabled — first reads (2026-10-27 PKT)
+
+Nate (request `672204`), after Melissa McNutt's approval: *"The scopes have been added to your
+"TCG ERP Integration" project."* Read-only probes the same day (shapes only kept on screen; bodies
+on syed.haris's machine):
+
+| Call | Result |
+| --- | --- |
+| `GET /payroll/v2/payroll-output` | **200.** `payrollOutputs[]` — **323 runs** for `4RZ`, each with `itemID`, `payrollProcessingJobID`, `payrollScheduleReference` (year, **week**, **run number**), `payrollProcessingJobStatusCode`, and `alternateJobIDs` (`chron` = a processing timestamp, `batch`, `payrollQuarter`, `payrollSequenceNumber`). Plus 104 `PYOGEN00001` warnings *"Payroll details are not available for payroll run with itemID …"* |
+| `GET /payroll/v2/payroll-output/{itemID}` (week 43) | **401** `GBXGEN00401` *"Scope is not valid"* — per-run detail not reachable this way |
+| `GET /payroll/v1/payroll-output` | **500** *"The called API is not registered for the required provider"* — v1 is not the WFN path |
+| `GET /payroll/v1/workers/{aoid}/pay-statements` | still **403** |
+
+**Status codes seen** (count): `PR-PRC` *Payroll Complete* 118 · `PR-EDL` *Rejected* 183 ·
+`PR-BAD` 1 · `MP-MPC` 9 · `MP-EDL` 1 · `NS-PRC` 5 · `NS-EDL` 2 · `NS-BAD` 4. Only `PR-PRC` /
+`PR-EDL` labels were read; the `MP-` / `NS-` families are unlabelled here (likely manual-pay and
+non-standard runs — unverified).
+
+**Week 43, 2026:** `PR-PRC` *Payroll Complete*, `chron` `20261020191215` — 19:12 on 2026-10-20,
+apparently Eastern (16:12 PT), three minutes before Micaela's ADP-app notice (§8). Weeks 33–42
+each show one `PR-PRC` run; week 34 also has a `PR-EDL` *Rejected* run.
+
+**What this changes:** the ERP can **poll the run list** and learn when a week is processed (and
+see a rejected run), with a timestamp — the signal events never gave. It does **not** yet give what
+was paid: the per-run detail returned 401. Next: find the detail call in the Payroll Output (Turbo)
+guide, or ask Nate.
+
+**Pay-period status, same day:** `2026-43` is now **`COMPLETE`**, `2026-44` **`OPEN`**, yet the
+event queue was **204** — `payPeriodStatus.change` (added 2026-10-22) did not deliver for that
+change. Combined with §8, polling the run list (or the pay-schedule status) is the dependable
+route; the event is not.
+
 ---
 
 ## Appendix — the test scripts, as run
