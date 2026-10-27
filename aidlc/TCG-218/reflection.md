@@ -136,6 +136,15 @@
 - **Class:** gate-illusion (the PRs read "ESLint clean on touched files"; that is not lint-clean, tsc-clean or tested).
 - **Fix:** R11. Not proposed: forcing per-PR full lint/build — the developer's deferral is a deliberate trade for long features and is recorded in §6.
 
+### ED-5 — Q69's fix widened the item-line build to every quotation type (post-close, PR #946)
+
+- **Where:** `resources-tab.mob-layout.ts` → `updateCraneMobPair`; introduced by 51a198300 (Q69, 2026-10-23), reported from production 2026-10-27, fixed in #946.
+- **Spec said:** REQ-07/08, Q42, Q69 — the item's own line and its Sub items form the pair **on Hourly w/ Mob**; Hourly has no pair (U3).
+- **Built:** Q69 removed `withItemLineFirst`'s early return on an empty `subLines`. Its Hourly w/ Mob caller was the target; its other caller, `updateCraneMobPair`, had gated only the Sub-item lines on `isHourlyWithMob` and relied on that empty return to stay quiet on Hourly. After Q69 every item pick on an Hourly root line built a Mobilization/Demobilization pair, rendered as plain rows because Hourly has no group headers.
+- **Caught by:** the client, in production, four days after merge. Not by the Q69 PR's review (one caller checked), not by tests (none for this path).
+- **Class:** over-broad-condition — a build that fired on every quote type instead of the one the spec qualifies; the qualifier existed in the caller but on the wrong line.
+- **Fix:** #946 gates the item line on the same `buildsPair` condition as its Sub items. Rule proposal R12 (§4).
+
 ## 3. Source and vault findings
 
 Every line has a proposed disposition. None is applied: `tcg-scrum` writes decision notes; any agent appends to spec §12.
@@ -211,6 +220,13 @@ All are proposals to Haris. Each was tested against its defect; where the propos
   - *Require tests/lint/build per unit before merge* — rejected: the developer's deferral of gates for long features is recorded in every PR and is a deliberate trade-off; R11 makes it cheap instead of banning it.
   - *Add a lint rule for ordering in snapshot readers* — rejected: no lint rule exists for module conventions in this codebase; R8's shared constant is checkable by review and cheaper.
   - *Tighten the 400-line budget or require size estimates in lines* — rejected: the budget held on every PR (U11a-1 at 398, then 407 caught and moved); the problem was where the cut was made (R6), not the number.
+
+### R12 — A fix that removes a helper's early return re-checks every caller's own gate
+
+- **Target:** `claude/agents/tcg-executor.md`, self-review before hand-back.
+- **Rule:** when a change removes or loosens an early return / empty result inside a shared helper, `grep` every caller and state, per caller, which condition now keeps it from firing where it must not. A caller that relied on the helper's emptiness as its gate gets its own gate in the same PR.
+- **From:** ED-5 — `withItemLineFirst` had two callers; the fix checked one.
+- **Status:** proposed.
 
 ## 5. Recurrence check
 
