@@ -9,7 +9,17 @@ decided_by: >-
   the STANDARD ticket meal fallback ships without payroll sign-off.
 status: verified
 resolves: TICKET-FLOW-SLOTS-HOLDOVER/spec.md#q5
-conflicts_with: []
+conflicts_with:
+  - decisions/2026-10-26-home-start-holdover-payable-start-work-to-end-work.md
+provenance_note: >-
+  Partly superseded 2026-10-26 by
+  decisions/2026-10-26-home-start-holdover-payable-start-work-to-end-work.md (owner
+  answer HOLDOVER-PAYROLL spec §12 Q2): the *payable boundary* on a Home-start
+  holdover day is Start Work → End Work (End Work resolved by the break-down → boom →
+  build-up chain), NOT this note's "Arrive Job Site → Left Job Site" headline or
+  "closes at submit" body. This note's other findings — no yard leg on Home-start
+  days, STANDARD-ticket meal fallback ships without payroll sign-off — stand, so the
+  status remains verified.
 tags: [module/field-ops, module/payroll, kind/decision, api]
 entities: [WORK_TIME]
 ---
