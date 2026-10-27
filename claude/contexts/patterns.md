@@ -98,6 +98,143 @@ a developer's yes — never in passing.
   `/employee-craft-codes` endpoint.
 - industries has two hook files: `use-industries.ts` and `use-industry-codes.ts`.
 
+## P3 — Entity photos and profile pictures
+
+Any entity that has a picture: many photos with one cover (assets, tools), or a single
+profile picture (employees, users). All of them use the same storage, the same API routes
+and the same way of showing a picture.
+
+**Reference — built by Akif (TCG-241 + PHOTO-REUSE, 2026-10-27).** A new entity that needs
+photos plugs into this flow. Do not build a new upload route, table or image component.
+
+### How it works
+
+**Upload**
+
+1. The browser shrinks the picked image to 2048 px at most
+   (`components/organisms/entity-photos/prepare-photo-for-upload.ts`).
+2. It sends one call: `POST /attachments/photos` with `featureType` (e.g. `TOOL`),
+   `featureId` (the owner's UUID) and the file.
+3. The API checks that the owner exists in the caller's tenant and that the caller may
+   change it.
+4. The API makes three versions (`service/attachments/entity-image-processor.ts`):
+   - the **original**, as WebP at quality 90;
+   - a **160 px square thumbnail**, as WebP;
+   - a **tiny 24 px blur**, saved inside the database row as a data URL (not in S3).
+5. It writes two files to S3:
+   `tenants/{tenantId}/{folder}/{ownerId}/profile-pictures/{photoId}/original.webp` and
+   `.../thumbnail.webp`.
+6. It saves one `attachments` row. In that row, `featureType` is the owner type,
+   `featureId` is the owner's UUID, `category` is 'Profile Picture', and
+   `placeholder_data_url` holds the blur.
+7. Many-photo owners: the first photo becomes the cover.
+   Single-picture owners: the new picture becomes the cover and the old one is deleted, in
+   one transaction, with its S3 files removed afterwards. There is no separate
+   "replace" route.
+
+**Cover**
+
+The owner table has `cover_attachment_id`, a foreign key to `attachments` that becomes
+null when the photo is deleted. `PUT /attachments/photos/:id/cover` changes it.
+
+**Showing a picture**
+
+1. A list or detail response carries `cover: { id, placeholderDataUrl, thumbnailUrl } | null`
+   (`EntityImageCover`).
+2. Never one request per row:
+   - one owner whose row is already loaded: `AttachmentPhotosService.coverOf`;
+   - many owners: `coversByOwnerId`, which is one query.
+3. The web shows the blur first, then the thumbnail. If the link has expired, it
+   refetches once, then shows the fallback (initials or icon).
+4. `GET /attachments/photos?featureType&featureId` lists every photo, with thumbnail and
+   original links, for the gallery.
+
+**Links**
+
+- Photo links are presigned S3 links, made locally with no call to S3
+  (`S3StorageService.presignGetUrl`).
+- They are signed at the start of the hour, so the URL stays the same for that hour and
+  the browser can cache it.
+- Each link is valid for 24 hours.
+
+**Delete**
+
+- `DELETE /attachments/photos/:id` deletes the row and its two files.
+- When an owner is deleted, its photo rows are deleted in the same transaction
+  (`deleteOwnerPhotosIn`) and the files after the commit (`deleteStoredFiles`).
+
+### Where the code is
+
+| Part | File |
+| --- | --- |
+| Routes | `apps/api/src/presentation/attachments/attachments.controller.ts` (`/attachments/photos`, declared above the `:id` routes) |
+| Main logic (upload, list, cover, delete, permissions) | `apps/api/src/usecase/attachments/attachment-photos.service.ts` |
+| Database (owner lookup, cover read and write, covers for many owners) | `apps/api/src/service/attachments/attachment-photos.repository.ts` |
+| Image resizing | `apps/api/src/service/attachments/entity-image-processor.ts` |
+| S3 keys and presigned links | `apps/api/src/service/storage/s3-storage.service.ts` |
+| Sizes and limits (2048 px, 160 px thumbnail, 24 px blur, 25 MB upload, 50 MB pick) | `packages/shared/src/constants/entity-image.ts` |
+| Web: photo card with gallery, upload and set cover (many photos) | `apps/web/src/features/entity-photos/entity-photos-card.tsx` |
+| Web: upload queued photos after a Create form saves | `apps/web/src/features/entity-photos/upload-queued-entity-photos.ts` |
+| Web: show one cover in a table, card or chip | `apps/web/src/components/organisms/entity-photos/entity-photo-thumbnail.tsx` (`EntityPhotoThumbnail`) |
+| Web: employee and user avatar, and picture upload | `apps/web/src/features/profile-picture/` (`EntityProfileAvatar`, `profile-picture-queries.ts`) |
+| Web: API client and the `PhotoEntityType` list | `apps/web/src/lib/api/entity-photos.ts` |
+| Mobile: show a picture | `apps/mobile/lib/profile-picture.ts` (`resolveProfilePhoto`) and the avatar component |
+
+### Who uses it today
+
+| Entity | Photos | Who may change them | Activity log | Where `cover` is returned |
+| --- | --- | --- | --- | --- |
+| ASSET | many, one cover | anyone who can edit | yes (unit code) | assets list |
+| TOOL | many, one cover | anyone who can edit | yes (tool code) | tools list, DAS job tools |
+| EMPLOYEE | one (upload replaces) | ADMIN only | no | `GET /employee*`, DAS employees and temps, allocations by sub-job |
+| USER | one (upload replaces) | that user only | no | `GET /users/me` (the newer of the user's own picture and the linked employee's) |
+
+### Adding photos to a new entity — checklist
+
+The compiler catches a missing step 1, 2 or 3.
+
+1. Add the type to `PHOTO_FEATURE_TYPES` in `attachment-photos.repository.ts`.
+2. Add one `case` to each of `findOwner`, `writeCover` and `readCover` in the same file.
+   These switches have no `default` on purpose.
+3. Add the S3 folder name to `ENTITY_FOLDER` and the not-found message to `OWNER_NOT_FOUND`
+   in `attachment-photos.service.ts`.
+4. Schema: add `cover_attachment_id` to the owner, with the relation (`onDelete: SetNull`),
+   an index and the back-relation on `Attachment`. Then write a migration.
+5. Only one picture allowed? Add the type to `SINGLE_PHOTO_FEATURE_TYPES`.
+   Only some people may change it? Add a rule to `assertCanChange`.
+   Should uploads be logged? Extend `logPhotoEvent`.
+6. When the owner is deleted, delete its photos too: `deleteOwnerPhotosIn` inside the
+   transaction, then `deleteStoredFiles` after it.
+7. Web: add the type to `PhotoEntityType` in `apps/web/src/lib/api/entity-photos.ts`, and
+   add `cover` to the owner's response type.
+8. Add `cover` to every API response that shows this entity's picture (use `coverOf` or
+   `coversByOwnerId`). Update its web, mobile and qa-automation callers in the same PR.
+9. UI:
+   - Detail page: `EntityPhotosCard` for many photos, or the profile-picture avatar for
+     one picture.
+   - Lists and chips: `EntityPhotoThumbnail`.
+
+### Rules
+
+- Never send an `Authorization` header with a presigned link. S3 refuses two auth methods
+  in one request, and the image fails to load. This matters on mobile.
+- Never put user text in an S3 key. Use only UUIDs and fixed names.
+- Use the owner's tenant for the row and the S3 keys, not the caller's tenant (a super
+  admin has no tenant).
+- Don't send photos through the generic `POST /attachments` upload. It refuses the 'Profile
+  Picture' category for photo-owning types.
+
+### Known deviations
+
+- `GET /das/allocations` (by date) returns no `employee.cover`. Only the by-sub-job read
+  does (Dylen uses it).
+- Asset avatars in Dylen show no picture (they never did).
+- Old profile-picture rows (flat `tenants/{t}/attachments/…` keys) are not handled by the
+  photo service. They were removed by hand during testing.
+- `components/sidebar/sidebar-user-profile.tsx` imports `EntityProfileAvatar` from
+  `features/`. The sidebar already imported from `features/` before this work.
+
+
 ## Shared building blocks that already exist — reuse before writing your own
 
 | Need | Use | Adoption today |
@@ -108,6 +245,10 @@ a developer's yes — never in passing.
 | Archive guards | `ArchiveReferenceService`, `ArchivedNameConflictService` | ~20 usecases |
 | A list table (web) | `components/templates/workspace-table.tsx` + its hooks | 79 files reference it; no other list table is in use |
 | Reference-code web service/hooks | `createReferenceCodeService` + the hook factories | 6 entities |
+| Upload / list / set cover / delete photos of an entity | `AttachmentPhotosService` (`usecase/attachments/attachment-photos.service.ts`) | assets, tools, employees, users |
+| A cover in an API response | `AttachmentPhotosService.coverOf` / `coversByOwnerId` → `EntityImageCover` | tools, DAS, employees, allocations, `/users/me` |
+| A presigned S3 link | `S3StorageService.presignGetUrl` (signed per hour, valid 24 h) | every photo link |
+| Show a cover on web | `components/organisms/entity-photos/EntityPhotoThumbnail` | assets, tools, Dylen/DAS, employee and user avatars |
 
 No code generator exists (no `generators` in `nx.json`, no plop/hygen). Until one does, the
 reference implementation **is** the template.
