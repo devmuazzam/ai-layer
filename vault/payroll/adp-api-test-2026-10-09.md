@@ -214,6 +214,121 @@ Corrina Bustos to choose (not decided): corrections are made **only in the ERP**
 (`Append` updates an existing batch — point 1), or payroll **confirms or marks changes in the ERP**
 after approving in ADP. Recorded as open in [gaps.md](gaps.md).
 
+
+## 8. The approval check — week 43 processed (2026-10-20 PT / 2026-10-21 PKT)
+
+Micaela Dipane submitted the real week-43 payroll (period `2026-43`, `2026-10-10` → `2026-10-16`, pay
+date `2026-10-22`) — a worksheet **not** created by the API. Her ADP mobile app then showed, at
+4:15 PM PT (screenshot shared in the Teams chat):
+
+> *"Your payroll for company 4RZ, payroll week 43 was processed."*
+
+| Check (PKT, 10/21) | Result |
+| --- | --- |
+| `GET /core/v1/event-notification-messages` at 04:15, then every 5 minutes | **204 — empty**. `pay-data-input.modify` is still the only subscription; nothing fires on processing |
+| `GET /payroll/v1/pay-schedule/payroll-groups/4RZ` at 04:18 | `2026-43` still **`OPEN`** three minutes after "processed"; `2026-41`, `2026-42` show **`COMPLETE`**, `2026-44`+ `NOT_STARTED`. Re-checked every 10 minutes until 04:38 PKT: **still `OPEN`** (watcher stopped there). The flip to `COMPLETE` was not caught — check the period again after the 2026-10-22 pay date to learn when it changes |
+
+**So ADP knows payroll was processed and tells the practitioner in its app, but sends the
+integration nothing.** Whether the worksheet came from the API or not makes no difference: events
+depend on the subscription, not on who created the data.
+
+**One real event exists in ADP's documentation, not on this project.** The *Payroll Group List of
+Pay Periods API Guide for ADP Workforce Now NextGen* (Chapter 4, *Receive Notifications when a Pay
+Period Status Changes*) names
+`/payroll/payrollManagement/payrollProcessingScheduleManagement/payScheduleManagement/payrollGroup.payPeriodStatus.change.eventNotify`,
+fired *"When the status of a payroll period changes"*. The same guide's GET
+(`/payroll/v1/pay-schedule/payroll-groups/{group-code}`) **is** on this project (*Discover APIs* →
+*Payroll Group Pay Periods*, *Included*), and its data dictionary gives the status as *"open/close/
+skipped etc."* (observed codes: `NOT_STARTED`, `OPEN`, `COMPLETE`). But all 147 subscribable events
+were read page by page on 2026-10-21 (via Chrome): **`payrollGroup.payPeriodStatus.change` is not
+among them.** syed.haris asked Nate on request `672204` (2026-10-21) whether it can be enabled.
+
+**Fallback the ERP can build today, unconfirmed:** poll the pay-schedule GET and treat `OPEN` →
+`COMPLETE` as "week processed". It works only if the status flips at processing rather than at the
+pay date or a later close — the watcher above decides that. ADP has **not replied** to the
+2026-10-17 follow-up (Payroll Output enablement) as of 2026-10-21.
+
+
+## 9. ADP's answer — status event added; Payroll Output needs a security master (2026-10-22)
+
+Nate (ADP API Central Support, request `672204`), received 2026-10-23 PKT, answering both follow-ups.
+Key points, his words where quoted:
+
+- **Pay-period status event: added.** *"I added the "payPeriodStatus.change" notification to your
+  project and notified our dev team to add it for clients."* Delivery is the project's existing
+  **polling** queue.
+- **Payroll Output and Pay Statements: available, but never through API Central.** *"can only be
+  activated by our support team and is NOT ever visible within API-Central."* Payroll Output
+  *"return[s] all raw payroll data (including sensitive personal and executive data) without
+  filtering"*; Pay Statements (WFN only) returns hours, earnings and statement data/images and
+  *"cannot be limited by masking settings"*.
+- **ADP's conditions to activate them:** (1) a clear **"Yes"** on the ticket; (2) **a TCG security
+  master on the ticket** — he names Corrina Bustos or Melissa McNutt; (3) the **API Central project
+  names** to assign them to (ours: *TCG ERP Integration*).
+- Docs: the Payroll Output (Turbo) guide and the WFN Pay Statements API in API Explorer; a paid
+  consultation is offered.
+
+**This is a TCG decision, not CodingCops'.** Enabling it exposes all 4RZ payroll — salaried and
+executive pay included, unfilterable — to the integration's credentials. Owner: Brian Petros /
+Corrina Bustos (security master). Asked in the Teams group 2026-10-23; TCG replied the same day,
+verbatim: *"Corrina is out today. She should be back tomorrow. I would put Melissa on the ticket to
+approve. I'll send Melissa a message to let her know to look out for it."* So **Melissa McNutt**
+(President) is the approver; syed.haris adds her to request `672204` for her "Yes", project
+*TCG ERP Integration*. Approval itself still pending.
+
+**First check after the event was added (2026-10-23 04:12 PKT, Pacific still 10-22):** queue
+**204**, and `2026-43` still **`OPEN`** on its own pay date (`2026-42` `COMPLETE`, `2026-44`
+`NOT_STARTED`). So the period does not close at processing (§8) nor, so far, on the pay date. Lead,
+unconfirmed: it flips when the next week is opened — which would make `payPeriodStatus.change` a
+*"next week started"* signal rather than *"this week processed"*. The next poll after Micaela starts
+week 44 settles it.
+
+
+## 10. Ticket `672204` and onboarding setup — 2026-10-23 (PKT)
+
+Everything else that happened on the ADP thread and in API Central that day, in order.
+
+| What | Status |
+| --- | --- |
+| Teams message to the TCG group explaining Nate's §9 answer and asking whether to enable Payroll Output / Pay Statements, naming Corrina **or** Melissa as the security master | sent |
+| TCG's reply (sender not recorded): Corrina out until the next day; *"I would put Melissa on the ticket to approve. I'll send Melissa a message to let her know to look out for it."* | received — §9 |
+| Reply to Nate on `672204`: Melissa McNutt added as security master to confirm, project *TCG ERP Integration*. Melissa's address in the vault is `melissa@craneguys.com` — from a 2026-02-09 invite, unverified | **sent 2026-10-23**; Melissa's "Yes" not yet recorded |
+| syed.haris plans to run **onboarding and offboarding** from the ERP too. Added to the same project (one project while testing): `applicant.onboard` (+meta), `worker.rehire` (+meta), `worker.work-assignment.terminate`, events `worker.hire` / `worker.rehire` / `worker.terminate`; ADP's Postman collection exported and stored | done — [adp-integration-capabilities.md](adp-integration-capabilities.md) → *Project scope as of 2026-10-23* |
+| Onboarding templates read: TCG uses **HR + Payroll TCG** (`9204592297352_1`); its meta returns **403** for the API user; the *System* template's 26 required fields recorded as a guide | done — same section |
+| Teams request to TCG to grant the API user access to the *HR + Payroll TCG* template in WFN security | drafted, **not sent** — the question went to ADP instead (next row) |
+| **Email to Nate on `672204` (sent):** quoted the 403, and asked (1) which WFN user the *TCG ERP Integration* project runs as, (2) what the security master must grant so it can use *HR + Payroll TCG* | **sent 2026-10-23** |
+| Queue polled after the worker events were added: **204** | 04:45 PKT |
+
+**Nate's answer on the template (request `672204`, received 2026-10-23):** the 403 is because
+*HR + Payroll TCG* is a **custom hire template**, which *"requires the API user to be explicitly
+assigned access within Workforce Now"*. A WFN admin does it:
+
+1. *Setup → Template Management → Hire/Rehire*
+2. open the template (*HR + Payroll TCG*)
+3. *Assign Users* step → tick the **API Central profiles**
+4. *Next* through each step → *Submit*
+
+*"This may change the template code so you should make a new meta request to get the updated
+code."* He also points to the [Applicant Onboard V2 API guide for WFN](https://developers.adp.com/guides/api-guides/applicant-onboard-v2-api-guide-for-workforce-now)
+for other prerequisites. Needs a TCG WFN admin: syed.haris sent the four steps to the TCG Teams
+group on 2026-10-23, asking whoever has ADP admin access to do it and confirm. **Micaela Dipane
+did it the same day** (*"This has been done!"*); the template code changed to `9205018681610_1`
+and its meta now reads (162 fields, 27 required — [adp-integration-capabilities.md](adp-integration-capabilities.md)).
+
+**Open after 2026-10-23:**
+
+1. ~~Melissa McNutt's "Yes" on `672204`~~ **given 2026-10-23**, verbatim: *"You have my approval to
+   proceed."* Now waiting on ADP support to enable Payroll Output and Pay Statements on *TCG ERP
+   Integration*; then re-run the read probes (both returned `403 Invalid Scope` before).
+2. ~~Nate: the grant for the TCG onboarding template~~ answered (above). Now: a TCG WFN admin
+   assigns the API Central profiles to *HR + Payroll TCG* → re-read the template list (the code
+   may change) → read its required fields and compare with the ERP's employee form.
+3. `payPeriodStatus.change` (added 2026-10-22): first firing not yet seen; `2026-43` still
+   `OPEN` on 10-23 PKT. Poll after Micaela opens week 44.
+4. Who starts onboarding — ERP or ADP (or ERP starts *in progress*, ADP completes): Brian
+   Petros / Ehtesham Anwar, open in [gaps.md](gaps.md).
+5. No onboard, rehire or terminate call has been made; each would change a live `4RZ` worker.
+
 ---
 
 ## Appendix — the test scripts, as run

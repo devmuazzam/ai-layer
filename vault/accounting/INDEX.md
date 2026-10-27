@@ -38,7 +38,8 @@ Invoicing and accounting (module not yet built). Backend usecases: `billing, exp
 
 ## Decisions that bind this module
 
-- [2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md](../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md) — invoices are built from whole days of a job, never from single tickets; a payroll-flagged ticket holds its day; days are independent; several days can share an invoice. Brent Wagstaff, `verified`. Holdover invoicing not decided
+- [2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md](../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md) — invoices are built from whole days of a job, never from single tickets; a payroll-flagged ticket holds its day; days are independent; several days can share an invoice. Brent Wagstaff, `verified`. Holdover cadence: see 2026-10-20 below
+- [2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md](../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md) — holdovers billed weekly, some customers only monthly; all other jobs billed daily; typically one job per invoice / PO. Melissa McNutt, `verified`. What sets monthly, the billing week, and the exceptions are open in [gaps.md](gaps.md)
 - [2026-10-13-collections-worked-at-customer-level-not-invoice-level.md](../decisions/2026-10-13-collections-worked-at-customer-level-not-invoice-level.md) — the collections worklist is per customer, not per invoice. Brent Wagstaff, `verified`. The rest of the tab is design
 - [2026-10-13-vendor-invoice-attachment-goes-to-quickbooks-with-the-bill.md](../decisions/2026-10-13-vendor-invoice-attachment-goes-to-quickbooks-with-the-bill.md) — the vendor's invoice document goes to QuickBooks with the vendor bill. Brent Wagstaff, `verified`
 - [2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md](../decisions/2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md) — one invoice for a job with two cranes. Joe Schacatano, `verified`
@@ -60,7 +61,7 @@ Invoicing and accounting (module not yet built). Backend usecases: `billing, exp
 
 ## Meetings
 
-11 meeting files carry `module/accounting` — list them:
+21 meeting files carry `module/accounting`. The latest is [../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md](../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md) — Brent's written review of the prototype (client asks) and CodingCops' replies and proposed vendor-bill flow (not decisions). List them:
 
 ```
 grep -rl 'module/accounting' vault/meetings/

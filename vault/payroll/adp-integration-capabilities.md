@@ -325,6 +325,14 @@ for the *not-yet-submitted-to-ADP* filter in the
 [5 Aug review](../meetings/2026-08-05-payroll-module-design-review.md). The people holding the API
 keys are the same people holding the unanswered payroll questions.
 
+**Unchanged on 2026-10-23** (Members page): Corrina Bustos `CBustos@blsr1`, Ehtesham Anwar
+`EAnwar@blsr1`, Melissa Mcnutt `MMcNutt@blsr1`, each with `P`/`C`/`M`. CodingCops (syed.haris)
+works in API Central through **Ehtesham's** login. Note the boundary: these roles govern the
+**API Central portal** only. API calls run as the project's own **API system user** in WFN
+(the Client ID/Secret), and *that* user's WFN security decides which data and onboarding templates
+it can reach — e.g. the 403 on *HR + Payroll TCG* (*Project scope as of 2026-10-23*) is a WFN
+security grant, not a portal role.
+
 ### The remaining access gap is narrow, and CodingCops can close it alone
 
 The PM has access; **the implementing developers do not**. Nobody who will actually write the
@@ -334,6 +342,58 @@ integration can reach a credential, a certificate or a project.
 defined as *"manage access and roles for internal and external users"*. CodingCops can add its own
 developers to the tenant without a procurement step, a licensing question, or a TCG approval
 cycle.
+
+### Project scope as of 2026-10-23 — *TCG ERP Integration*
+
+One project, deliberately (syed.haris, 2026-10-23: one set of credentials while testing; split
+HR into its own project before go-live if least privilege is wanted). Added on 2026-10-23 via
+*Add more APIs* (all 10 domains, all 245 sub-categories — narrower filters hide `applicant.onboard`):
+
+| Added | Purpose |
+| --- | --- |
+| `POST /hcm/v2/applicant.onboard` + `GET …/meta` | hire / onboard from the ERP (WFN's API hire path — the direct `worker.hire` POST is **not offered**) |
+| `POST /events/hr/v1/worker.rehire` + `GET …/meta` | rehire (ADP bundles the two) |
+| `POST /events/hr/v1/worker.work-assignment.terminate` | offboard — ends the work assignment |
+| events `worker.hire`, `worker.rehire`, `worker.terminate` | learn of hires / rehires / terminations made in ADP |
+
+Already there: Payroll Input (pay data, validation tables, workers read, codelists), the
+pay-schedule GET, event `pay-data-input.modify`, and `payPeriodStatus.change` (added by ADP
+2026-10-22). **Not** there: Payroll Output and Pay Statements — support-only, need TCG
+security-master consent ([adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §9).
+
+ADP's Postman collection for the project, exported 2026-10-23 (credentials are ADP placeholders):
+[sources/adp-postman-tcg-erp-integration-2026-10-23.json](sources/adp-postman-tcg-erp-integration-2026-10-23.json)
+— 24 onboard samples (US minimal/full, **in-progress vs complete hire**, pre-hire, custom
+fields, three *Bad Request* cases), 4 rehire, 1 terminate, 17 pay-data samples (incl. *Append*,
+temp rate, FLSA work week), codelists, validation tables, workers, pay schedule. Reference only —
+not a statement of what TCG has decided to build.
+
+**Onboarding templates on 4RZ (read 2026-10-23, `GET /hcm/v2/applicant.onboard/meta`):**
+`14495_6403` *HR + Payroll (System)*, `9204592297352_1` *HR + Payroll TCG*, `15336_7354` *HR Only
+(System)*. Template meta is read with
+`?$filter=meta/applicantOnboarding/onboardingTemplateCode/code eq '<code>'`. **The TCG template
+returns 403** — *"You do not have security access to use this template"* — so the API user needs
+that template granted in WFN security before TCG's own required fields can be read. **TCG
+onboards with *HR + Payroll TCG*, not the System template** (syed.haris, 2026-10-23), so the
+System list below is indicative only; TCG's real required fields are unknown until access is
+granted. **Resolved 2026-10-23:** Micaela Dipane assigned the API Central profiles; the code
+became **`9205018681610_1`**. Its meta: **162 fields, 27 required** — the System list below
+**plus personal email with "use for notification"** (ADP sends the new hire's onboarding invite
+there) and **minus ACA eligibility**. Notable optional fields it carries: union code, job code,
+worker type, workers'-comp class, home work location, base and additional rates, payroll custom
+fields, mobile numbers, race/ethnicity, marital status. **Fix, per ADP (Nate, 2026-10-23):** a WFN admin opens *Setup → Template Management →
+Hire/Rehire → HR + Payroll TCG → Assign Users*, ticks the **API Central profiles**, and submits;
+the template code may change afterwards, so re-read it. The System
+template returns 193 fields, **26 required** for a complete hire: hire date, company code, pay
+group, pay cycle, hire reason, federal filing status, worked-in-state, SUI state, SSN (type,
+status, number), first/last and payroll name, ACA eligibility, gender, birth date, legal address
+(country, line 1, city, state, zip), plus integration settings (onboarding status, experience,
+I-9 option). An *in-progress* start needs only five: template, company code, first and last
+name, hire date. Not yet compared field-by-field against the ERP's employee form in writing.
+
+**Calling** onboard, rehire or terminate changes a real `4RZ` worker (no sandbox); none has been
+called. Whether onboarding starts in the ERP or in ADP is open — *Where the employee lifecycle
+starts* in [gaps.md](gaps.md).
 
 ## Where to get credentials, from this account
 

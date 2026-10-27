@@ -854,6 +854,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   4. **Alerts on a crane swap and on crew-swapped rigging.** Dylan, [2026-05-07-loading-and-project-module-overview.md](../meetings/transcripts/2026-05-07-loading-and-project-module-overview.md):262-264 (*"they put a 265… but that rigging needs to go there… some kind of system to alert me as soon as it happens"*) and :293-297 (crew moves a husky bar between loads without telling the yard).
   5. **"Crane back in yard" notification, and returned trucks sort to the top.** Dylan, [2026-04-30-dispatch-scheduling-figma-demo.md](../meetings/transcripts/2026-04-30-dispatch-scheduling-figma-demo.md):179 (*"a message saying 275's back in the yard… so my guys know, okay, we can go offload this now"*); Ryan Adams, [2026-05-12…](../meetings/transcripts/2026-05-12-loading-figma-demo.md):230-232 (returned trucks *"pop up at top"*, cleared ones drop off).
   6. **Punch-list leftovers** — [yard-operations-jz.md](yard-operations-jz.md):20 *"Offload forcefully – rename"* (what to) and :21 *"Notification and unassign item if the item is not off loaded – if its assigned to another job"*. Neither is built; the second overlaps item 4.
+     - **2026-10-20, rename covered:** *"Offload forcefully – rename"* is now covered by [../decisions/2026-10-20-yard-steps-read-dispatch-and-return-to-yard.md](../decisions/2026-10-20-yard-steps-read-dispatch-and-return-to-yard.md) (Fouzan Shakil, CodingCops developer, `reference` — TCG has not confirmed). The step is renamed Return to Yard, and force-complete reads *"Return to Yard force-completed"*. The second half of item 6, notify and unassign an item not returned, is still open.
 - **Sources checked:** every `meetings/transcripts/` file tagged `module/dispatch` on *loadout* · *offload* · *yard*; [yard-operations-jz.md](yard-operations-jz.md) (`unverified`, 2026-07-15 — the only yard punch list); [../assets/tool-and-rigging.md](../assets/tool-and-rigging.md) Stories 4–5 (loading checklist, live counters — no review state, no loader identity); [daily-allocation-system.md](daily-allocation-system.md) (`unverified` — DAS, silent on yard sign-off); `.ai/aidlc/SCRUM-903/spec.md`, `SCRUM-LOADOUT-UNASSIGNED/spec.md` — neither scopes any of the six. `../decisions/` — no note on any of them. Jira not checked (no Jira MCP in this session).
 - **Related, already open — do not duplicate:** [*DAS map job status buckets — nine SubJob stages collapsed to four, and LOADOUT counted as pending*](#das-map-job-status-buckets--nine-subjob-stages-collapsed-to-four-and-loadout-counted-as-pending) (a review state would be a new bucket — decide the set first); the four entries below from the same close-out.
 - **Blocked:** nothing — every item is unbuilt and unticketed. Recorded so that six things the client said on tape stop living only on tape.
@@ -941,7 +942,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Sales Persons in the DAS Employees tab — dispatchability is an employee-type attribute we do not have
 
-- **Status:** open
+- **Status:** open — **answered in substance 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `verified`, Q5). Who may go on a job ticket: field crew, HDRs through their can-also-fill list, and the Crane Superintendent. *"NEVER yard techs."* By her "only", Sales is not on that list. **Same-day follow-up:** managers who are Local 12 members may go on a ticket too (Jeff Kelley, Kyle Harlow). Everyone goes on in **the position they fill on that job**; there is no Crane Superintendent slot. **Left to the developer:** where the attribute lives, now that the role is the job (role attribute, can-also-fill list, or both). See the dated line below. *(Was: open, 2026-09-19 – 2026-10-20.)*
 - **Asked:** 2026-09-19 — logging the 2026-09-18 UAT register into the module registers. Raised in **UAT 1**, still not done.
 - **Question:** which employees appear in the DAS **Employees** tab? The UAT ask is narrow (*"Sales Persons should not be displayed"*) but the rule behind it is not: is **dispatchability** a property of the employee, of their **employee type**, or of a portal role — and where is it stored?
 - **Sources checked:**
@@ -954,6 +955,54 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** the UAT 1 row itself; anything that needs to know which employees are dispatchable — DAS employee panel, allocation search, the dispatch packet.
 - **Owner:** Lisette Anzaldo (who should see whom on the board) with Brian Petros for where the attribute lives on the employee record.
 - **Pointer:** [../payroll/gaps.md](../payroll/gaps.md) → *DAS dispatchability is an employee-type attribute — pointer, owned by dispatch*.
+- **Update 2026-10-20 (Corrina Bustos, Teams, in writing — answered in substance):** see
+  [../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)
+  (`verified`). Asked *"Apart from field crew and HDRs, does anyone else ever go on a job ticket?"*
+  (examples: yard techs as driver or 3rd man, the crane superintendent, a manager who operates),
+  she replied *"only crane superintendent would also qualify to get a job ticket. NEVER yard
+  techs."*
+  - **Who is ticket-eligible:**
+    - field crew;
+    - HDR mechanics, through their can-also-fill list (*"can also be called out into the field to
+      be a 3rd man or rigger"*);
+    - the Crane Superintendent.
+
+    Yard techs are never eligible, and nor, by her "only", are Sales, Accounting, Safety, HR or
+    Dispatch staff. That covers this UAT row's *"Sales Persons should not be displayed"*, as a
+    rule rather than a one-off exclusion.
+  - **The upstream model is now answered:** a person has one main role plus a can-also-fill list
+    ([../payroll/gaps.md → *Employee types*](../payroll/gaps.md#employee-types--fcc-holds-several-per-employee-we-store-one)),
+    and the role is the job ([../payroll/gaps.md → *Field role vs portal role*](../payroll/gaps.md#field-role-vs-portal-role--one-list-in-fcc-three-representations-in-tcg)).
+    Dispatchability is therefore read from the **role**, and from the positions a person may fill.
+    It is not read from a separate employee type.
+  - **Left to the developer:** where the attribute is stored, and how the DAS query filters on it.
+  - **Not settled:**
+    - ~~**Managers who operate.**~~ **Closed by the follow-up below.** FCC holds three
+      `Management`-type employees who also hold `Operator`. Her "only" read as excluding them,
+      but she did not speak to that example directly.
+    - **Is the DAS Employees tab exactly the ticket-eligible set?** This entry reads it so.
+      Lisette Anzaldo, the owner here, has not confirmed it.
+    - **Work-order dispatchability.** FCC's `W` value is not covered: Q5 asked about job tickets
+      only.
+- **Update 2026-10-20, later (Corrina Bustos's follow-up, Teams, in writing):** recorded in the
+  same decision note → *The follow-up, same day*, F3–F4.
+  - **F3, the Crane Superintendent's position — answered:** *"Crane super would be assigned in
+    what position he was for that particular job."* He goes on the ticket as Operator, Rigger and
+    so on, and **"Crane Superintendent" is not a slot type**. He is eligible through the field
+    positions on his can-also-fill list.
+  - **F4, managers who operate — answered, yes:** *"Jeff Kelley and Kyle Harlow are managers but
+    are also in the local 12 union so they are allowed to operate."* The stated basis is **Local
+    12 membership**. Like the superintendent, they go on in the position they fill.
+  - **What this means for this entry:** eligibility is read from **the positions a person may
+    fill**: their main role plus their can-also-fill list. A Sales Person has no field position on
+    either, so the UAT row's exclusion follows from the model, not from a hard-coded filter.
+  - **Remainders:**
+    - **The third manager.** FCC holds three `Management` + `Operator` employees. She named two,
+      and the third is not identified in the vault.
+    - **Local 12 as a check?** Is union membership a rule the ERP checks, or simply the reason
+      `Operator` is on those managers' can-also-fill lists? Not stated. It is a developer decision.
+    - **Unchanged:** whether the DAS Employees tab is exactly the ticket-eligible set (Lisette),
+      and work-order dispatchability.
 
 ## Job ticket code format — UAT 3 asks for the FCC pattern, and no FCC pattern is written anywhere
 
@@ -1313,6 +1362,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (subsistence rows); [../payroll/2026-08-20-payroll-rules-meeting-notes.md](../payroll/2026-08-20-payroll-rules-meeting-notes.md).
 - **Blocked:** any link between the two flags; PAY-049's calendar-day rule.
 - **Owner:** Lisette Anzaldo (dispatch) with Corrina Bustos (payroll).
+- **Update 2026-10-20: billing now depends on the holdover definition too. Pointer only, the entry
+  stays open.** Melissa McNutt wrote: *"We like to bill holdovers weekly … All other jobs are
+  billed daily"*
+  ([../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md](../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md),
+  `verified`). That makes invoicing a third consumer of "is this job a holdover". She did not say
+  which flag she means. That question is filed in
+  [../accounting/gaps.md → *Billing cadence*](../accounting/gaps.md#billing-cadence--what-sets-monthly-instead-of-weekly-what-a-billing-week-is-and-what-billed-daily-means),
+  item (e).
 
 ## Make Holdover — every unit of a line, who may set it, and at what stage?
 
@@ -1339,6 +1396,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Schedule tab anyway; built as designed. See
   [../meetings/2026-09-22-erp-live-demo-02-project-schedule-permits-das-allocation-and-vendors.md](../meetings/2026-09-22-erp-live-demo-02-project-schedule-permits-das-allocation-and-vendors.md) §1.
 - **Owner:** Lisette Anzaldo (dispatch).
+- **Update 2026-10-23 (10-22 walkthrough part 2) — bears on (b):** ehtesham.anwar (57:13): dispatch
+  managers can add a day or make a holdover on the job schedule, which changes the schedule that came from
+  the quote; *"If we want to make sure that our quotation schedule is the only schedule that should be
+  followed … then we can remove this functionality for them."* Nobody from TCG answered. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §8.
 
 ## Schedule times on a later day — Start and On Site, shifts of 24 hours or more, and the minute step
 
@@ -1457,6 +1518,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   every date. The side panels now offer such an asset for a non-overlapping shift when it also
   has bookings that day. The field is unused locally (0 of 21 assets) and undocumented in the
   vault. What is it for?
+  *2026-10-20, TCG-235 (branch `fix/tcg-235-das-asset-assigned-without-allocation`):* the DAS
+  no longer reads `Asset.jobCode`. Asset status and the assigned job come only from that date's
+  allocations on active intervals (`daily-allocation-system.md` L51). The column, DTO and form
+  are unchanged. The field's purpose is **still open**. It has no input on the asset form, and
+  the FCC seeder lists it as "TCG has field — not in FCC".
   (g) **A shift longer than a day** (allowed since 2026-09-30, see *Schedule times on a later
   day*) blocks its crane and crew for its whole window at drop and Copy time: the check now
   also reads earlier rows whose stored end day reaches the target. But the board's side panels
@@ -1483,6 +1549,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the 2026-04-07 demo transcript (24-hour operations). No vault decision covers the allocation
   window.
 - **Owner:** Lisette Anzaldo (dispatch).
+- **Update 2026-10-23 (10-22 walkthrough part 2):** ehtesham.anwar confirmed to TCG that no asset or
+  employee can be double-booked; allocations are time-based (37:41). Melissa McNutt and Kyle Harlow said
+  TCG deliberately books small cranes back to back for billing, never with crew time overlapping. The
+  billing question is filed in [../accounting/gaps.md](../accounting/gaps.md) *Back-to-back jobs billed
+  portal to portal — billed time overlaps, crew time must not*. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §5.
 
 ## Shifts that run past their own day — what is built, what is still missing
 
@@ -1743,3 +1814,75 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (`verified`): the day's craft comes from a secondary assignment; it does not say who may
   create one. [../payroll/gaps.md → *Primary craft code constrained to the employee type, and changing a craft code in DAS*](../payroll/gaps.md#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das).
 - **Owner:** Lisette Anzaldo (dispatch), with Corrina Bustos (craft assignments are payroll's).
+
+## First right of refusal on the next day's crane — last-crew entitlement: Melissa's straight-time rule (2026-04-08) vs Kyle's overtime rule (2026-10-22)
+
+- **Status:** open
+- **Asked:** 2026-10-22 — ERP demo walkthrough part 2. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §9;
+  transcript [2026-10-22-erp-demo-walkthrough-part-2.md](../meetings/transcripts/2026-10-22-erp-demo-walkthrough-part-2.md). Filed 2026-10-23;
+  rewritten the same day once the earlier sources were found (the first vault check searched *right of
+  refusal* and missed the vault's own term, **last-crew entitlement**).
+  - **Melissa McNutt's e-mail, 2026-04-08** (sent with the Master Labor Agreement and the Local 12 Truck
+    Crane Agreement as *"sample union rules we need incorporated into the system"*), recorded in
+    [../erp-review-log.md](../erp-review-log.md) **#4 — Union rules to enforce** (`unverified`):
+    *"The last crew on the equipment on straight time is entitled to the overtime work."* Bob and Tom on
+    Crane 9001 for a day job 06:00–11:00; a night job comes in for the same crane at 19:00 — they are
+    entitled to it. Dispatch must offer it to them first, or *"we could be liable to pay all 4
+    employees."* Friday carries entitlement to Saturday; **next shift only** (not Sunday). The ask: the
+    system notifies dispatch that an action is required before scheduling.
+  - **Dispatch scheduling demo, 2026-04-09** ([transcript](../meetings/transcripts/2026-04-09-dispatch-scheduling-figma-demo.md),
+    1:17:12–1:22:40). Kyle Harlow: *"some type of way of knowing who was last on premium time and who
+    has the right to that machine next."* ehtesham.anwar restated Melissa's e-mail — for a second shift
+    on the same crane, the last crew is entitled first, and if not offered, *"by the union rules … they
+    are entitled to get another pay for that shift even though they did not work"* (Kyle: *"Yes"*) — and
+    asked *"Do you want to manage that within the system or do you want it to be just manual?"* (1:18:50).
+    **Kyle: in the system** — when Lisette is away *"somebody else decides to make a judgment … Those
+    charges can be extremely expensive"*; dispatch must know *"I have to call that crew first"* (1:18:56).
+    ehtesham.anwar proposed that dispatch **records which entitled people accepted or refused**, as a data
+    point *"we can later on show to the relevant authorities"*; Kyle: *"Yep … that would be very
+    helpful"* (1:19:46–1:20:45). Kyle doubted that system notifications would reach people at midnight
+    (1:21:25).
+  - **2026-10-22.** ehtesham.anwar (57:13): the DAS recommendations will change after the last session
+    with Lisette — if a person works a job one day, *"we are legally obliged to ask them first"* for the
+    next day. **Kyle Harlow, 1:08:22–1:10:01:** *"That's only for premium time, if they ended on a
+    premium time … and they're going to start before the next day premium time."* If the crew ended on
+    overtime and the crane goes out again before 6 AM, *"that crew has first right of refusal for that
+    crane"*; if it leaves *"at 6 or later … We can put anybody in that machine."* Framed as the
+    **machine** being paid; *"we'll probably have to like refine that."* Times transcribed *"6 P.m."*
+    (1:08:40), *"6 A.m."* (1:08:58), *"4 P.m."* (1:09:17). ehtesham.anwar: *"Adds another check to our
+    recommendation engine"* (1:09:45).
+- **What the three agree on:** the entitlement is to the **next shift on the same crane**, and only when
+  that next work is **overtime** (Melissa: *"entitled to the overtime work"*; Kyle: anyone may take a
+  6 AM-or-later start). It is a **union rule** with a **pay consequence** for passing the crew over.
+- **Question:** **(a) The trigger conflicts.** Melissa's e-mail: the crew was on **straight time**
+  (her example ends at 11:00). Kyle, both in April (*"last on premium time"*) and on 10-22: the crew
+  **ended on premium time**. Which is it — or is the trigger only that the next shift is overtime,
+  whatever the last one was? **(b)** What counts as the "next shift" overtime: before 06:00, after 17:00,
+  a weekend (Melissa's Friday → Saturday), or all of these? **(c)** Who holds the right — the whole crew
+  on the crane (Melissa: *"Bob and Tom"*, the operator and oiler) — and does it extend to a driver or
+  rigger? **(d)** The pay consequence — *"liable to pay all 4"*, *"another pay for that shift"*: is it a
+  full shift at the overtime rate, and is it a payroll rule the ERP must compute? If yes, it needs a row
+  in [../payroll/payroll-rules-provenance.md](../payroll/payroll-rules-provenance.md) (G4). **(e)** What
+  DAS does: rank the entitled crew first, warn on another crew, or block until an offer is recorded.
+  Kyle chose "in the system" over manual on 04-09; the form is open. **(f)** Recording offers and
+  refusals: agreed in principle on 04-09 (ehtesham.anwar proposed, Kyle *"Yep"*); where and by whom is
+  open.
+- **Sources checked:**
+  - [../erp-review-log.md](../erp-review-log.md) #4 (`unverified`) — the rule as Melissa sent it, above.
+  - [dispatch-value-engine-and-playbooks.md](dispatch-value-engine-and-playbooks.md) (`unverified`) —
+    *"The playbook says dispatch performs this check; the review log says what the check is. Neither
+    says how the system should enforce it, and no decision has been taken."*
+  - [../payroll/hr-onboarding-and-employee-forms.md](../payroll/hr-onboarding-and-employee-forms.md) —
+    points at the same review-log entry.
+  - [daily-allocation-system.md](daily-allocation-system.md) (read through
+    [daily-allocation-INDEX.md](daily-allocation-INDEX.md), `unverified`) — a *"Previous Night"* tag on
+    employees who worked the previous night shift. Adjacent, not this rule.
+  - [*Shifts that run past their own day — what is built, what is still missing*](#shifts-that-run-past-their-own-day--what-is-built-what-is-still-missing)
+    item (d), what *Previous Night* means; [*Default crew per unit, overridable per job*](#default-crew-per-unit-overridable-per-job).
+  - The payroll 06:00 overtime window: [../payroll/client-message-findings.md](../payroll/client-message-findings.md) (`reference`).
+- **Blocked:** the recommendation-engine check; any DAS warning or block on the next day's crew; any
+  payroll line for a passed-over crew.
+- **Owner:** Kyle Harlow and Melissa McNutt (they stated different triggers); Corrina Bustos for the
+  union-agreement clause and the pay consequence; Lisette Anzaldo (dispatch) for how the offer is
+  recorded.
+- **Update 2026-10-23:** two points of (e) and (f) are decided in principle by [../decisions/2026-04-09-last-crew-entitlement-managed-in-the-system-offers-and-refusals-recorded.md](../decisions/2026-04-09-last-crew-entitlement-managed-in-the-system-offers-and-refusals-recorded.md) (Kyle Harlow, 2026-04-09, recorded call, `verified`, hedged). For (e), the entitlement is managed **in the system, not manually**. For (f), dispatch **records which entitled crew members accepted or refused** the offer. Still open: (a) the trigger (straight time or ended on premium time), (b) what counts as next-shift overtime, (c) who holds the right, (d) the pay owed when the crew is passed over (no pay rule decided; G4), the form of (e) (rank, warn or block), and the detail of (f) (where the record lives and who enters it). The entry stays open.

@@ -810,6 +810,12 @@ someone has confirmed otherwise.
   not yet asked or made**: (a) corrections happen only in the ERP and are re-sent (`Append` updates
   an existing batch, request `672204` point 1), or (b) payroll marks the week approved and records
   any ADP-side change in the ERP after approving. Owner: syed.haris to put (a)/(b) to the client.
+- Update 2026-10-22 (Nate, ADP, request `672204`; [adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §9):
+  **Payroll Output and Pay Statements can be enabled — by ADP support only, never in API Central** —
+  once the ticket has a clear "Yes", **a TCG security master on it (Corrina Bustos or Melissa
+  McNutt)**, and the project name (*TCG ERP Integration*). Both return all payroll data unfiltered,
+  executive pay included. That would give the ERP the read side (what was calculated/paid) and so a
+  way to detect ADP-side edits by comparison. **TCG's decision; not yet asked.**
 
 ## Excel or API — the ADP submission path is not decided
 
@@ -1129,7 +1135,18 @@ someone has confirmed otherwise.
   approval poll is a formality. **The delete was silent too:** Micaela Dipane deleted the worksheet
   and the queue stayed 204 (polled 02:20 and 02:27 PKT). ADP has no *reject* for a worksheet — an
   edit or a delete is what rejecting means — so a rejected entry is invisible to the ERP as well.
-- **Status:** resolved 2026-10-17 — no pay-data or payroll-status event reaches the ERP.
+- Update 2026-10-21 (approval check, [adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §8):
+  week 43 was **processed** (ADP's app told Micaela Dipane at 4:15 PM PT, 2026-10-20) and the queue
+  stayed **204**. A documented event, `payrollGroup.payPeriodStatus.change`, exists in ADP's NextGen
+  pay-periods guide but is **not** among this project's 147; enablement asked of ADP (request
+  `672204`, 2026-10-21). Interim lead: poll `GET /payroll/v1/pay-schedule/payroll-groups/4RZ` for
+  `OPEN` → `COMPLETE` (timing of the flip unconfirmed). ADP has not answered the 2026-10-17 follow-up.
+- Update 2026-10-22 (Nate, ADP, request `672204`; [adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §9):
+  **`payPeriodStatus.change` added to the *TCG ERP Integration* project** (polling). Not yet
+  observed firing: at the first poll (2026-10-23 PKT) `2026-43` was still `OPEN` on its pay date,
+  so whether it signals *processed* or *next week opened* is open.
+- **Status:** resolved 2026-10-17 — no pay-data event reaches the ERP; a pay-period status event is
+  now subscribed (2026-10-22), timing unconfirmed.
 - **Rules:** [PAY-067](rules/PAY-067-adp-export.md)
 - **From (frozen original):** [gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires](gaps-2026-08-20-retired.md#where-do-webhook-events-live-in-api-central-and-what-fires)
 
@@ -2170,7 +2187,7 @@ someone has confirmed otherwise.
 - **Owner:** see the owning entry.
 ## Employee types — FCC holds several per employee; we store one
 
-- **Status:** open
+- **Status:** open — **first half answered 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `verified`): one main role per person plus a can-also-fill list (*"yes to both"*). **The second half is still open:** whether `CraftRoleType` derives from the role. It was not asked. *(Was: open in full, 2026-08-31 – 2026-10-20.)*
 - **Asked:** 2026-08-31 — reading `OneDrive_1_8-31-2026` into the vault
 - **Question:** `FMS_EMPLOYEE_TYPE_DETAILS` is a join table — 781 rows over ~354
   employees, `EmpID` × `EmpTypeID` with a `PrimaryType` flag (EmpID 5073 is Operator
@@ -2208,10 +2225,25 @@ someone has confirmed otherwise.
   constrain a picker by until it is answered. Also downstream of this entry:
   [../dispatch/gaps.md → *Sales Persons in the DAS Employees tab…*](../dispatch/gaps.md#sales-persons-in-the-das-employees-tab--dispatchability-is-an-employee-type-attribute-we-do-not-have),
   which needs the per-type `Dispatchable on` attribute this entry's 2026-09-04 update describes.
+- **Update 2026-10-20 (Corrina Bustos, Teams, in writing — first half answered):** see
+  [../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)
+  (`verified`). Asked whether each person can have *"one main role, plus a list of other positions
+  they're allowed to fill"* (examples: an Operator who can also fill Oiler, Rigger or 3rd Man; an
+  HDR mechanic who can also fill 3rd Man), she replied *"yes to both"*. To a later question she
+  added that an HDR mechanic *"can also be called out into the field to be a 3rd man or rigger"*.
+  - **Answered:** the ERP holds **one main role per employee plus a can-also-fill list** of other
+    positions. That is FCC's primary-plus-secondary model, now adopted by the client.
+  - **For the work that folds `EmployeeType` into `DepartmentRole`:** the list draws on the same
+    role list. How it is stored is a developer decision.
+  - **Also answered:** FCC's `Job Foreman` type (id 15) is **not** a role. *"Job Foreman is
+    something they are picked and assigned PER job."*
+  - **Still open:** the second half, whether `CraftRoleType` derives from the role. It was not
+    asked. [*Primary craft code constrained to the employee type…*](#primary-craft-code-constrained-to-the-employee-type-and-changing-a-craft-code-in-das)
+    still waits on it.
 
 ## Field role vs portal role — one list in FCC, three representations in TCG
 
-- **Status:** open
+- **Status:** open — **partly answered 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `verified`): the person's main role is their job, **and it decides what they can see**. So the field role and the portal role are one thing, which supports folding `EmployeeType` into `DepartmentRole`. **Still open:** how `CraftRoleType` relates to that role. It was not asked. *(Was: open in full, 2026-08-31 – 2026-10-20.)*
 - **Asked:** 2026-08-31 — departments-and-roles discussion, plus the FCC employees report
 - **Question:** FCC's `FMS_EMPLOYEE_TYPES` is one flat list mixing field roles (Operator,
   Oiler, Mechanic, Yard Man, Rigger, Driver, Shop) with portal roles (Management, Sales
@@ -2244,6 +2276,20 @@ someone has confirmed otherwise.
   are the incumbent's fields and the client's asks — evidence, **not a decision** on which of
   `DepartmentRole`, `EmployeeType`, `CraftRoleType` (or SCRUM-914's sub-categories) is the source
   of truth. Still needs the client.
+- **Update 2026-10-20 (Corrina Bustos, Teams, in writing — partly answered):** see
+  [../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)
+  (`verified`). The question put to her said a person's main role *"would also decide what they
+  can see in the system"*. She answered *"yes to both"*.
+  - **Answered:** in TCG, a person's **main role is their job and also their portal access**. There
+    are not two lists. That settles `DepartmentRole` vs `EmployeeType`: they are one concept.
+  - **Departments answered:** the nine departments a role belongs to are Field Operations, Shop,
+    Yard, Dispatch, Sales, Accounting, Safety, HR and Management.
+  - **Still open:**
+    - how `CraftRoleType` relates to the role (not asked);
+    - SCRUM-914's sub-categories;
+    - whether the DAS card colour resolver keeps substring-matching a name.
+
+    The `CraftRoleType` relationship is the same open half as the [*Employee types*](#employee-types--fcc-holds-several-per-employee-we-store-one) entry.
 
 ## Premium catalog CRUD — the engine reads six literal codes, not the catalog
 
@@ -4967,6 +5013,15 @@ somewhere it should not have. Settle that before touching either.
   onboarding practice.
 - **Rules:** [PAY-003](rules/PAY-003-employee-master-import.md), [PAY-067](rules/PAY-067-adp-export.md)
 
+- Update 2026-10-23 (syed.haris; [adp-integration-capabilities.md](adp-integration-capabilities.md) → *Project scope as of 2026-10-23*):
+  the API side now supports **either** answer. `applicant.onboard`, `worker.rehire` and
+  `worker.work-assignment.terminate` were added to *TCG ERP Integration*, plus the `worker.hire` /
+  `worker.rehire` / `worker.terminate` events. ADP's collection also shows a third shape that may
+  reconcile the 06-30 and 09-28 positions: `applicant.onboard` can **start** a hire in an
+  *in-progress* state (minimal payload, or *pre-hire*) that the practitioner **completes in ADP**,
+  then `worker.hire` tells the ERP it is done — the ERP initiates, ADP performs, the ERP records
+  the file number. A technical option, not a decision; still needs Brian Petros and Ehtesham
+  Anwar, with Corrina Bustos for the practice. Nothing called yet (every call hits live `4RZ`).
 ## Flagged entries go to payroll, not the crane superintendent — who corrects them, who the payroll admin is, and whether Send Back survives
 
 - **Status:** open — **partly answered 2026-09-29 by Corrina Bustos's second reply**, recorded in [../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md](../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md) (`status: verified`). Answered: 1, 2, 5(a)–(c), 5(d) sources half, 5(e) adjust half. **Third reply, same day** ([../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md](../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md), `verified`): C1 answered in her voice; Q7/Q8 partly answered; Q9's tolerance answered. Still open: 3, 4, 5(d) manual half, 5(f), 6, the remainders of 7–9, C1's confirmation trail, and C2–C6. **2026-09-30 messages** ([../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md](../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md), `verified`): C2 closed; a crew-time mismatch flag added (Q10); a Samsara start-of-ticket check requested (Q11); an asset-not-home flag requested and filed in assets (see *Related*). **Flag list confirmed 2026-09-30** ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)): nine flags, **all blocking** until fixed; Send Back to the worker with a 3-hour reminder; Q10's Left Yard / Arrived Yard ratified. **Q6 is still unanswered.** New open points: ~~how payroll clears a flag where nothing is wrong~~ **answered: "reviewed, no change"** ([../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md)); ~~whose week an asset flag blocks~~ **answered 2026-09-30: that ticket's crew's weeks** (developer mechanics); 24 vs 23.5 h **→ developer 2026-09-30: 24, at or above** (the `>=` boundary is pending Corrina). **Developer answers 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), `reference`): Q3's open remainder and Q5(f) are answered as mechanics of Corrina's rule; see the dated line below. **The entry stays open** for Q4, Q5(d)'s manual half, Q6, the remainders of Q7–Q9, Q10(c)(d), Q11, C1's confirmation trail, and C3–C6. **Round 9, 2026-09-30** (developer, [same note, section *Round 9*](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30)): **C4 answered** (CodingCops design: a per-employee override table). Q6, Q7 (AM/PM detection, labor vs ticket), Q8, Q9, Q10(c)(d) and Q11 now have developer readings, **pending Corrina's ratification**. See the dated lines under each. **Open after round 9:** Q4, Q5(d)'s manual half, Q6–Q11 (ratification, plus the remainders named under each), C1's confirmation trail, C3, C5 and C6. **Rounds 10–11, 2026-09-30** (developer, [same note, section *Rounds 10 and 11*](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#rounds-10-and-11--flag-details-for-payroll-flags-u14u21-2026-09-30), `reference`): developer readings for Q5(d)'s *missing notes* (what counts as a note), Q7 (AM/PM replaces out-of-order; the 30 minutes is on the total difference) and Q10(c)(d) (only the mismatching workers are held, which narrows round 9), **pending Corrina's ratification**. C1's rest-start mechanics (per rest chain, across chains) are **pay-affecting, pending Corrina Bustos / Brian Petros**. Nothing is closed. *(Was: open in full, 2026-09-29.)*
@@ -4975,6 +5030,7 @@ somewhere it should not have. Settle that before touching either.
 - **Questions**, each phrased so a one-line reply settles it:
   1. ~~**Who corrects a flagged entry?**~~ **Answered:** *"Payroll Admin/Manager adjusts"*. Payroll corrects directly.
   2. ~~**Who is the "payroll admin"?**~~ **Answered:** *"Right now the Payroll Administrator is Micaela Slykhuis"*. The assignment must be adjustable, so it is a role, not a hardcoded person. Both roles *"need to get all of the flags and be able to adjust"*. **Left open:** whether it is a new ERP role/permission beside `ROLE-ACCOUNTS-PM`, which is design work, not a client question. Also who Micaela Slykhuis is (C5).
+     - **Update 2026-10-20 — which department the role sits in: answered.** Corrina Bustos, Teams, in writing: *"right now, Micaela's Payroll Admin is still under HR"* ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `verified`). The Payroll Administrator role belongs to the **HR** department, not Accounting, for now. "Right now" and "still" say the placement may change. Whether it is a new role beside `ROLE-ACCOUNTS-PM` is still design work. C5 (Slykhuis vs Dipane) is **not** settled: her reply says only "Micaela".
   3. **Does Send Back survive?** Now that payroll corrects directly, is there still any send-back? If yes, to whom: the worker on mobile (Confluence US-03 AC 3 and 10; Ehtesham Anwar 2026-08-04 20:24 and 34:11)? **→ Answered 2026-09-30** ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)): yes. The target is **the worker**, with a reminder after 3 hours. Payroll may also fix any time itself. **Open:** the worker's mobile screen and edit rights, who the reminder goes to, and whether it repeats. **→ Answered 2026-09-30 as mechanics** (developer, items C3–C4 of [../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md)): the worker **edits the ticket times on mobile and resubmits**, and payroll recalculates. The reminder goes **to the worker, every 3 h, until they respond**. **Q3 is answered.** The one exception is the crew extension, a shared ticket sent back to every worker on it. That is pending Corrina under [*Send Back of a multi-crew ticket*](#send-back-of-a-multi-crew-ticket--does-sending-a-ticket-back-also-return-it-for-the-other-crew-members-on-that-ticket).
   4. **Does "all flags" include the field-ops ticket progress *Flagged*** (incident / deficiency / customer unavailable), or only payroll review flags? — **open**
   5. **The rest of the first 2026-09-29 message:**
@@ -5853,7 +5909,7 @@ somewhere it should not have. Settle that before touching either.
 
 ## Who may complete or correct a ticket on a worker's behalf, and who approves a late or post-submit edit — "manager" or payroll
 
-- **Status:** resolved — see [../decisions/2026-10-15-late-and-incomplete-tickets.md](../decisions/2026-10-15-late-and-incomplete-tickets.md) (L5, L7: only the worker and payroll-admin:edit holders; no dispatcher or supervisor)
+- **Status:** resolved — see [../decisions/2026-10-15-late-and-incomplete-tickets.md](../decisions/2026-10-15-late-and-incomplete-tickets.md) (L5, L7: only the worker and payroll-admin:edit holders; no dispatcher or supervisor). **Update 2026-10-21:** the *approver* answer still holds — a `payroll-admin:edit` holder approves — but L5's **seeded default holder** is deferred and E2 kept during the TICKET-FLOW-SLOTS-HOLDOVER Part 3 rebase: no role gets the permission by default; it is granted by hand in Departments until a TCG-237 role is chosen to hold it. See [../decisions/2026-10-21-defer-l5-payroll-admin-edit-default-holder.md](../decisions/2026-10-21-defer-l5-payroll-admin-edit-default-holder.md).
 - **Asked:** 2026-10-07 — recording Melissa McNutt's provisional incomplete-ticket answers
   ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
   `reference`, T2, T3, T13). TCG asked on 2026-10-06 to hold those answers until an updated version

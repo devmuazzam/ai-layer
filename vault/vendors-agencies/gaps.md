@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-10-08
+updated: 2026-10-20
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -147,6 +147,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   job, or must every Permit PO carry one?* The answer decides which side changes: the web edit page
   (if jobless is valid) or the Generate PO path (if not). Same question as the standalone half above,
   narrowed to one PO type.
+- **Update 2026-10-22 (10-21 walkthrough, `unverified`) — the quotation level, again from Ryan.** Ryan
+  Adams (on the room microphone labelled "Brian Petros", 53:42–55:18) wants a **vendor line on the
+  quote** — service and price — that **creates the PO automatically**, hidden from the customer and tied
+  to the same job, *"so we could get everything sent off at one time"*. Sammy Garrett compared it to
+  *"what Hayley does"* today when a job is subbed out (54:17). The build has the **dispatch** level only:
+  allocating a vendor's asset in DAS **opens a purchase order** that must be created to complete the
+  allocation (ehtesham.anwar, 54:54), and a quote cannot take a vendor in its resources (52:57). Melissa:
+  the dispatch side *"is pretty good … we just might need to add it to the quotes"* (55:38). Ryan named lift
+  plans through third parties and trucking as PO services, and will settle the path with Melissa and
+  Brent. Still open: the quotation-level PO, and whether it replaces or joins the DAS allocation PO.
+  Sources: [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §9; transcript [2026-10-21-erp-demo-walkthrough-part-1.md](../meetings/transcripts/2026-10-21-erp-demo-walkthrough-part-1.md).
 
 ## PO and vendor/agency rules the E2E suite asserts with no written source — PR #488
 
@@ -229,6 +240,10 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** product team — Joe Schacatano and Ryan Adams for the PO lifecycle (they own the related
   entry above), Liz Lopez for the permit-driven PO path, Melissa McNutt for the vendor type and
   billing terms she raised on 2026-06-17.
+- **Update 2026-10-22:** the vendor **category** half of (f) is partly settled — a vendor can carry
+  several categories ([../decisions/2026-10-21-a-vendor-can-carry-several-categories-multi-select.md](../decisions/2026-10-21-a-vendor-can-carry-several-categories-multi-select.md),
+  Sammy Garrett, `verified`). The category **values**, and the rest of (f), stay open; the build still
+  stores one nullable `Vendor.vendorCategory`.
 
 ## The PO sidebar flattens to one leaf — and the two things "tracking" could have meant are both unbuilt
 
@@ -304,6 +319,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Status:** open
 - **Asked:** 2026-09-15 — same work as above
 - **Question:** Ben's sheet carries two lead times per city: the agency's *Permit Lead Time* (on the form) and an *Estimated TCG Planning Lead Time (Days)* (5 for 431 rows, 3/4 for Orange-County-style overrides), with the note that the latter is "a planning estimate for internal scheduling, not an official agency commitment". The form has only the first. Is the planning estimate a second agency field, a tenant-level default, or not stored at all? Not built.
+- **Update 2026-10-20:** the seed import ([../decisions/2026-10-20-fcc-agency-sheet-import-and-field-mapping.md](../decisions/2026-10-20-fcc-agency-sheet-import-and-field-mapping.md)) uses the planning estimate as the `permitLeadTimeDays` **fallback** where the agency's own permit lead time is blank (most rows). That is a seed default only — whether the planning estimate should be its own stored field / tenant default remains open.
 - **Sources checked:** as above; `vault/quotations/` and `projects-jobs/` for any planning-lead-time requirement (none).
 
 ## Agency form 2026-09-15 — Submission Type and Avg Permit Cost: required or not?
@@ -319,7 +335,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** the request text; `apps/api` for any existing secret-at-rest pattern (none besides bcrypt user passwords and hashed refresh tokens).
 
 ## Agency form 2026-09-15 — is a bulk import of Ben's city list wanted?
-- **Status:** open
+- **Status:** resolved 2026-10-20 — yes. Ben's 500-row sheet is seeded via the FCC seeder (`apps/api/fcc-seeder/seed-files/agencies.json`, 500 records → `POST /agencies` in `seed-all.ts`) into the FCC tenant. The fields the sheet lacks are filled per [../decisions/2026-10-20-fcc-agency-sheet-import-and-field-mapping.md](../decisions/2026-10-20-fcc-agency-sheet-import-and-field-mapping.md): `agencyName` = City/Community (the 3 CA/NV duplicates suffixed `(CA)`/`(NV)` for per-tenant name uniqueness), `agencyType` derived from jurisdiction (City/Town → CITY_MUNICIPALITY, Unincorporated → COUNTY), `coverageArea` = the locality name, `timeRestrictions` = `[]` (no attachment is required at seed). Developer-directed in a 2026-10-20 session; mapping is a mechanical migration default, not ratified product rules — see the decision for what to revisit.
 - **Asked:** 2026-09-15 — same work
 - **Question:** The sheet is 500 rows in exactly the form's shape (city, lead time, county, state, jurisdiction, coverage note). Typing them by hand through the form is a week of data entry. Should there be a one-off seed / CSV import for it, and if so which tenant, and what fills the fields the sheet lacks (agency name — presumably "City of X" —, agency type, coverage area, the mandatory time restriction and attachment)? Not built; the form's required rules make a mechanical import impossible without answers.
 - **Sources checked:** the sheet; `apps/api/prisma/seed.ts` (no agency seed); `sync/project-repository-2026-09-04.md` (the 894-file city-permit library was dispositioned, never imported).
@@ -350,3 +366,17 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## Pointer — leave-page warning and value rewriting on open (vendor, agency)
 
 - **Pointer (2026-09-28):** the leave-page "unsaved changes" warning sticking after a no-op edit, and forms rewriting stored values on open, is filed once in [customers/gaps.md](../customers/gaps.md) → *Leave-page warning — does undoing an edit count as a change, and may opening a record rewrite its stored values?* It covers the vendor form (due/discount defaults, address normalization) and the agency form (state normalization).
+
+## Vendor-bill flow and pay-when-paid — pointer, owned by accounting
+
+- **Status:** open
+- **Asked:** 2026-10-20. tcg-scrum, logging Brent Wagstaff's 2026-10-16 e-mail review of the
+  accounting prototype.
+- **Question:** **Pointer only. The question lives in
+  [../accounting/gaps.md → *Vendor-bill flow — when is the QuickBooks bill created, and which bills wait for the customer's payment?*](../accounting/gaps.md#vendor-bill-flow--when-is-the-quickbooks-bill-created-and-which-bills-wait-for-the-customers-payment).**
+  It is registered here because it decides the status chain of a vendor bill raised against a PO
+  (`PO Open → Invoice Received → …`), which vendor POs are paid only after the customer pays
+  (subcontractors, permits, plans), and the LADWP pay-before-bill case.
+- **Sources checked:** see the accounting entry.
+- **Blocked:** see the accounting entry.
+- **Owner:** Brent Wagstaff (accounting).

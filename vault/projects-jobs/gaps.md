@@ -1113,3 +1113,29 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   them server-side too. Recorded so the rule is not taken as decided because two layers now agree.
 - **Owner:** whoever owns lift-plan content on the TCG side (the plan module's approver) for (a)–(b);
   the same person plus the asset-template owner for (c).
+
+## Several customers in one project — "a requirement from Wes" written nowhere, and a new quote from the project does not default the customer
+
+- **Status:** open
+- **Asked:** 2026-10-22 — ERP demo walkthrough part 2. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §7. Filed 2026-10-23.
+  - ehtesham.anwar (41:34–57:13): a new quotation created from a project should default to the project's
+    customer and allow a change, *"because this was one of the requirements from Wes that in a project we
+    can have multiple customers."* In the demo it did not default: *"I don't see the customer … auto
+    selected."*
+  - The code agrees with the demo: the create-quotation form receives `linkedProjectId` only to save the
+    link (`apps/web/src/features/quotations/views/create-quotation-form-model.ts`, read on main at
+    `a90658424`); nothing pre-fills the customer.
+- **Question:** **(a)** Can one project hold quotations for **different customers** — what is the case
+  (a general contractor and its subs, a customer and its parent)? Wes's requirement is not in any
+  recording note or decision. **(b)** If yes, whose is the project — does it keep one "project customer",
+  and what do its summary and invoices show? **(c)** Should a new quote from the project default to the
+  project's customer? (A default is CodingCops' to build once (a) is confirmed.)
+- **Sources checked:**
+  - [../erp-review-log.md](../erp-review-log.md) *Quotations, jobs and projects (9)* (`unverified`) —
+    *"a project may have multiple quotations"*; nothing on several customers.
+  - [../decisions/2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md](../decisions/2026-10-07-two-cranes-on-one-job-one-quote-mob-demob-per-crane-options-are-separate-quotes.md)
+    (`verified`, Joe) — options and phases are separate quotes under one project; one customer implied.
+  - [../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md](../decisions/2026-09-01-post-save-navigation-create-goes-to-detail.md)
+    (`reference`) — a quote created with `?projectId=` returns to the project.
+- **Blocked:** the customer default on a quote created from a project; any project-level invoice view.
+- **Owner:** Wes (named as the source) with Ryan Adams (sales).
