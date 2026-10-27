@@ -52,8 +52,8 @@
 
 ## 5. Out of scope
 
-- [ ] Tools & Riggings photo UI and storage — unchanged.
-- [ ] Existing user / employee profile-picture flow (`EntityProfilePictureService`, `features/profile-picture/`) — not migrated by this ticket.
+- [ ] Tools & Riggings photo UI and storage — unchanged. **Changed 2026-10-26 (Akif): brought in as U12 — see §13.**
+- [ ] Existing user / employee profile-picture flow (`EntityProfilePictureService`, `features/profile-picture/`) — not migrated by this ticket. **Changed 2026-10-27 (Akif): brought in as U13 — see §13.**
 - [ ] Mobile app — `NOT ON TICKET`; ticket names web screens only.
 - [ ] Re-processing or migrating any existing attachments.
 
@@ -123,3 +123,34 @@
   5. S3 folder when an asset's `unitCode` is renamed.
   6. Who may upload/delete (roles).
   7. Whether photos can be added on Create before the asset exists (pending files uploaded after save, as Tools does).
+
+## 13. Extension — PHOTO-REUSE (Akif, 2026-10-26 / 2026-10-27)
+
+Captured from the developer, not from a client ticket: the team moved to Trello and the Linear
+ticket could not be updated. Recorded here so the next reader finds the extension where the
+feature lives. Decisions: `spec.md` §11b D70–D89. Units: `units.md` U12, U13.
+
+- **Ask, part 1 (2026-10-26) — tools:** reuse the asset photo uploader for Tools & Riggings;
+  store asset and tool photos with the category "Profile Picture"; every place showing a tool or
+  asset image uses the new storage with the blur placeholder; covers come inside the tools/DAS
+  responses, not one request per tool; no ripple.
+- **Ask, part 2 (2026-10-27) — employees and users:** keep it very simple with minimal changes;
+  no new reusable component and no layout change for employees and users; tie them to the photo
+  API with the same structure (cover); one picture each for now (multiple later); replacing a
+  picture must not need much extra code; blur first, then the thumbnail, everywhere a picture
+  is shown on the web; mobile only picks the right key; sign-in must not break for any role,
+  from normal user to super admin; what a super admin could do before stays the same.
+- **Storage (both parts):** a `profile-pictures` folder inside each entity's S3 folder; no
+  `placeholder.webp` in S3 (the blur is in the database row).
+- **Existing data:** none migrated — testing environment only; old files and rows are deleted
+  and the system starts fresh.
+- **Out of scope:** multiple pictures per employee/user; a picture UI for any other entity;
+  backfilling old pictures.
+
+| Surface | Touched | What changes |
+| --- | --- | --- |
+| `apps/api` | yes | photo service/repository gain TOOL, EMPLOYEE, USER owners; covers in tools, DAS, employee, allocation and `/users/me` responses; old profile-picture routes removed |
+| `apps/api/prisma` | yes | FK on `tools.cover_attachment_id`; new `cover_attachment_id` on `employees` and `users` |
+| `apps/web` | yes | shared `features/entity-photos/`, `EntityPhotoThumbnail`; tool create/edit/view; every employee/user avatar reads `cover` |
+| `apps/mobile` | yes | identity reads `cover`; avatar shows the presigned thumbnail with the blur |
+| `packages/shared` | yes | `EntityImageCover`; `Employee.id`, `Employee.cover`; category and variants constants |

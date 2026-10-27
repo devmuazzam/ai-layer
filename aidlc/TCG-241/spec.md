@@ -32,15 +32,18 @@
 | REQ-09 | Blur placeholder first wherever a photo is shown | web | `[UNVERIFIED]` | TCG-241 | no |
 | REQ-10 | Tenant isolation of list/view/delete | api | `[UNVERIFIED]` | TCG-241; `rule` prisma.md | no |
 | REQ-11 | Generic reusable uploader, no asset code inside | web | `[UNVERIFIED]` | TCG-241 | no |
-| REQ-12 | Tools & Riggings photo section unchanged | web, api | `[UNVERIFIED]` | TCG-241 | no |
+| REQ-12 | ~~Tools & Riggings photo section unchanged~~ — **superseded by REQ-19** (D70, Akif 2026-10-26) | web, api | `[UNVERIFIED]` | TCG-241 | no |
 | REQ-13 | New UI elements carry `data-testid` | web | `[UNVERIFIED]` | TCG-241; `rule` root CLAUDE.md | no |
 | REQ-14 | Size limit, photo count, original dims/quality, thumbnail and placeholder size | api, shared, web | `[UNVERIFIED]` | §12 (Akif 2026-10-20) | no |
 | REQ-15 | Who may upload / delete / set cover | api | `[UNVERIFIED]` | §12 (Akif 2026-10-20) | no |
 | REQ-16 | Photos on Create before the asset exists | web | `[UNVERIFIED]` | §12 (Akif 2026-10-20) | no |
 | REQ-17 | S3 folder when `unitCode` is edited | api | `[UNVERIFIED]` | D6 (Akif 2026-10-20) | no |
 | REQ-18 | Mobile app involvement | mobile | `[UNVERIFIED]` | Q9 (Akif 2026-10-20) | no |
+| REQ-19 | Tools & Riggings photos use the same photo model, uploader and covers as assets (PHOTO-REUSE U1 = U12) | api, web, schema, shared | `[UNVERIFIED]` | Akif 2026-10-26 (developer, no ticket) | no |
+| REQ-20 | Employee and user profile pictures move onto the photo model: one picture each, blur then thumbnail wherever shown (PHOTO-REUSE U2 = U13) | api, web, mobile, schema, shared | `[UNVERIFIED]` | Akif 2026-10-27 (developer, no ticket) | no |
 
 Counts: 18 total — 0 verified, 18 unverified, 0 conflicted, 0 open (REQ-14–18 answered 2026-10-20).
+Counts after PHOTO-REUSE (2026-10-27): 20 total — 0 verified, 20 unverified, 0 conflicted, 0 open; REQ-12 superseded by REQ-19. REQ-19 and REQ-20 come from the developer, not the client ticket: the ticket's DoD 12 ("Tools unchanged") is overridden by Akif's decision D70, and no client confirmation is recorded.
 
 ## 2. Requirements
 
@@ -124,6 +127,7 @@ Counts: 18 total — 0 verified, 18 unverified, 0 conflicted, 0 open (REQ-14–1
 - **Open question:** sizes — Q1; sync vs async processing — D9. (`unitCode` rename no longer affects keys — D6.)
 - **Ripple:** `S3StorageService.buildKey` is used by `attachments.controller.ts:73`, `quotations.controller.ts:344`, `entity-profile-picture.service.ts:78`, `signed-copy-attachments.service.ts:153,207`, `ticket-attachment-guard.service.ts:77` — they must keep producing the flat key; a nested-key helper must be additive (enumerated by `git grep -n "buildKey" -- apps/api/src`). Unchanged is the only safe reading but no source says it — treated as the executor's constraint, not a product decision.
 - **Acceptance:** after one upload, exactly three objects exist under the folder with those names and `image/webp` content type.
+- **Superseded in part (PHOTO-REUSE, Akif 2026-10-27):** the key gains a `profile-pictures` folder — `tenants/{tenantId}/{assets|tools|employees|users}/{entityId}/profile-pictures/{photoId}/{variant}.webp` (D75) — and S3 now holds **two** objects, `original.webp` and `thumbnail.webp`; the blur placeholder lives only in `attachments.placeholder_data_url` (D76 reverses D30).
 - **Edges:**
   - **Reached by:** upload endpoint only.
   - **Does not apply when:** Tools photos, profile pictures, general attachments keep flat keys.
@@ -234,6 +238,7 @@ Counts: 18 total — 0 verified, 18 unverified, 0 conflicted, 0 open (REQ-14–1
 - **Acceptance:** Tools create/edit/detail photo flows behave as before (manual script); no diff in `features/assets/tools-riggings/` unless the developer decides otherwise (§11c).
 - **Edges:** Reached by: n/a. Does not apply when: n/a. When an input is absent: N/A. Trust boundary: N/A. Read time: N/A.
 - **Notes for the executor:** adopting the new uploader in Tools is a sibling decision, §11c, default out per ticket.
+- **Superseded (Akif 2026-10-26, D70):** Tools & Riggings now use the asset photo model and uploader — see REQ-19 (unit U12). The ticket's DoD 12 is overridden by the developer; no client confirmation is recorded.
 
 ### REQ-13 — `data-testid` on new UI `[UNVERIFIED]`
 
@@ -279,6 +284,39 @@ Counts: 18 total — 0 verified, 18 unverified, 0 conflicted, 0 open (REQ-14–1
 - **Statement:** Out of scope. Cover shows in the web Assets table only. (Q9)
 - **Surface:** mobile
 - **Sources:** Akif (2026-10-20, Claude Code session).
+- **Changed by REQ-20 (2026-10-27):** the mobile avatar of the signed-in user reads `cover` from `GET /users/me` (D86). Assets and tools stay web-only.
+
+### REQ-19 — Tools & Riggings photos on the entity photo model `[UNVERIFIED]`
+
+- **Statement:** A tool has photos exactly like an asset: multi-photo upload on Create (queued, uploaded after save) and on Edit, cover (first photo, set cover, oldest remaining after the cover is deleted), delete, preview; the tools list, DAS job tools and Dylen tool cards show the cover — blur placeholder first, then the thumbnail; deleting a tool removes its photos.
+- **Surface:** api, web, schema, shared
+- **Sources:** Akif (developer, Claude Code session) — no ticket: the team moved to Trello and the Linear ticket could not be updated (2026-10-26). Overrides REQ-12 / ticket DoD 12 (D70).
+- **Conflict:** with the ticket's DoD 12 ("Tools unchanged") — resolved by the developer, not by the client.
+- **Open question:** none.
+- **Ripple:** `Tool.coverAttachmentId` gains an FK (D73); `CreateToolDto.coverAttachmentId` removed (D74); tools list + DAS tool rows gain `cover` (D72); the old `tool-cover-photos-section`, `tool-photos-gallery`, `upload-tool-photos` are deleted; Playwright tools page object updated.
+- **Acceptance:** upload 3 photos on a tool's Edit → first is the cover; delete the cover → the oldest remaining becomes cover; the tools list shows the cover thumbnail after a blur; Create with 2 queued photos shows "Creating tool…" then "Uploading photos n of m…".
+- **Edges:**
+  - **Reached by:** `POST|GET /attachments/photos` (`featureType=TOOL`), `PUT /attachments/photos/:id/cover`, `DELETE /attachments/photos/:id`, `DELETE` tool.
+  - **Does not apply when:** a tool's non-photo attachments (unchanged).
+  - **When an input is absent:** no cover → initials.
+  - **Trust boundary:** the tool is resolved in the caller's tenant (404 "Tool not found"); keys are server-built.
+  - **Read time:** links are presigned at read time (D20, 24 h — D89).
+
+### REQ-20 — Employee and user profile picture on the entity photo model `[UNVERIFIED]`
+
+- **Statement:** An employee and a user each have **one** profile picture stored like an asset photo. Uploading replaces the previous picture on the server; removing leaves none. Wherever an employee or user picture was shown before, it is shown from `cover` — on the web the blur placeholder first, then the thumbnail; on mobile the thumbnail with the blur behind it. The screens' layout does not change.
+- **Surface:** api, web, mobile, schema, shared
+- **Sources:** Akif (developer, Claude Code session) — no ticket: the team moved to Trello and the Linear ticket could not be updated (2026-10-27).
+- **Conflict:** none (no vault file covers profile pictures; searched `.ai/vault` for "profile picture|profile photo|avatar" — meeting transcripts only).
+- **Open question:** none.
+- **Ripple:** `profilePictureId` → `cover` on `GET /employee` (list, paged, by department), `GET /employee/:code`, DAS employees/temps, DAS allocations by sub-job (`employee.cover`), `GET /users/me`; the six old `profile-picture` routes are removed (D85); shared `Employee` gains `id` and `cover`.
+- **Acceptance:** as an admin, upload a picture on an employee's Edit → it shows on the employee list, detail header, department linked users, DAS crew card popup and Dylen crew chips; upload another → only the new one remains (one row, one S3 folder); remove → initials everywhere. A user changes their own picture on My account → sidebar and My account show it; a user linked to an employee sees the newer of the two pictures (D84).
+- **Edges:**
+  - **Reached by:** the photo routes with `featureType=EMPLOYEE|USER`, the five reads above.
+  - **Does not apply when:** an employee's other attachments (they keep `featureId = employeeCode`).
+  - **When an input is absent:** no picture → initials (web) / initials (mobile).
+  - **Trust boundary:** employee pictures — ADMIN only; a user's picture — that user only (D82).
+  - **Read time:** links presigned at read time; mobile drops its Bearer header for presigned links (D86).
 
 ## 3. Data model — `apps/api/prisma/schema.prisma`
 
@@ -399,7 +437,7 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 | D18 | Tenant for a photo upload (analyst U2 F2) | Use the asset's `tenantCompanyId`, never the caller's context — a SUPER_ADMIN is unscoped and could otherwise file a photo under the wrong tenant | Bug fix, not a structural choice; recorded for traceability | asset's tenant | — (fix) | 2026-10-20 |
 | D19 | Asset lookup on photo reads (list + stream) | A. New light usecase/repository method returning only the asset's `id` and `tenantCompanyId` (scoped lookup, 404 when missing). B. Keep `assetsService.findById` (`findOneWithRelations`) per request. | U3 executor: up to 21 full-asset loads per Edit page (list + 20 thumbnails) | A | Akif | 2026-10-20 |
 | D20 | How the browser gets thumbnail/original bytes (supersedes D5 B) | A. Presigned S3 GET URLs: the photo list returns `placeholderDataUrl` + `thumbnailUrl` + `originalUrl`; plain `<img src>` loads straight from S3; the per-image stream route is removed. B. Keep streaming through the API (D5 B). | A needs `@aws-sdk/s3-request-presigner` (same AWS SDK v3 family already used). Link lifetime 1 h; links signed per fixed time window so the URL is stable inside it and the browser cache works; the list refetches every ~50 min and on window focus, and a tile whose image fails refetches the list once. D19's light lookup stays for list + upload | A | Akif | 2026-10-20 |
-| D21 | Presigned link lifetime | A. Sign per 1 h window (date floored to the hour), expiry 7200 s: every link has 1–2 h left and the URL is identical within the hour. B. Exactly 1 h per link with a short 5-min window (URL changes every 5 min). | Executor deviation from "3600 s" in the D20 brief: an hour window with 3600 s would leave a link issued at hh:59 with 1 s | A | Akif | 2026-10-20 |
+| D21 | Presigned link lifetime — **expiry superseded by D89 (24 h)** | A. Sign per 1 h window (date floored to the hour), expiry 7200 s: every link has 1–2 h left and the URL is identical within the hour. B. Exactly 1 h per link with a short 5-min window (URL changes every 5 min). | Executor deviation from "3600 s" in the D20 brief: an hour window with 3600 s would leave a link issued at hh:59 with 1 s | A | Akif | 2026-10-20 |
 | D22 | Browser caching of presigned images | A. `ResponseCacheControl: 'private, max-age=3600'` on the presigned GET (not on `getObjectStream`, which attachments use). B. Leave S3 heuristics. | Objects were stored without Cache-Control | A | Akif | 2026-10-20 |
 | D8b | Uploader location and how it loads image bytes | A. `apps/web/src/components/organisms/entity-photos/` (precedent: `organisms/entity-notes/`); the feature passes an image-loading function as a prop (no `features/` import). B. New `components/media/` folder, same prop approach. | `useAttachmentImageUrl` lives in `features/` and cannot be imported from `components/` | A | Akif | 2026-10-20 |
 | D23 | U4 copy and row behaviour (Q20) | A. Keep the U4 proposal as built. B. Change named items. | Rejections: "Photo must be a JPEG, PNG or WebP image", "Photo must be 25 MB or smaller" (binding client limit until U9 = 25 MiB upload cap), "File is empty", "Limit of {maxFiles} photos reached", "Couldn't check your photo count"; upload failure = server message, fallback "Upload failed". Rows "Waiting" / "Uploading N%" / "Processing…", Retry (upload failures) and Dismiss (any error row). Helper "Up to {maxFiles} photos", button "Add photos", description "JPEG, PNG or WebP, up to 25 MB.". Drop zone, button and Retry disabled while a batch runs | A — copy exactly as proposed; analyst R4 applied: a new batch **keeps** earlier failed/rejected rows until dismissed and appends new rows; uploaded rows are cleared; rows keyed and test-IDed by a monotonic row id (`<prefix>-upload-<id>`) | Akif (2026-10-21) | 2026-10-21 |
@@ -449,6 +487,26 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 | D67 | Detail page photo card = the Edit page's | The asset detail page shows the same Photos card as Edit — upload, set cover, delete, preview — in the same 24rem right column on xl (photos first below xl), via one shared `AssetPhotosCard` (features/assets/asset/components) used by both pages. Supersedes D66 and D41's read-only cover on detail; `EntityCoverPhoto` removed (no other user). Same access as editing (Q13 A): the detail page's Edit button is not permission-gated either | Akif: "make both identical on view and on edit", users should upload from view | as stated | Akif (2026-10-22) | 2026-10-22 |
 | D68 | Upload popup after a batch | Uploaded cards stay in place, green with ✓ "Uploaded" and no ✕ (no layout shift); the status chip moves from the header into the card body (it overlapped a long title); when every file uploaded and no other card needs attention the popup closes with one success toast ("N photos uploaded") — refines D29's no-toast for the per-file rows; with any failure it stays open on the failed cards; uploaded cards clear when the popup closes; the drop zone stays disabled while uploading | Akif's browser review | as stated | Akif (2026-10-22) | 2026-10-22 |
 | D69 | Create page photo flow | A+B. B: on Create, picked photos go straight onto the card (no cards-then-"Add" step — nothing uploads there); refused files still listed in the popup with their reason. A: the footer shows "Creating asset…" until the create call answers, then "Uploading photos n of m…"; each tile shows a progress bar while it uploads; no ✓ / ✕ afterwards (review follow-up, Akif 2026-10-23, option b: the queue clears as soon as the uploads finish and the form is click-locked while saving, so a final mark was never visible; the footer text and the warning toast report the outcome). Queued-mode helpers moved to `photo-queue.ts` (lint file-length limit). C. Keep as built | Akif asked whether the Create flow was right for users | A+B (AI recommendation, "go with your rec") | Akif (2026-10-23) | 2026-10-23 |
+| D70 | Tools & Riggings photos (reverses REQ-12, §11c "Tools — No") | A. Tools reuse the asset photo model, routes and uploader (`featureType = TOOL` on `/attachments/photos*`). B. Keep the old tool cover section | One model for every entity avoids a third photo system | A — unit U12 (client branch `feat/PHOTO-REUSE-u1-tools-riggings`) | Akif | 2026-10-26 |
+| D71 | Photo category (reverses D48's `'Photo'`) | `ENTITY_IMAGE_ATTACHMENT_CATEGORY = 'Profile Picture'` (= `EMPLOYEE_PROFILE_PICTURE_CATEGORY`) for every entity photo | Same value employee pictures already used | A | Akif | 2026-10-26 |
+| D72 | How lists get covers | A. `cover: EntityImageCover { id, placeholderDataUrl, thumbnailUrl }` inside the list response, built by `AttachmentPhotosService.coverOf` (no S3 call, presigned locally). B. One photo request per row | A: no N+1 requests; tools list (paged and unpaged), DAS job tools | A | Akif | 2026-10-26 |
+| D73 | `tools.cover_attachment_id` integrity | FK → `attachments(id)` ON DELETE SET NULL + `idx_tools_cover_attachment_id` (migration `20261026120000_add_tool_cover_attachment_fk`, clears dangling covers first); deleting the cover re-picks the oldest remaining, as assets | Without the FK the cover was not cleared on delete | A | Akif | 2026-10-26 |
+| D74 | `coverAttachmentId` on the create-tool input | Removed from `CreateToolDto`; the cover is set only by the photo routes; kept on responses | — | A | Akif | 2026-10-26 |
+| D75 | S3 key (refines D6) | `tenants/{tenant}/{assets|tools|employees|users}/{entityId}/profile-pictures/{photoId}/{variant}.webp` — a `profile-pictures` folder **inside each entity** | Keeps other per-entity folders possible later | "Inside each entity" | Akif | 2026-10-27 |
+| D76 | `placeholder.webp` in S3 (reverses D30) | Not written; `ENTITY_IMAGE_VARIANTS = ['original','thumbnail']`; delete removes those two | The blur is served from `placeholder_data_url` | A | Akif | 2026-10-27 |
+| D77 | Existing data | No backfill or rewrite. Testing environment only, nothing in production; old images and rows are deleted by hand and the system starts fresh | Old-format rows (flat keys, employee-code owners) are ignored | A | Akif | 2026-10-26 |
+| D78 | Web structure for reuse | `features/entity-photos/` (`EntityPhotosCard`, `use-entity-photo-mutations`, `upload-queued-entity-photos`) + `components/organisms/entity-photos/entity-photo-thumbnail.tsx` (`EntityPhotoThumbnail`, `bareFallback`) replace the asset-only hooks; `queuedPhotoProgressText` shared by asset and tool Create footers; tool view says "Edit Tool"; tool photo card 24rem on xl on view and edit | — | A | Akif | 2026-10-26 |
+| D79 | Tool delete | Deletes the tool's photo rows in its transaction and their S3 files after commit (`ToolsRepository.deleteWithPhotos`, as U10 for assets) | — | A | Akif | 2026-10-26 |
+| D80 | Employee and user pictures (U13) | Photo owners `EMPLOYEE` and `USER` on the same routes, `featureId` = UUID; `employees.cover_attachment_id`, `users.cover_attachment_id` FK SET NULL + indexes (migration `20261027120000_add_employee_user_cover_attachment`); screens keep their layout, no multi-photo UI | One model for every picture | A — client branch `feat/PHOTO-REUSE-u2-profile-pictures` | Akif | 2026-10-27 |
+| D81 | Replacing a single picture | A. Server replaces in the upload: `createAsOnlyPhoto` inserts, sets the cover and deletes the owner's other photos in one transaction; old files deleted from S3 after commit; `SINGLE_PHOTO_FEATURE_TYPES = {EMPLOYEE, USER}`. B. Keep old pictures, client sets the new one as cover (Akif's first idea) | B needs a client PUT, piles old pictures up and brings an old one back on remove; A needs no new endpoint | A | Akif | 2026-10-27 |
+| D82 | Who may change a picture | EMPLOYEE: `ADMIN` only (as `@Roles(ADMIN)` on the old routes; super admin unchanged — not allowed). USER: only that user (as `/users/me/profile-picture`). ASSET/TOOL: unchanged (anyone who can edit, Q13 A). `assertCanChange`; the controller passes the caller's role | Same rules as before | A | Akif | 2026-10-27 |
+| D83 | Response shape | `profilePictureId` → `cover` on `GET /employee*` (`EmployeeService`), DAS employees/temps (`DasService`), allocations by sub-job `employee.cover` (`DasAllocationsService`, Dylen crew chips), `GET /users/me` (`UsersService`); batch read `AttachmentPhotosService.coversByOwnerId` / repo `findOwnerCovers` (one query); shared `Employee.cover` and `Employee.id` | Callers fixed in the same change (web, mobile, qa) | A | Akif | 2026-10-27 |
+| D84 | Which picture `/users/me` shows | The newer of the user's own and the linked employee's (`newestCover`), as before | Before: newest of USER + EMPLOYEE rows | As before | Akif | 2026-10-27 |
+| D85 | Old picture code | Removed: `GET|POST|DELETE /employee/:code/profile-picture`, `GET|POST|DELETE /users/me/profile-picture`, `EntityProfilePictureService`, users picture constants/types, `AttachmentsRepository.findProfilePictureIdsByFeature`, the web blob hooks, the qa API helpers | — | A | Akif | 2026-10-27 |
+| D86 | Mobile | Identity contract carries `cover`; the avatar shows the presigned thumbnail with the blur behind and drops the Bearer header for presigned links (S3 refuses two auth mechanisms); `onImageError` refetches the identity. Akif first asked for "key mapping only"; the committed change (`be36297df`) is this broader one | — | as committed | Akif | 2026-10-27 |
+| D87 | Activity log | Employee and user picture changes are not logged, as before; asset and tool photo events unchanged | — | A | Akif | 2026-10-27 |
+| D88 | Generic wording and exhaustive owners | Photo comments, Swagger descriptions and the error "Photos are not supported for this feature type" name no entity type; `findOwner`, `writeCover`, `readCover` switch over every `PhotoFeatureType` with no `default`, so a new owner type fails to compile until it has a case | Adding an owner must not need comment edits, and must not silently fall back to assets | A | Akif | 2026-10-27 |
+| D89 | Presigned link validity (replaces D21's 7200 s; D20/D22 otherwise unchanged) | 24 h (was 2 h); still signed at the start of the hour, browser cache 1 h | Fewer expired links on long-open pages | A | Akif | 2026-10-27 |
 
 **From `tcg-prisma-guardian` (2026-10-20).** Executor must-dos, not decisions: add `'entityimage'` to `TENANT_SCOPED_MODELS` (`apps/api/src/orm/prisma.service.ts:26`); `createdAt @db.Timestamptz()`; `@@map("entity_images")`, `idx_entity_images_*`; cover re-pick orders by `createdAt, id`; upload, photo delete and asset delete each in one transaction; the assets list loads the cover with one `include`/batched query and selects `placeholderDataUrl` only there.
 
@@ -466,8 +524,8 @@ Chosen/Decided by filled only from Akif's own words. Blank = not yet decided.
 
 | Sibling | Pattern | Same change? | Decided by | Enumerated by |
 | --- | --- | --- | --- | --- |
-| Tools & Riggings cover photos (`tool-cover-photos-section.tsx`, `Tool.coverAttachmentId`) | cover photo | **No** — unchanged; WebP/thumbnail/placeholder only for asset profile images for now | Akif 2026-10-20 | `git grep -n "coverAttachmentId" -- apps` |
-| Users/employees profile picture (`entity-profile-picture.service.ts`, `features/profile-picture/`) | single profile picture | **No** — unchanged for now; the uploader is reusable later | Akif 2026-10-20 | `git grep -ln "profile-picture\|ProfilePicture" -- apps` |
+| Tools & Riggings cover photos (`tool-cover-photos-section.tsx`, `Tool.coverAttachmentId`) | cover photo | ~~**No** — unchanged; WebP/thumbnail/placeholder only for asset profile images for now~~ → **Yes** — U12 (D70) | Akif 2026-10-20; changed 2026-10-26 | `git grep -n "coverAttachmentId" -- apps` |
+| Users/employees profile picture (`entity-profile-picture.service.ts`, `features/profile-picture/`) | single profile picture | ~~**No** — unchanged for now; the uploader is reusable later~~ → **Yes** — U13 (D80–D86), one picture each, layout unchanged | Akif 2026-10-20; changed 2026-10-27 | `git grep -ln "profile-picture\|ProfilePicture" -- apps` |
 | Generic attachments (`attachments.controller.ts` upload/download, every `AttachmentFeatureType`) | file upload to S3 | **No** — attachments work exactly as now; asset profile images have nothing to do with them | Akif 2026-10-20 |
 | Categories / sub-categories list avatars (initials) | list avatar | **No** — follow-up if wanted; uploader is reusable | Akif 2026-10-20 | `git grep -n "<Avatar" -- apps/web/src/features` |
 | Asset detail/other asset renderings (Q9) | asset identity | **No** — Assets table only (Q9 A) | Akif 2026-10-20 | see §11a |

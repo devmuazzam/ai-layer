@@ -27,8 +27,12 @@
 | U8 | Photos can be picked on Create; uploaded after the asset saves; failures listed, retry on Edit | REQ-16, REQ-01 (create) | web | U5 (stacked on U7) | ~170 lines / 6 files | committed — feat/TCG-241-u8-asset-photos-on-create |
 | U9 | Large phone photos are downscaled in the browser; HEIC converted where decodable, else clearly rejected | REQ-14 (client downscale, 50 MB pick — still applies after D31 removed the photo-count cap, 10 MB post-downscale), REQ-04 (HEIC message) | web | U8 | ~140 lines / 4 files | committed — feat/TCG-241-u9-browser-photo-downscale |
 | U10 | Deleting an asset removes its photo rows and S3 files | REQ-07 (asset-delete entry), REQ-03 (asset archive keeps photos: test) | api | U6 | ~80 lines / 5 files | committed — feat/TCG-241-u10-asset-delete-removes-photos |
+| U11 | Photos are staged as cards in the upload popup and sent in parallel (max 4); first-in-list cover; one Photos card on detail and Edit | REQ-01, REQ-02, REQ-03, REQ-16 (D62–D69) | web, api (WebP quality) | U10 | ~600 lines | merged to main — feat/TCG-241-u11-staged-parallel-upload |
+| U12 | Tools & Riggings use the asset photo model, uploader and covers (PHOTO-REUSE U1) | REQ-19 (D70–D79) | schema, api, shared, web, qa | U11 | 69 files (most are the shared-component move) | committed — client `feat/PHOTO-REUSE-u1-tools-riggings` (28002146d), not merged |
+| U13 | Employee and user profile pictures on the photo model — one picture each, cover in every response, old routes removed (PHOTO-REUSE U2) | REQ-20 (D80–D89) | schema, api, shared, web, mobile, qa | U12 | ~70 files | committed — client `feat/PHOTO-REUSE-u2-profile-pictures` (be36297df), not merged |
 
 - **Requirements covered:** REQ-01..REQ-18 counted against `spec.md` §2 on 2026-10-20: 18 in spec, 17 in units, 1 not covered. Recount whenever §2 gains a REQ.
+- **Recount 2026-10-27:** 20 in spec; REQ-19 → U12, REQ-20 → U13; REQ-12 superseded by REQ-19 (no longer a negative check). REQ-18 changed by REQ-20 (mobile reads `/users/me` `cover`).
 - **Not covered:** REQ-18 (Mobile) — its statement is "out of scope; cover shows in the web Assets table only" (Q9 A). There is nothing to build; every unit carries a regression note that `apps/mobile` is untouched. REQ-12 (Tools unchanged) is a constraint, carried as a negative check in U2, U3, U5, U6, not a build item.
 - **Units blocked on an open question:** none. No requirement is `[OPEN]`; all §12 questions Q1–Q7, Q9–Q12 read `resolved`. See "Findings for the spec" at the end for things the elaborator should look at, none of which blocks a unit.
 - **Layer-split exception used:** only U1 (`kind: foundation`), see its justification.
@@ -535,12 +539,123 @@ Enumerated by: `git grep -ln "prisma.asset\." -- apps/api/src` (consumers read t
 
 ---
 
+## U11 — Staged, parallel photo upload (recorded after the fact)
+
+- **Outcome:** Picked or dropped photos appear as cards in the upload popup and upload in parallel (at most 4); the first card in the list becomes the cover only when there is none; finished cards turn green; one Photos card serves the asset detail and Edit pages.
+- **Kind:** vertical
+- **Requirements covered:** REQ-01, REQ-02, REQ-03, REQ-16 — decisions D62–D69 in `spec.md` §11b.
+- **Depends on:** U10
+- **Branch / PR base:** `feat/TCG-241-u11-staged-parallel-upload`, stacked on U10; merged to `main` with the rest of TCG-241 (the photo migrations were squashed on main, `f33dc7223`).
+- **Size:** not recorded at build time.
+
+This section was missing from the ledger when U12 was written up (2026-10-27); it records what the client commits and D62–D69 already say. No slice table was kept for U11.
+
+---
+
+## U12 — Tools & Riggings on the entity photo model (PHOTO-REUSE U1)
+
+- **Outcome:** A tool's photos work exactly like an asset's — upload on Create and Edit, cover rules, delete, preview — and every tool image (tools list, DAS job tools, Dylen tool cards) shows the cover with the blur placeholder first.
+- **Kind:** vertical
+- **Requirements covered:** REQ-19 (supersedes REQ-12) — D70–D79.
+- **Depends on:** U11 (uses its staged uploader).
+- **Branch / PR base:** client `feat/PHOTO-REUSE-u1-tools-riggings`, rebased onto `main` (`28002146d`). The client branch name does not carry TCG-241: the work started with no ticket (team on Trello). Overlay record on `feat/TCG-241-u12-photo-reuse`.
+- **Size:** 69 files changed — most are the asset-only photo hooks moved into the shared `features/entity-photos/` and Dylen/DAS type renames.
+
+### Slice contents
+
+| Layer | Change | Notes |
+| --- | --- | --- |
+| Schema | `Tool.coverAttachment` relation, FK SET NULL, index; migration `20261026120000_add_tool_cover_attachment_fk` (clears dangling covers first) | D73 |
+| API — photos | `attachment-photos.repository.ts`: `PHOTO_FEATURE_TYPES` + `TOOL`, `findOwner` (tool code), `writeCover`/`readCover` per type, `PHOTO_COVER_SELECT`; `attachment-photos.service.ts`: `ENTITY_FOLDER`, tool activity logger, `coverOf`, two WebP files, `profile-pictures` key | D71, D72, D75, D76 |
+| API — tools | `tools.repository.ts`: `TOOL_COVER_INCLUDE` in both list reads, `deleteWithPhotos`; `tools.service.ts`: list rows carry `cover`, delete removes photo files; `CreateToolDto.coverAttachmentId` removed | D72, D74, D79 |
+| API — DAS | `das.repository.ts` tool select adds `tenantCompanyId` + `coverAttachment`; `das.service.ts` `toolCoversById` → `DasSubJobTool.cover` | D72 |
+| Shared | `EntityImageCover`; category `'Profile Picture'`; `ENTITY_IMAGE_VARIANTS = ['original','thumbnail']` | D71, D76 |
+| Web | `lib/api/entity-photos.ts`; `features/entity-photos/` (card, mutations, queued upload); `EntityPhotoThumbnail`; `queuedPhotoProgressText`; tool form (queued uploader on Create, Photos card on Edit), tool view ("Edit Tool", 24rem card), list/Dylen/DAS read `cover`; asset-only hooks and the old tool photo components deleted | D78 |
+| QA | tools page object (photos, "Edit Tool"), lifecycle spec, `tool-api.ts` | test IDs `tools-*-photos*`, `tools-create-photo-progress` |
+
+### Reviewable as
+
+- **Demo:** create a tool with 2 photos → footer "Creating tool…", "Uploading photos 1 of 2…"; the tools list shows its cover after a blur; delete the cover on Edit → the other becomes cover; delete the tool → its photo rows and `…/tools/{id}/profile-pictures/` files are gone.
+
+### Risk
+
+- **Weakest source:** developer decision overriding the ticket's DoD 12 (D70); no client confirmation.
+- **Blast radius:** tools list and DAS job responses (additive `cover`); `CreateToolDto` loses `coverAttachmentId` (web caller fixed in the same change).
+
+### Ripple
+
+| Existing consumer | Reached via | Regression proof | Source |
+| --- | --- | --- | --- |
+| Asset photos | shared service/repository/folder change | existing attachment-photos specs (updated for category and 2 files) | D71, D75, D76 |
+| Generic attachment upload/list of TOOL | `isPhotoAttachment` now covers TOOL | controller photo specs | D71 |
+| Dylen/DAS tool cards | `cover` instead of a per-tool photo read | web typecheck | D72 |
+| Meter evidence field (`TOOL_IMAGE_ACCEPT`) | kept in `utils/tool-photos.ts` | `meter-reading-changes.test.mjs` | — |
+
+### Deliberately not in this unit
+
+- Backfilling old tool cover files (D77). Employee and user pictures (U13).
+
+---
+
+## U13 — Employee and user profile pictures on the photo model (PHOTO-REUSE U2)
+
+- **Outcome:** Employees and users each have one picture stored like an asset photo; uploading replaces it on the server; every place that showed an employee or user picture still shows it, now from `cover` (web: blur then thumbnail; mobile: thumbnail with the blur behind); the old profile-picture routes are gone.
+- **Kind:** vertical
+- **Requirements covered:** REQ-20 — D80–D89.
+- **Depends on:** U12 (stacked on its client branch).
+- **Branch / PR base:** client `feat/PHOTO-REUSE-u2-profile-pictures` (`be36297df`), PR targets the U12 branch.
+- **Size:** ~70 files; removes more lines than it adds.
+
+### Slice contents
+
+| Layer | Change | Notes |
+| --- | --- | --- |
+| Schema | `cover_attachment_id` on `employees` and `users`, FK SET NULL, indexes; migration `20261027120000_add_employee_user_cover_attachment` | D80 |
+| API — photos | repository: `EMPLOYEE`/`USER` owners, `createAsOnlyPhoto`, `findOwnerCovers`, exhaustive owner switches; service: `SINGLE_PHOTO_FEATURE_TYPES`, `assertCanChange`, `coversByOwnerId`, `newestCover`, no log for EMPLOYEE/USER; controller passes the role; generic wording and error copy | D81, D82, D84, D87, D88 |
+| API — readers | `EmployeeService` (list, paged, by department, detail), `DasService` (employees, temps), `DasAllocationsService.getAllocationsBySubJob` (`employee.cover`; module imports `AttachmentsModule`), `UsersService` (`/users/me` `cover`) | D83, D84 |
+| API — removed | the six `profile-picture` routes, `EntityProfilePictureService` + types, users picture constants/types, `findProfilePictureIdsByFeature` | D85 |
+| Storage | presigned links valid 24 h | D89 |
+| Shared | `Employee.id`, `Employee.cover` | D83 |
+| Web | `features/profile-picture/`: service and mutations on the photo routes, `EntityProfileAvatar` (cover → `EntityPhotoThumbnail`, initials fallback, `border`, `fallback`), section takes `entityId` + `cover`, `profile-picture-queries.ts` refreshes employee and temp keys; settings and sidebar read `user.cover`; employee list/detail/form, departments, DAS popup, Dylen crew chips read `cover` | layout unchanged |
+| Mobile | identity contract `cover`; `resolveProfilePhoto`; avatar placeholder + presigned link without Bearer; `onImageError` refetches identity | D86 |
+| QA | old picture helpers removed; specs poll `cover`; auth fixture | — |
+
+### Reviewable as
+
+- **Demo:** the test plan given to Akif on 2026-10-27 — 13 web pages (employee and temp create/edit/list/detail, department detail, DAS right panel, Dylen, My account) plus the sidebar and the mobile home, menu and sales settings.
+- **Acceptance:** REQ-20.
+
+### Risk
+
+- **Weakest source:** developer decisions only; no vault file covers profile pictures.
+- **Blast radius:** every response that carried `profilePictureId` — web, mobile and qa callers fixed in the same change; API, web and mobile must deploy together.
+
+### Ripple
+
+| Existing consumer | Reached via | Regression proof | Source |
+| --- | --- | --- | --- |
+| Sign-in → `/users/me` | `cover` replaces `profilePictureId` | full API suite; mobile identity test | D83 |
+| Generic attachments of EMPLOYEE | `isPhotoAttachment` now covers EMPLOYEE/USER; generic upload refuses the category for them | attachment-photos read spec (updated) | D80 |
+| Admin users list (`sanitizeUser`) | gains `coverAttachmentId` column | none (additive) | — |
+| Unpaginated `GET /employee` (pickers) | each row gains `cover` (~1 KB) | none — advisory | D83 |
+
+### Deliberately not in this unit
+
+- Multiple pictures per employee/user (remove the type from `SINGLE_PHOTO_FEATURE_TYPES` when wanted).
+- Covers on `GET /das/allocations` by date (Dylen reads by sub-job).
+- Old-format picture rows (flat S3 keys, employee-code owners) — deleted by hand (D77).
+
+---
+
 ## Sequencing
 
 ```
 U1 ──▶ U2 ──▶ U3 ──▶ U4 ──▶ U5 ──┬──▶ U6 ──┬──▶ U8 ──▶ U9
                                   │         └──▶ U10
                                   └──▶ U7
+
+(as built: one straight stack U1 → … → U10 → U11, merged to main; then)
+main ──▶ U12 (feat/PHOTO-REUSE-u1-tools-riggings) ──▶ U13 (feat/PHOTO-REUSE-u2-profile-pictures)
 ```
 
 - **Parallelisable:** none — linear stack chosen by Akif 2026-10-20 (was: U7 with U6). U7 touches `assets.repository.ts` (`ASSET_LIST_INCLUDE`), `lib/api/asset-management.types.ts`, `use-assets-list-state.ts`, `assets-list-view.columns.tsx`; U6 touches the entity-images service/controller and the uploader tile — no shared file. U10 with U8/U9 (U10 touches `assets.service.ts` `remove`, `sub-categories.repository.ts`, `clear-tenant-data.ts` — no shared file with the web units). Everything else is sequential: U2–U6 and U8–U9 all edit the uploader component and/or entity-images service.
