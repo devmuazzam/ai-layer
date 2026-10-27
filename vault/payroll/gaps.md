@@ -2583,6 +2583,11 @@ someone has confirmed otherwise.
 - **Blocked:** any close/reopen UI; the ADP re-export story for an amended week; and the decision
   on whether the calculate window widens — all three are the same question asked at different
   layers.
+  **Update 2026-10-27:** a *plain* re-export of a sent week (same frozen figures, stamp
+  overwritten) now exists by developer direction —
+  [decisions/2026-10-27-adp-re-export-of-a-sent-week-developer-direction.md](../decisions/2026-10-27-adp-re-export-of-a-sent-week-developer-direction.md).
+  It does not carry a correction, so the *amended-week* re-export stays blocked here; it also
+  leaves open whether ADP accepts a second file for the same batch id (→ Brian).
 - **Owner:** TCG payroll (Brian Petros, Corrina for practice) for the correction policy;
   CodingCops for the window. Brian has offered to walk through it in a meeting — that meeting is
   where PAY-068 and PAY-066 close.

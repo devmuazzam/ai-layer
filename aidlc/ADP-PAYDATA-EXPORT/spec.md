@@ -804,6 +804,14 @@ Enumerated by: `git grep -n -E 'toAdpWorkbookRows|findEmployeesMissingAdpFile|bu
 - **Owner:** Ali Riaz / Brian.
 - **Status:** open (Q38a–c).
 
+### Q39 — Raised by the developer (P5): re-export of an already-sent week
+
+- **Question:** An exported ADP file cannot be produced again — the per-employee send refuses any week with `exportedAt` (P2, `PAYROLL_EXPORT_ALREADY_EXPORTED_CODE`). Should a sent week be exportable again, and what does that send contain and record?
+- **Readings offered:** (A) rebuild and download the file for sent weeks without touching the stamp; (B) an explicit re-export that bypasses the already-exported refusal, builds from the figures in force and overwrites `exportedAt` / `exportedById` / `exportBatchLabel`; (C) an entry fix clears `exportedAt` so the normal export sends the week again.
+- **Resolution (Decided by: Syed Haris, 2026-10-27 — developer direction, `reference`):** **(B).** `POST periods/:id/export` body gains optional `reexport: boolean`; true lets the selection include sent weeks, which are sent again and re-stamped; every other gate and the period stamp are unchanged. Web: sent rows in the Export to ADP dialog are selectable for a `payroll-admin:edit` holder (unticked by default, warning shown); the employee-week hero gets a "Re-export" button beside the Sent badge. Recorded in [`vault/decisions/2026-10-27-adp-re-export-of-a-sent-week-developer-direction.md`](../../vault/decisions/2026-10-27-adp-re-export-of-a-sent-week-developer-direction.md).
+- **What it does not settle:** a sent week is frozen (P2b) and entry fixes refuse it, so a re-export cannot carry a correction — the amended-week story stays the PAY-066/PAY-068 gap. Whether ADP accepts a second file for the same batch id was **not** put to the client (developer chose to build first). Owner for both: Brian Petros.
+- **Status:** resolved by developer direction (P5 built); the two residuals above stay open in `payroll/gaps.md`.
+
 ## 12.5 Developer resolutions (2026-10-15)
 
 All 18 §12 questions were answered by the developer. **Decided by: Ali Riaz, 2026-10-15.**
