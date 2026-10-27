@@ -362,6 +362,14 @@ event queue was **204** — `payPeriodStatus.change` (added 2026-10-22) did not 
 change. Combined with §8, polling the run list (or the pay-schedule status) is the dependable
 route; the event is not.
 
+**Week 44 watched live (2026-10-27 PT / 10-28 PKT).** Micaela Dipane submitted the real week-44
+payroll at about 4 PM PT. First read after her message, 04:23 PKT (16:23 PT): the run list had
+grown **323 → 324**, the one new row being **week 44 run 1 `PR-PRC` *Payroll Complete***, `chron`
+`20261027191823` (19:18 — 16:18 PT if Eastern, as week 43 suggested), batch `5459`. **No `PR-EDL`
+*Rejected* or preview row preceded it.** At the same moment `2026-44` was still **`OPEN`** and the
+queue **204**. So the run list reports *processed* within minutes; the pay-period status lags it.
+A watcher polls periods and the queue for two more hours to time the period flip.
+
 ---
 
 ## Appendix — the test scripts, as run
