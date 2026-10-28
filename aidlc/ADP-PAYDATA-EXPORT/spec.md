@@ -802,7 +802,39 @@ Enumerated by: `git grep -n -E 'toAdpWorkbookRows|findEmployeesMissingAdpFile|bu
 - **Q38b — run counts:** `payroll_runs.employeeCount` / `laborEntryCount` / `issueCount` are still the **fresh** engine counts (they include frozen employees as recomputed, and exclude a frozen employee the fresh run no longer produced). Should the run counts describe the figures actually persisted (carried + fresh) instead?
 - **Q38c — automatic recalc queue interaction (not obvious):** once any week is sent it is APPROVED, so `calculateQueued` returns `NOT_APPLIED` (its approved-weeks guard) and the automatic queue stops recalculating the period entirely after the first partial send. The only way to reprice the not-yet-exported employees is then a **manual Recalculate** (which now freezes the sent ones). Is that acceptable, or should the automatic queue be allowed to recalc the non-exported remainder while the freeze protects the sent ones? (Out of P2b scope; it would change the PR #709 approved-weeks hold.)
 - **Owner:** Ali Riaz / Brian.
-- **Status:** open (Q38a–c).
+- **Resolution (Ali Riaz, 2026-10-28 — developer direction, `reference`):** Q38c is answered.
+  The automatic run reprices the not-yet-approved remainder and carries every approved or
+  exported week forward frozen, its approval kept. When a carried, approved, not-yet-exported week
+  would reprice differently, the job is left outstanding and names the employee. See
+  [`vault/decisions/2026-10-28-auto-recalc-reprices-pending-weeks-keeps-approved-weeks-frozen-developer-direction.md`](../../vault/decisions/2026-10-28-auto-recalc-reprices-pending-weeks-keeps-approved-weeks-frozen-developer-direction.md).
+  Q38a and Q38b were built with it, as developer choices recorded in the PR's *AI decisions*:
+  - **Q38a:** frozen employees are excluded from all five flag-reconciliation passes. Their flags
+    stay as they were. A grouped cross-employee flag drops only the frozen member's row, and the
+    other members reconcile as before.
+  - **Q38b:** the run counts and the rate snapshot describe the persisted figures (carried plus
+    fresh), and the snapshot records `carriedForward`.
+
+  Platform branch `fix/auto-recalc-preserves-approved-weeks`.
+- **Status:** resolved by developer direction (Q38a–c), 2026-10-28.
+
+### Q40 — Raised by the 2026-10-28 calculation audit: the ADP file leaves out the adder share of a rest-forced hour
+
+- **Context:** the engine now prices the rest-period premium (PAY-045) on the full
+  into-the-rate hourly: base, shift, foreman, hourly catalog premiums, and boom on boom hours.
+  This is Ruling 5 of
+  [`vault/decisions/2026-10-28-calc-audit-override-adders-shared-half-hour-contested-rules-developer-direction.md`](../../vault/decisions/2026-10-28-calc-audit-override-adders-shared-half-hour-contested-rules-developer-direction.md),
+  and it is engine 5.0.0. The serializer (`adp-paydata-csv.ts`, the `REST_PREMIUM` /
+  `WTL_MISSED_MEAL` bump) still moves only the **base-rate hours** from the source column into
+  the floor column, so the boom, shift and foreman temp-rate rows stay on the ladder bucket. Under
+  the 2026-10-22 decision the shift-adder part of this was already an accepted approximation, and
+  until now the ERP ledger made the same approximation. Now the ledger pays the adders on the
+  floor and the file does not. Example: 1 h forced ST → 1.5× with a 3rd-shift adder ($4) and a
+  boom adder ($4) — the ledger pays $4 more than the file implies.
+- **Question:** should the serializer move the adder rows of a rest-forced (or WTL-floored) hour
+  into the floor bucket as well, so the file carries what the ledger pays? Or does the 2026-10-22
+  approximation stand, extended to boom and foreman?
+- **Owner:** Brian Petros (ADP side) / Ali Riaz.
+- **Status:** open.
 
 ### Q39 — Raised by the developer (P5): re-export of an already-sent week
 
