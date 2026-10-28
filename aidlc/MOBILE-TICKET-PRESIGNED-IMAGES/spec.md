@@ -256,6 +256,7 @@ Counts: 11 total — 0 verified, 7 unverified, 1 conflicted, 3 open. *(Amended 2
 - **Ripple:** `ProgressSignature`, `ProgressChecklistAnswer`, `ProgressIncident`, `ProgressAttachment` (`@tcg/shared`, optional fields); `JobProgressModule` gains `AttachmentsRepository` and `StorageModule`; web `AttachmentThumbnail`.
 - **Acceptance:** with a ticket that has a signature, an identity photo, a deficiency photo and an incident photo, the images show and the Network tab shows no `/attachments/:id/download` for them; an old ticket still shows its images; an expired link refetches the ticket detail once.
 - **Edges:** link made only from rows of the caller's tenant (tenant-scoped repository); an id with no row yields `null`; incident evidence that is not an image (video) yields `image: null` and keeps the `/download` fallback; authorisation of the route is unchanged.
+- **Amended 2026-10-28 (Haris, after browser testing):** clicking a progress-tracking image opens the shared `EntityPhotoLightbox` (the Assets page's photo viewer) instead of the hand-rolled modal; the image label is no longer shown in a header on open. A failed tile recovers when the API delivers a new link. See units.md U6 follow-up changes (`2b58998f3`, `68a0bd9c9`).
 
 ### REQ-13 — Asset meter-reading photos use presigned covers `[UNVERIFIED]`
 

@@ -428,6 +428,12 @@ Derived acceptance criteria in the spec are accepted as definition of done.
 
 - Documents and PDFs (stay on `/download`); DAS loadout photos (proposed follow-up, D13).
 
+### Follow-up changes to U6 (2026-10-28, Haris, after browser testing)
+
+- `2b58998f3` fix(web): a progress tile that gave up ("unable to load") starts over when the API delivers a different link (the ticket detail polls every 15 s); links are hour-stable, so a bad link cannot reset it in a loop. Found by `tcg-contract-tracer` (DEGRADES 1).
+- `68a0bd9c9` feat(web): clicking a progress-tracking image opens the shared `EntityPhotoLightbox` (the viewer the Assets page uses for its photos: original over a dark backdrop, blur placeholder, zoom, one refetch for a fresh link) in place of the hand-rolled `PreviewModal`. `attachment-thumbnail.tsx` builds a one-item list from the cover (`id`, `originalName` = label, `placeholderDataUrl`, `thumbnailUrl`, `originalUrl`); a row with no cover opens its streamed file in the same viewer. The viewer is mounted only while open. **Known difference:** the old popup showed the image label ("Front") in a header; the shared lightbox has no title, so the label is no longer shown on open. Single-image viewer per thumbnail, no arrows between a ticket's images (as before).
+- Not verified in a browser.
+
 ---
 
 ## U7 — Asset meter-reading photos use presigned covers *(added 2026-10-28, Haris)*
