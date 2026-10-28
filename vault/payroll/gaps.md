@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-10-07
+updated: 2026-10-28
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -2588,6 +2588,17 @@ someone has confirmed otherwise.
   [decisions/2026-10-27-adp-re-export-of-a-sent-week-developer-direction.md](../decisions/2026-10-27-adp-re-export-of-a-sent-week-developer-direction.md).
   It does not carry a correction, so the *amended-week* re-export stays blocked here; it also
   leaves open whether ADP accepts a second file for the same batch id (→ Brian).
+  **Update 2026-10-28 — the *Built state* above is stale on one point, and the hole is
+  unchanged.** Recalculation stopped being manual-only on 2026-10-06
+  ([decisions/2026-10-06-payroll-calculate-runs-automatically.md](../decisions/2026-10-06-payroll-calculate-runs-automatically.md)).
+  The automatic run now also reprices the unapproved weeks of a period that holds approved ones,
+  and carries the approved weeks forward frozen
+  ([decisions/2026-10-28-auto-recalc-reprices-pending-weeks-keeps-approved-weeks-frozen-developer-direction.md](../decisions/2026-10-28-auto-recalc-reprices-pending-weeks-keeps-approved-weeks-frozen-developer-direction.md)).
+  When a change *would* reprice an approved week, that run is left outstanding and names the
+  employee, so approve and export stay held. Nothing reprices the week silently. APPROVED and
+  EXPORTED *periods* are still skipped, and there is still no reopen or delta path — this
+  question stands as asked. The calculate window has also moved since this entry: the engine now
+  reads prior-week context (PAY-045 rest, the holiday ladder, the premium-date minimum).
 - **Owner:** TCG payroll (Brian Petros, Corrina for practice) for the correction policy;
   CodingCops for the window. Brian has offered to walk through it in a meeting — that meeting is
   where PAY-068 and PAY-066 close.
@@ -3291,6 +3302,21 @@ someone has confirmed otherwise.
 - Blocked: the WTL half of any parallel run; our §2 branch.
 - Owner: Corrina Bustos or the labor-counsel review for the frame question (is a worked meal inside or
   outside the paid shift, given TCG pays yard to yard). CodingCops for the §2 branch once it lands.
+- **Update 2026-10-28 (calc audit):** priced, the missing §2 branch underpays every weekend and
+  holiday worked-through lunch against every written reading. `priceMealPeriods`
+  (`packages/payroll-engine/src/meal-periods.ts:292-391`) deducts each worked-through half hour at
+  its own bucket (:314) and adds it back at `max(2, multiplier)` (:357), so on a 2× or 3× slice the
+  two cancel. Input: 07:00–15:00, one recorded worked-through lunch at 12:00, $80 base; change
+  against no lunch signal — weekday **+$40** (equals `WTL_DT_FLOOR`), Saturday **+$20**, Sunday
+  **$0**, holiday **$0**. Other readings: legacy `WTL_APPLICABLE_ADD` (pure add, flat ×2.0, no
+  deduction — [rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §10)
+  gives +$80 on all three; MLA §2 *"at the applicable wage rate"* gives Saturday +$60, Sunday +$80,
+  holiday +$120; the WTL charts' Saturday and Sunday notes say *"8 hrs plus 1 missed lunch = 8 hrs
+  plus an extra 0.5 hr"* at the applicable rate ([wtl-charts.md](wtl-charts.md), unverified). A
+  weekday meal in an OT slice nets +$20 against the legacy `NonSTStartMode` +$80 (item 1 above).
+  The engine comment at `meal-periods.ts:339-345` argues the holiday case the other way (a flat 2×
+  add-back would pay less than a taken lunch). Meals audit F1, probe `p06`. Recorded, no pay
+  change (Ali Riaz, 2026-10-28); the frame question still decides it — Brian Petros / Corrina Bustos.
 
 ## Entry 43694's WTL token never parsed — is the payroll department correcting these by hand?
 
@@ -3978,6 +4004,19 @@ somewhere it should not have. Settle that before touching either.
   [client-message-findings.md](client-message-findings.md), the 2026-08-24 and 2026-09-04
   cross-midnight rows (none reaches the re-entry case); `grep -rn "re-entry\|reentry"` across `.ai/`.
 - **Owner:** Corrina Bustos (confirmation); CodingCops (build).
+- **Update 2026-10-28 (calc audit):** the built rung is wider than the scope written above.
+  `bucketForSlice` (`packages/payroll-engine/src/day-type.ts:203`) tests the **slice's** day type
+  (`dayType === 'WEEKDAY' && afterStartDate`), fed `afterStartDate: slice.workDate > workDate` by
+  `priceL12JobDay` (`calculate.ts:358`) and `explain.ts:213`. So a Sunday-, Saturday- or
+  holiday-start entry that runs into a weekday morning also gets no ST there, although the comment
+  at `day-type.ts:179-180` and this entry say *"weekday-start entries only"*. Input: Sun 22:00 →
+  Mon 14:00, $100 base — engine 0 ST · 10 OT · 6 DT = **$2,700**; weekday-start-only gives Mon
+  06:00–10:00 as ST, 4 ST · 6 OT · 6 DT = **$2,500** ($200 per Sunday-night shift). Corrina's
+  *"starting on overtime before midnight"* (2026-09-10 15:18) arguably supports the engine;
+  [payroll-rules-provenance.md](payroll-rules-provenance.md) §1 *Cross-midnight — day type* already
+  says Sunday-start → Monday is *"applied by the same principle; one line from Corrina would make
+  it explicit"*. **Added question:** does the carryover apply to a Sunday/Saturday/holiday-start
+  entry, or to weekday starts only? Time audit T4. Recorded, no pay change (Ali Riaz, 2026-10-28).
 
 ## Cross-midnight day type — the 2026-09-04 decision assumes a per-slice flip that neither engine performs
 
@@ -5482,6 +5521,16 @@ somewhere it should not have. Settle that before touching either.
     - Or does the split apply only after the first 24 h?
 - **Owner:** **Brian Petros**, who wrote the non-union rules, and **Corrina Bustos**.
 - **Rules:** [PAY-012](rules/PAY-012-non-union-hourly-rate.md)
+- **Update 2026-10-28 (calc audit):** probes confirm today's behaviour (`classifyNonUnionWeek`,
+  `packages/payroll-engine/src/non-union.ts:76`; rule stated at :12-13). A 30 h entry Mon 08:00 →
+  Tue 14:00 pays 8 ST + 4 Daily OT + 18 Daily DT, all on Monday; split at midnight it would be
+  16 ST + 8 OT + 6 DT — at $35/h, $1,750 against $1,400. Thu 20:00 → Fri 06:00 as Friday's only
+  work leaves Friday not worked, so the seventh-day rule cannot fire that week. Note that the
+  developer's follow-up (*"split at every midnight, always — a 22:00 → 03:00 shift is two
+  workdays"*, [payroll-rules-provenance.md](payroll-rules-provenance.md) §5) reaches entries under
+  24 h too, which the engine reads §10's 19:00 → 01:30 example as keeping on the start date — so a
+  ruling on this entry also settles the overnight case. Non-union audit F4. Recorded, no pay change
+  (Ali Riaz, 2026-10-28).
 
 ## Multi-day entry — DAILY catalog premiums once per ticket or once per calendar date
 
@@ -5511,6 +5560,14 @@ somewhere it should not have. Settle that before touching either.
   No engine change. Pending ratification.
 - **Owner:** **Brian Petros** and **Corrina Bustos**.
 - **Rules:** none of its own. It is a property of the premium catalog.
+- **Update 2026-10-28 (calc audit):** "once per entry" also bites inside a single date, with no
+  multi-day entry at all. `priceL12JobDay` (`packages/payroll-engine/src/calculate.ts:554-559`)
+  adds the flat DAILY amount once per priced entry, so one job split into two tickets on the same
+  day pays it twice ($25 × 2, probe Q5), and a zero-hour ticket pays it too. The comment there
+  still says *"DAILY pays once for the day"*; subsistence, by contrast, de-duplicates per job and
+  date (`applySubsistence`, :1361-1405). Latent while the seeded premiums are all HOURLY. Wider
+  question: is a DAILY premium once per employee per calendar date (or per job and date), however
+  many tickets carry it? Ladder audit R2. Recorded, no pay change (Ali Riaz, 2026-10-28).
 
 ## Multi-day entry — a craft rate change that takes effect inside one entry
 
@@ -6018,3 +6075,245 @@ somewhere it should not have. Settle that before touching either.
   clauses 1–3 (`reference`): both assume one craft per day; neither covers a PRIMARY changing
   after dispatch.
 - **Owner:** Corrina Bustos / Brian Petros.
+
+## Worked-through lunches after the first — does each add a paid half hour? The engine never adds one
+
+- **Status:** open — recorded as a question, no pay change (Ali Riaz, 2026-10-28).
+- **Asked:** 2026-10-28 — payroll calculation audit (Ali Riaz; no ticket), meals audit F2.
+- **Question:** the written model absorbs the **first** missed meal (its half hour repriced to ≥ 2×,
+  no hours added) and has each **further** missed meal add a new half hour at double time on top of
+  the hours worked. Should the engine add that half hour for the 2nd, 3rd and 4th worked-through
+  lunch?
+- **What the code does:** every worked-through meal is priced alike — `priceMealPeriods`
+  (`packages/payroll-engine/src/meal-periods.ts:292-391`) deducts the half hour at its bucket (:314)
+  and adds it back at `max(2, multiplier)` (:357); no meal adds hours. Yet `restGapStartMs`
+  (`rest-period.ts:116-138`) moves the rest gap 30 minutes for each worked-through meal after the
+  chain's first, because those meals add paid time (comment :119-125).
+- **Sources checked:** for adding — [payroll-rules-provenance.md](payroll-rules-provenance.md) §4
+  *Worked-through meal — penalty* (Contract + Confirmed); [2026-08-20-payroll-rules-meeting-notes.md](2026-08-20-payroll-rules-meeting-notes.md)
+  (Travis Garrett: 13.5 h worked through both lunches, paid 14.0 h); [wtl-charts.md](wtl-charts.md)
+  Mon–Fri table (11 h with 2 WTL → 11.5; unverified);
+  [../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md](../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md)
+  clause 2 (verified; gives the model as its reason). [rules/PAY-047](rules/PAY-047-worked-through-lunch-adjustment.md)
+  says *"Engine = charts = contract = SME"* — not true of the engine on this point. Against or open —
+  [implementation-audit-2026-09-11.md](implementation-audit-2026-09-11.md) lists *"first missed lunch
+  absorbed vs added"* as owed by Brian; legacy `WTL_DT_FLOOR` tops each weekday ST-block meal to 2×
+  without adding hours (§10); TCG's WTL scenario `#2` (all breaks worked) is still pending in this
+  register (*WTL scenarios `#2` and `#3`*, above).
+- **Evidence / $ impact:** $80 base. 13.5 h with 2 worked-through lunches: engine pays 13.5 h
+  ($1,420), the Garrett example 14.0 h. 11 h with 2: engine 11 h, chart 11.5 h. Short per extra
+  lunch = its deduction: $40 in ST, $60 in OT, $80 in DT. In probe `p14` the rest-gap move alone
+  forced a $660 rest premium while the half hour that justifies the move was never paid.
+- **Owner:** Brian Petros / Corrina Bustos.
+
+## Taken-meal deduction — does it also remove the foreman, military and lattice premiums?
+
+- **Status:** open — recorded as a question, no pay change (Ali Riaz, 2026-10-28).
+- **Asked:** 2026-10-28 — payroll calculation audit (Ali Riaz; no ticket), ladder audit R1 and the
+  foreman part of meals audit F3.
+- **Question:** a taken meal takes off the half hour the crew did not work, including its shift
+  differential and boom. Should it also take off the foreman, military and lattice premiums paid on
+  that half hour?
+- **What the code does:** no. `priceMealPeriods` (`packages/payroll-engine/src/meal-periods.ts:314`)
+  deducts `(base + shift + boom if on boom) × multiplier`; `applyContinuousMealPeriods`
+  (`calculate.ts:1308-1348`, call at :1332-1336) passes only those three rates. The foreman premium
+  (`priceL12JobDay`, :493-504) and HOURLY catalog premiums such as military and lattice (:535-552)
+  are paid on every bucket hour, the meal's half hour included.
+- **Sources checked:** [../decisions/2026-09-10-craft-adders-are-into-the-rate-multiplied.md](../decisions/2026-09-10-craft-adders-are-into-the-rate-multiplied.md)
+  (verified: foreman, lattice and military go into the rate the same way as boom);
+  [payroll-rules-provenance.md](payroll-rules-provenance.md) §4 *Taken meal — deduction* (Confirmed:
+  *"deduct the whole priced half-hour … boom included"*, from Brian's scenario `#1` workbook, which
+  has no foreman or military); legacy deduct basis `base + shift + boom`
+  ([rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §10), from an
+  app that had none of these premiums in its slice rate. Nothing written addresses them.
+- **Evidence / $ impact:** $60 base, foreman and military day, taken lunch in ST: deduction −$30.00,
+  while foreman $1.50 and military $1.00 stay paid for the unworked half hour (probe Q6). ×1.5 in OT.
+- **Owner:** Brian Petros / Corrina Bustos.
+
+## Daily 4-hour minimum (PAY-040) — does a taken meal count toward the four, and do admin-craft hours?
+
+- **Status:** open — recorded as a question, no pay change (Ali Riaz, 2026-10-28).
+- **Asked:** 2026-10-28 — payroll calculation audit (Ali Riaz; no ticket), meals audit F5 and F11.
+- **Question:** (1) Is the floor four hours **worked** or four hours **paid**? Should a shift that an
+  unpaid taken lunch leaves under four paid hours be topped up? (2) On a day with both an admin
+  craft and a union craft, do the admin hours count toward the four?
+- **What the code does:** `applyDailyMinimumGuarantee` (`packages/payroll-engine/src/guarantee.ts:91-143`)
+  sums `actualHours` per work day (:99) — the rounded window, taken meal included — and skips ADMIN
+  crafts entirely (:98; `EXEMPT_CRAFT_ROLES` :40-46, whose comment says widening the exemption *"is
+  a client decision"*). Meals are priced after it (`calculatePayPeriod`: `applyCalendarDayMinimums`
+  at `calculate.ts:1656`, `applyContinuousMealPeriods` at :1660).
+- **Sources checked:** MLA [Art. III](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md)
+  *Reporting Time and Minimum Pay* §3 — *"not less than four (4) hours pay"*;
+  [rules/PAY-040](rules/PAY-040-work-provided-minimum.md) — *"minimum four paid hours"*, blocking item
+  *"Confirm exclusions"*; Corrina 2026-06-11, *"four-hour minimum per day or their true time"*
+  (provenance §3); legacy `DAILY_MIN_4` — gap = 4 − actual hours, non-ADMIN crafts only
+  ([rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §6), the same as
+  the engine.
+- **Evidence / $ impact:** $80 base. 4.0 h with a recorded taken lunch: 3.5 h paid ($280), no top-up;
+  "four hours pay" adds $40. 3.0 h with a taken lunch: 1 h top-up then −0.5 h = 3.5 h paid, while
+  `payableHours` reads 4. 3 h admin + 1 h operator on one day: a 3 h top-up on the operator hour,
+  7 paid hours for 4 worked.
+- **Owner:** Brian Petros / Corrina Bustos.
+
+## Rest-forced hours — do the daily minimum and the shift hours-add ride the rest floor?
+
+- **Status:** open — recorded as a question, no pay change (Ali Riaz, 2026-10-28).
+- **Asked:** 2026-10-28 — payroll calculation audit (Ali Riaz; no ticket), meals audit F8.
+- **Question:** the 4-hour minimum's shortfall pays at the rate the shift *"finished"* on, and the
+  2nd/3rd-shift hours-add at the last slice's multiplier. When the 8-hour rest rule has forced that
+  last slice up to 1.5× or 2.0×, is the forced rate what the shift finished on?
+- **What the code does:** both read the slice's own bucket, before rest forcing.
+  `applyCalendarDayMinimums` passes `endingBucket` from `slicePlan` (`packages/payroll-engine/src/calculate.ts:1146-1147`)
+  to `applyDailyMinimumGuarantee` (`guarantee.ts:119-121`); `applyShiftHoursAdd` reads the last
+  `slicePlan` bucket (`calculate.ts:1018-1019`). The rest premium is a separate component
+  (`applyRestPeriodPremium`, `rest-period.ts:211-294`) and never changes `slicePlan`.
+- **Sources checked:** [payroll-rules-provenance.md](payroll-rules-provenance.md) §3 *Daily 4-hour
+  minimum* (Confirmed, Corrina 2026-06-11: *"whatever they finished"*) and §4 *8-hour rest — effect*
+  (Confirmed); [rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md) §6
+  (legacy: minimum at ×1.0) and §8 (hours-add at the last slice's multiplier). Nothing written says
+  whether rest forcing counts.
+- **Evidence / $ impact:** $80 base. A 2 h return forced to 1.5×: its 2 h top-up pays at 1.0× ($160),
+  not 1.5× ($240). A 2nd-shift chain forced to 2.0× whose last slice is OT: the +1 h add pays
+  (80 + 3) × 1.5 = $124.50, not × 2.0 = $166.00. Probes `p05`, `p11`.
+- **Owner:** Brian Petros / Corrina Bustos.
+
+## Rest rule trigger — are holiday (3×) and special-Saturday (2×) hours an "overtime period"?
+
+- **Status:** open — recorded as a question, no pay change (Ali Riaz, 2026-10-28).
+- **Asked:** 2026-10-28 — payroll calculation audit (Ali Riaz; no ticket), meals audit F12.
+- **Question:** MLA Rest Periods §1 owes 8 hours' rest *"between the end of any overtime period and
+  the beginning of another straight-time shift"*. Does a chain worked wholly on a holiday or a
+  special Saturday force the next shift when the crew come back within 8 hours, as weekday OT,
+  Saturday OT or Sunday DT does?
+- **What the code does:** no. `hasActualOtDt` (`packages/payroll-engine/src/rest-period.ts:101-103`)
+  triggers on `OT`/`DT` slices only. Saturday (`OT`) and Sunday (`DT`) hours trigger; holiday (`H3X`)
+  and special-Saturday (`H2X`) hours do not (`bucketForSlice`, `day-type.ts:197-199`), though a
+  special Saturday pays the same 2× as a Sunday.
+- **Sources checked:** MLA [Art. III](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md) *Rest
+  Periods* §1; [payroll-rules-provenance.md](payroll-rules-provenance.md) §4 *8-hour rest — trigger*
+  (*"the prior chain contained OT or DT"*; legacy `TriggerMode = HrsOTDTPositive`). Neither names
+  holiday or special-Saturday hours.
+- **Evidence / $ impact:** arithmetic, $100 base: Memorial Day 15:00–23:00, back Tuesday 06:00–14:00
+  (7 h off). Engine: no rest premium. Counted as an overtime period, Tuesday's four ST hours rise to
+  the 1.5× floor: +$200 (10:00 on is DT either way, the ladder carrying the holiday hours). Probe
+  `p08` confirmed the no-trigger behaviour.
+- **Owner:** Brian Petros / Corrina Bustos.
+
+## Holiday observed on a Friday or Monday — is the actual Saturday or Sunday a holiday too?
+
+- **Status:** open — recorded as a question, no pay change (Ali Riaz, 2026-10-28).
+- **Asked:** 2026-10-28 — payroll calculation audit (Ali Riaz; no ticket), time audit T9.
+- **Question:** MLA Holidays §5 makes the Friday before a Saturday Christmas or New Year's Day *"a
+  holiday"*; §2 does the same for the Monday after any listed holiday that falls on a Sunday. Is the
+  actual Saturday or Sunday still paid as a holiday as well, or only the observed weekday?
+- **What the code does:** only the observed date. `observedDate` / `l12HolidaysForYear`
+  (`packages/payroll-engine/src/day-type.ts:46-74`) move the date and drop the original, so Saturday
+  2027-12-25 and Saturday 2028-01-01 price as plain Saturday (1.5×) and Sunday 2027-07-04 as plain
+  Sunday (2×), with no 8-hour minimum. Other holidays that land on a Saturday stay there, unshifted.
+- **Sources checked:** MLA [Art. III](mcog-l12-mla-2025-2028/01-article-iii-working-rules.md)
+  *Holidays* §2, §5 (*"shall be considered a holiday"* — can read as additive); legacy
+  `dim.LU12_Holiday` ([config-values.md](legacy-payroll-app-db-extract/config-values.md) rows 20,
+  22, 28) holds only the observed rows 2027-07-05, 2027-12-24 and 2027-12-31 — the engine matches
+  the incumbent exactly; [payroll-rules-provenance.md](payroll-rules-provenance.md) §2 *Holiday list
+  and observance* (Contract) states the shift, not whether the original date also counts.
+- **Evidence / $ impact:** $100 base, 8 h 07:00–15:00 on Saturday 2027-12-25: engine $1,200 (1.5×);
+  as a holiday $2,400 (3×). Sunday 2027-07-04, same shift: $1,600 against $2,400. Next dates
+  affected: 2027-07-04, 2027-12-25, 2028-01-01.
+- **Owner:** Brian Petros / Corrina Bustos.
+
+## Subsistence — two subsistence jobs on one day: one allowance, or one per job?
+
+- **Status:** open — recorded as a question, no pay change (Ali Riaz, 2026-10-28).
+- **Asked:** 2026-10-28 — payroll calculation audit (Ali Riaz; no ticket), non-union / money audit F5.
+- **Question:** an employee works two holdover jobs on the same calendar date, one 60 mi from the
+  yard ($85 tier) and one 100 mi ($200 tier). Is that one subsistence allowance for the day — and if
+  so which tier — or one per job?
+- **What the code does:** one per job. `applySubsistence`
+  (`packages/payroll-engine/src/calculate.ts:1361-1405`) groups on `${jobId}:${workDate}` (:1377)
+  and pays each group; its doc comment says *"one payment per employee per job per calendar date"*.
+- **Sources checked:** [../decisions/2026-09-01-subsistence-not-a-craft-attribute.md](../decisions/2026-09-01-subsistence-not-a-craft-attribute.md)
+  — Corrina's *"per job, not per craft code"* (19:56) placed eligibility and mileage on the job; it
+  says nothing on payments per day. MLA Article V, as quoted there, pays *"a subsistence allowance"*
+  to employees *"required … to remain away from home overnight"* — which reads as one per night.
+  [*Subsistence — the recording and the engine disagree*](#subsistence--the-recording-and-the-engine-disagree-on-both-the-amount-and-the-trigger)
+  settles amounts and tiers, not two jobs on one date.
+- **Evidence / $ impact:** the input above pays $85 + $200 = **$285** for one day; one allowance per
+  day pays $200 if the higher tier wins.
+- **Owner:** Brian Petros / Corrina Bustos.
+
+## Money rounding — round each component to the cent, or the day's total once?
+
+- **Status:** open — recorded as a question, no pay change (Ali Riaz, 2026-10-28).
+- **Asked:** 2026-10-28 — payroll calculation audit (Ali Riaz; no ticket), non-union / money audit F9.
+- **Question:** PAY-069 settles **how** money rounds (half away from zero), not **when**. Is rounding
+  each (entry, reason) component and summing them the rule, or should a day or week be computed
+  exactly and rounded once? Which figure should ADP's gross agree with?
+- **What the code does:** `addComponent` rounds each component (`packages/payroll-engine/src/money.ts:58`,
+  `round2` :46); a day's total is the sum of rounded components (`calculate.ts:565`, :721). The ADP
+  file sends week-total bucket **hours** (`apps/api/src/usecase/payroll/adp-paydata-csv.ts`, primary
+  row Reg / O/T), so ADP prices its own gross from hours × rate.
+- **Sources checked:** [rules/PAY-069](rules/PAY-069-money-rounding-and-rounding-adjustment-components.md)
+  and the resolved entry
+  [*PAY-069's rounding-adjustment component*](#pay-069s-rounding-adjustment-component--architecturally-inapplicable-to-this-engine)
+  (mode built; adjustment row inapplicable); legacy §14
+  ([rules-plain-language.md](legacy-payroll-app-db-extract/rules-plain-language.md)). None says
+  when to round.
+- **Evidence / $ impact:** $15.01 rate, 7.5 ST + 0.5 OT: components $112.58 + $11.26 = $123.84;
+  exact $123.8325 → $123.83. About 4.2% of single-entry days at 2-decimal rates miss by 1¢, up to
+  3¢ a week (3,000-week fuzz). ADP's gross can differ from the ERP's `totalAmount` by a few cents.
+- **Owner:** Brian Petros / Corrina Bustos.
+
+## Premium-date 8-hour minimum across the Saturday week edge — paid by both weeks (partial fix; residual open)
+
+- **Status:** open — known gap for the engine developers. A partial engine fix is in progress
+  (2026-10-28, uncommitted); this records what it leaves.
+- **Asked:** 2026-10-28 — payroll calculation audit (Ali Riaz; no ticket), time audit T1.
+- **Question:** a holiday or special Saturday that is a period's first day can be worked by a
+  Friday-night ticket the previous week prices and by Saturday tickets this week prices. The minimum
+  is per employee per calendar date across every entry
+  ([*Holiday 8-hour minimum on a shift that only spills past midnight*](#holiday-8-hour-minimum-on-a-shift-that-only-spills-past-midnight-into-the-holiday),
+  resolved; decision 2026-09-04). **Developers:** how do the two runs settle it exactly? **Corrina
+  Bustos:** which week owns that date's minimum — the week of the earliest entry on the date (the
+  Friday ticket's week, which pays it today) or the week that contains the date?
+- **What the code does:** before the fix each week topped the date up on the hours it could see.
+  The fix (`applyPremiumDayMinimums` and `premiumDatesSettledByContext`,
+  `packages/payroll-engine/src/guarantee.ts:231-330`) counts context hours, never makes a context
+  entry the receiver, and treats a date any context entry touched as settled, so the later week
+  pays nothing for it. Its comment (:264-268) names the residual: the earlier week topped up without
+  seeing the later week's hours, so the date can still be paid more than eight.
+- **What the exact fix needs:** forward context (the earlier week's run seeing the next week's
+  tickets on that date); the ownership answer above; and a requeue of the neighbouring week
+  whenever tickets on that date change in either week.
+- **Evidence / $ impact:** $100 base. Special Saturday 2026-12-05: ticket 1 Fri 20:00 → Sat 04:00
+  (4 h on the date), ticket 2 Sat 08:00–12:00 — 8 h worked, no minimum owed. Before the fix both weeks
+  topped up 4 h at 2× (+$1,600); after it the earlier week's $800 remains. Saturday holiday
+  2026-07-04 (unshifted), 2 h spill + 4 h shift, 2 h owed: +$2,400 before, +$1,200 after. Residual
+  figures are arithmetic on the audit's inputs, not re-probed. Exposed: every special Saturday
+  (next 2026-12-05, 2027-06-05) and every holiday that lands on a Saturday (next 2028-11-11).
+- **Owner:** payroll engine developers; Corrina Bustos for which week owns the minimum.
+- **Related:** [*Multi-day entry — which pay period owns the hours after Saturday 00:00*](#multi-day-entry--which-pay-period-owns-the-hours-after-saturday-0000).
+
+## Back-to-back tickets handed over off the half hour — is the shared half hour paid once?
+
+- **Status:** decided — flag only. Ali Riaz, 2026-10-28: raise a warning, do not change pay. Whether
+  the slot should be paid once stays with TCG.
+- **Asked:** 2026-10-28 — payroll calculation audit (Ali Riaz; no ticket), ladder audit F1.
+- **Question:** ticket A 06:00–12:10, ticket B 12:10–15:00. PAY-020 rounds each entry on its own —
+  A's end up to 12:30, B's start down to 12:00 — so 12:00–12:30 is priced on both. Should that slot
+  be paid once?
+- **What the code does:** pays it twice (`sliceWindow`, `packages/payroll-engine/src/slices.ts:115-117`,
+  per ticket). Since the decision `flagOverlappingLabor` (`calculate.ts:784-840`, branch :813-832)
+  raises `OVERLAPPING_LABOR` when only the rounded windows overlap — a `warning`, not
+  approval-blocking by default (`packages/shared/src/constants/payroll-issue-severity.ts:94, 145-147`).
+  The API's `OVERLAPPING_JOBS` flag still compares raw windows and skips back-to-back tickets
+  (`apps/api/src/usecase/payroll-flags/payroll-flag-detection.service.ts:163-169`).
+- **Sources checked:** [../decisions/2026-08-24-payroll-time-rounding-method.md](../decisions/2026-08-24-payroll-time-rounding-method.md)
+  (start down, end up, per entry); [../decisions/2026-09-09-work-chains-stitch-only-when-there-is-no-gap.md](../decisions/2026-09-09-work-chains-stitch-only-when-there-is-no-gap.md)
+  (notes a handover's rounded windows overlap — for the rest chain only, silent on pay);
+  [../decisions/2026-10-22-back-to-back-jobs-scheduled-without-overlap-overlap-is-billing-only.md](../decisions/2026-10-22-back-to-back-jobs-scheduled-without-overlap-overlap-is-billing-only.md)
+  (scheduling, not pay); [*Overlapping FCC labor entries — no rule*](#overlapping-fcc-labor-entries--no-rule-and-brian-has-none-either) (raw overlap).
+- **Evidence / $ impact:** $60 base, Tuesday: one 06:00–15:00 ticket pays 9 h (8 ST + 1 OT) = $570;
+  split at 12:10 it pays 9.5 h (8 ST + 1.5 OT) = $615. $80 base: 07:00–15:10 as one ticket 8.5 h
+  ($700), split at 12:10 9 h ($760). Twenty back-to-back 30-minute tickets from 06:10 pay 20 h
+  ($1,800) for 10 h worked. Splits on :00 / :30 change nothing.
+- **Owner:** Brian Petros / Corrina Bustos (whether the slot is paid once).
