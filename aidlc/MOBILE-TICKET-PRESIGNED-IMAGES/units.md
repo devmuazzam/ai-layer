@@ -76,6 +76,8 @@ Derived acceptance criteria in the spec are accepted as definition of done.
 | U3 | Crew sees incident evidence and the incident signature load from presigned links; video evidence opens by presigned link | REQ-01, 02, 03, 04, 07, 08, 11 (part) | api, mobile | U1 | ~550 lines / ~12 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u3-incident |
 | U4 | Crew sees lunch worked-through signatures load from presigned links, labelled `Lunch WTL 1`..`4`; display-by-`/download` branch retired | REQ-01, 02, 03, 05, 07, 08, 11 (part) | api, mobile | U1 (stack after U3) | ~450 lines / ~10 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u4-lunch-wtl |
 | U5 | Crew opens and shares Attach-File documents from a presigned link; image attachments get variants | REQ-02, 03, 06, 07 | api, mobile | U1 | ~450 lines / ~10 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u5-documents |
+| U6 | Office sees ticket progress-tracking images (signature, identity photo, checklist photos, incident photos) load from presigned links, with the `/download` fallback kept (added 2026-10-28) | REQ-12 | api, shared, web | U5 | ~450 lines / ~14 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u5-documents |
+| U7 | Office sees asset meter-reading history photos load from presigned links (added 2026-10-28) | REQ-13 | api, web | U5 | ~150 lines / ~6 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u5-documents |
 
 - **Status** takes exactly one of: `not started` · `in progress — <branch>` · `built — <branch>`
   · `merged — PR #<n>` · `cut — <reason>`. Never a commit SHA.
@@ -397,6 +399,58 @@ Derived acceptance criteria in the spec are accepted as definition of done.
 
 - Presigned upload (PUT): out of scope, `intent.md` §5.
 - Sales quotation attachments and job artifacts: Q1 = A, follow-up ticket.
+
+---
+
+## U6 — Web ticket progress tracking uses presigned covers *(added 2026-10-28, Haris)*
+
+- **Outcome:** the office sees the signature, identity photo, checklist photos and incident photos on Progress Tracking from presigned S3 links; nothing streams through `/attachments/:id/download` unless there is no cover.
+- **Kind:** vertical.
+- **Requirements covered:** REQ-12.
+- **Depends on:** U5 (same branch; the shared loader builds on `toTicketCover`).
+- **Branch / PR base:** the current branch `feat/MOBILE-TICKET-PRESIGNED-IMAGES-u5-documents` (no new branch, developer's request).
+
+### Slice contents
+
+| Layer | Change | Notes |
+| --- | --- | --- |
+| Schema | N/A | |
+| API | `service/attachments/ticket-image.ts` + barrel: new `loadTicketCovers(repo, storage, ids)`; `job-progress.service.ts`: one `loadImages` per ticket detail, covers set on signatures, checklist answers, incident signature and evidence; `job-progress.module.ts`: `StorageModule`, `AttachmentsRepository`; `checklist-assignments.service.ts` `loadTicketImages` now calls the shared loader | specs: `job-progress.service.spec.ts` (constructor, expected objects), `job-progress.module.spec.ts` (overrides `S3StorageService`) |
+| Web | `attachment-thumbnail.tsx` (`image` prop, placeholder, presigned thumbnail, original in modal, one refetch, `/download` fallback), `signature-block.tsx`, `checklist-results.tsx`, `step-bodies/incident.tsx`, `use-ticket-progress.ts` (`ticketProgressKeys.tickets`) | every `data-testid` kept |
+| Shared | `job-progress.types.ts`: optional `signatureImage`, `identityPhotoImage`, `photoImage`, incident `signatureImage`, `ProgressAttachment.image` | |
+| Tests | not requested | existing specs updated to compile |
+
+### Reviewable as
+
+- **Demo:** open a ticket in progress tracking with a signed customer signature, identity photo, deficiency photo and incident photo: images show, Network tab has no `/attachments/:id/download` for them.
+
+### Deliberately not in this unit
+
+- Documents and PDFs (stay on `/download`); DAS loadout photos (proposed follow-up, D13).
+
+---
+
+## U7 — Asset meter-reading photos use presigned covers *(added 2026-10-28, Haris)*
+
+- **Outcome:** meter-reading photos in the asset history drawer load from presigned links.
+- **Kind:** vertical.
+- **Requirements covered:** REQ-13.
+- **Depends on:** U5.
+- **Branch / PR base:** the current branch.
+
+### Slice contents
+
+| Layer | Change | Notes |
+| --- | --- | --- |
+| Schema | N/A | |
+| API | `assets.service.ts`: `withPhotoImages` adds `image` to each photo of `listMeterReadings` and `createMeterReading` (constructor gains `S3StorageService`; `StorageModule` is already imported by `AssetManagementModule`); `assets.repository.ts`: select `placeholderDataUrl` | spec: `assets.service.spec.ts` constructor |
+| Web | `asset-meter-reading-history-drawer.tsx` (`EntityPhotoThumbnail`, one refetch of `meterReadingKeys.all`, `/download` fallback), `asset-management.meter.types.ts` (`AssetMeterReadingPhoto.image`) | new `data-testid` `asset-meter-history-photo` |
+| Shared | none | |
+| Tests | not requested | |
+
+### Deliberately not in this unit
+
+- DAS loadout photos (`das-loadout.mapper.ts`, `DylenLoadoutAttachmentThumb`): shown on the web through `/download`; not built, follow-up (D13).
 
 ---
 

@@ -86,7 +86,7 @@ Developer-chosen `category` labels (written when the attachment is linked, excep
 - [ ] Presigned upload (client PUT to S3). Uploads stay multipart POSTs to the API.
 - [ ] Removing or changing `GET /attachments/:id/download`. It stays as a fallback.
 - [ ] Moving or rewriting existing S3 objects and existing `attachments` rows (no backfill, no G2 work).
-- [ ] The web app's own attachment screens, except fixing callers broken by a response-shape change.
+- [ ] The web app's own attachment screens, except fixing callers broken by a response-shape change. *(Amended 2026-10-28: see the note after §12. Web progress tracking and asset meter-reading photos are now in scope; documents stay out.)*
 - [ ] Mobile surfaces outside the ticketing flow, such as sales quotation attachments and job artifacts: OPEN, see §12.
 - [ ] Resolving the field-ops FRD conflict (`field-ops-mobile-INDEX.md`). The `Lunch WTL 1` to `4` labels mirror the code's four-slot cap and settle nothing.
 - [ ] New tests (none requested; root `CLAUDE.md`).
@@ -153,5 +153,9 @@ Developer-chosen `category` labels (written when the attachment is linked, excep
   3. Pre-existing flat ticket images: confirm that a no-blur, original-as-thumbnail fallback is acceptable (no backfill).
 
 ---
+
+## Amended 2026-10-28 (Haris)
+
+Web progress tracking (the ticket images on Job -> Progress Tracking: customer signature, identity photo, checklist deficiency photos, checklist signatures, incident photos and signature) and the asset meter-reading photos in the history drawer are now IN scope. They use the same presigned S3 links as mobile and the entity photos. Intent §5's line "The web app's own attachment screens, except fixing callers broken by a response-shape change" is replaced by this: documents and PDF downloads (`downloadAttachmentBlob`, `openAttachmentBlob`, quotation documents, print dispatch packet, entity-notes files) stay out of scope and on `GET /attachments/:id/download`. The original intent text above is kept as first written.
 
 **Next step:** run the elaborator (`.ai/aidlc/agents/inception/tcg-elaborator.md`) against this file.

@@ -30,6 +30,7 @@ related_tickets:
 related_decisions:
   - 2026-10-27-mobile-ticket-images-ticketing-flow-only-old-images-not-backfilled.md
   - 2026-10-20-asset-photos-entity-images.md
+  - 2026-10-28-web-ticket-progress-and-meter-reading-images-on-presigned-covers.md
 tags: [module/field-ops, kind/decision, signatures, architecture, integrations]
 ---
 
@@ -69,7 +70,9 @@ original. D11 replaced it the same day:
     API still parses. The preview then falls back to `thumbnailUrl`.
   - Because the field is on every cover, list responses carry one more presigned URL per
     cover, about 600 characters each. Web reads `thumbnailUrl` and `placeholderDataUrl` from
-    a cover and ignores `originalUrl` at runtime.
+    a cover and ignores `originalUrl` at runtime. *(Out of date since U6 and U7, 2026-10-28:
+    web progress tracking and the meter-reading drawer now read `originalUrl`. The sentence is
+    kept as written. See "Amended 2026-10-28, second: web reads originalUrl (U6, U7)" below.)*
 - Ticket images uploaded before this change keep the D5 fallback
   (`decisions/2026-10-27-mobile-ticket-images-ticketing-flow-only-old-images-not-backfilled.md`).
 
@@ -135,6 +138,44 @@ as reasons.
 
 > Profile photos do not change. The default processor profile keeps the 160 px square cover crop and the 24 px blur. `ENTITY_IMAGE_*` constants, `EntityImageCover` and `EntityImageListItem` are not changed. The new shared constants and the `TicketImage` type are listed in spec D11. *(Replaced and removed 2026-10-28.)*
 
+## Amended 2026-10-28, second: web reads originalUrl (U6, U7)
+
+**What changed.** This corrects a statement of fact about the web. It changes no decision.
+D11 and D6 stand. The 640 / 80 / 32 numbers stand, and they still have no product source.
+
+- When this note was written, and when it was first amended, web ignored `originalUrl` at
+  runtime. That was true of the web covers of the time, such as `AssetListCover`.
+- Haris then widened the ticket's scope to two web surfaces. Units U6 and U7 built them on
+  branch `feat/MOBILE-TICKET-PRESIGNED-IMAGES-u5-documents`. Since then, web progress tracking
+  and the asset meter-reading drawer consume `EntityImageCover` from presigned URLs, and that
+  includes `originalUrl`. The scope decision is recorded in
+  `decisions/2026-10-28-web-ticket-progress-and-meter-reading-images-on-presigned-covers.md`.
+- **U6, web progress tracking** (spec REQ-12 and §11b D13, commit `53e62bf19`).
+  `apps/web/src/features/ticket-progress/components/attachment-thumbnail.tsx` shows the
+  cover's `placeholderDataUrl` and `thumbnailUrl` on the page. It opens `image.originalUrl` in
+  its on-page modal (`const src = image ? image.originalUrl : download.src;`, line 225). With
+  no cover, it falls back to `/download`.
+- **U7, asset meter-reading drawer** (spec REQ-13 and §11b D13, commit `fd9330e76`).
+  `apps/web/src/features/assets/asset/components/asset-meter-reading-history-drawer.tsx`
+  renders the photo's cover through `EntityPhotoThumbnail`. It links the photo to
+  `image.originalUrl`, which opens in a new tab. With no `image`, it falls back to `/download`.
+- **Not changed.** Every other web cover consumer still reads only `thumbnailUrl` and
+  `placeholderDataUrl`. This includes the asset list cover (`AssetListCover`, in
+  `apps/web/src/lib/api/asset-management.types.ts`). On 2026-10-28,
+  `grep -rn 'originalUrl' apps/web/src` found no other cover read. Its `entity-photos` hits
+  read `EntityImageListItem`, which is not a cover.
+
+**Text superseded in this note.** It is kept above, as written. The Decision list says:
+
+> Web reads `thumbnailUrl` and `placeholderDataUrl` from a cover and ignores `originalUrl` at runtime.
+
+The first amendment, under "What it costs", says:
+
+> Web ignores the extra field at runtime. Web's `AssetListCover` type gains the field, and the web list still shows the thumbnail only.
+
+Both are now true only of the web covers other than progress tracking and the meter-reading
+drawer. The second sentence of the second quote is still true.
+
 ## Effect on the vault
 
 - No vault file changes status. This note adjudicates no vault conflict and edits no
@@ -160,3 +201,9 @@ as reasons.
   `decisions/2026-10-28-ticket-attachment-category-labels.md`,
   `decisions/2026-10-28-ticket-incident-video-plain-file-undecodable-image-rejected-no-viewer.md`
   and `decisions/2026-10-27-mobile-ticket-images-ticketing-flow-only-old-images-not-backfilled.md`.
+- **Amended 2026-10-28, second (U6, U7).** No vault file changes status. In this note's
+  frontmatter, `related_decisions` gains
+  `2026-10-28-web-ticket-progress-and-meter-reading-images-on-presigned-covers.md`. No other
+  file is edited. The ticket's spec still has the older web wording, and it is not edited here:
+  - the §11b D11 row: "web ignores it at runtime and still shows the thumbnail"
+  - the §11a R9 row: "web covers read `thumbnailUrl` only"
