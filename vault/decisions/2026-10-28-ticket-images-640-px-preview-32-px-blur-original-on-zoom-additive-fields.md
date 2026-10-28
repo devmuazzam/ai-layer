@@ -1,6 +1,6 @@
 ---
-title: "Ticket images get a 640 px whole-image preview and a 32 px blur, the original only on zoom, and image objects are added beside the existing id fields — decision"
-source: decision/Syed Haris (CodingCops) — Q6 revised by D11, and D6, in MOBILE-TICKET-PRESIGNED-IMAGES spec §11b and §12, 2026-10-28
+title: "Ticket images get a 640 px whole-image preview and a 32 px blur, the original only on zoom, every image cover carries the original as originalUrl (no separate ticket type), and image objects are added beside the existing id fields — decision"
+source: decision/Syed Haris (CodingCops) — Q6 revised by D11, and D6, in MOBILE-TICKET-PRESIGNED-IMAGES spec §11b and §12, 2026-10-28; D11 amended the same day (commit 9f19d41e9)
 decided: 2026-10-28
 decided_by: >-
   Syed Haris (CodingCops), the requester of MOBILE-TICKET-PRESIGNED-IMAGES and the named
@@ -8,10 +8,20 @@ decided_by: >-
   replaced it the same day with spec §11b D11 ("yes to the approach and numbers"). He also
   confirmed D6 (additive response fields, names as listed). The answers are recorded in
   .ai/aidlc/MOBILE-TICKET-PRESIGNED-IMAGES/spec.md §11b (D6, D11 Reviewed by) and §12 Q6.
-  tcg-scrum did not see the session and records from the spec. This is a developer and
+  tcg-scrum did not see the session and records from the spec. Later on 2026-10-28, in a
+  live session, he amended D11: no separate ticket image type, and the shared
+  EntityImageCover carries originalUrl for every cover. That change is built in commit
+  9f19d41e9 (author haris). tcg-scrum did not see that session either. It records the
+  amendment from the session agent's relay and from the commit. This is a developer and
   requester decision. It binds this build. It is not a TCG client ruling, so the status is
   reference.
 status: reference
+provenance_note: >-
+  AMENDED 2026-10-28 by the same developer (Haris), the day it was written. The first version
+  recorded a new ticket-only image type and said EntityImageCover was not changed. Now there
+  is no separate type, and EntityImageCover itself gains originalUrl for every cover. The
+  sizes (640 / 80 / 32) and D6 stand. Status stays reference; the note is amended, not
+  superseded. The replaced text is kept under "Amended 2026-10-28" below.
 resolves:
   - MOBILE-TICKET-PRESIGNED-IMAGES/spec.md#q6
 conflicts_with: []
@@ -41,10 +51,25 @@ original. D11 replaced it the same day:
 - Stored variants are `original.webp` and `preview.webp`.
 - In effect this is option B (a thumbnail that keeps the whole image), applied to every
   ticket image, not to signatures only.
-- Profile photos do not change. The default processor profile keeps the 160 px square
-  cover crop and the 24 px blur. `ENTITY_IMAGE_*` constants, `EntityImageCover` and
-  `EntityImageListItem` are not changed. The new shared constants and the `TicketImage`
-  type are listed in spec D11.
+- Profile photos are processed as before. The default processor profile keeps the 160 px
+  square cover crop and the 24 px blur. The `ENTITY_IMAGE_*` constants and
+  `EntityImageListItem` are not changed. The new shared constants are listed in spec D11.
+- **Every image cover carries its original** (amended 2026-10-28, see below). There is no
+  separate ticket image type. The shared `EntityImageCover` itself gains `originalUrl`. Every
+  cover object the API returns is `{ id, placeholderDataUrl, thumbnailUrl, originalUrl }`:
+  the profile (`/users/me`), employee, DAS, tool and asset list covers, and field-ticket
+  images. `originalUrl` is the presigned S3 link to the stored original (up to 2048 px WebP).
+  - For a ticket image, `thumbnailUrl` is the presigned 640 px preview (`preview.webp`) and
+    `placeholderDataUrl` is the 32 px blur. The ticket processor profile is kept.
+  - Entity covers (profile, asset, tool, employee) keep the 160 px thumbnail and the 24 px
+    blur.
+  - Mobile preview and zoom views show `originalUrl` from the cover. Lists and thumbnails
+    use `thumbnailUrl` and `placeholderDataUrl`.
+  - Mobile's zod schema marks `originalUrl` optional, so a new app build against an older
+    API still parses. The preview then falls back to `thumbnailUrl`.
+  - Because the field is on every cover, list responses carry one more presigned URL per
+    cover, about 600 characters each. Web reads `thumbnailUrl` and `placeholderDataUrl` from
+    a cover and ignores `originalUrl` at runtime.
 - Ticket images uploaded before this change keep the D5 fallback
   (`decisions/2026-10-27-mobile-ticket-images-ticketing-flow-only-old-images-not-backfilled.md`).
 
@@ -75,6 +100,40 @@ As recorded in D11 and D6:
   are gone.
 - The response-shape change is still guardrail G5: `tcg-contract-tracer` runs, and callers
   are fixed in the same unit.
+- The "about 600 characters" per presigned URL is an estimate recorded with the amendment.
+  It was not measured, and the real length depends on the key and the signing credentials.
+
+## Amended 2026-10-28
+
+**What changed.** Haris amended D11 in a live Claude Code session on 2026-10-28, after units
+U1 to U5 were built. The change is in commit `9f19d41e9` on branch
+`feat/MOBILE-TICKET-PRESIGNED-IMAGES-u5-documents`. That branch also has a rebased history, so
+commit ids quoted earlier in the ticket's documents may not match.
+
+- Before (removed 2026-10-28): a new shared type `TicketImage = EntityImageCover & { originalUrl: string }` for ticket images only, with `EntityImageCover` itself not changed.
+- After: no separate type. `EntityImageCover` gains `originalUrl`, so every cover carries
+  it, as stated under Decision above.
+- Not changed: the ticket processor profile (640 px preview, quality 80, 32 px blur), the
+  entity profile (160 px thumbnail, 24 px blur), `EntityImageListItem`, the D5 fallback for
+  old rows, and D6.
+
+**Why, in the developer's words.** This is a paraphrase relayed from the session, not a
+verbatim quote:
+
+- The extra type was not needed, because `cover` should carry the original.
+- This should be generic for all cover objects.
+
+**What it costs.** These are effects of the change, recorded with it. Haris did not give them
+as reasons.
+
+- `originalUrl` is now part of every cover, not ticket images only. Each list response
+  carries one more presigned URL per cover, about 600 characters each.
+- Web ignores the extra field at runtime. Web's `AssetListCover` type gains the field, and
+  the web list still shows the thumbnail only.
+
+**Text replaced in this note.** It is kept here for the record. The Decision list said:
+
+> Profile photos do not change. The default processor profile keeps the 160 px square cover crop and the 24 px blur. `ENTITY_IMAGE_*` constants, `EntityImageCover` and `EntityImageListItem` are not changed. The new shared constants and the `TicketImage` type are listed in spec D11. *(Replaced and removed 2026-10-28.)*
 
 ## Effect on the vault
 
@@ -83,3 +142,21 @@ As recorded in D11 and D6:
 - `.ai/aidlc/MOBILE-TICKET-PRESIGNED-IMAGES/spec.md` §12 Q6: `Status:` set to
   `resolved — see decisions/2026-10-28-ticket-images-640-px-preview-32-px-blur-original-on-zoom-additive-fields.md`.
   **Done.** D6 and D11 have no §12 entry. Their §11b rows already carry Haris as reviewer.
+- **Amended 2026-10-28.** No vault file changes status, and no frontmatter outside this note
+  is edited. The ticket's records are amended in the same pass to say the same thing, each
+  edit marked "amended 2026-10-28", with the earlier text kept. **Done:**
+  - `.ai/aidlc/MOBILE-TICKET-PRESIGNED-IMAGES/spec.md`: the REQ-02 ledger row, REQ-02,
+    REQ-03, §4, §6 contracts, §7 types, §11a R9, §11b D5, D6 and D11, and the §12 Q6 Answer
+    line. No question is renumbered. No §14 box is ticked.
+  - `.ai/aidlc/MOBILE-TICKET-PRESIGNED-IMAGES/units.md`: the Q6 row, finding A1, and the U1,
+    U2, U3 and U5 slice rows.
+  - `.ai/aidlc/MOBILE-TICKET-PRESIGNED-IMAGES/state.md`: Resume and Last updated.
+- `.ai/aidlc/MOBILE-TICKET-PRESIGNED-IMAGES/patterns-p3-proposal.md` was amended on
+  2026-10-28 in another session, not by this note: its helper and response lines now name
+  `toTicketCover` and `EntityImageCover`. `.ai/claude/contexts/patterns.md` P3 read step 1
+  still shows the cover as `{ id, placeholderDataUrl, thumbnailUrl }`. It is Haris-only
+  tooling and is not edited here.
+- The other decision notes for this ticket name no ticket image type, so they are not changed:
+  `decisions/2026-10-28-ticket-attachment-category-labels.md`,
+  `decisions/2026-10-28-ticket-incident-video-plain-file-undecodable-image-rejected-no-viewer.md`
+  and `decisions/2026-10-27-mobile-ticket-images-ticketing-flow-only-old-images-not-backfilled.md`.

@@ -15,7 +15,7 @@ re-run. They are treated here as **resolved by Haris's in-session answers** (spe
 | REQ-10 | Q1 = A | Sales quotation attachments and job artifacts are **out**. Follow-up ticket, not a unit. `job-artifacts.http.ts` and quotation attachment code are not touched. |
 | REQ-11 | Q4 = C | Nearest-label mapping (spec Q4 Answer line, derived, flagged to confirm at review) is distributed to the unit that owns each link site: compliance to U1, checklist signature to U2, incident signature to U3, WTL identity photo to U4. |
 | Q5 = A | video plain file + presigned link; undecodable image rejected | Rejection applies to every image-group upload route (U1 builds it); video handling is U3. |
-| Q6 (revised) | superseded by spec D11 (Haris, 2026-10-28): ticket-only 640 px aspect-preserving preview as `thumbnailUrl`, 32 px blur as `placeholderDataUrl`; signatures and identity photos display from the preview, original only on zoom | Responses use the new `TicketImage` type (`EntityImageCover & { originalUrl }`); see A1 below. |
+| Q6 (revised) | superseded by spec D11 (Haris, 2026-10-28): ticket-only 640 px aspect-preserving preview as `thumbnailUrl`, 32 px blur as `placeholderDataUrl`; signatures and identity photos display from the preview, original only on zoom | Responses use the shared `EntityImageCover`, which gains `originalUrl` for every cover *(amended 2026-10-28, Haris: was "the new `TicketImage` type (`EntityImageCover & { originalUrl }`)", now removed)*; see A1 below. |
 | D6 | confirmed additive: new fields beside the bare ids | Bare ids stay in every response; older mobile builds and the offline queue keep working. No cross-surface break window. |
 
 Derived acceptance criteria in the spec are accepted as definition of done.
@@ -39,15 +39,18 @@ Derived acceptance criteria in the spec are accepted as definition of done.
 
 ## Findings for the elaborator (not units)
 
-- **A1 — shape for ticket images (resolved by spec D11, Haris 2026-10-28).** Single-image
-  fields on tickets use the new shared type **`TicketImage = EntityImageCover & { originalUrl: string }`**
-  (`id`, `placeholderDataUrl`, `thumbnailUrl`, `originalUrl`). `thumbnailUrl` is the presigned
-  640 px preview and `placeholderDataUrl` the 32 px blur, so the field names match the profile
-  `cover`; `originalUrl` feeds the full-screen/zoom view. `EntityImageCover` and
-  `EntityImageListItem` are unchanged, so web and profile photos are not disturbed. Galleries
-  (incident evidence) are `TicketImage[]`. Property names follow D6 (`signatureImage`,
-  `identityPhotoImage`, and the same `…Image` suffix elsewhere). Record in the PR AI-decisions
-  table and show it to `tcg-contract-tracer`.
+- **A1 — shape for ticket images (resolved by spec D11, Haris 2026-10-28; amended 2026-10-28).**
+  Image fields on tickets, single or in a gallery, use the shared **`EntityImageCover`**
+  (`id`, `placeholderDataUrl`, `thumbnailUrl`, `originalUrl`). `EntityImageCover` itself gains
+  `originalUrl`, so every cover the API returns carries it (profile `/users/me`, employee, DAS,
+  tool and asset lists, and field-ticket images). For a ticket image `thumbnailUrl` is the
+  presigned 640 px preview and `placeholderDataUrl` the 32 px blur; entity covers keep the
+  160 px thumbnail and 24 px blur. `originalUrl` feeds the full-screen/zoom view. Galleries
+  (incident evidence) are `EntityImageCover[]`. `EntityImageListItem` is unchanged. Mobile's
+  zod cover schema marks `originalUrl` optional and falls back to `thumbnailUrl`. Property
+  names follow D6 (`signatureImage`, `identityPhotoImage`, and the same `…Image` suffix
+  elsewhere). Record in the PR AI-decisions table and show it to `tcg-contract-tracer`.
+  - *Amended 2026-10-28 (Haris; commit `9f19d41e9`):* this finding first read "the new shared type `TicketImage = EntityImageCover & { originalUrl: string }`", galleries `TicketImage[]`, and "`EntityImageCover` and `EntityImageListItem` are unchanged, so web and profile photos are not disturbed". That type is removed. Why, as Haris put it: the extra type was not needed because `cover` should carry the original, and this should be generic for all cover objects. Effect: every list response carries one more presigned URL per cover (about 600 characters, estimate); web ignores the field at runtime.
 - **A2 — rejected uploads and the offline queue.** Q5 = A makes ticket upload routes return an
   error for an undecodable image (they accepted any file before). Whether mobile `sync/drain.ts`
   retries or drops a 4xx on a queued upload is not in the spec (R7 says "unchanged"). U1
@@ -114,14 +117,14 @@ Derived acceptance criteria in the spec are accepted as definition of done.
 | API: key tree | `S3StorageService.buildEntityImageKey` gains optional `subfolder` (default `profile-pictures`); add `buildTicketFileKey` (D1) | profile keys byte-identical |
 | API: processor profile | `EntityImageProcessor.process(input, profile = ENTITY_PROFILE)`; add the ticket profile: preview 640 px `fit: 'inside'` WebP q80, placeholder 32 px blur (D11) | default profile = today's output; profile photos byte-identical |
 | API: variant store | extract `storeImageVariants(keyPrefix, buffer, profile)` from `attachment-photos.service.ts:137-168` (D2); `AttachmentPhotosService.upload` calls it with the default profile; ticket routes pass the ticket profile (variants `original`, `preview`) | behaviour-preserving for profile photos; guard with existing `attachment-photos.*.spec.ts` |
-| API: presign-shape | helper: row to `TicketImage` with the flat-object fallback (D5, Q3 = A) | old row: `thumbnailUrl = originalUrl = presigned fileName`, `placeholderDataUrl: null` |
+| API: presign-shape | helper: row to `EntityImageCover` (`toTicketCover`) with the flat-object fallback (D5, Q3 = A) *(amended 2026-10-28: was "row to `TicketImage`" via `toTicketImage`, now removed)* | old row: `thumbnailUrl = originalUrl = presigned fileName`, `placeholderDataUrl: null` |
 | API: repository | `AttachmentsRepository.setCategory(attachmentId, category)`, tenant-scoped (D4) | `tcg-prisma-guardian` on this method |
 | API: guard service | `TicketAttachmentGuardService.storeUpload` gains optional image path (`ticketId`, `group`): decode, store variants, set `placeholderDataUrl`, reject undecodable with an error (Q5 = A). Legacy flat path stays for callers that pass no `group` | keeps `clientUploadId` idempotency and `P2002` race path; all-or-nothing cleanup. Constructor gains `EntityImageProcessor`: update all four modules providing it |
 | API: signatures | `ticket-signatures.service.ts`: `recordSignature` writes `category` via `setCategory` (sig1: `Customer First Signature`, `Customer First Identity Photo`; sig2: `Customer Last …`; compliance: `Compliance Signature` for both signature and identity photo); upload route passes `group: signatures`; `TicketSignatureResponse` gains `signatureImage`, `identityPhotoImage` (A1); bare ids kept (D6) | other step keys: category null (A4). `cleanupReplaced` unchanged |
 | Mobile: component | new `components/field/attachment-image.tsx` (D7, D8): `expo-image`, no `Authorization` on `X-Amz-Signature` URLs, `localUri` first, blur beneath, one `onExpired` refetch | search all mobile `components/` dirs for an existing image component first; StyleSheet + `theme/tokens.ts` |
-| Mobile: contracts | `ticket-signature.contract.ts`, its parser under `data/services/*`, `ticket-signatures.mock.ts`; reuse the `cover` zod schema from `identity.contract.ts:45-47`, extended with `originalUrl` for `TicketImage` | additive optional fields |
+| Mobile: contracts | `ticket-signature.contract.ts`, its parser under `data/services/*`, `ticket-signatures.mock.ts`; reuse the `cover` zod schema from `identity.contract.ts:45-47`, which itself gains `originalUrl` (optional on the wire, falls back to `thumbnailUrl`) *(amended 2026-10-28: was "extended with `originalUrl` for `TicketImage`", a separate schema, now removed)* | additive optional fields |
 | Mobile: display sites | `signature-capture-field.tsx`, `signer-capture.tsx` (optional `image` prop; callers that pass none keep the legacy path), `photo-preview-modal.tsx` (optional image prop), `Sig1Body.tsx`, `Sig2Body.tsx`, `ComplianceBody.tsx`, `signature-rehydrate.ts`; signature and identity photo show the 640 px **preview** (`thumbnailUrl`), the original only on zoom (D11) | `local:` / `file://` branches of `resolvePhotoUri` untouched |
-| Shared (`packages/shared`) | new `constants/ticket-image.ts` (`TICKET_IMAGE_PREVIEW_SIZE = 640`, `TICKET_IMAGE_PREVIEW_WEBP_QUALITY = 80`, `TICKET_IMAGE_PLACEHOLDER_WIDTH = 32`, `TICKET_IMAGE_VARIANTS`), new type `TicketImage` (A1, D11), both exported from the barrels; existing entity-image exports unchanged | build `@tcg/shared` before `pnpm typecheck` |
+| Shared (`packages/shared`) | new `constants/ticket-image.ts` (`TICKET_IMAGE_PREVIEW_SIZE = 640`, `TICKET_IMAGE_PREVIEW_WEBP_QUALITY = 80`, `TICKET_IMAGE_PLACEHOLDER_WIDTH = 32`, `TICKET_IMAGE_VARIANTS`), exported from the barrels; `EntityImageCover` gains `originalUrl` (A1, D11) *(amended 2026-10-28: was "new type `TicketImage` (A1, D11), both exported from the barrels; existing entity-image exports unchanged"; that type is removed)* | build `@tcg/shared` before `pnpm typecheck` |
 | Category labels | five rows of the REQ-04 table + compliance labels per Q4 | strings exact, longest 29 chars |
 | Key tree | `tenants/{t}/job-tickets/{ticketId}/signatures/{attachmentId}/{original,preview}.webp` | `ticketId` is `ticket.id` |
 | Tests | not requested | run existing specs only |
@@ -185,7 +188,7 @@ Derived acceptance criteria in the spec are accepted as definition of done.
 | Layer | Change | Notes |
 | --- | --- | --- |
 | Schema (`apps/api/prisma`) | N/A — none | |
-| API | `checklist-assignments.service.ts`: item photo upload route passes `group: checklist-photos`; `submitAnswers` calls `setCategory` on each answer's `photoAttachmentId` (`Pre-Trip Checklist` via `submitPretrip`, `Post-Trip Checklist` via `submitPosttrip`, `JSA Checklist` via `submitJsa`); `saveChecklistSignature` passes `group: signatures` and labels the signature with its checklist's label (Q4); checklist read responses (`GET …/checklists/{pretrip,jsa,posttrip}`) gain `photoImage` per answer (and a signature image field for the checklist signature), `TicketImage` (A1); bare `photoAttachmentId` kept | uses U1 helpers, no new helper |
+| API | `checklist-assignments.service.ts`: item photo upload route passes `group: checklist-photos`; `submitAnswers` calls `setCategory` on each answer's `photoAttachmentId` (`Pre-Trip Checklist` via `submitPretrip`, `Post-Trip Checklist` via `submitPosttrip`, `JSA Checklist` via `submitJsa`); `saveChecklistSignature` passes `group: signatures` and labels the signature with its checklist's label (Q4); checklist read responses (`GET …/checklists/{pretrip,jsa,posttrip}`) gain `photoImage` per answer (and a signature image field for the checklist signature), `EntityImageCover` (A1) *(amended 2026-10-28: was `TicketImage`, now removed)*; bare `photoAttachmentId` kept | uses U1 helpers, no new helper |
 | Web (`apps/web`) | N/A — no web call to `/field/tickets/*` (spec §5) | |
 | Mobile | `checklist.contract.ts` + parser + checklist mocks; `checklist-rehydrate.ts`, `checklist-units.ts`, `ChecklistEngine.tsx`, `deficiency-panel.tsx`, `photo-thumb.tsx`, `photo-preview-modal.tsx` (checklist callers), the checklist `SignatureCaptureField` caller; render through `AttachmentImage`, `onExpired` refetches the checklist query | `local:` previews unchanged; thumbnails and previews use `thumbnailUrl` (640 px), full-screen uses `originalUrl` |
 | Shared (`packages/shared`) | none | |
@@ -242,7 +245,7 @@ Derived acceptance criteria in the spec are accepted as definition of done.
 | Layer | Change | Notes |
 | --- | --- | --- |
 | Schema (`apps/api/prisma`) | N/A — none | |
-| API | `ticket-incidents.service.ts`: `uploadAttachment` passes `group: incident-evidence` for `image/*` (variants, undecodable rejected) and stores non-image evidence as a plain file with a presigned link (Q5 = A), sets `category = Incident Evidence` directly (incident known at upload); `create` labels the linked customer signature `Incident Evidence` via `setCategory` (Q4); incident create/list responses gain `images: TicketImage[]` for evidence, a link field for video files, and a signature image field (names chosen by executor, D6 style, recorded in PR); bare ids kept | video key under `incident-evidence/` with a UUID name and extension, per D9 pattern |
+| API | `ticket-incidents.service.ts`: `uploadAttachment` passes `group: incident-evidence` for `image/*` (variants, undecodable rejected) and stores non-image evidence as a plain file with a presigned link (Q5 = A), sets `category = Incident Evidence` directly (incident known at upload); `create` labels the linked customer signature `Incident Evidence` via `setCategory` (Q4); incident create/list responses gain `images: EntityImageCover[]` for evidence *(amended 2026-10-28: was `images: TicketImage[]`, now removed)*, a link field for video files, and a signature image field (names chosen by executor, D6 style, recorded in PR); bare ids kept | video key under `incident-evidence/` with a UUID name and extension, per D9 pattern |
 | Web (`apps/web`) | N/A | |
 | Mobile | `ticket-incident.contract.ts` + parser + `ticket-incidents.mock.ts`; `use-incident-report.ts`, `incident-sheet.tsx`, photo preview; evidence gallery and signature through `AttachmentImage`; video opens from the presigned link, with the existing path as fallback | find how video is shown today before changing (not in spec) |
 | Shared (`packages/shared`) | none | |
@@ -354,7 +357,7 @@ Derived acceptance criteria in the spec are accepted as definition of done.
 | Layer | Change | Notes |
 | --- | --- | --- |
 | Schema (`apps/api/prisma`) | N/A — none | |
-| API | `ticket-attachments.service.ts`: `upload` stores non-image files under `buildTicketFileKey` (`documents/{uuid}.{ext}`), and `image/*` through `storeImageVariants` in group `attachments` (A3; undecodable image rejected, Q5 = A); `listForTicket` rows gain a presigned download link for documents (D9, `presignGetUrl(fileName)`) and `TicketImage` for images; `category` unchanged (no label for documents); the constructor gains `EntityImageProcessor`, so update its module; `/download` route untouched | property names chosen by executor, D6 style, recorded in PR; `ticketId` (UUID) must be passed in: check `resolveTicketCode` |
+| API | `ticket-attachments.service.ts`: `upload` stores non-image files under `buildTicketFileKey` (`documents/{uuid}.{ext}`), and `image/*` through `storeImageVariants` in group `attachments` (A3; undecodable image rejected, Q5 = A); `listForTicket` rows gain a presigned download link for documents (D9, `presignGetUrl(fileName)`) and `EntityImageCover` for images *(amended 2026-10-28: was `TicketImage`, now removed)*; `category` unchanged (no label for documents); the constructor gains `EntityImageProcessor`, so update its module; `/download` route untouched | property names chosen by executor, D6 style, recorded in PR; `ticketId` (UUID) must be passed in: check `resolveTicketCode` |
 | Web (`apps/web`) | N/A | |
 | Mobile | `ticket-attachment.contract.ts` + parser; `ticket-attachments.http.ts` `download`; `ticket-attachment-file.ts` `openAttachmentFile` fetch/download the presigned link then `Sharing.shareAsync`, arraybuffer path as offline fallback; attachments sheet image rows through `AttachmentImage` | whether the shared file keeps its original name is the executor's call; record in PR |
 | Shared (`packages/shared`) | none | |
@@ -402,6 +405,7 @@ Derived acceptance criteria in the spec are accepted as definition of done.
 Write out a `patterns.md` P3 sub-shape entry for Haris (ticket images: multiple per ticket, no
 `cover_attachment_id`, existing ticket-scoped upload routes, no `/attachments/photos`; reuse the
 processor, `EntityImageCover`/`EntityImageListItem`, UUID-only keys under `job-tickets/{ticketId}/`).
+*(Amended 2026-10-28, D11: ticket responses use `EntityImageCover` only, which now carries `originalUrl` on every cover.)*
 `.ai/claude/**` is changed only when `git -C .ai config user.email` is `syed.haris@codingcops.com`.
 Not a unit; no executor edits it. Also a follow-up ticket for REQ-10 (quotation attachments, job artifacts).
 

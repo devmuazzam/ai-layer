@@ -22,9 +22,11 @@ through the existing ticket-scoped routes. They reuse P3's image pipeline and re
   cover-crop thumbnail and 24 px blur; `TICKET_PROFILE` makes a 640 px `fit: 'inside'` WebP
   preview (quality 80) and a 32 px blur. Constants: `packages/shared/src/constants/ticket-image.ts`.
 - `storeImageVariants(...)` in `service/attachments` — decode, put both objects, all or nothing.
-- `toTicketImage(storage, row)` — turns a row into `TicketImage`
-  (`EntityImageCover & { originalUrl }`). A row whose key is not in the ticket tree is an old
-  flat object: `thumbnailUrl = originalUrl`, no blur.
+- `toTicketCover(storage, row)` — turns a row into an `EntityImageCover`
+  (`id`, `placeholderDataUrl`, `thumbnailUrl`, `originalUrl`; `originalUrl` was added to the
+  shared cover for every entity, amended 2026-10-28, so there is no separate ticket type). A row
+  whose key is not in the ticket tree is an old flat object: `thumbnailUrl = originalUrl`, no
+  blur.
 - `ticketImageObjectKeys(fileName)` — every S3 object a row owns. **Every delete path must use it**,
   or the `preview.webp` is left behind.
 - Presigned links are signed locally; never send an `Authorization` header with one (P3 rule).
@@ -41,7 +43,7 @@ through the existing ticket-scoped routes. They reuse P3's image pipeline and re
 - `attachments.category` is a label written **when the attachment is linked**, not at upload (the
   upload route knows no step, checklist type or break number). Use `AttachmentsRepository.setCategory`
   on an id already verified for this ticket; a failed label write is logged, never fails the save.
-- Responses add `…Image: TicketImage | null` beside the bare ids (additive), loaded with one
+- Responses add `…Image: EntityImageCover | null` beside the bare ids (additive), loaded with one
   tenant-scoped `findByIds` per read.
 - Mobile renders through `AttachmentImage` and refetches the owning query once when a link fails.
 
