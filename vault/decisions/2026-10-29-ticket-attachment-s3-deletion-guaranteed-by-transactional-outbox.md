@@ -79,6 +79,11 @@ in `apps/api/src/usecase/attachments/attachments.service.ts`, called from
 `apps/api/src/presentation/attachments/attachments.controller.ts`). Spec §11c listed it as a
 follow-up. **Haris folded it into U2** on 2026-10-29, so it uses the outbox too.
 
+Checked 2026-10-30 (developer answer "Fold into U2", relayed by the coordinator): this note
+records the sixth site correctly, and Haris confirmed the shared code name
+`TICKET_ATTACHMENT_ERROR_CODES.ATTACHMENT_IN_USE` for the signature-referenced 409 (D14; in
+`packages/shared/src/utils/ticket-completion-window.ts` on the U2 branch).
+
 ### A missing id on the Attach File delete returns 204
 
 `TicketAttachmentsService.remove` returns `204` when the attachment id does not exist. A

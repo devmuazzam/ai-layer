@@ -752,7 +752,7 @@ Rows D1 to D4 record the developer's decisions of 2026-10-29 (relayed in the req
 - **Candidates:** `apps/mobile/app/(field)/field.tsx` (handleRefresh); `apps/mobile/features/field-ticket/use-retry-failed-sync.ts` (`FAILED_SYNC_OFFLINE_MESSAGE`, the one place to change).
 - **Owner:** Haris
 - **Workaround, if any:** none needed.
-- **Status:** answered — developer, session 2026-10-30; built in U5 (`use-retry-failed-sync.ts`).
+- **Status:** resolved — see decisions/2026-10-29-mobile-offline-queue-failed-sync-policy-three-retries-then-tap-to-retry.md (developer answer, session 2026-10-30, status `reference`; the exact second sentence is the AI's; built in U5, `use-retry-failed-sync.ts`).
 
 ### Q15 — Is the first foreground send counted, and does the pre-submit drain resend an exhausted entry? (raised by the U5 executor)
 
@@ -768,7 +768,7 @@ Rows D1 to D4 record the developer's decisions of 2026-10-29 (relayed in the req
 - **Candidates:** `apps/mobile/features/field-ticket/flow/ticket-step-screen.tsx` (`ackStepProgress`); `apps/mobile/features/field-ticket/sync/drain.ts` (`onePass`).
 - **Owner:** Haris
 - **Workaround, if any:** none needed.
-- **Status:** answered — developer, session 2026-10-30; built in U5 (`drain.ts` `retryExhausted`, `ticket-step-screen.tsx` `blockSubmit`).
+- **Status:** (b) resolved — see decisions/2026-10-29-mobile-offline-queue-failed-sync-policy-three-retries-then-tap-to-retry.md (developer answer, session 2026-10-30, status `reference`; the one-resend rule is an AI decision the developer delegated; built in U5, `drain.ts` `retryExhausted`, `ticket-step-screen.tsx` `blockSubmit`). (a) unchanged: answered — left as built (the foreground ack failure is not counted); not resolved by that note.
 
 ## 13. What this spec deliberately does not specify
 

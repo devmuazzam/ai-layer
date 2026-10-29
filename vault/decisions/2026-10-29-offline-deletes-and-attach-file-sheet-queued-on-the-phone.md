@@ -2,6 +2,7 @@
 title: "Offline deletes of uploaded ticket photos and the Attach File sheet are queued on the phone: a 409 is handled by cause, a photo whose upload is still queued cancels both, Attach File has only the 50 MB per-file cap and a \"Pending sync\" marker, failed outbox rows are kept and logged, and the Attach File queue is a reserved key in the draft's sync ledger — decision"
 source: decision/Syed Haris (CodingCops) — his answers to MOBILE-OFFLINE-DELETE-QUEUE spec §12 in a Claude Code session, 2026-10-29
 decided: 2026-10-29
+amended: '2026-10-30 — section "Added later — a queued Attach File upload the server refuses for good"'
 decided_by: >-
   Syed Haris (CodingCops), the developer and requester of MOBILE-OFFLINE-DELETE-QUEUE, in
   conversation with Claude Code on 2026-10-29. He answered Q2, Q3, Q5, Q6, Q7 and Q13 of
@@ -105,6 +106,38 @@ Smaller assumptions in the same spec, also not decisions:
 - The Attach File sheet receives only a ticket id and sits outside the flow store. If no draft
   can be reached or created from it, the executor stops and raises a new §12 question. It does
   not build a second queue (REQ-06, `units.md` F2).
+
+## Added later — a queued Attach File upload the server refuses for good
+
+Source: Haris, in conversation with Claude Code (the U4 "wedge question"; recorded in
+`.ai/aidlc/MOBILE-OFFLINE-DELETE-QUEUE/units.md`, U4 block, *AI decisions made in U4*, and
+relayed by the coordinator, session 2026-10-29/30). It is not a §12 question, so no `Status:`
+line changes for it. Status `reference`, as for the rest of this note.
+
+- **The developer's choice:** "Drop it and tell the crew".
+- **Dropped** means: the queued `uploadAttachment` op is removed from the ledger and the
+  local copy of the file is deleted. Later files under the same key still send.
+- **Told** means: the server's own message is shown through the existing error display
+  (`showGlobalToast` with `formatApiError`). No new copy is written and nothing is prepended.
+- **Refused for good** means a server-answered HTTP **400, 413, 415 or 422**
+  (`UPLOAD_REFUSED_FOR_GOOD` in `apps/mobile/features/field-ticket/sync/step-ops.ts`). This
+  list is the **AI's concrete reading** of "refused permanently", not the developer's words.
+- **Not dropped:** a 5xx, no answer from the server, 401, 403, 404, 408, 429 and 409. They
+  keep their existing handling. A window-closed 409 still keeps the op and the "Request
+  approval" path (Q2).
+
+**Also confirmed by Haris (relayed, 2026-10-30):** the shared code name
+`TICKET_ATTACHMENT_ERROR_CODES.ATTACHMENT_IN_USE`. The line above under *Gaps the AI filled*
+that calls `ATTACHMENT_IN_USE` "the AI's choice (D14)" is kept as the record; the name is now
+developer-confirmed.
+
+### AI choices in this section — NOT the developer's words
+
+- The status list 400, 413, 415, 422 for "refused for good", and the list of statuses that
+  are not dropped.
+- Continuing with later files in the key after a drop (the drop itself, op and local file,
+  is the developer's).
+- Showing the server's message as it stands, with no file name prepended.
 
 ## What this does not decide
 

@@ -2,6 +2,7 @@
 title: "Failed-sync policy for queued ticket changes on mobile: no retention limit, one send then at most 3 retries counting only server-answered errors, then \"Sync failed — tap to retry\" on the ticket card and the completed rows in Jobs; the tap probes the API, resets the count and starts a drain — decision"
 source: decision/Syed Haris (CodingCops) — his answers to MOBILE-OFFLINE-DELETE-QUEUE spec §12 Q4, Q9, Q10, Q12 and the retry count in a Claude Code session, 2026-10-29
 decided: 2026-10-29
+amended: '2026-10-30 — section "Added 2026-10-30 — Q14 and Q15(b)"'
 decided_by: >-
   Syed Haris (CodingCops), the developer and requester of MOBILE-OFFLINE-DELETE-QUEUE, in
   conversation with Claude Code on 2026-10-29. He answered Q4, then the retry count, Q12, Q9
@@ -15,6 +16,8 @@ resolves:
   - MOBILE-OFFLINE-DELETE-QUEUE/spec.md#q9
   - MOBILE-OFFLINE-DELETE-QUEUE/spec.md#q10
   - MOBILE-OFFLINE-DELETE-QUEUE/spec.md#q12
+  - MOBILE-OFFLINE-DELETE-QUEUE/spec.md#q14
+  - MOBILE-OFFLINE-DELETE-QUEUE/spec.md#q15 # part (b) only; (a) is not resolved here
 conflicts_with: []
 related_tickets:
   - MOBILE-OFFLINE-DELETE-QUEUE
@@ -103,6 +106,76 @@ These are the AI's assumptions in D19 and REQ-12. Each one is reviewable in the 
 - The badge's look: the shared `Badge` component, as the existing "Offline" badge uses. The
   "Offline" badge may show beside it. Haris gave the text, not the look.
 
+## Added 2026-10-30 — Q14 and Q15(b)
+
+Source: `.ai/aidlc/MOBILE-OFFLINE-DELETE-QUEUE/spec.md` §12 Q14 and Q15 Answer lines; `state.md`
+U5 entry. Haris, in conversation with Claude Code, 2026-10-30. Status `reference`, as for the
+rest of this note. This section refines step 3 of *The tap* and the assumption "A failed
+entry still blocks later entries and the submit" above; the earlier text is kept as the
+record.
+
+### Q14 — what the badge tap says when the probe fails
+
+Haris, verbatim: "if we try to click on this while connected to internet then we should say
+server not responding or something went wrong, try after a few minutes; in offline mode,
+clicking on it should say Offline - will sync when reconnected".
+
+Built as two cases, both after `isApiReachable()` fails:
+
+- The phone's network flag says **offline**: the existing text "Offline — will sync when
+  reconnected" (the Field tab's text).
+- The phone's network flag says **online**: "Server not responding. Please try again in a few
+  minutes."
+
+The sense of the second message is the developer's. **The exact sentence is the AI's** and can
+be reworded. It lives in `apps/mobile/features/field-ticket/use-retry-failed-sync.ts`.
+
+### Q15(b) — the pre-submit check and an exhausted entry
+
+Haris, verbatim: "Implement which is best. But if the retries are blocked and ticket is not
+getting submitted then instead of generic message we need to show specific message
+indicating what is the actual issue." (The spec's Q15 Answer line renders it with light
+edits.)
+
+Two parts, with different owners:
+
+- **The developer's requirement:** a submit blocked by exhausted retries shows a specific
+  message naming the actual issue, not a generic one.
+- **The AI's choice, delegated by "implement which is best":** the pre-submit check
+  (`useDrainTicket`, run when the crew presses Complete) resends each exhausted entry **once**.
+  The count is not reset. If the resend fails, the entry stays exhausted (count capped at 4)
+  and the submit stays blocked.
+
+The blocked-submit message then reads `<step title>: <the server's own message>`. It replaces
+"The server does not have everything for: <step>". That generic line is kept only as a
+fallback when the entry holds no server message. For the reserved delete and upload queue
+keys, the server's message is shown as a toast. Built in U5 (`drain.ts` `retryExhausted`,
+`ticket-step-screen.tsx` `blockSubmit`).
+
+### Q15(a) — not resolved by this note
+
+Q15(a) asks whether a foreground-failed progress ack (`ackStepProgress`) counts as a send. It
+was left as built: uncounted, so such a step gets 5 sends, not 4. That is the AI's reading of
+"implement which is best", not a ruling on (a). Its §12 entry is left as it was.
+
+### AI choices in this section — NOT the developer's words
+
+- The exact English "Server not responding. Please try again in a few minutes."
+- The one-resend rule at pre-submit, with no count reset and the count capped at 4.
+- The message shape `<step title>: <server message>`, the generic-line fallback and the toast
+  for the reserved keys.
+- Leaving Q15(a) uncounted.
+- (In the related note) the 400, 413, 415, 422 status list for dropping a queued Attach File
+  upload refused for good. See
+  `decisions/2026-10-29-offline-deletes-and-attach-file-sheet-queued-on-the-phone.md`.
+
+### Still not answered — Q8 and Q11
+
+**Haris has not answered Q8 or Q11.** Q8 (confirm the derived acceptance criteria) stays
+`open`. Q11 (does the rule cover a failed ticket submit) stays `open`, with the "queued ops
+only" workaround. The Q15(b) work does not change the submit paths themselves. This note
+decides neither.
+
 ## What this does not decide
 
 - **Q11**, a failed ticket submit (above).
@@ -121,3 +194,6 @@ These are the AI's assumptions in D19 and REQ-12. Each one is reviewable in the 
 - `.ai/aidlc/MOBILE-OFFLINE-DELETE-QUEUE/spec.md` §12: the `Status:` lines of Q4, Q9, Q10 and
   Q12 are changed from `answered` to resolved, pointing at this note. **Done** (2026-10-29).
   Q11 is unchanged (`open`). No other text in the spec is changed.
+- 2026-10-30: the `Status:` line of Q14 is changed from `answered` to resolved, and the
+  `Status:` line of Q15 to resolved for part (b) only, both pointing at this note. **Done**
+  (2026-10-30). Q15(a), Q8 and Q11 are not resolved. No other text in the spec is changed.
