@@ -566,7 +566,7 @@ Per endpoint:
 - **Blocked:** nothing.
 - **Owner:** Haris
 - **Workaround, if any:** orphans accumulate silently.
-- **Status:** open
+- **Status:** resolved — see decisions/2026-10-29-ticket-attachment-s3-deletion-guaranteed-by-transactional-outbox.md (option X: a transactional outbox retries a failed S3 delete until it succeeds; no lifecycle rule; orphans already left are swept by a separate ticket; decided under MOBILE-OFFLINE-DELETE-QUEUE spec §11b D1).
 
 ## 13. What this spec deliberately does not specify
 
