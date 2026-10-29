@@ -823,7 +823,7 @@ someone has confirmed otherwise.
   earning code, hours, rate and amount actually paid. **So the ERP can now detect ADP-side edits —
   after processing, by comparing what it sent with what was paid.** What remains is product, not
   access: when to compare, what to do with a difference, and who sees it (Brian Petros / Corrina
-  Bustos). Pay Statements: path still 404.
+  Bustos). Pay Statements also work, per worker: `/payroll/v1/workers/{aoid}/organizational-pay-statements` (+`/{id}`).
 
 ## Excel or API — the ADP submission path is not decided
 

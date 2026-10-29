@@ -385,7 +385,10 @@ Probed on **week 44, 2026** (`PR-PRC`), bodies kept only on syed.haris's machine
 | --- | --- |
 | `…/{wk44}/associate-payment-summary/earnings` | **200**, ~1 MB, `meta.totalNumber` **102** associates, *"Company Error Count:0 / Employee Error Count:0"*. Per associate (`associateOID`) → payments → earnings sections → items: **`earningID.idValue` + `idDescription`, `timeWorkedQuantity` (hours), `payRate.rateValue`, `earningAmount`, `earningClassificationCode`**, plus per-item and per-payment `payrollAccumulations` (YTD amount/hours) |
 | `…/{wk44}/associate-payment-allocations/non-statutory-deductions` | **200**, 102 associates; deduction id + description + amount taken, by section |
-| `GET /payroll/v1/organizational-pay-statements` | **404** — exact path still to find in API Explorer |
+| `GET /payroll/v1/organizational-pay-statements` | **404** — needs the worker in the path (next rows) |
+| `GET /payroll/v1/workers/{aoid}/organizational-pay-statements` | **200** — list per worker: `payDate`, `grossPayAmount`, `netPayAmount`, `totalHours`, `payDetailUri`, `statementImageUri` (6 statements, 10-01 → 10-29, for the worker probed). `?numberoflastpaydates=1` also accepted |
+| `GET /payroll/v1/workers/{aoid}/organizational-pay-statements/{id}` | **200** — one statement: pay period, earnings (code name, hours, rate, amount, YTD), deductions and deduction categories (period + YTD), gross/net (+YTD), and **pay distributions (deposit amounts, method, file number)** — the most sensitive data the project can now read |
+| `GET /payroll/v1/workers/{aoid}/pay-statements` (non-organizational) | still **403** — not the WFN path |
 
 **Earning codes present in week 44** (count of items): `*RG` Regular, `*OT` Overtime, `DT`, `LBH`
 BOOM REG, `LBO` BOOM OT, `LBD` BOOM DBL, `SUB` Substpay NT, `ML R/O/D`, `FR R/O/D`, `LO R/O/D`,
