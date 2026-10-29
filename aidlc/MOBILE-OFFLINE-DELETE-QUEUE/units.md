@@ -765,6 +765,16 @@ no boot. No new tests.
 
 ---
 
+### U5 build notes and analyser fixes (recorded by the executor, 2026-10-30)
+
+- Field: `StepSyncEntry.refusedSends`; counted in `failedStep` (`drain.ts`), `markRejectedStep` (`background-sync.ts`) and, after the analyser's F2, in `ticket-step-screen.tsx` `ackStepProgress` (the foreground first send, so REQ-09 acceptance (1) holds: four sends in all). Capped at 4.
+- Q14 answered: offline flag and failed probe: "Offline — will sync when reconnected"; online flag and failed probe: "Server not responding. Please try again in a few minutes." (the sense is the developer's, the sentence is the executor's).
+- Q15 answered: the user-initiated Complete attempt (pre-submit check, resubmit, finish edit) resends each exhausted entry once per call (`drainPendingSteps` `retryExhausted`, default off, so the Next press catch-up never does; `alreadyRetried` carries the fact across a joiner's re-run); a blocked submit shows the step title and the entry's stored server message (`DrainResult.issue`).
+- F3 (analyser, developer: fix in U5): the background scan uploads local photos before replaying steps; a refused upload is now counted on each unsynced entry whose stored `ops` name `local:<id>` (an entry that names it twice is counted once per failure; two entries naming the same photo are both counted), the entry is marked `failed` with the server's message, and a photo whose naming entries are all exhausted is skipped by later scans; its file stays (the sweep keeps files named by any entry's ops). A photo no stored op names, or a timeout, 409 or missing file, keeps today's behaviour.
+- Not done (follow-ups): tap-outcome toast on the silent early returns of `retryTicketSyncNow`; badge on the Field tab's Recently completed rows and on `ReturnedTicketCard`; lazy `useOnline` read in the tap hook; one shared offline-message constant with `field.tsx`; F8 (a timeout overwrites `lastError`).
+
+---
+
 ## Sequencing
 
 ```
