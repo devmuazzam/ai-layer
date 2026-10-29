@@ -8,7 +8,8 @@ decided_by: >-
   S3 lifecycle rule, no new dependency, no orphan sweep and one ticket with stacked units in
   the request that started the elaboration (spec §11b D1, "Haris (decided, relayed)"). In the
   same session he confirmed the fifth delete site (D7) and the 204 for a missing id on the
-  Attach File delete (D11). tcg-scrum did not see the session. It records from
+  Attach File delete (D11), and folded the generic DELETE /attachments/:id route into U2 as a
+  sixth site (relayed by the coordinator, 2026-10-29). tcg-scrum did not see the session. It records from
   .ai/aidlc/MOBILE-OFFLINE-DELETE-QUEUE/spec.md (§0, §11b, §12, §13) and intent.md. This is a
   developer decision. It binds this build. It is not a TCG client ruling, so the status is
   reference.
@@ -58,9 +59,9 @@ REQ-05; §13. Haris, 2026-10-29.
   units. The decomposer later added a fifth for the Q4 retry scope (`units.md`, U1 to U5);
   that slicing is the AI's, not the developer's words.
 
-### The five delete sites
+### The six delete sites
 
-All five enqueue the keys instead of swallowing a failed S3 delete (REQ-05). Four are in
+All six enqueue the keys instead of swallowing a failed S3 delete (REQ-05). Four are in
 `apps/api/src/usecase/ticket-attachment-guard/ticket-attachment-guard.service.ts`:
 
 1. `removeUnreferenced` — signature, identity and WTL-photo removal.
@@ -73,10 +74,16 @@ The fifth is `TicketAttachmentsService.remove` in
 delete route (D7). The developer's list named four sites. A grep for `deleteObject(` found
 this fifth one, and **Haris confirmed it** on 2026-10-29.
 
+The sixth is the generic admin route `DELETE /attachments/:id` (`AttachmentsService.delete`
+in `apps/api/src/usecase/attachments/attachments.service.ts`, called from
+`apps/api/src/presentation/attachments/attachments.controller.ts`). Spec §11c listed it as a
+follow-up. **Haris folded it into U2** on 2026-10-29, so it uses the outbox too.
+
 ### A missing id on the Attach File delete returns 204
 
-`TicketAttachmentsService.remove` returns `204` when the attachment id does not exist. It
-keeps `403` for a row that exists but belongs to another ticket (D11). Today a missing id
+`TicketAttachmentsService.remove` returns `204` when the attachment id does not exist. A
+cross-tenant id also answers `204`, because the tenant extension hides the row; a row on
+another ticket, or of another feature type, stays `403` (D11). Today a missing id
 answers `403`, so a replayed queued delete would fail forever. **Haris confirmed this** on
 2026-10-29. The success contract (204) does not change.
 
@@ -128,10 +135,10 @@ These are the AI's choices or open items. They are not the developer's words:
   the tenant context in the worker (D6): AI decisions, reviewed in the PR.
 - **What happens to a job that ends FAILED.** That is Q7, recorded in
   `decisions/2026-10-29-offline-deletes-and-attach-file-sheet-queued-on-the-phone.md`.
-- **Other swallowed S3 deletes.** Entity photos (`attachment-photos.service.ts`), the generic
-  attachment delete (`attachments.controller.ts`) and signed quotation copies
-  (`signed-copy-attachments.service.ts`) also swallow a failed delete. They are not ticket
-  attachments. They are follow-ups (spec §11c), not part of this decision.
+- **Other swallowed S3 deletes.** Entity photos (`attachment-photos.service.ts`) and signed
+  quotation copies (`signed-copy-attachments.service.ts`) also swallow a failed delete. They
+  stay follow-ups (spec §11c), not part of this decision. The generic attachment delete is no
+  longer one of them: it is the sixth site above.
 - **No product behaviour.** No TCG person ruled on this. It is an engineering rule for this
   build.
 
