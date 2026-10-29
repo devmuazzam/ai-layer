@@ -555,6 +555,10 @@ someone has confirmed otherwise.
 - **Status:** open
 - **From (frozen original):** [gaps-2026-08-20-retired.md#payroll-calculation-logic-brian-owes-a-revised-version](gaps-2026-08-20-retired.md#payroll-calculation-logic-brian-owes-a-revised-version)
 - Update 2026-09-04 (Project Repository ingest): something has arrived, and it is not the promised documentation. The drop's one file absent from the 2026-08-13 manifest is `Payroll-rule dependency matrix.docx` → [payroll-rule-dependency-matrix.md](payroll-rule-dependency-matrix.md): a ~9,000-word TCG-side position paper, **no author line, no date**, whose content matches the 2026-09-04 Brian ↔ Ehtesham exchange point for point ([client-message-findings.md](client-message-findings.md#2026-09-04--rule-lookback-windows-and-recalculation-across-an-approved-week-brian-petros--ehteshamanwar)). It explicitly supersedes parts of the as-built engine — the no-token WTL default (*"latest Payroll Manager direction supersedes some of our earlier WTL assumptions"*), the payroll period as a calculation boundary, guarantees stacking, and closed-period handling (immutable, retro delta) — and its §15 lists sixteen collisions with the vault, none adjudicated. So the calculation logic **has** moved since the `payroll/` documents, at least in those places, but as one person's recommendation rather than a re-migration of the rule matrix. The *Value Engineering / Payroll Workflow* documents turn out to be the 2025 Visio charts in [payroll-value-engines.md](payroll-value-engines.md) — people and hand-offs, not calculation. Still owed by Brian: confirmation that he authored the paper, and the comprehensive rules documentation; still owed by Corrina: nothing further on the workflow charts unless they have changed since 2025.
+- **Update 2026-10-29 (10-27 walkthrough part 3):** syed.haris, on the call: *"since Brian is working
+  on the payroll rules … once he finalizes all the document and it's being reviewed by Micaela and
+  Corrina, then we will implement that"* (41:33). Still not arrived. **Micaela** is named as a reviewer
+  for the first time (the vault had Corrina, then Brian). Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
 
 ## Lattice Crane identification
 
@@ -877,6 +881,12 @@ someone has confirmed otherwise.
   client says the CSV is **not the whole payroll**: Corrina edits and adds in ADP after import
   (below, *Post-import ADP entry*) and keys salary separately. Still undecided by anyone.
 - Update 2026-10-09 ([adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md)): **the API path works end to end for the boom/OT shape.** One `POST pay-data-input.modify` built from `EPI4RZ41.csv` rows (`R`/`O`/`DT` hours, `LBH`/`LBO`/`LBD` with temp rates) created a worksheet the payroll department accepted as correct. Evidence that the API is viable, not a decision between the two paths. Micaela Dipane also described the step both paths share before submission: *Validation Pending* → check the worksheet against the *ADP_Preview Batch Totals* → *Auto Balance*, *Save*, *Done* → *In Balance*.
+- **Update 2026-10-29 (10-27 walkthrough part 3):** CodingCops told TCG that *"now our payroll is
+  submitted via API. We are creating the worksheet via API"* (abdulrehman, 26:50). The ERP offers both
+  paths: **export** the worksheet and import it by hand, or **Submit to ADP** by API. abdulrehman: *"we will
+  recommend to go with the second option"* (48:40). syed.haris asked to watch the next real submission,
+  and Micaela agreed to message when it was sent that afternoon (27:44–28:08). **No TCG owner chose
+  between the paths on the call**, so this stays open. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
 
 ## Employee master — who creates a worker, ERP or ADP
 
@@ -3219,6 +3229,11 @@ someone has confirmed otherwise.
   and out of scope of `SCRUM-926` (its intent §5; the resolver leaves an extension point only). The
   week-38 row does not obviously match that shape: it is a full rate (about twice a group rate) on
   regular hours only, not a bump across all hours. Unverified, one-line chat answer; not a decision.
+- **Update 2026-10-29 (10-27 walkthrough part 3):** asked on the call whether the special rate is per
+  job or per ticket, Micaela Dipane answered *"It'll be on a specific ticket"* (40:54): an employee sent
+  out as an operator on one job is paid a different base rate for that job's ticket (41:02). That is
+  narrower than the built per-employee, per-period override. Filed as evidence on
+  [ADP-PAYDATA-EXPORT spec §12 Q32](../../aidlc/ADP-PAYDATA-EXPORT/spec.md). Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
 
 ## Boom window as built — the ERP pays the adder across the whole paid shift, not build-up→breakdown
 
@@ -5074,6 +5089,11 @@ somewhere it should not have. Settle that before touching either.
   then `worker.hire` tells the ERP it is done — the ERP initiates, ADP performs, the ERP records
   the file number. A technical option, not a decision; still needs Brian Petros and Ehtesham
   Anwar, with Corrina Bustos for the practice. Nothing called yet (every call hits live `4RZ`).
+- **Update 2026-10-29 (10-27 walkthrough part 3):** CodingCops announced ERP-initiated onboarding as
+  the **next sprint**. An employee created in the ERP is created in ADP, and the ERP gets back the **file
+  number and position ID**. Status changes (inactive → active after onboarding) sync back to the ERP
+  (abdulrehman, 26:50, 48:40). That matches the verified 06-30 direction, not the 09-28 ADP-first
+  account. Nobody from TCG commented, so the conflict is still open. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
 ## Flagged entries go to payroll, not the crane superintendent — who corrects them, who the payroll admin is, and whether Send Back survives
 
 - **Status:** open — **partly answered 2026-09-29 by Corrina Bustos's second reply**, recorded in [../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md](../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md) (`status: verified`). Answered: 1, 2, 5(a)–(c), 5(d) sources half, 5(e) adjust half. **Third reply, same day** ([../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md](../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md), `verified`): C1 answered in her voice; Q7/Q8 partly answered; Q9's tolerance answered. Still open: 3, 4, 5(d) manual half, 5(f), 6, the remainders of 7–9, C1's confirmation trail, and C2–C6. **2026-09-30 messages** ([../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md](../decisions/2026-09-30-crew-time-mismatch-flag-first-wtl-does-not-move-rest-and-two-new-flag-ideas.md), `verified`): C2 closed; a crew-time mismatch flag added (Q10); a Samsara start-of-ticket check requested (Q11); an asset-not-home flag requested and filed in assets (see *Related*). **Flag list confirmed 2026-09-30** ([../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md)): nine flags, **all blocking** until fixed; Send Back to the worker with a 3-hour reminder; Q10's Left Yard / Arrived Yard ratified. **Q6 is still unanswered.** New open points: ~~how payroll clears a flag where nothing is wrong~~ **answered: "reviewed, no change"** ([../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md](../decisions/2026-09-30-incomplete-tickets-block-payroll-and-reviewed-no-change-clears-a-flag.md)); ~~whose week an asset flag blocks~~ **answered 2026-09-30: that ticket's crew's weeks** (developer mechanics); 24 vs 23.5 h **→ developer 2026-09-30: 24, at or above** (the `>=` boundary is pending Corrina). **Developer answers 2026-09-30** ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md), `reference`): Q3's open remainder and Q5(f) are answered as mechanics of Corrina's rule; see the dated line below. **The entry stays open** for Q4, Q5(d)'s manual half, Q6, the remainders of Q7–Q9, Q10(c)(d), Q11, C1's confirmation trail, and C3–C6. **Round 9, 2026-09-30** (developer, [same note, section *Round 9*](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30)): **C4 answered** (CodingCops design: a per-employee override table). Q6, Q7 (AM/PM detection, labor vs ticket), Q8, Q9, Q10(c)(d) and Q11 now have developer readings, **pending Corrina's ratification**. See the dated lines under each. **Open after round 9:** Q4, Q5(d)'s manual half, Q6–Q11 (ratification, plus the remainders named under each), C1's confirmation trail, C3, C5 and C6. **Rounds 10–11, 2026-09-30** (developer, [same note, section *Rounds 10 and 11*](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#rounds-10-and-11--flag-details-for-payroll-flags-u14u21-2026-09-30), `reference`): developer readings for Q5(d)'s *missing notes* (what counts as a note), Q7 (AM/PM replaces out-of-order; the 30 minutes is on the total difference) and Q10(c)(d) (only the mismatching workers are held, which narrows round 9), **pending Corrina's ratification**. C1's rest-start mechanics (per rest chain, across chains) are **pay-affecting, pending Corrina Bustos / Brian Petros**. Nothing is closed. *(Was: open in full, 2026-09-29.)*
@@ -6325,3 +6345,21 @@ somewhere it should not have. Settle that before touching either.
   ($700), split at 12:10 9 h ($760). Twenty back-to-back 30-minute tickets from 06:10 pay 20 h
   ($1,800) for 10 h worked. Splits on :00 / :30 change nothing.
 - **Owner:** Brian Petros / Corrina Bustos (whether the slot is paid once).
+
+## Weekly payroll utilization — an 8-hours-a-day basis shown to TCG, never specified
+
+- **Status:** open
+- **Asked:** 2026-10-27 — ERP demo walkthrough part 3. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md). Filed 2026-10-29.
+  - syed.haris (38:17) showed **average utilization** on the weekly payroll and per employee: *"right now
+    we are using like 8 hours per day minimum, but we can adjust the time to calculate the utilization. If
+    it's 10 hours per day … we can update the formula"*. Nobody from TCG commented.
+- **Question:** **(a)** Does TCG want a utilization figure on payroll at all? **(b)** If so, what is the
+  basis — 8 h a day, 40 h a week, the scheduled hours, or something else — and is it per employee type
+  or per union? **(c)** Which hours count (paid, worked, boom)?
+- **Sources checked:** nothing in the vault defines payroll utilization. Nearest:
+  [../field-ops/gaps.md](../field-ops/gaps.md) *My Labor / My Performance KPI card — three metrics have no
+  defined formula or data source* (*"no weekly-hours target field exists"*), and the sub-category target
+  hours in [../decisions/2026-09-30-sub-category-target-hours-per-month-whole-number-0-to-744.md](../decisions/2026-09-30-sub-category-target-hours-per-month-whole-number-0-to-744.md)
+  (assets, not people).
+- **Blocked:** nothing — display only; the figure should be labelled provisional until answered.
+- **Owner:** Corrina Bustos / Micaela Dipane (payroll); Melissa McNutt if it is a management KPI.

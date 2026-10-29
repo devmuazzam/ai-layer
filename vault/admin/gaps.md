@@ -1439,3 +1439,32 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Related:** [*Whose company identity do customer-facing emails carry when a deployment sets no env?*](#whose-company-identity-do-customer-facing-emails-carry-when-a-deployment-sets-no-env) is still open and broader: it asks whether a hardcoded TCG fallback is right at all. Answer (b) together with it.
 - **Blocked:** nothing at merge, because `COMPANY_*` env overrides the fallbacks on deployed servers. This entry does block superseding the 2026-09-15 note's item 12. Only a named human can supersede it.
 - **Owner:** (b) Ehtesham Anwar, who recorded item 12, or TCG, which the note says may overrule it. (a) Patrick McKiernan (IT Manager), who knows which mailboxes exist.
+
+## Field beta test and parallel run with FCC — four field testers chosen by Kyle, no plan written
+
+- **Status:** open
+- **Asked:** 2026-10-27 — ERP demo walkthrough part 3. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md). Filed 2026-10-29.
+  - abdulrehman (52:03–52:23): CodingCops needs field employees to install the app and stress-test it on
+    real jobs — holdover, build-up / breakdown, boom time, a Home start with no breakdown the day before.
+    syed.haris (52:51): the Samsara payroll flags can be tested only on a real job.
+  - **Kyle Harlow (VP of Fleet), 53:41:** *"put actual jobs in the system that they're doing currently and
+    have them do it in FCC and do it in your system"*. abdulrehman: yes — the ERP is beta, *"not production
+    ready as yet"* (53:57–54:21).
+  - abdulrehman (54:45): **one operator, one oiler, one third man and one rigger**. Kyle will pick them with
+    the superintendent (55:52).
+  - ans.nisar (55:01–55:20): later, run **one whole project** in the ERP rather than moving over at once.
+    Kyle: *"that makes good sense."*
+- **Question:** **(a)** Who are the four testers, and when do they start? **(b)** Which jobs run in both FCC
+  and the ERP, for how long, and who compares the results (tickets, payroll, flags)? **(c)** Does a
+  parallel-run ticket pay anyone, or is FCC still the system of record for pay and billing? **(d)** What
+  ends the beta and starts the one-project run?
+- **Sources checked:** Kyle promised testers twice before —
+  [../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md)
+  §8 (*"one good person from each pool"*) and
+  [../meetings/2026-09-22-erp-live-demo-02-project-schedule-permits-das-allocation-and-vendors.md](../meetings/2026-09-22-erp-live-demo-02-project-schedule-permits-das-allocation-and-vendors.md)
+  (*"I'll get those together"*) — not delivered by 10-27. [tcg-erp-rfp-2026-02-26.md](tcg-erp-rfp-2026-02-26.md)
+  plans *"UAT with key users, parallel running"* for Nov–Dec 2026. FCC is
+  [../domain/fcc-nexgen-fms.md](../domain/fcc-nexgen-fms.md). The frozen root `gaps.md` entry *Phased
+  rollout — no vault coverage* is the only earlier rollout record.
+- **Blocked:** real-job testing of the holdover flow and the Samsara flags; the one-project pilot.
+- **Owner:** Kyle Harlow (testers); CodingCops (test plan, ans.nisar / abdulrehman).

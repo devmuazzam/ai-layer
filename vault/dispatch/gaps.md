@@ -405,6 +405,18 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   it is a dispatcher's attestation or a system comparison — the paper form points at leave-yard and
   return-to-yard checked by the office, but nobody has said so for the ERP.
 - **Update 2026-09-04, from the record** (computed the same day from `stg.FMS_JOB_TICKET_Raw` in the restored 2026-06-23 backup): the `PostedToGeoTab` flag is **0 on all 9,070 tickets dated 2025 or later** — a vendor column TCG never used, so it is not evidence of a second telematics provider and not a place where any GPS verification was ever recorded. FCC holds no GPS-derived time; whatever "verified by GPS" means, it has no legacy precedent in the ticket table.
+- **Update 2026-10-29 (10-27 walkthrough part 3) — three new asks:**
+  - **Joe Schacatano (VP of Operations), 18:05:** show the machine's **Samsara mileage** on job progress
+    so it shows whether the job is in the **short or long subsistence zone** (*"the 45 and the 77 and a
+    half mile … we're not having to actually track that ourselves"*). abdulrehman (38:03): show short sub
+    and long sub on the ticket's labor table. Neither says whether the mileage is Samsara's travelled
+    distance or the permitted yard-to-job route Joe himself required on 06-09 (*"No, it's the permitted
+    route"*). The engine takes manual miles today.
+  - The ticket captures the **GPS location of the customer signature**. syed.haris said it *"can be
+    compared"* with the job location from the quote (30:47). What a mismatch does is not said.
+  - syed.haris's Samsara flag example (52:51) was **arrival at the job site** (claimed 1 pm, Samsara 3 pm).
+    The verified flag list (`decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md`,
+    flag 7) checks the **start and end of the day** (yard times). CodingCops to say which it built. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
 
 ## Default crew per unit, overridable per job
 

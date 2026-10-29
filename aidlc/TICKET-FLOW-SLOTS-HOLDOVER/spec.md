@@ -775,6 +775,15 @@ Per endpoint:
 - **Workaround, if any (what M2 built, labelled):** provisional copy in `holdover-day-start-card.tsx` — heading "Where are you starting from?", body "Choose where today begins. This decides your steps, so the ticket stays locked until you answer.", buttons "The yard" (`truck` icon) and "Home" (`home` icon). Reversible — strings/icons only, no stored value. Change when the copy is decided.
 - **Blocked:** nothing — M2 ships with the workaround above.
 - **Status:** open
+- **Update 2026-10-29 (10-27 walkthrough part 3) — the built copy contradicts the step list:** the card
+  now offers **Yard** (*"Pre-Trip Inspection → Left Yard → Driving to Site"*) and **Home** (*"Drive straight
+  to the job site · no pre-trip or yard departure"*). But DN-1 H7 and
+  `FULL_HOLDOVER_MIDDLE_DAY_HOME_STEP_KEYS` keep **Pre-Trip** on a Home start (`arriveJob`, `pretrip`, …).
+  The demo did the same: syed.haris chose Home and still filled the pre-trip (21:44). abdulrehman's
+  explanation (26:00) also implied only Yard starts with the pre-trip. **The Home subtitle is wrong
+  against the build and should drop "no pre-trip"** — a CodingCops fix, not a client question.
+  syed.haris also said *"from an hotel or … the home address"*: no hotel option exists (`TICKET_DAY_STARTS =
+  ['YARD','HOME']`), and nobody from TCG asked for one. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../../vault/meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../../vault/meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
 
 ### Q16 — End Work summary work-time basis when `arriveJob` is absent
 
@@ -802,6 +811,11 @@ Per endpoint:
 - **Workaround, if any (what M6 built, labelled):** provisional copy in `end-work-holdover-sheet.tsx` — title "End of day — the crane"; body "Work time has ended. Is the crane being left set up for tomorrow, or torn down today?"; a secondary "Leave crane set up" button (`check` icon) and a primary "Start Breakdown" button (`stop` icon). Reversible — strings/icons only, no stored value. Change when the copy is decided.
 - **Blocked:** nothing — M6 ships with the workaround above.
 - **Status:** open
+- **Update 2026-10-29 (client request, 10-27 walkthrough part 3):** the sheet in the build is now titled
+  *"End Work · holdover crane"* with *"Leave crane set up"* / *"Start Breakdown"* (not the workaround text
+  above). **Joe Schacatano (VP of Operations), 30:27:** *"Instead of hold over crane where it says [End],
+  can we call it hold over job?"* syed.haris: *"Yes, we can."* So the title is **client-specified: "holdover
+  job"** (e.g. *End Work · holdover job*). The button labels were not discussed. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../../vault/meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../../vault/meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
 
 ### Q19 — "Start Breakdown" navigation and End Work completion ordering on a holdover ticket
 

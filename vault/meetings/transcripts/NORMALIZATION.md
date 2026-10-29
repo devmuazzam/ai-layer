@@ -387,3 +387,29 @@ the daily allocation system. "plane(s)", "frame", "cream" and "turn clean" were 
 none is in pass 1's list — and are listed in the file's header note. Speaker labels are reproduced
 uncorrected: "IT Support" is Patrick McKiernan; the header gives the evidence. Left unchanged: the items
 listed in the file's own header note.
+
+# Pass 16 — 2026-10-29 (one new transcript only)
+
+Applied to `2026-10-27-erp-demo-walkthrough-part-3.md` (32); no earlier file was touched. **32
+substitutions**, each pinned to its own turn, with the timestamps in the file's header note. In summary:
+"Harris" -> "Haris" (5, as pass 10); "ADB" -> "ADP" (3, as pass 3 and 11); "Dispatch Flight app" ->
+"TestFlight app" (2); "Euler" -> "oiler" (2, as pass 3 and 11); "graph code rate" / "the graph code" ->
+"craft code" (2, as pass 1) and "graph modifier" -> "craft modifier" (1, as pass 14); "ending codes" ->
+"earning codes" (2); "JS tail bootstrap" / "TS retail board" -> "JSA tailboard" (2) and "GSA" -> "JSA" (1,
+as pass 1); "grain" / "plane" / "plan" -> "crane" (1 / 1 / 1, as pass 1 and 3); and one each: "desk view"
+-> "DAS view" (as pass 11's "dash"), "Sam Sara traging" -> "Samsara tracking" and "Sam Sara" -> "Samsara"
+(as pass 3), "food" -> "fuel", "label unit details" -> "labor and unit details", "code" -> "quote" (as
+pass 11), "long room" -> "long boom", "Abdimana" -> "Abdulrehman" (as pass 9 and 12), "rigor" -> "rigger"
+(as pass 3 and 8).
+
+New evidence rules used here: **the mobile app's own labels pin a correction**, as pass 15 used the web
+app's: *JSA — Tailboard* (the JSA step), *"The crane was left set up yesterday. Tap to start work — no
+build up needed today"* and *"Leave crane set up"* / *"Start Breakdown"* (the holdover cards) were on the
+shared phone screen, so "JS tail bootstrap", "TS retail board", "the plane was left up" and "leave plan
+set up" were read against them. **"Dispatch Flight" -> TestFlight** only in abdulrehman's 8:16 turn, which
+installs the App Store app that opens the builds added *"in the test flight"*. **"food" -> fuel** only in
+the 19:09 Samsara turn that opens on the asset's fuel. "failed" for *filled* (three times) was **not**
+changed — no earlier pass licensed it and "failed" is a real word in an inspection form. "hotel" (21:44)
+was left: the app offers only *Yard* and *Home*, and the curated notes say so. Speaker labels need no
+caveat: every speaker joined under their own account. Left unchanged: the items listed in the file's own
+header note.

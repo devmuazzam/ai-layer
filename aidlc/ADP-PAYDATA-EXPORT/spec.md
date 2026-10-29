@@ -752,6 +752,16 @@ Enumerated by: `git grep -n -E 'toAdpWorkbookRows|findEmployeesMissingAdpFile|bu
 - **Candidates:** (a) always-all (built); (b) add an explicit scope column (craft / job / entry).
 - **Owner:** Ali Riaz.
 - **Status:** open.
+- **Update 2026-10-29 (client evidence, 10-27 walkthrough part 3) — points to candidate (b):** syed.haris
+  demoed *Manage override* with the 135.14 special rate. abdulrehman asked whether it is for a whole job
+  or a single ticket. **Micaela Dipane (40:54): *"It'll be on a specific ticket."*** At 41:02: *"sometimes
+  it'll only apply to like one job if the employee was sent out as an operator and like he gets a different
+  pay rate for that specific … work that he did … for that specific [job] ticket."* abdulrehman restated it
+  as *"on the job level"*, so whether the scope is the **ticket** or the **job** is still unsettled. Either
+  way it is narrower than the built (period, employee) grain. It also fits Corrina's 09-28 example (72.16
+  owed *"on one job"*). This is not yet a decision: the owner of the special-agreement rule is still
+  Corrina / Brian (`decisions/2026-10-19-pm-pa-manual-base-rate-override-kept-as-built.md` is pending their
+  ratification). A scope column is a schema change (G3, `tcg-prisma-guardian`) and changes U5c's emission. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../../vault/meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../../vault/meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
 
 ### Q33 — Raised by the executor (U5b): is the override's note/reason field required, and is there a length cap?
 - **Question:** U5b's `payroll_base_rate_override.note` was built as **optional** (`String? @db.Text`, per the caller's schema), and the Set DTO caps the input at **1000 characters** (`@MaxLength(1000)`) — a defensive guard the spec does not state. Should the "special agreement" memo be **required** (a special-agreement override arguably must say why), and is 1000 the right input cap (or unbounded, since the column is `TEXT`)?
