@@ -29,13 +29,13 @@ not do before?"**
 | Planned unit | Honest answer | Verdict |
 | --- | --- | --- |
 | U1: model + migration + `TENANT_SCOPED_MODELS` + repository + worker + module | Nothing. A table and a worker with no caller. Only an operator reading an empty table sees a difference. | **Fails the test.** Foundation is allowed only when three or more later units consume the migration; only U2 does. So it cannot be a bare foundation. |
-| U2: enqueue at five sites + D11 + `ATTACHMENT_IN_USE` | Delete a ticket photo with S3 down and the object is still removed later. Backend-only, but a real behaviour change (S3 cleanup guaranteed). | Passes, but only because it contains the half U1 lacks. |
+| U2: enqueue at the remaining delete sites (the plan said five in total; the developer later folded in a sixth, the generic `DELETE /attachments/:id`) + D11 + `ATTACHMENT_IN_USE` | Delete a ticket photo with S3 down and the object is still removed later. Backend-only, but a real behaviour change (S3 cleanup guaranteed). | Passes, but only because it contains the half U1 lacks. |
 | U3: mobile delete op, wiring, sweep, cancel-both, 409 split | **First crew-visible value**: a photo removed offline stays removed across a restart and reaches the server on reconnect. | Passes. |
 | U4: Attach File offline queue | Crew attach and delete files offline. | Passes. |
 
 **Move 1 (the one change to the plan): the boundary between U1 and U2 is cut by delete site, not
 by layer.** Merging U1 into U2 was considered and rejected: it makes one very large API unit that
-proves the migration, worker, DI across five modules and five sites in one PR. Instead:
+proves the migration, worker, DI across five modules and all six delete sites in one PR. Instead:
 
 - **U1 = outbox + the first complete path.** Model, migration, repository, worker, module, the
   immediate attempt (D5), the FAILED handling (REQ-11), **and** the `deleteOrphaned` site, which
@@ -44,12 +44,14 @@ proves the migration, worker, DI across five modules and five sites in one PR. I
   tests the riskiest assumptions first (a one-way migration, the DI graph, a worker that runs
   outside any request).
 - **U2 = the remaining sites and the two small contract items.** `removeUnreferenced`,
-  `discardObjects`, the fifth site (`TicketAttachmentsService.remove`), D11 (missing id, 204) and
-  D14 (`ATTACHMENT_IN_USE`).
+  `discardObjects`, the Attach File site (`TicketAttachmentsService.remove`), the **generic admin
+  route `DELETE /attachments/:id`** (`AttachmentsService.delete`, folded in by the developer after the
+  first pass, so the sites are six, not five; built in commit `7d826e40e`, U2 = `3626d1295` +
+  `7d826e40e`), D11 (missing id, 204) and D14 (`ATTACHMENT_IN_USE`).
 
 Effect on coverage: **REQ-03 and REQ-05 are split by site across U1 and U2** (each unit's
 *Requirements covered* names its part). Every other REQ sits in exactly one unit. If the
-developer prefers the plan's literal boundary (U1 = model + worker with no site; U2 = all five
+developer prefers the plan's literal boundary (U1 = model + worker with no site; U2 = all six
 sites) it is a re-cut of the same work, but U1 would then fail the shipped-alone test; this file
 does not do that.
 
@@ -201,7 +203,7 @@ unit's path.
 | --- | --- | --- | --- | --- | --- | --- |
 | U1 | A checklist photo (or a replaced signature, lunch or checklist record) deleted on the API leaves its S3 objects removed even when S3 fails at the time: the keys are saved in the same transaction and a worker retries | REQ-03 (mechanism, `deleteOrphaned` and `cleanupReplaced` paths), REQ-04, REQ-05 (part: `deleteOrphaned`, `cleanupReplaced`), REQ-11 | schema, api | — | ~450 lines / ~14 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u1-outbox-worker |
 | U2 | The same guarantee holds on every other ticket-attachment delete path (signature, identity, WTL photo, failed upload, Attach File, and the generic `DELETE /attachments/:id` — six sites, folded in by the developer 2026-10-29); a replayed Attach File delete succeeds; a signature-referenced refusal carries its own code | REQ-03 (remaining sites), REQ-05 (the rest: `removeUnreferenced`, `discardObjects`, `TicketAttachmentsService.remove`, D11, D14) | api, shared | U1 | ~250 lines / ~8 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u2-delete-sites |
-| U3 | A crew member removes an uploaded checklist or signature photo offline: it vanishes at once, survives an app restart, reaches the server on reconnect; removing a not-yet-uploaded photo cancels both; a refused delete is handled by cause | REQ-01, REQ-02, REQ-07, REQ-08 | mobile, api (header read on two routes) | U2 | ~600 lines / ~16 files | not started |
+| U3 | A crew member removes an uploaded checklist or signature photo offline: it vanishes at once, survives an app restart, reaches the server on reconnect; removing a not-yet-uploaded photo cancels both; a refused delete is handled by cause | REQ-01, REQ-02, REQ-07, REQ-08 | mobile, api (header read on two routes) | U2 | ~600 lines / ~16 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u3-mobile-delete-op |
 | U4 | A crew member adds and deletes Attach File files offline; queued rows show "Pending sync"; 50 MB per file, no other cap | REQ-06, REQ-10 | mobile, api (header read on two routes, upload idempotency check) | U3 | ~550 lines / ~9 files | not started |
 | U5 | A ticket whose queued item was refused by the server on 4 sends stops retrying by itself and its card (and its completed row in Jobs) shows "Sync failed — tap to retry"; tapping probes the API, resets the count and drains that ticket even when the network flag says offline | REQ-09, REQ-12 | mobile | U4 | ~500 lines / ~10 files | not started |
 
@@ -333,20 +335,22 @@ checklist specs); `pnpm db:migrate` then confirm the migration folder is committ
 
 ---
 
-## U2 - Every other ticket-attachment delete path uses the outbox; replayed Attach File delete succeeds; own code for the signature-referenced 409
+## U2 - Every other ticket-attachment delete path (four sites, incl. the generic `DELETE /attachments/:id`) uses the outbox; replayed Attach File delete succeeds; own code for the signature-referenced 409
 
-- **Outcome:** a signature, identity photo, lunch WTL photo, failed upload or Attach File file
-  deleted on the API also has its S3 objects removed with retry; an Attach File delete replayed
+- **Outcome:** a signature, identity photo, lunch WTL photo, failed upload, Attach File file or a
+  ticket attachment deleted through the generic admin route `DELETE /attachments/:id` also has its S3
+  objects removed with retry (all six delete sites are now covered: two in U1, four here); an Attach File delete replayed
   after a lost response answers `204`; a delete refused because a saved signature still points at
   the image carries `code: 'ATTACHMENT_IN_USE'`, distinct from `TICKET_WINDOW_CLOSED`.
 - **Kind:** vertical (API behaviour change at the remaining delete sites plus the error body).
 - **Requirements covered:** REQ-03 (the remaining sites), REQ-05 (the rest: `removeUnreferenced`,
-  `discardObjects`, `TicketAttachmentsService.remove`, D11, D14).
+  `discardObjects`, `TicketAttachmentsService.remove`, the generic `AttachmentsService.delete`
+  (`attachments.service.ts:300`, called from `attachments.controller.ts` `remove`), D11, D14).
 - **Depends on:** U1 (the repository, worker and module; both units edit
   `ticket-attachment-guard.service.ts` and `attachments.repository.ts`).
 - **Branch / PR base:** `feat/MOBILE-OFFLINE-DELETE-QUEUE-u2-delete-sites` stacked on
   `feat/MOBILE-OFFLINE-DELETE-QUEUE-u1-outbox-worker` while U1's PR is open.
-- **Size estimate:** ~250 source lines, ~8 source files.
+- **Size estimate:** ~250 source lines, ~8 source files before the generic route; ~350 lines, ~11 files with it (estimate, information only).
 
 ### Slice contents
 
@@ -357,11 +361,12 @@ checklist specs); `pnpm db:migrate` then confirm the migration folder is committ
 | API: D14 | The signature-referenced refusal throws `new ConflictException({ message, code })` with the existing message text unchanged ("This image is part of a saved signature and cannot be removed") and `code: TICKET_ATTACHMENT_ERROR_CODES.ATTACHMENT_IN_USE` | Same body shape as the window guard (`job-tickets.service.ts:1873-1876`). The window-closed 409 is not changed |
 | Shared (`packages/shared`) | `TICKET_ATTACHMENT_ERROR_CODES` (`ATTACHMENT_IN_USE`) beside `TICKET_WINDOW_ERROR_CODES` in `packages/shared/src/utils/ticket-completion-window.ts:62`, exported through `packages/shared/src/utils/index.ts` | One constant. `@tcg/shared` is consumed as built `dist/`: build it before API and mobile gates. Name and home are AI-chosen (D14), reviewable |
 | API: `discardObjects` | `discardObjects` (the failed-upload cleanup, callers `ticket-attachment-guard.service.ts:191` and `:199`) inserts the job **alone** (no row exists to share a transaction with, D4); if that insert itself fails it falls back to today's best-effort delete and logs | Keeps the upload error path from failing a second time |
-| API: fifth site (D7) | `TicketAttachmentsService.remove` (`ticket-attachments.service.ts:150-166`) deletes the row and enqueues in one transaction, then `attemptNow`; the inline per-key swallow loop goes | Uses the repository method from U1 where it fits |
+| API: Attach File site (D7) | `TicketAttachmentsService.remove` (`ticket-attachments.service.ts:150-166`) deletes the row and enqueues in one transaction, then `attemptNow`; the inline per-key swallow loop goes | Uses the repository method from U1 where it fits. The ownership check is extracted as `assertOwnedBy` (see *AI decisions* below) |
+| API: generic admin route (sixth site, D7) | `DELETE /attachments/:id`: `AttachmentsService.delete` (`apps/api/src/usecase/attachments/attachments.service.ts:300`, called from `attachments.controller.ts` `remove`) deletes the row and writes the outbox job (the keys) in one transaction, then calls `attemptNow` **after** the activity log and PO-reopen side effects; the controller no longer calls S3 itself (`attachments.controller.ts:260` swallow goes). A photo-feature row on the route still goes to `photos.remove`, unchanged; the `204` contract is unchanged | Folded into U2 by the developer after the first pass (spec §11a row 21, D7). Built in `7d826e40e`. Callers of the generic route are listed by the executor (`grep -rn "attachments/" apps/web/src apps/mobile qa-automation --include=*.ts --include=*.tsx -l`) |
 | API: D11 | `TicketAttachmentsService.remove`: a **missing attachment id returns `204`** (no throw); a row that exists but belongs to another ticket still returns `403` (the same split as `removeItemPhoto`) | Today a missing id answers `403` (`ticket-attachments.service.ts:208-229`, "deliberately Forbidden"); this is the one changed error case on an existing route |
-| API: DI | `TicketAttachmentsService` constructor gains the outbox provider; `ticket-attachments.module.ts` already imports `StorageDeletionModule` from U1 (it provides the guard) | **Boot `pnpm api:dev` once** |
+| API: DI | `TicketAttachmentsService` and `AttachmentsService` constructors gain the outbox provider; `ticket-attachments.module.ts` already imports `StorageDeletionModule` from U1 (it provides the guard); the module that provides `AttachmentsService` imports it too | **Boot `pnpm api:dev` once** |
 | Web / Mobile | N/A — none | The only reader of the new `code` is the mobile drain, changed in U3 (below, **Sequencing**) |
-| Tests | not requested | existing `ticket-attachments.service.spec.ts` asserts today's `403` on a missing id and is expected to need updating (spec §10: updating a test the change breaks is not adding one) — check and say so in the PR |
+| Tests | not requested | existing `ticket-attachments.service.spec.ts` asserts today's `403` on a missing id and is expected to need updating (four existing specs were updated in the build) (spec §10: updating a test the change breaks is not adding one) — check and say so in the PR |
 
 ### Reviewable as
 
@@ -371,11 +376,19 @@ checklist specs); `pnpm db:migrate` then confirm the migration folder is committ
   repeat the same call with the now-unknown id -> `204` (was `403`); (3) `DELETE` an image a saved
   signature points at -> `409` whose body is `{ message, code: 'ATTACHMENT_IN_USE' }`, no job; (4)
   after the window closes, `DELETE` -> `409` with `TICKET_WINDOW_CLOSED`, unchanged; (5) force a
-  failed upload (`storeUpload` after objects were written) -> a pending job for the leftover keys.
-  `grep -rn "deleteObject(" apps/api/src/usecase apps/api/src/service` shows no call on a ticket
-  attachment path outside the outbox worker and its immediate attempt.
-- **Acceptance:** REQ-05 acceptance lines (grep result, each path with S3 failing, unknown id `204`,
-  new code on the signature 409, `TICKET_WINDOW_CLOSED` unchanged); REQ-03 for these sites.
+  failed upload (`storeUpload` after objects were written) -> a pending job for the leftover keys;
+  (6) `DELETE /api/v1/attachments/:id` (the generic admin route) for a ticket attachment with S3
+  failing -> `204`, the row gone, one pending job holding its keys, the activity log and PO-reopen
+  side effects as before; the same route for a photo-feature row still goes through `photos.remove`.
+  `grep -rn "deleteObject(" apps/api/src/usecase apps/api/src/service apps/api/src/presentation` shows
+  no call on a ticket attachment path outside the outbox worker and its immediate attempt. **The
+  grep also legitimately finds the `discardObjects` fallback** in `ticket-attachment-guard.service.ts`
+  (D4: if the job insert itself fails, today's best-effort delete runs and an error is logged), **besides
+  the two §11c follow-ups** (`attachment-photos.service.ts`, `signed-copy-attachments.service.ts`).
+  Those three are expected matches, not misses.
+- **Acceptance:** REQ-05 acceptance lines (grep result with the three expected matches above, each of
+  the six paths with S3 failing, unknown id `204`, new code on the signature 409,
+  `TICKET_WINDOW_CLOSED` unchanged); REQ-03 for these sites.
   Derived, unconfirmed (Q8).
 - **Reviewer can verify without:** U3, U4, any mobile build.
 
@@ -401,7 +414,8 @@ checklist specs); `pnpm db:migrate` then confirm the migration folder is committ
 | --- | --- | --- | --- |
 | `removeUnreferenced` callers: `ticket-signatures.service.ts:259`, `ticket-lunch-breaks.service.ts:566` | `AttachmentsRepository.removeIfUnreferenced` | existing signature and lunch specs via `pnpm api:test`; by hand: remove a lunch WTL photo and an unreferenced signature photo, both `204` | `spec.md` REQ-05 |
 | `discardObjects` callers inside `storeUpload` (`ticket-attachment-guard.service.ts:191`, `:199`) used by all five modules | failed-upload path | upload a file that fails validation after write; upload still returns its original error | `spec.md` REQ-05, §11a row 5 |
-| `TicketAttachmentsService.remove` and mobile `useDeleteTicketAttachment` / the Attach File sheet | fifth site, D11 | `ticket-attachments.service.spec.ts`; by hand: delete a file from the sheet online (still removed), cross-ticket id still `403` | `spec.md` D7, D11 (confirmed 2026-10-29); §11a row 6 |
+| `TicketAttachmentsService.remove` and mobile `useDeleteTicketAttachment` / the Attach File sheet | Attach File site, D11 | `ticket-attachments.service.spec.ts`; by hand: delete a file from the sheet online (still removed), cross-ticket id still `403` | `spec.md` D7, D11 (confirmed 2026-10-29); §11a row 6 |
+| The generic route `DELETE /attachments/:id` (`attachments.controller.ts` `remove`, `AttachmentsService.delete`) and its callers | sixth delete site | `204` contract and the photo-feature branch (`photos.remove`) unchanged: delete a non-photo attachment (row gone, job pending) and a photo-feature attachment (still removed through `photos.remove`) by hand; existing attachments specs via `pnpm api:test`; list callers with `grep -rn "attachments/" apps/web/src apps/mobile qa-automation --include=*.ts --include=*.tsx -l` | `spec.md` REQ-05, D7, §11a row 21 (developer answer 2026-10-29, folded into U2) |
 | Mobile drain's reading of every 409 as "request approval" (`drain.ts:162-170`) | the new `code` on the signature-referenced 409 (D14) | `tcg-contract-tracer` on U2 (precaution, G5: error body only); the old app still reads any 409 as it does today — not made worse (spec §11); read `grep -rn "getHttpStatus\|=== 409" apps/mobile --include=*.ts --include=*.tsx \| grep -v test` | `spec.md` D14, §11a row 12 |
 | Other readers of `TICKET_WINDOW_ERROR_CODES` / `packages/shared` utils barrel | shared export added, none changed | `pnpm --filter @tcg/shared build` then `pnpm typecheck` | `spec.md` §7 |
 
@@ -414,11 +428,41 @@ checklist specs); `pnpm db:migrate` then confirm the migration folder is committ
 the signature-referenced 409 as "window closed", exactly as today. Nothing is broken that works
 now.
 
+### AI decisions made in U2 (recorded here for the PR's AI-decisions table)
+
+| ID (PR table) | Decision | Where | Why |
+| --- | --- | --- | --- |
+| U2-A1 | New exported method `StorageDeletionQueueRepository.enqueue` (a job on its own, outside any caller transaction), beside U1's `enqueueIn(tx, …)` | `apps/api/src/service/storage-deletion/` | `discardObjects` has no row to share a transaction with (D4) |
+| U2-A2 | New exported method `StorageDeletionQueueService.enqueueAndAttempt` (insert the job, then the immediate attempt, never failing the caller) | `apps/api/src/usecase/storage-deletion/` | one call for the `discardObjects` path instead of repeating insert + `attemptNow` |
+| U2-A3 | `TicketAttachmentsService` gains an extracted private/shared `assertOwnedBy` (the ticket and feature ownership check pulled out of `findOwnedAttachment`) | `ticket-attachments.service.ts` | `remove` needs "missing id -> 204, other ticket or feature -> 403" (D11) without duplicating the check |
+
+### Analyser findings carried as notes for the PR (not blockers; verdict MERGE)
+
+- **Cross-tenant id on the Attach File delete now answers `204`** (it was `403`). An id from
+  another tenant now takes the D11 "not found" path instead of the old `403` (analyser finding; the
+  mechanism, most likely the tenant-scoped lookup, is for the PR author to confirm). Nothing is
+  deleted across tenants, but the answer changed. State it in the PR next to D11.
+- **A replayed delete after the window closes gets `409 TICKET_WINDOW_CLOSED` before the id lookup.**
+  So a queued Attach File or checklist/signature delete replayed after the window closed is refused by
+  the window guard first, not answered `204` for an already-gone id. **U3 (and U4) must know this**:
+  the 409 split treats `TICKET_WINDOW_CLOSED` as "keep the op, show Request approval", so a delete
+  whose row is already gone still waits for approval rather than counting as done (D10).
+- **The transaction path of `removeIfUnreferenced` is unrun against a real database.** The build was
+  checked by lint, build, the existing jest suites and a boot, not by an end-to-end delete against
+  Postgres. The P2003 rollback and the `{ deleted, jobId }` return are covered by reading and mocks
+  only. Run the Demo steps (1) and (3) on a dev database before relying on it.
+- **`identityPhotoAttachment` is `SetNull`, so only the signature image is protected by the P2003
+  rollback.** Deleting an identity photo that a signature row points at nulls the reference instead of
+  failing, so the "referenced by a saved signature" refusal (and its `ATTACHMENT_IN_USE` code) protects
+  `signatureAttachment` only. The count check at the top of `removeIfUnreferenced` still covers both
+  columns before the delete; the P2003 path is the concurrent-save backstop and does not cover the
+  identity photo. Record as existing behaviour, not a regression.
+
 ### Deliberately not in this unit
 
 - The mobile reading of the new code (drop the op, restore the photo, tell the crew) — **U3**.
 - `X-Captured-At` on the delete routes — U3 (checklist, signature) and U4 (Attach File).
-- Entity-photo and other swallows (§11c) — follow-ups.
+- Entity-photo and other swallows (§11c: `attachment-photos.service.ts`, `signed-copy-attachments.service.ts`) — follow-ups. (The generic route is no longer one of them; it is in this unit.)
 
 ---
 
