@@ -816,6 +816,14 @@ someone has confirmed otherwise.
   McNutt)**, and the project name (*TCG ERP Integration*). Both return all payroll data unfiltered,
   executive pay included. That would give the ERP the read side (what was calculated/paid) and so a
   way to detect ADP-side edits by comparison. **TCG's decision; not yet asked.**
+- Update 2026-10-29 ([adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §11–§12): **enabled and working.**
+  Melissa McNutt approved (2026-10-23); ADP added the scopes. The run list gives each week's
+  processing status within minutes (`PR-PRC` *Payroll Complete*), and
+  `/payroll/v2/payroll-output/{itemID}/associate-payment-summary/earnings` gives, per employee and
+  earning code, hours, rate and amount actually paid. **So the ERP can now detect ADP-side edits —
+  after processing, by comparing what it sent with what was paid.** What remains is product, not
+  access: when to compare, what to do with a difference, and who sees it (Brian Petros / Corrina
+  Bustos). Pay Statements: path still 404.
 
 ## Excel or API — the ADP submission path is not decided
 

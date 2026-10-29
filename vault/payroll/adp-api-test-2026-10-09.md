@@ -370,6 +370,40 @@ grown **323 → 324**, the one new row being **week 44 run 1 `PR-PRC` *Payroll C
 queue **204**. So the run list reports *processed* within minutes; the pay-period status lags it.
 A watcher polls periods and the queue for two more hours to time the period flip.
 
+
+## 12. Payroll Output detail — what was actually paid (2026-10-29 PKT)
+
+Nate (request `672204`), answering the 401: the URI must name what to pull, e.g.
+`/payroll/v2/payroll-output/{output-id}/associate-payment-summary/earnings` and
+`/payroll/v2/payroll-output/{output-id}/associate-payment-allocations/non-statutory-deductions`
+(`{output-id}` = the run's `itemID`, URL-encoded). Pay statements: the endpoint is
+*"organizational-pay-statements"* (API Explorer `hcm-offrg-wfn-payroll-pay-statements-v1`).
+
+Probed on **week 44, 2026** (`PR-PRC`), bodies kept only on syed.haris's machine:
+
+| Call | Result |
+| --- | --- |
+| `…/{wk44}/associate-payment-summary/earnings` | **200**, ~1 MB, `meta.totalNumber` **102** associates, *"Company Error Count:0 / Employee Error Count:0"*. Per associate (`associateOID`) → payments → earnings sections → items: **`earningID.idValue` + `idDescription`, `timeWorkedQuantity` (hours), `payRate.rateValue`, `earningAmount`, `earningClassificationCode`**, plus per-item and per-payment `payrollAccumulations` (YTD amount/hours) |
+| `…/{wk44}/associate-payment-allocations/non-statutory-deductions` | **200**, 102 associates; deduction id + description + amount taken, by section |
+| `GET /payroll/v1/organizational-pay-statements` | **404** — exact path still to find in API Explorer |
+
+**Earning codes present in week 44** (count of items): `*RG` Regular, `*OT` Overtime, `DT`, `LBH`
+BOOM REG, `LBO` BOOM OT, `LBD` BOOM DBL, `SUB` Substpay NT, `ML R/O/D`, `FR R/O/D`, `LO R/O/D`,
+`LP R/O/D`, `HDD`, `HOL`, `PTO`, `SIC`, `ANV`, `RET`, `OTH`, `BN`, `CM`, `ONC` On Call NT, and
+numeric `1`/`2` rows (many items carry only accumulations, no hours). Note **ADP reports regular
+and overtime as `*RG` / `*OT`**, not the `R` / `O` the pay-data input uses — a reconciler must map
+them.
+
+**What this unlocks:** for every processed week the ERP can read, per employee and code, the
+hours, rate and amount ADP actually paid, and compare them with what it sent. A practitioner's
+edit in ADP (the round-trip question) becomes visible **after processing** as a difference — not
+at the moment of the edit, which still raises no event (§7).
+
+**Pay-period status, same day:** `2026-44` **`COMPLETE`**, `2026-45` **`OPEN`** (it was still
+`OPEN` at 16:23 PT on 10-27). The queue was **204** again — `payPeriodStatus.change` has now
+failed to deliver for two week-closes. The run list (`PR-PRC`, minutes after processing) is the
+signal to use.
+
 ---
 
 ## Appendix — the test scripts, as run
