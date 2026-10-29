@@ -640,6 +640,13 @@ then `pnpm typecheck`; `pnpm mobile:lint`; mobile `jest` for `components/field/t
 and `features/field-ticket/sync` in isolation, compared with the nine inherited failures.
 No new tests.
 
+### AI decisions made in U4 (recorded here for the PR's AI-decisions table)
+
+- **Developer decision 2026-10-29 (wedge question):** a queued `uploadAttachment` op the server refuses for good — a server-answered HTTP 400, 413, 415 or 422 — is dropped with a toast, not retried forever. Dropped means: op removed from the ledger through the per-file acknowledgment path (no `rev` bump), local copy deleted, not rethrown (later files in the key still send), the server's message shown by the global error toast (`showGlobalToast` + `formatApiError`, no new copy), no row added to the cached list. No answer, 5xx, 401/403/404/408/429 and 409 keep their handling (a window-closed 409 still keeps the op and `needsEditRequest`). The server's message does not necessarily name the file (`formatApiError` returns the API message, not the `Could not upload <name>` prefix); nothing was prepended.
+- **Reserved ledger keys:** one helper `isReservedLedgerKey` in the leaf `sync/delete-queue-key.ts` covers both. Sites that use it: `draftHasLocalProgress` (`ticket-flow.store.ts`), `derivedOps` (`sync/drain.ts`), `reportDrainFailure` (`flow/ticket-step-screen.tsx`). `ATTACH_FILE_LEDGER_KEY` moved to the leaf and is re-exported from `sync/attach-file-queue.ts`. `orderedUnsynced`, `ticketNeedsSync`/`hasUnsyncedSteps` and `retireServerKnownSteps` do not list keys by hand and needed no change.
+- **Unsourced choices, for review:** op kind `uploadAttachment` (flat shape, no `target`) and key literal `__attachFileUploads`; the picked file's details live in the op, not in `sync.attachments` (that registry is uploaded eagerly by `uploadDraftAttachments`, swept after 30 minutes and not tied to the ledger key); a missing local file is released (op dropped, nothing sent) with a `console.warn` naming the file, no toast; queued files reuse the existing "Attached N, M skipped (too large)" copy when some were rejected or failed, and show no banner when all queued; queued rows sit at the top of the list; new test IDs `ticket-attachment-pending-<localId>`, `ticket-attachment-pending-marker-<localId>`, `ticket-attachment-pending-remove-<localId>`; the remove button on a pending row is 48 px (the server row's delete button stays 36 px, unchanged); online upload and delete keep the direct path.
+- **Queued bytes are unbounded** (Q5, F6): the 50 MB per-file cap is the only limit; no count or total cap.
+
 ### Deliberately not in this unit
 
 - Any cap on file count or total bytes — the developer chose none (Q5).
