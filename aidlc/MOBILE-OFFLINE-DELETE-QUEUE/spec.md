@@ -739,6 +739,37 @@ Rows D1 to D4 record the developer's decisions of 2026-10-29 (relayed in the req
 - **Workaround, if any:** none needed.
 - **Status:** resolved — see decisions/2026-10-29-offline-deletes-and-attach-file-sheet-queued-on-the-phone.md (developer answer, session 2026-10-29, status `reference`; recorded in REQ-06, §11b D9).
 
+### Q14 — What the failed-sync badge tap says when the API does not answer (raised by the U5 executor, from `units.md` F9)
+
+- **Question:** When the badge tap's probe finds the API unreachable, the tap shows "the existing offline message". The only generic one is the Field tab's header refresh text, "Offline — will sync when reconnected" (`app/(field)/field.tsx`); the others name an action ("Offline — reconnect to save this step"). The generic text says it will sync on reconnect, but an exhausted entry is no longer retried by itself, so it does not. Keep that text?
+- **Options:**
+  - A. Keep "Offline — will sync when reconnected"
+  - B. Use another existing text — say which
+  - X. New copy — say what
+- **Answer:** None yet.
+- **Why it cannot be answered from what is written:** REQ-12 and F9 say "the existing offline message" without naming it, and forbid new copy; no existing text fits both "the API is unreachable" and "tap again later".
+- **Blocked:** nothing (U5 is built with option A).
+- **Candidates:** `apps/mobile/app/(field)/field.tsx` (handleRefresh); `apps/mobile/features/field-ticket/use-retry-failed-sync.ts` (`FAILED_SYNC_OFFLINE_MESSAGE`, the one place to change).
+- **Owner:** Haris
+- **Workaround, if any:** yes, labelled as one: option A, reuse the Field tab's text unchanged.
+- **Status:** open — not answered; the workaround stands.
+
+### Q15 — Is the first foreground send counted, and does the pre-submit drain resend an exhausted entry? (raised by the U5 executor)
+
+- **Question:** (a) §11c says the foreground first-send failure (`ticket-step-screen.tsx` `ackStepProgress` → `markStepFailed`) "applies as the first attempt of the count"; the U5 brief counted only inside the drain's and the scan's generic failure paths. A step whose progress ack fails in the foreground is therefore sent 5 times, not 4, before it stops. Count it too? (b) The open ticket's pre-submit check (`useDrainTicket`) goes through the same drain, so it now skips an exhausted entry and reports it as a failed step; the badge is not shown inside the open ticket (Q9), so the crew must leave the ticket and tap the badge on the card or the Jobs row. Should the pre-submit check resend an exhausted entry instead?
+- **Options:**
+  - A. (a) count the foreground ack failure; (b) keep skipping
+  - B. (a) leave uncounted; (b) pre-submit check resends an exhausted entry (without resetting its count)
+  - C. A for (a), B for (b); or the reverse
+  - X. Other — say what
+- **Answer:** None yet.
+- **Why it cannot be answered from what is written:** REQ-09 says the first foreground send "is the first send, not a retry" and that automatic retries stop; it does not say whether the user-initiated pre-submit check is automatic.
+- **Blocked:** nothing (U5 is built with (a) uncounted, (b) skipping).
+- **Candidates:** `apps/mobile/features/field-ticket/flow/ticket-step-screen.tsx` (`ackStepProgress`); `apps/mobile/features/field-ticket/sync/drain.ts` (`onePass`).
+- **Owner:** Haris
+- **Workaround, if any:** yes, labelled as one: (a) uncounted, (b) skipping, as built.
+- **Status:** open — not answered; the workaround stands.
+
 ## 13. What this spec deliberately does not specify
 
 - Sweeping S3 objects that earlier swallowed deletes already orphaned: out of scope by the developer's decision (guardrail G2, needs developer approval and a run on a copy of staging data); a separate ticket.
