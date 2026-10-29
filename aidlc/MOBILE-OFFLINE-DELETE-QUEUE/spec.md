@@ -746,13 +746,13 @@ Rows D1 to D4 record the developer's decisions of 2026-10-29 (relayed in the req
   - A. Keep "Offline — will sync when reconnected"
   - B. Use another existing text — say which
   - X. New copy — say what
-- **Answer:** None yet.
+- **Answer:** Two cases (Haris, session 2026-10-30): "if we try to click on this while connected to internet then we should say server not responding or something went wrong, try after a few minutes; in offline mode, clicking on it should say Offline - will sync when reconnected". So: probe fails while the phone's network flag says offline: "Offline — will sync when reconnected" (option A for that case); probe fails while the flag says online: "Server not responding. Please try again in a few minutes." (the sense is the developer's; the exact sentence is the executor's and can be reworded).
 - **Why it cannot be answered from what is written:** REQ-12 and F9 say "the existing offline message" without naming it, and forbid new copy; no existing text fits both "the API is unreachable" and "tap again later".
-- **Blocked:** nothing (U5 is built with option A).
+- **Blocked:** nothing.
 - **Candidates:** `apps/mobile/app/(field)/field.tsx` (handleRefresh); `apps/mobile/features/field-ticket/use-retry-failed-sync.ts` (`FAILED_SYNC_OFFLINE_MESSAGE`, the one place to change).
 - **Owner:** Haris
-- **Workaround, if any:** yes, labelled as one: option A, reuse the Field tab's text unchanged.
-- **Status:** open — not answered; the workaround stands.
+- **Workaround, if any:** none needed.
+- **Status:** answered — developer, session 2026-10-30; built in U5 (`use-retry-failed-sync.ts`).
 
 ### Q15 — Is the first foreground send counted, and does the pre-submit drain resend an exhausted entry? (raised by the U5 executor)
 
@@ -762,13 +762,13 @@ Rows D1 to D4 record the developer's decisions of 2026-10-29 (relayed in the req
   - B. (a) leave uncounted; (b) pre-submit check resends an exhausted entry (without resetting its count)
   - C. A for (a), B for (b); or the reverse
   - X. Other — say what
-- **Answer:** None yet.
+- **Answer:** "Implement which is best; but if the retries are blocked and the ticket is not getting submitted then instead of a generic message we need to show a specific message indicating the actual issue" (Haris, session 2026-10-30). (a) left as built: the foreground ack failure is not counted. (b) AI decision, option B with a specific message: the pre-submit check resends each exhausted entry once per attempt (a user pressing Complete is a real attempt), a failed resend leaves it exhausted with the count capped at 4, and the blocked-submit alert names the step and shows the entry's stored server message instead of the generic line.
 - **Why it cannot be answered from what is written:** REQ-09 says the first foreground send "is the first send, not a retry" and that automatic retries stop; it does not say whether the user-initiated pre-submit check is automatic.
-- **Blocked:** nothing (U5 is built with (a) uncounted, (b) skipping).
+- **Blocked:** nothing.
 - **Candidates:** `apps/mobile/features/field-ticket/flow/ticket-step-screen.tsx` (`ackStepProgress`); `apps/mobile/features/field-ticket/sync/drain.ts` (`onePass`).
 - **Owner:** Haris
-- **Workaround, if any:** yes, labelled as one: (a) uncounted, (b) skipping, as built.
-- **Status:** open — not answered; the workaround stands.
+- **Workaround, if any:** none needed.
+- **Status:** answered — developer, session 2026-10-30; built in U5 (`drain.ts` `retryExhausted`, `ticket-step-screen.tsx` `blockSubmit`).
 
 ## 13. What this spec deliberately does not specify
 
