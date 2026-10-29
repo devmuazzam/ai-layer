@@ -38,7 +38,8 @@ through the existing ticket-scoped routes. They reuse P3's image pipeline and re
   group names (`signatures`, `checklist-photos`, `incident-evidence`, `attachments`); never
   `ticketCode`.
 - Rows keep `featureType` (`TICKET_SIGNATURE`, `CHECKLIST`, `TICKET_INCIDENT`, `JOB_TICKET`) and
-  `featureId = ticketCode`. The precise link is a direct FK (`TicketSignature`,
+  `featureId` = the ticket UUID for rows written from 2026-10-28 (older rows hold the `ticketCode`,
+  never rewritten; reads and ownership checks accept either, D12). The precise link is a direct FK (`TicketSignature`,
   `ChecklistItemAnswer.photoAttachmentId`, `Attachment.incidentReportId`).
 - `attachments.category` is a label written **when the attachment is linked**, not at upload (the
   upload route knows no step, checklist type or break number). Use `AttachmentsRepository.setCategory`
