@@ -71,13 +71,15 @@ Derived acceptance criteria in the spec are accepted as definition of done.
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | Crew sees customer signatures and identity photos (sig1, sig2, compliance) load from presigned links on iOS, with labelled rows and WebP variants; carries the shared helpers and `AttachmentImage` | REQ-01, 02, 03, 04, 07, 08, 09, 11 (part) | api, mobile | — | ~900 lines / ~22 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u1-signatures |
-| U2 | Crew sees checklist and deficiency photos (pre-trip, post-trip, JSA) and checklist signatures load from presigned links, labelled by checklist type | REQ-01, 02, 03, 04, 07, 08, 11 (part) | api, mobile | U1 | ~600 lines / ~14 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u2-checklist |
-| U3 | Crew sees incident evidence and the incident signature load from presigned links; video evidence opens by presigned link | REQ-01, 02, 03, 04, 07, 08, 11 (part) | api, mobile | U1 | ~550 lines / ~12 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u3-incident |
-| U4 | Crew sees lunch worked-through signatures load from presigned links, labelled `Lunch WTL 1`..`4`; display-by-`/download` branch retired | REQ-01, 02, 03, 05, 07, 08, 11 (part) | api, mobile | U1 (stack after U3) | ~450 lines / ~10 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u4-lunch-wtl |
-| U5 | Crew opens and shares Attach-File documents from a presigned link; image attachments get variants | REQ-02, 03, 06, 07 | api, mobile | U1 | ~450 lines / ~10 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u5-documents |
-| U6 | Office sees ticket progress-tracking images (signature, identity photo, checklist photos, incident photos) load from presigned links, with the `/download` fallback kept (added 2026-10-28) | REQ-12 | api, shared, web | U5 | ~450 lines / ~14 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u5-documents |
-| U7 | Office sees asset meter-reading history photos load from presigned links (added 2026-10-28) | REQ-13 | api, web | U5 | ~150 lines / ~6 files | built — feat/MOBILE-TICKET-PRESIGNED-IMAGES-u5-documents |
+| U1 | Crew sees customer signatures and identity photos (sig1, sig2, compliance) load from presigned links on iOS, with labelled rows and WebP variants; carries the shared helpers and `AttachmentImage` | REQ-01, 02, 03, 04, 07, 08, 09, 11 (part) | api, mobile | — | ~900 lines / ~22 files | merged — PR #958 |
+| U2 | Crew sees checklist and deficiency photos (pre-trip, post-trip, JSA) and checklist signatures load from presigned links, labelled by checklist type | REQ-01, 02, 03, 04, 07, 08, 11 (part) | api, mobile | U1 | ~600 lines / ~14 files | merged — PR #958 |
+| U3 | Crew sees incident evidence and the incident signature load from presigned links; video evidence opens by presigned link | REQ-01, 02, 03, 04, 07, 08, 11 (part) | api, mobile | U1 | ~550 lines / ~12 files | merged — PR #958 |
+| U4 | Crew sees lunch worked-through signatures load from presigned links, labelled `Lunch WTL 1`..`4`; display-by-`/download` branch retired | REQ-01, 02, 03, 05, 07, 08, 11 (part) | api, mobile | U1 (stack after U3) | ~450 lines / ~10 files | merged — PR #958 |
+| U5 | Crew opens and shares Attach-File documents from a presigned link; image attachments get variants | REQ-02, 03, 06, 07 | api, mobile | U1 | ~450 lines / ~10 files | merged — PR #958 |
+| U6 | Office sees ticket progress-tracking images (signature, identity photo, checklist photos, incident photos) load from presigned links, with the `/download` fallback kept (added 2026-10-28) | REQ-12 | api, shared, web | U5 | ~450 lines / ~14 files | merged — PR #958 |
+| U7 | Office sees asset meter-reading history photos load from presigned links (added 2026-10-28) | REQ-13 | api, web | U5 | ~150 lines / ~6 files | merged — PR #958 |
+
+- **Closed 2026-10-29:** all seven units merged into `staging` as PR #958 (merge commit `0f4704b10`, one branch `feat/MOBILE-TICKET-PRESIGNED-IMAGES-u5-documents` holding U1 to U7, rebased by Haris; the separate u1 to u4 branches were deleted from the remote). **Not yet on `main`.** Units cut or not built: none of U1 to U7; proposed follow-ups not built: DAS loadout photos on web (D13), an incident viewer on mobile (Q8), sales quotation attachments and job artifacts on mobile (Q1).
 
 - **Status** takes exactly one of: `not started` · `in progress — <branch>` · `built — <branch>`
   · `merged — PR #<n>` · `cut — <reason>`. Never a commit SHA.
