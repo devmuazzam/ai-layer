@@ -8,6 +8,13 @@ decided_by: >-
   product-owner sign-off. Recorded `status: reference` — binding on the
   CodingCops build through that deadline, open to being overruled by TCG.
 status: reference
+provenance_note: >-
+  Points 2 and 4 are superseded for All Permits as of 2026-10-29 by
+  decisions/2026-10-29-all-permits-create-permit-modal.md (Syed Haris, TCG-132, `reference`).
+  Create Permit returns on All Permits as a modal (Travel, Annual Travel, FAA, Encroachment, Sub
+  Hauler), with asset linking as the prototype shows. The 15 Sep 2026 deadline has passed. The
+  companion tracker note (2026-09-11-track-permits-job-only-until-sept-15) is fully superseded.
+  Points 1, 3 and 5 are not addressed by that decision. Recorded by tcg-scrum.
 conflicts_with: []
 resolves: projects-jobs/gaps.md#permits-can-no-longer-be-created-outside-the-artifact-flow--and-the-vault-says-they-can
 supersedes_partial:

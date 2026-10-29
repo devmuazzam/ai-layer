@@ -7,7 +7,12 @@ decided_by: >-
   of branch `fix/das-fixes`, in answer to explicit questions. Not a TCG
   client-side product-owner sign-off. Recorded `status: reference` — binding on
   the CodingCops build, open to being overruled by TCG.
-status: reference
+status: superseded
+superseded_by: decisions/2026-10-29-all-permits-create-permit-modal.md
+provenance_note: >-
+  Superseded 2026-10-29 by Syed Haris (developer direction, TCG-132 Q2, `reference`): Track
+  Permits lists every permit regardless of job, and asset- and vendor-linked permits get status
+  actions. The 15 Sep 2026 interim this note set has ended. Recorded by tcg-scrum.
 conflicts_with: []
 resolves:
   # part (b), for the interim; (c) stays open
