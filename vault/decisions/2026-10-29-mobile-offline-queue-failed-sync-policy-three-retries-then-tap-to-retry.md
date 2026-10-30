@@ -2,7 +2,7 @@
 title: "Failed-sync policy for queued ticket changes on mobile: no retention limit, one send then at most 3 retries counting only server-answered errors, then \"Sync failed — tap to retry\" on the ticket card and the completed rows in Jobs; the tap probes the API, resets the count and starts a drain — decision"
 source: decision/Syed Haris (CodingCops) — his answers to MOBILE-OFFLINE-DELETE-QUEUE spec §12 Q4, Q9, Q10, Q12 and the retry count in a Claude Code session, 2026-10-29
 decided: 2026-10-29
-amended: '2026-10-30 — section "Added 2026-10-30 — Q14 and Q15(b)"'
+amended: '2026-10-30 — sections "Added 2026-10-30 — Q14 and Q15(b)" and "Added 2026-10-30 — Q11 in part"'
 decided_by: >-
   Syed Haris (CodingCops), the developer and requester of MOBILE-OFFLINE-DELETE-QUEUE, in
   conversation with Claude Code on 2026-10-29. He answered Q4, then the retry count, Q12, Q9
@@ -25,6 +25,7 @@ related_decisions:
   - 2026-10-29-offline-deletes-and-attach-file-sheet-queued-on-the-phone.md
   - 2026-10-29-ticket-attachment-s3-deletion-guaranteed-by-transactional-outbox.md
   - 2026-10-15-late-and-incomplete-tickets.md
+  - 2026-10-30-mobile-ticket-state-tick-and-category-follow-ups.md
 tags: [module/field-ops, kind/decision, offline, ticket-workflow]
 ---
 
@@ -175,6 +176,26 @@ was left as built: uncounted, so such a step gets 5 sends, not 4. That is the AI
 `open`. Q11 (does the rule cover a failed ticket submit) stays `open`, with the "queued ops
 only" workaround. The Q15(b) work does not change the submit paths themselves. This note
 decides neither.
+
+## Added 2026-10-30 — Q11 in part
+
+Source: `.ai/aidlc/MOBILE-OFFLINE-DELETE-QUEUE/spec.md` REQ-13, §11b D22, §12 Q11 Status line.
+Haris, in conversation with Claude Code, 2026-10-30. Status `reference`, as for the rest of
+this note. This section supersedes the statements above that Q11 is not answered and that
+REQ-13 stays `[OPEN]` ("Not answered — Q11", "Still not answered — Q8 and Q11", and the Q11
+line of "What this does not decide"). The earlier text is kept as the record.
+
+- **Q11 is answered in part.** Haris directed "real fix here" and "the ticket state should be
+  consistent!", after TK-00031 and TK-00032 showed completed on the phone while the server held
+  them `IN_PROGRESS`. REQ-13 is now `[UNVERIFIED]`, built in U7.
+- **The rule is the AI's reading, not his words** (D22): a submit the server never accepted
+  (`submitState: 'error'`) raises the same "Sync failed — tap to retry" badge; a ticket the
+  server has not completed is never shown completed.
+- **Still not decided:** whether a failed submit counts against the 4-send limit. It is not
+  built. Q11 keeps that part open. Q8 is unchanged (open).
+
+The full record, with the developer's words and the AI's choices kept apart:
+`decisions/2026-10-30-mobile-ticket-state-tick-and-category-follow-ups.md`.
 
 ## What this does not decide
 
