@@ -158,6 +158,24 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   plans through third parties and trucking as PO services, and will settle the path with Melissa and
   Brent. Still open: the quotation-level PO, and whether it replaces or joins the DAS allocation PO.
   Sources: [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §9; transcript [2026-10-21-erp-demo-walkthrough-part-1.md](../meetings/transcripts/2026-10-21-erp-demo-walkthrough-part-1.md).
+- **Update 2026-10-30 (10-29 sales quoting) — Joe splits the quote PO from the dispatch PO.**
+  - **Joe Schacatano (VP of Sales), 55:50–57:41:** when a service is known at quote time to be 100 %
+    third-party — e.g. Roadway (permitting and traffic control) quotes 5,000 and TCG quotes 6,000 — *"that
+    $5,000 amount should generate a PO on the quoting end that gets sent directly to Roadway"*; Dispatch
+    sends no PO for it. A sub-out by Dispatch (trucking for support loads, another crane company) is for
+    asset availability and gets its PO there. *"They both need the ability"* (55:06). The quote is not
+    updated afterwards (1:00:27). This answers [sub-out-crane-and-trucking.md](sub-out-crane-and-trucking.md)'s
+    *"Neither sub-out file says who raises the PO or when"*.
+  - **Ryan Adams (Sales Manager), 45:06–50:12:** on the quote — vendor, scope, date and time, their cost,
+    a **markup %**, the customer price as a line *"but not to the customer"* as a third party, drag-and-drop
+    of their estimate, and the PO.
+  - ehtesham.anwar: two shapes — a vendor line of its own, or a flag on an existing line; priced by markup,
+    not billing codes; **CodingCops will prototype both** (51:28). **No vendor communication exists** —
+    allocated vendors get no job details or PO (53:18–55:08, 1:00:49); to be designed with Lisette.
+  - Still open: **(a)** the quote-side shape (after the prototype); **(b)** the markup default (the profit
+    forecast's *"MINIMUM OF 10% MARK UP"*?) and whether sales may change it per line; **(c)** what a vendor is
+    sent, how and when (on *won*?); **(d)** a quote PO when the quote is lost — this entry's original
+    question. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §7.
 
 ## PO and vendor/agency rules the E2E suite asserts with no written source — PR #488
 

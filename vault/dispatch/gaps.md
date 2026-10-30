@@ -248,6 +248,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   still has to say which reading they meant — the register is right about that. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
   **Scope note:** this is the **employee** case. This entry's own double-booking material (Brian Petros, *"we could double book"*,
   `daily-allocation-system.md`:48) is about the same **crane** on two non-overlapping jobs. Same words, different object.
+- **Update 2026-10-30 (10-29 sales quoting) — Sales Admin and sales coordinator are one role.** Joe
+  Schacatano (VP of Sales), 43:15: *"the sales coordinator and the sales admin are the same exact thing."*
+  Ryan Adams: *"They are, yes."* One sales coordinator and one salesperson per quote, sometimes the same
+  person; tracked separately for commission (Ryan, 42:18, 43:40–44:01); either can add the coordinator
+  (42:37); every coordinator sees and acts on all quotes (41:52–42:07). CodingCops keeps the existing
+  `salesCoordinatorId` field. This answers *"whether those are one role is not stated"* above; a decision
+  note is a candidate. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §6.
 
 ## Crane configuration — is a support load an Asset, or a line on the crane?
 

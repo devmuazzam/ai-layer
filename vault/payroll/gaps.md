@@ -6363,3 +6363,18 @@ somewhere it should not have. Settle that before touching either.
   (assets, not people).
 - **Blocked:** nothing — display only; the figure should be labelled provisional until answered.
 - **Owner:** Corrina Bustos / Micaela Dipane (payroll); Melissa McNutt if it is a management KPI.
+
+## Certified payroll — sending completed e-tickets to the preparer, not written
+
+- **Status:** open
+- **Asked:** 2026-10-29 — before the sales quoting call. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §1.
+  - **Micaela Dipane, 1:25:** *"for the CPR stuff, will the new ERP send Samantha the e-tickets directly? Or
+    no?"* **Corrina Bustos (HR Manager):** *"We haven't even got there … When we build that out, yes."* Today
+    each ticket is downloaded one by one from FCC (1:43–1:47).
+- **Question:** **(a)** Who receives the e-tickets for certified payroll — "Samantha" is not in the vault; the
+  2026 chart names Rose Aguilera for Certified Payroll? **(b)** Which tickets (jobs flagged certified payroll
+  only), in what form, and when — per ticket on completion, or per week?
+- **Sources checked:** [../meetings/2026-08-07-labor-compliance-certified-payroll.md](../meetings/2026-08-07-labor-compliance-certified-payroll.md)
+  (*"if a job is not marked as a Labor Compliance job, it will not appear in Certified Payroll reports"*);
+  `Quotation.certifiedPayroll` exists. Nothing routes tickets.
+- **Owner:** Corrina Bustos.

@@ -672,6 +672,22 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** rename Yard master does not update jobs/quotes; list `yardId` filter ≠ job.yard string.
 - **Owner:** Lisette Anzaldo.
 - **See also:** [dispatch/gaps.md](../dispatch/gaps.md) pointer entry.
+- **Update 2026-10-30 (10-29 sales quoting) — the yard is a billing input.**
+  - **Joe Schacatano (VP of Sales), 21:05–21:27:** with the job-site address the salesperson selects the
+    yard the quote comes out of; on conversion the auto-populated asset is the one at that yard, tagged
+    *"this is quoted to come out of this yard"*.
+  - ehtesham.anwar (23:56): *"quotation always is going to be for one yard, from one yard"*; billing is yard
+    to job site, never job to job. **Joe, 24:23: *"Exactly correct."*** Two minutes earlier (22:01) Joe
+    allowed a multi-yard **project** quote as *"a possibility"*. Dispatch may still send from any yard or
+    job; the DAS should show the yard more clearly (24:24, 25:06).
+  - **Kyle Harlow, 18:03–18:49:** pick the yard from the job location — asset availability in the yard
+    first, then distance, against a mapped cutoff. Joe (17:47): or from the asset's yard.
+  - **Melissa McNutt, 19:07:** employees must be assignable to **both yards**; in FCC re-assigning them
+    *"messes up payroll"*. FCC's own reference data allows more than one yard per employee
+    (`payroll/fcc-employee-master-reference-data.md`); `Employee.yardId` is a single FK.
+  - Each needs a real yard, so this question now blocks them. Still open: **(a)** FK or free text;
+    **(b)** may a project quote carry more than one yard; **(c)** may an employee belong to more than one
+    yard, and which yard drives payroll (subsistence distance, home yard). Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §4.
 
 ## Ready-to-schedule / publish-without-permit gates unenforced
 
@@ -681,6 +697,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** `projects-jobs/project-module/05-create-and-track-permits.md` (unverified); scheduling playbooks under `projects-jobs/scheduling/`; no matching enforce path found in API/web grep.
 - **Related:** [*Converted-quotation schedule days…*](#converted-quotation-schedule-days--checked-by-default-and-what-that-puts-on-the-das-board).
 - **Owner:** Lisette Anzaldo.
+- **Update 2026-10-30 (10-29 sales quoting) — Ryan states the gate.** Ryan Adams (Sales Manager), 40:34–40:55:
+  a quote must go out **without** the on-site contact / *Report To*, the lift plan, FAA permit, site plan,
+  encroachment permit and travel permit, *"But I gotta be able to stop it before the scheduling happens
+  without that."* Ryan (38:14) and Joe (39:28): an **alert** to the salesperson and the sales coordinator
+  listing what is missing. ehtesham.anwar proposed the review at *mark as won* / convert (38:49, 40:59);
+  Ryan: *"That is correct"* (41:31). Still open: **(a)** is the stop at conversion or at scheduling — Ryan
+  said scheduling; **(b)** hard block or warning; **(c)** which missing items block (abdulrehman asked
+  field by field, 39:50; not answered). Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §5.
 
 ## Plans have no PO attach path
 

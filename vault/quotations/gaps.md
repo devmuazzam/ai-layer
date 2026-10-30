@@ -2473,6 +2473,20 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   This is **not** an adjudication — the principle is decided, the model (a)–(d) in the 2026-09-16 update above is
   still open, and nothing here reverses a shipped row. It is a warning that the register and this entry are
   describing two different products. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
+- **Update 2026-10-30 (10-29 sales quoting) — Ryan asks for the crane "fully built up".** Ryan Adams (Sales
+  Manager), 29:11–29:41 and 32:50: picking a crane should add the crane, the operator load and the support
+  loads *"in a line so you can see each line item"*, plus a travel permit for that size, a line for a
+  potential rigger, and fuel and insurance; lines can be inserted and deleted. Joe (32:15): a 265 populates
+  the operator load and three support loads, *"which is how we'll build it"*. Ryan (34:42): the configuration
+  should carry the **counterweight load weights** (*"operator load maybe 44,000, next one would be 88"*).
+  ehtesham.anwar showed the 10-06 *show* toggles: with them off the quote shows only the crane and the job
+  still carries the oiler, operator load and tractor. This fits the 09-16 principle (billing codes on the
+  quote, crew on the job). Two parts do not: fuel and insurance are **one surcharge per quote**
+  (`decisions/2026-09-02-one-surcharge-per-quote.md`, verified), and the rigger row was withdrawn from the
+  approved sheet (`dispatch/crane-configuration-rules.md` §9). Weights exist only for the 190 T (§5.2). Not
+  a decision: **(e)** should a rigger be an optional line on every crane's set, at quantity 0 (see *Quantity
+  0 on an Hourly quote line* below)? **(f)** where do counterweight weights live — on the support-load billing
+  code, the association, or the configuration? Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §2.
 
 ## Resources Total Value — UAT asks for exact decimals, the code deliberately strips cents
 
@@ -2502,6 +2516,11 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This one is unusual: the row is itself a **deferral**, so the register records that nobody has decided, which matches the vault.
 - **Blocked:** any permit work on the quotation Resources tab; the post-15-Sep permit-class work.
 - **Owner:** the product team, per the UAT 2 sheet's own words — Joe Schacatano for what belongs on an estimate, Liz Lopez for the permit side.
+- **Update 2026-10-30 (10-29 sales quoting):** Ryan Adams (29:11, 32:50) wants **a travel permit for that
+  size crane** added automatically when the crane is picked — *"select the crane and it populate everything
+  that has a line item with that crane, which would include a travel permit"*. That is a priced quote line
+  per crane size, as Joe's 09-16 *"operator load, travel permit, and a surcharge"*. Nobody said what the line
+  becomes on conversion. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §2.
 
 ## Billing Code Flags and Surcharge checkboxes — the expected behaviour was never defined
 
@@ -2613,6 +2632,13 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Sources checked:** [*Sell-side scheduling artefacts — no vault coverage*](#sell-side-scheduling-artefacts--no-vault-coverage) (the Job Schedule Master and Geographic Heat Map were shared on 2026-08-12 but are not in the vault); [*Quote line items vs dispatch resources…*](#quote-line-items-vs-dispatch-resources--the-associated-set-auto-fills-the-quote-and-the-sales-owner-says-dispatch-resources-must-not-be-quoted). If quoting and dispatch schedule different things (Ehtesham, 8:27 on the same call), then "availability" at quote time has to be defined against one of them. Nothing written defines it.
 - **Blocked:** any availability indicator on the quotation builder; any "emergency job" definition or SLA.
 - **Owner:** Brian Petros (raised it), with Joe Schacatano / Ryan Adams for what sales needs to see.
+- **Update 2026-10-30 (10-29 sales quoting):** Brian Petros (10:55): sales has built a **dispatch
+  scheduling coordination board** showing crane availability, where coordinators or sales can *"suggest a
+  time or book, make a reservation basically on a crane in advance, but mainly to see the availability"* —
+  *"you can think about how we can integrate it into the ERP"*. The board itself was not shown or shared on
+  the call; it may be the manual crane-by-day board in [sales-reporting-workbooks.md](sales-reporting-workbooks.md)
+  §3. ehtesham.anwar (19:33): at quote time sales cares whether the sub-category is available, not which
+  unit. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §4, §8.
 
 ## Does a quotation carry sales tax at all, and if so on which amount?
 
@@ -2805,3 +2831,45 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Sources checked:** A vault-wide grep outside `meetings/transcripts/` for compact money, K/M, abbreviated amounts, `Won value` and `Pipeline value` finds nothing on display format. [*Resources Total Value — UAT asks for exact decimals*](#resources-total-value--uat-asks-for-exact-decimals-the-code-deliberately-strips-cents) covers a different surface (the Resources Total Value field, UAT 3) and is a pricing question. [../projects-jobs/job-project-das.md](../projects-jobs/job-project-das.md):36 (`unverified`, punch list) asks only for consistent *naming* of budget, pipeline and won value. `uat/sessions/` has no 2026-10-22 session. `.ai/aidlc/processed.log:245` records "UAT feedback 2026-10-22" with no written source.
 - **Blocked:** nothing. The change is display-only and reversible. The UAT ask still needs writing down (who asked, and where), or the next formatter change may revert it.
 - **Owner:** whoever raised it at the 2026-10-22 UAT. Otherwise Joe Schacatano / Ryan Adams (sales).
+
+## FAA / NOTAM airport radius — built at 5 miles, the call said 3 miles or 3 nautical miles
+
+- **Status:** open
+- **Asked:** 2026-10-29 — sales quoting call. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §9.
+  - The room mic (Brian or Ryan), 1:04:30: when a job-site address is within a distance of an airport,
+    *"automatically flag for FAA or NOTAM and add that"* as a quote line.
+  - ehtesham.anwar first said *"30 kilometers"* (1:05:53). **Joe Schacatano (VP of Sales), 1:06:47:**
+    *"Minimum is 3 miles"*; 1:07:57: *"best practices is 3 miles … I think 3 miles is safer than three nautical
+    miles."* The room mic, 1:08:17: *"use 3 miles instead of three nautical miles."* ehtesham.anwar closed
+    with *"it's going to be safer if we use the nautical miles"* (1:08:43). Melissa was asked to agree; no
+    answer is recorded.
+- **As built:** `Airport.radiusMeters` defaults to **8047 m (5 statute miles)**; migration
+  `20260728140000_scrum_414_airports` seeds 34 airports at that radius; `job-site-location-insights.service.ts`
+  returns `faa.required` and a `faaPermitRequired` suggestion. Nobody on the call mentioned it.
+- **Question:** **(a)** What radius flags a job site — 3 statute miles (4.83 km), 3 nautical miles (5.56 km)
+  or the built 5 miles — and is it one radius for every airport? **(b)** Does a flag add a priced FAA line,
+  set *FAA permit required*, or only warn? **(c)** NOTAM versus FAA permit — what decides which one?
+- **Sources checked:** no distance anywhere in the vault. [sales-intake-and-job-walk.md](sales-intake-and-job-walk.md)
+  lists *"Near airport"*; [sales-operating-system/03-sales-coordinator-operations-manual.md](sales-operating-system/03-sales-coordinator-operations-manual.md)
+  §5: *"Evaluate FAA permit, NOTAM and A1 Survey requirements immediately"*.
+  [../customers/gaps.md](../customers/gaps.md) *Job-site map — required on the form …* is adjacent.
+- **Blocked:** the default radius and the quote line on an airport flag.
+- **Owner:** Joe Schacatano (sales) — the call ended on two answers.
+
+## Quantity 0 on an Hourly quote line — Joe says it is a priced note, the web blocks it
+
+- **Status:** open — answer on tape, no decision note yet
+- **Asked:** 2026-10-29 — sales quoting call. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §3.
+  - **Ryan Adams (Sales Manager), 36:26–37:10:** show a rigger at 0 so the customer sees the rate — *"a lot of
+    times we're trying to sell a rigger. They're not sure if they want it yet, but they want to see the
+    pricing"*; *"optional line items with the rate in there, but not adding to the total"*.
+  - **Joe Schacatano (VP of Sales), 37:22:** *"you just select quantity 0 and then it's just a note if
+    required … in the comment section."* ehtesham.anwar (37:30–37:45): CodingCops will allow 0.
+- **As built:** the API allows 0 (`create-quotation.dto.ts`, `@Min(0)`). The web allows 0 only inside a
+  Mob/Demob group (`create-quotation.helpers.ts`, `isResourceQuantityValid`).
+- **Question:** **(a)** May any quote line carry quantity 0, staying out of the total, as the verified
+  [../decisions/2026-10-01-mob-demob-lines-quantities-and-placement-on-the-quote.md](../decisions/2026-10-01-mob-demob-lines-quantities-and-placement-on-the-quote.md)
+  pt 5 already says for Mob/Demob lines? **(b)** How does the customer PDF show it — rate shown, total blank,
+  a note? **(c)** What does a 0-quantity line become on conversion — nothing, or a slot?
+- **Blocked:** the web validation change.
+- **Owner:** Joe Schacatano; (b)–(c) CodingCops to propose.

@@ -413,3 +413,25 @@ changed — no earlier pass licensed it and "failed" is a real word in an inspec
 was left: the app offers only *Yard* and *Home*, and the curated notes say so. Speaker labels need no
 caveat: every speaker joined under their own account. Left unchanged: the items listed in the file's own
 header note.
+
+# Pass 17 — 2026-10-30 (one new transcript only)
+
+Applied to `2026-10-29-sales-quoting.md` (22); no earlier file was touched. **22 substitutions**, each
+pinned to its own turn, with the timestamps in the file's header note. In summary: "Harris" -> "Haris" (1,
+as pass 10); "time" / "100 and" -> "ton" (4 / 1, as pass 10 and 11) and "train" -> "crane" (3, as pass 1);
+"100 time frame" -> "100 ton crane" (1, as pass 14); "Euler" -> "oiler" (1, as pass 3 and 11); "rigor" /
+"dagger" -> "rigger" (1 / 1); "quoted, report to" / "report 2" -> "Quoted To, Report To" / "Report To"
+(1 / 1, as pass 15); "tree closures" -> "street closures" (1); "tracking" -> "trucking" (1); "cells" ->
+"sales" (1); "FA" -> "FAA" (3) and "NOTAMP" / "NODEM" -> "NOTAM" (1 / 1).
+
+New evidence rules used here: **"dagger" -> rigger** only in ehtesham.anwar's 36:38 answer to *"can you
+add a rigger on there?"* (36:12). **"tree closures" -> street closures** only where the next turn answers
+*"we are working on street closure part"*. **"tracking" -> trucking** only beside *Piazza*, TCG's outside
+trucking vendor in the vault. **"cells" -> sales** only in *"would cells be sending the PO … or would
+Dispatch be sending"*, where the sentence sets the two departments against each other. **"FA" -> FAA and
+"NOTAMP" / "NODEM" -> NOTAM** only in the airport-distance exchange, pinned by *"we either have to get an
+FAA or a NOTAM"* (1:04:30). "cream", "queen" and "undertone" were **not** read as crane or *hundred ton*
+— none is in pass 1's list (as pass 14 and 15) — although the "time" beside "cream" was read as "ton".
+"Dallas" was not read as Lisette. Speaker labels are reproduced uncorrected: "Brian Petros" is the
+conference-room microphone, carrying Brian and Ryan Adams; the header gives the evidence. Left unchanged:
+the items listed in the file's own header note.
