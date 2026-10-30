@@ -824,6 +824,22 @@ Rows D1 to D4 record the developer's decisions of 2026-10-29 (relayed in the req
 - **Workaround, if any:** none needed.
 - **Status:** (b) resolved — see decisions/2026-10-29-mobile-offline-queue-failed-sync-policy-three-retries-then-tap-to-retry.md (developer answer, session 2026-10-30, status `reference`; the one-resend rule is an AI decision the developer delegated; built in U5, `drain.ts` `retryExhausted`, `ticket-step-screen.tsx` `blockSubmit`). (a) unchanged: answered — left as built (the foreground ack failure is not counted); not resolved by that note.
 
+### Q16 — Which server answers count as a "server-refused send" toward the 4-send limit (raised by the PR #982 review, U5)
+
+- **Question:** Your Q12 answer was "Only count server-refused sends". Does a 5xx (502, 503, 504 — gateway or deploy outage), 401/403 (auth) or 408/429 (timeout, rate limit) count as a refused send, or only a 4xx that rejects the request itself?
+- **Options:**
+  - A. Every HTTP error status except 409 counts, including 5xx, 401, 403, 408 and 429 (as built: `countsAsRefusedSend` in `apps/mobile/features/field-ticket/sync/retry-limit.ts`)
+  - B. Only a 4xx counts, except 401, 408, 409 and 429; a 5xx is treated like no connection (retried on every scan, not counted)
+  - C. A fixed list of statuses — say which
+  - X. Other — say what
+- **Answer:**
+- **Why it cannot be answered from what is written:** the Q12 options set "no connection" against "the server answered with an error"; they did not separate an outage or auth answer from a refusal. "Any status except 409" is recorded as an AI assumption, not the developer's words (decision note, *Assumptions*; §13 above). In the same ticket, the Attach File "refused for good" list (400, 413, 415, 422) treats 5xx, 401, 403, 404, 408 and 429 as *not* refused. That is also an AI reading, so the two readings of "refused" disagree and neither is sourced. Under A, a 30-minute deploy outage can exhaust every queued entry and show the badge on tickets the server never rejected.
+- **Blocked:** PR #982 (U5) review sign-off on `countsAsRefusedSend`.
+- **Candidates:** decisions/2026-10-29-mobile-offline-queue-failed-sync-policy-three-retries-then-tap-to-retry.md (11.0 KB, 2026-10-29, `reference`; *Assumptions* line "Server-refused means any HTTP error status other than 409"); decisions/2026-10-29-offline-deletes-and-attach-file-sheet-queued-on-the-phone.md (`reference`; *Added later*, AI status list); admin/responsive-design-and-security-posture.md (unverified, 2026-03-09; a 401 is refreshed and replayed by the client). No vault file or FRD states which statuses count.
+- **Owner:** Haris
+- **Workaround, if any:** keep A as built, labelled an assumption in the PR's *AI decisions* table, pending this answer.
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - Sweeping S3 objects that earlier swallowed deletes already orphaned: out of scope by the developer's decision (guardrail G2, needs developer approval and a run on a copy of staging data); a separate ticket.
