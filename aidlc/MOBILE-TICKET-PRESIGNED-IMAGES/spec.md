@@ -566,7 +566,7 @@ Per endpoint:
 - **Blocked:** nothing.
 - **Owner:** Haris
 - **Workaround, if any:** orphans accumulate silently.
-- **Status:** open
+- **Status:** resolved — see decisions/2026-10-30-ticket-attachment-s3-deletion-in-the-row-delete-transaction-no-outbox.md (option X: the S3 delete runs inside the row delete's transaction and a failed S3 delete rolls it back — best effort with rollback, no outbox; no lifecycle rule; orphans already left are swept by a separate ticket; decided under MOBILE-OFFLINE-DELETE-QUEUE spec §11b D20, which reversed D1 on 2026-10-30).
 
 ## 13. What this spec deliberately does not specify
 
