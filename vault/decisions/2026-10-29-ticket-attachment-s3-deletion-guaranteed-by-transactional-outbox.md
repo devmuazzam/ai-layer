@@ -13,7 +13,8 @@ decided_by: >-
   .ai/aidlc/MOBILE-OFFLINE-DELETE-QUEUE/spec.md (§0, §11b, §12, §13) and intent.md. This is a
   developer decision. It binds this build. It is not a TCG client ruling, so the status is
   reference.
-status: reference
+status: superseded
+superseded_by: decisions/2026-10-30-ticket-attachment-s3-deletion-in-the-row-delete-transaction-no-outbox.md
 resolves:
   - MOBILE-TICKET-PRESIGNED-IMAGES/spec.md#q10
   - MOBILE-OFFLINE-DELETE-QUEUE/spec.md#d1
@@ -32,6 +33,14 @@ tags: [module/field-ops, kind/decision, architecture, ticket-workflow]
 ---
 
 # Ticket attachment S3 deletion is guaranteed by a transactional outbox
+
+> **Superseded 2026-10-30** by `decisions/2026-10-30-ticket-attachment-s3-deletion-in-the-row-delete-transaction-no-outbox.md`. The developer reviewed the built outbox
+> and decided against the extra table and worker: the S3 objects are deleted inside the row
+> delete's transaction instead, and a failed S3 delete rolls the delete back. This note is kept
+> as the record of the first answer. Everything below it was true on 2026-10-29 and is no longer
+> the design. The decisions that stand from it: no S3 lifecycle rule, no new dependency, existing
+> orphans not swept here, one ticket with stacked units, the six delete sites, and the 204 for a
+> missing id on the Attach File delete (D11).
 
 ## Decision
 

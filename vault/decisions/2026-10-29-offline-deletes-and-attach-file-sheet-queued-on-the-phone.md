@@ -56,9 +56,11 @@ Q13; REQ-01, REQ-05 to REQ-11; §11b D7, D9, D11, D14, D15. Haris, 2026-10-29.
   the total size. REQ-10.
 - **Q6 — a "Pending sync" marker.** A queued Attach File row carries a small marker. The copy
   is exactly "Pending sync" (option A). REQ-10.
-- **Q7 — failed outbox rows are kept and logged only.** When a server-side S3 deletion job
-  uses up its attempts and ends FAILED, the row is kept with its last error and the event is
-  logged at error level. No list, no notification (option A). REQ-11.
+- **Q7 — failed outbox rows are kept and logged only.** **Superseded 2026-10-30:** there is no
+  outbox (see `decisions/2026-10-30-ticket-attachment-s3-deletion-in-the-row-delete-transaction-no-outbox.md`); a failed S3 delete is logged at error level and fails the
+  delete with a 503. Earlier answer: when a server-side S3 deletion job uses up its attempts and
+  ends FAILED, the row is kept with its last error and the event is logged at error level. No
+  list, no notification (option A). REQ-11.
 - **Q13 — the Attach File queue is a reserved ledger key.** The Attach File offline queue is a
   reserved key in the ticket draft's sync ledger, sent by the existing sync. It is **not** a
   separate durable queue (option A). This confirms D9. REQ-06.

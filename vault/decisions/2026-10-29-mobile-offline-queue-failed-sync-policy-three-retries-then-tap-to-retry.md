@@ -180,9 +180,10 @@ decides neither.
 
 - **Q11**, a failed ticket submit (above).
 - **Q8**, the derived acceptance criteria. It stays open.
-- **The server-side outbox worker's retries.** The developer's 3 retries are for the phone's
-  queue. The server worker's `maxAttempts` (8) is AI decision D3. See
-  `decisions/2026-10-29-ticket-attachment-s3-deletion-guaranteed-by-transactional-outbox.md`.
+- **The server-side S3 delete.** The developer's 3 retries are for the phone's queue. There is
+  no server worker after 2026-10-30 (the outbox was dropped; see
+  `decisions/2026-10-30-ticket-attachment-s3-deletion-in-the-row-delete-transaction-no-outbox.md`): a failed S3 delete fails the delete with a 503, which the phone's
+  queue counts as a refused send like any other server error.
 - **Any signal for an item that never reaches the server.** It is not part of this ticket.
 - **No product behaviour from TCG.** No TCG person ruled on this. The field-ops conflict stub
   (`field-ops/field-ops-mobile-INDEX.md`) is unresolved, and this note takes no side.

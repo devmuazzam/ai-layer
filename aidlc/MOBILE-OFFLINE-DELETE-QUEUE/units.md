@@ -4,6 +4,17 @@
 > Jira id; the slug stands in for `SCRUM-###`). Consumed by an executor, one unit at a time.
 > **Nothing has been implemented.**
 >
+> **Revised 2026-10-30 — the S3 outbox is dropped (`spec.md` D20).** The developer decided the
+> `storage_deletion_queue` table and worker are not needed: the API deletes the S3 objects inside
+> the row delete's transaction, before it commits, and an S3 failure rolls the delete back (503).
+> **U1 is cut.** **U2 is rebuilt** as the first API unit on `staging`: `S3StorageService.deleteObjects`,
+> `AttachmentsRepository.deleteWithObjects` and `removeIfUnreferenced(id, removeObjects)`, the six
+> sites on the new pattern, `ATTACHMENT_IN_USE`, D11. **U3, U4 and U5 are re-stacked unchanged** (the
+> same commits, cherry-picked onto the new U2) as `-v2` branches; the earlier branches
+> (`u1-outbox-worker` … `u5-failed-sync-badge`, pushed 2026-10-30) are superseded and must not be
+> merged. The stack is now **U2 → U3 → U4 → U5**; U2's PR targets `staging`. The U1 and U2
+> sections below are the earlier design, kept as the record; the *Unit ledger* is current.
+>
 > **Revised 2026-10-29 (third pass).** The spec changed after the first pass: Q4 is answered
 > (REQ-09 and REQ-12 defined, D16 to D19), REQ-13 is new and `[OPEN]` (Q11), and Q13 (where the
 > Attach File queue is stored) is **answered: option A, a reserved key in the draft's sync ledger,
@@ -201,11 +212,11 @@ unit's path.
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | A checklist photo (or a replaced signature, lunch or checklist record) deleted on the API leaves its S3 objects removed even when S3 fails at the time: the keys are saved in the same transaction and a worker retries | REQ-03 (mechanism, `deleteOrphaned` and `cleanupReplaced` paths), REQ-04, REQ-05 (part: `deleteOrphaned`, `cleanupReplaced`), REQ-11 | schema, api | — | ~450 lines / ~14 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u1-outbox-worker |
-| U2 | The same guarantee holds on every other ticket-attachment delete path (signature, identity, WTL photo, failed upload, Attach File, and the generic `DELETE /attachments/:id` — six sites, folded in by the developer 2026-10-29); a replayed Attach File delete succeeds; a signature-referenced refusal carries its own code | REQ-03 (remaining sites), REQ-05 (the rest: `removeUnreferenced`, `discardObjects`, `TicketAttachmentsService.remove`, D11, D14) | api, shared | U1 | ~250 lines / ~8 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u2-delete-sites |
-| U3 | A crew member removes an uploaded checklist or signature photo offline: it vanishes at once, survives an app restart, reaches the server on reconnect; removing a not-yet-uploaded photo cancels both; a refused delete is handled by cause | REQ-01, REQ-02, REQ-07, REQ-08 | mobile, api (header read on two routes) | U2 | ~600 lines / ~16 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u3-mobile-delete-op |
-| U4 | A crew member adds and deletes Attach File files offline; queued rows show "Pending sync"; 50 MB per file, no other cap | REQ-06, REQ-10 | mobile, api (header read on two routes, upload idempotency check) | U3 | ~550 lines / ~9 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u4-attach-file-queue |
-| U5 | A ticket whose queued item was refused by the server on 4 sends stops retrying by itself and its card (and its completed row in Jobs) shows "Sync failed — tap to retry"; tapping probes the API, resets the count and drains that ticket even when the network flag says offline | REQ-09, REQ-12 | mobile | U4 | ~500 lines / ~10 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u5-failed-sync-badge |
+| U1 | A checklist photo (or a replaced signature, lunch or checklist record) deleted on the API leaves its S3 objects removed even when S3 fails at the time: the keys are saved in the same transaction and a worker retries | REQ-03 (mechanism, `deleteOrphaned` and `cleanupReplaced` paths), REQ-04, REQ-05 (part: `deleteOrphaned`, `cleanupReplaced`), REQ-11 | schema, api | — | ~450 lines / ~14 files | cut — outbox dropped 2026-10-30 (D20); superseded branch `feat/MOBILE-OFFLINE-DELETE-QUEUE-u1-outbox-worker` is not to be merged |
+| U2 | The same guarantee holds on every other ticket-attachment delete path (signature, identity, WTL photo, failed upload, Attach File, and the generic `DELETE /attachments/:id` — six sites, folded in by the developer 2026-10-29); a replayed Attach File delete succeeds; a signature-referenced refusal carries its own code | REQ-03 (remaining sites), REQ-05 (the rest: `removeUnreferenced`, `discardObjects`, `TicketAttachmentsService.remove`, D11, D14) | api, shared | U1 | ~250 lines / ~8 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u2-delete-sites-v2 (rebuilt on D20; supersedes `-u2-delete-sites`) |
+| U3 | A crew member removes an uploaded checklist or signature photo offline: it vanishes at once, survives an app restart, reaches the server on reconnect; removing a not-yet-uploaded photo cancels both; a refused delete is handled by cause | REQ-01, REQ-02, REQ-07, REQ-08 | mobile, api (header read on two routes) | U2 | ~600 lines / ~16 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u3-mobile-delete-op-v2 (re-stacked; supersedes `-u3-mobile-delete-op`) |
+| U4 | A crew member adds and deletes Attach File files offline; queued rows show "Pending sync"; 50 MB per file, no other cap | REQ-06, REQ-10 | mobile, api (header read on two routes, upload idempotency check) | U3 | ~550 lines / ~9 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u4-attach-file-queue-v2 (re-stacked; supersedes `-u4-attach-file-queue`) |
+| U5 | A ticket whose queued item was refused by the server on 4 sends stops retrying by itself and its card (and its completed row in Jobs) shows "Sync failed — tap to retry"; tapping probes the API, resets the count and drains that ticket even when the network flag says offline | REQ-09, REQ-12 | mobile | U4 | ~500 lines / ~10 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u5-failed-sync-badge-v2 (re-stacked; supersedes `-u5-failed-sync-badge`) |
 
 - **Status** takes exactly one of: `not started` · `in progress — <branch>` · `built — <branch>`
   · `merged — PR #<n>` · `cut — <reason>`. **Never a commit SHA.** `tcg-executor` writes this
@@ -241,7 +252,9 @@ unit's path.
 
 ---
 
-## U1 - Outbox table, worker and the first complete delete path (`deleteOrphaned`, `cleanupReplaced`)
+## U1 - CUT 2026-10-30 (D20): Outbox table, worker and the first complete delete path (`deleteOrphaned`, `cleanupReplaced`)
+
+> **Cut.** Nothing in this section is built on the current stack. Kept as the record of the design the developer reversed.
 
 - **Outcome:** a checklist photo removed on the phone (or a stale attachment replaced on
   resubmission) has its S3 objects removed even if S3 fails at that moment; the keys are saved in
@@ -335,7 +348,15 @@ checklist specs); `pnpm db:migrate` then confirm the migration folder is committ
 
 ---
 
-## U2 - Every other ticket-attachment delete path (four sites, incl. the generic `DELETE /attachments/:id`) uses the outbox; replayed Attach File delete succeeds; own code for the signature-referenced 409
+## U2 - REBUILT 2026-10-30 (D20): every ticket-attachment delete path deletes its S3 objects in the row delete's transaction — earlier title: Every other ticket-attachment delete path (four sites, incl. the generic `DELETE /attachments/:id`) uses the outbox; replayed Attach File delete succeeds; own code for the signature-referenced 409
+
+> **Rebuilt 2026-10-30 (D20) — what is on the branch now.** Branch `feat/MOBILE-OFFLINE-DELETE-QUEUE-u2-delete-sites-v2`, **depends on nothing, PR base `staging`** (the *Depends on* and *Branch / PR base* lines below describe the dropped U1 stack). One commit:
+> - `S3StorageService.deleteObjects(keys)` — each key tried on its own, error-level log and a 503 if any failed.
+> - `AttachmentsRepository.deleteWithObjects(id, removeObjects)` and `removeIfUnreferenced(id, removeObjects)` — the callback runs inside the transaction before it commits (20 s timeout); the signature-referenced refusal keeps `ATTACHMENT_IN_USE` (`TICKET_ATTACHMENT_ERROR_CODES` in `@tcg/shared`).
+> - `TicketAttachmentGuardService` (`removeUnreferenced`, `deleteOrphaned`, `cleanupReplaced`), `TicketAttachmentsService.remove` (D11: missing id answers success, 403 for another ticket's), `AttachmentsService.delete` + `AttachmentsController.remove` (generic route) on the pattern. `cleanupReplaced` logs a warning and leaves the stale row on a 503. `discardObjects` (no row) is unchanged.
+> - No schema, migration, module registration or `TENANT_SCOPED_MODELS` change. Existing specs updated to the new call shapes (no new spec files).
+> - Gates: `api:lint`, `api:build`, full `api:test` (one failure, `AuthService.signIn`, passes alone and on plain `origin/staging`).
+
 
 - **Outcome:** a signature, identity photo, lunch WTL photo, failed upload, Attach File file or a
   ticket attachment deleted through the generic admin route `DELETE /attachments/:id` also has its S3
@@ -778,7 +799,7 @@ no boot. No new tests.
 ## Sequencing
 
 ```
-U1 ──▶ U2 ──▶ U3 ──▶ U4 ──▶ U5
+U1 (cut, D20)    U2 ──▶ U3 ──▶ U4 ──▶ U5
 ```
 
 - **Parallelisable:** **strictly sequential, by the developer's stacked decision and by the files.**
