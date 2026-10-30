@@ -217,6 +217,9 @@ unit's path.
 | U3 | A crew member removes an uploaded checklist or signature photo offline: it vanishes at once, survives an app restart, reaches the server on reconnect; removing a not-yet-uploaded photo cancels both; a refused delete is handled by cause | REQ-01, REQ-02, REQ-07, REQ-08 | mobile, api (header read on two routes) | U2 | ~600 lines / ~16 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u3-mobile-delete-op-v2 (re-stacked; supersedes `-u3-mobile-delete-op`) |
 | U4 | A crew member adds and deletes Attach File files offline; queued rows show "Pending sync"; 50 MB per file, no other cap | REQ-06, REQ-10 | mobile, api (header read on two routes, upload idempotency check) | U3 | ~550 lines / ~9 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u4-attach-file-queue-v2 (re-stacked; supersedes `-u4-attach-file-queue`) |
 | U5 | A ticket whose queued item was refused by the server on 4 sends stops retrying by itself and its card (and its completed row in Jobs) shows "Sync failed — tap to retry"; tapping probes the API, resets the count and drains that ticket even when the network flag says offline | REQ-09, REQ-12 | mobile | U4 | ~500 lines / ~10 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u5-failed-sync-badge-v2 (re-stacked; supersedes `-u5-failed-sync-badge`) |
+| U6 | A checklist or signature photo whose offline upload has landed shows the double tick at once, with no reopening (the tick reads the sync ledger's `serverId`, not only the saved `local:` reference) | REQ-14 | mobile | U5 | ~50 lines / 4 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u6-synced-tick-v2 (one tip branch holding U2 to U8) |
+| U7 | A ticket the server still holds as `IN_PROGRESS` never reads as completed on the phone (Recently Completed, card status, Offline icon, read-only screen); a submit the server never accepted raises the existing "Sync failed" badge | REQ-13 | mobile | U6 | ~60 lines / 4 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u6-synced-tick-v2 |
+| U8 | A checklist photo is labelled with its checklist ("Pre-Trip Checklist", "JSA Checklist", "Post-Trip Checklist") on the `attachments` row when it is uploaded, online or from the offline queue, not when the step is submitted | REQ-15 | mobile, api | U7 | ~120 lines / 15 files | built — feat/MOBILE-OFFLINE-DELETE-QUEUE-u6-synced-tick-v2 |
 
 - **Status** takes exactly one of: `not started` · `in progress — <branch>` · `built — <branch>`
   · `merged — PR #<n>` · `cut — <reason>`. **Never a commit SHA.** `tcg-executor` writes this
@@ -796,10 +799,52 @@ no boot. No new tests.
 
 ---
 
+## U6 to U8 - follow-ups added after the stack was built (2026-10-30, developer-directed)
+
+Found by the developer testing U3 to U5 on a device. Each is a separate commit on the one tip branch
+`feat/MOBILE-OFFLINE-DELETE-QUEUE-u6-synced-tick-v2` (the developer asked for a single branch that holds every
+earlier unit; the five outbox-version branches were deleted from `origin`). No new test files (root rule); existing
+suites run.
+
+- **U6 - double tick on a landed upload** (REQ-14, D21; commit `8f3801ea5`).
+  Why: the saved step keeps the `local:<id>` reference until the step is sent, so the tick stayed single after the
+  background upload had already put the file on S3 (reproduced on the emulator: 201 about 3 s after reconnect, tick
+  still single).
+  Files: `local-attachments.ts` (new `isAttachmentOnServer(ref, attachments)`), `ChecklistEngine.tsx`
+  (photo grid, preview), `deficiency-panel.tsx`, `signer-capture.tsx` (each subscribes to `sync.attachments`).
+  Checked: tsc, lint 0 errors, on the emulator the tile flips live; online upload shows the double tick at once.
+- **U7 - one state for a ticket the server has not completed** (REQ-13, D22; commit `d7be07945`).
+  Why: a draft whose step counter ran past the last step made `isSubmittedLocally` true, which drove Recently
+  Completed, the card status, the "Offline" icon and a read-only ticket screen, while the server held TK-00031 and
+  TK-00032 as `IN_PROGRESS` (`completed_at` null). Their drafts were clean (`submitState: idle`, no steps, nothing to
+  sync), so nothing was ever going to send.
+  Files: `use-ticket-progress.ts` (`computeIsSubmittedLocally` takes the server status; `displayStep`;
+  `computeHasFailedSync`; `computeHasStarted`), `step-status.ts` (`isTicketComplete(active, total, serverStatus?)`),
+  `ticket-step-screen.tsx` (`isCompletedOnDevice`), `app/(field)/ticket/index.tsx` (two call sites).
+  Checked: tsc, lint 0 errors; on the emulator both tickets moved to Active with no Offline icon; Recently Completed
+  lists only server-`COMPLETE` tickets. `use-ticket-progress.test.ts` is one of the nine inherited failing suites and
+  could not be re-run (jest out of memory, with and without the change).
+- **U8 - category at upload** (REQ-15, D23; commit `77b16664d`).
+  Why: the checklist photo upload carried no checklist, so `attachments.category` was null until the submit route
+  labelled it.
+  Files: API `field-tickets.controller.ts` (`checklistType` body field, `ParseEnumPipe`, optional),
+  `checklist-assignments.service.ts` (`uploadItemPhoto` passes `category` to `storeUpload`); mobile service, hook,
+  `use-photo-capture.ts`, `camera-sim.tsx`, `deficiency-panel.tsx`, `ChecklistEngine.tsx`, `JsaBody.tsx`,
+  `LocalAttachmentEntry.checklistType`, `uploader.ts`; one existing test call updated for the new argument order
+  (`background-requests.test.ts`).
+  Checked: API tsc, lint, 60 existing tests; mobile tsc, lint 0 errors, `background-requests` test. **Not run live:**
+  the running API was an old build that ignores the field; rebuild and restart it, upload a Pre-Trip photo online and
+  read the row.
+- **Not on the branch - re-sign replaces the old signature image** (D24). `c165917b1` made Pre-Trip, Post-Trip and
+  JSA submits delete the signature image they replace (the checklist paths upserted the row and never called
+  `cleanupReplaced`; 8 of 9 signature uploads for TK-00099 were orphans). The developer's reflog shows
+  `reset: moving to HEAD^1` at 16:09:45 on the branch, so the commit is no longer reachable from it (the object still
+  exists). Whether the reset was deliberate is open: re-apply with `git cherry-pick c165917b1`.
+
 ## Sequencing
 
 ```
-U1 (cut, D20)    U2 ──▶ U3 ──▶ U4 ──▶ U5
+U1 (cut, D20)    U2 ──▶ U3 ──▶ U4 ──▶ U5 ──▶ U6 ──▶ U7 ──▶ U8
 ```
 
 - **Parallelisable:** **strictly sequential, by the developer's stacked decision and by the files.**
@@ -843,11 +888,12 @@ U1 (cut, D20)    U2 ──▶ U3 ──▶ U4 ──▶ U5
 
 ## Ledger notes for `close-ticket`
 
-- All five units belong to one ticket and are stacked; each opens one PR. A PR per unit,
-  never a combined branch. The stack order is U1, U2, U3, U4, U5 (numeric): each PR targets the
+- All eight units (U2 to U8; U1 is cut) belong to one ticket and are stacked. **Changed 2026-10-30 by the developer:** one
+  tip branch holds every unit and the older per-unit branches are removed from `origin`, so the PR shape is the
+  developer's call (the earlier rule was a PR per unit, never a combined branch). The stack order is U1, U2, U3, U4, U5 (numeric): each PR targets the
   previous unit's branch.
 - The slug `MOBILE-OFFLINE-DELETE-QUEUE` stands in for the Jira id. When one exists the folder, the
   `processed.log` entry and the branch names are renamed together.
-- REQ-13 stays unassigned until Q11 is answered. U4 is blocked by nothing except Q8 sign-off; its
+- REQ-13 is assigned to U7 (built 2026-10-30 on the developer's direction; the counting of a failed submit stays unspecified, Q11). U4 is blocked by nothing except Q8 sign-off; its
   executor risk (F2) is a stop-and-ask condition. If Q11 or a new §12 question changes the work, the
   decomposer re-runs for the affected unit and recounts §2.
