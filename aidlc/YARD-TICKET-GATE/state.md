@@ -54,7 +54,12 @@ flipped every §12 Status to resolved; §14 fully signed (haris); walkthrough un
 no pinned surface); `processed.log` row added (PR #993). Sign-offs: D1 (G3), D4 (G5), D12
 (G4-reversal) — haris; §12 Q1–Q6 resolved.
 
-**Nothing pending** except the one carried-forward follow-up: PR-review **finding 7** (concurrent
-`completeLoadout` JSON-merge race) — make the per-shift merge atomic in SQL, its own sweep PR
-(`spec.md` §13). Re-confirm on the staging→main promotion that the `processed.log` row and ledger
-still read PR #993.
+**Post-close:** §12 **Q7** (opened at close — no-load sub-jobs unreachable under Q6=C) was
+answered **B** by the owner and implemented: the mapper sends `yardGate: null` for a no-load job
+(`buildLoadoutAssetCatalogEntries` empty + no tools). Branch `fix/yard-ticket-gate-no-load`
+(commit `637d6d123`), not yet merged. `@tcg/api` build + 388 specs + lint 0. Supersedes Q6=C in
+`decisions/2026-11-02-yard-ticket-gate-legacy-and-no-load-sub-jobs.md`.
+
+**Carried-forward follow-up:** PR-review **finding 7** (concurrent `completeLoadout` JSON-merge
+race) — make the per-shift merge atomic in SQL, its own sweep PR (`spec.md` §13). Re-confirm on the
+staging→main promotion that the `processed.log` row and ledger still read PR #993.

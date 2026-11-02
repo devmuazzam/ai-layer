@@ -336,11 +336,14 @@ signature and the new guard mock; no new spec files added.
   loaded out · B. never gate a sub-job with no loadable items (mapper sends `yardGate: null`, Q6
   option A) · C. accept: such tickets are permanently blocked until dispatch adds a loadable item ·
   X. Other
-- **Answer:** *blank — owner decision*
-- **Blocked:** REQ-01 and REQ-02 for no-load sub-jobs (reflection SD-5).
+- **Answer:** B — do not gate a no-load sub-job; the mapper sends `yardGate: null` when the job
+  has nothing loadable (`buildLoadoutAssetCatalogEntries(job.resources)` empty and no `job.tools`).
+  **Supersedes Q6 = C** (which was unreachable: such a ticket could never clear gate 2). (owner, 2026-11-02)
+- **Blocked:** was REQ-01/REQ-02 for no-load sub-jobs (reflection SD-5) — resolved by B.
 - **Owner:** syedharis14@gmail.com / dispatch
-- **Status:** open (raised by `tcg-reflector`, 2026-11-02). The second, blank "Q6" block above is a
-  stale duplicate of the resolved Q6 and should be deleted.
+- **Status:** resolved — B, see `decisions/2026-11-02-yard-ticket-gate-legacy-and-no-load-sub-jobs.md`.
+  Built on branch `fix/yard-ticket-gate-no-load`. The second, blank "Q6" block above is a stale
+  duplicate of the resolved Q6 and should be deleted.
 
 ## 13. What this spec deliberately does not specify
 

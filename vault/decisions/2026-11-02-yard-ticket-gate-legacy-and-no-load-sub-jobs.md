@@ -40,7 +40,15 @@ shift-1-only legacy branch.
 
 ### Q6 — No-load / employee-only sub-jobs
 
-**The gate stays; no special-casing, no mapper change.** A non-holdover ticket whose sub-job
+> **SUPERSEDED 2026-11-02 by Q7 = B (owner).** Q6 = C below was found unreachable: a no-load
+> sub-job can never Mark Available or complete Loadout, so "waits for a yard action" meant
+> "blocked forever". The owner reversed it to **B — do not gate a no-load sub-job**: the mapper
+> sends `yardGate: null` when the job has nothing loadable
+> (`buildLoadoutAssetCatalogEntries(job.resources)` empty **and** no `job.tools`), the same catalog
+> the yard builds. Built on branch `fix/yard-ticket-gate-no-load`. The original Q6 = C reasoning is
+> kept below for the record.
+
+**(Superseded) The gate stays; no special-casing, no mapper change.** A non-holdover ticket whose sub-job
 has nothing loadable (the yard UI disables Mark Available and `completeLoadout` rejects an empty
 loadout) is **not** exempted and is **not** given a `yardGate: null` from the mapper. No
 loadable-item signal is introduced. Such a ticket waits for a yard action to mark it available,
