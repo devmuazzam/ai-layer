@@ -6,7 +6,7 @@
 
 - [x] Intent — `intent.md`
 - [x] Spec — `spec.md` (retrofitted; not via `tcg-elaborator`)
-- [ ] Sign-off — `spec.md` §14: §11b D1 (G3) and D4 (G5) await a named developer; decision notes for §12 Q1–Q4 not yet written
+- [x] Sign-off — `spec.md` §14: D1 (G3), D4 (G5), D12 (G4 reversal) signed and §12 Q5 (A) / Q6 (C) resolved — haris 2026-11-02; still open: decision notes for §12 Q1–Q4 not yet written (`tcg-scrum`)
 - [x] Units — `units.md` (retrofitted; not via `tcg-decomposer`)
 - [x] Build — U1 + U2 built on one branch (deviation from one-unit-one-PR, recorded in `units.md`)
 - [x] Analyse — `tcg-prisma-guardian` (G3), `tcg-contract-tracer` (G5), `tcg-analyst` U1 + U2 run; findings fixed (D5–D9) and recorded
