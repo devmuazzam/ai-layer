@@ -1,18 +1,18 @@
 # State — YARD-TICKET-GATE Yard-Operations dependency for employee tickets
 
-**Path:** A · **Branch(es):** `feat/yard-ops-ticket-start-gate` (off `origin/staging`) · **Last updated:** 2026-11-02 by *AI (PR-review round)*
+**Path:** A · **Branch(es):** `feat/yard-ops-ticket-start-gate` (off `origin/staging`) · **Last updated:** 2026-11-02 by *AI (close)*
 
 ## Phases
 
 - [x] Intent — `intent.md`
 - [x] Spec — `spec.md` (retrofitted; not via `tcg-elaborator`)
-- [x] Sign-off — `spec.md` §14: D1 (G3), D4 (G5), D12 (G4 reversal) signed and §12 Q5 (A) / Q6 (C) resolved — haris 2026-11-02; still open: decision notes for §12 Q1–Q4 not yet written (`tcg-scrum`)
+- [x] Sign-off — `spec.md` §14 all checked: D1 (G3), D4 (G5), D12 (G4 reversal) signed, §12 Q1–Q6 resolved with decision notes — haris 2026-11-02
 - [x] Units — `units.md` (retrofitted; not via `tcg-decomposer`)
 - [x] Build — U1 + U2 built on one branch (deviation from one-unit-one-PR, recorded in `units.md`)
 - [x] Analyse — `tcg-prisma-guardian` (G3), `tcg-contract-tracer` (G5), `tcg-analyst` U1 + U2 run; findings fixed (D5–D9) and recorded
-- [ ] Merged — PR not raised
-- [ ] Reflect — `reflection.md` (`tcg-reflector`)
-- [ ] Closed — `close-ticket` run, overlay pushed
+- [x] Merged — PR #993 to `staging` (`units.md` ledger flipped). Staging → main later.
+- [x] Reflect — `reflection.md` (`tcg-reflector`)
+- [x] Closed — `close-ticket` run, overlay pushed
 
 ## PR-review round (2026-11-02)
 
@@ -42,6 +42,19 @@ D3-corrected + the guard moved below the idempotent-COMPLETE short-circuit and s
 returned-correction / approved-edit (analyst U1 F2),
 D9 (single-shift re-mark clears the per-shift marker — analyst U1 F3), plus the Jobs-tab sibling
 now gated (analyst U2 F1). Gates after fixes: `@tcg/api` build + 388 specs pass; `@tcg/mobile`
-typecheck 0, lint 0, card/contract/active-tickets 93 pass. Next: developer sign-off on §11b D1 (G3)
-and D4 (G5) and §12 Q5/Q6; `tcg-scrum` writes the §12 Q1–Q4 decision note; raise the PR; then
-`close-ticket`. Blocking: nothing for build; sign-off is the human gate.
+typecheck 0, lint 0, card/contract/active-tickets 93 pass. A PR review then raised 7 findings —
+see the PR-review round above; findings 2/5/6/3 fixed (server enforcement removed, D12), findings
+1/4 are §12 Q6/Q5, finding 7 is a follow-up.
+
+**CLOSED — 2026-11-02 (`close-ticket`).** Merged to `staging` via **PR #993** (merge
+`37fa7d285`); staging → main later. All seven close steps done: `units.md` ledger flipped to
+`merged — PR #993`; `tcg-reflector` wrote `reflection.md` and appended the reflections index;
+`tcg-scrum` wrote three decision notes (`vault/decisions/2026-11-02-yard-ticket-gate-*.md`) and
+flipped every §12 Status to resolved; §14 fully signed (haris); walkthrough untouched (grep found
+no pinned surface); `processed.log` row added (PR #993). Sign-offs: D1 (G3), D4 (G5), D12
+(G4-reversal) — haris; §12 Q1–Q6 resolved.
+
+**Nothing pending** except the one carried-forward follow-up: PR-review **finding 7** (concurrent
+`completeLoadout` JSON-merge race) — make the per-shift merge atomic in SQL, its own sweep PR
+(`spec.md` §13). Re-confirm on the staging→main promotion that the `processed.log` row and ledger
+still read PR #993.

@@ -261,7 +261,7 @@ signature and the new guard mock; no new spec files added.
 - **Answer:** `A — owner, 2026-11-02`
 - **Blocked:** REQ-02
 - **Owner:** syedharis14@gmail.com
-- **Status:** resolved — decision note pending (`tcg-scrum` to write `decisions/2026-11-02-yard-ticket-gate-stages.md`)
+- **Status:** resolved — see decisions/2026-11-02-yard-ticket-gate-stage-scope-and-card-lock.md
 
 ### Q2 — Per-shift or whole-sub-job?
 - **Question:** gate on the ticket's shift, or the whole sub-job?
@@ -269,7 +269,7 @@ signature and the new guard mock; no new spec files added.
 - **Answer:** `A — owner, 2026-11-02` (requires the REQ-03 marker; `loadoutCompletedAt` alone is whole-sub-job)
 - **Blocked:** REQ-01, REQ-02, REQ-03
 - **Owner:** syedharis14@gmail.com
-- **Status:** resolved — decision note pending
+- **Status:** resolved — see decisions/2026-11-02-yard-ticket-gate-stage-scope-and-card-lock.md
 
 ### Q3 — What does gate 1 block on mobile?
 - **Question:** lock the whole card, or show Start and block on open?
@@ -277,7 +277,7 @@ signature and the new guard mock; no new spec files added.
 - **Answer:** `A — owner, 2026-11-02`
 - **Blocked:** REQ-01
 - **Owner:** syedharis14@gmail.com
-- **Status:** resolved — decision note pending
+- **Status:** resolved — see decisions/2026-11-02-yard-ticket-gate-stage-scope-and-card-lock.md
 
 ### Q4 — Where is the dependency enforced?
 - **Question:** client only, or client + server?
@@ -285,7 +285,7 @@ signature and the new guard mock; no new spec files added.
 - **Answer:** `A — owner, 2026-11-02`
 - **Blocked:** REQ-01, REQ-02
 - **Owner:** syedharis14@gmail.com
-- **Status:** resolved — decision note pending
+- **Status:** resolved — see decisions/2026-11-02-yard-ticket-gate-client-only-online-enforcement.md
 
 ### Q5 — Legacy multi-shift loadouts completed before the new column
 - **Question:** a sub-job whose shift 2 completed loadout before this deploy has no per-shift
@@ -297,7 +297,7 @@ signature and the new guard mock; no new spec files added.
 - **Answer:** A — accept, no backfill. Live tickets at deploy are almost all COMPLETE, so gate 2 never fires on legacy shift-2 rows; historical rows fall back to the shift-1-only legacy branch. (haris, 2026-11-02)
 - **Blocked:** none for live gating; only historical shift-2 rows.
 - **Owner:** syedharis14@gmail.com / dev
-- **Status:** resolved — A (haris, 2026-11-02)
+- **Status:** resolved — A (haris, 2026-11-02); see decisions/2026-11-02-yard-ticket-gate-legacy-and-no-load-sub-jobs.md
 
 ### Q6 — No-load / employee-only shifts
 - **Question:** a non-holdover ticket whose sub-job has nothing loadable — the yard UI disables
@@ -309,7 +309,7 @@ signature and the new guard mock; no new spec files added.
 - **Answer:** C — gate stays. A no-load / employee-only sub-job waits for a yard action like any other; it is not special-cased. No mapper change — no loadable-item signal is introduced. Trade-off accepted: such a ticket cannot start until the yard marks it available. (haris, 2026-11-02)
 - **Blocked:** REQ-01 for no-load sub-jobs (PR-review finding 1) — resolved by C; no code deferred.
 - **Owner:** syedharis14@gmail.com / dispatch
-- **Status:** resolved — C (haris, 2026-11-02)
+- **Status:** resolved — C (haris, 2026-11-02); see decisions/2026-11-02-yard-ticket-gate-legacy-and-no-load-sub-jobs.md
 
 ### Q6 — No-load / employee-only shifts
 - **Question:** a non-holdover ticket whose sub-job has nothing loadable — the yard UI disables
@@ -322,7 +322,25 @@ signature and the new guard mock; no new spec files added.
 - **Blocked:** REQ-01 for no-load sub-jobs (PR-review finding 1). Code deferred until answered —
   the loadable-item signal is not guessed. Open gap: `vault/dispatch/gaps.md`.
 - **Owner:** syedharis14@gmail.com / dispatch
-- **Status:** open (PR-review finding 1, 2026-11-02)
+- **Status:** resolved — C (haris, 2026-11-02); see decisions/2026-11-02-yard-ticket-gate-legacy-and-no-load-sub-jobs.md (this is the older duplicate of Q6 above; its answer is the resolved C block)
+
+### Q7 — What yard action releases a no-load sub-job, now that Q6 = C keeps the gate?
+- **Question:** Q6 = C says a no-load / employee-only sub-job "waits for a yard action". But
+  `completeLoadout` rejects an empty loadout (`Nothing to dispatch for this shift.`,
+  `apps/api/src/usecase/das-loadout/das-loadout.service.ts` ~:385, SCRUM-LOADOUT-UNASSIGNED) and the
+  yard UI disables Mark Available when nothing is loadable (per Q6's own text). So no yard action
+  can pass gate 2 for such a sub-job, and its crew cannot leave the yard. Related open gap:
+  `vault/dispatch/gaps.md` → *Should the yard board show jobs that have nothing to load* (Melissa
+  McNutt: hide them, "Dylan won't need to mark them").
+- **Options:** A. add a yard "Release without loadout" action that marks the shift available and
+  loaded out · B. never gate a sub-job with no loadable items (mapper sends `yardGate: null`, Q6
+  option A) · C. accept: such tickets are permanently blocked until dispatch adds a loadable item ·
+  X. Other
+- **Answer:** *blank — owner decision*
+- **Blocked:** REQ-01 and REQ-02 for no-load sub-jobs (reflection SD-5).
+- **Owner:** syedharis14@gmail.com / dispatch
+- **Status:** open (raised by `tcg-reflector`, 2026-11-02). The second, blank "Q6" block above is a
+  stale duplicate of the resolved Q6 and should be deleted.
 
 ## 13. What this spec deliberately does not specify
 
@@ -343,7 +361,7 @@ signature and the new guard mock; no new spec files added.
 ## 14. Sign-off before build
 
 - [x] Every `[OPEN]` requirement answered — the four §12 questions are resolved
-- [ ] Decision notes written in `.ai/vault/decisions/` (pending — `tcg-scrum`)
+- [x] Decision notes written in `.ai/vault/decisions/` — 2026-11-02 yard-ticket-gate stage-scope, client-only-online, legacy-and-no-load notes (`tcg-scrum`)
 - [x] Answers written back into this spec
 - [x] Edges filled on every requirement
 - [x] §11a ripple rows sourced

@@ -15,8 +15,8 @@ the change; the pre-change baseline on `origin/staging` was green for the same t
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | API gates the ticket on yard state and exposes it to mobile | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05 (api) | schema, api | — | ~150 lines / 7 files | built — `feat/yard-ops-ticket-start-gate` |
-| U2 | Mobile locks the card and the Left-Yard steps per the gate | REQ-01, REQ-02, REQ-05 (mobile) | mobile | U1 | ~215 lines / 5 files | built — `feat/yard-ops-ticket-start-gate` |
+| U1 | API gates the ticket on yard state and exposes it to mobile | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05 (api) | schema, api | — | ~150 lines / 7 files | merged — PR #993 |
+| U2 | Mobile locks the card and the Left-Yard steps per the gate | REQ-01, REQ-02, REQ-05 (mobile) | mobile | U1 | ~215 lines / 5 files | merged — PR #993 |
 
 - Requirements covered: REQ-01..REQ-05, counted against `spec.md` §2 on 2026-11-02. Not covered: none.
 - Units blocked on an open question: none (all §12 resolved).
