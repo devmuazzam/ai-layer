@@ -236,7 +236,8 @@ signature and the new guard mock; no new spec files added.
 | D1 | where per-shift completion lives | `loadout_completed_shifts_at` JSONB column on `SubJobLoadout` | one-to-one, symmetric with `marked_available_shifts_at`; rejected deriving from `SubJobLoadoutItem` (heavier read, duplicates yard-board logic) | yes — G3 (tenant data / schema) | | |
 | D2 | gate-2 step set | `leftYard` and later by `ALL_TICKET_FLOW_STEP_KEYS` index, **excluding `startWork`** | includes `endWork`; unknown key ⇒ gated (server) / not gated (client UI). `startWork` is the punch-in (gate 1), fires before Left Yard in time though it sorts after it in the flow array — gating it 409'd the dashboard Start Work | no | AI (post-review fix 2026-11-02) | 2026-11-02 |
 | D10 | gate-2 UX | block navigation into a gated step with a warn toast, not an in-step locked body | owner feedback 2026-11-02: don't open the step; show "This step will be available once the Yard Operation completes Loadout." on tap. Locked body kept only as a deep-link backstop | no | AI | 2026-11-02 |
-| D11 | online-mode only | gate enforced only while online; offline completion bypasses it | owner, 2026-11-02 — "only in online mode … do not enforce … if completed offline". Client: every gate call-site is `online && …` (`useOnline`). Server: `recordTicketStep` skips the guard when `capturedAt` is set — the `X-Captured-At` header the outbox drain sends and a live online punch never does — so drained offline punches are never 409'd | no | AI | 2026-11-02 |
+| D11 | online-mode only | gate enforced only while online; offline completion bypasses it | owner, 2026-11-02 — "only in online mode … do not enforce … if completed offline". Client: every gate call-site is `online && …` (`useOnline`). **Server half superseded by D12.** | n/a | AI | 2026-11-02 |
+| D12 | **server enforcement removed** | the gate is **client-only, online-only**; `recordTicketStep` no longer calls any yard guard | PR-review findings 2 & 6: `capturedAt`/`X-Captured-At` could not tell an offline-captured punch from an online-retry replay op (persisted at `ticket-step-screen.tsx` before the live send), so the server guard both leaked (a 409'd online punch drained later and succeeded) and 409'd the online finalization review punch (sent without `capturedAt`). A guard that leaks and breaks finalization is worse than none. Removed `assertYardGateAllowsStep`, `isLeftYardOrLater`, `findYardGateForTicket`. Supersedes D2, D3-server, D11-server. The client still reads the live `yardGate` and gates while online. | **yes — reverses G4 "client + server"** | | 2026-11-02 |
 | D3 | guard placement | in `recordTicketStep`, **below** the idempotent-COMPLETE short-circuit and skipped for returned-correction / approved-edit | corrected after tcg-analyst U1 finding 2: above the short-circuit it 409'd COMPLETE re-drains and blocked payroll corrections/approved edits; it must gate only a live forward punch | no | AI (post-review fix 2026-11-02) | 2026-11-02 |
 | D4 | response field | additive optional `yardGate` on `FieldTicket` + mobile zod | G5 contract change; web unaffected | yes — G5 (changed response shape) | | |
 | D5 | `isShiftLoadedOut` fallback scope | fallback to `loadoutCompletedAt` only when the per-shift map is empty | fixes tcg-prisma-guardian finding 1 — `completeLoadout` always sets `loadoutCompletedAt`, so an unconditional shift-1 fallback mis-reads shift 1 when only a later shift completed | no | AI (post-review fix 2026-11-02) | 2026-11-02 |
@@ -250,7 +251,7 @@ signature and the new guard mock; no new spec files added.
 | Sibling | Pattern | Same change? | Reviewed by | Enumerated by |
 | --- | --- | --- | --- | --- |
 | Future-ticket card | future-card treatment | yes — parametrized in the same unit (U2), not forked | | `grep -rn 'isFuture' apps/mobile/components/field` |
-| `isShiftMarkedAvailable` | per-shift JSON marker + shift-1 fallback | **follow-up** — the same fallback-only-when-empty flaw exists there (tcg-prisma-guardian finding 1, sibling); not changed here because it is shipped and has other consumers (`das-allocations.repository.ts:767`). Developer to decide. | | `grep -rn 'isShiftMarkedAvailable' apps/api/src` |
+| `isShiftMarkedAvailable` | per-shift JSON marker + shift-1 fallback | **fixed** — PR-review finding 5 confirmed the unconditional shift-1 fallback let marking shift 2 unlock shift 1. Restricted to an empty per-shift map, matching D5. Other consumer `das-allocations.repository.ts:767` only benefits (correct per-shift reads). | AI 2026-11-02 | `grep -rn 'isShiftMarkedAvailable' apps/api/src` |
 
 ## 12. Open questions — answered 2026-11-02
 
@@ -298,22 +299,34 @@ signature and the new guard mock; no new spec files added.
 - **Owner:** syedharis14@gmail.com / dev
 - **Status:** open (tcg-prisma-guardian finding 2, 2026-11-02)
 
+### Q6 — No-load / employee-only shifts
+- **Question:** a non-holdover ticket whose sub-job has nothing loadable — the yard UI disables
+  Mark Available and `completeLoadout` rejects an empty loadout, so the job can never reach
+  Available/Loaded. Should such a ticket be gated at all, and if not, what marks it "no-load"?
+- **Options:** A. never gate a sub-job with no loadable asset/tool items (mapper sends
+  `yardGate: null`); B. a yard "release without loadout" action that marks it available; C. gate
+  stays (these tickets wait for a yard action) · X. Other
+- **Answer:** *blank — owner decision*
+- **Blocked:** REQ-01 for no-load sub-jobs (PR-review finding 1). Code deferred until answered —
+  the loadable-item signal is not guessed. Open gap: `vault/dispatch/gaps.md`.
+- **Owner:** syedharis14@gmail.com / dispatch
+- **Status:** open (PR-review finding 1, 2026-11-02)
+
 ## 13. What this spec deliberately does not specify
 
 - Real-time push when the yard releases a job — no source; mobile picks it up on next fetch.
 - Per-shift gate 2 for historical multi-shift loadouts completed before the new column — shift-1
   fallback only; irrelevant for live gating (those tickets are COMPLETE).
-- Old mobile builds (prior zod) strip the unknown `yardGate` key, so their UI does not gate; the
-  server guard still returns 409 on a gated step punch, so those builds show a server rejection
-  instead of a gated card. UX degradation only, not a crash, not hotfixable (tcg-contract-tracer, 2026-11-02).
-- A non-holdover ticket on a job that never passes through Yard Operations (no loadout row ever)
-  would be gate-1 blocked forever. The request states every per-day DAS job mirrors into Yard
-  Operations, so this is assumed not to occur; flagged by tcg-analyst U1 finding 2 as the residual
-  risk if that assumption is false.
-- Gate 2 server enforcement covers only `recordTicketStep` (the tracked milestone endpoint).
-  Untracked-step endpoints (signatures, checklists, labor, submit) are client-gated only
-  (tcg-analyst U1 finding 5); they sit after `leftYard` in the flow and are unreachable until the
-  milestone punches pass, so the client gate suffices.
+- Old mobile builds (prior zod) strip the unknown `yardGate` key, so their UI does not gate. With
+  server enforcement removed (D12) they are simply ungated — no 409, no error. Acceptable: the gate
+  is a dispatch convenience, not a safety control.
+- No-load / employee-only sub-jobs (PR-review finding 1) — gating deferred to §12 **Q6**.
+- Concurrent `completeLoadout` on two shifts of one sub-job can race the JSON merge and drop a
+  shift key (PR-review finding 7 / tcg-prisma-guardian finding 3). Low-risk (two yard users at
+  once); follow-up to make the merge atomic in SQL (`col = COALESCE(col,'{}') || jsonb_build_object(...)`),
+  same for `markAvailable`. Its own sweep PR.
+- Server enforcement is gone (D12): the gate is client-only and online-only, so it is not a
+  backstop against a tampered client — accepted trade-off for a dispatch-convenience gate.
 
 ## 14. Sign-off before build
 

@@ -1,6 +1,6 @@
 # State — YARD-TICKET-GATE Yard-Operations dependency for employee tickets
 
-**Path:** A · **Branch(es):** `feat/yard-ops-ticket-start-gate` (off `origin/staging`) · **Last updated:** 2026-11-02 by *AI (retrofit)*
+**Path:** A · **Branch(es):** `feat/yard-ops-ticket-start-gate` (off `origin/staging`) · **Last updated:** 2026-11-02 by *AI (PR-review round)*
 
 ## Phases
 
@@ -13,6 +13,21 @@
 - [ ] Merged — PR not raised
 - [ ] Reflect — `reflection.md` (`tcg-reflector`)
 - [ ] Closed — `close-ticket` run, overlay pushed
+
+## PR-review round (2026-11-02)
+
+A PR review of `22c650d` raised 7 findings; all confirmed valid against the code. Actioned:
+- **Findings 2 & 6 (capturedAt leak + finalization 409)** → **D12**: server enforcement removed;
+  gate is now client-only + online-only. Deleted `assertYardGateAllowsStep` / `isLeftYardOrLater`
+  / `findYardGateForTicket` and the guard call. Reverses G4 — awaits developer sign-off.
+- **Finding 5 (`isShiftMarkedAvailable` fallback)** → fixed (fallback only when per-shift map empty).
+- **Finding 3 (nav ignores approved-edit)** → fixed in `isYardLeaveBlocked` (exempts `editRequest`
+  APPROVED; returned-correction already exempt as COMPLETE).
+- **Finding 1 (no-load shifts)** → §12 **Q6** (owner); code deferred, loadable signal not guessed.
+- **Finding 4 (legacy shift-2)** → remains §12 **Q5** (owner).
+- **Finding 7 (concurrent merge race)** → follow-up sweep PR (§13).
+
+Gates after: `@tcg/api` build + 388 specs pass; `@tcg/mobile` typecheck 0, lint 0.
 
 ## Resume
 
