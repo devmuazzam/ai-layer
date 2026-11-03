@@ -48,6 +48,12 @@
 - **D4 — Straight-line distance** (yard address lat/lng ↔ job site lat/lng) for the suggestion; no
   new maps API on the server. [developer, 2026-11-03; client confirmation §12 Q2]
 - **D5 — The "quoted from" marker is office-only** (web DAS); mobile is unchanged. [developer, 2026-11-03; §12 Q3]
+- **D6 — The Home yard is required on the web create form only.** The API keeps `yardId` optional on
+  employee create: the qa employee helper and the tenant seed create employees without one, and edit
+  never requires it (a legacy employee without a yard can still be saved). [developer, 2026-11-03]
+- **D7 — The web suggestion sends the job site only.** The Yard is picked on the quote's Main step,
+  before the crane sizes (Resources step); the API also takes `subCategoryIds` for when they are known.
+  [developer, 2026-11-03]
 
 ## 12. Questions
 
@@ -59,6 +65,13 @@
   - **Status:** open · **Blocks:** nothing (D4 ships straight-line; changeable).
 - **Q3 — Who sees "quoted from".** Office only, or field crews too? Ask Joe.
   - **Status:** open · **Blocks:** nothing (D5 ships office-only).
+- **Q5 — Yards have no coordinates.** Found in the live check 2026-11-03: no local yard address has
+  latitude/longitude — they are captured only when the address is picked through the Google address
+  search on the yard form; nothing geocodes a yard on the server (job sites are geocoded). Until yards
+  have coordinates, the suggestion ranks by crane size and then by name. Options: geocode yard addresses
+  on save (as job sites are), and backfill existing yards. Ask the developer / Lisette.
+  - **Status:** open · **Blocks:** the distance half of REQ-12 in practice (the code works — verified with
+    temporary coordinates).
 - **Q4 — One quote with several yards.** Joe allowed it for project quotes (22:01) before agreeing to
   one yard (24:23). REQ-02 ships one yard per quote.
   - **Status:** open (low) · **Blocks:** nothing.

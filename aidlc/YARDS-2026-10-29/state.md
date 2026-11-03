@@ -9,7 +9,7 @@
 - [x] Intent — `intent.md` (from the 2026-10-29 meeting and the developer's Trello text)
 - [x] Spec — `spec.md` — 13 requirements; §12 Q1–Q4 open, none blocking (decisions D1–D5 cover them for now)
 - [x] Units — `units.md` — 4 units
-- [-] Build — U1–U4 built as one local commit `2f32af194` (not pushed); live checks pending
+- [x] Build — U1–U4 built as one local commit `2f32af194` (not pushed); checked live 2026-11-03
 - [ ] Analyse
 - [ ] Merged — PR #…
 - [ ] Closed
@@ -22,4 +22,12 @@ Gates: api tsc 0 errors; jest quotations/projects/yards/jobs/field-tickets/emplo
 node tests 1018/1022 (same 4 pre-existing); mobile tsc clean (mobile jest cannot run on this Windows machine). qa parse-checked.
 Decision added in build: D6 — Home yard required in the web create form only; the API keeps it optional (qa helper and tenant seed
 create employees without one). Web suggestion sends the job site only (crane sizes are chosen after the yard).
-Next: live checks in the browser (user must sign in), optionally split the commit per unit, record D6 in spec.md.
+Live checks 2026-11-03 (Chrome, signed in as admin): U1 — quote without yardId 400; yardId sets the yard name
+(QUOT-00027); draft yard change ok; jobs filter by yard; yard delete blocked; rename rewrote quote + job names and back;
+convert QUOT-00027 → PROJ-00004 / JOB-00006 with the quote's yard linked. U2 — extra yard saved, list untouched when not
+sent, Home yard refused on the list, Home→extra swap refused; form shows "Also works out of" rows. U3 — "Quoted from ABC"
+chips, Yard filter, asset/employee card yards, slot marker "From Los Angeles Main Yard · quoted from ABC" (test
+allocation removed). U4 — crane-size ranking (Riverside first for a Tower Crane), unknown job site 404, distance
+ranking with temporary yard coordinates (removed after), "Suggested: … — Use" fills the Yard.
+Left in local tcg_db from the checks: QUOT-00027 (Won) → PROJ-00004 / JOB-00006; CTE-00001's extra yard (LA).
+Next: decide §12 Q5 (yard coordinates); optionally split the commit per unit; PR when the developer says.

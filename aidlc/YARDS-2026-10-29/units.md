@@ -4,10 +4,10 @@
 
 | Unit | Outcome | Requirements | Layers | Depends on | Status |
 | --- | --- | --- | --- | --- | --- |
-| U1 | A quote is made from a real yard and the job carries it | REQ-01..06, 13 | schema, api, web, mobile, qa | — | not started |
-| U2 | An employee has a Home yard and extra yards | REQ-09, 10, 11 | schema, api, web, qa | — | not started |
-| U3 | The Dispatch board shows yards, filters by them and marks other-yard allocations | REQ-07, 08, 10 | api, web | U1, U2 | not started |
-| U4 | A new quote suggests its yard | REQ-12 | api, web | U1 | not started |
+| U1 | A quote is made from a real yard and the job carries it | REQ-01..06, 13 | schema, api, web, mobile, qa | — | built, checked live |
+| U2 | An employee has a Home yard and extra yards | REQ-09, 10, 11 | schema, api, web, qa | — | built, checked live |
+| U3 | The Dispatch board shows yards, filters by them and marks other-yard allocations | REQ-07, 08, 10 | api, web | U1, U2 | built, checked live |
+| U4 | A new quote suggests its yard | REQ-12 | api, web | U1 | built, checked live (distance needs yard coordinates — §12 Q5) |
 
 ---
 
