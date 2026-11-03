@@ -31,7 +31,7 @@ do not settle.
 | Elaborated on | `2026-10-29`; answers to Q1–Q5 folded in `2026-10-29` (see §12) |
 | Answers source | Syed Haris (developer), 2026-10-29, relayed by the coordinator. Recorded as `ticket`-kind sources, `[UNVERIFIED]` until `tcg-scrum` writes the decision notes listed in §13a. |
 | Vault state at elaboration | Six `domain/` files verified; ~145 content files unverified; permit topic has **no** conflict stub. Two permit decisions conflict in-tree (`2026-09-10-permit-create-types-mockup-document-types.md` lists `conflicts_with: 2026-09-10-permit-association-scope-asset-job-vendor.md`) — read in REQ-03. `projects-jobs/gaps.md` read by section only. |
-| Open questions raised by this spec | 14 raised, **0 open**. Q1–Q7, Q9 and Q13 are resolved by Syed Haris (developer direction, `decisions/2026-10-29-all-permits-create-permit-modal.md` incl. Addendum 2026-10-30). Q8, Q10, Q11, Q12 and Q14 have no human answer. They are recorded as AI decisions D20–D25 (`needs developer: yes`) and are **awaiting developer review**. Q14's product question stays open at `projects-jobs/gaps.md#permitpo-reverse-cascades-incomplete` |
+| Open questions raised by this spec | 18 raised, **0 open**. Q1–Q7, Q9, Q13 and Q15–Q18 are resolved by Syed Haris (developer direction, `decisions/2026-10-29-all-permits-create-permit-modal.md` incl. Addenda 2026-10-30 and 2026-11-03). Q8, Q10, Q11, Q12 and Q14 have no human answer. They are recorded as AI decisions D20–D25 (`needs developer: yes`) and are **awaiting developer review**. Q14's product question stays open at `projects-jobs/gaps.md#permitpo-reverse-cascades-incomplete`. The prototype re-exploration's other decisions and the U11–U16 build choices are AI decisions D34–D48 (no §12 entry) |
 | Already-shipped behaviour reached | 20 consumers in §11a, each with a stated outcome and source |
 | Rules consulted | `CLAUDE.md`; `.ai/claude/contexts/api.md`, `prisma.md`, `web.md`, `patterns.md` |
 | Sizing | 8 REQs; the spec is well over the ~40 KB guide (tables, not scope). No split proposed. The answers added a second schema change (PurchaseOrder) and a tracker change, both inside REQ-06 / REQ-08. |
@@ -745,13 +745,28 @@ REQ-08.
 | D24 | Q12: is a Type alone "unsaved data" | no; a Type alone closes the modal without the leave prompt | A Type with nothing else costs nothing to re-pick. Alternative: any choice prompts. Source: tcg-scrum Q12; executor U9/U10. | needs developer: yes | | |
 | D25 | Q14: PO cardinality and the picker scope for job-less permits | an existing PO may be attached to more than one permit; for a permit with neither job nor project the picker lists **all tenant POs** (`assertPoShareableWithPermit` checks nothing then) | D14 delegated only the picker scope. **Conflicts with the open vault gap** `projects-jobs/gaps.md#permitpo-reverse-cascades-incomplete` ("is one PO per permit still the rule"). That gap stays open with a 2026-10-30 pointer. A developer review does not settle the product question (owner Liz Lopez). Alternative: one PO per permit, or same-job only. Source: tcg-scrum Q14. | needs developer: yes | | |
 | D26 | U10: Valid till at the API | optional for **every** type at the API | The approved prototype's FAA, Encroachment and Sub Hauler layouts have no Valid till field. **Flag for product review:** a non-Annual permit can therefore have no end date and never expire. Source: executor U10. | needs developer: yes | | |
-| D27 | U10: duplicate-annual rule scope | runs only for asset-scoped types; several Travel permits per crane are allowed | Travel is per job (slot-unique per (job, asset)); the duplicate rule was meant for annual coverage per crane. Commit `118732b41`. Source: executor U10. | needs developer: yes | | |
+| D27 | U10: duplicate-annual rule scope | runs only for asset-scoped types; several Travel permits per crane are allowed | Travel is per job (slot-unique per (job, asset)); the duplicate rule was meant for annual coverage per crane. Commit `118732b41`. Source: executor U10. **Superseded 2026-11-03 (Q17, Haris):** the duplicate-annual 409 is removed for every type; a second active Annual for the same asset, type and city is allowed (commits de3452a5b, 919bcc34a). | no — superseded by Q17 |  |  |
 | D28 | U10: Travel-only route fields | `travelFrom`, `travelTo`, `originYardId`, `destinationJobSiteId` are accepted only for Travel, plus existing rows that already carry them | The prototype shows them only on Travel. Rejecting them elsewhere stops stray data, and the grandfather clause avoids failing a PATCH of an old row. Source: executor U10. | needs developer: yes | | |
 | D29 | U10: tenant-checked references | planner, yard and job-site references are tenant-checked on create **and** update; an archived yard or inactive job site is refused for a **new** selection, and an unchanged existing value is kept | Same as the sibling resolvers (D18). Without the "new selection" rule, an unrelated edit of an old permit would fail. Source: executor U10. | needs developer: yes | | |
 | D30 | U10: date-only guard | `@IsDateOnly()` (`apps/api/src/utility/is-date-only.decorator.ts`) on the permit DTO fields stored as `@db.Date` (`travelFrom`, `travelTo`, `receivedDate`, `dueDate`, lift-window fields); `poDate` keeps its own `YYYY-MM-DD` `@Matches` | A full timestamp on a calendar-day column shifts the day across time zones. Commit `118732b41`. Source: executor U10. | needs developer: yes | | |
 | D31 | U10: PO date default | the modal pre-fills PO date with the **`BUSINESS_TIMEZONE`** business date (`isoToBusinessDateInput`, `@tcg/shared`) | **Flag:** REQ-06 says tenant timezone (`decisions/2026-09-09-business-timezone-is-a-tenant-property.md`), but the web app has no per-tenant timezone hook, so this uses the single business zone. Per-tenant timezone for the web is in the follow-ups. Source: executor U10. | needs developer: yes | | |
 | D32 | U10: the modal's pending (not yet created) PO follows the permit's job | when the user changes the permit's job in the Create Permit modal, the pending nested-PO form's job is rewritten to the new job, and dropped if the job is cleared | Stops the PO from being created against a job the permit no longer carries ("stale PO job", commit `ec7d34b7b`). Source: executor U10. | needs developer: yes | | |
 | D33 | U10: E2E and QA doc edits | edited the existing `qa-automation` page object `permits.page.ts` and specs `create.spec.ts`, `validation.spec.ts`, plus the QA docs (permits validation spec and test cases) to follow the edit-page ids, no Area field, optional City / Valid till, and OPEN on create | These are edits of existing tests that follow changed behaviour, not new tests (`decisions/2026-10-21-no-new-tests-unless-asked.md`). Commits `9553d766f`, `33ae511fb`. Source: executor U10. | needs developer: yes | | |
+| D34 | Gap D-2: Create Permit type switch | the modal keeps typed values when the Type changes; it clears only Asset, Job and Vendor when the type's scope (association) changes, and clears the PO when the Job clears | The prototype keeps values on a type switch. The payload builder sends only the fields shown for the chosen type, so a kept hidden value cannot reach the API. Alternative: reset everything (`intent.md` Appendix A line 152 "resets, Job/PO cleared"). Alternative: keep every hidden value as the prototype does. Source: gap analysis D-2 (recommended C); executor U12, commit `da80fdf49`. | needs developer: yes | | |
+| D35 | Gap D-5: "Gross weight" in the Asset ⓘ popover | shown from the legacy `dvr` column **as stored** (free text, "GVW" in practice); width, height and length are the stored VarChar(30) strings; "-" when empty | No weight column exists. Alternative: numeric weight/unit columns (schema change and backfill) — rejected for this ticket. Source: gap analysis D-5 (recommended A); executor U13. | needs developer: yes | | |
+| D36 | Gap D-6: City / Authority vs Agency | **Travel / Annual:** choosing an Agency fills City only while City is empty, and City stays editable. This applies in the modal and on the edit page only; detail inline edit is unchanged. **FAA / Encroachment / Sub Hauler:** the Agency fills State and City, read-only; changing State clears a City that does not match it | Follows the prototype for Travel/Annual. The built app always overwrote City and locked it. **Client-facing.** Alternative: "City follows Agency, read-only" everywhere. Source: gap analysis D-6 (recommended A for modal and edit); executor U12. | needs developer: yes | | |
+| D37 | Gap D-7: City without a State (FAA / Encroachment / Sub Hauler) | a City can be picked before, or without, a State (`CitySelect` lists every city) | The prototype allows it and does not auto-fill State. **Client-facing**, low impact. Alternative: City disabled until State is chosen (as built before). Source: gap analysis D-7 (recommended A); executor U12. | needs developer: yes | | |
+| D38 | Gap D-8: Track Permits type filter | adds an **"Annual Travel Permit"** option; **"Travel"** matches `TRAVEL_CITY_STREET_PERMIT` only; legacy asset-level types appear only under "All permit types". The filter runs on the server | The prototype has no Annual option. The built app's Travel option took in Annual through a shared docKey. Annual cards are now on the board without a job (Q2/U3), so they need their own option. **Client-facing.** Alternative: copy the prototype (no Annual option). Source: gap analysis D-8 (recommended B); executor U11/U14, commit `1829e658d`. | needs developer: yes | | |
+| D39 | Gap D-9: PO picker scope and status | the Create Permit PO picker stays **scoped to the permit's job** and lists **OPEN POs only** (opt-in status filter on `PurchaseOrderSelect`, commit `31280e9dd`). A nested "Create new" PO is created with the permit, after it (D5), not at once | The prototype lists all OPEN POs across jobs, but the API refuses a cross-job attach (`assertPoShareableWithPermit`). D25 (the job-less, project-less picker scope) is unchanged. Alternative: drop the job scope — rejected, because the attach would fail. Source: gap analysis D-9 (recommended A); executor U12. | needs developer: yes | | |
+| D40 | Gap D-11: nested Create PO "Notes" | omitted; no column is added | `PurchaseOrder` has no `notes` column, and Description already exists. Matches §13 and the decision note ("Not stored; Haris named two columns only"). Alternative: nullable `notes` column (schema change, `tcg-prisma-guardian`). Source: gap analysis D-11 (recommended A). | needs developer: yes | | |
+| D41 | Annual lookup under Asset | reuses `GET /permits?assetId=…&type=…`; **no new endpoint**; the banner shows the City only | Permits store a city but no state, so the banner cannot name a state (state in the banner is a §13b follow-up). Alternative: a dedicated "active annual for asset" endpoint. Source: executor U11/U13. | needs developer: yes | | |
+| D42 | Asset ⓘ popover behaviour | opens and closes on click and **stays open until toggled**. Esc closes it only while focus is on the ⓘ button. It does **not** close on an outside click or on Esc elsewhere | An owner instruction relayed with the build. It is not recorded as a decision, so it is listed here. The prototype analysis suggested closing on an outside click or Esc. That was **not followed**, apart from Esc from the button. **Client-facing.** Source: executor U13, commit `c85f91359`. | needs developer: yes | | |
+| D43 | DAS "Link annual permit" | the step is **inside the DAS All Permits dialog**, only on **asset-level Travel** rows. It links per (job, asset) through `POST /jobs/:jobId/permit-assignments` and lists annuals filtered by the unit. A **job-level** Travel assignment is not changed, so both rows legitimately exist, and the dialog copy says so. A toast confirms the link and the checklist refreshes | The prototype links one annual per job. The DAS assignment model is per (job, asset), so the link follows that model. **Client-facing.** **Check against D20:** D20 says an Annual's own `jobId` takes no (job, asset) slot. This explicit DAS link does create a (job, asset) assignment for an Annual. Those are two separate paths, and a reviewer should confirm that is intended. The checklist counts the link only when the Annual is APPROVED (Q18). Source: executor U15, commit `13b6cabf6`. | needs developer: yes | | |
+| D44 | API validation of a DAS annual link | the link is refused for an **archived** or **cancelled** permit, and for a permit **tied to another asset** | Stops a link that could never cover the crane. Error copy follows the sibling assignment errors. Alternative: allow it and show a warning. Source: executor U15/U16, commits `c014dd100`, `346a6efc5`. | needs developer: yes | | |
+| D45 | Received date not before submitted date | on create, update **and approve**, the permit-received date may not be earlier than the application-submitted date. The two are compared as **business-timezone days** | Received before submitted is not a possible real sequence. Comparing calendar days stops a time-zone shift from rejecting a same-day pair. **Client-facing validation that no source states.** Alternative: no rule (store as typed, as Q4 says for status). Source: executor U11/U16, commits `de3452a5b`, `c014dd100`. | needs developer: yes | | |
+| D46 | Which "today" each date rule uses | the Valid to banners and the annual banners use the **`BUSINESS_TIMEZONE`** business day. The past-date block (web min date) stays on the **browser-local** day, which matches the API's `IsNotBeforeToday` | Keeps the block identical on web and API, so the web never offers a day the API refuses. The banners describe the business calendar. Same per-tenant-timezone caveat as D31. Alternative: one zone for both, which would need an API change. Source: executor U13/U16. | needs developer: yes | | |
+| D47 | Track Permits KPIs | the KPI tiles follow the type filter | The tiles counted every type while the list showed one, so the numbers disagreed with the cards on screen. Alternative: tiles always count every type. Source: executor U14/U16. | needs developer: yes | | |
+| D48 | Permit detail: asset and expired annuals | the detail page puts the asset in the title and in Resource (vendor when there is no asset). The sub-category annual table on a Travel detail labels an expired annual **"Expired"** | Without the asset, an asset-level permit's title named only a type and a city. An expired annual is not coverage, so the table should not look as if it were. **Client-facing.** Source: executor U13/U14/U16, commits `3d061b080`, `346a6efc5`. | needs developer: yes | | |
 
 ## 11c. Siblings — same pattern, same change?
 
@@ -775,6 +790,13 @@ resolved by Syed Haris's developer instructions of 2026-10-29/30, recorded in th
 coordinator, and recorded by `tcg-scrum` on 2026-10-29 in `decisions/2026-10-29-all-permits-create-permit-modal.md` (`status: reference`: a developer
 direction, not a TCG sign-off). Each line below reads `resolved — see` that note. Sweep:
 `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/[A-Z]*/spec.md`.
+
+**Q15–Q18 came from the prototype re-exploration (2026-10-30).** They are decisions D-1, D-3, D-4 and D-10 of the
+88-row gap analysis between the approved prototype and the built app. Syed Haris answered all four in the
+Claude Code session of 2026-10-30 to 2026-11-03, relayed by the coordinator. They are recorded in the same
+decision note's *Addendum 2026-11-03* as developer directions (`reference`), not as a TCG sign-off. The other
+gap-analysis decisions (D-2, D-5 to D-9, D-11) and the build choices of U11–U16 have no human answer. They are
+AI decisions D34 onward in §11b (`needs developer: yes`) and have no §12 entry.
 
 ### Q1 — Which fields does the inline "Create new" PO carry?
 
@@ -984,6 +1006,47 @@ direction, not a TCG sign-off). Each line below reads `resolved — see` that no
 - **Owner:** Liz Lopez (PO process, per the vault entry), with Lisette Anzaldo; Syed Haris for the ticket
 - **Status:** recorded as AI decision D25, awaiting developer review — not resolved; product question stays open at projects-jobs/gaps.md#permitpo-reverse-cascades-incomplete
 
+### Q15 — May Valid to be in the past when a permit is created? (gap analysis D-1, prototype re-exploration, 2026-10-30)
+
+- **Question:** The prototype saves a permit with Valid to in the past and shows a red "This permit expired {date}." banner. The built app blocks it on the web (min date) and at the API (`IsNotBeforeToday` on the create and update DTOs, which three other create pages share). Allow a past Valid to on create, or keep the block?
+- **Options:** A. Allow a past Valid to (modal only; the permit saves as expired) · B. Keep the block; add the amber and green Valid to banners; show the red "expired" note only on detail and edit for a permit that has already expired · X. Other — say what
+- **Answer:** B. Valid to in the past stays **blocked** on create (web min date, API `IsNotBeforeToday`). Under Valid to the app shows an amber "Expires in N days" banner and a green "Valid until {date}" banner. Detail and edit show a red "expired" note for a permit that has already expired. Syed Haris (developer), 2026-10-30/11-03. The 30-day line between amber and green is the prototype's (`Expires in` for 0–30 days, `Valid until` beyond).
+- **Candidates:** the prototype (captured in the 2026-10-30 re-exploration notes: past Valid to saves with a red banner); `apps/api` `create-permit.dto.ts` / `update-permit.dto.ts` `IsNotBeforeToday`; no vault file mentions past-dated permits.
+- **Blocked:** nothing now (U12, U13).
+- **Owner:** Syed Haris (permits owners on the TCG side: Lisette Anzaldo, Brian Petros)
+- **Status:** resolved — see decisions/2026-10-29-all-permits-create-permit-modal.md (Addendum 2026-11-03, point 14). This is a developer direction (`reference`), not a TCG sign-off.
+
+### Q16 — What happens after Create Permit succeeds? (gap analysis D-3, prototype re-exploration, 2026-10-30)
+
+- **Question:** The prototype closes the modal and opens the new permit's detail page with no toast. The built app stayed on All Permits and showed a success toast. Which one?
+- **Options:** A. Stay on the list with a success toast · B. Go to the new permit's detail page with no success toast; keep the failure toasts for the PO and attachment steps · C. Go to the detail page and keep the success toast · X. Other — say what
+- **Answer:** B. After a successful create the modal closes and the app goes to the new permit's detail page. There is **no** success toast. The failure toasts for the PO and attachment steps stay. Syed Haris (developer), 2026-10-30/11-03.
+- **Candidates:** the prototype (re-exploration notes); `intent.md` Appendix A does not say what follows a create.
+- **Blocked:** nothing now (U12).
+- **Owner:** Syed Haris
+- **Status:** resolved — see decisions/2026-10-29-all-permits-create-permit-modal.md (Addendum 2026-11-03, point 15). This is a developer direction (`reference`), not a TCG sign-off.
+
+### Q17 — May an asset have a second active Annual permit for the same type and city? (gap analysis D-4, prototype re-exploration, 2026-10-30)
+
+- **Question:** In the prototype, the green "Annual permit found" note under Asset is advisory and the create still goes through. The API returned 409 for a second active Annual permit with the same asset, type and city (`assertNoActiveDuplicatePermit` / `findActiveDuplicate`; scoped to asset types by AI decision D27). Keep the 409, or allow the duplicate?
+- **Options:** A. Keep the API 409; the banner explains the conflict · B. Remove the 409; the banner is advisory only · X. Other — say what
+- **Answer:** B. A second **active** Annual permit for the same asset, type and city is **allowed**. The API's duplicate-annual 409 is removed (`assertNoActiveDuplicatePermit` / `findActiveDuplicate`), and the green banner under Asset is advisory. This supersedes AI decision **D27** and the earlier one-active-annual rule. Syed Haris (developer), 2026-10-30/11-03. It goes against the gap analysis's recommendation (A).
+- **Candidates:** AI decision D27 (§11b); `projects-jobs/gaps.md#permit-rules-the-e2e-suite-asserts-with-no-written-source--pr-488` item (d). That entry asks whether the guard is one active annual per (asset, type, city). It notes that `projects-jobs/city-permits/permit-tracker-workbook.md`:120-124 (`unverified`) keeps several records per city side by side, which goes against such a guard. No decision note ever set the rule.
+- **Note:** the code change and the edit of the existing E2E spec `qa-automation/e2e/specs/permits/duplicates.spec.ts` (now asserts the second annual is accepted) are in commits `de3452a5b` and `919bcc34a`. The vault entry above stays **open**. A developer direction is not the product answer its owners (Lisette Anzaldo, Liz Lopez) were asked for. It now carries an *Update 2026-11-03* pointer to this question.
+- **Blocked:** nothing now (U11).
+- **Owner:** Syed Haris for the ticket; Lisette Anzaldo and Liz Lopez for the vault entry
+- **Status:** resolved — see decisions/2026-10-29-all-permits-create-permit-modal.md (Addendum 2026-11-03, point 16). This is a developer direction (`reference`), not a TCG sign-off.
+
+### Q18 — Does a linked Annual permit satisfy the DAS pre-checklist Permits row before it is approved? (gap analysis D-10, prototype re-exploration, 2026-10-30)
+
+- **Question:** In the prototype, linking an annual on DAS turns the Permits row green at once (its seed annuals are already Approved). The built checklist counts a linked permit only when it is APPROVED, and a modal-created Annual starts at Open. Must the linked Annual be approved?
+- **Options:** A. Only when APPROVED (existing checklist logic) · B. Satisfied when linked and Valid to has not passed, approved or not · X. Other — say what
+- **Answer:** A. A linked Annual counts toward the DAS pre-checklist Permits row **only when it is APPROVED**. The existing checklist logic is kept. Syed Haris (developer), 2026-10-30/11-03.
+- **Candidates:** the prototype (re-exploration notes); existing DAS pre-checklist code (descriptive only). Related open vault entry: `projects-jobs/gaps.md#conversion-mints-artifacts-without-das-assignment-rows`.
+- **Blocked:** nothing now (U15).
+- **Owner:** Syed Haris (DAS/permits owner on the TCG side: Lisette Anzaldo)
+- **Status:** resolved — see decisions/2026-10-29-all-permits-create-permit-modal.md (Addendum 2026-11-03, point 17). This is a developer direction (`reference`), not a TCG sign-off.
+
 ## 13. What this spec deliberately does not specify
 
 - **What "Bill to customer" does downstream** — whether it adds the PO fee to a customer invoice, quote or
@@ -1033,16 +1096,28 @@ direction, not a TCG sign-off). Each line below reads `resolved — see` that no
 - **A PO Notes column.** The prototype shows Notes, but `PurchaseOrder` has no column for it. Still
   unbuilt, awaiting Haris (§13, first bullet).
 - **A per-tenant timezone for the web** (see D31).
+- **Require the asset to be allocated to the job before linking** an annual from DAS (D43). Today the link
+  checks only the permit, not the job's allocation.
+- **An asset allocation check on `linkType`** for permit assignments.
+- **Nested PO number preview and selects** in the nested Create PO (extends the existing "PO number preview" bullet).
+- **State in the annual banner** under Asset. Permits store no state today (D41).
+- **The raw `QUOT_RESOURCE_ADDED` activity-log wording**, which shows the event code instead of a readable line.
+- **A DAS annual whose validity ends before the job date.** Today it can be linked and, once approved, counts on the checklist.
+- **Unbounded sub-category and vendor list lookups** on the permit list and Track Permits filters.
+- **Migration order against staging.** `20261029120000_add_permit_route_and_validity_dates` and
+  `20261029130000_add_purchase_order_po_date_bill_to_customer` sort **before** staging's
+  `20261102120000_yard_loadout_completed_shifts_at`. A developer should confirm that ordering is fine on the
+  target database (Prisma applies the unapplied ones but reports them out of order).
 
 ## 14. Sign-off before build
 
 - [x] Every `[OPEN]` requirement is answered — none remain (REQ-08 answered by Q2)
 - [x] Every `[CONFLICT]` requirement has a decision note — none flagged `[CONFLICT]`; the in-tree decision pair is noted in REQ-03
 - [x] Answers written back into `spec.md` with their new sources and flags (2026-10-29)
-- [x] Every §12 question has a status line. Q1–Q7, Q9 and Q13 are resolved (decision note + Addendum 2026-10-30). Q8, Q10–Q12 and Q14 are recorded as AI decisions D20–D25, awaiting developer review (tcg-scrum 2026-10-30)
+- [x] Every §12 question has a status line. Q1–Q7, Q9, Q13 and Q15–Q18 are resolved (decision note + Addenda 2026-10-30 and 2026-11-03). Q8, Q10–Q12 and Q14 are recorded as AI decisions D20–D25, awaiting developer review (tcg-scrum 2026-10-30, 2026-11-03)
 - [x] Every requirement's **Edges** fields are filled (`ASSUMED` allowed) or point at a §12 question
 - [x] Every §11a ripple row has a source, or an AI decision (rows 15, 19: D11, D14)
-- [ ] A developer has reviewed §11b and §11c (_Reviewed by_ cells are blank); `needs developer` rows: D20–D33. Items most worth a look: D20, D25, D26, D31 (client-facing or flagged), then D5, D11–D14
-- [x] Decomposed into vertical units — units.md (tcg-decomposer 2026-10-29, U1–U7; U8–U10 added during build)
+- [ ] A developer has reviewed §11b and §11c (_Reviewed by_ cells are blank); `needs developer` rows: D20–D26, D28–D48 (D27 superseded by Q17). Items most worth a look: D20 with D43, D25, D26, D31, D36, D42, D45, then D5, D11–D14
+- [x] Decomposed into vertical units — units.md (tcg-decomposer 2026-10-29, U1–U7; U8–U10 added during build; U11–U16 added after the prototype re-exploration, 2026-10-30 to 2026-11-03)
 
 Answered by: Syed Haris (relayed by coordinator)  Date: 2026-10-29

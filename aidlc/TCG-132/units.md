@@ -29,6 +29,15 @@ picker** (`limit` 100+) of their own — that same guard would fail on their cod
 | U5 | The modal also creates Travel permits (Origin yard / Destination job site, travel dates) and FAA permits (airport, flight details, FAA filing) | REQ-02 (Travel, FAA sections), REQ-05 (web part) | web | U4 | ~450 lines / 5 files | not started |
 | U6 | Files can be added to "Submitted Application" and "Final Permit" in the modal, with expiry, and are saved with the permit | REQ-07 | web | U4 | ~200 lines / 3 files | not started |
 | U7 | The modal's Purchase Order field has "Create new": nested Create PO with PO date, Bill to customer, PO fee prefilled, linked to the permit being created | REQ-06 (nested Create PO, acceptance 2-create, 3, 4) | web | U4, U2 | ~350 lines / 5 files | not started |
+| U8 | The Create Permit and nested Create PO modals match the prototype's widths, grids and attachment tiles | REQ-01, REQ-02, REQ-06, REQ-07 (fidelity) | web | U7 | — | built (added during build) |
+| U9 | Live-test fixes | REQ-01..REQ-07 | api, web | U8 | — | built (added during build) |
+| U10 | PR-review fixes (§11b D20–D33) | REQ-02..REQ-06 | api, web, qa-automation | U9 | — | built (added during build) |
+| U11 | API lookups and rules: type/sub-category filters, vendor search, received ≥ submitted, duplicate-annual 409 removed (Q17); U3 cherry-picked in | REQ-04, REQ-08 | api, qa-automation | U10 | — | built (prototype re-exploration) |
+| U12 | The modal and edit page react like the prototype: Valid to notes, Agency/City rules, OPEN POs, type switch keeps values, opens the new permit after create | REQ-01, REQ-02, REQ-06 | web | U11 | — | built (prototype re-exploration) |
+| U13 | Asset ⓘ popover and the annual banners in the modal and edit page; sub-category annual table on Travel detail | REQ-02 | web | U12 | — | built (prototype re-exploration) |
+| U14 | Detail and tracker polish: asset in title/Resource, Travel sections grouped, tracker type filter with Annual, KPIs follow the filter | REQ-08 | api, web | U13 | — | built (prototype re-exploration) |
+| U15 | Link an annual permit to the job from the DAS All Permits dialog | REQ-03 (DAS reach) | api, web | U14 | — | built (prototype re-exploration) |
+| U16 | Review fixes for U11–U15 | REQ-02..REQ-08 | api, web | U15 | — | built (prototype re-exploration) |
 
 - **Status** values per the template; `tcg-executor` writes its own row, `close-ticket` flips `built` to `merged`.
 - Requirements covered: REQ-01..REQ-08, counted against `spec.md` §2 on **2026-10-29** — 8 in spec, 8 covered,
@@ -482,3 +491,10 @@ C1 (tcg-scrum vault/decision note) before U1
 - **First unit to ship:** U1 — it carries the riskiest assumptions: the second migration-bearing change to the
   permit table, the association relaxation (D3), and the start status change for every caller (D11), which is
   the one place an unseen consumer (`qa-automation`) already contradicts the spec.
+
+- **U11–U16 were added after the prototype re-exploration (2026-10-30 to 2026-11-03).** An 88-row gap
+  analysis compared the approved prototype with the built app. Q15–Q18 were answered by Syed Haris (decision
+  note *Addendum 2026-11-03*). The remaining choices are AI decisions D34–D48 in spec §11b, awaiting
+  developer review. Spec §0 now reads **18 questions raised, 0 open**: Q1–Q7, Q9, Q13 and Q15–Q18 are
+  resolved by Haris, and Q8, Q10–Q12 and Q14 await developer review. No REQ was added, so the coverage count
+  (8/8) stands.

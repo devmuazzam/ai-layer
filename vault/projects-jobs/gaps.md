@@ -563,6 +563,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   works; what is unknown is whether it is right, and a green suite will stop anyone asking.
 - **Owner:** Lisette Anzaldo (dispatch/DAS/permits), with Liz Lopez — the same pair who own the two
   related entries above.
+- **Update 2026-11-03 (pointer, TCG-132):** item **(d)** no longer matches the code. On TCG-132, Syed Haris
+  (developer) directed that a second **active** Annual permit for the same asset, type and city is
+  **allowed**. The API's duplicate 409 (`assertNoActiveDuplicatePermit` / `findActiveDuplicate`) is removed,
+  and `qa-automation/e2e/specs/permits/duplicates.spec.ts` now asserts the second annual is accepted
+  (commits `de3452a5b`, `919bcc34a`). See
+  [../decisions/2026-10-29-all-permits-create-permit-modal.md](../decisions/2026-10-29-all-permits-create-permit-modal.md)
+  *Addendum 2026-11-03*, point 16, and `aidlc/TCG-132/spec.md` Q17. This is a developer direction
+  (`reference`), not the owners' answer, so (d) and this entry stay **open**.
 
 ## Working note — interim open-loop fixes on feat/permits-plans-project-artifacts (2026-09-08)
 

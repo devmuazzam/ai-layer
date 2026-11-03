@@ -22,6 +22,10 @@ resolves:
   - TCG-132/spec.md#q7
   - TCG-132/spec.md#q9
   - TCG-132/spec.md#q13
+  - TCG-132/spec.md#q15
+  - TCG-132/spec.md#q16
+  - TCG-132/spec.md#q17
+  - TCG-132/spec.md#q18
   - projects-jobs/gaps.md#permits-can-no-longer-be-created-outside-the-artifact-flow--and-the-vault-says-they-can
 supersedes:
   - decisions/2026-09-11-track-permits-job-only-until-sept-15.md
@@ -221,3 +225,67 @@ Done 2026-10-30 by tcg-scrum:
   added. `Status:` stays `open`.
 
 No frontmatter of any other file changed, and nothing was flipped to `verified`.
+
+## Addendum 2026-11-03: prototype re-exploration (Q15–Q18)
+
+After the 2026-10-30 close-out, the approved prototype was explored again and compared with the built app in an
+88-row gap analysis. That analysis listed eleven decisions, D-1 to D-11. Syed Haris (developer) answered four
+of them directly in the Claude Code session of 2026-10-30 to 2026-11-03. The coordinator relayed them to
+tcg-scrum, which recorded them on 2026-11-03. The basis is the same as above: a developer direction,
+`status: reference`, which TCG can overrule. Nobody at TCG signed it off. The full question text is in
+`aidlc/TCG-132/spec.md` §12 Q15–Q18.
+
+14. **Q15 (D-1): a Valid to in the past stays blocked on create.** The web keeps its min date and the API
+    keeps `IsNotBeforeToday`. Under Valid to the app shows an amber "Expires in N days" banner and a green
+    "Valid until {date}" banner (the prototype's 30-day line). Detail and edit show a red "expired" note for
+    a permit that has already expired.
+15. **Q16 (D-3): a successful Create Permit opens the new permit.** The modal closes and the app goes to the
+    new permit's detail page with **no** success toast. The failure toasts for the PO and attachment steps
+    stay.
+16. **Q17 (D-4): a second active Annual permit for the same asset, type and city is allowed.** The API's
+    duplicate-annual 409 (`assertNoActiveDuplicatePermit` / `findActiveDuplicate`) is removed. The green
+    banner under Asset is advisory. This **supersedes spec AI decision D27** (the duplicate rule scoped to
+    asset types) and the one-active-annual rule before it. No decision note ever wrote that rule down. It was
+    code, asserted by `qa-automation/e2e/specs/permits/duplicates.spec.ts`, and that existing spec now asserts
+    the opposite (commits `de3452a5b`, `919bcc34a`).
+17. **Q18 (D-10): a linked Annual counts toward the DAS pre-checklist Permits row only when it is APPROVED.**
+    The existing checklist logic is kept. A modal-created Annual starts at Open (point 10), so linking it
+    does not turn the row green until it is approved.
+
+### Why (addendum 2026-11-03)
+
+- **Q15:** a past-dated create has no known business use. Allowing it would change an API rule shared with
+  three other create pages. The banners give the prototype's feedback without that change.
+- **Q16:** this is what the approved prototype does. The partial-failure toasts still show after the route
+  change.
+- **Q17:** this follows the prototype, where the found-annual banner does not block. The gap analysis
+  recommended keeping the 409, and Haris chose otherwise. It also fits TCG's own tracker, which keeps
+  current, future and historical permits for a city as separate records
+  (`projects-jobs/city-permits/permit-tracker-workbook.md`:120-124, `unverified`).
+- **Q18:** an annual that is not yet approved does not cover the crane.
+
+### Not settled by this addendum
+
+- **The open vault question on the duplicate guard.** Item (d) of
+  `projects-jobs/gaps.md#permit-rules-the-e2e-suite-asserts-with-no-written-source--pr-488` asks its owners
+  (Lisette Anzaldo, Liz Lopez) whether the guard is one active annual per (asset, type, city). Point 16 is a
+  developer direction for the build, not their answer, so the entry stays **open**. It now has a pointer.
+- **The other gap-analysis decisions (D-2, D-5 to D-9, D-11) and the build choices of U11–U16.** No person
+  answered these. They are AI decisions D34 onward in `aidlc/TCG-132/spec.md` §11b, `needs developer: yes`,
+  awaiting developer review. Among them are the Asset ⓘ popover, which stays open until toggled (an owner
+  instruction relayed with the build; it is not recorded here as a decision), and the DAS "Link annual
+  permit" flow.
+
+### Effect on the vault (addendum 2026-11-03)
+
+Done 2026-11-03 by tcg-scrum:
+
+- `aidlc/TCG-132/spec.md` §12: Q15–Q18 were added, each reading `resolved`, with a pointer to this addendum.
+  The §12 intro now says where they came from.
+- `projects-jobs/gaps.md#permit-rules-the-e2e-suite-asserts-with-no-written-source--pr-488`: an
+  *Update 2026-11-03* pointer bullet was added. `Status:` stays `open`.
+- This note: `resolves:` gains `TCG-132/spec.md#q15` to `#q18`.
+
+No frontmatter of any other file changed, and nothing was flipped to `verified`. AI decision D27 lives in
+the spec's §11b, which tcg-scrum does not write, so marking it superseded there is a handoff. The same goes
+for the `INDEX.md` row.
