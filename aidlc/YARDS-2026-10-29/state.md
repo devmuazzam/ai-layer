@@ -30,4 +30,9 @@ chips, Yard filter, asset/employee card yards, slot marker "From Los Angeles Mai
 allocation removed). U4 — crane-size ranking (Riverside first for a Tower Crane), unknown job site 404, distance
 ranking with temporary yard coordinates (removed after), "Suggested: … — Use" fills the Yard.
 Left in local tcg_db from the checks: QUOT-00027 (Won) → PROJ-00004 / JOB-00006; CTE-00001's extra yard (LA).
-Next: decide §12 Q5 (yard coordinates); optionally split the commit per unit; PR when the developer says.
+2026-11-03 later: `8e59f0181` — yard geocoding on save + backfill script (D8, §12 Q5 answered); local backfill set
+LA and Riverside (10 blank test-yard addresses skipped). `5e6885ee6` — employee Yards multi-select with a starred Home
+chip replaces the extra-yard rows (D9); checked live: pick two, star moves Home, removing Home promotes the next, edit
+loads both, swap Home on CTE-00001 saved (now Home LA, extra Claude Test Yard). Web tsc/eslint clean, node tests
+1018/1022 (same 4); api helper spec 6/6. Not checked live: geocoding through the yard form (unit-tested only).
+Next: optionally split the commits per unit; run the backfill per environment on deploy; PR when the developer says.

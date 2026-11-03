@@ -7,7 +7,7 @@
 | U1 | A quote is made from a real yard and the job carries it | REQ-01..06, 13 | schema, api, web, mobile, qa | — | built, checked live |
 | U2 | An employee has a Home yard and extra yards | REQ-09, 10, 11 | schema, api, web, qa | — | built, checked live |
 | U3 | The Dispatch board shows yards, filters by them and marks other-yard allocations | REQ-07, 08, 10 | api, web | U1, U2 | built, checked live |
-| U4 | A new quote suggests its yard | REQ-12 | api, web | U1 | built, checked live (distance needs yard coordinates — §12 Q5) |
+| U4 | A new quote suggests its yard | REQ-12 | api, web | U1 | built, checked live; yard geocoding added (D8) |
 
 ---
 
@@ -27,7 +27,7 @@
 | --- | --- |
 | Schema | `EmployeeYard` (`employee_yards`): id, tenant, employee_id (cascade), yard_id (cascade), created_at; unique (employee, yard); tenant-scoped. `Employee.yardId` stays the Home yard. |
 | API | Create requires `yardId` (Home); create/update take `additionalYardIds: uuid[]` (Home excluded, duplicates dropped, yards must exist in tenant); update with the field replaces the set. Employee read returns `additionalYards: { id, yardName, yardId }[]`. Payroll untouched (REQ-11). |
-| Web | Employee form: "Also works out of" — repeat-row `YardSelect`s with "+ Add yard"; Home yard required; detail shows both. |
+| Web | Employee form: one "Yards" multi-select (`AsyncMultiCombobox`), the starred chip is Home (D9); Home required on create; detail shows Home and "Also works out of". |
 | qa | Employee helpers already send `yardId`; add a lifecycle check for extra yards. |
 
 ## U3 — Yards on the Dispatch board
@@ -43,3 +43,4 @@
 | --- | --- |
 | API | `GET /yards/suggestions?jobSiteId=&subCategoryIds=` — active yards ranked: has an active, non-archived asset in every given sub-category first, then straight-line distance from the job site to the yard's physical address (D4); returns `{ id, yardId, yardName, distanceMiles, hasAllSubCategories }[]`. Picker route rules: `@SkipThrottle`, small result. |
 | Web | New quote, Main step: when a job site is set and the yard is empty, show "Suggested: <yard> · <n> mi" with Use; never overwrites a chosen yard. |
+| API (D8) | Yard create/update geocodes addresses saved without coordinates; `prisma/scripts/backfill-yard-coordinates.ts` for existing yards. |

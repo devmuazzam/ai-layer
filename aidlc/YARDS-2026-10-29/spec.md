@@ -54,6 +54,17 @@
 - **D7 — The web suggestion sends the job site only.** The Yard is picked on the quote's Main step,
   before the crane sizes (Resources step); the API also takes `subCategoryIds` for when they are known.
   [developer, 2026-11-03]
+- **D8 — Yard addresses are geocoded on the server** when saved without coordinates (as job sites
+  are; client/map-pin coordinates kept; a saved address at the same place reuses its own). An address
+  with no street, city or ZIP is never geocoded — the geocoder answers a bare "US" with the middle of
+  the country. `prisma/scripts/backfill-yard-coordinates.ts` fills existing yards (dry run by default,
+  `--apply` to write; run once per environment). Answers §12 Q5. [developer, 2026-11-03]
+- **D9 — One "Yards" multi-select on the employee form, the starred chip is Home.** Replaces the
+  "Also works out of" repeat rows and "+ Add yard". The first yard picked is Home until another is
+  starred; removing Home makes the next one Home. Data and API unchanged (`yardId` = Home,
+  `additionalYardIds` = the rest). New shared `components/ui/async-multi-combobox.tsx` — the first
+  multi-select picker in the app; `contexts/web.md` → *Multi-select* still says there is none and
+  repeat rows are the sanctioned pattern (a human updates contexts). [developer, 2026-11-03]
 
 ## 12. Questions
 
@@ -70,8 +81,7 @@
   search on the yard form; nothing geocodes a yard on the server (job sites are geocoded). Until yards
   have coordinates, the suggestion ranks by crane size and then by name. Options: geocode yard addresses
   on save (as job sites are), and backfill existing yards. Ask the developer / Lisette.
-  - **Status:** open · **Blocks:** the distance half of REQ-12 in practice (the code works — verified with
-    temporary coordinates).
+  - **Status:** answered 2026-11-03 by the developer → D8 (geocode on save + backfill).
 - **Q4 — One quote with several yards.** Joe allowed it for project quotes (22:01) before agreeing to
   one yard (24:23). REQ-02 ships one yard per quote.
   - **Status:** open (low) · **Blocks:** nothing.
