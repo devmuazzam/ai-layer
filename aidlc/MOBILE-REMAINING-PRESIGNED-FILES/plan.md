@@ -1,70 +1,75 @@
-# Plan — consistent mobile upload metadata
+# Plan — complete mobile presigned reads and consistent attachment metadata
 
-Updated 2026-11-03 to the requester's latest scope. This replaces the earlier viewing/open-share execution proposal; that proposal is retained in presigned-read-plan.md for reference.
+Updated 2026-11-03. No external ticket. **Current work is Path A continuation**, explicitly authorized by the requester to add the missing work, follow all AI-DLC phases and implement. The former metadata-only exclusion is superseded. See current spec.md and units.md; archived presigned-read-plan/spec are history, not the current scope.
 
-## Current goal and path
+## Outcome and delivery boundary
 
-No external ticket. Path C: a stated consistency change, one independent task on `codex/attachment-metadata-consistency`. Implementation checkout: `/home/codingcops/.codex/worktrees/attachment-metadata-consistency/craneguys-platform`, based on `origin/staging` because the ticket-image migration dependency is absent from `origin/main`.
+Preserve completed upload metadata consistency and finish presigned GET viewing/opening/sharing across the remaining mobile file surfaces. Uploads retain current multipart API transport. No schema migration, dependency, object move or existing-row backfill. This is one remaining-mobile-file-read migration with shared signing/opening and rendering siblings, on `codex/mobile-presigned-reads`, stacked on published `codex/attachment-metadata-consistency`. Prior ticket-image dependency is on staging, so do not rebase away onto an incompatible main baseline.
 
-Every mobile image/document upload must create an attachment row with the owning resource UUID in feature_id, the appropriate feature_type and a useful category. Routes may still accept business codes; the API resolves them within the tenant before storage. Existing category-driven behaviors must remain intact.
+## AI-DLC phases
 
-No new viewers, presigned upload transport, read/download transport changes, data backfill, new schema fields or dependencies. Existing records remain readable through aliases. New tests were not requested; update affected expectations in existing cases only.
+| Phase | Deliverable / current disposition |
+| --- | --- |
+| Triage / intent | Path A continuation; intent.md records latest explicit implementation request and superseded exclusions |
+| Elaborate | spec.md REQ-01..06, acceptance/edges/sources; zero OPEN requirements |
+| Decompose | units.md: completed U0 metadata parent, one vertical U1 remaining read migration; all six requirements covered |
+| Execute | U1 implements API authorization/links, mobile consumers and required compatible contract changes together |
+| Analyse | Independent contract/tenant/source review plus existing checks; record exact results and runtime limits in review.md/state.md |
+| Reflect | Record actual outcome, residual gaps and follow-ups after construction; no merge/deployment claim without evidence |
 
-## Complete mobile upload coverage
+The requester has authorized implementation. Technical endpoint/reuse choices are AI decisions for review, not another confirmation gate. No PR, merge, deployment or automatic check bypass is inferred.
 
-Nine binary-upload operations across eight HTTP adapters; several signature consumers share an uploader.
+## Complete upload metadata coverage — completed baseline retained
 
-| Upload | feature_type | New feature_id | Category |
+Nine binary-upload operations across eight HTTP adapters; shared signature uploaders serve multiple screens.
+
+| Upload | feature_type | Canonical feature_id | Category |
 | --- | --- | --- | --- |
-| Certificate renewal | EMPLOYEE | Employee UUID | Certification name; server retains catalog/legacy reference normalization |
+| Certificate renewal | EMPLOYEE | Employee UUID | Certification name; preserve catalog/legacy linkage normalization |
 | Quotation general/create attachment | QUOTATION | Quotation UUID | Quotation Attachment when none supplied |
-| Quotation plans/documents batch | QUOTATION | Quotation UUID | PLAN_OR_DOC retained |
+| Quotation plans/documents batch | QUOTATION | Quotation UUID | PLAN_OR_DOC |
 | Job-walk operator/foreman signature | JOB_WALK | JobWalkReport UUID | Job Walk Operator Signature / Job Walk Foreman Signature |
 | Ticket Attach File | JOB_TICKET | Ticket UUID | Ticket Attachment |
-| Customer/compliance/JSA/checklist signature and identity upload | TICKET_SIGNATURE | Ticket UUID | Ticket Signature until linking assigns the precise existing label |
-| Lunch WTL signature/identity upload | TICKET_SIGNATURE | Ticket UUID | Ticket Signature until linking assigns Lunch WTL 1..4 |
-| Pretrip/posttrip/JSA checklist photo | CHECKLIST | Ticket UUID | Existing checklist label, or Checklist Photo until submit identifies the type |
-| Incident evidence image/video | TICKET_INCIDENT | Ticket UUID | Incident Evidence; incidentReportId holds the incident UUID |
+| Customer/compliance/JSA/checklist signature and identity upload | TICKET_SIGNATURE | Ticket UUID | Ticket Signature until precise link-time label |
+| Lunch WTL signature/identity upload | TICKET_SIGNATURE | Ticket UUID | Ticket Signature until Lunch WTL 1..4 linking |
+| Pretrip/posttrip/JSA checklist photo | CHECKLIST | Ticket UUID | Existing checklist label or Checklist Photo until submit |
+| Incident evidence image/video | TICKET_INCIDENT | Ticket UUID | Incident Evidence; incidentReportId identifies incident UUID |
 
-Incident customer signatures reuse the TICKET_SIGNATURE upload, then become Incident Evidence on linking. No mobile profile-photo or meter-photo upload producer was found. Their read-only use does not introduce another uploader.
+Incident customer signatures reuse TICKET_SIGNATURE then receive Incident Evidence when linked. Existing UUID/code/User-ID aliases and uploader-scoped legacy me reads remain; no backfill. General quotation files never become PLAN_OR_DOC or profile photos by default. Completed metadata code is the parent, not evidence that presigned reading was already delivered.
 
-## Implementation steps and status
+## Remaining reads — U1 delivery matrix
 
-1. **Implemented:** resolve employee/code/legacy User UUID inputs to Employee UUID; remove the mobile literal `me`/User-ID upload fallback. Legacy `me` rows are read only when their uploader matches the employee's linked user.
-2. **Implemented:** resolve generic and batch quotation uploads to Quotation UUID, retaining PLAN_OR_DOC and WON_EVIDENCE. General files never inherit PLAN_OR_DOC, which would wrongly include them in customer emails.
-3. **Implemented:** store job-walk signature owner UUID and role-derived category. Keep routes by code and role attachment UUID references.
-4. **Implemented:** supply neutral categories for new ticket uploads that previously started null; retain all existing link-time specific labels.
-5. **Implemented:** preserve code/UUID alias reads, employee/quotation code-based activity logs, expiry links and recipients, and UUID/code Won/Signed evidence checks. No existing attachment rows are rewritten.
-6. **Completed:** validate owners before writing S3 objects; API build, API/mobile lint, mobile typecheck and selected existing regressions passed. Primary final review completed; independent agents supplied static audit/guardian feedback but later review turns hit usage limits.
-7. **Completed:** verification results are recorded below and in review.md. User subsequently requested commit/push; code commit 1d439ae58 passed pre-commit hooks. The requester approved a one-time SKIP_GATES=1 publication exception after reviewing the mobile baseline failures; code is pushed and these records accompany it on the matching overlay branch. See publication.md for the gate results and approval. No PR or merge requested.
+| Surface | Planned visible behavior | Existing route/data retained |
+| --- | --- | --- |
+| Quotation general attachments | Open/share every saved file with signed S3 GET | Existing list/upload/delete and category distinction |
+| Quotation Plans & Documents | Same open/share, including when upload is disabled | PLAN_OR_DOC and send restrictions |
+| Create/edit wizard picks | Continue local name/type/size until save; saved files use migrated cards | No remote request for unsaved files |
+| Certification documents | Open uploaded saved document; no broken action when none exists | Certification id/status/dedup, optional distinct attachmentId, current-user employee visibility |
+| Saved job-walk signatures | Read-only saved report list/card on quotation Attachments tab; view/open operator and foreman | Existing list(quoteNo), role attachment IDs, local SignaturePad upload workflow untouched |
+| Linked job documents | Signed open/share for permit, plan and PO files | Existing crew-authorized artifact response and metadata fields |
+| Saved JSA | Remote saved deficiency photos/signatures render from live covers; local capture preferred when matching | Existing assignments/answers/attachment IDs, no expiring URLs in draft |
+| Saved incidents | View saved evidence images/signature; open/share non-image files such as video | Existing incident API signed fields, ticket access, MIME/submission behavior |
+| Ticket/profile/entity photos already signed | Regression-check existing behavior | Existing cover/signature fields and upload processing |
 
-## Technical decisions and siblings
+## Common implementation decisions
 
-- Shared lower-layer resolvers use explicit tenant predicates; never treat a supplied UUID as authorization.
-- Employee attachment reads accept owner UUID, employee code and linked User UUID. Literal `me` additionally requires the matching uploadedById; it is never a global alias.
-- Quotation/job-walk list reads accept both new UUID and historical code rows. Existing code-based routes and notification labels remain code based.
-- Generic attachment activity logs convert UUID owners back to employeeCode/quoteNo. Existing expiry notifications resolve the owner before constructing links and recipients.
-- Won/Signed evidence validation accepts only IDs on the resolved quotation, with existing tenant/type/WON_EVIDENCE restrictions.
-- Generic profile-photo categories remain reserved for P3. Arbitrary ticket/quotation images are not labeled Profile Picture or Photo.
-- Web callers of the same upload/list functions keep working with codes. No web UI changes are included.
-- Server-generated Signed Quotation copies are not a mobile binary-upload producer; their separate direct-writer canonicalization is a follow-up. Current reads preserve them.
+1. Add authenticated `GET /attachments/:id/links` returning `{ id, originalName, mimeType, url, previewUrl? }`. Explicitly constrain the loaded row to current tenant, retain existing generic attachment download access policy, sign only its server-stored key, and return no user-supplied S3 key capability. Guardian reviews tenant/access boundary; contract tracer reviews exact response.
+2. `url` uses `presignDownloadUrl`; an image-only `previewUrl` uses `presignGetUrl`. Reuse current signer/TTL and existing native opener/AttachmentImage. Legacy flat keys sign directly without moving objects.
+3. Mobile asks for links on demand when opening. Reuse the same helper for linked job artifacts, so their response/DTO need no signed-URL addition. No per-row link requests merely to list filenames. Component preview state is transient and cleared when its owner changes.
+4. Request fresh links on opening and refresh once after a signed fetch fails. Keep API byte routes compatible with older clients; no normal new mobile read uses arraybuffer as its primary path. Do not send API bearer headers to S3. Preserve share cancellation/error behavior; do not mistake native sharing errors for link expiry.
+5. Certification `id` can identify EmployeeCertification or Attachment. Add optional `attachmentId` independently, associate the matching uploaded document without changing existing certification identity/status/expiry dedup, and preserve rows without documents. New attachment IDs are not guessed from certificate IDs.
+6. Use existing job-walk list(quoteNo) and saved role IDs for a read-only signature card on quotation detail. Do not add edit hydration or change clearing semantics. Persist no signed URLs in the job-walk store.
+7. Feed JSA existing live photo/signature covers into current components with attachment-ID matching and refetch callbacks. Incident saved viewer consumes existing images/files/signatureImage. Keep local captures, video classification and reporting workflows intact.
+8. Generic list/upload/download routes and web blob consumers remain compatible. No new shared export expected; if one changes, update all callers in this unit and rebuild shared dist before consumers.
 
-## Verification
+## Checks and truthful status
 
-Completed checks:
+Fresh continuation baseline is **pending execution/results**, not inferred from the parent. Mobile typecheck passed (14 s; `/tmp/presigned-baseline-typecheck.log`); selected existing suites are running under `/tmp/presigned-baseline*`. The initial suite command had a shell quoting failure before Jest and is being rerun; no application failure is inferred. Executor records exact results. Historical parent gates and approved one-time publication exception remain in publication.md and are not authorization to skip current checks.
 
-- Shared build and final API build (including Prisma generation): passed.
-- API lint: passed, 0 errors / 669 warnings. Mobile lint: passed, 0 errors / 392 warnings.
-- Mobile typecheck: passed.
-- API upload/compatibility regressions: 12 existing suites / 174 tests passed.
-- Existing attachment-controller/photo regressions: 4 suites / 21 tests passed.
-- Mobile certification/quotation regressions: 29 of 30 tests passed on the combined run; the first modal test timed out at 5 seconds. Rerunning that whole existing modal suite alone passed all 9 tests, leaving all 30 unique selected mobile tests passing across the runs. The timeout was not hidden by increasing its limit.
-- Diff whitespace and final source review: passed. No new test cases were added; two existing metadata expectations were updated.
+Run existing checks appropriate to the final diff through pnpm nx: shared build; API lint/build and affected attachment/Me/job-walk/ticket/incident/checklist suites; mobile lint/typecheck and existing card/service/helper/certification/JSA/incident suites. Run affected web checks for any changed shared response/export. New tests are **not requested**. Constructor/module changes require an API boot check. Every failure is triaged against an observed baseline rather than assumed pre-existing.
 
-No real device, database or S3 validation was performed. This validates code and existing regressions, not historical production row contents.
-
-Relevant existing coverage: job-walk signature storage/cleanup; ticket attachment guard, ticket attachments and ticket signatures; checklist assignments and lunch breaks; incidents; quotation Mark Won/Mark Signed and send/signature paths; generic attachments and mobile certification contracts/renewal flow. Run through `pnpm nx`, using a 4096 MB Node heap for API lint/build where needed.
+Named runtime checks: iOS/Android open/share names and MIME; signed S3 requests without bearer headers; both quote cards and both job-walk roles; certificates with/without documents; all three artifact types; saved JSA/incident content absent local cache; video opens as file; bounded expiry refresh; missing/deleted objects; cross-tenant access; existing upload/delete/category/metadata behavior. Mark unavailable device/API/S3/DB checks explicitly; passing mocked suites is not runtime evidence.
 
 ## Handoff
 
-Implementation is restricted to upload persistence and its required compatibility callers. The previous presigned viewing/open-share/JSA-rendering proposals remain archived and are not silently implemented by this task. Review results and exact gate outcomes belong in state.md before handoff.
+Execute U1 in units.md, then analyse and reflect with exact evidence. Keep state/ledger current. The overall migration is complete only when the new controls and renderers consume signed links across the delivery matrix; API schemas or upload metadata alone do not establish completion. Unrelated web blob conversion and server-generated signed-copy metadata writers remain recorded follow-ups.

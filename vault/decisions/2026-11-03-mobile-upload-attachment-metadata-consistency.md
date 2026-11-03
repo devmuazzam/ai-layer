@@ -2,6 +2,9 @@
 title: Mobile upload attachment metadata consistency
 source: requester direction in this conversation, 2026-11-03
 status: reference
+superseded_by: decisions/2026-11-03-mobile-presigned-read-implementation.md
+provenance_note: >-
+  Metadata-only and no-viewer/read-transport exclusions are superseded by the requester implementation direction; metadata consistency remains required. See decisions/2026-11-03-mobile-presigned-read-implementation.md
 conflicts_with: []
 ---
 

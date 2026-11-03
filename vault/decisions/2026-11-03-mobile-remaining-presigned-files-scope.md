@@ -8,6 +8,9 @@ decided_by: >-
   inferred from Git configuration. This records requester direction for planning,
   not a TCG client ruling or authorization to implement.
 status: reference
+superseded_by: decisions/2026-11-03-mobile-presigned-read-implementation.md
+provenance_note: >-
+  Planning-only and no-viewer exclusions are superseded by the requester implementation direction; retained GET-only and API-upload scope still applies. See decisions/2026-11-03-mobile-presigned-read-implementation.md
 conflicts_with: []
 related_tickets:
   - MOBILE-REMAINING-PRESIGNED-FILES
