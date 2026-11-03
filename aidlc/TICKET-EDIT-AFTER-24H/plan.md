@@ -100,4 +100,6 @@ Proposed implementation choices:
 
 **Q1 — Finalized records:** When Payroll corrects approved/exported payroll or an invoiced ticket, should the system preserve finalized records and create an approved adjustment, or reopen the originals and require re-approval/re-export/reissue? Asked asynchronously in this chat on 2026-11-02. Status: open. Recommended proposal: preserve finalized records and create linked corrections requiring review and the applicable downstream adjustment; this is a proposal, not an approved requirement. Blocks Unit 2 specification/execution, not Unit 1.
 
+**Q1 closeout disposition (2026-11-03):** remains open and is deferred to the separate Path A finalized-record work; the Unit 1 merge does not answer it. Routing owner: requesting developer, devmuazzam, to obtain the Payroll/accounting policy owner's choice between linked adjustments and reopening originals. No policy decision maker has yet been named in this record.
+
 Any field-specific post-submit edit question found during Unit 1 belongs here before implementing unsourced behavior. The plan does not claim full alignment of unrelated holdover/inspection/reminder requirements from the earlier 33-check audit.
