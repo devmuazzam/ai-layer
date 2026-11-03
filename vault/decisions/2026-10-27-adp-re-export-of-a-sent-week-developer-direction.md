@@ -9,7 +9,8 @@ decided_by: >-
   batch a client question first. This is a developer direction, not a TCG product decision, so it
   is `status: reference` on the same basis as 2026-10-21-defer-l5-payroll-admin-edit-default-holder.md.
   It binds implementation now; TCG can overrule it.
-status: reference
+status: superseded
+superseded_by: decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md
 conflicts_with: []
 related:
   - decisions/2026-10-22-adp-guaranteed-hours-fold-into-st-dt.md

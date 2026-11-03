@@ -887,6 +887,10 @@ someone has confirmed otherwise.
   recommend to go with the second option"* (48:40). syed.haris asked to watch the next real submission,
   and Micaela agreed to message when it was sent that afternoon (27:44–28:08). **No TCG owner chose
   between the paths on the call**, so this stays open. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
+- **Update 2026-11-02:** Syed Haris (developer direction, `reference`, TCG not consulted) said of
+  re-sending *"for now no, add the export option for now, but for API call no need for re-send"*. That
+  is his statement about the eventual API path. **It does not choose between the paths, so this stays
+  open.** Source: [decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md](../decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md).
 
 ## Employee master — who creates a worker, ERP or ADP
 
@@ -2617,6 +2621,11 @@ someone has confirmed otherwise.
   EXPORTED *periods* are still skipped, and there is still no reopen or delta path — this
   question stands as asked. The calculate window has also moved since this entry: the engine now
   reads prior-week context (PAY-045 rest, the holiday ladder, the premium-date minimum).
+  **Update 2026-11-02 — the 2026-10-27 update above is stale.** The plain re-send is withdrawn by
+  developer direction (Syed Haris, `reference`, TCG not consulted):
+  [decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md](../decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md).
+  A sent week can only be exported again as a download of its frozen figures, with nothing stamped.
+  It still cannot carry a correction, so the amended-week question stands as asked.
 - **Owner:** TCG payroll (Brian Petros, Corrina for practice) for the correction policy;
   CodingCops for the window. Brian has offered to walk through it in a meeting — that meeting is
   where PAY-068 and PAY-066 close.

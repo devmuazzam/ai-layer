@@ -19,4 +19,6 @@
 
 ## Resume
 
+**2026-11-02:** all or nothing replaces the partial send (P1–P4) and the re-send (P5), per [2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md](../../vault/decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md). The change is uncommitted on app branch `feat/payroll-weekly-design-alignment`; the existing partial-send and re-export tests in `payroll.service.spec.ts` still expect the old behaviour. The text below predates this.
+
 P5 (re-export of a sent week, spec §12 Q39) is built and gated on `feat/ADP-PAYDATA-EXPORT-p5-reexport`; next is push + PR against `main`, then `close-ticket` to fill the ledger row and flip this file. Open from P-series: Q38a–c (frozen-employee flags, run counts, auto-recalc after a partial send) and Q39's two residuals (amended-week re-export; ADP duplicate batch) — all owned by Ali Riaz / Brian.

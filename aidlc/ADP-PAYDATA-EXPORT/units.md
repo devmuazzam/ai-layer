@@ -504,6 +504,8 @@ U1 ──▶ U2 ──▶ U3* ──▶ U4 ──▶ U5 ──▶ U6 ──▶ U
 
 ## P5 — Re-export of an already-sent week (2026-10-27, outside the U-series like P1–P4)
 
+> **Superseded 2026-11-02** by [2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md](../../vault/decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md): the send is all or nothing and there is no re-send. `reexport` stays on the route, but now only downloads the whole sent week's CSV and stamps nothing. The single-employee export and re-export buttons (P4, P5) are removed. Kept below as what was built at the time.
+
 | Field | Value |
 | --- | --- |
 | Outcome | A `payroll-admin:edit` holder can send an already-exported employee week to ADP again; the stamp is overwritten, nothing is recalled |
