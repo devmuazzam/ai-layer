@@ -36,7 +36,7 @@ establish a baseline or prove the device demo. See `implementation.md` for comma
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | A worker can request an approved correction on a completed ticket older than 24h, same request→approve→edit(4h)→save→re-request flow as a recent one | REQ-19, REQ-20, REQ-21 (age-cutoff correction) | api, mobile | — | ~small; 2 behaviour edits + consumers + copy + test-assertion updates | built — `fix/TICKET-EDIT-AFTER-24H-u1-completed-age-cutoff` (`ea1e22d80`); gates passed; analyst: do not ship pending `analysis.md` findings |
+| U1 | A worker can request an approved correction on a completed ticket older than 24h, same request→approve→edit(4h)→save→re-request flow as a recent one | REQ-19, REQ-20, REQ-21 (age-cutoff correction) | api, mobile | — | ~small; 2 behaviour edits + consumers + copy + test-assertion updates | merged — client PR #995 to staging (`dbef9c1e5`); age-cutoff scope closed at owner request; three mobile acceptance findings remain OPEN in `followups.md`; not promoted to client main |
 
 - Requirements covered: the completed-ticket age-cutoff removal within TICKET-FLOW-SLOTS-HOLDOVER
   REQ-19/20/21, counted 2026-11-02. Weakest source `[UNVERIFIED]` (developer direction in

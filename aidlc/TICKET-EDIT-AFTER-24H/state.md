@@ -1,39 +1,40 @@
 # State — TICKET-EDIT-AFTER-24H
 
-Working ID only; no external ticket supplied. Related: TICKET-FLOW-SLOTS-HOLDOVER REQ-18–21 and APPROVED-TICKET-EDIT-PAYROLL-RECALC.
+Working ID only; no external ticket supplied. Related: TICKET-FLOW-SLOTS-HOLDOVER
+REQ-18–21 and APPROVED-TICKET-EDIT-PAYROLL-RECALC.
 
-**Requested:** 2026-11-02 — plan alignment of completed-ticket edit requests with the supplied client answers.
-**Path:** B for removing the age cutoff against existing REQ-20/21; separate Path A for overriding finalized payroll/accounting policy.
-**Status:** Unit 1 built; executor gates passed; analyst verdict **do not ship** until the three mobile slice findings in `analysis.md` are resolved. Unit 2 remains blocked on Q1.
-**Last updated:** 2026-11-03 — resumed the executor handoff and completed independent source review.
-**Branch:** `fix/TICKET-EDIT-AFTER-24H-u1-completed-age-cutoff` (client and overlay).
-**Client commit reviewed:** `ea1e22d80e515e4210ffcc5a736fa3d1383c509b`, parent `9966b2c56f03ff73ada3c0695842cfe4ed3f2f02`. This parent is the review base; it must not be confused with the older `origin/main` recorded during planning.
+**Status:** CLOSED — merged Unit 1 age-cutoff scope, at the owner's request on 2026-11-03.
+This is a scoped administrative close, not full acceptance of every original slice obligation.
+The three mobile review findings and live demo remain OPEN in `followups.md`; the analyst
+verdict has not been overturned. Unit 2/Q1 remains outside this close.
 
-- [x] Compare supplied workflow with current API/mobile guards and existing specification.
-- [x] Save scoped implementation plan and acceptance matrix in `plan.md`.
-- [x] Decompose Unit 1 into an executable `units.md` slice contract (2026-11-02).
-- [ ] Resolve Q1 in `plan.md` before specifying finalized-payroll/invoice correction behavior.
-- [x] Execute Unit 1 — core API/mobile age-cutoff removal already committed on arrival; executor verified it without recreating the edits. See `implementation.md`.
-- [x] Run executor gates — API lint/build, mobile lint/typecheck and 116 existing tests passed. No pre-edit baseline was captured; see `implementation.md` for the evidence and limits.
-- [x] Analyse Unit 1 — independent `tcg-analyst` source review completed; verdict **do not ship**. See `analysis.md`.
-- [ ] Resolve the three mobile findings and re-run affected existing gates, then obtain a new analyst verdict.
-- [ ] Demonstrate the old completed-ticket request → approve → edit/save → payroll recalculation → expiry/re-request flow in a configured tenant/device environment.
-- [x] Record the overlay handoff on the matching branch; user authorized commit, rebase onto latest overlay main, and branch push on 2026-11-03.
-- [ ] Complete PR/merge workflow. No PR created or merge verified by this handoff.
+**Path:** B for age eligibility; separate Path A required for finalized-record correction.
+**Implementation branch:** `fix/TICKET-EDIT-AFTER-24H-u1-completed-age-cutoff`.
+**Closeout branch:** `codex/close-ticket-edit-after-24h`.
+**Last updated:** 2026-11-03.
+
+## Phases
+
+- [x] Plan — `plan.md`, requested 2026-11-02; no external ticket supplied.
+- [x] Units — Unit 1 slice retained in `units.md`; Unit 2 excluded pending Q1.
+- [x] Build — client `ea1e22d80`; four-file API/mobile age-cutoff change.
+- [x] Gates — recovered executor evidence: API lint/build, mobile lint/typecheck, 116 existing tests passed. No pre-edit baseline or live demo; see `implementation.md`.
+- [x] Analyse — independent source review; three INFERRED findings remain OPEN. `analysis.md` remains the historical do-not-ship-as-complete verdict.
+- [x] Merged — application PR #995 to **staging**, merge `dbef9c1e5`, contains `ea1e22d80`. Client main did not contain the fix at close verification. Overlay handoff PR #224 merged to overlay main as `2b58629`, contains `24b9ee5`.
+- [x] Reflect — `reflection.md`; one ED-1 index row, one rule proposal, none applied.
+- [x] Disposition — F1–F4 in `followups.md`; Q1 stays open in `plan.md` §6. Routing owner: devmuazzam; no new product answer inferred from merge.
+- [x] Ledger — `processed.log` PR field set to application PR #995; overlay PR #224 recorded separately here.
+- [x] Closed — merged age-cutoff scope closed on owner instruction; see `closeout.md` for evidence and publication.
 
 ## Resume
 
-Read `implementation.md` for recovered executor evidence, then `analysis.md` for the remaining
-Unit 1 work. The core four-file fix is committed in the client repo. Its executor finished at
-15:32 PKT on 2026-11-03; the caller then hit its usage limit before processing the handoff.
-The executor's isolated overlay lacked the uncommitted canonical `units.md` and had stale
-`state.md`; it correctly stopped rather than overwriting them. This takeover preserved that
-decomposition, updated the unit ledger, and added the missing retrospective `processed.log`
-row on the matching overlay branch. No application files were changed during this takeover.
+Closed for the merged age-cutoff scope. No additional implementation is authorized by this
+closeout. To resume corrective work, use `followups.md`: F1 expired-approval request banner,
+F2 payroll-void precedence, F3 request-kind copy, F4 configured-tenant/device demo and renewed
+analyst verdict. These are tracked, not resolved by closing the record. No new tests requested.
 
-Next executor: address expired-approval banner suppression, payroll-void precedence, and
-request-kind-specific correction copy, all already required by Unit 1. Preserve existing
-test IDs and run existing tests; no new tests requested. Keep finalized-payroll policy
-unchanged. Unit 2 still needs the owner decision in `plan.md` §6 Q1. User authorized
-committing this overlay handoff, rebasing it onto latest overlay main, and pushing the
-matching branch on 2026-11-03. Reflection/closure have not run.
+Q1 remains unanswered: devmuazzam to route the finalized-record policy choice to the
+Payroll/accounting decision maker before separate Path A work. Keep existing finalized-payroll
+locks. No vault sources or tooling were changed at close, and no deployment was verified.
+The closeout is committed/published through the closeout branch; its Git merge history is the
+publication record. Do not confuse application staging, application main and overlay main.
