@@ -16,7 +16,7 @@
 | Layer | Change |
 | --- | --- |
 | Schema | `Quotation.yardId` and `Job.yardId` — nullable UUID FK → `yards`, `onDelete: Restrict`, indexed. Migration backfills by matching the text `yard` to a yard's name (case/space-insensitive) or code within the tenant; jobs fall back to their quote's yard. Unmatched rows are counted in a `RAISE NOTICE`, left null. |
-| API | Quote create requires `yardId` (uuid, must be an active yard of the tenant); update may change it while the quote is not converted; the `yard` text is set from the yard's name on every write (D2). Duplicate copies `yardId`. Conversion sets `job.yardId` from the quote. Yard rename rewrites `yard` text on its linked quotes and jobs. Yard guards count by `yardId` (fallback name for unlinked legacy rows). Jobs `yardId` filter matches the link (fallback name). Field-ticket yard address resolves by `yardId` first. |
+| API | Quote create requires a yard, as `yardId` (uuid) or `yard` (name or code), which must be an active yard of the tenant (D12); update may change it while the quote is not converted; the `yard` text is set from the yard's name on every write (D2). Duplicate copies `yardId`. Conversion sets `job.yardId` from the quote. Yard rename rewrites `yard` text on its linked quotes and jobs. Yard guards count by `yardId` (fallback name for unlinked legacy rows). Jobs `yardId` filter matches the link (fallback name). Field-ticket yard address resolves by `yardId` first. |
 | Web | Quote form picker stores the yard's uuid + name (`valueField="id"`); edit maps `yardId`; travel time resolves the yard by id. Job detail unchanged (reads name). |
 | Mobile | Quote create sends `yardId` with the name. |
 | qa | Quotation context/specs send `yardId`. |

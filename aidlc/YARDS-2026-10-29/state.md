@@ -47,4 +47,9 @@ not set up on this machine). `lifecycle.spec.ts` still fills the removed `payTyp
 Type, so it fails before the details page. Pushed with SKIP_GATES=1: web and mobile test targets fail on Windows here.
 2026-11-04 later: `f9aa3f78a` — client feedback: the yard suggestion text uses the auto-filled green (#16a34a). Not seen
 live (browser session expired); web tsc clean.
+2026-11-04 later: reviewed PR #1015. `092699b04` — quote create accepts the yard name (D12), checked on the running API:
+name only 201 and linked, unknown name 400, no yard 400 (test row QUOT-00032 archived locally). `54911518f` — single-select
+dropdown rows say aria-selected false again. Open from the review: duplicate yard names on staging and production before the
+migration; stale coordinates when a yard address is typed over; Secondary-only yards and archive/delete; the API accepts an
+inactive Secondary; no processed.log entry; review questions not yet in §12.
 Next: optionally split the commits per unit; run the backfill per environment on deploy; PR when the developer says.

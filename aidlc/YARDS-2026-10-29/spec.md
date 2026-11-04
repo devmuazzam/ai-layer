@@ -75,6 +75,10 @@
   pills and checkboxes; the star is gone. A yard cannot be both: the Primary shows greyed out in the
   Secondary list, and a yard made Primary leaves it. The details page uses both names. Data and API
   unchanged (`yardId` = Home = Primary, `additionalYardIds` = Secondary). [developer, 2026-11-04]
+- **D12 — A quote can be created from the yard's name; the id stays underneath.** Installed mobile apps
+  send the name only, so requiring `yardId` would reject their quotes (found reviewing PR #1015). The
+  API takes `yardId` or `yard`, matches a name to a yard (an unarchived one first) and stores the link,
+  so REQ-01 still holds: sending neither is refused. No mobile release needed. [developer, 2026-11-04]
 
 ## 12. Questions
 
