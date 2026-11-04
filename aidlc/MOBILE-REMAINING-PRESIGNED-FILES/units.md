@@ -12,14 +12,14 @@ Historical parent validation is in publication.md: API full tests, web tests, af
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U0 | Every audited mobile upload uses canonical owner UUID/type/category with compatible legacy reads | REQ-01 | api/mobile | Existing ticket-image migration on staging | Completed parent, 19 files | built — codex/attachment-metadata-consistency |
-| U1 | Saved mobile files open through signed S3 URLs and saved JSA/incident images render, retaining canonical upload metadata | REQ-01 regression, REQ-02, REQ-03, REQ-04, REQ-05, REQ-06 | api/mobile; web compatibility | U0 | ~600–1100 source lines / 20–35 files | built — fix/mobile-presigned-reads |
-| U2 | Quotation documents, signed PDF copies, and Job Walk signatures are stored in scoped S3 paths and consistently persist UUIDs in attachments.feature_id | REQ-07, REQ-08 | api | U1 | ~100–150 source lines / 6 files | built — fix/mobile-presigned-reads |
+| U0 | Every audited mobile upload uses canonical owner UUID/type/category with compatible legacy reads | REQ-01 | api/mobile | Existing ticket-image migration on staging | Completed parent, 19 files | merged — PR #1018 to staging, 2026-11-04 |
+| U1 | Saved mobile files open through signed S3 URLs and saved JSA/incident images render, retaining canonical upload metadata | REQ-01 regression, REQ-02, REQ-03, REQ-04, REQ-05, REQ-06 | api/mobile; web compatibility | U0 | ~600–1100 source lines / 20–35 files | merged — PR #1018 to staging, 2026-11-04 |
+| U2 | Quotation documents, signed PDF copies, and Job Walk signatures are stored in scoped S3 paths and consistently persist UUIDs in attachments.feature_id | REQ-07, REQ-08 | api | U1 | ~100–150 source lines / 6 files | merged — PR #1018 to staging, 2026-11-04 |
 
 - Requirements covered: eight in spec.md §1, eight covered on 2026-11-04. REQ-01 is completed U0 plus U1 regression; REQ-02..06 are U1 delivery; REQ-07..08 are U2 delivery. No uncovered or partially omitted requirements.
 
 - Units blocked on an open question: none. Endpoint/reuse choices are AI decisions, already authorized, subject to contract/guardian review.
-- U0 is a published parent, not a merged claim. No PR or deployment is asserted.
+- Closure, 2026-11-04: U0, U1 and U2 landed together in PR #1018, staging merge `330cedd99` (head `350dad0da`). Earlier branch/base descriptions below are historical construction records. No deployment or merge to client `main` is asserted. See closure.md for review disposition and retained limitations.
 
 ## U0 — completed attachment metadata parent
 
