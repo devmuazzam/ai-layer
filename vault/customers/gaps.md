@@ -828,3 +828,26 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Candidates:** none. No `decisions/` note defines what counts as an unsaved change. `decisions/2026-09-22-browser-autofill-suppression-scope-and-mechanism.md` is adjacent but about autofill only.
 - **Blocked:** a consistent dirty rule across the react-hook-form forms. The fix direction is known: build defaults in the exact shape the form ends up in, or move normalizers to `resetField(name, { defaultValue })`. But (b) decides whether normalization should happen on open at all.
 - **Owner:** product team for (a) and (b), with Melissa McNutt for customer and job-site data. The CodingCops web team sequences the fix once (a) and (b) are answered.
+
+## Customer contracts and quote documents — stored per customer with dates, operator licences per crane size; not built, write-up owed by Ryan
+
+- **Status:** open
+- **Asked:** 2026-10-29 — sales quoting call. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §10.
+  - **Ryan Adams (Sales Manager), 1:10:29–1:10:59:** a documents page on the quote — **operator licences**
+    for certain cranes attached per crane size; customer forms (W-9, new customer set-up) sent with the quote,
+    *"Or would you want that separate Melissa on the form side?"*
+  - **Ryan, 1:11:24–1:11:57:** a returned **contract** or filled forms dropped into that customer, *"put in
+    the start date, end date, everything like that"*.
+  - ehtesham.anwar (1:12:07): contract management is not built; asked Ryan for a write-up — how contracts
+    arrive, when they are generated, how they are used. Ryan agreed to write up the sales flow (1:10:29); the
+    contract write-up was asked *"for Tuesday"* (2026-11-03).
+- **As built:** the quote send has an *Include New Customer Packet* toggle (a separate e-mail;
+  [new-customer-packet.md](new-customer-packet.md) includes TCG's W-9). No contract model; no licence
+  attachment on a quote.
+- **Question:** **(a)** What is a customer contract in the ERP — a document with start and end dates on the
+  customer, terms that change pricing, or both? **(b)** Does an expired contract stop a quote (as
+  [../quotations/contracts-and-coi-sop.md](../quotations/contracts-and-coi-sop.md) §12 hints, *"the previous
+  agreement may have expired"*)? **(c)** Which operator licences go with a quote — the crane class's required
+  certification, or the named operator's card, which is not known until dispatch?
+- **Blocked:** contract storage on the customer; quote attachments by crane size.
+- **Owner:** Ryan Adams (write-up), with Melissa McNutt for customer forms.

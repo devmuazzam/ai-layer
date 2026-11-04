@@ -35,6 +35,7 @@ example responses**, so the response shapes are otherwise unrecorded anywhere.
 | [codelist-worker-management.md](codelist-worker-management.md) | `union-codes`, `locations`, `business-units`, `eligibility-classes`, `job-titles`. **Also holds the only observed ADP error envelope** — the shape the ERP's error handling must be written against |
 | [workers-meta.md](workers-meta.md) | The worker schema. **Every field is read-only**, the File Number regex the crosswalk gets wrong, and the `$select` lever that keeps PII out of the ERP |
 | [workers-list.md](workers-list.md) | Real worker records. **No pay rates are returned**, `occupationalClassifications` turns out to be workers' comp, and union membership is recorded two ways that disagree |
+| [workers-departments-2026-10-20.md](workers-departments-2026-10-20.md) | **The whole roster (461 workers), counts only.** Only 3 of the 12 departments are in use — `PPEDEP` hourly field/shop/yard, `SADMIN` salaried office, `SALOFF` officers — and the job title carries the function. Crossed with FCC: owners are `SALOFF`, and FCC type and ADP job title disagree for about one field worker in five |
 | [pay-schedule.md](pay-schedule.md) | The pay calendar. **Saturday-Friday confirmed against production**, `payPeriodID` as the batch key, and why `OPEN` does not mean ADP will accept a batch |
 | [codelist-endpoint-catalog.md](codelist-endpoint-catalog.md) | Every valid `{code-type}`, and what `{version-id}` means — the answer the Postman collection does not give |
 
@@ -48,6 +49,7 @@ example responses**, so the response shapes are otherwise unrecorded anywhere.
 | Military Base premium ADP codes | **`MLR`/`MLO`/`MLD`/`MLT` already exist** — never supplied to CodingCops |
 | Can ADP carry job-level attribution? | **No.** TCG allocates by department; 12 org units, not jobs |
 | Can craft classification come from ADP? | **No.** 10 job titles against 9 union groups plus apprentice steps — `OPERATOR` alone collapses six groups spanning $3.29/hour |
+| Are the 12 departments an org structure to model on? | **No (2026-10-20).** Only `PPEDEP`, `SADMIN` and `SALOFF` hold active workers; the other nine are empty. See [workers-departments-2026-10-20.md](workers-departments-2026-10-20.md) |
 | Can home yard come from ADP? | **No.** Two locations, one named `DEFAULT`. Subsistence eligibility must be ERP-side |
 | Can certified payroll come from ADP? | **No.** No job, no craft, and payroll-output APIs are not sold to WFN clients |
 | Is the pay period really Saturday-Friday? | **Yes — verified in production.** 27 consecutive periods, every one Sat->Fri, pay date the following Thursday |

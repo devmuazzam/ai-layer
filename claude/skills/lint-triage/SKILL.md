@@ -35,21 +35,13 @@ mine.forEach(x => console.log("  " + x));
 '
 ```
 
-## 2. Known baseline, as of 2026-08-19 (post-Nx merge, PR #363)
+## 2. Known baseline, as of 2026-10-21 (`main` at `27390de69`)
 
-`apps/web` carried **37 errors** on `main` (up from 14 on 2026-08-11 — the import-order rule
-and the customer-edit workspace added the rest):
-
-| Rule | Count | Where |
-| --- | --- | --- |
-| `no-empty-function` | 17 | mostly `features/customers/workspace/edit/*` |
-| `no-magic-numbers` | 11 | `features/permits/components/print/*` |
-| `max-lines-per-function` / `max-lines` | 3 + 3 | `permits/components/print/*`, `lib/*` |
-| `complexity`, `no-constant-binary-expression`, `require-unicode-regexp` | 1 each | `permits-listing.tsx`, `lib/*` |
-
-If your failures are in `features/permits/components/print/` or
-`features/customers/workspace/edit/`, suspect the baseline first. **Re-measure rather than
-trusting this table** — it is a snapshot and the point of the skill is not to need it.
+**0 lint errors on every project** — the 37 `apps/web` errors of 2026-08-19 are gone. Warnings
+only (`@tcg/api` ~712). So on a branch from current `main`, **a lint error is yours**.
+`@tcg/api` lint and build need `NODE_OPTIONS=--max-old-space-size=4096` on an 8 GB machine;
+a heap-out-of-memory crash is not a lint failure. **Re-measure rather than trusting this
+line** — it is a snapshot and the point of the skill is not to need it.
 
 ## 3. Know which projects actually run, and where
 

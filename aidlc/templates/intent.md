@@ -96,8 +96,7 @@ Mark every row. `?` is a legitimate answer and is more useful than a wrong `no`.
 Notes for the elaborator:
 
 - A `yes` on `apps/api/prisma` means a committed migration under
-  `apps/api/prisma/migrations/` is mandatory (CLAUDE.md → Web UI Rules 12,
-  `.ai/claude/contexts/prisma.md`).
+  `apps/api/prisma/migrations/` is mandatory (`.ai/claude/contexts/prisma.md`).
 - A `yes` on `packages/shared` means both web and mobile are downstream whether or not
   they are marked here.
 

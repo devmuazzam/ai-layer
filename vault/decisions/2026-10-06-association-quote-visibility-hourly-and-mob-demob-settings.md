@@ -14,6 +14,16 @@ decided_by: >-
   answers are Syed Haris's alone; Joe did not discuss them. Written 2026-10-07; ported to overlay
   main 2026-10-09. Built on branch feat/association-document-visibility, under review.
 status: verified
+provenance_note: >-
+  EXISTING ROWS: the same ticket owner answered TCG-218 Q1 on 2026-10-14 ("hidden") — existing
+  non-employee associations start hidden on both quote types when the settings arrive, so the
+  Conflicts section's "every existing field-asset association stays on the quote until an admin
+  unticks it" no longer describes the build. See
+  decisions/2026-10-15-existing-associations-hidden-sub-items-auto-fill-at-zero-one-pair-per-crane.md
+  (status: reference). NEW PICKS: TCG-218 spec §12 Q21(a), 2026-10-15 ("Hidden, like everything"),
+  departs from this note's "a direct non-employee association starts shown"; no decision note
+  records it yet. Points 1–3 unchanged; status and conflicts_with unchanged. Added 2026-10-17 by
+  tcg-scrum (bookkeeping only).
 conflicts_with:
   - decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md
 resolves: []

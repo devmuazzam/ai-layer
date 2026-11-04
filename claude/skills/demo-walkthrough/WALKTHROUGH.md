@@ -461,6 +461,13 @@ On the **sub-category**, configure its **associated resources**: for the crane s
 associate the **Operator** and **Oiler** employee types (`SubCategoryAssociatedResource`, with
 `isRequired`).
 
+**Tick Show, or the quote stays empty (TCG-218).** Each association row has **Hourly Show**,
+**Mob/Demob Show** and **Sub item** columns, and every row **starts unticked**. An unticked row is
+still added to the job at conversion, but it never appears on the quote. For the demo, tick
+**Hourly Show** on the crane's Operator Load (or Operator), and **Mob/Demob Show** plus **Sub item**
+on what travels with it. Rows the associated item brings along (e.g. Operator Load → Operator /
+Tractor) get the same three ticks per crane, under the row.
+
 **Why this is load-bearing.** When a quotation is converted to a project/job,
 `materializeAssociatedJobResources()` walks each resource carrying a `subCategoryId`, reads its
 associated-resource definitions, and creates **child `job_resources` rows** at $0 — building the
@@ -626,6 +633,16 @@ Customer, job site, **price list**, job date / job end date, salesperson.
 Add the crane by its **sub-category**. Because you configured associated resources in 5.2, the
 Operator and Oiler rows should be **offered as children of the crane**, with the crane as parent.
 
+**Quotation Type (TCG-218)** — the chip above the lines: **Hourly** or **Hourly w/ Mob**.
+- **Hourly** lists only the rows ticked *Hourly Show* in 5.2.
+- **Hourly w/ Mob** adds a crane-named **Mobilization / Demobilization** pair per crane at the
+  bottom, with the crane as its first line and the *Sub item* rows inside. The pair is collapsed
+  by default; its own quantity is **visits** (amount = visits × the ticked lines).
+- Switching type on a quote that has lines asks first, then re-lays them out.
+- The customer PDF and print show each Mob/Demob as **one line**, and every line **net of its
+  discount and price hike** — there are no Discount / Price Hike rows on the customer's copy;
+  the Surcharge row stays.
+
 **Verify before leaving this tab:**
 - The rows render as a **hierarchy** (crane, indented operator/oiler) — not three flat siblings.
 - The pricing chips / sidebar show a subtotal equal to the sum of line `finalAmount`s.
@@ -651,8 +668,12 @@ Approval is triggered above `QUOTATION_APPROVAL_TOTAL_THRESHOLD` (an API env var
 margin thresholds shown in the approval panel.
 
 **Edge cases:**
-- **Try *Mark as Won* on a `DRAFT`** → `409 Conflict`: "Must be Internal Approved, Sent to Customer,
-  or Changes Requested." A clean, demonstrable state-machine guard.
+- ***Mark as Won* on a `DRAFT` is allowed** (once the quote is sendable — approval rules still
+  apply); only Won / Lost / Expired / In Revision quotes are refused with `409 Conflict`. Mark as
+  Won also freezes the asset configuration on a quote that was never sent (TCG-218).
+- **Configuration freeze (TCG-218).** A quote keeps the asset configuration it was **first sent**
+  (or won, or converted) with: change a crane's 5.2 settings afterwards and its job still follows
+  the quote. A quote never sent picks up the change.
 - **Mark Lost** → forces a Loss Reason from your step-2.5 list.
 - **Reactivate** a lost quotation.
 - Set the quotation total just under, then just over, the approval threshold and show the approval
@@ -801,6 +822,11 @@ When it doesn't, the craft must be supplied explicitly and the resolver matches 
 
 **Verify:** the sub-job stage advances (`OPEN → ALLOCATION_COMPLETED`), and each crew card shows the
 resolved craft.
+
+**Hourly w/ Mob jobs (TCG-218).** The Mobilization/Demobilization lines are not slots. Equipment
+quoted only inside Mobilization (not in the crane's configuration) becomes its own Set with an
+**Optional** badge; the card reads "Required Assets: N · Optional: M", and an empty optional slot
+never blocks Allocation Completed or Send Tickets.
 
 **Edge cases:**
 - **Quantity 2 on the quotation → two sets on the board.** Verify.
@@ -1165,6 +1191,7 @@ Tick every box before you start the demo narrative. Anything unticked fails **la
 **Assets**
 - [ ] Category → Sub-Category
 - [ ] **Sub-category associated resources configured (Operator, Oiler)** ← boom pay depends on this
+- [ ] **Hourly Show / Mob/Demob Show ticked** on those associations (5.2) ← otherwise the quote lists nothing under the crane (TCG-218)
 - [ ] Crane asset with a **Main Boom Length** that lands in a bracket
 
 **Commercial**

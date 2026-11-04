@@ -2,6 +2,7 @@
 name: tcg-contract-tracer
 description: Trace what breaks in web and mobile when an API response shape or DTO changes — four independent search passes, because only the files importing @tcg/shared are compile-checked. Use whenever a contract moves. Reports, never fixes.
 model: sonnet
+tools: Read, Grep, Glob, Bash
 ---
 
 # TCG Contract Tracer — what breaks when an API shape changes
@@ -28,7 +29,7 @@ misjudging one. Where something needs a real decision, report it and stop.
 | --- | --- |
 | Whole repo | **read-only** |
 | Shell, for search | **run** — grep, find, git diff |
-| Anything | **no write access** |
+| Anything | **no write access** — enforced: the frontmatter `tools:` list has no Edit or Write. Bash can still write; do not |
 
 ---
 
