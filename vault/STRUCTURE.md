@@ -66,7 +66,7 @@ question with a stable anchor, `- **Status:** open` / `answered`, sources cited 
 existing sweep still works, now across modules:
 
 ```
-grep -rn '^- \*\*Status:\*\* open' vault/*/gaps.md .ai/aidlc/SCRUM-*/spec.md
+grep -rn '^- \*\*Status:\*\* open' vault/*/gaps.md .ai/aidlc/[A-Z]*/spec.md
 ```
 
 **Phase 3 landed 2026-08-24.** The retired registers' open entries were dispositioned into

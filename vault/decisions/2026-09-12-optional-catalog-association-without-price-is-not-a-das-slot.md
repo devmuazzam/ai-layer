@@ -19,7 +19,12 @@ provenance_note: >-
   decisions/2026-10-07-tcg-218-open-questions-answered-by-the-ticket-owner.md). That contradicts
   this note for an Optional association the quotation does not carry. Both are developer rulings;
   open until Lisette Anzaldo, Melissa McNutt or Joe Schacatano confirms. Added 2026-10-09 by
-  tcg-scrum (bookkeeping only).
+  tcg-scrum (bookkeeping only). UPDATE 2026-10-17: on 2026-10-15 the same developer, answering
+  TCG-218 spec §12 Q12 ("no"), took THIS note's side for Optional associations (an Optional
+  association left off the quote is not a DAS slot), reversing his own 2026-10-07 Q6/U8 answer; built
+  as TCG-218 REQ-15. Recorded as a working assumption pending Lisette Anzaldo's review — see
+  decisions/2026-10-16-dispatch-slots-required-optional-none.md rule 7. A developer revising his
+  own ruling is not an adjudication: status and conflicts_with unchanged.
 resolves: [dispatch/gaps.md#branch-fixuat4-schedule-copy-allocation--a-das-slot-the-quotation-never-priced-the-job-resources-tab-now-hides-materialised-0-rows-the-board-still-allocates-against-them, projects-jobs/gaps.md#branch-fixuat4-schedule-copy-allocation--job-resources-tab-hides-rows-the-quotation-never-priced--see-dispatchgapsmd]
 tags: [module/dispatch, module/projects-jobs, module/quotations, kind/decision, daily-allocation]
 ---

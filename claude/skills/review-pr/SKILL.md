@@ -27,21 +27,16 @@ Find the ticket. If the branch names one (`feat/SCRUM-757-u1-…`), read it. If 
 spec at `.ai/aidlc/SCRUM-###/spec.md`, that is the contract and it outranks your judgement
 about what the feature should do.
 
-**Size first.** One PR is one unit or one independent task, within ~400 changed source
-lines and 25 source files (root `CLAUDE.md` → _One unit, or one independent task, per PR_).
-Measure against the PR's real base — a stacked PR's base is the unit below it, not `main`:
+**Scope first.** One PR is one unit or one independent task — there is no line or file
+budget (removed 2026-10-21). Check the commit list against the PR's real base (a stacked
+PR's base is the unit below it, not `main`):
 
 ```bash
-git diff --numstat origin/<base>...HEAD | grep -Ev '(\.spec\.|\.test\.|/e2e/|__tests__/|^qa-automation/|/migrations/|pnpm-lock\.yaml$|\.snap$)' \
-  | awk '{l+=$1+$2; f++} END{print l+0" lines, "f+0" files"}'
 git log --no-merges --oneline origin/<base>..HEAD      # units and sweeps show up here
 ```
 
-Over budget without a `size-exception` label and a written reason is **do not ship — split**.
-Propose the split from the commit list: one PR per unit (stacked where they depend), sweeps
-(lint/format autofix, import order, SDK or dependency upgrades) and unrelated fixes out
-first. Do not review a 900-file PR line by line and call it reviewed — that is the failure
-this check exists for.
+A sweep (lint/format autofix, import order, SDK or dependency upgrade) or an unrelated fix
+inside a feature PR is a finding: it comes out into its own PR.
 
 ## 2. The vault pass — what the product record says
 
@@ -149,10 +144,10 @@ Each of these is a question about the diff. *Who else consumes what it changed* 
 the two are not the same check: a DTO can be correct, conventional and still break three
 screens that are not in the diff.
 
-## 4b. The decisions pass — did a developer choose this structure
+## 4b. The decisions pass — is every choice recorded, and is it a good one
 
-AI is a tool here; a developer is the decider of record for structure (root `CLAUDE.md` →
-_Developers decide structure_). List every **structural** change in the diff with a command:
+The AI decides structure and records it; the reviewer audits the record (root `CLAUDE.md` →
+_The AI decides how_). List every **structural** change in the diff with a command:
 
 ```bash
 git diff origin/main...HEAD -- apps/api/prisma/schema.prisma   # models, columns, enums, relations
@@ -161,17 +156,16 @@ git diff origin/main...HEAD | grep -E '^\+.*@(Get|Post|Put|Patch|Delete)\('   # 
 git diff origin/main...HEAD -- '**/package.json'                # new dependencies
 ```
 
-For each, find the decision: `spec.md` §11b (Path A) or the PR description's
-_Developer decisions_ table (Paths B/C, `commit` skill §6). Report one of:
+For each, find the record: `spec.md` §11b (Path A) or the PR description's _AI decisions_
+table (Paths B/C, `commit` skill §6). Report one of:
 
 | Outcome | Meaning |
 | --- | --- |
-| **Decided** | A row names the developer who chose it. Cite it |
-| **Undecided** | No row, or _Decided by_ is blank, an AI, or "Claude". The structure was chosen by whoever was typing. Name the options a developer should have seen — including the existing code it could have reused, with paths |
-| **Contradicts decision** | The diff built something other than what the row says was chosen |
+| **Recorded** | A row states the choice and why. **Judge it on merit** — and name the existing code it should have reused, with paths, if it did not |
+| **Unrecorded** | The diff made a structural choice no row lists. The finding: hidden choices are what the table exists to prevent |
+| **Guardrail skipped** | A G1–G5 item (client-facing behaviour, destroyed data, tenant data, pay rule, new dependency) was decided without its stop — no question, no staging dry run, no guardian, no source. **Blocking** |
+| **Contradicts record** | The diff built something other than what the row says was chosen |
 
-Do not judge whether the undecided choice was right — that is the developer's call, and a
-reviewer who decides it has just made the same mistake. Report it so a developer makes it.
 For schema, delegate the shape questions (one-to-one with no history, a key repeated on a
 child, a duplicate model) to `tcg-prisma-guardian` §1b.
 
@@ -228,11 +222,11 @@ pinned upstream commit — never edit them here; re-syncing is a tooling change 
    beyond the diff's own new code are **follow-ups — their own PR** (root `CLAUDE.md` → _One
    unit, or one independent task, per PR_). Lean findings on code **this PR adds** may be
    fixed in this PR — if the developer says so.
-3. **Structure is the developer's call.** Every suggestion to add, split, merge, extract or
-   delete a function, abstraction or file is a proposal. Present it with the options; do not
-   mark §4b decisions as made because a rubric preferred one.
-4. **Tests.** Ponytail's *Missing test* findings are reported, and cap nothing beyond what §5's
-   regression-coverage rule already caps.
+3. **Structure is judged on merit.** The AI decided it and recorded it (§4b); a rubric's
+   suggestion to add, split, merge, extract or delete is a review comment against that record.
+4. **Tests.** New tests are written only when the developer asks (root `CLAUDE.md`). Ponytail's
+   *Missing test* findings are suggestions, never a cap on the verdict; an existing consumer
+   nobody **checked** (by an existing test or by hand) is still a finding.
 5. **Format.** Render findings in §7's shape with `file:line` and `[VERIFIED]` / `[INFERRED]`.
    The rubrics' tone examples are not this review's tone.
 
@@ -297,17 +291,18 @@ before reporting any — `lint-triage`.
 ```
 PR review: <branch> → <base>   (<n> files, ticket <SCRUM-###|none>)
 
-SIZE — <n> source lines, <n> source files vs <base> — <within budget | size-exception: <reason> | OVER — split: <PR 1: …; PR 2 stacked on 1: …; sweep PR: …>>
+SCOPE — <one unit / task | mixed: <sweep or unrelated commits to move out>>
 
 LOOP TRAIL — .ai/aidlc/processed.log
   <entry found: path taken | no entry, no folder — untracked | no entry, folder exists — inconsistent>
 
 TOOLING — <untouched | changed by Haris only | changed by <author> — not permitted>
 
-DECISIONS — who chose the structure
-  Decided:     <change> — <developer> — <spec.md §11b D<n> | PR description>
-  Undecided:   <change> — options a developer should have seen: <a | b | reuse <path>>
-  Contradicts: <change> — decision says <x>, diff does <y>
+DECISIONS — is every choice recorded, and is it sound
+  Recorded:    <change> — <spec.md §11b D<n> | PR description> — <sound | better: reuse <path> / <why>>
+  Unrecorded:  <change> — the diff chose this and no row says so
+  Guardrail:   <change> — <G1–G5> decided without its stop
+  Contradicts: <change> — record says <x>, diff does <y>
 
 PATTERN — against .ai/claude/contexts/patterns.md
   <feature> — P<n> — <matches reference | deviates: <how> — decided by <dev> | undecided | reference UNDECIDED, followed variant <X>>
@@ -353,15 +348,11 @@ goes first. A ripple target with no regression coverage caps the verdict at **sh
 follow-ups**; an unintended one — an existing consumer whose behaviour changes and which no
 source mentions — is **do not ship** until someone says it was meant to.
 
-**Over the size budget with no `size-exception` is do not ship** — the verdict is the split.
-
 **A source file pushed past 1,000 lines by this PR caps the verdict at ship with follow-ups**
 (§4d); the follow-up is its decomposition, as its own PR.
 
-**Undecided structure is do not ship** until a developer records the decision — one table
-row, not a rewrite; the developer may well keep exactly what was built. A **not-asked
-sibling** caps the verdict at **ship with follow-ups**, and the follow-up is the developer's
-yes/no on that sibling.
+**A skipped guardrail is do not ship.** An **unrecorded** structural choice or sibling caps
+the verdict at **ship with follow-ups** — the follow-up is one table row, not a rewrite.
 
 ## 8. Rules
 
