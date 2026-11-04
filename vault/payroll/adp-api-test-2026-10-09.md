@@ -115,9 +115,8 @@ answered here.
 1. ~~Was the worksheet deleted?~~ **Yes** — confirmed by syed.haris on 2026-10-15 (deleted by
    payroll in the WFN UI; the API cannot delete or read a batch, request `672204`). Every future test
    needs the same manual delete before the week is calculated.
-2. **Events.** No event was subscribed, so this test says nothing about notifications. ADP said on
-   2026-10-07 that none fire for pay data ([adp-event-notifications.md](adp-event-notifications.md)).
-   A second test to settle it is requested (§6).
+2. ~~**Events.**~~ **Settled by the second test (§7): no event for an edit.** The approval half runs
+   on 2026-10-20.
 3. **Untested code families:** `SUB` (earnings amount), foreman `FR*`, military `ML*`, lattice,
    `SIC`, holiday, and an override (`BASE_RATE_OVERRIDE`) row.
 4. **Batch totals** — what `ADP_Preview Batch Totals` sums, so the ERP can match it (§4).
@@ -163,6 +162,250 @@ Plan:
 - **Expected:** nothing. ADP said no pay-data events fire (request `672204`), and the catalogue has
   no *payroll approved / processed* event. An empty queue confirms the ERP must track worksheet
   status by hand; a message would show ADP's answer is out of date.
+
+## 7. Second test — result (2026-10-16 PT / 2026-10-17 PKT)
+
+The agreed morning slot slipped. syed.haris asked Micaela Dipane whether she was still free that
+Friday (*"Hi! No worries! Yes I am!"*) and the test ran in the Pacific afternoon. Times below are
+PKT; Pacific was 12 hours earlier, still 2026-10-16.
+
+| When (PKT, 10/17) | What |
+| --- | --- |
+| before | *TCG ERP Integration* subscribed to **`pay-data-input.modify`** (API Central → project → APIs → **Events (1)**, the event shows *Included*); delivery **Polling — Active**, webhook untouched. Baseline `GET /core/v1/event-notification-messages` → **204** (empty). Dry run: open period **`2026-43`** (`2026-10-10` → `2026-10-16`, pay date `2026-10-22`), the same three file numbers, 6 / 8 / 7 lines |
+| ~01:14 | `POST pay-data-input.modify`, batch **`TCGAPITEST20261016`** (named for Micaela's date, not the local one), the same week-41 figures as §2 → **HTTP 200**, the same bare echo as §3: no `confirmMessage`, no ADP batch name, no status. Queue straight after → **204** |
+| ~01:38 | **Micaela Dipane**, verbatim: *"I changed Brad #459 from 23.5 to 21.5 Regular hours and Travis #288 from 40 to 30 regular hours!"* — and, asked, confirmed she **saved** the worksheet (*"Yes I did!"*) |
+| 01:23 → 02:12 | Queue polled every ~5 minutes, plus on demand: **204 every time — 0 messages**, for ~35 minutes after the saved edit |
+| ~02:00 | syed.haris told the group chat (Brian Petros is in it) the result and asked Micaela to delete the worksheet |
+| by 02:27 | **Micaela Dipane deleted the worksheet** (relayed by syed.haris). Queue polled at 02:20 and 02:27 → **204**: **a delete sends no event either** |
+
+**Result — the edit sends nothing.** A practitioner editing and saving an API-posted worksheet
+produces no event, even with `pay-data-input.modify` subscribed and polling active. That matches
+ADP's Known Issue (*"Event notification is not supported"*, Payroll Data Input guide, added May
+2020) and request `672204` point 8. The subscription itself is real (Events (1), *Included*); the
+queue answers 204, not an auth error. **The ERP cannot learn of a change made in ADP after it posts.**
+
+**No event exists for payroll status either.** The full catalogue (all 10 domains, 147 events) has
+**no event path containing `payroll` or `payroll-job`**; `job` matches only four Staffing events.
+`payroll-job-status.change`, which a third-party connector (StackOne) lists for Workforce Now, is not
+offered to this project. So the 2026-10-20 approval check is expected to be empty too; it is still
+worth one poll after Micaela's message.
+
+**The read side is closed as well.** Read-only probes on 2026-10-17 (`get.sh`, appendix):
+
+| Call | Result |
+| --- | --- |
+| `GET /payroll/v2/payroll-output` | **403** `Invalid Scope` |
+| `GET /payroll/v1/payroll-output` | **403** `Invalid Scope` |
+| `GET /payroll/v1/workers/{aoid}/pay-statements` | **403** `Invalid Scope` |
+
+and **Discover APIs** (intent *Read or Write*, all domains) finds nothing for `payroll-output`,
+`output`, `pay-statement` or `statement`. So ADP's point 9 (*"The Payroll Output API can be used
+for getting details for preview complete for final payrolls"*) is **not available on TCG's API
+Central project** — consistent with the 2026-08-18 finding that it is Marketplace-partner-only
+([adp-read-write-boundary-2026-08-18.md](adp-read-write-boundary-2026-08-18.md) §1). syed.haris
+replied to Nate on request `672204` (2026-10-17 1:57 AM PKT) asking whether it can be enabled, or
+whether any other API shows a worksheet's status or contents after posting, and forwarded the whole
+thread to Brian Petros.
+
+**What the ERP can know today:** that it posted (the 200). Nothing after — not an edit, not a
+delete, not a calculation, not an approval. ADP has no *reject* for a worksheet: payroll rejecting
+an entry means editing or deleting it, and both were tested here — **neither produces an event**. Two process options remain, for Brian Petros and
+Corrina Bustos to choose (not decided): corrections are made **only in the ERP** and re-sent
+(`Append` updates an existing batch — point 1), or payroll **confirms or marks changes in the ERP**
+after approving in ADP. Recorded as open in [gaps.md](gaps.md).
+
+
+## 8. The approval check — week 43 processed (2026-10-20 PT / 2026-10-21 PKT)
+
+Micaela Dipane submitted the real week-43 payroll (period `2026-43`, `2026-10-10` → `2026-10-16`, pay
+date `2026-10-22`) — a worksheet **not** created by the API. Her ADP mobile app then showed, at
+4:15 PM PT (screenshot shared in the Teams chat):
+
+> *"Your payroll for company 4RZ, payroll week 43 was processed."*
+
+| Check (PKT, 10/21) | Result |
+| --- | --- |
+| `GET /core/v1/event-notification-messages` at 04:15, then every 5 minutes | **204 — empty**. `pay-data-input.modify` is still the only subscription; nothing fires on processing |
+| `GET /payroll/v1/pay-schedule/payroll-groups/4RZ` at 04:18 | `2026-43` still **`OPEN`** three minutes after "processed"; `2026-41`, `2026-42` show **`COMPLETE`**, `2026-44`+ `NOT_STARTED`. Re-checked every 10 minutes until 04:38 PKT: **still `OPEN`** (watcher stopped there). The flip to `COMPLETE` was not caught — check the period again after the 2026-10-22 pay date to learn when it changes |
+
+**So ADP knows payroll was processed and tells the practitioner in its app, but sends the
+integration nothing.** Whether the worksheet came from the API or not makes no difference: events
+depend on the subscription, not on who created the data.
+
+**One real event exists in ADP's documentation, not on this project.** The *Payroll Group List of
+Pay Periods API Guide for ADP Workforce Now NextGen* (Chapter 4, *Receive Notifications when a Pay
+Period Status Changes*) names
+`/payroll/payrollManagement/payrollProcessingScheduleManagement/payScheduleManagement/payrollGroup.payPeriodStatus.change.eventNotify`,
+fired *"When the status of a payroll period changes"*. The same guide's GET
+(`/payroll/v1/pay-schedule/payroll-groups/{group-code}`) **is** on this project (*Discover APIs* →
+*Payroll Group Pay Periods*, *Included*), and its data dictionary gives the status as *"open/close/
+skipped etc."* (observed codes: `NOT_STARTED`, `OPEN`, `COMPLETE`). But all 147 subscribable events
+were read page by page on 2026-10-21 (via Chrome): **`payrollGroup.payPeriodStatus.change` is not
+among them.** syed.haris asked Nate on request `672204` (2026-10-21) whether it can be enabled.
+
+**Fallback the ERP can build today, unconfirmed:** poll the pay-schedule GET and treat `OPEN` →
+`COMPLETE` as "week processed". It works only if the status flips at processing rather than at the
+pay date or a later close — the watcher above decides that. ADP has **not replied** to the
+2026-10-17 follow-up (Payroll Output enablement) as of 2026-10-21.
+
+
+## 9. ADP's answer — status event added; Payroll Output needs a security master (2026-10-22)
+
+Nate (ADP API Central Support, request `672204`), received 2026-10-23 PKT, answering both follow-ups.
+Key points, his words where quoted:
+
+- **Pay-period status event: added.** *"I added the "payPeriodStatus.change" notification to your
+  project and notified our dev team to add it for clients."* Delivery is the project's existing
+  **polling** queue.
+- **Payroll Output and Pay Statements: available, but never through API Central.** *"can only be
+  activated by our support team and is NOT ever visible within API-Central."* Payroll Output
+  *"return[s] all raw payroll data (including sensitive personal and executive data) without
+  filtering"*; Pay Statements (WFN only) returns hours, earnings and statement data/images and
+  *"cannot be limited by masking settings"*.
+- **ADP's conditions to activate them:** (1) a clear **"Yes"** on the ticket; (2) **a TCG security
+  master on the ticket** — he names Corrina Bustos or Melissa McNutt; (3) the **API Central project
+  names** to assign them to (ours: *TCG ERP Integration*).
+- Docs: the Payroll Output (Turbo) guide and the WFN Pay Statements API in API Explorer; a paid
+  consultation is offered.
+
+**This is a TCG decision, not CodingCops'.** Enabling it exposes all 4RZ payroll — salaried and
+executive pay included, unfilterable — to the integration's credentials. Owner: Brian Petros /
+Corrina Bustos (security master). Asked in the Teams group 2026-10-23; TCG replied the same day,
+verbatim: *"Corrina is out today. She should be back tomorrow. I would put Melissa on the ticket to
+approve. I'll send Melissa a message to let her know to look out for it."* So **Melissa McNutt**
+(President) is the approver; syed.haris adds her to request `672204` for her "Yes", project
+*TCG ERP Integration*. Approval itself still pending.
+
+**First check after the event was added (2026-10-23 04:12 PKT, Pacific still 10-22):** queue
+**204**, and `2026-43` still **`OPEN`** on its own pay date (`2026-42` `COMPLETE`, `2026-44`
+`NOT_STARTED`). So the period does not close at processing (§8) nor, so far, on the pay date. Lead,
+unconfirmed: it flips when the next week is opened — which would make `payPeriodStatus.change` a
+*"next week started"* signal rather than *"this week processed"*. The next poll after Micaela starts
+week 44 settles it.
+
+
+## 10. Ticket `672204` and onboarding setup — 2026-10-23 (PKT)
+
+Everything else that happened on the ADP thread and in API Central that day, in order.
+
+| What | Status |
+| --- | --- |
+| Teams message to the TCG group explaining Nate's §9 answer and asking whether to enable Payroll Output / Pay Statements, naming Corrina **or** Melissa as the security master | sent |
+| TCG's reply (sender not recorded): Corrina out until the next day; *"I would put Melissa on the ticket to approve. I'll send Melissa a message to let her know to look out for it."* | received — §9 |
+| Reply to Nate on `672204`: Melissa McNutt added as security master to confirm, project *TCG ERP Integration*. Melissa's address in the vault is `melissa@craneguys.com` — from a 2026-02-09 invite, unverified | **sent 2026-10-23**; Melissa's "Yes" not yet recorded |
+| syed.haris plans to run **onboarding and offboarding** from the ERP too. Added to the same project (one project while testing): `applicant.onboard` (+meta), `worker.rehire` (+meta), `worker.work-assignment.terminate`, events `worker.hire` / `worker.rehire` / `worker.terminate`; ADP's Postman collection exported and stored | done — [adp-integration-capabilities.md](adp-integration-capabilities.md) → *Project scope as of 2026-10-23* |
+| Onboarding templates read: TCG uses **HR + Payroll TCG** (`9204592297352_1`); its meta returns **403** for the API user; the *System* template's 26 required fields recorded as a guide | done — same section |
+| Teams request to TCG to grant the API user access to the *HR + Payroll TCG* template in WFN security | drafted, **not sent** — the question went to ADP instead (next row) |
+| **Email to Nate on `672204` (sent):** quoted the 403, and asked (1) which WFN user the *TCG ERP Integration* project runs as, (2) what the security master must grant so it can use *HR + Payroll TCG* | **sent 2026-10-23** |
+| Queue polled after the worker events were added: **204** | 04:45 PKT |
+
+**Nate's answer on the template (request `672204`, received 2026-10-23):** the 403 is because
+*HR + Payroll TCG* is a **custom hire template**, which *"requires the API user to be explicitly
+assigned access within Workforce Now"*. A WFN admin does it:
+
+1. *Setup → Template Management → Hire/Rehire*
+2. open the template (*HR + Payroll TCG*)
+3. *Assign Users* step → tick the **API Central profiles**
+4. *Next* through each step → *Submit*
+
+*"This may change the template code so you should make a new meta request to get the updated
+code."* He also points to the [Applicant Onboard V2 API guide for WFN](https://developers.adp.com/guides/api-guides/applicant-onboard-v2-api-guide-for-workforce-now)
+for other prerequisites. Needs a TCG WFN admin: syed.haris sent the four steps to the TCG Teams
+group on 2026-10-23, asking whoever has ADP admin access to do it and confirm. **Micaela Dipane
+did it the same day** (*"This has been done!"*); the template code changed to `9205018681610_1`
+and its meta now reads (162 fields, 27 required — [adp-integration-capabilities.md](adp-integration-capabilities.md)).
+
+**Open after 2026-10-23:**
+
+1. ~~Melissa McNutt's "Yes" on `672204`~~ **given 2026-10-23**, verbatim: *"You have my approval to
+   proceed."* Now waiting on ADP support to enable Payroll Output and Pay Statements on *TCG ERP
+   Integration*; then re-run the read probes (both returned `403 Invalid Scope` before).
+2. ~~Nate: the grant for the TCG onboarding template~~ answered (above). Now: a TCG WFN admin
+   assigns the API Central profiles to *HR + Payroll TCG* → re-read the template list (the code
+   may change) → read its required fields and compare with the ERP's employee form.
+3. `payPeriodStatus.change` (added 2026-10-22): first firing not yet seen; `2026-43` still
+   `OPEN` on 10-23 PKT. Poll after Micaela opens week 44.
+4. Who starts onboarding — ERP or ADP (or ERP starts *in progress*, ADP completes): Brian
+   Petros / Ehtesham Anwar, open in [gaps.md](gaps.md).
+5. No onboard, rehire or terminate call has been made; each would change a live `4RZ` worker.
+
+
+## 11. Payroll Output enabled — first reads (2026-10-27 PKT)
+
+Nate (request `672204`), after Melissa McNutt's approval: *"The scopes have been added to your
+"TCG ERP Integration" project."* Read-only probes the same day (shapes only kept on screen; bodies
+on syed.haris's machine):
+
+| Call | Result |
+| --- | --- |
+| `GET /payroll/v2/payroll-output` | **200.** `payrollOutputs[]` — **323 runs** for `4RZ`, each with `itemID`, `payrollProcessingJobID`, `payrollScheduleReference` (year, **week**, **run number**), `payrollProcessingJobStatusCode`, and `alternateJobIDs` (`chron` = a processing timestamp, `batch`, `payrollQuarter`, `payrollSequenceNumber`). Plus 104 `PYOGEN00001` warnings *"Payroll details are not available for payroll run with itemID …"* |
+| `GET /payroll/v2/payroll-output/{itemID}` (week 43) | **401** `GBXGEN00401` *"Scope is not valid"* — per-run detail not reachable this way |
+| `GET /payroll/v1/payroll-output` | **500** *"The called API is not registered for the required provider"* — v1 is not the WFN path |
+| `GET /payroll/v1/workers/{aoid}/pay-statements` | still **403** |
+
+**Status codes seen** (count): `PR-PRC` *Payroll Complete* 118 · `PR-EDL` *Rejected* 183 ·
+`PR-BAD` 1 · `MP-MPC` 9 · `MP-EDL` 1 · `NS-PRC` 5 · `NS-EDL` 2 · `NS-BAD` 4. Only `PR-PRC` /
+`PR-EDL` labels were read; the `MP-` / `NS-` families are unlabelled here (likely manual-pay and
+non-standard runs — unverified).
+
+**Week 43, 2026:** `PR-PRC` *Payroll Complete*, `chron` `20261020191215` — 19:12 on 2026-10-20,
+apparently Eastern (16:12 PT), three minutes before Micaela's ADP-app notice (§8). Weeks 33–42
+each show one `PR-PRC` run; week 34 also has a `PR-EDL` *Rejected* run.
+
+**What this changes:** the ERP can **poll the run list** and learn when a week is processed (and
+see a rejected run), with a timestamp — the signal events never gave. It does **not** yet give what
+was paid: the per-run detail returned 401. Next: find the detail call in the Payroll Output (Turbo)
+guide, or ask Nate.
+
+**Pay-period status, same day:** `2026-43` is now **`COMPLETE`**, `2026-44` **`OPEN`**, yet the
+event queue was **204** — `payPeriodStatus.change` (added 2026-10-22) did not deliver for that
+change. Combined with §8, polling the run list (or the pay-schedule status) is the dependable
+route; the event is not.
+
+**Week 44 watched live (2026-10-27 PT / 10-28 PKT).** Micaela Dipane submitted the real week-44
+payroll at about 4 PM PT. First read after her message, 04:23 PKT (16:23 PT): the run list had
+grown **323 → 324**, the one new row being **week 44 run 1 `PR-PRC` *Payroll Complete***, `chron`
+`20261027191823` (19:18 — 16:18 PT if Eastern, as week 43 suggested), batch `5459`. **No `PR-EDL`
+*Rejected* or preview row preceded it.** At the same moment `2026-44` was still **`OPEN`** and the
+queue **204**. So the run list reports *processed* within minutes; the pay-period status lags it.
+A watcher polls periods and the queue for two more hours to time the period flip.
+
+
+## 12. Payroll Output detail — what was actually paid (2026-10-29 PKT)
+
+Nate (request `672204`), answering the 401: the URI must name what to pull, e.g.
+`/payroll/v2/payroll-output/{output-id}/associate-payment-summary/earnings` and
+`/payroll/v2/payroll-output/{output-id}/associate-payment-allocations/non-statutory-deductions`
+(`{output-id}` = the run's `itemID`, URL-encoded). Pay statements: the endpoint is
+*"organizational-pay-statements"* (API Explorer `hcm-offrg-wfn-payroll-pay-statements-v1`).
+
+Probed on **week 44, 2026** (`PR-PRC`), bodies kept only on syed.haris's machine:
+
+| Call | Result |
+| --- | --- |
+| `…/{wk44}/associate-payment-summary/earnings` | **200**, ~1 MB, `meta.totalNumber` **102** associates, *"Company Error Count:0 / Employee Error Count:0"*. Per associate (`associateOID`) → payments → earnings sections → items: **`earningID.idValue` + `idDescription`, `timeWorkedQuantity` (hours), `payRate.rateValue`, `earningAmount`, `earningClassificationCode`**, plus per-item and per-payment `payrollAccumulations` (YTD amount/hours) |
+| `…/{wk44}/associate-payment-allocations/non-statutory-deductions` | **200**, 102 associates; deduction id + description + amount taken, by section |
+| `GET /payroll/v1/organizational-pay-statements` | **404** — needs the worker in the path (next rows) |
+| `GET /payroll/v1/workers/{aoid}/organizational-pay-statements` | **200** — list per worker: `payDate`, `grossPayAmount`, `netPayAmount`, `totalHours`, `payDetailUri`, `statementImageUri` (6 statements, 10-01 → 10-29, for the worker probed). `?numberoflastpaydates=1` also accepted |
+| `GET /payroll/v1/workers/{aoid}/organizational-pay-statements/{id}` | **200** — one statement: pay period, earnings (code name, hours, rate, amount, YTD), deductions and deduction categories (period + YTD), gross/net (+YTD), and **pay distributions (deposit amounts, method, file number)** — the most sensitive data the project can now read |
+| `GET /payroll/v1/workers/{aoid}/pay-statements` (non-organizational) | still **403** — not the WFN path |
+
+**Earning codes present in week 44** (count of items): `*RG` Regular, `*OT` Overtime, `DT`, `LBH`
+BOOM REG, `LBO` BOOM OT, `LBD` BOOM DBL, `SUB` Substpay NT, `ML R/O/D`, `FR R/O/D`, `LO R/O/D`,
+`LP R/O/D`, `HDD`, `HOL`, `PTO`, `SIC`, `ANV`, `RET`, `OTH`, `BN`, `CM`, `ONC` On Call NT, and
+numeric `1`/`2` rows (many items carry only accumulations, no hours). Note **ADP reports regular
+and overtime as `*RG` / `*OT`**, not the `R` / `O` the pay-data input uses — a reconciler must map
+them.
+
+**What this unlocks:** for every processed week the ERP can read, per employee and code, the
+hours, rate and amount ADP actually paid, and compare them with what it sent. A practitioner's
+edit in ADP (the round-trip question) becomes visible **after processing** as a difference — not
+at the moment of the edit, which still raises no event (§7).
+
+**Pay-period status, same day:** `2026-44` **`COMPLETE`**, `2026-45` **`OPEN`** (it was still
+`OPEN` at 16:23 PT on 10-27). The queue was **204** again — `payPeriodStatus.change` has now
+failed to deliver for two week-closes. The run list (`PR-PRC`, minutes after processing) is the
+signal to use.
 
 ---
 
@@ -288,4 +531,70 @@ doc = {'events': [{'data': {
 }}]}
 json.dump(doc, sys.stdout, indent=2)
 print()
+```
+
+### `poll-events.sh` (added 2026-10-17)
+
+```bash
+#!/usr/bin/env bash
+# Drain the ADP event-notification queue (polling delivery). Same credentials.conf as adp-test.sh.
+# Each GET returns ONE message (200 + adp-msg-msgid header) or 204 when empty.
+# Every message is saved to out/events/ and then acknowledged with DELETE so the queue advances.
+# KEEP=1 saves without deleting (re-read the same message).
+set -euo pipefail
+[ -f "$(dirname "$0")/credentials.conf" ] && { set -a; . "$(dirname "$0")/credentials.conf"; set +a; }
+: "${ADP_CLIENT_ID:?}" "${ADP_CLIENT_SECRET:?}" "${ADP_CERT:?}" "${ADP_KEY:?}"
+OUT=${OUT:-"$(dirname "$0")/out/events"}; mkdir -p "$OUT"
+MTLS=(--cert "$ADP_CERT" --key "$ADP_KEY")
+
+TOKEN=$(curl -sS "${MTLS[@]}" -X POST https://accounts.adp.com/auth/oauth/v2/token \
+  -u "$ADP_CLIENT_ID:$ADP_CLIENT_SECRET" -d grant_type=client_credentials | jq -r .access_token)
+[ "$TOKEN" != null ] || { echo "no token"; exit 1; }
+AUTH=(-H "Authorization: Bearer $TOKEN" -H "Accept: application/json")
+
+n=0
+while :; do
+  stamp=$(date +%Y%m%d-%H%M%S)
+  HTTP=$(curl -sS "${MTLS[@]}" "${AUTH[@]}" -D "$OUT/$stamp.headers" -o "$OUT/$stamp.json" \
+    -w '%{http_code}' https://api.adp.com/core/v1/event-notification-messages)
+  if [ "$HTTP" = 204 ]; then rm -f "$OUT/$stamp.headers" "$OUT/$stamp.json"; echo "queue empty (204) — $n message(s) read"; break; fi
+  if [ "$HTTP" != 200 ]; then echo "HTTP $HTTP"; cat "$OUT/$stamp.json"; echo; exit 1; fi
+  MSGID=$(grep -i '^adp-msg-msgid:' "$OUT/$stamp.headers" | cut -d' ' -f2 | tr -d '\r')
+  n=$((n+1))
+  echo "== message $n  id=$MSGID  saved $OUT/$stamp.json"
+  jq '[.events[]? | {event: .eventNameCode.codeValue, status: .eventStatusCode.codeValue, recorded: .recordDateTime, actor: .actor.formattedName}]' "$OUT/$stamp.json" || cat "$OUT/$stamp.json"
+  if [ "${KEEP:-0}" = 1 ]; then echo "KEEP=1: not acknowledging"; break; fi
+  [ -n "$MSGID" ] || { echo "no adp-msg-msgid header; stopping"; break; }
+  curl -sS "${MTLS[@]}" "${AUTH[@]}" -o /dev/null -w "DELETE %{http_code}\n" \
+    -X DELETE "https://api.adp.com/core/v1/event-notification-messages/$MSGID"
+  sleep 1
+done
+```
+
+### `get.sh` — read-only probe (added 2026-10-17)
+
+```bash
+#!/usr/bin/env bash
+# Read-only probe: GET one ADP path, save the body to out/probe/, print status + response shape only
+# (keys and array lengths, never values — payroll responses carry real pay data).
+# usage: ./get.sh '/payroll/v2/payroll-output?$filter=...'
+set -euo pipefail
+[ -f "$(dirname "$0")/credentials.conf" ] && { set -a; . "$(dirname "$0")/credentials.conf"; set +a; }
+: "${ADP_CLIENT_ID:?}" "${ADP_CLIENT_SECRET:?}" "${ADP_CERT:?}" "${ADP_KEY:?}"
+OUT=${OUT:-"$(dirname "$0")/out/probe"}; mkdir -p "$OUT"
+MTLS=(--cert "$ADP_CERT" --key "$ADP_KEY")
+TOKEN=$(curl -sS "${MTLS[@]}" -X POST https://accounts.adp.com/auth/oauth/v2/token \
+  -u "$ADP_CLIENT_ID:$ADP_CLIENT_SECRET" -d grant_type=client_credentials | jq -r .access_token)
+for path in "$@"; do
+  f="$OUT/$(date +%H%M%S)-$(echo "$path" | tr -c 'A-Za-z0-9' '_' | cut -c1-80).json"
+  # pass the path already URL-encoded (spaces as %20); -g stops curl globbing [] and {}
+  code=$(curl -sS -g "${MTLS[@]}" -H "Authorization: Bearer $TOKEN" -H "Accept: application/json" \
+    -o "$f" -w '%{http_code}' "https://api.adp.com${path}")
+  echo "== $code  GET $path  -> $f"
+  if jq -e . "$f" >/dev/null 2>&1; then
+    # errors are safe to show in full; success bodies only as a shape
+    if [ "${code:0:1}" != 2 ]; then jq -c '.confirmMessage // . | {status: .requestStatusCode?, msgs: [.resourceMessages[]?.processMessages[]? | {id: .processMessageID?.idValue?, text: .userMessage?.messageTxt?}]} // .' "$f" | cut -c1-600
+    else jq -c '[paths(type != "object" and type != "array")] | map(map(if type=="number" then "[]" else . end) | join(".")) | unique | .[:40]' "$f"; fi
+  else head -c 300 "$f"; echo; fi
+done
 ```

@@ -192,9 +192,10 @@ Counts: `23` total — `0` verified, `12` unverified, `2` conflicted, `9` open.
 - **Acceptance:** an employee with DT and holiday-×3 hours in the week produces `DT <h>` and `HOL <h>` pairs in Hours 3.
 - **Notes for the executor:** `adp-workbook-column-rules.md` records that weekday DT below 12 h appears often in real weeks, likely a folded-in missed meal (inferred) — the ERP should not need to reproduce that.
 
-### REQ-11 — H2x, Special Saturday and 2x boom hours `[OPEN]`
+### REQ-11 — H2x, Special Saturday and 2x boom hours `[PARTLY RESOLVED]`
 
 - **Statement:** `OPEN — the workbook sends the H2x bucket (special Saturday, ×2) as code HDD "Holiday Double"; the crosswalk says Special Saturday needs its own code (D-005, blocking), and Special-Saturday boom hours have no LB code.`
+- **Resolved 2026-10-22 (worked H2x → HDD):** worked ×2 / holiday-double hours now emit the **`HDD`** Hours-3 code (slot 02), matching the current workbook (crosswalk: "HDD = Holiday Double"). The `(H2X, NONE)` seed row is now ACTIVE with `adpEarningCode: 'HDD'`; the exporter already orders `DT · HDD · HOL`, and U6 no longer refuses it. Product-owner-approved developer decision (provenance in `payroll-rules-provenance.md`). The Special-Saturday 8-hour-minimum top-up now folds to `HDD` too (via `GUARANTEED`/`H2X`, REQ-19). **2x boom** (`LONG_BOOM @ H2X`) is routed to **`LBD`** (the ×2 double-time boom code) since no dedicated 2x code exists — an accepted workaround (Q8 unresolved). **Still OPEN / DIVERGENT:** a *dedicated* Special-Saturday code distinct from holiday-double (D-005) and a dedicated 2x-boom code (Q8) — both ride existing codes by product-owner decision pending Brian.
 - **Surface:** api
 - **Sources:** none sufficient. Searched: `adp-bucket-crosswalk.md` (D-005 open; HDD "verify semantics"), v5.1 engine §4 (client's own mapping table: H2x "maps to HDD/HOL; ADP semantics still need confirmation"), `payroll/gaps.md` line 78 (D-005 still blocking, "None of those codes exist in the live table"), the engine's own comment that the LBH/LBO/LBD/LBT set "has no 2x slot".
 - **Conflict:** n/a — a gap, not a disagreement.
@@ -294,9 +295,10 @@ Counts: `23` total — `0` verified, `12` unverified, `2` conflicted, `9` open.
 - **Acceptance:** `OPEN`
 - **Notes for the executor:** the smallest slice that does not depend on the answer: emit no `SIC` pair (the layout already omits an unused pair, REQ-08). Labelled a **workaround pending Q15**, not a decision.
 
-### REQ-19 — Guarantee top-ups, rest premium, WTL, Special Saturday dollars, added hours, accumulators `[OPEN]`
+### REQ-19 — Guarantee top-ups, rest premium, WTL, Special Saturday dollars, added hours, accumulators `[PARTLY RESOLVED]`
 
 - **Statement:** `OPEN — three of the engine's pay results (guarantee top-ups, rest premium, WTL/missed-meal) and the shift hours-add have dollars but no ADP code and no hours column; whether added hours ride the worked-hour codes or their own earning codes is undecided.`
+- **Resolved 2026-10-22 (guaranteed hours only):** the daily (PAY-040) and holiday (PAY-033) minimum top-ups **fold into the worked-hour columns by the bucket they priced at** — ST→`Reg`, OT→`O/T`, DT→Hours-3 `DT`, ×3 holiday→Hours-3 `HOL` — with **no separate ADP code and no separate variable** (product-owner-approved developer decision → [decisions/2026-10-22-adp-guaranteed-hours-fold-into-st-dt.md](../../vault/decisions/2026-10-22-adp-guaranteed-hours-fold-into-st-dt.md); provenance in `payroll-rules-provenance.md`). Pay is unchanged — attribution onto the file only. The **Special-Saturday 8h-min top-up (PAY-034)** also folds — ×2 → Hours-3 `HDD` (`GUARANTEED`/`H2X`). The **long-boom minimum (PAY-043)** rides the LB Hours-4 codes (REQ-11). **Rest (Q6/D-003) and WTL (Q7/D-004)** are now also put on the file — their hours are "bumped" into the floor worked-hour column (rest 1.5→`O/T`/2→`DT`; WTL 2→`DT`/3→`HOL`) via a new `PayrollComponent.adpTargetBucket`. **All of the above are product-owner decisions (2026-10-22) that DIVERGE from the crosswalk's written guidance** (dedicated codes; premiums "not worked hours"; "do not hide guarantee hours inside Reg Hours") — the client has no confirmed ADP destination for guarantee/rest/WTL/2x-boom, and the bump is an approximation that under-represents the shift-adder portion when a shift differential applies. Swap to dedicated codes if/when Brian confirms them. A **taken meal's deduction (PAY-046)** now also subtracts from its bucket's worked-hour column (Q28 resolved — the buckets include the meal, so omitting it over-paid). Accumulators (Q9/D-009) remain **OPEN**; salary (Q13) stays off this file by design.
 - **Surface:** api
 - **Sources:** none. Searched: crosswalk D-002, D-003, D-004, D-005, D-009 (all Open, "Blocks CodingCops: Yes"); `payroll/gaps.md` line 78 (none of those codes exist in the live ADP table; creating one is a manual WFN UI task); line 4243 (*Added hours* — Brian Petros asked on 2026-09-13 that "ADP reported hours" go on the next meeting's agenda; Haris asked Corrina on 2026-09-13 to bring a real ADP week with a guaranteed-hours entry; no answer on file); `adp-workbook-column-rules.md` *Open questions* (three of eleven pay rules have no route to payroll through this file); `PAY-067` *Added hours have no hours column in the export*. The legacy app folds holiday gap hours "reported as DT hours" — that is the legacy, not a decision.
 - **Conflict:** n/a — a gap. (Brian's "separate pay component" vs the union BA's "counts toward the 12-hour rung" is a different, open question about thresholds, line 4243.)
@@ -713,6 +715,7 @@ Enumerated by: `git grep -n -E 'toAdpWorkbookRows|findEmployeesMissingAdpFile|bu
 - **Candidates:** (a) give the deduction its own ADP representation (code or worked-hour reduction) and have U6 refuse until it exists; (b) confirm the worked-hour totals already net it out and keep it omitted.
 - **Owner:** Brian (D-004) / Ali Riaz (structure).
 - **Resolution (Decided by: Ali Riaz, 2026-10-15):** leave `PAY-046` **unstamped** in phase 1 (its prior behaviour — not refused, not emitted). Routed to Brian as a netting/correctness question: does the primary-row Reg/OT total already net out the unpaid meal half-hour, or must the deduction reach ADP as its own line? U6 ships with PAY-046 unstamped; the answer may add a representation (and a refusal) later.
+- **Resolution (Decided by: product owner, 2026-10-22 — supersedes the above):** the primary-row Reg/OT total does **NOT** net the meal out — `stHours`/`payableHours` come from the full-window buckets (`calculate.ts`), with PAY-046 a separate negative dollar line, so omitting it on the file **over-paid** the unpaid half hour. So a **TAKEN** meal's PAY-046 is now stamped `(MEAL_DEDUCT, meal.bucket)` and the serializer subtracts its negative hours from that worked-hour column; `MEAL_DEDUCT` is skipped by U6 (no mapping code). A **WORKED_THROUGH** meal's PAY-046 stays unstamped — its half hour is moved to the premium column by the WTL bump (REQ-19), so subtracting again would double-count. Same base-rate approximation as the rest/WTL bump (the shift-adder portion is not separately removed). Provenance in `payroll-rules-provenance.md`.
 - **Status:** pending Brian — phase-1 behaviour decided (leave unstamped); the netting/correctness question stays open with Brian (D-004).
 
 ### Q29 — Raised by the executor (U7): which permission gates the ADP mapping admin routes?
@@ -749,6 +752,16 @@ Enumerated by: `git grep -n -E 'toAdpWorkbookRows|findEmployeesMissingAdpFile|bu
 - **Candidates:** (a) always-all (built); (b) add an explicit scope column (craft / job / entry).
 - **Owner:** Ali Riaz.
 - **Status:** open.
+- **Update 2026-10-29 (client evidence, 10-27 walkthrough part 3) — points to candidate (b):** syed.haris
+  demoed *Manage override* with the 135.14 special rate. abdulrehman asked whether it is for a whole job
+  or a single ticket. **Micaela Dipane (40:54): *"It'll be on a specific ticket."*** At 41:02: *"sometimes
+  it'll only apply to like one job if the employee was sent out as an operator and like he gets a different
+  pay rate for that specific … work that he did … for that specific [job] ticket."* abdulrehman restated it
+  as *"on the job level"*, so whether the scope is the **ticket** or the **job** is still unsettled. Either
+  way it is narrower than the built (period, employee) grain. It also fits Corrina's 09-28 example (72.16
+  owed *"on one job"*). This is not yet a decision: the owner of the special-agreement rule is still
+  Corrina / Brian (`decisions/2026-10-19-pm-pa-manual-base-rate-override-kept-as-built.md` is pending their
+  ratification). A scope column is a schema change (G3, `tcg-prisma-guardian`) and changes U5c's emission. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../../vault/meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../../vault/meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
 
 ### Q33 — Raised by the executor (U5b): is the override's note/reason field required, and is there a length cap?
 - **Question:** U5b's `payroll_base_rate_override.note` was built as **optional** (`String? @db.Text`, per the caller's schema), and the Set DTO caps the input at **1000 characters** (`@MaxLength(1000)`) — a defensive guard the spec does not state. Should the "special agreement" memo be **required** (a special-agreement override arguably must say why), and is 1000 the right input cap (or unbounded, since the column is `TEXT`)?
@@ -799,7 +812,47 @@ Enumerated by: `git grep -n -E 'toAdpWorkbookRows|findEmployeesMissingAdpFile|bu
 - **Q38b — run counts:** `payroll_runs.employeeCount` / `laborEntryCount` / `issueCount` are still the **fresh** engine counts (they include frozen employees as recomputed, and exclude a frozen employee the fresh run no longer produced). Should the run counts describe the figures actually persisted (carried + fresh) instead?
 - **Q38c — automatic recalc queue interaction (not obvious):** once any week is sent it is APPROVED, so `calculateQueued` returns `NOT_APPLIED` (its approved-weeks guard) and the automatic queue stops recalculating the period entirely after the first partial send. The only way to reprice the not-yet-exported employees is then a **manual Recalculate** (which now freezes the sent ones). Is that acceptable, or should the automatic queue be allowed to recalc the non-exported remainder while the freeze protects the sent ones? (Out of P2b scope; it would change the PR #709 approved-weeks hold.)
 - **Owner:** Ali Riaz / Brian.
-- **Status:** open (Q38a–c).
+- **Resolution (Ali Riaz, 2026-10-28 — developer direction, `reference`):** Q38c is answered.
+  The automatic run reprices the not-yet-approved remainder and carries every approved or
+  exported week forward frozen, its approval kept. When a carried, approved, not-yet-exported week
+  would reprice differently, the job is left outstanding and names the employee. See
+  [`vault/decisions/2026-10-28-auto-recalc-reprices-pending-weeks-keeps-approved-weeks-frozen-developer-direction.md`](../../vault/decisions/2026-10-28-auto-recalc-reprices-pending-weeks-keeps-approved-weeks-frozen-developer-direction.md).
+  Q38a and Q38b were built with it, as developer choices recorded in the PR's *AI decisions*:
+  - **Q38a:** frozen employees are excluded from all five flag-reconciliation passes. Their flags
+    stay as they were. A grouped cross-employee flag drops only the frozen member's row, and the
+    other members reconcile as before.
+  - **Q38b:** the run counts and the rate snapshot describe the persisted figures (carried plus
+    fresh), and the snapshot records `carriedForward`.
+
+  Platform branch `fix/auto-recalc-preserves-approved-weeks`.
+- **Status:** resolved by developer direction (Q38a–c), 2026-10-28.
+
+### Q40 — Raised by the 2026-10-28 calculation audit: the ADP file leaves out the adder share of a rest-forced hour
+
+- **Context:** the engine now prices the rest-period premium (PAY-045) on the full
+  into-the-rate hourly: base, shift, foreman, hourly catalog premiums, and boom on boom hours.
+  This is Ruling 5 of
+  [`vault/decisions/2026-10-28-calc-audit-override-adders-shared-half-hour-contested-rules-developer-direction.md`](../../vault/decisions/2026-10-28-calc-audit-override-adders-shared-half-hour-contested-rules-developer-direction.md),
+  and it is engine 5.0.0. The serializer (`adp-paydata-csv.ts`, the `REST_PREMIUM` /
+  `WTL_MISSED_MEAL` bump) still moves only the **base-rate hours** from the source column into
+  the floor column, so the boom, shift and foreman temp-rate rows stay on the ladder bucket. Under
+  the 2026-10-22 decision the shift-adder part of this was already an accepted approximation, and
+  until now the ERP ledger made the same approximation. Now the ledger pays the adders on the
+  floor and the file does not. Example: 1 h forced ST → 1.5× with a 3rd-shift adder ($4) and a
+  boom adder ($4) — the ledger pays $4 more than the file implies.
+- **Question:** should the serializer move the adder rows of a rest-forced (or WTL-floored) hour
+  into the floor bucket as well, so the file carries what the ledger pays? Or does the 2026-10-22
+  approximation stand, extended to boom and foreman?
+- **Owner:** Brian Petros (ADP side) / Ali Riaz.
+- **Status:** open.
+
+### Q39 — Raised by the developer (P5): re-export of an already-sent week
+
+- **Question:** An exported ADP file cannot be produced again — the per-employee send refuses any week with `exportedAt` (P2, `PAYROLL_EXPORT_ALREADY_EXPORTED_CODE`). Should a sent week be exportable again, and what does that send contain and record?
+- **Readings offered:** (A) rebuild and download the file for sent weeks without touching the stamp; (B) an explicit re-export that bypasses the already-exported refusal, builds from the figures in force and overwrites `exportedAt` / `exportedById` / `exportBatchLabel`; (C) an entry fix clears `exportedAt` so the normal export sends the week again.
+- **Resolution (Decided by: Syed Haris, 2026-10-27 — developer direction, `reference`):** **(B).** `POST periods/:id/export` body gains optional `reexport: boolean`; true lets the selection include sent weeks, which are sent again and re-stamped; every other gate and the period stamp are unchanged. Web: sent rows in the Export to ADP dialog are selectable for a `payroll-admin:edit` holder (unticked by default, warning shown); the employee-week hero gets a "Re-export" button beside the Sent badge. Recorded in [`vault/decisions/2026-10-27-adp-re-export-of-a-sent-week-developer-direction.md`](../../vault/decisions/2026-10-27-adp-re-export-of-a-sent-week-developer-direction.md).
+- **What it does not settle:** a sent week is frozen (P2b) and entry fixes refuse it, so a re-export cannot carry a correction — the amended-week story stays the PAY-066/PAY-068 gap. Whether ADP accepts a second file for the same batch id was **not** put to the client (developer chose to build first). Owner for both: Brian Petros.
+- **Status:** resolved by developer direction; implemented in code 2026-10-28 (`reexport` flag threaded end-to-end: DTO → service/repository overwrite path → web export service/hook → hero "Re-export" button + selectable sent rows in the submit dialog); the two residuals above stay open in `payroll/gaps.md`.
 
 ## 12.5 Developer resolutions (2026-10-15)
 

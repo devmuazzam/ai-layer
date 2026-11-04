@@ -383,14 +383,18 @@ Honest state, so nobody rediscovers them.
 - **Nested-context loading is not yet confirmed by observation.** The root is. `/context`
   settles it in seconds (§4.2); it has not been run.
 - **Antigravity's loading behaviour is unestablished** — reachable, but unproven (§4.3).
-- **The loop is half-running (audited 2026-08-24).** Entry side works: five tickets in
-  `aidlc/processed.log` (paths B/C — fouzan, areeba), specs with §12, five decision notes
-  written back, SCRUM-903 shipped through spec → review → decision → merge. **The tail has
-  never run**: `reflections/INDEX.md` has zero rows — no merged ticket has had its
-  `close-ticket` writeback, so the third-occurrence rule protects nothing yet. Also missed:
-  `scrum-873` and `sync-fcc-data-with-tcg` merged with **no ledger row and no folder**
-  (the latter also breaks branch naming), and the ledger's `pr` column is never backfilled
-  after merge. Path A (full spec → decompose → units) is still unexercised.
+- **The loop runs end to end; its learning step does not (re-audited 2026-10-20).** The
+  2026-08-24 audit found the tail had never run and path A unexercised. Since then 18 ticket
+  folders have a `units.md`, 9 have a `reflection.md`, and `reflections/INDEX.md` holds 64
+  defect rows. The **third-occurrence escalation** had never run until 2026-10-20, when
+  `missing-requirement` (19 rows) and `gate-illusion` (14) were escalated into template rules
+  and 41 queued proposals applied; of the rest, 6 were withdrawn and 3 decided by Haris
+  (`vault/decisions/2026-10-20-sole-unverified-source-confirmed-structure-not-delegable-api-layering-linted.md`)
+  — the API layering lint is decided but not built (client-repo sweep, then the rule).
+  **`gate-illusion` is only partly fixed**: nothing runs lint, typecheck, build or test on a
+  PR; a `.github/workflows/gates.yml` was proposed and is parked (client repo). Ledger rows are still
+  sometimes backfilled at close (4 rows say so) rather than written by `commit` at branch
+  creation.
 - **`apps/web` does not glob its tests** — `package.json` passes 14 filenames explicitly, so
   a web test not hand-added never runs and nothing says so. Fix before trusting web coverage.
 - [`aidlc/context-restructure-plan.md`](aidlc/context-restructure-plan.md) is **partly

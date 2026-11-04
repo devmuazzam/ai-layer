@@ -48,6 +48,7 @@ Assets, yards-as-records, tools & rigging, categories. Backend usecases: `asset-
 - [2026-10-06-nested-association-quote-visibility-stored-per-parent.md](../decisions/2026-10-06-nested-association-quote-visibility-stored-per-parent.md) — "Also brings along" rows carry the same settings, per parent, hidden by default — configurable (Joe 2026-10-07, `verified`); conflict with the 10-01 Operator Load note closed
 - [2026-10-01-operator-load-is-one-billing-code-its-associations-stay-off-the-quote.md](../decisions/2026-10-01-operator-load-is-one-billing-code-its-associations-stay-off-the-quote.md) — Operator Load is one billing code; its tractor/operator hidden on the quote **by default**, configurable (Joe, 2026-10-01 + 2026-10-07, `verified`); tractor/operator keep codes for one-offs; Certified Operator is its own code
 - [2026-10-07-field-assets-configuration-tab-rename-and-activity-log.md](../decisions/2026-10-07-field-assets-configuration-tab-rename-and-activity-log.md) — Sub-category tab renamed Field Assets Configuration, with its own activity log (ehtesham.anwar, CodingCops, `reference`)
+- [2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md](../decisions/2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md) — A change to a sub-category's Field Assets Configuration reaches only quotes not yet gone out: a quote keeps a snapshot from its first send (or Mark as Won, or conversion), never refreshed; jobs read their quote's; names stay live (Syed Haris, ticket owner, `reference`)
 
 ## Open questions
 

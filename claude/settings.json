@@ -53,12 +53,13 @@
     ]
   },
   "hooks": {
-    "UserPromptSubmit": [
+    "PreToolUse": [
       {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'AI-DLC triage (CLAUDE.md, GUIDE.md §2): if this prompt asks to build, change or fix code, then before editing anything name the ticket (or say there is none) and state its path: A = new behaviour or needs product intent (full loop, starting with tcg-elaborator); B = bug against specified behaviour (repro, tcg-executor, tcg-analyst); C = small stated change (just build). Any path becomes A once something nobody specified must be decided. Questions, debugging, reviews and exploration: ignore this.'"
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-edits.mjs\""
           }
         ]
       }
@@ -85,11 +86,20 @@
   },
   "sandbox": {
     "filesystem": {
-      "allowRead": ["/tmp/.nx", "~/.nx"],
-      "allowWrite": ["/tmp/.nx", "~/.nx"]
+      "allowRead": [
+        "/tmp/.nx",
+        "~/.nx"
+      ],
+      "allowWrite": [
+        "/tmp/.nx",
+        "~/.nx"
+      ]
     },
     "network": {
-      "allowUnixSockets": ["/tmp/.nx", "~/.nx"]
+      "allowUnixSockets": [
+        "/tmp/.nx",
+        "~/.nx"
+      ]
     }
   }
 }

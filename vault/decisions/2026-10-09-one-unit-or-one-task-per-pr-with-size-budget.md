@@ -12,6 +12,12 @@ decided_by: >-
 status: verified
 resolves: none (no open §12 or module gaps.md entry asked this; raised directly in the session)
 tags: [module/all, kind/decision, sprint-planning]
+superseded_by: decisions/2026-10-21-capability-first-ai-decides-structure-guardrails-only.md  # size budget only (§1 Budget / Not counted / Over budget, §3)
+provenance_note: >-
+  The ~400-line / 25-file PR size budget and its agent stops are removed by decisions/2026-10-21-capability-first-ai-decides-structure-guardrails-only.md §8.
+  One unit or one task per PR, stacked PRs (§2), no single-PR opt-out and sweeps as
+  their own PR (§4) stand. .github/workflows/pr-size.yml still exists in the client
+  repo. Body unchanged.
 ---
 
 ## Decision

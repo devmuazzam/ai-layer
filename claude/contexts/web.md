@@ -361,6 +361,14 @@ grep -rn '<the-id>' qa-automation/e2e
 Updating the spec in the same commit is part of the change, not a follow-up. A screen you
 are rewriting keeps its IDs unless the element itself is gone.
 
+## Vehicle tracking (Samsara)
+
+Every Samsara feed read goes through `useVehicles({ samsaraAssetIds })`
+(`features/vehicle-tracking/hooks/use-vehicles.ts`) **with an id list** — called with no ids it
+fetches the whole fleet. Never fetch the whole fleet from a retry, a remount or a new call
+site. React Query's `refetch()` ignores `enabled`, so guard any manual retry with
+`if (!enabled) return`. Cost scales with the fleet, not the screen (SCRUM-252).
+
 ## Misc
 
 Mobile-first Tailwind breakpoints. Touch targets ≥ 44px. Routes are URL-driven: `/create`,
