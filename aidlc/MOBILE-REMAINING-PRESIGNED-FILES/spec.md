@@ -22,8 +22,11 @@ Rules consulted: AGENTS.md; contexts/api.md (layers/auth), mobile.md (tokens/tou
 | REQ-04 | Saved certification and job-walk signature reads | api/mobile | REFERENCE | S1 | No |
 | REQ-05 | Saved JSA signed rendering | mobile | UNVERIFIED | S1/S4 | No |
 | REQ-06 | Saved incident evidence/signature reads | mobile/api as needed | REFERENCE | S1/S5 | No |
+| REQ-07 | Quotation & Job-Walk S3 folder hierarchy | api | REFERENCE | S6 | No |
+| REQ-08 | Consistent attachment owner UUID persistence | api | REFERENCE | S6 | No |
 
-Six sourced requirements; zero OPEN/CONFLICT requirements in this read/metadata scope. Reference tags reflect actual recorded requester direction; none is promoted to verified client business intent.
+Eight sourced requirements; zero OPEN/CONFLICT requirements in this scope. S6 is decisions/2026-11-04-quotation-and-job-walk-s3-folder-hierarchy-and-uuid-consistency.md.
+
 
 ## 2. Requirements
 

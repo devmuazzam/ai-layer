@@ -13,9 +13,11 @@ Historical parent validation is in publication.md: API full tests, web tests, af
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | U0 | Every audited mobile upload uses canonical owner UUID/type/category with compatible legacy reads | REQ-01 | api/mobile | Existing ticket-image migration on staging | Completed parent, 19 files | built — codex/attachment-metadata-consistency |
-| U1 | Saved mobile files open through signed S3 URLs and saved JSA/incident images render, retaining canonical upload metadata | REQ-01 regression, REQ-02, REQ-03, REQ-04, REQ-05, REQ-06 | api/mobile; web compatibility | U0 | ~600–1100 source lines / 20–35 files | in progress — codex/mobile-presigned-reads |
+| U1 | Saved mobile files open through signed S3 URLs and saved JSA/incident images render, retaining canonical upload metadata | REQ-01 regression, REQ-02, REQ-03, REQ-04, REQ-05, REQ-06 | api/mobile; web compatibility | U0 | ~600–1100 source lines / 20–35 files | built — fix/mobile-presigned-reads |
+| U2 | Quotation documents, signed PDF copies, and Job Walk signatures are stored in scoped S3 paths and consistently persist UUIDs in attachments.feature_id | REQ-07, REQ-08 | api | U1 | ~100–150 source lines / 6 files | built — fix/mobile-presigned-reads |
 
-- Requirements covered: six in spec.md §1, six covered on 2026-11-03. REQ-01 is completed U0 plus U1 regression; REQ-02..06 are U1 delivery. No uncovered or partially omitted requirements.
+- Requirements covered: eight in spec.md §1, eight covered on 2026-11-04. REQ-01 is completed U0 plus U1 regression; REQ-02..06 are U1 delivery; REQ-07..08 are U2 delivery. No uncovered or partially omitted requirements.
+
 - Units blocked on an open question: none. Endpoint/reuse choices are AI decisions, already authorized, subject to contract/guardian review.
 - U0 is a published parent, not a merged claim. No PR or deployment is asserted.
 
@@ -115,14 +117,33 @@ Historical parent validation is in publication.md: API full tests, web tests, af
 ### Deliberately not in this unit
 
 - Direct-to-S3 PUT uploads, schema/data backfill, object moves, new offline file library, universal embedded editor — explicitly excluded by spec.
-- Unrelated web blob migration and server-generated signed-copy metadata writer canonicalization — recorded follow-ups, not mobile binary-upload/read omissions.
+- Unrelated web blob migration — recorded follow-up.
 - New certification approval, incident workflow, job-walk editing or quotation lifecycle rules — excluded by scope.
+
+## U2 — Quotation & Job-Walk S3 folder hierarchy and UUID consistency
+
+- **Outcome:** Quotation documents, signed PDF copies, and Job Walk signatures are stored under structured, tenant-isolated S3 paths (`tenants/{tenantId}/quotations/{quotationId}/...`), and all quotation and job-walk upload pipelines consistently persist UUIDs in `attachments.feature_id`.
+- **Kind:** vertical.
+- **Requirements covered:** REQ-07, REQ-08.
+- **Depends on:** U1.
+- **Branch:** `fix/mobile-presigned-reads`.
+- **Size estimate:** ~100–150 source lines across 6 files.
+
+### Slice contents
+
+| Layer | Change | Notes |
+| --- | --- | --- |
+| Storage (`apps/api/src/service/storage`) | Add `buildQuotationFileKey` and `buildJobWalkFileKey` | Reuses tenant isolation pattern; creates scoped quotation and job-walk keys |
+| API (`apps/api/src/presentation`) | Update `QuotationsController.uploadAttachments` and `AttachmentsController.upload` | Uses scoped quotation and job-walk S3 keys; resolves `JOB_WALK` to UUID |
+| API (`apps/api/src/usecase`) | Update `SignedCopyAttachmentsService` and `JobWalkReportsService` | Scopes DocuSign copies and job walk signatures under parent quotation; sets `featureId: quotation.id` (UUID) |
+| Tests | Existing test expectations updated for quotation UUID targets | Zero new test files (Haris rule) |
 
 ## Sequencing
 
 ```text
-U0 (built/published metadata parent) → U1 (remaining presigned reads + rendering siblings)
+U0 (built/published metadata parent) → U1 (remaining presigned reads + rendering siblings) → U2 (quotation/job-walk S3 hierarchy + UUIDs)
 ```
+
 
 - **Parallelisable:** No independently shippable units remain to parallelize. Specialists may review read-only contracts/tenancy and separate mobile/API files within U1; coordinate common service exports, attachment controller and MeService to avoid concurrent edits.
 - **Merge order constraint:** U1 targets U0 while its PR is open; retarget only after parent merge. Deploy additive API endpoint/optional certification field before the new mobile build; existing clients and web retain byte endpoints. No incompatible response window is intended.
