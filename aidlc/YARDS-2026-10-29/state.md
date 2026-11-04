@@ -40,4 +40,9 @@ checkbox on every row, the list stays open between picks, neutral pills, Home re
 yards: pick, untick, search + Enter, Backspace, Esc, click outside, star, removing Primary, required error, wheel
 and open/close scroll. Edit load and save + reload were checked before the last visual changes. Web tsc clean, node
 tests 1028/1036 (same 8). Not checked: phone width, qa-automation.
+2026-11-04 later: `92f6f1708` — client feedback: separate Primary Yard and Secondary Yards fields (D11); checked live,
+including edit save + reload (CTE-00001 restored). `8143b2608` — the employee details page now emits the `info-*` ids
+the qa specs look up: 26 of 26 on a temp employee, 25 of 25 on a salaried one. Not run: the qa specs (qa-automation is
+not set up on this machine). `lifecycle.spec.ts` still fills the removed `payType` field and never sets Compensation
+Type, so it fails before the details page. Pushed with SKIP_GATES=1: web and mobile test targets fail on Windows here.
 Next: optionally split the commits per unit; run the backfill per environment on deploy; PR when the developer says.

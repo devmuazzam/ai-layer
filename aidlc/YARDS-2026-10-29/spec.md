@@ -70,6 +70,11 @@
   open between picks and every row has a checkbox. The Home yard reads **Primary** on screen; the
   data, the API and this spec keep "Home" (`yardId`). The details page still labels it "Yard".
   [developer, 2026-11-04]
+- **D11 — Two fields on the employee form, from client feedback; replaces D9's one picker.** **Primary
+  Yard** is a required single-select, as it was. **Secondary Yards** is the multi-select, with D10's
+  pills and checkboxes; the star is gone. A yard cannot be both: the Primary shows greyed out in the
+  Secondary list, and a yard made Primary leaves it. The details page uses both names. Data and API
+  unchanged (`yardId` = Home = Primary, `additionalYardIds` = Secondary). [developer, 2026-11-04]
 
 ## 12. Questions
 
