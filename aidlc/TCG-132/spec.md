@@ -1047,6 +1047,28 @@ AI decisions D34 onward in §11b (`needs developer: yes`) and have no §12 entry
 - **Owner:** Syed Haris (DAS/permits owner on the TCG side: Lisette Anzaldo)
 - **Status:** resolved — see decisions/2026-10-29-all-permits-create-permit-modal.md (Addendum 2026-11-03, point 17). This is a developer direction (`reference`), not a TCG sign-off.
 
+### Q19 — Does allocating an asset auto-link the job's Travel permit, and does Unlink stop it re-linking? (raised by `tcg-scrum`, code-review follow-up, 2026-11-04)
+
+- **Question:** A travel permit is applied for per crane. When an asset is allocated to a job that already has a job-level Travel permit, should the app link that permit to the asset automatically, and if a user then Unlinks it, does the app stop re-linking it on the next allocation or sync?
+- **Options:** A. Auto-link on allocation; Unlink is remembered and the app never re-links that (job, asset, permit) · B. Auto-link on allocation; Unlink is not remembered, the next allocation or sync re-links · C. Never auto-link; the dispatcher links each crane by hand · X. Other — say what
+- **Answer:**
+- **Candidates:** `dispatch/travel-permits-playbook.md`:18-19 (`unverified`), *"All cranes 40 ton or bigger required travel permit"*, and :40-46 (the Caltrans annual is held per crane). Neither says whether a job's city travel permit covers each allocated crane or is applied for per crane. AI decision D3 (§11b) notes the artifact flow already holds a Travel permit with job + asset (`syncJobAssetAssignment`). The unlink endpoint distinguishes asset-scoped and job-level assignments (`apps/api/src/presentation/job-permit-assignments/job-permit-assignments.controller.ts`:72). No decision note covers auto-linking.
+- **Note:** raised in the same 2026-11-04 review as `decisions/2026-11-04-permit-vendor-required-annual-city-agency-filter.md`; not answered there.
+- **Blocked:** the DAS permit link/unlink behaviour for allocated assets (TCG-132 follow-up units).
+- **Owner:** Lisette Anzaldo (TCG-side permit owner)
+- **Status:** open
+
+### Q20 — Does linking another permit to a (job, asset) replace the existing link, and does the job-level permit count as coverage after Unlink? (raised by `tcg-scrum`, code-review follow-up, 2026-11-04)
+
+- **Question:** Two parts, each answerable in a line. (a) When a (job, asset) already has a permit linked and the user links a different permit to the same (job, asset), does the new link **replace** the old one, or do both stay linked? (b) After the asset-level link is Unlinked, does the job's job-level permit still count as that asset's permit coverage (DAS pre-checklist Permits row, Track Permits)?
+- **Options:** (a) A. Replace · B. Both stay linked · X. Other — say what. (b) A. Yes, the job-level permit still covers the asset · B. No, the asset is uncovered until a permit is linked to it again · X. Other — say what
+- **Answer:**
+- **Candidates:** AI decision D20 (§11b; Q8, awaiting developer review): an Annual permit with a job and an asset takes no (job, asset) slot. Q18 (resolved): a linked Annual counts toward the Permits row only when APPROVED. Neither says whether a link replaces another or what covers an asset after Unlink. No vault file covers it.
+- **Note:** raised in the same 2026-11-04 review as Q19; not answered by `decisions/2026-11-04-permit-vendor-required-annual-city-agency-filter.md`.
+- **Blocked:** the DAS link flow's replace/append behaviour and the Permits-row coverage after Unlink (TCG-132 follow-up units).
+- **Owner:** Lisette Anzaldo (TCG-side permit owner)
+- **Status:** open
+
 ## 13. What this spec deliberately does not specify
 
 - **What "Bill to customer" does downstream** — whether it adds the PO fee to a customer invoice, quote or

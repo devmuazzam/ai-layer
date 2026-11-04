@@ -34,6 +34,12 @@ supersedes_partial:
   - decisions/2026-09-10-permit-create-types-mockup-document-types.md
   - decisions/2026-09-11-outbound-po-subtypes-and-modal-fields.md
   - decisions/2026-10-08-po-fee-typed-by-user-approval-leaves-po-alone.md
+provenance_note: >-
+  Point 1 (the approved prototype) is partly superseded 2026-11-04 by
+  decisions/2026-11-04-permit-vendor-required-annual-city-agency-filter.md (Fouzan Shakil,
+  TCG-132, `reference`): City / Authority is required on Annual Travel (the prototype had it
+  optional), and Vendor is required on every permit type (the prototype had it optional). Point 4
+  stands except that every type now also requires a vendor. Recorded by tcg-scrum.
 conflicts_with: []
 related:
   - decisions/2026-09-10-permit-association-scope-asset-job-vendor.md

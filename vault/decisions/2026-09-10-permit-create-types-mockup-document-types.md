@@ -15,6 +15,10 @@ provenance_note: >-
   on create, including on /permits/create and the project and asset create pages. The "exactly
   one link" rule is relaxed: a Travel permit may also carry an asset and an Annual Travel permit
   may also carry a job. Points 2 and 4 are not addressed. Recorded by tcg-scrum.
+  Point 3 is further superseded for vendors 2026-11-04 by
+  decisions/2026-11-04-permit-vendor-required-annual-city-agency-filter.md (Fouzan Shakil,
+  TCG-132, `reference`): Vendor is required on every permit type (Travel, Annual Travel, FAA,
+  Encroachment, Sub Hauler), not only on Sub Hauler. Recorded by tcg-scrum.
 conflicts_with:
   - 2026-09-10-permit-association-scope-asset-job-vendor.md
 partially_superseded_by: 2026-09-11-permit-classes-job-only-until-sept-15.md
