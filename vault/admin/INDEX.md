@@ -49,6 +49,7 @@ uses it.
 | Decision | What it settles |
 | --- | --- |
 | [decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md](../decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md) | Seeded (`isSystem`) departments and roles may be edited, archived and deleted like any other — the flag is a display badge, and `lockedPermissions` restricts nothing. `status: reference` (decided by a CodingCops developer in PR review, not by TCG). **Tenant lockout and what a new tenant is provisioned with are not settled** — see [gaps.md](gaps.md) |
+| [decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md) | Nine departments; one main role plus a can-also-fill list, the main role decides access; Job Foreman is per job, not a role; on a job ticket: field crew, HDRs, the Crane Superintendent and Local 12 managers, each in the position they fill (never yard techs); Payroll Admin in HR; the Dispatcher assigns roles with Dispatch Manager approval, and Corrina, Melissa, Joe or Lisette edit what a role can do. `status: verified` (Corrina Bustos, 2026-10-20, two replies). **Role capabilities and per-person access (awaiting Ryan Adams) are not settled** — see [gaps.md](gaps.md) |
 
 ## Open questions
 

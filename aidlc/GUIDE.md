@@ -74,25 +74,25 @@ rule, a third repeat. It is almost never worth it on C.
 
 ### The escalation rule is what makes B and C safe
 
-**Any path becomes Path A the moment you have to decide something nobody specified.**
-
-Without that valve, C becomes the default and the whole discipline evaporates — "it's only a
-small change" is precisely how unspecified decisions get made and never noticed.
+**A path becomes Path A only when the work needs client-facing behaviour nobody specified,
+or one side of a vault conflict** (root `CLAUDE.md` → guardrail G1). Everything else nobody
+specified is decided and recorded, not escalated — that is what keeps B and C fast without
+hiding choices: the PR's _AI decisions_ table makes each one visible to the reviewer.
 
 Escalate when:
 
-- **Fixing the bug means deciding what correct is.** "Fix the sort order" usually means
-  choosing one. That is a product question wearing a bug's clothes, and it is the single
-  most common escalation.
-- The ticket says *"make it consistent with X"* and X is ambiguous, or X is one side of an
-  open conflict in the vault.
-- The change touches **schema, tenancy, or an API response shape** — at minimum call
-  `tcg-prisma-guardian` or `tcg-contract-tracer`, whatever the path.
-- You catch yourself writing a value nobody stated: a length, a default, a threshold, a page
-  size.
+- **Fixing the bug means deciding client-facing behaviour** — what a customer sees, who may
+  act, what money moves. "Fix the sort order" is *not* one: pick the order the nearest
+  screen uses and record it.
+- The ticket says *"make it consistent with X"* and X is one side of an open vault conflict.
 
-Escalating is cheap. A bug that turns out to need a spec has just found a real gap at the
-cheapest possible moment, and `gaps.md` is where it goes.
+Schema, tenancy and API shape call `tcg-prisma-guardian` / `tcg-contract-tracer` on every
+path, without escalating. A value nobody stated — a length, a default, a page size — is
+decided and recorded, not escalated.
+
+TCG-237 (role and department) and TICKET-FLOW-SLOTS-HOLDOVER are why: escalating every
+unstated value produced 70+ questions per ticket, most answered by the developer, and turned
+a day's build into several (`vault/decisions/2026-10-21-capability-first-…`).
 
 ### Every path leaves one line, even the ones with no folder
 
@@ -304,9 +304,10 @@ breadth matters more than judgement and the failure mode is *missing* something 
 | `commit` | Branch naming, rebase from `origin/main` at start **and on resume**, conventional commits |
 | `close-ticket` | A PR merged — the writeback that merging does not do by itself |
 | `review-pr` | Ad-hoc PR review — **against the vault as well as the code** |
-| `lint-triage` | Which failures are mine vs the ~14 pre-existing |
+| `lint-triage` | Which failures are mine vs the pre-existing ones (37 in `apps/web` as of 2026-08-19) |
 | `find-component` | Search all nine `components/` directories before creating |
 | `debug-api` | Failing endpoint — four global guards, tenancy checked early |
+| `demo-walkthrough` | Fresh tenant → calculated payroll; kept true by `close-ticket` step 5 |
 
 Skills are procedures the current session follows. Agents get their own context and model
 tier. Cheap mechanical work belongs in a skill; judgement belongs in an agent.
@@ -319,7 +320,11 @@ built through the loop; the skill is the ad-hoc path for a PR with no unit behin
 ## 10. Where things live
 
 ```
-.ai/aidlc/SCRUM-###/
+.ai/aidlc/SCRUM-###/   (also TCG-### and named folders — sweep them as .ai/aidlc/[A-Z]*/)
+  state.md        where the ticket is in the loop: one row per phase, and a Resume
+                  paragraph the next session reads first. Progress only — it points at
+                  units.md and §12, never copies them. Every phase agent updates it once,
+                  at the end of its run
   intent.md       ticket capture, before elaboration
   spec.md         the elaborator's output — what an executor builds from
   units.md        the decomposer's output — vertical slices
@@ -335,11 +340,31 @@ built through the loop; the skill is the ad-hoc path for a PR with no unit behin
                   across tickets, and the queue for proposed rule changes
 
 .ai/vault/        product knowledge — INDEX.md first, always
-.ai/vault/gaps.md the open-question register, product half — read by section
-.ai/vault/payroll/gaps.md   the payroll and ADP half — same format, same rules
+.ai/vault/<module>/gaps.md  open questions belonging to no ticket, one register per
+                  module (payroll included) — read by section. The root vault/gaps.md
+                  and payroll/gaps-2026-08-20-retired.md are retired and frozen
 .ai/vault/decisions/  what a named human settled, and why
 .ai/claude/contexts/  how to build, per surface
 ```
+
+**Where a fact goes, and who writes it.** Never in a tool's own memory, rules or saved
+prompts — a fact kept there is invisible to the other developers and tools, and nothing
+reports the divergence. If deleting your tool's local state would lose it, it is not memory
+yet.
+
+| What you learned | Where it goes | Who writes it |
+| --- | --- | --- |
+| A named human decided something | `.ai/vault/decisions/` | `tcg-scrum` |
+| An open question raised by a ticket | `.ai/aidlc/<TICKET>/spec.md` §12 | any agent, append |
+| An open question belonging to no ticket | `.ai/vault/<module>/gaps.md` (`vault/STRUCTURE.md` → _Where a question goes_) | any agent, append |
+| How we build — a convention, a rail | `.ai/claude/contexts/` (recurring shapes: `patterns.md`) | Haris only |
+| A defect the loop made | `.ai/aidlc/reflections/INDEX.md` | `tcg-reflector` |
+
+Sweeps: every ticket `grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/[A-Z]*/spec.md` · every
+module `grep -rn '^- \*\*Status:\*\* open' .ai/vault/*/gaps.md`. A fact reaches the team only
+once the overlay is pushed — in a linked worktree, once `pnpm worktree:done` merges its
+branch into overlay `main`. Skills and subagents are Claude Code features; on other tools,
+open `.ai/claude/skills/<name>/SKILL.md` and `.ai/aidlc/agents/` by path.
 
 **Three memories, three clocks, and they are not interchangeable.** `vault/` is what the
 product should do and only a human changes it. `contexts/` is how we build and only an
@@ -385,9 +410,12 @@ mode with eight people filling them.
 
 ## 12. Running it for real — what to expect
 
-**Only the elaborator and scrum have ever been run.** The other four are written against the
-current context layer but have never executed. The first pass is as much a test of the
-agents as of the ticket.
+Every phase agent has now run on real tickets (`reflections/INDEX.md` holds defects from nine
+of them). The **third-occurrence escalation** first ran on 2026-10-20, after
+`missing-requirement` had reached 19 rows and `gate-illusion` 14: each became one structural
+rule (the spec template's **Edges** block; the units template's **Gate baseline**) and 41
+queued proposals were applied in one pass. Keep the queue short — a proposal left `proposed`
+for weeks is how a class reaches 19.
 
 Expect, in rough order of likelihood:
 
@@ -489,7 +517,9 @@ question is right now — before the code exists.
   likeliest origin of the ~593 hardcoded colour values.
 - **Mechanical rails** — nothing enforces module boundaries, duplication, reuse, or
   hardcoded colour. Every one of those is currently a reminder, and the reflector is written
-  to escalate when a reminder fails three times.
+  to escalate when a reminder fails three times. The only rules enforced mechanically are in
+  `.claude/hooks/guard-edits.mjs` (Claude Code, Edit/Write only): no client-repo edit on
+  `main`, and no tooling edit unless the overlay email is Haris's.
 
 ---
 

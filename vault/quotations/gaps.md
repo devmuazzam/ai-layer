@@ -534,6 +534,20 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   is sent ([tcg-creating-quotes-sop.md](tcg-creating-quotes-sop.md) §7) — a different regime from a
   threshold altogether. Still needs the client: "at or above" vs "above", stated as a rule about the
   comparison.
+- **Update 2026-10-22 (10-20 call and the code):** the documentation CodingCops handed TCG on 2026-10-20
+  says a quotation needs approval when it is **above 50K** or when *"there is an amount that is changed
+  from the billing code"* (ehtesham.anwar, 7:01 — [2026-10-20-erp-documentation-portal-set-up-order-test-login-and-staging.md](../meetings/2026-10-20-erp-documentation-portal-set-up-order-test-login-and-staging.md) §1). The build is
+  narrower: `apps/api/src/usecase/quotation-approvals/quotation-approvals.service.ts` computes
+  `RATE_BELOW_MINIMUM` (a rate **below** the reference rate), `TOTAL_EXCEEDS_LIMIT`, `BOTH`, or else
+  `MANDATORY` — so every quote is routed for approval, and a rate changed **upwards** is not a trigger.
+  The build matches the review log (*"charging above standard rate is fine"*) and the SOP's unconditional
+  approval; **the documentation's wording overstates it**. Nothing on the call answered the
+  inclusive/exclusive question. The wording is CodingCops' to correct, not a question for TCG.
+- **Update 2026-10-23 (10-22 walkthrough part 2):** ehtesham.anwar repeated the documentation's wording
+  on the call: internal approval when the quote is *"50,000 and above"* and on *"any change from the billing
+  code that we have added"* (41:34). It is still broader than the build (a rate **below** the reference
+  rate, or the total over the threshold), and *"and above"* is inclusive where the code is exclusive
+  (`totalAmount > approvalThreshold`). Nobody from TCG commented. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §6.
 
 ## Does "Valid until <date>" mean end of that day, or the instant of midnight?
 
@@ -1083,6 +1097,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   harmless. The UAT row also mis-names the thing it wants removed, so the request itself is not clean. **Do not treat
   this as a contradiction to resolve; treat it as one more reason to answer this entry.** Nothing adjudicated.
 
+- **Update 2026-10-17 (TCG-218 close-out) — the customer-document decision does not reach this entry.**
+  [../decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md](../decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md)
+  (`verified` for Joe Schacatano's rules 1–3) changes 09-11 rules 2–3 **for customer documents only** — the PDF and print show
+  every line net, with no Discount / Price Hike rows. It states that internal screens (create/edit, detail, approvals) keep
+  the 09-11 on-screen rules, so the create/edit hover tooltip, its *"Final Amount"* row and parts (a)–(c) here are untouched.
+  Do not read the 10-17 note as answering this entry. **Status unchanged: open.**
+
 ## Estimate defaults per resource type / job type / yard — FCC has them, TCG has no job type at all
 
 - **Status:** open
@@ -1190,6 +1211,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - Ryan has built a spreadsheet mob/demob tool, and Joe offered to show it on a separate call. The mob/demob walkthrough is deferred to the week of 2026-09-28.
 
   Source: [../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md](../meetings/2026-09-16-resource-types-billing-codes-configurations-and-permit-pos.md) §1, §3, §4.
+
+- **Update 2026-10-17 (TCG-218 close-out) — (e) and (f): ticket-owner rulings exist; neither sub-question is closed.**
+  - **(f).** Syed Haris (TCG-218 ticket owner, CodingCops) ruled that the Quotation Type — *Hourly* / *Hourly w/ Mob*, FCC's `H` / `Z` — is chosen **once per quotation** (*"q17: once per quote"*, 2026-10-08): [../decisions/2026-10-06-quotation-type-hourly-or-hourly-with-mob.md](../decisions/2026-10-06-quotation-type-hourly-or-hourly-with-mob.md) point 2, `reference`. TCG-218 shipped it that way (Linear TCG-218, merged by 2026-10-17). Joe Schacatano was **not** asked whether one quote may mix an hourly crane with a mob/demob crane — which is (f). Stays open with its owners, as that note itself says.
+  - **(e).** [../decisions/2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md](../decisions/2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md) (`reference`, ticket owner) decides that a change to a sub-category's **asset configuration** — which TCG-218 now uses to auto-fill quote lines — reaches only quotes not yet gone out: a quote keeps a snapshot from its first send / Mark as Won / conversion, never refreshed. **It does not answer (e)**: (1) (e) asks about FCC's job-type estimate template, which TCG does not have; (2) it does not decide whether a saved quote's existing lines are re-seeded when the configuration changes — that they are not today is a code finding recorded in TCG-218 spec §12 Q51, not a decision; (3) the owners named here were not asked. It is the nearest precedent for whoever answers (e).
+  - **Status unchanged: open.**
 
 ## FCC estimate templates were already extracted — and the seeder flattened them to one FK
 
@@ -2048,7 +2074,7 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Owner:** product team — Ehtesham Anwar for the single- vs multi-tenant half (he owns it on the admin entry above), Brian Petros or Ryan Adams for whether a quote is raised under a company the salesperson picks.
 ## Branch fix/das-fixes — archive gate, rate-error precedence, discount and price-hike footer rows
 
-- **Status:** open, for (b), the printed-quote half of (c), and (d) only. (a) and the on-screen half of (c) were resolved 2026-09-11; see the next bullet.
+- **Status:** open, for (b) and (d) only. (a) and the on-screen half of (c) were resolved 2026-09-11; the printed-quote half of (c) was resolved 2026-10-17 — see decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md. See the next two bullets.
 - **Resolved in part 2026-09-11, by Fouzan Shakil (CodingCops, `reference`, not a TCG sign-off):**
   - **(a).** Settled by [../decisions/2026-09-11-quotation-archive-blocked-by-in-flight-jobs.md](../decisions/2026-09-11-quotation-archive-blocked-by-in-flight-jobs.md). Archive is blocked while any linked job is `ACTIVE` or `ON_HOLD`. It is allowed once every linked job is `COMPLETED`, `INVOICED` or `CANCELLED`, which covers the whole `JobStatus` enum. No other blocker was named, including a linked project.
   - **(c), on-screen half.** Settled by [../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md](../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md):
@@ -2057,8 +2083,9 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
     - The footer rows carry the adjustment money, so the Amount column sums to the Total.
   - **Still open:**
     - (b).
-    - Whether the **printed** quote carries the same rows (the second question of (c)).
+    - ~~Whether the **printed** quote carries the same rows (the second question of (c)).~~ Resolved 2026-10-17, next bullet.
     - (d), below.
+- **Resolved in part 2026-10-17 — the printed-quote half of (c):** no, the customer's copy carries neither row. **Discount row — Joe Schacatano** (TCG VP of Sales, an owner named for (c)), written Teams reply, `verified`: *"Discount kept internal. We don't want a discount line to show to the customer."* **Price Hike row — Syed Haris** (TCG-218 ticket owner, `reference`, not asked of Joe): price hikes are treated like discounts, every line prints net of both, and the Surcharge row stays. Internal screens keep the on-screen rules above. See [../decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md](../decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md) rules 2–4 and 7.
 - **(d), added 2026-09-11 and left open by the archive decision.** Should archiving a **WON** quotation remove its value from the WON revenue KPIs and from the customer's revenue figure, or should both keep counting it? As built, it removes it from the customer's figure. `apps/api/src/service/quotations/quotations.repository.ts` `findManyForCustomerMetrics` filters `archivedAt: null`. The field it feeds is named `revenueYtd` but holds all-time won revenue (`apps/api/src/usecase/customers/customer-quotation-metrics.ts`:9). The other WON-revenue KPIs were not checked. Blocks: nothing hard, only reporting correctness once won quotations start being archived. Owner: as for (a).
 - **Asked:** 2026-09-11 — PR review of branch `fix/das-fixes` (no ticket, no `.ai/aidlc/` folder); tcg-scrum escalation. Commits `b81f1b0b5`, `48d93f9f6`, `c11bba5c2`.
 - **Question:** three parts, each answerable in a line. **(a)** May a quotation be archived while it still has a linked project, or linked jobs that are not `ACTIVE`? The branch now blocks archive **only** on `ACTIVE` jobs (`archive-reference.service.ts`). A linked project, or a job in any other state, no longer blocks. **(b)** When a resource line has no billing code, should its Rate cell also show *"Rate must be greater than 0"*, or only *"Billing Code missing."*? The branch hides the rate message in that case. The row cannot be saved either way. **(c)** Should quote-level **Discount** and **Price Hike** rows sit in the Resources footer beside the Fuel & Insurance Surcharge row, on create/edit and on the detail tab? Each is summed from the lines and shows a shared percentage when the lines agree. If yes, should the printed quote carry the same rows?
@@ -2446,6 +2473,20 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   This is **not** an adjudication — the principle is decided, the model (a)–(d) in the 2026-09-16 update above is
   still open, and nothing here reverses a shipped row. It is a warning that the register and this entry are
   describing two different products. A UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md).
+- **Update 2026-10-30 (10-29 sales quoting) — Ryan asks for the crane "fully built up".** Ryan Adams (Sales
+  Manager), 29:11–29:41 and 32:50: picking a crane should add the crane, the operator load and the support
+  loads *"in a line so you can see each line item"*, plus a travel permit for that size, a line for a
+  potential rigger, and fuel and insurance; lines can be inserted and deleted. Joe (32:15): a 265 populates
+  the operator load and three support loads, *"which is how we'll build it"*. Ryan (34:42): the configuration
+  should carry the **counterweight load weights** (*"operator load maybe 44,000, next one would be 88"*).
+  ehtesham.anwar showed the 10-06 *show* toggles: with them off the quote shows only the crane and the job
+  still carries the oiler, operator load and tractor. This fits the 09-16 principle (billing codes on the
+  quote, crew on the job). Two parts do not: fuel and insurance are **one surcharge per quote**
+  (`decisions/2026-09-02-one-surcharge-per-quote.md`, verified), and the rigger row was withdrawn from the
+  approved sheet (`dispatch/crane-configuration-rules.md` §9). Weights exist only for the 190 T (§5.2). Not
+  a decision: **(e)** should a rigger be an optional line on every crane's set, at quantity 0 (see *Quantity
+  0 on an Hourly quote line* below)? **(f)** where do counterweight weights live — on the support-load billing
+  code, the association, or the configuration? Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §2.
 
 ## Resources Total Value — UAT asks for exact decimals, the code deliberately strips cents
 
@@ -2475,6 +2516,11 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This one is unusual: the row is itself a **deferral**, so the register records that nobody has decided, which matches the vault.
 - **Blocked:** any permit work on the quotation Resources tab; the post-15-Sep permit-class work.
 - **Owner:** the product team, per the UAT 2 sheet's own words — Joe Schacatano for what belongs on an estimate, Liz Lopez for the permit side.
+- **Update 2026-10-30 (10-29 sales quoting):** Ryan Adams (29:11, 32:50) wants **a travel permit for that
+  size crane** added automatically when the crane is picked — *"select the crane and it populate everything
+  that has a line item with that crane, which would include a travel permit"*. That is a priced quote line
+  per crane size, as Joe's 09-16 *"operator load, travel permit, and a surcharge"*. Nobody said what the line
+  becomes on conversion. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §2.
 
 ## Billing Code Flags and Surcharge checkboxes — the expected behaviour was never defined
 
@@ -2489,6 +2535,12 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). This row asks for a definition rather than a change, so there is nothing here to build from and nothing to verify against; that is the finding.
 - **Blocked:** verification of the Flags and Surcharge panel (QA has no expected behaviour); the per-line surcharge opt-out question above.
 - **Owner:** Melissa McNutt (she owns the surcharge rule) with Joe Schacatano.
+- **Update 2026-10-22 (10-21 walkthrough, CodingCops describing the build, `unverified`):** ehtesham.anwar
+  showed the edit form with **taxable** and **apply surcharge**. With apply surcharge **off**, the line
+  takes **no** surcharge — neither the general one nor a customer price list's — and his example was the
+  **operator** (36:55). That is the build's meaning, consistent with
+  [../decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md);
+  no TCG owner confirmed it or said what **taxable** gates. Source: [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §7.
 
 ## A billing code rate may never be zero — shipped and enforced at every layer, adjudicated by nobody
 
@@ -2580,6 +2632,13 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Sources checked:** [*Sell-side scheduling artefacts — no vault coverage*](#sell-side-scheduling-artefacts--no-vault-coverage) (the Job Schedule Master and Geographic Heat Map were shared on 2026-08-12 but are not in the vault); [*Quote line items vs dispatch resources…*](#quote-line-items-vs-dispatch-resources--the-associated-set-auto-fills-the-quote-and-the-sales-owner-says-dispatch-resources-must-not-be-quoted). If quoting and dispatch schedule different things (Ehtesham, 8:27 on the same call), then "availability" at quote time has to be defined against one of them. Nothing written defines it.
 - **Blocked:** any availability indicator on the quotation builder; any "emergency job" definition or SLA.
 - **Owner:** Brian Petros (raised it), with Joe Schacatano / Ryan Adams for what sales needs to see.
+- **Update 2026-10-30 (10-29 sales quoting):** Brian Petros (10:55): sales has built a **dispatch
+  scheduling coordination board** showing crane availability, where coordinators or sales can *"suggest a
+  time or book, make a reservation basically on a crane in advance, but mainly to see the availability"* —
+  *"you can think about how we can integrate it into the ERP"*. The board itself was not shown or shared on
+  the call; it may be the manual crane-by-day board in [sales-reporting-workbooks.md](sales-reporting-workbooks.md)
+  §3. ehtesham.anwar (19:33): at quote time sales cares whether the sub-category is available, not which
+  unit. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §4, §8.
 
 ## Does a quotation carry sales tax at all, and if so on which amount?
 
@@ -2596,6 +2655,16 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
 - **Note:** before TCG-51, the PDF was the only surface that added tax. It printed a Sales Tax row on every quote ($0.00 for web-created ones), on a base that counted grouped lines two or three times ($1,448 → $231.61 at 9.5% instead of $137.56). `isTaxable` has no web writer, so only API, seed, import or migration quotes could be taxable. Related open entries, not re-raised here: [*"Final Amount" means two different numbers*](#per-row-surcharge-now-has-no-ui-on-createedit-and-final-amount-means-two-different-numbers) and [Q-24](#q-24--list-and-summary-disagree-on-resource-less-quotation-totals).
 - **Blocked:** printing any tax on the quotation PDF or showing it on screens; the meaning of the stored `tax` column (send no longer rewrites it, and see [*Quotation duplicate*](#quotation-duplicate--what-a-copy-carries-and-what-a-fresh-copy-resets) (c)); product sign-off of TCG-51.
 - **Owner:** Joe Schacatano (sales, quotation pricing) with Melissa McNutt, and Ryan Adams (quotation send). Accounting should be consulted if invoice tax must match.
+- **Update 2026-10-22 (10-21 walkthrough, `unverified`) — new evidence for (a), not an answer.** Ryan
+  Adams (Sales Manager, speaking on the room microphone labelled "Brian Petros", 51:59–52:41): materials
+  going to a site are taxed at **that city's rate**; he wants the tax set **on the quote, editable**, and
+  carried through to the invoice — *"if we were going to buy something, it would go into the quote, but
+  we would need somewhere where we could change the amount of tax"*. ehtesham.anwar: not possible now,
+  *"We'll update the functionality while adding in the quotations"* (52:57). The billing code and the
+  vendor in the build both carry a **taxable** flag (§7, §9), against TCG's *"Taxable: Not needed"* on
+  the FCC slides. Sources: [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §9 and *Against the vault*; transcript
+  [2026-10-21-erp-demo-walkthrough-part-1.md](../meetings/transcripts/2026-10-21-erp-demo-walkthrough-part-1.md). This is the second TCG manager (after Kyle, 2026-07-28) to want tax by
+  job-site location, so (a) leans **yes, on taxable lines**; Joe has still not ruled.
 
 ## Additional Information on a quotation — does a sent quote freeze it, and what is the PDF heading called?
 
@@ -2617,6 +2686,12 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   - (a) Ryan Adams (quotation send) with Joe Schacatano (sales), because it decides what a signed quote legally showed.
   - (b) Joe Schacatano.
   - (c) Brian Petros, who owns template field identity in the assets entry.
+- **Update 2026-10-23 (10-22 walkthrough part 2):** ehtesham.anwar (41:34) said the sub-category
+  attributes on a quote line had two intended uses — details of the asset, and lift information like
+  FCC's — and that lift planning *"now … we need to figure out … separately, so we might want to change
+  this structure."* If lift information leaves the attributes, (a) and (b) here cover asset details only.
+  Where lift information lives is not decided: FCC holds it per job quote
+  ([fcc-nexgen-quote-entry.md](fcc-nexgen-quote-entry.md), `unverified`). Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §6.
 
 ## Editing a quotation — should opening it re-apply the customer's price list, and re-price a draft?
 
@@ -2706,3 +2781,95 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   and [../admin/gaps.md#social-media-icon-rows-removed-from-ticket-and-pre-quote-emails--intended](../admin/gaps.md#social-media-icon-rows-removed-from-ticket-and-pre-quote-emails--intended).
   Filed 2026-10-13 from tcg branch `fix/13-oct-uat` (TCG-37).
 - **Owner:** product team
+
+## Should the API enforce billing codes and whole-dollar rates on quote lines?
+
+- **Status:** open
+- **Asked:** 2026-10-16 — raised by tcg-executor building TCG-218 U6 (spec §12 Q38c); deferred by the ticket owner (Syed Haris: "No, follow-up").
+- **Question:** today only the web blocks a quote line with no billing code ("Billing Code missing.") and rounds ordinary rates to whole dollars; the API (`create-quotation.dto.ts`, `quotations.service.ts` `syncResources`) accepts code-less lines and cents on any line, so another client (mobile, a script) can save what the web would refuse. Should the server enforce both? If so: (a) look the item's billing code up itself, or trust the client's `pricingSource`; (b) custom types only, or every resource type; (c) keep the TCG-218 exceptions — a "Price Adjustment" line inside a Mobilization/Demobilization group may be code-less with a cents rate (D9a, Q38b).
+- **Sources checked:** TCG-218 spec REQ-13, D9a, Q38; `units.md` U6 test row (which assumed server rejection).
+- **Owner:** ticket owner of a follow-up ticket (none yet).
+- **Update 2026-10-23 (10-22 walkthrough part 2, CodingCops describing the build):** a quote on a
+  sub-category with no billing code shows *"billing code missing"* to **users with the right access, and
+  salespeople do not see it** (ehtesham.anwar, 27:44). The role-based hiding is not in the vault, and it
+  sits against [../erp-review-log.md](../erp-review-log.md) *Quotations, jobs and projects (9)*: *"do not
+  show quoteable items without valid pricing"*. Source: [2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §3.
+
+## Price-list discount plus the quote's own discount or price hike — added, compounded, or exclusive?
+
+- **Status:** open
+- **Asked:** 2026-10-21 — ERP demo walkthrough part 1. Brian Petros (41:33–41:53): *"there's a difference
+  between a price list that is applied for specific billing codes and a general type of discount because
+  … the quote itself … has an option to give a general discount on the entire quote or a price hike … So
+  when there's a price list selected and then we also apply that general discount or price hike, it's going
+  to combine both of those things together, right?"* ehtesham.anwar answered only on **surcharge**
+  precedence (42:09–42:30). Source: [2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §8. Filed 2026-10-22.
+- **Question:** when a customer's price list carries a **discount %** and the quote also has a
+  **quote-level discount or price hike**, which applies? **(a)** both, added (10% + 5% = 15%); **(b)**
+  both, in sequence (price-list discount first, then the quote's); **(c)** only one — and if so, which
+  wins? Follow-up: is the price-list discount on **its own codes only**, or on the whole quote?
+- **Sources checked:**
+  - [../decisions/2026-09-02-one-surcharge-per-quote.md](../decisions/2026-09-02-one-surcharge-per-quote.md)
+    (`verified`) — settles surcharge only: the price list's surcharge, else the general one.
+  - [../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md](../decisions/2026-09-11-quotation-footer-discount-and-price-hike-rows.md)
+    (`reference`) — the quote-level rows; says nothing of a price-list discount.
+  - [fcc-billing-data-and-price-lists.md](fcc-billing-data-and-price-lists.md) (`unverified`) — FCC's price
+    list has a blanket Sales Discount % and per-code rates, and *"does not say how they interact"*.
+  - [../erp-review-log.md](../erp-review-log.md) (`unverified`) — *"price list discounts and price hikes
+    apply only to items in that list"*: bears on the follow-up, not on the combination.
+  - [*Billing-code and price-list rules the E2E suite asserts with no written source — PR #488*](#billing-code-and-price-list-rules-the-e2e-suite-asserts-with-no-written-source--pr-488)
+    item (e) — whether the quote's discount and price hike are mutually exclusive. Answer them together.
+- **Blocked:** the quote total whenever a price-list customer is also given a quote-level discount.
+- **Owner:** Melissa McNutt (pricing) with Joe Schacatano (quotations); Kaitlin Kiesel can check against
+  Edison's current pricing.
+
+## Branch fixes/TCG-22-OCT-UAT (PR #926) — quotation hero Subtotal and workspace KPIs now show money in full, not compact
+
+- **Status:** resolved — see [../decisions/2026-10-23-pr-926-won-popup-craneguys-domain-full-money-as-built.md](../decisions/2026-10-23-pr-926-won-popup-craneguys-domain-full-money-as-built.md). Asad Amanullah decided on 2026-10-23 (`reference`). Four figures show the full amount, 2 decimals, no K/M: Total Amount and Subtotal on the quotation detail hero, and Won value and Pipeline value on the workspace KPIs. Tables, the pipeline board and the other compact (`qmoney`) displays are not covered by this decision.
+- **Asked:** 2026-10-23, in the PR #926 review (tcg-scrum escalation). Path C, no ticket.
+- **Question:** On the quotation detail hero (Subtotal) and the quotations workspace KPI ribbon (Won value, Pipeline value), should money show in full to the cent ($267,580.00) or compact ($267.58K)? The branch leaves tables and the pipeline board compact. Is that split intended?
+- **Sources checked:** A vault-wide grep outside `meetings/transcripts/` for compact money, K/M, abbreviated amounts, `Won value` and `Pipeline value` finds nothing on display format. [*Resources Total Value — UAT asks for exact decimals*](#resources-total-value--uat-asks-for-exact-decimals-the-code-deliberately-strips-cents) covers a different surface (the Resources Total Value field, UAT 3) and is a pricing question. [../projects-jobs/job-project-das.md](../projects-jobs/job-project-das.md):36 (`unverified`, punch list) asks only for consistent *naming* of budget, pipeline and won value. `uat/sessions/` has no 2026-10-22 session. `.ai/aidlc/processed.log:245` records "UAT feedback 2026-10-22" with no written source.
+- **Blocked:** nothing. The change is display-only and reversible. The UAT ask still needs writing down (who asked, and where), or the next formatter change may revert it.
+- **Owner:** whoever raised it at the 2026-10-22 UAT. Otherwise Joe Schacatano / Ryan Adams (sales).
+
+## FAA / NOTAM airport radius — built at 5 miles, the call said 3 miles or 3 nautical miles
+
+- **Status:** open
+- **Asked:** 2026-10-29 — sales quoting call. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §9.
+  - The room mic (Brian or Ryan), 1:04:30: when a job-site address is within a distance of an airport,
+    *"automatically flag for FAA or NOTAM and add that"* as a quote line.
+  - ehtesham.anwar first said *"30 kilometers"* (1:05:53). **Joe Schacatano (VP of Sales), 1:06:47:**
+    *"Minimum is 3 miles"*; 1:07:57: *"best practices is 3 miles … I think 3 miles is safer than three nautical
+    miles."* The room mic, 1:08:17: *"use 3 miles instead of three nautical miles."* ehtesham.anwar closed
+    with *"it's going to be safer if we use the nautical miles"* (1:08:43). Melissa was asked to agree; no
+    answer is recorded.
+- **As built:** `Airport.radiusMeters` defaults to **8047 m (5 statute miles)**; migration
+  `20260728140000_scrum_414_airports` seeds 34 airports at that radius; `job-site-location-insights.service.ts`
+  returns `faa.required` and a `faaPermitRequired` suggestion. Nobody on the call mentioned it.
+- **Question:** **(a)** What radius flags a job site — 3 statute miles (4.83 km), 3 nautical miles (5.56 km)
+  or the built 5 miles — and is it one radius for every airport? **(b)** Does a flag add a priced FAA line,
+  set *FAA permit required*, or only warn? **(c)** NOTAM versus FAA permit — what decides which one?
+- **Sources checked:** no distance anywhere in the vault. [sales-intake-and-job-walk.md](sales-intake-and-job-walk.md)
+  lists *"Near airport"*; [sales-operating-system/03-sales-coordinator-operations-manual.md](sales-operating-system/03-sales-coordinator-operations-manual.md)
+  §5: *"Evaluate FAA permit, NOTAM and A1 Survey requirements immediately"*.
+  [../customers/gaps.md](../customers/gaps.md) *Job-site map — required on the form …* is adjacent.
+- **Blocked:** the default radius and the quote line on an airport flag.
+- **Owner:** Joe Schacatano (sales) — the call ended on two answers.
+
+## Quantity 0 on an Hourly quote line — Joe says it is a priced note, the web blocks it
+
+- **Status:** open — answer on tape, no decision note yet
+- **Asked:** 2026-10-29 — sales quoting call. Source: [2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md](../meetings/2026-10-29-sales-quoting-crane-set-one-yard-third-party-pos-and-faa-flag.md), transcript [2026-10-29-sales-quoting.md](../meetings/transcripts/2026-10-29-sales-quoting.md) §3.
+  - **Ryan Adams (Sales Manager), 36:26–37:10:** show a rigger at 0 so the customer sees the rate — *"a lot of
+    times we're trying to sell a rigger. They're not sure if they want it yet, but they want to see the
+    pricing"*; *"optional line items with the rate in there, but not adding to the total"*.
+  - **Joe Schacatano (VP of Sales), 37:22:** *"you just select quantity 0 and then it's just a note if
+    required … in the comment section."* ehtesham.anwar (37:30–37:45): CodingCops will allow 0.
+- **As built:** the API allows 0 (`create-quotation.dto.ts`, `@Min(0)`). The web allows 0 only inside a
+  Mob/Demob group (`create-quotation.helpers.ts`, `isResourceQuantityValid`).
+- **Question:** **(a)** May any quote line carry quantity 0, staying out of the total, as the verified
+  [../decisions/2026-10-01-mob-demob-lines-quantities-and-placement-on-the-quote.md](../decisions/2026-10-01-mob-demob-lines-quantities-and-placement-on-the-quote.md)
+  pt 5 already says for Mob/Demob lines? **(b)** How does the customer PDF show it — rate shown, total blank,
+  a note? **(c)** What does a 0-quantity line become on conversion — nothing, or a slot?
+- **Blocked:** the web validation change.
+- **Owner:** Joe Schacatano; (b)–(c) CodingCops to propose.

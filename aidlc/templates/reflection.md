@@ -3,7 +3,7 @@
 > Written to `.ai/aidlc/SCRUM-###/reflection.md` after the units ship, before the ticket
 > closes. Consumed by the reflector.
 >
-> **Skeleton only in this run** — the reflector agent that fills it does not exist yet.
+> Filled by `tcg-reflector` (`.ai/aidlc/agents/reflection/tcg-reflector.md`).
 > The field list is the contract; treat it as fixed.
 
 ## What this is for

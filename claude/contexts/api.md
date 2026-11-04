@@ -14,13 +14,12 @@ src/orm/                      PrismaService, BaseRepository
 
 **Never import upward.** A repository must not import a controller.
 
-One sanctioned exception: a usecase **module** imports its controller, because that is how
-NestJS registers it (`controllers: [XController]`). That applies to `*.module.ts` only —
-a `*.service.ts` importing from `@presentation/` is a real violation.
-
-Nothing enforces this. There is no `import/no-restricted-paths` or `boundaries/*` rule in
-`eslint.config.mjs`, so the layering is convention, and it is currently violated in places.
-Do not take existing code as licence.
+**Enforced by lint** (`@typescript-eslint/no-restricted-imports`, error — PRs #899/#900):
+no runtime import from a higher layer, by alias or relative path. Allowed: `import type`
+(no runtime dependency), `*.module.ts` (Nest module registration), `*.spec.ts`, and a usecase
+service injecting a presentation `*.gateway` — keep that a value import: with
+`emitDecoratorMetadata`, `import type` of an injected class breaks DI silently. A helper a
+repository needs lives in `service/` or `utility/`, never `usecase/`.
 
 ## File patterns
 
@@ -113,3 +112,23 @@ constant is `PICKER_PAGE_SIZE` and stays well below it.
 
 Pagination `orderBy` must end on a unique key — see `contexts/prisma.md` (*Picker
 pagination sorts on a unique last key*).
+
+## Reading frozen or copied data
+
+A reader of a frozen copy (snapshot, history, revision) imports the **same exported
+`orderBy` constant** as the live read of the same data and adds no tie-break of its own. If
+the live order needs a unique last key, add it to the shared constant, so both reads change
+together (TCG-218).
+
+## Notifications
+
+Every key in the notification catalog is a member of `NOTIFICATION_TYPES` in `@tcg/shared`
+(`packages/shared/src/types/notification.types.ts`). The catalog is keyed by plain string, so
+tsc does not catch a miss (`payroll.entry_corrected`, PAYROLL-FLAGS, fixed in #735). Add a
+type to both in the same commit.
+
+## Testing
+
+No new tests unless the developer asks (root `CLAUDE.md`). A unit that changes a provider
+constructor, or a module's `providers` or `imports`, boots the API once (`pnpm api:dev`) so a
+DI break shows before the PR, not after (TICKET-FLOW-SLOTS-HOLDOVER).

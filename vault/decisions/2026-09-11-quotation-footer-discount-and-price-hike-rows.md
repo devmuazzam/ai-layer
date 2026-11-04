@@ -15,6 +15,11 @@ provenance_note: >-
   that the group quantity is the number of visits and multiplies that sum; see
   decisions/2026-10-07-mob-demob-group-quantity-is-visits-times-the-summed-lines.md. Other group
   parents still roll up at the plain sum. Added 2026-10-09 by tcg-scrum (bookkeeping only).
+  The printed half left open under "What this does not settle" is answered: customer documents
+  carry no Discount and no Price Hike rows, every line prints net (Joe Schacatano, 2026-10-17, for
+  discounts; ticket owner for price hikes); see
+  decisions/2026-10-17-customer-documents-show-no-discount-every-line-net.md. The on-screen rules
+  here stand. Added 2026-10-17 by tcg-scrum (bookkeeping only).
 resolves:
   # part (c), the on-screen half; the printed-quote half stays open
   - quotations/gaps.md#branch-fixdas-fixes--archive-gate-rate-error-precedence-discount-and-price-hike-footer-rows

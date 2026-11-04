@@ -294,6 +294,10 @@ real event payload — which nothing in ADP's documentation or Postman collectio
 
 Remember to `DELETE /core/v1/event-notification-messages/{adp-msg-msgid}` afterwards.
 
+> **Run 2026-10-16/17 — result: nothing.** Subscribed, posted a test batch, a practitioner edited
+> and saved it: the queue stayed **204** for ~35 minutes. And no event in the full catalogue has
+> `payroll` in its path. See [adp-api-test-2026-10-09.md](adp-api-test-2026-10-09.md) §7.
+
 ### What is still absent — the boundary holds
 
 **There is no "payroll processed", "payroll completed", or "pay statement available" event.**
