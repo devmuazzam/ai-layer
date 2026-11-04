@@ -18,6 +18,15 @@ decided_by: >-
   question log exist only on overlay branch feat/association-document-visibility (under review);
   this log is the product record of the answers, ported to overlay main 2026-10-09.
 status: reference
+provenance_note: >-
+  Rows refined or reversed by the same ticket owner's later answers in the TCG-218 spec §12 log
+  (a different Q numbering from this log's): Q6/U8 — for OPTIONAL associations, reversed 2026-10-15
+  (spec Q12 "no": an Optional association left off the quote is not a DAS slot), a working
+  assumption pending Lisette Anzaldo, see decisions/2026-10-16-dispatch-slots-required-optional-none.md
+  rule 7; Q14 — adding now mirrors both ways, see decisions/2026-10-16-mob-demob-twin-rule-is-symmetric.md;
+  Q15 — the switch now asks whenever the quote has lines and keeps edits, see
+  decisions/2026-10-16-quotation-type-switch-re-lays-out-and-keeps-edits.md. Status and
+  conflicts_with unchanged. Added 2026-10-17 by tcg-scrum (bookkeeping only).
 conflicts_with:
   - decisions/2026-09-12-optional-catalog-association-without-price-is-not-a-das-slot.md
 resolves: []

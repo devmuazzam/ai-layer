@@ -114,6 +114,25 @@ Repeat this block per requirement. Keep the field order.
   what happens to each, with its source. `none — new surface only (established by: <command>)`
   where true. `OPEN — see Q<n>` where nothing says what the existing consumers should do.*
 - **Acceptance:** *how a reviewer checks this is done. Concrete enough to fail.*
+- **Edges** *(required on every requirement that has behaviour; `N/A — <reason>` only for pure
+  copy or styling. A field nobody can source takes `ASSUMED — <value, from where>` (the
+  nearest existing behaviour), unless it is client-facing (guardrail G1), which becomes
+  `OPEN — see Q<n>` and makes the requirement `[OPEN]` until answered)*:
+  - **Reached by:** *every action, endpoint, job or path that can reach the state this
+    requirement keys on, one line each. A path this requirement does not hook gets a §12 line.*
+  - **Does not apply when:** *the cases the rule must leave alone (other flows, kinds,
+    statuses, floating vs sequential). Each one is checked in `units.md` — by a test only if
+    the developer asked for tests.*
+  - **When an input is absent:** *the behaviour for a missing or empty input, slot, field or
+    relation.*
+  - **Trust boundary:** *who supplies each input and whether the server believes it (client
+    clocks, headers, ids), or `N/A — server-derived`.*
+  - **Read time:** *for catalogue or configuration data a customer-visible record shows,
+    `live` or `frozen at <event>`. `live` on a sent quote, a job or a document is a §12
+    question.*
+  - **Matrix** *(only when the statement says twin, mirror, sync or follows)*: *operation
+    (add, edit, delete, reorder) × side, each cell `mirrors` / `does not` / `starts at
+    <value>`, sourced.*
 - **Notes for the executor:** *e.g. which existing component/service to reuse; which rule
   file governs it. `NOT SPECIFIED` is allowed.*
 
@@ -130,6 +149,7 @@ Repeat this block per requirement. Keep the field order.
   requirement still has a knowable radius; list the existing consumers if you enumerated
   them, and say that what happens to them is part of the question.*
 - **Acceptance:** `OPEN — cannot be stated until the question above is answered.`
+- **Edges:** `OPEN — cannot be stated until the question above is answered.`
 - **Notes for the executor:** *the smallest change that does not depend on the unknown, if
   one exists, explicitly labelled a workaround. Otherwise `blocked`.*
 
@@ -164,7 +184,8 @@ Repeat this block per requirement. Keep the field order.
 
 - **New prefix introduced:** yes / no — *a new prefix is a product-visible decision. If no
   source names it, it is `[OPEN]`, not a naming choice for the executor.*
-- **Child relations:** *FKs reference the parent UUID `id`, never the business code.*
+- **Child relations:** *FKs reference the parent UUID `id`, never the business code — and
+  `onDelete` for each FK, as a §11b row where no source states it.*
 - **Fields whose type/precision no source states:** *list them as `NOT SPECIFIED` rather
   than choosing. Money is `Decimal` with precision; dates are `@db.Timestamptz`.*
 
@@ -192,8 +213,10 @@ Per endpoint:
 - **Route param identity:** *business code on the boundary; resolve `(tenant, code) → id`
   once in the service, then operate by UUID*
 - **Errors:** *status + message per failure case, or `NOT SPECIFIED`*
+- **Pagination (list endpoints):** *page size and max, with source, or `OPEN — Q<n>`*
 - **Module registration:** *new module registered in `app.module.ts`; barrel `index.ts` in
-  every folder*
+  every folder; and every provider whose constructor changes, with each module that provides
+  it (the DI graph)*
 
 ## 5. Web surface — `apps/web`
 
@@ -254,6 +277,9 @@ Invented validation is still invention. A max length nobody wrote down is `NOT S
 
 ## 10. Tests
 
+`not requested` unless the developer or the ticket asked for tests (root `CLAUDE.md`). If
+asked:
+
 | Level | What it proves | Req |
 | --- | --- | --- |
 | Unit | | |
@@ -287,28 +313,28 @@ should happen to each consumer is a product fact and needs a source, or an open 
   it — an absent grep result is a finding, an unrun grep is not*
 - **Consumers with no source for what happens to them:** *list them; each is a §12 question*
 
-## 11b. Developer decisions — structure is the developer's call
+## 11b. AI decisions — reviewed by a developer
 
-*§12 asks the product owner what to build. This section asks a **developer** how it is
-structured* — every choice root `CLAUDE.md` → _Developers decide structure_ lists: a new
-table/column/enum/relation, new exported function vs reuse, a new endpoint or shape, a new
-dependency, a pattern choice or deviation.
+*§12 asks the product owner what to build. This section records **how it is structured** —
+decided by the AI* (root `CLAUDE.md` → _The AI decides how_): a new table/column/enum/relation,
+new exported function vs reuse, a new endpoint or shape, a pattern choice or deviation.
 
-**The agent writes the options; a developer writes the choice.** An agent fills _Decision_
-and _Options_, may add its recommendation with trade-offs under _AI note_, and leaves
-_Chosen_ and _Decided by_ blank. A blank row blocks sign-off exactly like an open §12 question.
+The AI fills every column except _Reviewed by_: what it chose, why, and what it passed over
+(with the existing code it found). A developer reviews the table at sign-off and edits any
+row they would choose differently. Only a guardrail row — destroying data (G2), tenant data
+(G3), a new dependency (G5) — is marked `needs developer` and waits for an answer.
 
-| ID | Decision | Options (with existing code found) | AI note | Chosen | Decided by | Date |
+| ID | Decision | Chosen | Why / alternatives (with existing code found) | Needs developer | Reviewed by | Date |
 | --- | --- | --- | --- | --- | --- | --- |
-| D1 | *e.g. where boom adders live* | *new `CraftModifierRate` table; columns on `CraftModifier` (`schema.prisma:2597`)* | *recommendation + why, optional* | | | |
+| D1 | *e.g. where boom adders live* | *columns on `CraftModifier`* | *one-to-one, no history → columns; rejected a new `CraftModifierRate` table (`schema.prisma:2597`)* | no | | |
 
 ## 11c. Siblings — same pattern, same change?
 
 *Features built on the same `patterns.md` entry as this one, or doing the same job by another
-name. For each: would this ticket's change apply there too? The developer answers; on a yes
-the change is in scope for this ticket's units.*
+name. For each: what this ticket does there — applied in a unit, or a follow-up when it is a
+separate job. The AI decides; the developer reviews.*
 
-| Sibling | Pattern | Same change? | Decided by | Enumerated by |
+| Sibling | Pattern | Same change? | Reviewed by | Enumerated by |
 | --- | --- | --- | --- | --- |
 | *module / screen* | P1 / P2 / none | yes — unit U*n* / no — *reason* / follow-up *ticket* | | `git grep -rn '<term>' <paths>` |
 
@@ -319,19 +345,32 @@ the change is in scope for this ticket's units.*
 **This section is the ticket's gaps register — there is no separate `gaps.md` in a ticket
 folder.** Every question this ticket raised lives here, with the search that produced it, and
 stays here when it is answered: mark it resolved and point at the decision note, so the
-question and its answer are read together. `.ai/vault/gaps.md` holds only what belongs to no
-ticket. To sweep every ticket for what is still open:
+question and its answer are read together. `.ai/vault/<module>/gaps.md` holds only what
+belongs to no ticket. To sweep every ticket for what is still open:
 
 ```bash
-grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/SCRUM-*/spec.md
+grep -rn '^- \*\*Status:\*\* open' .ai/aidlc/[A-Z]*/spec.md
 ```
 
 Each question must be answerable in one line by the person named. If it takes a meeting to
-answer, it is two questions.
+answer, it is two questions. **Give it lettered options so the reply can be a letter** — taken
+from the sources, in no order of preference, **none marked recommended or default** (choosing
+is the owner's call), always ending `X. Other — say what`. Only a value nobody can enumerate
+(a rate, a date) takes `free answer — <the form it takes>` instead. A question about what a
+customer-facing document shows asks the **scope first** ("does the customer ever see X, on
+any line?") before the narrow case ("on this line?"); the narrow reading is not built until
+the scope reply is in.
 
 ### Q1 — <topic>
 
-- **Question:** *one line, with the options if there are obvious ones*
+- **Question:** *one line*
+- **Options:**
+  - A. *one answer a person could give*
+  - B. *another*
+  - X. Other — say what
+- **Answer:** *blank until the owner replies — `B`, `A, C` or `X: <text>`, then who and when
+  (`B — Brian, 2026-10-21`). An answer alone does not resolve the question: `tcg-scrum` writes
+  the decision note and flips Status*
 - **Why it cannot be answered from what is written:** *what you read, and what it did not
   settle*
 - **Blocked:** REQ-nn *(and what cannot ship without it)*
@@ -358,9 +397,9 @@ exists so nobody mistakes the spec's silence for the feature's simplicity.
 - [ ] Every `[CONFLICT]` requirement has a decision note in `.ai/vault/decisions/`
 - [ ] Answers written back into `spec.md` with their new sources and flags
 - [ ] Every §12 question updated to `Status: resolved — see decisions/YYYY-MM-DD-topic.md`
+- [ ] Every requirement's **Edges** fields are filled (`ASSUMED` allowed) or point at a §12 question
 - [ ] Every §11a ripple row has a source for what happens to that consumer, or a §12 question
-- [ ] Every §11b row has _Chosen_ and _Decided by_ filled by a developer
-- [ ] Every §11c sibling has a developer's yes / no / follow-up
+- [ ] A developer has reviewed §11b and §11c (_Reviewed by_), and answered every `needs developer` row
 - [ ] Decomposed into vertical units — `units.md`
 
 Answered by: ______________  Date: ______________

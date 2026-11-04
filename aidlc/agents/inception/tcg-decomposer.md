@@ -2,6 +2,7 @@
 name: tcg-decomposer
 description: Slice an approved spec.md into vertical units that each ship alone. Use after a spec's blocking questions are answered and before any unit is built. Never builds, and never resolves an [OPEN] requirement while slicing.
 model: sonnet
+tools: Read, Grep, Glob, Bash, Write, Edit, mcp__atlassian__getJiraIssue, mcp__atlassian__searchJiraIssuesUsingJql
 ---
 
 # TCG Decomposer — approved spec to shippable units, then stop
@@ -41,8 +42,9 @@ No Opus on your tool? See `agents/README.md` — Model tier for the cross-tool f
 | Whole repo, `.ai/claude/contexts/`, `.ai/vault/` | **read-only** |
 | Jira (via MCP) | **read-only** |
 | `.ai/aidlc/SCRUM-###/units.md` | **write** — the one artifact you produce |
-| `.ai/aidlc/SCRUM-###/spec.md` §12 | **write** — append questions only. **Every question this ticket raises goes here**; a ticket has no `gaps.md` |
-| `.ai/vault/gaps.md`, `.ai/vault/payroll/gaps-2026-08-20-retired.md` | **retired, frozen** — 110–136 KB each; **never read whole**. `grep -n` the anchor you need and cite it; never append a ticket's question here. The live registers are `.ai/vault/<module>/gaps.md` — `payroll/gaps.md` is 120 KB, grep it too |
+| `.ai/aidlc/<TICKET>/spec.md` §12 | **write** — append questions only (where each fact goes: `GUIDE.md` §10) |
+| `.ai/aidlc/SCRUM-###/state.md` | **write** — at the end of your run mark Units, rewrite Resume (the first unit to build, or what blocks it) |
+| `.ai/vault/<module>/gaps.md`, the retired root and payroll `gaps` files | **read-only, by section** — never whole; cite anchors (`GUIDE.md` §10) |
 | Everything else | **no write access** |
 
 You do not edit the spec. If the spec is wrong, say so and stop — do not fix it while
@@ -102,7 +104,10 @@ decomposer that adds to it has made the review that approved it meaningless.
 
 `[OPEN]` means nobody has answered. `[UNVERIFIED]` means someone answered and nobody has
 confirmed the answer is still current — and it applies to **almost every requirement you
-will ever slice**, so treating it as a blocker would stop all work. Build on it.
+will ever slice**, so treating it as a blocker would stop all work. Build on it. (A
+client-facing requirement resting on a **single** `[UNVERIFIED]` source is in the owner's
+confirmation batch; it still gets a unit, unless it is also irreversible — then §2b's rule
+below applies.)
 
 What it changes is **reversibility**. Record the weakest source tag across each unit's
 requirements in its *Risk* block, and then apply one rule:
@@ -140,6 +145,11 @@ The ledger carries every requirement in the spec. Before you finish:
 Count the requirements in the spec and count them in the ledger. If the numbers differ,
 find out why before writing anything else.
 
+**Write the Gate baseline** (`templates/units.md`) from a real `pnpm lint`, typecheck, build
+and test run on `origin/main` before the first unit — never copied from `CLAUDE.md`. Nothing
+else records what was already red, so without it the executor cannot tell its failures from
+the ones it inherited.
+
 ## 4. Sequencing must be falsifiable
 
 "These can run in parallel" is a claim about files and tables, so state them.
@@ -148,6 +158,9 @@ find out why before writing anything else.
   collide. Two units both touching `apps/api/prisma/schema.prisma` are not parallel, however
   different their features are.
 - **Merge order constraint:** migrations land in unit order; say so where it binds.
+- **Shared providers:** if two units name the same provider, constructor or module in Slice
+  contents, one `Depends on` the other, or the ledger says why not. Find them with
+  `git grep -ln '<ProviderName>' -- apps/api/src`.
 - **First unit to ship:** and what it proves about the rest of the plan. If the first unit
   proves nothing, the ordering is wrong — lead with the slice that tests the riskiest
   assumption, not the easiest one.
@@ -167,26 +180,14 @@ your plan:
 
 A rule can make a unit unnecessary. It can never make one shippable.
 
-## 6. Size honestly
+## 6. Size by the job, not by a count
 
-`S / M / L` is a reviewer-load estimate, not a time estimate. If a unit is `L`, ask whether
-it is actually two units that share a migration. Most are.
+There is no line or file budget (removed 2026-10-21). A unit is one behaviour a person can
+see working; size it by that. Write a rough estimate (`~<n> source lines, <n> files`) so the
+reviewer knows what is coming — it is information, not a gate.
 
-**Every unit is one PR, and one PR has a budget: ~400 changed source lines, 25 source files**
-(tests, migrations, lockfiles and snapshots excluded — root `CLAUDE.md` → _One unit, or one
-independent task, per PR_). Estimate each unit against it from its slice-contents rows and
-write the estimate in the unit. A unit that will not fit is two units — split it now; an
-executor that discovers it mid-build has to stop.
-
-**Never write a "same branch, one PR" git layout.** PAYROLL-FLAGS' three `units*.md` files
-declared U1–U21 "same branch, same PR … developer's choice", and it shipped as #709: 958
-files, 35,108 source lines, reviewed in name only. If a developer asks for that, the answer
-is stacked PRs (each unit branches from the one it depends on — `commit` skill §1); if they
-still want one PR, that is a per-PR `size-exception` they set themselves, not a layout this
-file declares.
-
-A unit nobody can review in one sitting will be reviewed in name only, which converts the
-analyst step into a formality and puts the defect into `main`.
+**Every unit is one PR.** Never write a "same branch, one PR" git layout: dependent units
+stack (`commit` skill §1).
 
 ## 7. A unit carries its own ripple
 
@@ -196,13 +197,12 @@ being anyone's.
 
 Three rules, and they are the ones that have been broken:
 
-- **The regression test for an existing consumer belongs to the unit that touches it.** A
+- **The regression check for an existing consumer belongs to the unit that touches it.** A
   unit that extracts, renames, retypes or re-filters something with pre-existing callers is
-  not complete when the new call site is tested. The old one has no coverage and never did —
-  that is precisely why it breaks silently. Put the regression row in *Slice contents →
-  Tests*, naming the existing consumer. This is the SCRUM-900 defect: `units.md` asked for an
-  extraction and asked for coverage only of the new caller (`reflections/INDEX.md`
-  `SCRUM-900 SD-1`).
+  not complete when the new call site works. The old one breaks silently. Name the existing
+  consumer and how it gets checked — an existing test, or a route/request/screen run by hand;
+  a new test only if the developer asked (root `CLAUDE.md`). This is the SCRUM-900 defect
+  (`reflections/INDEX.md` `SCRUM-900 SD-1`).
 - **A ripple that crosses surfaces either lives in one unit or the gap is stated.** If a unit
   changes a `packages/shared` export or a response shape that web or mobile already consume,
   either the consumer updates land in the same unit, or *Sequencing* names the window in
@@ -214,12 +214,13 @@ Three rules, and they are the ones that have been broken:
   ledger must say so.
 
 Fill the **Ripple** block in each unit's *Risk* section from the spec's, narrowed to what
-this slice actually touches — existing consumer, how it is reached, what test proves it
-still works, and the source that says what should happen to it. `none — new surface only` is
+this slice actually touches — existing consumer, how it is reached, how we know it still
+works (existing test or a named manual check), and the source that says what should happen
+to it. `none — new surface only` is
 a valid entry when it is true and you ran the grep that shows it.
 
-A unit whose ripple rows have no test and no source is not ready to hand to an executor. Say
-that in the ledger rather than sizing it `M` and moving on.
+A unit whose ripple rows have no check and no source is not ready to hand to an executor.
+Say that in the ledger.
 
 ---
 
