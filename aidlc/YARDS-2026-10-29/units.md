@@ -27,7 +27,7 @@
 | --- | --- |
 | Schema | `EmployeeYard` (`employee_yards`): id, tenant, employee_id (cascade), yard_id (cascade), created_at; unique (employee, yard); tenant-scoped. `Employee.yardId` stays the Home yard. |
 | API | Create requires `yardId` (Home); create/update take `additionalYardIds: uuid[]` (Home excluded, duplicates dropped, yards must exist in tenant); update with the field replaces the set. Employee read returns `additionalYards: { id, yardName, yardId }[]`. Payroll untouched (REQ-11). |
-| Web | Employee form: one "Yards" multi-select (`AsyncMultiCombobox`), the starred chip is Home (D9); Home required on create; detail shows Home and "Also works out of". |
+| Web | Employee form: one "Yards" multi-select (`AsyncMultiCombobox`), the starred chip is Home, shown as Primary (D9, D10); Home required on create; detail shows Home and "Also works out of". |
 | qa | Employee helpers already send `yardId`; add a lifecycle check for extra yards. |
 
 ## U3 — Yards on the Dispatch board

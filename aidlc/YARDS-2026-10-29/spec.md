@@ -65,6 +65,11 @@
   `additionalYardIds` = the rest). New shared `components/ui/async-multi-combobox.tsx` — the first
   multi-select picker in the app; `contexts/web.md` → *Multi-select* still says there is none and
   repeat rows are the sanctioned pattern (a human updates contexts). [developer, 2026-11-03]
+- **D10 — The Yards picker's look, from client feedback.** Picked yards are pills inside the field,
+  on one row that scrolls sideways so the field keeps the height of its neighbours. The list stays
+  open between picks and every row has a checkbox. The Home yard reads **Primary** on screen; the
+  data, the API and this spec keep "Home" (`yardId`). The details page still labels it "Yard".
+  [developer, 2026-11-04]
 
 ## 12. Questions
 

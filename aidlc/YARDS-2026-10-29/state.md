@@ -35,4 +35,9 @@ LA and Riverside (10 blank test-yard addresses skipped). `5e6885ee6` — employe
 chip replaces the extra-yard rows (D9); checked live: pick two, star moves Home, removing Home promotes the next, edit
 loads both, swap Home on CTE-00001 saved (now Home LA, extra Claude Test Yard). Web tsc/eslint clean, node tests
 1018/1022 (same 4); api helper spec 6/6. Not checked live: geocoding through the yard form (unit-tested only).
+2026-11-04: `8ef8ec868` — client feedback on the Yards picker (D10): pills inside the field on one scrolling row, a
+checkbox on every row, the list stays open between picks, neutral pills, Home reads Primary. Checked live with six
+yards: pick, untick, search + Enter, Backspace, Esc, click outside, star, removing Primary, required error, wheel
+and open/close scroll. Edit load and save + reload were checked before the last visual changes. Web tsc clean, node
+tests 1028/1036 (same 8). Not checked: phone width, qa-automation.
 Next: optionally split the commits per unit; run the backfill per environment on deploy; PR when the developer says.
