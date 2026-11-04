@@ -60,6 +60,14 @@ and is not in it, that is a finding, not a detail.
 - Tables `snake_case` plural via `@@map()`; columns `snake_case` via `@map()`.
 - Timestamps are `@db.Timestamptz` — used ~285 times; match it.
 - Indexes: `idx_<table>_<column>`; unique constraints `uq_<table>_<what>`.
+- A field typed as a Prisma enum in `schema.prisma` is typed with that generated enum
+  everywhere application code reads or compares it, test fixtures included. Never re-declare
+  it as `string` or match it against a `Set<string>` of literals: tsc then accepts values that
+  do not exist (SCRUM-900: `'IN_PROGRESS'` for `SubJobStage`).
+- A new query over the same entity or board as an existing one diffs its `where` against that
+  query field by field. A scope filter present on one and absent on the other (`isActive`,
+  `archivedAt`, `replacedAt`) is a §12 question for the ticket, not a choice — types cannot
+  catch it (SCRUM-252).
 
 ## Every picker search is currently a sequential scan
 

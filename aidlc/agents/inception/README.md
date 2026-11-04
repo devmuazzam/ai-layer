@@ -43,7 +43,7 @@ And a second answer the phase now owes, because the last two weeks' defects were
 features but working ones that stopped: *what already ships that this reaches?* The
 elaborator enumerates it (`tcg-elaborator.md` §9 → `spec.md` §11a and each requirement's
 `Ripple:` field) and refuses to decide what happens to an existing consumer that no source
-mentions; the decomposer puts the regression proof for that consumer inside the unit that
+mentions; the decomposer puts the regression check for that consumer inside the unit that
 touches it (`tcg-decomposer.md` §7). Neither is a code question — the enumeration is a repo
 fact, what should happen to it is a product fact, and only the second one needs a human.
 

@@ -950,7 +950,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Departments, roles and their capabilities — the authorization layer is unbuilt and the list is unwritten
 
-- **Status:** open
+- **Status:** open — **partly answered 2026-10-20 by Corrina Bustos** ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md), `status: verified`). **Answered:** the department list (nine); the person-to-role shape (one main role plus a can-also-fill list, the main role decides access); who may change roles and permissions. That last item was narrowed by her same-day follow-up: the Dispatcher assigns a person's role, approved by the Dispatch Manager; Corrina, Melissa, Joe or Lisette edit what a role can do. See the second dated line below. **Still open:** what each role may do, and the full role list inside each department. Per-person access and the approval flow are split out to [*Per-person access beyond the role default*](#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes). *(Was: open, 2026-09-01 – 2026-10-20.)*
 - **Asked:** 2026-09-01 — Abdul Rehman, in the accounting/onboarding call
   ([meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md](../meetings/2026-09-01-accounting-boundary-and-erp-onboarding.md) §3;
   transcript 29:54–30:31, 34:48).
@@ -1000,6 +1000,54 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   [responsive-design-and-security-posture.md](responsive-design-and-security-posture.md)). All
   of this is background; still needed from TCG: the department list, the role list, and each
   role's capabilities.
+- **Update 2026-10-20 (whole ADP roster + FCC seed extract, counts only):** evidence for the
+  department and role list, **not a TCG answer**. ADP's twelve departments are not an org
+  structure: only `PPEDEP` (81 active — hourly field, shop, yard), `SADMIN` (26 — salaried office)
+  and `SALOFF` (4 — officers) hold anyone; the job title carries the function. FCC's populated
+  grouping is the **classification** (`FIELD EMP`, `MECH LABOR`, `YARD LABOR`, `ACCOUNTING`,
+  `SALES`, `DISPATCH`, `SAFETY DEP`, `HR`, `OFC ADMIN`, `MANAGEMENT`, `OWNER`); its employee
+  `department` field is empty on every record. Department heads are FCC type `Management` with
+  the classification naming their function, and the four `OWNER` records are ADP's four `SALOFF`
+  officers. Together with the 16 June 2026 org chart this supports a candidate list — Field
+  Operations, Shop, Yard, Dispatch, Sales, Accounting, Safety, HR, Management — but **what each
+  role may do is still unwritten**. Detail:
+  [../payroll/adp-api-responses/workers-departments-2026-10-20.md](../payroll/adp-api-responses/workers-departments-2026-10-20.md).
+- **Update 2026-10-20 (Corrina Bustos, Teams, in writing — partly answered):** Syed Haris asked
+  eight questions; her answers are recorded verbatim in
+  [../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)
+  (`verified`).
+  - **Departments — answered:** *"yes"* to Field Operations, Shop, Yard, Dispatch, Sales,
+    Accounting, Safety, HR, Management. Her "yes" also accepts the examples given with the list:
+    Operators, Oilers and Riggers under Field Operations; Mechanics under Shop; Wes and the owners
+    under Management.
+  - **Roles — shape answered:** *"yes to both"*. One main role per person, plus a can-also-fill
+    list of other positions. The main role decides what the person can see. A temp fill-in uses
+    the regular role for that job, with the same pay setup and the same access (*"yes and yes"*).
+    The Payroll Administrator role sits in HR, *"right now"*.
+  - **Who may change roles and permissions — answered as stated:** *"Sales Coordinator and Dispatch
+    should be able to change roles and permissions, Dispatch Manager (Lisette) and myself
+    approve."* This describes a request/approval flow the ERP does not have. That flow, and
+    whether one person's access can differ from their role's (her *"i am unsure about the sales
+    coordinator part"*), are now in
+    [*Per-person access beyond the role default*](#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes).
+  - **Still open here:** **what each role may do**, and the full role list inside each department
+    beyond the examples. The Blocked line above stands: no permission check can be written without
+    the capabilities.
+- **Update 2026-10-20, later (Corrina Bustos's follow-up, Teams, in writing):** recorded in the
+  same decision note, section *The follow-up, same day*.
+  - **Who changes what:** *"Dispatcher can assign someone's role. A change needs approval from
+    Dispatch Manager. Editing what a role can do would be myself, Melissa, Joe, or Lisette."*
+    - **Assigning a person's role:** the Dispatcher, approved by the Dispatch Manager (Lisette
+      Anzaldo) alone.
+    - **Editing a role's permissions:** Corrina Bustos, Melissa McNutt, Joe Schacatano (our
+      reading of "Joe") or Lisette Anzaldo.
+  - **This narrows the first reply.** That reply said Sales Coordinators change roles and that
+    Corrina co-approves.
+  - **Open remainders** are in
+    [*Per-person access beyond the role default*](#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes):
+    the Sales Coordinator tension, self-approval, and whether role edits need approval.
+  - **Unchanged here:** what each role may do is still unwritten. The follow-up names who may
+    *edit* a role's capabilities, not what they are.
 
 ## Must a new nav entry be permission-gated, and who may see live vehicle locations?
 
@@ -1185,6 +1233,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - `decisions/` has no note on authentication method.
 - **Blocked:** onboarding TCG users onto the mobile app; any SSO work; whether the employee profile must require a work cell phone.
 - **Owner:** Patrick McKiernan (TCG IT) for (a); Brian Petros / Kyle Harlow for (b) and (c); CodingCops for scope.
+- **Update 2026-10-22 (10-20 and 10-21 calls, `unverified`):** still open. On 2026-10-20 Brian Petros
+  asked *when* TCG users would sign in with their own e-mail through **Entra ID** instead of a general test
+  login. ehtesham.anwar: to be planned once staging is done ([2026-10-20-erp-documentation-portal-set-up-order-test-login-and-staging.md](../meetings/2026-10-20-erp-documentation-portal-set-up-order-test-login-and-staging.md) §5). On
+  2026-10-21 abdulrehman described the build: TCG tests on a shared admin login in a test tenant;
+  employees are **invited by e-mail**; and the **work cell phone is required** because the mobile app
+  signs in with an **OTP** to it ([2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md) §1). That is CodingCops' build, not an
+  answer to (a)–(c): the build has made (b) the default without an owner's answer.
 
 ## Accessibility standard — WCAG 2.1 AA, or only the de-facto 44px lines?
 
@@ -1291,3 +1346,125 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   email. No decision in `decisions/`. Jira unreachable.
 - **Blocked:** nothing hard.
 - **Owner:** product team.
+
+## Per-person access beyond the role default, and the approval flow for role and permission changes
+
+- **Status:** open
+  - **Part 1:** asked again 2026-10-20. Corrina has passed it to Ryan Adams, and the answer is
+    awaited.
+  - **Part 2:** (a)–(c) answered by her same-day follow-up. (d) is open, and the follow-up adds
+    two new remainders. See the dated line below.
+- **Asked:** 2026-10-20 — split out of [*Departments, roles and their capabilities*](#departments-roles-and-their-capabilities--the-authorization-layer-is-unbuilt-and-the-list-is-unwritten)
+  when Corrina Bustos answered Syed Haris's eight role questions
+  ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)).
+  No ticket. Raised by the `EmployeeType` → `DepartmentRole` fold (Syed Haris, CodingCops).
+- **Question:** two parts, each answerable in one line.
+  1. **Can one person get access beyond their main role's default?** For example, two Sales
+     Coordinators where only one may approve quotes. Yes means the ERP holds per-person grants on
+     top of the role. No means anyone who needs different access gets a different role.
+  2. **How does a role or permission change get approved?** Corrina's rule is *"Sales Coordinator
+     and Dispatch should be able to change roles and permissions, Dispatch Manager (Lisette) and
+     myself approve."* Four details are open:
+     - (a) Is "Dispatch" the whole department, the Dispatcher role, or the Dispatch Manager?
+     - (b) Is "change roles and permissions" assigning a person's role, editing what a role may do,
+       or both?
+     - (c) Must both Lisette Anzaldo and Corrina Bustos approve, or does either one?
+     - (d) Does a change made by an approver also need the other's approval?
+- **Candidates:**
+  - Corrina Bustos, Teams, 2026-10-20, to the Q3 example (two people, same job, different
+    access): *"yes sometimes. ex: HDR Mechanic can also be called out into the field to be a 3rd man
+    or rigger. i am unsure about the sales coordinator part"*. Her example is about **filling a
+    slot**, which the can-also-fill list already covers. It is **not** about access. Part 1 is
+    therefore unanswered, and she said she was unsure.
+  - Ryan Adams (Sales Manager), 2026-03-19 roles demo 29:52–31:39
+    ([../meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md](../meetings/transcripts/2026-03-19-roles-permissions-figma-demo.md)
+    lines 156–164): default access by checkbox, plus a way for an employee to *request extra
+    access*, with *"a tractable asset there to who approved"* and an email to the executive team
+    to approve. Ehtesham Anwar (CodingCops): *"Right now it's not there, but we can have this
+    functionality of change request … request permissions"*. Ryan asked for per-person extra
+    access; Corrina was unsure about it. **Nobody has decided it.** A meeting is a record, not a
+    commitment.
+  - [../decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md](../decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md)
+    (`reference`, developer): any role-editing user may edit any role today. There is no approval
+    step.
+  - [../erp-review-log.md](../erp-review-log.md) → *Employees, HR and permissions*: *"maintain the
+    department/role permission structure, configurable"*. That covers the structure, not
+    per-person grants.
+- **Note:** the ERP has **no** request/approval flow for role or permission changes today. Part 2
+  is new behaviour (Path A), not a setting. Lisette Anzaldo is not on record agreeing to be an
+  approver. Related: [*Deleting the last admin-capable role can lock a tenant out*](#deleting-the-last-admin-capable-role-can-lock-a-tenant-out--is-a-floor-required).
+  An approval step changes who can cause that lockout.
+- **Sources checked:** the 2026-10-20 decision note; the 2026-03-19 transcript lines above; the
+  2026-09-04 decision; this register's departments/roles and lockout entries;
+  `quotations/sales-operating-system/03-sales-coordinator-operations-manual.md` §2 (the Sales
+  Coordinator authority-limit table: it limits what the role may approve, and is silent on
+  changing roles).
+- **Blocked:** any per-user permission override in the role model; the role/permission edit screens
+  (who may save a change, and whether it waits for approval).
+- **Owner:** Corrina Bustos (both parts), with Lisette Anzaldo for part 2(c)–(d). Ryan Adams raised
+  part 1.
+- **Update 2026-10-20, later (Corrina Bustos's follow-up, Teams, in writing):** recorded in
+  [../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)
+  → *The follow-up, same day* (`verified`).
+  - **Part 1, still open: asked Ryan, awaiting.** Her reply: *"I have asked Ryan about the sales
+    coordinator. Will let you know when he responds."* The owner for part 1 is now **Ryan Adams**
+    (Sales Manager), through Corrina.
+  - **Part 2.** Her reply: *"Dispatcher can assign someone's role. A change needs approval from
+    Dispatch Manager. Editing what a role can do would be myself, Melissa, Joe, or Lisette."*
+    - ~~(a)~~ **Answered:** the **Dispatcher** assigns roles.
+    - ~~(b)~~ **Answered: both, split.** The Dispatcher assigns a person's role. Corrina Bustos,
+      Melissa McNutt, Joe Schacatano or Lisette Anzaldo edit what a role can do. "Joe" is our
+      reading: the directory also lists a Joe Deitrick.
+    - ~~(c)~~ **Answered:** an assignment needs approval from the **Dispatch Manager** (Lisette
+      Anzaldo) **alone**. The first reply's *"Dispatch Manager (Lisette) and myself approve"* is
+      narrowed to one approver.
+    - **(d) Still open:** self-approval. Lisette is both the assignment approver and a role
+      editor.
+    - **New (e), a tension, recorded, not resolved:** the first reply said *"Sales Coordinator and
+      Dispatch should be able to change roles and permissions"*. The follow-up names only the
+      Dispatcher for assignment. **Do Sales Coordinators still assign roles?** A confirmation has
+      been sent to Corrina.
+    - **New (f):** **does editing what a role can do need approval?** None was stated. Her approval
+      sentence sits with the assignment sentence, and the question did not ask this separately.
+  - **Still true:** the ERP has no approval flow. Part 2's assignment approval is new behaviour
+    (Path A). Lisette Anzaldo, Melissa McNutt and Joe Schacatano are not on record agreeing to
+    these duties.
+
+## Branch fixes/TCG-22-OCT-UAT (PR #926) — fallback company email moved from thecraneguys.com to craneguys.com, with new mailbox names
+
+- **Status:** resolved — see [../decisions/2026-10-23-pr-926-won-popup-craneguys-domain-full-money-as-built.md](../decisions/2026-10-23-pr-926-won-popup-craneguys-domain-full-money-as-built.md). Asad Amanullah decided on 2026-10-23 (`reference`). The website is `www.craneguys.com`: bare host, no scheme, lowercase. Contact emails are `quotes@`, `permits@`, `dispatch@` and `hello@` @craneguys.com. (b) is **yes**, for the Email and Website rows of item 12 only. (a) is decided for the build, but nobody has confirmed the mailboxes exist on TCG's mail server; the decision note says who can. The broader identity question below stays open.
+- **Asked:** 2026-10-23, in the PR #926 review (tcg-scrum escalation). Path C, no ticket.
+- **Question:** Two questions, each answerable in one line. (a) Do the code fallbacks the branch introduces exist as TCG mailboxes: `quotes@`, `hello@`, `permits@` and `dispatch@` @craneguys.com? (b) Does this supersede item 12 of [../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md](../decisions/2026-09-15-fix-15-sep-das-and-quotations-as-built.md) (`reference`), which records `quotes@thecraneguys.com` and `www.CraneGuys.com` as the letterhead fallback? Answer yes or no.
+- **Sources checked:** Several `unverified` sources show craneguys.com as TCG's mail domain: [engagement-directory-and-org-charts.md](engagement-directory-and-org-charts.md):46 (staff work emails), [../accounting/invoice-packets-2026-04-worked-examples.md](../accounting/invoice-packets-2026-04-worked-examples.md):57-58 (`invoices@`, `Accounting@`), [../projects-jobs/city-permits/permit-acquisition-process.md](../projects-jobs/city-permits/permit-acquisition-process.md):29,170 (`dispatch@`) and [../payroll/certified-payroll-playbook.md](../payroll/certified-payroll-playbook.md):159 (`Laborcompliance@`). Outside `meetings/`, `thecraneguys.com` appears only in the 2026-09-15 note and in the placeholder defaults described in the entry below. Only `dispatch@` is sourced. `quotes@`, `hello@` and `permits@` appear in no source at any domain, except the 2026-09-15 note's `quotes@thecraneguys.com`. Host names are case-insensitive, so `www.CraneGuys.com` and `www.craneguys.com` are the same address. Nothing written says whether to use the www or the bare host.
+- **Related:** [*Whose company identity do customer-facing emails carry when a deployment sets no env?*](#whose-company-identity-do-customer-facing-emails-carry-when-a-deployment-sets-no-env) is still open and broader: it asks whether a hardcoded TCG fallback is right at all. Answer (b) together with it.
+- **Blocked:** nothing at merge, because `COMPANY_*` env overrides the fallbacks on deployed servers. This entry does block superseding the 2026-09-15 note's item 12. Only a named human can supersede it.
+- **Owner:** (b) Ehtesham Anwar, who recorded item 12, or TCG, which the note says may overrule it. (a) Patrick McKiernan (IT Manager), who knows which mailboxes exist.
+
+## Field beta test and parallel run with FCC — four field testers chosen by Kyle, no plan written
+
+- **Status:** open
+- **Asked:** 2026-10-27 — ERP demo walkthrough part 3. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md). Filed 2026-10-29.
+  - abdulrehman (52:03–52:23): CodingCops needs field employees to install the app and stress-test it on
+    real jobs — holdover, build-up / breakdown, boom time, a Home start with no breakdown the day before.
+    syed.haris (52:51): the Samsara payroll flags can be tested only on a real job.
+  - **Kyle Harlow (VP of Fleet), 53:41:** *"put actual jobs in the system that they're doing currently and
+    have them do it in FCC and do it in your system"*. abdulrehman: yes — the ERP is beta, *"not production
+    ready as yet"* (53:57–54:21).
+  - abdulrehman (54:45): **one operator, one oiler, one third man and one rigger**. Kyle will pick them with
+    the superintendent (55:52).
+  - ans.nisar (55:01–55:20): later, run **one whole project** in the ERP rather than moving over at once.
+    Kyle: *"that makes good sense."*
+- **Question:** **(a)** Who are the four testers, and when do they start? **(b)** Which jobs run in both FCC
+  and the ERP, for how long, and who compares the results (tickets, payroll, flags)? **(c)** Does a
+  parallel-run ticket pay anyone, or is FCC still the system of record for pay and billing? **(d)** What
+  ends the beta and starts the one-project run?
+- **Sources checked:** Kyle promised testers twice before —
+  [../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md](../meetings/2026-09-10-rate-buckets-rest-chain-holiday-minimum-and-work-orders.md)
+  §8 (*"one good person from each pool"*) and
+  [../meetings/2026-09-22-erp-live-demo-02-project-schedule-permits-das-allocation-and-vendors.md](../meetings/2026-09-22-erp-live-demo-02-project-schedule-permits-das-allocation-and-vendors.md)
+  (*"I'll get those together"*) — not delivered by 10-27. [tcg-erp-rfp-2026-02-26.md](tcg-erp-rfp-2026-02-26.md)
+  plans *"UAT with key users, parallel running"* for Nov–Dec 2026. FCC is
+  [../domain/fcc-nexgen-fms.md](../domain/fcc-nexgen-fms.md). The frozen root `gaps.md` entry *Phased
+  rollout — no vault coverage* is the only earlier rollout record.
+- **Blocked:** real-job testing of the holdover flow and the Samsara flags; the one-project pilot.
+- **Owner:** Kyle Harlow (testers); CodingCops (test plan, ans.nisar / abdulrehman).

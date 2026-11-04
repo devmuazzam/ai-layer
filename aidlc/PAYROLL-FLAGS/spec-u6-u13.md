@@ -1805,6 +1805,68 @@ grep -n '^### REQ-\|^### Q[0-9]' .ai/aidlc/PAYROLL-FLAGS/spec.md   # re-check be
     `provenance_note`, not a ticket question.
 - **Status:** resolved — see decisions/2026-10-06-payroll-calculate-runs-automatically.md
 
+### Q27 — REQ-22: is the retirement of `/v1/payroll-corrections` superseded by the restored Returned Entries page?
+
+- **Status:** open
+- **Asked:** 2026-10-19 — Jz-Nd (git user), Claude Code session fixing the failing test suite (no
+  ticket). `crane-supervisor-retired.spec.ts` failed because the controller REQ-22 removed is
+  served again.
+- **Question:** REQ-22 retires the `/v1/payroll-corrections/*` controller along with the Crane
+  Supervisor routing. `decisions/2026-10-06-returned-entries-correction-flow-and-send-back.md`
+  (Ali Riaz, developer direction, `status: reference`) restored the controller and the Returned
+  Entries page under `payroll` / `payroll-admin`, and `6ae1e4543` added routes to it. One line:
+  **"REQ-22 is amended — the route stays, only the `crane-supervisor` permission is retired"**, or
+  the route must go and Returned Entries moves elsewhere.
+- **Why it cannot be answered from what is written:** the 2026-10-06 note calls itself "a developer
+  direction, not a client-side product decision", and REQ-22 was never amended to match it. The
+  verified 2026-09-29 decision (Corrina Bustos) routes flags to Payroll Admin/Manager but says
+  nothing about this route either way.
+- **Blocked:** nothing. As built, the route is served with no `crane-supervisor` permission; on
+  2026-10-19 `crane-supervisor-retired.spec.ts` was updated to assert exactly that instead of the
+  route's absence. A "route must go" answer reverts that test and removes the controller.
+- **Candidates:**
+  - REQ-22 (this spec).
+  - `.ai/vault/decisions/2026-10-06-returned-entries-correction-flow-and-send-back.md` (reference).
+  - `.ai/vault/decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md`
+    (verified).
+  - `.ai/vault/decisions/2026-10-13-fix-entry-roundtrip-attribution-and-pm-pa-split.md`, which
+    lowers `/payroll-corrections/:id` to `payroll:edit`.
+- **Owner:** Syed Haris (PAYROLL-FLAGS owner); Corrina Bustos if it is treated as product intent.
+- **Workaround, if any:** as built.
+
+### Q28 — REQ-26 / REQ-29: on a send-back, is the crew told and reminded, or neither until a Payroll Admin forwards it?
+
+- **Status:** open
+- **Asked:** 2026-10-20 — Jz-Nd (git user), review of client branch `test/stale-specs-green-suite`.
+- **Question:** REQ-26 says every returned crew member is told (`payroll.ticket_returned`, push +
+  in-app) when the ticket is sent back, and REQ-29 reminds each one every 3 hours until they reply.
+  Since `c7d1ef313`, following `decisions/2026-10-06-returned-entries-correction-flow-and-send-back.md`,
+  the send-back tells only the Payroll Admins the sender picks; the crew is told when an admin
+  forwards it (`sendBackToEmployee`). The reminders were not changed with it. One line:
+  **"neither until forwarded"** — no notice and no reminder until `sendBackToEmployee` — or
+  **"both, as REQ-26/29 say"**, or another split.
+- **Why it cannot be answered from what is written:** REQ-26/29 (this spec, `[UNVERIFIED]`) and the
+  2026-10-06 note (developer direction, `status: reference`) disagree, and neither mentions the other.
+- **As built — the inconsistency:**
+  - `sendBack` sets every crew row's `nextReminderAt` to 3 hours out
+    (`payroll-send-backs.service.ts`, `nextSendBackReminderAt(sentAt)` on the rows it creates), and
+    `PayrollSendBackRemindersRepository.findDue` takes every `SENT_BACK` row without looking at
+    `employeeNotifiedAt`. So the crew gets **no notice, then "reminder #1" 3 hours later** — possibly
+    before any admin has decided to forward it.
+  - `sendBackToEmployee` notifies the one row's employee, not the crew REQ-25 returns, and has no test.
+  - Both halves are pinned green: `payroll-send-backs.service.spec.ts` asserts no crew notice on
+    send-back; `notification-scheduled-jobs.service.spec.ts` asserts the 3-hour crew reminder.
+- **Blocked:** nothing in a build; the fix waits on this answer. For "neither until forwarded": leave
+  `nextReminderAt` null on send-back, set it in `sendBackToEmployee` (for the whole return group or
+  the one member — part of the answer), have `findDue` skip rows not yet forwarded, and rewrite the
+  reminders spec to forward first.
+- **Candidates:**
+  - REQ-25, REQ-26, REQ-29 (this spec).
+  - `.ai/vault/decisions/2026-10-06-returned-entries-correction-flow-and-send-back.md` (reference).
+  - `.ai/vault/decisions/2026-10-13-fix-entry-roundtrip-attribution-and-pm-pa-split.md` (reference).
+- **Owner:** Syed Haris (PAYROLL-FLAGS owner); Corrina Bustos if it is treated as product intent.
+- **Workaround, if any:** as built.
+
 ---
 
 ## 13. What this spec deliberately does not specify

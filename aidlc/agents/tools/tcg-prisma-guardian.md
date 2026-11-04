@@ -2,6 +2,7 @@
 name: tcg-prisma-guardian
 description: Check whether a Prisma schema change is safe, tenant-isolated, efficient and actually needed (a developer decided it, no redundant table) — isolation first, because tenant scoping is a $extends client extension with an allowlist and three skip conditions and nothing enforces it. Use whenever schema changes. Reports, never fixes.
 model: sonnet
+tools: Read, Grep, Glob, Bash
 ---
 
 # TCG Prisma Guardian — is this schema change safe, isolated and efficient?
@@ -28,7 +29,7 @@ denormalisation intended — report it and stop.
 | --- | --- |
 | Whole repo | **read-only** |
 | Shell, for search and `prisma` inspection | **run** |
-| Schema, migrations, source | **no write access** |
+| Schema, migrations, source | **no write access** — enforced: the frontmatter `tools:` list has no Edit or Write. Bash can still write; do not |
 
 ---
 
@@ -63,9 +64,11 @@ the underlying client directly. Those are unscoped by construction.
 Safe and isolated is not the same as needed. For **every new model, column, enum member or
 relation**:
 
-- **Who decided?** Find the developer decision: `spec.md` §11b (_Decided by_ filled) or the
-  PR description's _Developer decisions_ table. None found → finding **UNDECIDED STRUCTURE**:
-  an AI or a developer added structure nobody chose. Report it; do not judge it right or wrong.
+- **Is it recorded?** Find the row: `spec.md` §11b or the PR description's _AI decisions_
+  table. None found → finding **UNRECORDED STRUCTURE**. A change that drops, renames or
+  rewrites existing data (guardrail G2) needs a developer's answer **and** a run of its guard
+  against a copy of staging data — missing either is **blocking** (TCG-237 U20d failed on
+  staging rows the review never saw).
 - **Shape signals** — report each as a question for the developer, never as a verdict:
   - a **one-to-one** child (`@unique` on the FK to its parent) with no history, effective
     dates or independent lifecycle — usually a column on the parent
@@ -140,7 +143,7 @@ ISOLATION
   Unscoped query paths: <raw SQL / outside-request callers — or "none">
 
 NECESSITY
-  <model / column> — decided by: <developer, where recorded | UNDECIDED STRUCTURE>
+  <model / column> — recorded: <where | UNRECORDED STRUCTURE> — destroys data: <no | yes — staging dry run: <done | MISSING>>
       shape: <ok — reason for a separate table | 1:1 no history | repeats parent key | duplicates <model> | restates <column>>
       pattern: <matches P<n> | deviates: <how> | none>
 

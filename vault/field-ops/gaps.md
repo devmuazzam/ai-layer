@@ -821,7 +821,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## May one job ticket run 24 hours or more, or is a multi-day job always one ticket per day?
 
-- **Status:** open
+- **Status:** resolved — see [../decisions/2026-10-15-slot-driven-steps-floating-checklists-holdover-flow.md](../decisions/2026-10-15-slot-driven-steps-floating-checklists-holdover-flow.md) (H2: one ticket per day, days open in date order)
 - **Asked:** 2026-09-30 — surfaced while recording the developer's answers to the multi-day gaps
   ([../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md) A6).
 - **Question:** the verified
@@ -836,7 +836,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## End Work — break-down end, or the crew leaving the job site?
 
-- **Status:** open
+- **Status:** resolved — see [../decisions/2026-10-15-slot-driven-steps-floating-checklists-holdover-flow.md](../decisions/2026-10-15-slot-driven-steps-floating-checklists-holdover-flow.md) (H3: End Work records WORK_AT_JOB_SITE_TIME.endedAt; on holdover with no break-down, the boom closes at the same instant)
 - **Asked:** 2026-09-30 — developer answer C10 in
   [../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md).
 - **Question:** which instant closes `WORK_AT_JOB_SITE_TIME` (End Work)?
@@ -854,7 +854,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** the TCG field-ops owner. No billing owner is named in the vault.
 ## Late and incomplete tickets — where the 24-hour window starts, what it allows, and how reminders are anchored
 
-- **Status:** open
+- **Status:** resolved — see [../decisions/2026-10-15-late-and-incomplete-tickets.md](../decisions/2026-10-15-late-and-incomplete-tickets.md) (L2–L18)
 - **Asked:** 2026-10-07 — recording Melissa McNutt's provisional answers to umer.islam's
   incomplete-ticket questions
   ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
@@ -954,7 +954,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 
 ## Holdover days 2+ — on-site daily pre-trip, and is there a post-trip on the days in between?
 
-- **Status:** open
+- **Status:** resolved — see [../decisions/2026-10-15-slot-driven-steps-floating-checklists-holdover-flow.md](../decisions/2026-10-15-slot-driven-steps-floating-checklists-holdover-flow.md) (D6, H8, H10)
 - **Asked:** 2026-10-07 — recording Melissa McNutt's provisional holdover answers
   ([../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md),
   `reference`, T5–T6).
@@ -1028,3 +1028,18 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** PR #732's commit message preserves three recent completed cards through the default list. Local client remediation `1fe9d08926fa79c641600067a080f5af54260069` also prunes terminal query payloads while retaining returned tickets and pending native drafts. Both are implementation context, not a verified product ruling. The subsequent review treats retention as an unresolved requirement, separately from the lockfile mismatch and acknowledgment-notification race.
 - **Blocked:** product sign-off on terminal-history retention across offline dashboard, jobs filters, and ticket detail screens.
 - **Owner:** TCG product team.
+
+## Two Operator slots and no Oiler on the same DAS set — which Operator gets FULL?
+
+- **Status:** open
+- **Asked:** 2026-10-15 — raised by D3 in
+  [../decisions/2026-10-15-slot-driven-steps-floating-checklists-holdover-flow.md](../decisions/2026-10-15-slot-driven-steps-floating-checklists-holdover-flow.md).
+- **Question:** When a DAS set has two Operator slots and no Oiler slot, do both Operators get
+  FULL flow (the current behaviour), or should one be designated as FULL and the other STANDARD?
+- **Candidates:** none: nothing written. Current behaviour gives both FULL; Haris says this is not
+  a real case and stays as-is for now.
+- **Note:** D1 says an Operator slot gets FULL when the set has no Oiler slot. With two Operator
+  slots and no Oiler, both qualify. The scenario is flagged as not practically occurring, so no
+  change is made; the question is filed in case the assumption is wrong.
+- **Blocked:** nothing currently — behaviour unchanged.
+- **Owner:** TCG field-ops owner, with Kyle Harlow.
