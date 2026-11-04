@@ -45,4 +45,6 @@ including edit save + reload (CTE-00001 restored). `8143b2608` — the employee 
 the qa specs look up: 26 of 26 on a temp employee, 25 of 25 on a salaried one. Not run: the qa specs (qa-automation is
 not set up on this machine). `lifecycle.spec.ts` still fills the removed `payType` field and never sets Compensation
 Type, so it fails before the details page. Pushed with SKIP_GATES=1: web and mobile test targets fail on Windows here.
+2026-11-04 later: `f9aa3f78a` — client feedback: the yard suggestion text uses the auto-filled green (#16a34a). Not seen
+live (browser session expired); web tsc clean.
 Next: optionally split the commits per unit; run the backfill per environment on deploy; PR when the developer says.
