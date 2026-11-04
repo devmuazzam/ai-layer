@@ -51,5 +51,6 @@ live (browser session expired); web tsc clean.
 name only 201 and linked, unknown name 400, no yard 400 (test row QUOT-00032 archived locally). `54911518f` — single-select
 dropdown rows say aria-selected false again. Open from the review: duplicate yard names on staging and production before the
 migration; stale coordinates when a yard address is typed over; Secondary-only yards and archive/delete; the API accepts an
-inactive Secondary; no processed.log entry; review questions not yet in §12.
+inactive Secondary; no processed.log entry. Review questions filed as §12 Q6–Q11.
+2026-11-04 later: to staging. Branch `fixes/yards-2026-10-29-staging` from staging: `bb59ac240` squashes the 9 yards commits, conflicts in 7 files resolved keeping both sides, then staging merged in again. API jest 3660/3660, web 1041/1046 (photo imports, Windows-path autofill), api and web tsc clean. Checked live on the first merge: details, edit + save + reload, green suggestion, Quoted from labels. Not checked live after the last staging merge. PR #1015 stays open for main, unchanged. Staging commit `3f74fd146` tracks `packages/payroll-engine/node_modules` as a symlink to a Linux path, which breaks `pnpm install` on Windows; not ours, not changed here.
 Next: optionally split the commits per unit; run the backfill per environment on deploy; PR when the developer says.

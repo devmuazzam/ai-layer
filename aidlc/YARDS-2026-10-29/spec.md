@@ -99,3 +99,29 @@
 - **Q4 — One quote with several yards.** Joe allowed it for project quotes (22:01) before agreeing to
   one yard (24:23). REQ-02 ships one yard per quote.
   - **Status:** open (low) · **Blocks:** nothing.
+- **Q6 — A yard that is someone's Secondary Yard.** Should archive, deactivate or delete be blocked,
+  warned about, or just drop the link? Today none of the three checks for it, and a delete removes the
+  link silently. Nothing written covers this. Ask Dylan Masterson / Brian Petros.
+  - **Status:** open · **Blocks:** nothing built (ships as described).
+- **Q7 — An inactive or archived yard as a Secondary Yard.** Does it stay on employees who already have
+  it, and still show on their record and the Dispatch board? The picker lists active yards only, but the
+  API accepts any yard of the tenant and reads return it. Internal UAT says inactive yards "shouldn't popup
+  anywhere" (`vault/uat/sessions/17sep-internal-uat.md`, `unverified`), which does not cover links that
+  already exist. Ask Dylan Masterson / Brian Petros.
+  - **Status:** open · **Blocks:** nothing built (ships as described).
+- **Q8 — What counts as an "active" asset for the suggestion?** REQ-12 says active; Kyle's word was
+  "available". The API counts any non-archived asset, and the web sends no crane sizes today (D7), so
+  this only matters once it does. Any non-archived unit, one not down, or one free on the job's dates?
+  Ask Kyle Harlow, with Q2.
+  - **Status:** open · **Blocks:** nothing (not reachable from the app yet).
+- **Q9 — Changing an employee's Primary Yard.** Payroll reads this yard. Should the screen warn first, or
+  is a silent change fine? Linked to Q1. Ask Corrina Bustos / Melissa McNutt.
+  - **Status:** open · **Blocks:** nothing built (ships with no warning).
+- **Q10 — "Primary" and "Secondary" as names.** Who gave the feedback behind D10 and D11, and where was it
+  said? It has no written record. Should "Primary Yard" also replace "Home yard" in API errors and payroll
+  screens, or on the employee form only? Ask the developer first, then Corrina Bustos / Brian Petros.
+  - **Status:** open · **Blocks:** nothing built (form and details page only).
+- **Q11 — Who must give an employee a Home yard?** Every new employee, including temps, imports and
+  API-created records, or only those created on the web form? REQ-09 has no scope; D6 ships web form only,
+  and web drafts can still save without one. Ask Corrina Bustos / Brian Petros.
+  - **Status:** open · **Blocks:** nothing built (D6).
