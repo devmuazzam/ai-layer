@@ -3,7 +3,7 @@
 > Written to `.ai/aidlc/SCRUM-###/units.md` from the approved `spec.md` beside it.
 > Consumed by the decomposer and then by an executor, one unit at a time.
 >
-> **Skeleton only in this run** — the decomposer agent that fills it does not exist yet.
+> Filled by `tcg-decomposer` (`.ai/aidlc/agents/inception/tcg-decomposer.md`).
 > The field list is the contract; treat it as fixed.
 
 ## What a unit is
@@ -42,18 +42,36 @@ cut is recorded in *Deliberately not in this unit*.
 
 An `[UNVERIFIED]` requirement is different and much weaker: it **does not** block a unit.
 Almost every requirement carries it. It constrains *how* the unit is built, not whether —
-see **Risk** below.
+see **Risk** below. A client-facing requirement whose only source is `[UNVERIFIED]` is in the
+ticket's confirmation batch to the owner, but builds meanwhile unless it is also irreversible.
 
 ---
+
+## Gate baseline
+
+**Gate baseline:** *`YYYY-MM-DD`, `origin/main` at `<sha>` — lint: `<n>` errors (`apps/web`
+`<n>`), typecheck: pass / fail, build: pass / fail, test: pass / fail.* Written by the
+decomposer from a real run, not copied from `CLAUDE.md`. The executor reports its gates
+**vs this baseline**, so a new failure cannot hide among old ones. Nothing runs these gates
+on a PR (no CI job, pre-push gates commented out) — this line is the only record of what
+was green before the work started.
 
 ## Unit ledger
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | | REQ-01, REQ-03 | schema, api, web | — | S / M / L | not started |
+| U1 | | REQ-01, REQ-03 | schema, api, web | — | ~<n> lines / <n> files | not started |
 | U2 | | | | U1 | | |
 
-- Requirements not covered by any unit: *list them, with why — usually `[OPEN]`*
+- **Status** takes exactly one of: `not started` · `in progress — <branch>` · `built — <branch>`
+  · `merged — PR #<n>` · `cut — <reason>`. **Never a commit SHA**: rebases and squashes
+  rewrite them. `tcg-executor` writes this cell for its own unit at the end of every run (its
+  only write to `units.md`); `close-ticket` §1 flips `built` to `merged — PR #<n>`. A ledger
+  that says `not started` for a unit with a merged PR is a stale reference.
+- Requirements covered: REQ-01..REQ-nn, counted against `spec.md` §2 on *date*. **Recount
+  whenever §2 gains a REQ.** A REQ added after this file was written is not built until the
+  decomposer gives it a unit row, never as a ride-along in another unit's PR. Not covered:
+  *list, with why — usually `[OPEN]`*
 - Units blocked on an open question: *list them, with the `spec.md` §12 question id*
 
 ---
@@ -67,8 +85,8 @@ see **Risk** below.
 - **Depends on:** *unit ids, or `—`*
 - **Branch / PR base:** *`<type>/SCRUM-###-u<n>-<slug>` from `origin/main`, or stacked on
   `<U<n>'s branch>` while that PR is open. One unit, one branch, one PR — always.*
-- **Size estimate:** *~<n> source lines, <n> source files — must be within ~400 / 25
-  (tests, migrations, lockfiles excluded). Over it → this is two units.*
+- **Size estimate:** *~<n> source lines, <n> source files — information for the reviewer,
+  not a gate (no budget since 2026-10-21).*
 
 ### Slice contents
 
@@ -79,7 +97,13 @@ see **Risk** below.
 | Web (`apps/web`) | | *route + components; reuse before creating* |
 | Mobile (`apps/mobile`) | | |
 | Shared (`packages/shared`) | | |
-| Tests | | *unit / integration / e2e* |
+| Tests | | *`not requested` — new tests only when the developer asks (root `CLAUDE.md`)* |
+
+**If the developer asks for tests**, these are the ones that pay: a negative test per *Does
+not apply when* item (`spec.md` → the REQ's **Edges**), asserting the rule does **not** fire
+there; an API-level test per uniqueness or window constraint, asserting the response code;
+one per §12 **Workaround** the unit builds. Unasked, check those cases by hand and say how in
+_Reviewable as_.
 
 ### Reviewable as
 
@@ -101,12 +125,13 @@ see **Risk** below.
 From `spec.md` §11a, narrowed to what this slice actually touches. `none — new surface only`
 is a valid row when the grep that establishes it is named.
 
-| Existing consumer | Reached via | Regression proof in this unit | Source for what happens to it |
+| Existing consumer | Reached via | How we know it still works | Source for what happens to it |
 | --- | --- | --- | --- |
-| *file / screen / endpoint* | shared export / DTO / schema field / component / filter / config | *test path, or* **none — unbuilt** | `spec.md` REQ-nn / `<path>` / **OPEN — Q**n |
+| *file / screen / endpoint* | shared export / DTO / schema field / component / filter / config | *existing test path, or the check you ran (route, request, screen)* | `spec.md` REQ-nn / `<path>` / **OPEN — Q**n |
 
-**A pre-existing consumer with no regression proof is an unbuilt part of this unit, not a
-follow-up.** A test written for the new call site does not cover the old one — that is the
+**A pre-existing consumer nobody checked is an unbuilt part of this unit, not a follow-up.**
+Check it with an existing test or by hand and name the check — a new test only if the
+developer asked. A check of the new call site does not cover the old one — that is the
 `refactor-untested` defect (`reflections/INDEX.md`, SCRUM-900 SD-1), and it is invisible to
 every gate. If a consumer's fix genuinely belongs to another unit, that unit is a dependency
 of this one and the ledger says so; it never lands in *Deliberately not in this unit*.

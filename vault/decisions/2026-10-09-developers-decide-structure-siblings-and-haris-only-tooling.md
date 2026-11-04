@@ -10,6 +10,12 @@ decided_by: >-
 status: verified
 resolves: none (no open §12 or module gaps.md entry asked this; raised directly in the session)
 tags: [module/all, kind/decision, architecture, sprint-planning]
+superseded_by: decisions/2026-10-21-capability-first-ai-decides-structure-guardrails-only.md  # structure and siblings only; Haris-only tooling stands
+provenance_note: >-
+  §1–§3 (developers decide structure, where it is recorded, siblings asked first) are
+  superseded by decisions/2026-10-21-capability-first-ai-decides-structure-guardrails-only.md:
+  the AI decides structure and records it for developer review, and siblings are applied
+  or listed, not asked. §4 (tooling is Haris-only) stands. Body unchanged.
 ---
 
 ## Decision

@@ -15,6 +15,15 @@ decided_by: >-
   `reference`: it binds the build, and TCG can overrule it. Built on branch
   feat/association-document-visibility (kept in TCG-218 at the ticket owner's request), under review.
 status: reference
+provenance_note: >-
+  Rules 4 and 5 were not built as day rules. Answering TCG-218 spec §12 Q13 and Q15 on 2026-10-15,
+  the same ticket owner ruled "we don't restrict day, where dispatch add it can be sent" and "we
+  don't restrict for now": equipment quoted only inside Mob/Demob is an OPTIONAL dispatch slot,
+  allocatable on any day, never blocking allocation completed (built in TCG-218 U9/U10). Joe's
+  rules 1–3 stand (dispatch may still send it first and last day; the system does not enforce it).
+  Those answers are working assumptions pending Lisette Anzaldo's review, so this note is not
+  superseded — see decisions/2026-10-16-dispatch-slots-required-optional-none.md rules 9–10. Added
+  2026-10-17 by tcg-scrum (bookkeeping only).
 conflicts_with: []
 resolves: []
 related_decisions:

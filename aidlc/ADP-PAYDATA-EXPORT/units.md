@@ -501,3 +501,17 @@ U1 ──▶ U2 ──▶ U3* ──▶ U4 ──▶ U5 ──▶ U6 ──▶ U
 | U9 | Where `findEmployeesMissingAdpFile` lives after the workbook is gone | stay in `xlsx-rows.ts` / move |
 | Q23 | Final route shape | keep `export.csv` / make `export` return CSV / both |
 | D3 | `4RZ` constant vs tenant setting | left as the existing constant, unchanged |
+
+## P5 — Re-export of an already-sent week (2026-10-27, outside the U-series like P1–P4)
+
+| Field | Value |
+| --- | --- |
+| Outcome | A `payroll-admin:edit` holder can send an already-exported employee week to ADP again; the stamp is overwritten, nothing is recalled |
+| Source | spec §12 Q39 — developer direction Syed Haris 2026-10-27 (`reference`) |
+| Surfaces | api (`export-paydata.dto.ts` `reexport`, `payroll.controller.ts`, `payroll.service.ts` `exportPaydataForEmployees` options, `payroll.repository.ts` `markEmployeeWeeksExportedAndMaybeStampPeriod` `resend`); web (`payroll.service.ts` `exportEmployees` options, `use-payroll.ts` `useExportPeriod`, `use-payroll-worklist.ts` `confirmAdpSubmit`, `payroll-adp-submit-dialog.tsx` + new `payroll-adp-submit-rows.tsx`, `payroll-worklist.tsx` `canReexport`, `payroll-employee-export-adp.tsx` Re-export button) |
+| Schema | none — the three existing stamp columns are overwritten |
+| Tests | not requested |
+| Branch | `feat/ADP-PAYDATA-EXPORT-p5-reexport` |
+| Status | built — `feat/ADP-PAYDATA-EXPORT-p5-reexport` |
+
+AI decisions (recorded for the PR): the flag rides on the existing single export route rather than a second route (Q35: one export path); a re-export keeps the period's file name and batch id (nothing in the spec gives a re-send its own); the dialog never pre-ticks a sent row; the repository drops only the `exportedAt: null` filter for a resend, so the in-force-run check still refuses a stale run.

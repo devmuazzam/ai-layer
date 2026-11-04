@@ -331,3 +331,107 @@ Manager. IT Support's "log in as D" (43:07) was left, because it may be a login 
 cost" (54:19, 54:41) names the document that requires a paper scope of work, and was left because nothing
 in the call resolves it. Speaker labels are reproduced uncorrected: Dee speaks on Brian Petros's
 microphone from 36:41, as in pass 9's file. Left unchanged: the items listed in the file's own header note.
+
+# Pass 14 — 2026-10-22 (two new transcripts only)
+
+Applied to `2026-10-20-erp-documentation-and-guides.md` (10) and `2026-10-21-erp-demo-walkthrough-part-1.md`
+(42); no earlier file was touched. **52 substitutions**, each pinned to its own turn, with the timestamps in
+each file's header note. In summary: "Harris" -> "Haris" (3, as pass 10); "graph code(s)" / "graph
+board(s)" / "graph ports" / "draft boards" -> "craft code(s)" (18) and "draft based hourly" -> "craft
+based hourly", "graph modifiers" -> "craft modifiers" (1 / 1, as pass 1); "union ports" -> "union codes"
+(3); "train(s)" -> "crane(s)" (4, as pass 1); "Abdul Rahman" / "Abdur Rahman" / "Abiraman" ->
+"Abdulrehman" (3, as pass 9 and 12); "ERB" -> "ERP" (1, as pass 9); "code" -> "quote" (2, as pass 11);
+"550 time frame" -> "550 ton crane" (1, "time" -> "ton" as pass 11); "tools and writings" / "tools and
+draggings" -> "tools and riggings" (2); "billing boards" / "Belling codes" -> "billing codes" (1 / 1);
+"departments and rules" / "rules" -> "roles" (1 / 2); "Bess" -> "Wes" (1); "CD data" -> "seed data" (1);
+"asserts" -> "assets" (2); "bentress" -> "vendors" (1); "default DL expense account" -> "default GL
+expense account" (1); "early" -> "hourly" and "code invoice" -> "quote/invoice" (1 / 1, as pass 11).
+
+New evidence rules used here: **"union ports" -> union codes and "graph ports" -> craft codes** only in
+the 10-21 19:34 turn, which opens with *"union codes, graph codes"*. **"rules" -> roles** only where the
+sentence is about departments and their access, never for payroll rules. **"Bess" -> Wes** only where the
+next turn by the same speaker says *"Wes and Melissa"*. **"CD data" -> seed data** pinned by *"we have
+just seeded this information"* in the same call. **"DL" -> GL** only in *"default DL expense account …
+of the general ledger"*; "the DL" meaning a distribution list (10-20 14:51) was left, as pass 13. "Perez"
+was **not** read as Haris here (pass 10 did), because the same sentence names *"Harris"* separately.
+"Edison" addressing ehtesham.anwar (10-20 24:39) was left because Edison is also a TCG customer, named in
+the 10-21 call. "200 ton queen" was left — "queen" is not in pass 1's crane list. Speaker labels are
+reproduced uncorrected: "Brian Petros" is the conference-room microphone, carrying Dee (10-20) and Ryan
+Adams (10-21 51:59–55:18), each file's header gives the evidence. Left unchanged: the items listed in
+each file's own header note.
+
+# Pass 15 — 2026-10-23 (one new transcript only)
+
+Applied to `2026-10-22-erp-demo-walkthrough-part-2.md` (63); no earlier file was touched. **63
+substitutions**, each pinned to its own turn, with the timestamps in the file's header note. In summary:
+"screen" -> "crane" (6), "train(s)" / "brains" -> "crane(s)" (14) and "green" -> "crane" (1, as pass 1);
+"done" / "then" -> "ton" (1 / 1, as pass 11); "Eiler" / "boiler" / "Euler" / "ailer" -> "oiler" (6, as
+pass 11); "one" -> "won" (5, as pass 11 and 13); "Harris" -> "Haris" (4, as pass 10); "Quoted To" /
+"Report To" for "Ported 2" / "ported 2" / "report 2" / "report tool" (4); "belly code" / "billing board" /
+"billing date" -> "billing code" (3, as pass 14); "left information" / "left planning" -> "lift …" (3);
+"early" -> "hourly" (2, as pass 11); "Sam Sarah" -> "Samsara" (2, as pass 7); and one each: "wet field" ->
+"wet fuel", "ERB" -> "ERP" (as pass 9), "building purposes" -> "billing purposes", "search jars" ->
+"surcharges", "customer PU" -> "customer PO" (as pass 13), "tools and ratings" -> "tools and riggings" (as
+pass 14), "DL allocation system" -> "daily allocation system", "Doss" -> "DAS", "free checklist" -> "pre
+checklist", "Ed Shawn" -> "Ehtesham" (as pass 12), "approved format" -> "approved permit".
+
+New evidence rules used here: **"screen" -> crane** only in *"<N> ton screen"*, *"done screen"*, *"mobile
+screen"* (the category) and *"send with the screen whenever the screen is going on a job"*, all in
+ehtesham.anwar's asset turns, pinned by *"that train is a mobile train"* in the next sentence. It does not
+license "screen" elsewhere: *"share my screen"*, *"My screen is visible"* and *"display on the screen"* are
+genuine. **"Ported 2" / "report 2" -> Quoted To / Report To** only in the quotation-form turn where both
+fields add contacts to the customer profile; the pin is the two field labels in the web app, which were on
+the shared screen. **"left" -> lift** only beside *information* or *planning*, pinned by *"We need to
+figure out the lift planning separately"* in the same turn. **"Doss" -> DAS** only in the turn presenting
+the daily allocation system. "plane(s)", "frame", "cream" and "turn clean" were **not** read as crane —
+none is in pass 1's list — and are listed in the file's header note. Speaker labels are reproduced
+uncorrected: "IT Support" is Patrick McKiernan; the header gives the evidence. Left unchanged: the items
+listed in the file's own header note.
+
+# Pass 16 — 2026-10-29 (one new transcript only)
+
+Applied to `2026-10-27-erp-demo-walkthrough-part-3.md` (32); no earlier file was touched. **32
+substitutions**, each pinned to its own turn, with the timestamps in the file's header note. In summary:
+"Harris" -> "Haris" (5, as pass 10); "ADB" -> "ADP" (3, as pass 3 and 11); "Dispatch Flight app" ->
+"TestFlight app" (2); "Euler" -> "oiler" (2, as pass 3 and 11); "graph code rate" / "the graph code" ->
+"craft code" (2, as pass 1) and "graph modifier" -> "craft modifier" (1, as pass 14); "ending codes" ->
+"earning codes" (2); "JS tail bootstrap" / "TS retail board" -> "JSA tailboard" (2) and "GSA" -> "JSA" (1,
+as pass 1); "grain" / "plane" / "plan" -> "crane" (1 / 1 / 1, as pass 1 and 3); and one each: "desk view"
+-> "DAS view" (as pass 11's "dash"), "Sam Sara traging" -> "Samsara tracking" and "Sam Sara" -> "Samsara"
+(as pass 3), "food" -> "fuel", "label unit details" -> "labor and unit details", "code" -> "quote" (as
+pass 11), "long room" -> "long boom", "Abdimana" -> "Abdulrehman" (as pass 9 and 12), "rigor" -> "rigger"
+(as pass 3 and 8).
+
+New evidence rules used here: **the mobile app's own labels pin a correction**, as pass 15 used the web
+app's: *JSA — Tailboard* (the JSA step), *"The crane was left set up yesterday. Tap to start work — no
+build up needed today"* and *"Leave crane set up"* / *"Start Breakdown"* (the holdover cards) were on the
+shared phone screen, so "JS tail bootstrap", "TS retail board", "the plane was left up" and "leave plan
+set up" were read against them. **"Dispatch Flight" -> TestFlight** only in abdulrehman's 8:16 turn, which
+installs the App Store app that opens the builds added *"in the test flight"*. **"food" -> fuel** only in
+the 19:09 Samsara turn that opens on the asset's fuel. "failed" for *filled* (three times) was **not**
+changed — no earlier pass licensed it and "failed" is a real word in an inspection form. "hotel" (21:44)
+was left: the app offers only *Yard* and *Home*, and the curated notes say so. Speaker labels need no
+caveat: every speaker joined under their own account. Left unchanged: the items listed in the file's own
+header note.
+
+# Pass 17 — 2026-10-30 (one new transcript only)
+
+Applied to `2026-10-29-sales-quoting.md` (22); no earlier file was touched. **22 substitutions**, each
+pinned to its own turn, with the timestamps in the file's header note. In summary: "Harris" -> "Haris" (1,
+as pass 10); "time" / "100 and" -> "ton" (4 / 1, as pass 10 and 11) and "train" -> "crane" (3, as pass 1);
+"100 time frame" -> "100 ton crane" (1, as pass 14); "Euler" -> "oiler" (1, as pass 3 and 11); "rigor" /
+"dagger" -> "rigger" (1 / 1); "quoted, report to" / "report 2" -> "Quoted To, Report To" / "Report To"
+(1 / 1, as pass 15); "tree closures" -> "street closures" (1); "tracking" -> "trucking" (1); "cells" ->
+"sales" (1); "FA" -> "FAA" (3) and "NOTAMP" / "NODEM" -> "NOTAM" (1 / 1).
+
+New evidence rules used here: **"dagger" -> rigger** only in ehtesham.anwar's 36:38 answer to *"can you
+add a rigger on there?"* (36:12). **"tree closures" -> street closures** only where the next turn answers
+*"we are working on street closure part"*. **"tracking" -> trucking** only beside *Piazza*, TCG's outside
+trucking vendor in the vault. **"cells" -> sales** only in *"would cells be sending the PO … or would
+Dispatch be sending"*, where the sentence sets the two departments against each other. **"FA" -> FAA and
+"NOTAMP" / "NODEM" -> NOTAM** only in the airport-distance exchange, pinned by *"we either have to get an
+FAA or a NOTAM"* (1:04:30). "cream", "queen" and "undertone" were **not** read as crane or *hundred ton*
+— none is in pass 1's list (as pass 14 and 15) — although the "time" beside "cream" was read as "ton".
+"Dallas" was not read as Lisette. Speaker labels are reproduced uncorrected: "Brian Petros" is the
+conference-room microphone, carrying Brian and Ryan Adams; the header gives the evidence. Left unchanged:
+the items listed in the file's own header note.
