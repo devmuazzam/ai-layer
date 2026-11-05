@@ -14,15 +14,15 @@
 
 ## 1. Requirements ledger
 
-| Req    | Title                                                                        | Surface     | Flag           | Sources                                                                         | Blocks build? |
-| ------ | ---------------------------------------------------------------------------- | ----------- | -------------- | ------------------------------------------------------------------------------- | ------------- |
-| REQ-01 | Gate 1 on Day 1 Holdover — block start until Available for Dispatch          | mobile, api | `[UNVERIFIED]` | user request; `YARD-TICKET-GATE`                                                | no            |
-| REQ-02 | Gate 2 on Day 1 Holdover — block Left Yard & later until Complete Loadout    | mobile, api | `[UNVERIFIED]` | user request; `YARD-TICKET-GATE`                                                | no            |
-| REQ-03 | Gate 1 on Day 2+ Yard Start — block start until Available for Dispatch       | mobile, api | `[UNVERIFIED]` | user request                                                                    | yes (§12 Q1)  |
-| REQ-04 | Gate 2 on Day 2+ Yard Start — block Left Yard & later until Complete Loadout | mobile, api | `[UNVERIFIED]` | user request                                                                    | no            |
-| REQ-05 | Home-Start Exemption on Day 2+ — no yard gate enforcement                    | mobile, api | `[UNVERIFIED]` | user request; `decisions/2026-10-15-...`                                        | no            |
-| REQ-06 | Expose `yardGate` in API read model for holdover tickets                     | api         | `[UNVERIFIED]` | user request; `field-ticket.mapper.ts`                                          | no            |
-| REQ-07 | Client-only, online-only enforcement                                         | mobile      | `[UNVERIFIED]` | `decisions/2026-11-02-yard-ticket-gate-client-only-online-enforcement.md` (D12) | no            |
+| Req    | Title                                                                        | Surface     | Flag           | Sources                                                                         | Blocks build?    |
+| ------ | ---------------------------------------------------------------------------- | ----------- | -------------- | ------------------------------------------------------------------------------- | ---------------- |
+| REQ-01 | Gate 1 on Day 1 Holdover — block start until Available for Dispatch          | mobile, api | `[UNVERIFIED]` | user request; `YARD-TICKET-GATE`                                                | no               |
+| REQ-02 | Gate 2 on Day 1 Holdover — block Left Yard & later until Complete Loadout    | mobile, api | `[UNVERIFIED]` | user request; `YARD-TICKET-GATE`                                                | no               |
+| REQ-03 | Gate 1 on Day 2+ Yard Start — block start until Available for Dispatch       | mobile, api | `[UNVERIFIED]` | user request                                                                    | no — Q1 resolved |
+| REQ-04 | Gate 2 on Day 2+ Yard Start — block Left Yard & later until Complete Loadout | mobile, api | `[UNVERIFIED]` | user request                                                                    | no               |
+| REQ-05 | Home-Start Exemption on Day 2+ — no yard gate enforcement                    | mobile, api | `[UNVERIFIED]` | user request; `decisions/2026-10-15-...`                                        | no               |
+| REQ-06 | Expose `yardGate` in API read model for holdover tickets                     | api         | `[UNVERIFIED]` | user request; `field-ticket.mapper.ts`                                          | no               |
+| REQ-07 | Client-only, online-only enforcement                                         | mobile      | `[UNVERIFIED]` | `decisions/2026-11-02-yard-ticket-gate-client-only-online-enforcement.md` (D12) | no               |
 
 ## 2. Requirements
 
@@ -45,7 +45,7 @@
 
 - **Statement:** On Day 2 to End Day of a holdover job (`holdover.dayNumber >= 2`), if the employee starts from the Yard (`dayStartFrom === 'YARD'`), the ticket start is gated on Available for Dispatch.
 - **Surface:** mobile, api
-- **Open Question:** See §12 Q1 & Q2 regarding pre-choice dashboard behavior.
+- **Resolved edge:** §12 Q1 = B and Q2 = B: before a Home/Yard choice, keep the dashboard card locked until Available for Dispatch; once available, Start Work may punch in before that choice. Named attribution is tracked separately in Q4.
 
 ### REQ-04 — Gate 2 on Day 2+ Yard Start: block Left Yard & later until Complete Loadout `[UNVERIFIED]`
 
@@ -135,3 +135,10 @@
   - **B.** API conditionally sets `yardGate: null` if `dayStartFrom === 'HOME'`.
 - **Answer:** **A — API sends `yardGate` for all loadable holdover tickets.** Mobile evaluates `dayNumber` and `effectiveDayStart`: if Day 2+ and Home is chosen, mobile treats the ticket as ungated.
 - **Status:** resolved
+
+### Q4 — Named attribution for the captured Q1–Q3 answers (closeout follow-up)
+
+- **Question:** Who approved Q1–Q3 on 2026-11-04, in which source conversation, and in what decision-making role?
+- **Owner:** Ticket requester — provide the named decision maker and the original answer reference.
+- **Context:** The existing capture identifies only “user/owner”; merge and local Git identities do not establish who gave the original answers. The answers remain resolved within this ticket, but `tcg-scrum` §8 requires a named human before recording a verified vault decision.
+- **Status:** open — provenance follow-up; not an unimplemented requirement or a reopened Q1–Q3 product choice. No vault source or conflict status was changed at close.
