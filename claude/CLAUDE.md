@@ -163,6 +163,18 @@ API aliases: `@orm/* @presentation/* @usecase/* @service/* @config/* @guard/* @d
 - **No AI committer identity:** commits and PRs carry the human developer's name and email
   only — never `Co-Authored-By`, `Committer: Claude` or an AI attribution line.
 
+## Say how you know
+
+Before saying something works, is fixed or is done, check the thing the claim is about, and say
+what you checked. A fix is checked by repeating the original symptom, not by changing the code.
+A screen is checked on the screen, in the right tenant and date. Data is checked by querying it. A
+subagent's report is a lead, not a result. If you did not check it, say "not run" or "not checked":
+that is always acceptable, and it never needs a new test.
+
+**Debugging:** reproduce it and find the cause before changing code. Rule out the local state first:
+branch, pending migrations, stale Prisma client or `@tcg/shared` build, tenant, date. Change one
+thing at a time. After two failed fixes, stop and report what you know. API failures: `debug-api`.
+
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->
 
