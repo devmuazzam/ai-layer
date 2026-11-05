@@ -32,6 +32,15 @@ of AC4, a human review, or a merge.
 
 ## Resume
 
+PR #1049 follow-up: independent review found post-save cleanup could return 400 for rejected
+stale keys after a valid replacement was saved. Developer requested the Path B correction;
+guard patch and independent analyst source/runtime review pass. Direct invalid-key
+reads/deletes remain strict. Fresh API build, lint and all 328 suites / 3,845 tests pass;
+the HTTP suites required local-port access outside the sandbox. See review-cleanup-fix.md for
+the exact reproduction, result and publication state. The fix is committed and published as
+`1e4e375b5`; matching overlay records accompany this publication. Earlier readiness claims below do
+not cover this newly discovered scenario.
+
 Current: native emulator attachment flows and supporting endpoint checks passed. Live negative QA found and corrected the featureId/ticketId owner-shape gap in generic access, shared covers and orphan cleanup (Path B, ED-1). Fresh cache-disabled API 328 suites/3845 tests, lint, typecheck and API build pass. Confirmed current-server live retests reject wrong UUID/code/unknown owners and preserve valid code-owned structured files. Cleanup is complete. See emulator-validation.md for the matrix, evidence, implementation decision and exact limitations. Office meter/job-progress views still require an authorized admin session (field role gets 403); no live SUPER_ADMIN demonstration is claimed. Human AI-decision review remains pending. The followup API fix and existing fixture updates are committed as `9b8afbf11`; the matching overlay records accompany the requested branch publication below. No merge, deployment or closure occurred.
 
 ### Historical construction evidence (superseded where noted above)
