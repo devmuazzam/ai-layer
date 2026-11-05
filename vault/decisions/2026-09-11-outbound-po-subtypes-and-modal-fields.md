@@ -9,6 +9,13 @@ decided_by: >-
   2026 deadline, open to being overruled by TCG. PO statuses OPEN|CLOSED also
   demonstrated in Ehtesham Anwar's 2026-09-11 Loom walkthroughs.
 status: reference
+provenance_note: >-
+  Partly superseded 2026-10-29 by decisions/2026-10-29-all-permits-create-permit-modal.md (Syed
+  Haris, TCG-132 Q1, `reference`). The locked modal field set (point 2) does not apply to the
+  Create Permit modal's nested "Create new" PO, which follows the prototype: PO date, PO fee,
+  Description, Invoice, Bill to customer, with no Agency and no PO items. Point 2 stands for the
+  other PO screens, which also gain the two new optional PurchaseOrder columns, `po_date` and
+  `bill_to_customer`. Points 1 and 3 stand. Recorded by tcg-scrum.
 conflicts_with: []
 resolves: []
 jira: []

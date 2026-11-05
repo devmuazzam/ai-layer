@@ -12,6 +12,12 @@ decided_by: >-
   process) and Brian Petros — were not asked and have not confirmed it. That is why the status is
   `reference`: it binds the CodingCops build, and TCG can overrule it.
 status: reference
+provenance_note: >-
+  Partly settled further 2026-10-29 by
+  decisions/2026-10-29-all-permits-create-permit-modal.md (Syed Haris, TCG-132, `reference`).
+  The create-time PO fee default, left open here, is settled for the Create Permit modal's
+  nested "Create new" PO only: prefilled from the permit's service fee, editable. Everything
+  else in this note stands. Recorded by tcg-scrum.
 conflicts_with: []
 resolves:
   # resolved at reference status; TCG (Liz Lopez / Brian Petros) can overrule

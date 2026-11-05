@@ -10,6 +10,12 @@ decided_by: >-
   reason — binding on implementation now, open to being overruled by TCG. Same
   basis as `2026-09-08-artifact-due-date-seeded-from-first-job-day.md`.
 status: superseded
+provenance_note: >-
+  Still superseded. Its "exactly one of asset / job / vendor" rule, carried into
+  2026-09-10-permit-create-types-mockup-document-types point 3, is relaxed 2026-10-29 for
+  Travel (may also carry an asset) and Annual Travel (may also carry a job) by
+  decisions/2026-10-29-all-permits-create-permit-modal.md (Syed Haris, TCG-132, `reference`).
+  Recorded by tcg-scrum.
 conflicts_with:
   - 2026-09-10-permit-create-types-mockup-document-types.md
 resolves: projects-jobs/gaps.md#permits-can-no-longer-be-created-outside-the-artifact-flow--and-the-vault-says-they-can
