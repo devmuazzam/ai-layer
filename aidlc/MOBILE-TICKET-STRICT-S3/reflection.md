@@ -1,5 +1,10 @@
 # Reflection — MOBILE-TICKET-STRICT-S3 — strict ticket S3 hierarchy
 
+> **CURRENT QUALIFICATION — 2026-11-06:** The appended live-QA addendum supersedes
+> the historical “no executor defects” and “AC4-only blocker” conclusions below.
+> ED-1 was reproduced and corrected before merge; fresh gates now pass. This record
+> does not claim merge, deployment, ticket closure, or complete office-role UI coverage.
+
 > **PRE-MERGE IMPLEMENTATION REFLECTION — 2026-11-05.** Requested explicitly before
 > publishing. U1 is uncommitted and unmerged; nothing is claimed shipped or closed.
 > Analyst verdict remains **DO NOT SHIP: AC4 UNFULFILLED, no waiver**.
@@ -197,3 +202,96 @@ Not built, not added to a unit, and not a follow-up ticket; a human may choose t
 Shipment remains blocked solely by the recorded AC4 failures, with no waiver. Normal
 AI-decision review and any later publish/merge/close-ticket steps remain outstanding.
 I proposed rule changes; I did not apply them.
+
+## 2026-11-06 addendum — live emulator QA and owner-boundary correction
+
+### ED-1 — Attachment row owner shape silently skipped ticket-folder isolation
+
+- **Requirement already present:** REQ-02 trust boundary requires comparison with
+  known owner tenant/ticket identifiers; REQ-03 likewise requires owner validation.
+  No new product requirement or owner answer was needed.
+- **Built:** Generic ticket attachment paths passed an `Attachment` row carrying
+  `featureId` to a helper that checked optional `ticketId`. TypeScript structural
+  compatibility accepted the argument. Tenant validation ran, but a same-tenant
+  different-ticket folder was not compared to the row's actual ticket owner. Shared
+  cover/orphan-cleanup paths had the same shape boundary.
+- **Caught by:** Coordinator's live adversarial QA, after the original source/targeted
+  reviews. This supersedes §2's earlier bounded zero-executor-defect conclusion.
+- **Cause of the review miss:** The earlier inventory established that validation
+  calls existed, but did not establish that callers populated the identity field the
+  helper consumed. Valid structured-key and tenant cases could pass while the
+  same-tenant wrong-parent case remained unchecked. This is an implementation and
+  verification gap, not a missing requirement.
+- **Correction:** UUID ownership is inferred from row `featureId`; ticket-code aliases
+  are batch-resolved explicitly within each row's tenant before signing or deletion.
+  Shared cover and orphan paths use the same resolved ownership. The correction
+  preserves ticketCode identity compatibility without preserving flat storage keys.
+- **Class:** `tenancy-gap` — owner isolation was not fully checked. Status:
+  **corrected locally, verified before merge; prevention proposal pending**.
+
+### Verification and its limits
+
+The reflector inspected the corrected helper source and the existing live-QA outputs,
+without rerunning tests or mutating data. `owner-retest-confirmed.json` records valid
+ticket-code owner links/download/delete returning 200/200/204, and wrong-code,
+wrong-UUID and unknown-code owner operations returning 400. The file contains a
+device-runner preamble before its JSON payload. `cover-owner-results.json` records
+valid-code signature covers returning 200 (three covers) and wrong-folder covers 400.
+`loadout-results.json` records cover access 200, unlinked deletion 204 and linked-item
+deletion 400. The coordinator additionally verified both deleted loadout objects 404.
+
+The coordinator reports independent guardian/tracer/analyst PASS, native direct-S3
+normal opening, expiry refresh, failure and deletion checks PASS, and fresh full API
+tests (328 suites / 3,845 tests), lint, typecheck and API build PASS. These fresh results
+supersede the earlier AC4-only blocker statement; historical failures remain historical
+evidence rather than a current failure claim. The reflector did not independently run
+those gates or replay the native screen interactions.
+
+`cleanup-results.json` was inspected: 14 residual S3 objects removed, no remaining
+objects in the checked QA prefixes, 17 residual test attachment rows removed,
+QA ticket/attachment counts zero, non-ticket object absent and the foreign
+attachment preserved. The coordinator verified historical TK-28 `updatedAt` remains
+2026-10-28. Cleanup is complete for the recorded fixtures, not a historical-data sweep.
+
+The field interactive session expired. Final supporting API probes used a 15-minute
+local JWT carrying the same existing database user's USER role and tenant, held only
+in memory and removed afterward. These probes are API evidence, not an uninterrupted
+native-session claim. Office meter/job-progress screens returned 403 to the field
+role; an authorized office/admin session was unavailable, so those screens remain
+**not checked**. No merge, deployment, close-ticket, or commit/push of the QA fix has
+occurred as part of this addendum.
+
+### Role-boundary lesson and prevention proposal
+
+The executor must establish the caller's concrete identity shape; the tracer follows
+its mapping across the helper boundary; the guardian checks same-tenant wrong-parent
+rejection alongside cross-tenant isolation; the analyst repeats that adversarial case
+against the running application when available. A helper-call inventory alone cannot
+establish owner enforcement.
+
+**R2 — proposal only:** In `.ai/aidlc/agents/construction/tcg-analyst.md`, the checklist
+row `Isolation`, replace the existing row with:
+
+> | **Isolation** | Any new or modified model: does it hold tenant data, and is it in the scoping allowlist in `prisma.service.ts`? Scoping is conditional. A model outside the allowlist is not isolated. For changed owner-bound file/data access, map the caller's concrete identity fields into the guard and record evidence for both cross-tenant and same-tenant wrong-parent rejection, including UUID/code aliases where supported; an optional guard field or green happy path is not isolation evidence. An unchecked case is reported NOT CHECKED, never PASS — this is the highest-severity finding available to you |
+
+Adds one Markdown table row, removes one existing row; it replaces the current check
+rather than copying it into multiple roles. Applicability: tracing `featureId` into
+optional `ticketId` and requiring the wrong-parent case would have exposed ED-1 before
+the earlier review verdict. This is a required evidence field, not a new test mandate
+or an automatic source verifier. No tooling was edited and no new test was requested
+by this proposal. Haris review remains required for applying it.
+
+Recurrence checked by class grep in `reflections/INDEX.md`: one prior `tenancy-gap`
+defect, SCRUM-877 ED-1 (Prisma allowlist conflict on rebase), whose relevant section was
+read. This is the second recorded occurrence. The earlier allowlist correction was
+applied but concerns model scoping, not row-to-storage parent identity; no evidence
+shows that an applied same-parent verification rule was ignored. No new class and no
+third-occurrence escalation. One ED-1 index row appended, status `proposed` for R2;
+the local source correction is separately recorded above.
+
+No new vault findings, unanswered product questions, or unwritten human decisions were
+identified by this QA addendum. The historical SD-1 and R1 remain as recorded. The
+earlier zero-executor-defect claim is superseded, not silently erased. The developer
+could have requested the same-tenant wrong-ticket fixture alongside cross-tenant QA
+at the start; no additional approval step was necessary. The earlier unrequested
+link-expiration idea remains unbuilt. Normal review/merge/closure work remains pending.

@@ -16,7 +16,7 @@ of AC4, a human review, or a merge.
 | tcg-analyst | analysis.md: no source defect; DO NOT SHIP because AC4 remains unfulfilled |
 | tcg-reflector | reflection.md: pre-merge reflection; one corrected interim planning gap, zero final executor defects; proposal only |
 
-**Path:** A (explicit developer request) · **Branch(es):** `fix/strict-ticket-presigned-attachments` · **Last updated:** 2026-11-06 by rebase coordinator
+**Path:** A (explicit developer request), then Path B live-QA correction · **Branch(es):** `fix/strict-ticket-presigned-attachments` · **Last updated:** 2026-11-06 by emulator QA coordinator
 
 ## Phases
 
@@ -24,15 +24,17 @@ of AC4, a human review, or a merge.
 - [x] Spec — spec.md, 5 sourced requester directions; no open questions
 - [x] Sign-off — explicit request authorizes technical scope; scrum records fallback reversal; routine AI decision/sibling review pending, no unanswered guardrail row
 - [x] Units — units.md, one coherent vertical U1; 5/5 requirements, all 10 ripple groups
-- [-] Build — U1 implemented and reconciled by tcg-executor; focused checks pass, AC4 remains unfulfilled on pre-existing failures
-- [x] Analyse — tcg-analyst; implementation matches U1, do not ship while AC4 remains unfulfilled
+- [x] Build — U1 plus live-QA owner-validation correction; fresh full gates pass, historical AC4 failures superseded
+- [x] Analyse — initial verdict retained below; independent Path B analyst/guardian/tracer review passes; emulator evidence in emulator-validation.md
 - [ ] Merged — no PR/merge requested
 - [x] Reflect — tcg-reflector; pre-merge/local implementation only, reflection.md and one indexed corrected interim SD-1; no shipped/closed claim
 - [ ] Closed — publishing/close-ticket not requested
 
 ## Resume
 
-U1 analysed: implementation matches all five requirements, D1–D6 and all ten ripple groups; no source defect or unsourced decision survived independent review, but verdict is **do not ship** because AC4 remains unfulfilled; pre-merge reflection is now recorded in reflection.md with one corrected interim planning gap, zero final executor defects, and one proposed (unapplied) structural enumeration rule. Normal developer AI-decision/sibling review remains pending. The local result is ready for user review, but AC4 still blocks shipment; no merge, close-ticket or deployment is authorized; the later branch-push request is recorded in the rebase handoff.
+Current: native emulator attachment flows and supporting endpoint checks passed. Live negative QA found and corrected the featureId/ticketId owner-shape gap in generic access, shared covers and orphan cleanup (Path B, ED-1). Fresh cache-disabled API 328 suites/3845 tests, lint, typecheck and API build pass. Confirmed current-server live retests reject wrong UUID/code/unknown owners and preserve valid code-owned structured files. Cleanup is complete. See emulator-validation.md for the matrix, evidence, implementation decision and exact limitations. Office meter/job-progress views still require an authorized admin session (field role gets 403); no live SUPER_ADMIN demonstration is claimed. Human AI-decision review remains pending. The followup API fix and existing fixture updates are committed as `9b8afbf11`; the matching overlay records accompany the requested branch publication below. No merge, deployment or closure occurred.
+
+### Historical construction evidence (superseded where noted above)
 
 Fresh executor evidence after final source edits: 11 existing API suites / 158 tests PASS
 (`/tmp/ticket-u1-executor-api-tests.log`); API build PASS
@@ -99,3 +101,19 @@ passed: lint (4 projects), typecheck (2 projects plus shared prerequisite) and b
 GitHub `local-gates` status because gh authentication was unavailable; the branch push
 itself succeeded. The matching overlay branch carries this rebase record. No merge or
 deployment occurred, and no full post-rebase API-suite pass is claimed.
+
+## QA publication handoff — 2026-11-06
+
+The developer explicitly requested committing the live-QA fix, updating this overlay, and
+pushing both `fix/strict-ticket-presigned-attachments` branches while skipping push gates.
+Application commit: `9b8afbf11c50d536b44fd2d58b3ef0fbc34a3491`
+(`fix(api): validate ticket attachment row ownership`). Normal pre-commit lint-staged checks
+passed; the hook left the reviewed 11-file change unchanged. Both remotes were fetched:
+the application already contains current `origin/staging`, and the overlay contains current
+`origin/main`; neither remote task branch had diverged. Existing stashes were left untouched.
+
+Publication uses the supported `SKIP_GATES=1` environment switch, preserving the application's
+branch guard. The fresh full API/lint/typecheck/build evidence in emulator-validation.md was
+already complete; no new push-gate run or `local-gates` status is claimed. This overlay commit
+records the QA result, ED-1 correction, source decision, reflection/index, cleanup, and remaining
+admin-only manual checks. No PR, merge, deployment, or ticket closure is part of this request.
