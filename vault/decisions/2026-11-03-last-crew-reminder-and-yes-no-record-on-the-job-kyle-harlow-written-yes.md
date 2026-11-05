@@ -16,6 +16,13 @@ decided_by: >-
   direction on who owns the question. Neither Kyle nor Melissa said it, her case was not put to
   Kyle, and she has not responded. Recorded by tcg-scrum on 2026-11-03 at the request of Syed Haris.
 status: verified
+superseded_by: decisions/2026-11-05-last-crew-entitled-when-the-machine-goes-out-on-premium-time-kyle-harlow-written-reply.md
+provenance_note: >-
+  Superseded in part, 2026-11-05, by Kyle Harlow's written reply in the note named above: only item 3,
+  the trigger stated in this note's title and body (crew finished on overtime, crane out before 6 AM).
+  Do not answer the trigger from this file. Item 1 (the reminder) is repeated in that reply, and which
+  crew it shows is open there. Item 2 (the yes/no record) is neither repeated nor withdrawn. status
+  stays verified for items 1 and 2.
 conflicts_with: []
 resolves: []
 related_decisions:
