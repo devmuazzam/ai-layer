@@ -78,6 +78,7 @@ prevent, one level up.
 | `stale-ui-state` | UI state tied to an async input outlives that input — a spinner that never ends, a failed tile that never retries after a good link arrives; added `2026-10-29` by the MOBILE-TICKET-PRESIGNED-IMAGES reflection |
 | `env-lesson` | A dev or test environment fact, or a destructive step on a developer's local data, that cost time or misled the developer and sits outside the product diff — a tool that looks hung, a worktree resolving a stale build, a missing boot dependency, a local table emptied in a way that broke the app; added `2026-10-30` by the MOBILE-OFFLINE-DELETE-QUEUE reflection |
 | `ignored-spec-edge` | A stated `When an input is absent` or `Does not apply when` line of the spec is contradicted by the build, found by the analyst or review and not by the executor; distinct from `over-broad-condition` (wider than the spec's qualifier) and `contradicted-source` (a `[VERIFIED]` artefact); added `2026-11-02` by the YARD-TICKET-GATE reflection |
+| `ui-ripple` | A change to a shared component or the theme altered screens outside its ticket, unnoticed until QA, UAT or the client |
 | `phase-skipped` | Code written before the spec or units existed (Path A), the artefacts then retrofitted from the diff so their edges describe what was built; distinct from `branch-ops`, which is about git bases; added `2026-11-02` by the YARD-TICKET-GATE reflection |
 
 **Adding a class is allowed and sometimes correct** — this list was written from the defects

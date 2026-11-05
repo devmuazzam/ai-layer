@@ -118,8 +118,9 @@ pnpm test / pnpm typecheck      # api jest · web node --test · mobile jest / w
 pnpm affected                   # lint + build + test for projects changed vs main
 ```
 
-**Nothing runs these automatically** — pre-push keeps only the `main` guard and CI only
-deploys (the PR size check goes with #897). Run them yourself. On an 8 GB machine the API's lint and build
+**`pre-push` refuses `main` and runs the gates on affected projects** (`scripts/gates.sh`: lint skips
+`@tcg/web`, build skips `@tcg/web`). `SKIP_GATES=1` skips them. CI only deploys, so run the web checks
+yourself. On an 8 GB machine the API's lint and build
 need `NODE_OPTIONS=--max-old-space-size=4096`. As of 2026-10-21 lint has 0 errors on every
 project; a lint error is yours.
 
