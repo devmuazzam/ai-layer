@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-10-20
+updated: 2026-11-05
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -399,3 +399,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** see the accounting entry.
 - **Blocked:** see the accounting entry.
 - **Owner:** Brent Wagstaff (accounting).
+
+## Can one job carry more than one Customer PO?
+
+- **Status:** open
+- **Asked:** 2026-11-05 — left open when Trello card #14 (TCG-22) closed. The card asked whether there can be more than one; the answer it closed on settles where the Customer PO lives, not how many.
+- **Question:** one line answers it. May a single job carry more than one Customer PO number, for example when a customer issues a second PO for extra work, or is it always one per job?
+- **Sources checked:** [../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md) and [purchase-orders-fcc/commissioning-email-thread.md](purchase-orders-fcc/commissioning-email-thread.md) place it on the job and the invoice, and do not address a count. [../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md](../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md) records Melissa McNutt's written reply on billing, 20 Oct 2026: *"We typically do 1 job per invoice / PO."* "Typically" leaves the exception open.
+- **Related, do not answer separately:** [../quotations/gaps.md → *The customer PO arrives before the job exists — may the quotation capture it?*](../quotations/gaps.md#the-customer-po-arrives-before-the-job-exists--may-the-quotation-capture-it) and [../projects-jobs/gaps.md → *Customer PO on the job*](../projects-jobs/gaps.md#customer-po-on-the-job--a-new-pos-tab-where-every-source-names-schedule-or-main).
+- **Blocked:** nothing today; the job holds one number. It matters when invoicing is built.
+- **Owner:** Brian Petros, with Melissa McNutt.
