@@ -1598,3 +1598,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     phase order was never written.
 - **Blocked:** discovery for the next loop.
 - **Owner:** Melissa McNutt and Kyle Harlow (yards), Jeff Stricker (fleet); CodingCops for the roadmap.
+
+## Does changing a subcategory's configuration reach quotes and jobs that already exist?
+
+- **Status:** open
+- **Asked:** 2026-11-03 — ehtesham.anwar, showing Brian Petros the configuration, 1:11:07: *"I'm not sure it's going to impact the older ones"*. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §14. TCG still owes its review of the configuration (1:13:46).
+- **Question:** *"When the asset manager changes a subcategory's associated assets, show switches or substitutions, what happens to existing draft quotes, sent quotes, and scheduled jobs?"*
+- **Sources checked:** [../decisions/2026-10-06-association-quote-visibility-hourly-and-mob-demob-settings.md](../decisions/2026-10-06-association-quote-visibility-hourly-and-mob-demob-settings.md) (`verified`): the switches, not their reach. [../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §2. No entry found by grepping this file for existing quotes and configuration.
+- **Blocked:** nothing now; it affects how TCG tests the configuration.
+- **Owner:** Joe Schacatano; CodingCops to state what the build does.

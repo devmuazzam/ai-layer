@@ -2,7 +2,7 @@
 title: Accounting — module index
 status: reference
 kind: index
-updated: 2026-09-04
+updated: 2026-11-05
 tags: [module/accounting, kind/reference]
 ---
 
@@ -61,7 +61,7 @@ Invoicing and accounting (module not yet built). Backend usecases: `billing, exp
 
 ## Meetings
 
-21 meeting files carry `module/accounting`. The latest is [../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md](../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md) — Brent's written review of the prototype (client asks) and CodingCops' replies and proposed vendor-bill flow (not decisions). List them:
+31 meeting files carry `module/accounting`. The latest is [../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md) — the prototype walked with Brent, Tia, Sammy, Joe and Kyle: fix payroll before billing, rounded times, the AR view, a held PO status, 24-hour invoicing vs Tuesday payroll (not decisions; Corrina and Micaela absent, candidates listed). Before it, [../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md](../meetings/2026-10-16-accounting-prototype-review-email-brent-wagstaff-and-ehtesham-anwar.md) — Brent's written review of the prototype (client asks) and CodingCops' replies and proposed vendor-bill flow (not decisions). List them:
 
 ```
 grep -rl 'module/accounting' vault/meetings/

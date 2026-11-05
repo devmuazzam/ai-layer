@@ -1967,6 +1967,7 @@ Recorded so they are not re-filed. Full evidence in the audit doc.
   entry now asks: **(i)** is DocuSign retired for in-house portal signing, and when; **(ii)** until
   then, does *send via e-mail* need a signing path; **(iii)** where does a redlined, email-agreed
   contract live, and how does accounting know it governs? Owner unchanged, plus Ryan Adams for (iii).
+- **Update 2026-11-05 (11-03 accounting module) — the sender mechanism is answered; the rest is not.** abdulrehman, 1:02:06, offered two options: shared address with replies to the salesperson, or per-salesperson Outlook by OAuth 2.0, *"complete isolation"*. **Joe Schacatano, 1:04:28: *"Option 2. Option 2."*** So (a) above means **per-user OAuth, sending as the individual**. Still open: whether DocuSign stays as the signing rail; whether any e-mail beyond quotes (invoices, permits) sends the same way; what happens to a salesperson who has not connected. **Owed:** two craneguys.com test accounts (Brian Petros with Patrick McKiernan, 1:05:21). [code] No Outlook or Graph integration exists yet. A decision note is a candidate. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §13.
 
 ## Billing-code and price-list rules the E2E suite asserts with no written source — PR #488
 
