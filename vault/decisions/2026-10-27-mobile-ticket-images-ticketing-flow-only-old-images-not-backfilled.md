@@ -10,6 +10,11 @@ decided_by: >-
   and records from the spec's Answer lines. This is a developer and requester decision. It
   binds this build. It is not a TCG client ruling, so the status is reference.
 status: reference
+provenance_note: >-
+  Q3's legacy flat-image fallback is retired for MOBILE-TICKET-STRICT-S3 by the
+  requester's explicit 2026-11-05 technical direction; see
+  decisions/2026-11-05-ticket-attachments-retire-flat-keys-and-api-streaming.md.
+  Q1's original ticketing-flow scope and the no-backfill record remain intact.
 resolves:
   - MOBILE-TICKET-PRESIGNED-IMAGES/spec.md#q1
   - MOBILE-TICKET-PRESIGNED-IMAGES/spec.md#q3
