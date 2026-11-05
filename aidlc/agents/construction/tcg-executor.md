@@ -270,9 +270,9 @@ unchanged project, but if a green looks wrong, `--skip-nx-cache` before you argu
 `pnpm lint` currently fails on pre-existing errors in `apps/web` (37 on 2026-08-19). **Check
 whether a failure is yours** (`lint-triage`) — and say which, explicitly, in your report.
 "Lint fails" without that distinction wastes the reviewer's time and trains everyone to
-ignore the gate. Know also that **nothing runs these gates for you** — the `nx affected`
-block in `.husky/pre-push` is commented out and CI only deploys (root `CLAUDE.md` →
-Commands). A green push is not evidence anything passed. Run them.
+ignore the gate. Know also that `.husky/pre-push` runs the gates on affected projects but skips
+`@tcg/web` for lint and build, and CI only deploys (root `CLAUDE.md` → Commands). A green push
+is not evidence the web checks passed. Run them.
 
 ---
 

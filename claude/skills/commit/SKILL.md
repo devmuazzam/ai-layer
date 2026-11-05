@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Create the branch for a unit or ticket, rebase it onto main, and write conventional commits. Use when starting work on a unit, before pushing, or when asked to commit, stage, or write a commit message.
+description: Create the branch for a unit or ticket, rebase it onto main, and write conventional commits. Use when starting work on a unit, before pushing, when opening a pull request, or when asked to commit, stage, or write a commit message.
 ---
 
 The git workflow for one unit of work. Mechanical — no judgement about *what* to build,
@@ -153,13 +153,12 @@ Never rebase a branch someone else has checked out, and never force-push `main`.
 After a rebase, updating your own PR branch needs `git push --force-with-lease` — never a
 bare `--force`, which discards a teammate's push to that branch without telling you.
 
-**Only the branch guard is enforced.** Since the Nx merge (PR #363) the hooks are tracked
+**What `pre-push` enforces.** Since the Nx merge (PR #363) the hooks are tracked
 files in `.husky/` and run in the main checkout and every linked worktree (`pnpm install` sets
-`core.hooksPath=.husky`). `pre-push` refuses a direct push of `main` — and nothing else: its
-`nx affected` lint/typecheck/build block is commented out, `SKIP_GATES=1` is a no-op, and the
-hook's own comment "CI runs them on the PR instead" is false — CI runs only `deploy.yml` and
-`pr-size.yml`. **Run the gates yourself before you push.** `--no-verify` skips the branch
-guard too — treat that as a decision, not a habit. **The rebase-behind check is not
+`core.hooksPath=.husky`). `pre-push` refuses a direct push of `main` and, since 2026-10-20, runs
+`scripts/gates.sh` on the affected projects (lint skips `@tcg/web`, build skips `@tcg/web`).
+`SKIP_GATES=1` skips the gates. CI only deploys, so **run the web checks yourself**. `--no-verify`
+skips the branch guard too — treat that as a decision, not a habit. **The rebase-behind check is not
 enforced by anything any more** — `.ai/setup.sh` no longer installs its own hook, because two
 `core.hooksPath` values cannot coexist and the tracked hooks won — so *rebase before you push*
 is back to being your discipline. Branch naming is not checked either.
@@ -241,6 +240,18 @@ sections, even when they say "none":
 - **Siblings** come from `.ai/claude/contexts/patterns.md` plus a `git grep`. "None — no
   pattern entry and no other instance found by `<command>`" is a valid row; an empty
   section is not.
+
+**A PR that changes `apps/web/src/components/` or `apps/web/src/styles/` also carries:**
+
+```markdown
+## Shared UI changed
+| File | What changed | Screens checked |
+| --- | --- | --- |
+| `ui/button` | new variant only, existing screens unaffected | Quotations, DAS |
+```
+
+A Claude Code hook refuses `gh pr create` without this section. "Screens checked: not checked" is an
+acceptable answer; a missing section is not.
 
 ## 7. Size
 

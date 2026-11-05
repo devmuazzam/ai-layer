@@ -266,9 +266,9 @@ Two judgements per ripple target, and both belong in the output:
   change to it is **Unsourced** — route it through §2 like any other, including the
   `tcg-scrum` hand-off.
 
-**Green is not evidence of no ripple.** Nothing runs lint, typecheck or build automatically
-right now — the `nx affected` block in `.husky/pre-push` is commented out and CI only deploys
-(`CLAUDE.md` → Commands). Nothing lints a module boundary, and no gate
+**Green is not evidence of no ripple.** `.husky/pre-push` runs the gates on affected projects but
+skips `@tcg/web` for lint and build, and CI only deploys (`CLAUDE.md` → Commands). Nothing lints a
+module boundary, and no gate
 notices that a filter now returns rows it used to hide. The grep is the evidence; a ripple
 target you did not enumerate with a command is **INFERRED**, and must say so.
 

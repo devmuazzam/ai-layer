@@ -369,6 +369,12 @@ fetches the whole fleet. Never fetch the whole fleet from a retry, a remount or 
 site. React Query's `refetch()` ignores `enabled`, so guard any manual retry with
 `if (!enabled) return`. Cost scales with the fleet, not the screen (SCRUM-252).
 
+## Shared UI — a ticket changes only its own screens
+
+If a ticket needs a shared component or the theme to look different, add a variant or raise a separate
+design ticket. A deliberate app-wide change gets its own ticket and PR, lists the screens it affects, and is
+approved by Umer Islam.
+
 ## Misc
 
 Mobile-first Tailwind breakpoints. Touch targets ≥ 44px. Routes are URL-driven: `/create`,
