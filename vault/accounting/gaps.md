@@ -91,6 +91,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   (`verified`). That shows a manual collections check-in is wanted in the ERP. It does **not** tier
   the wishlist's AI collections assistant (automated reminders and escalation), and nothing else in
   this entry is answered. The entry stays open.
+- **Update 2026-11-05 (11-03 accounting module) — the portal date moved, not tiered.** ehtesham.anwar, 13:46: *"in a couple of weeks, we are going to introduce, thinking of introducing the client portal"*; 1:06:20: *"we are also working on client portal"*. This conflicts with (c) above. Brent (51:24) on commissions: *"I don't know if that's a right now thing"*. On deferred items, ehtesham.anwar (1:00:36): *"the next layer of functionalities"*, *"based on need"*. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §2, §9, §11.
 
 ## Project detail Accounting tab — what it shows, and what it shows before the module exists
 
@@ -409,6 +410,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** Joe Schacatano (what the customer is billed against the quote) with Corrina Bustos /
   TCG accounting (invoice presentation). Relayed by Brian Petros. Brian (2026-10-01, 1:04:34) named
   invoicing as the phase not yet covered.
+- **Update 2026-11-05 (11-03 accounting module) — design shown, no TCG answer.** ehtesham.anwar, 13:46: the invoice opens with *"the line items that we added in the quotation"*, each with its quoted figure beside it; on a mismatch *"you can edit the invoice. Quantities yourself. But the quoted ones. Stay the same."* That bears on (a). Nobody at TCG commented, and Mob/Demob itemisation and (b) were not touched. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §2.
 
 ## Billing cadence — what sets monthly instead of weekly, what a billing week is, and what "billed daily" means
 
@@ -460,6 +462,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   days it carries); any per-customer billing-cadence setting; Cash Forecast dates that depend on
   invoice dates.
 - **Owner:** Melissa McNutt / Brent Wagstaff, with Tia Brenneise (Accounts Receivable) for (a)–(c).
+- **Update 2026-11-05 (11-03 accounting module) — weekly shown, no question answered.** ehtesham.anwar, 45:43: a holdover weekly job with two weeks, *"This is going to create an invoice for one week"*. This agrees with the 2026-10-20 decision. Nobody at TCG commented; (a)–(e) stay open, and a monthly customer was not shown. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §7.
 
 ## One job per invoice / PO — what are the exceptions to "typically"?
 
@@ -539,6 +542,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** the vendor-bill status model, *Create Bill* timing, the customer-invoice blocker for
   Case 2, and the AP figures read from QuickBooks.
 - **Owner:** Brent Wagstaff (CFO), with Melissa McNutt on the subcontractor and LADWP rule.
+- **Update 2026-11-05 (11-03 accounting module) — partial evidence, not an answer; Brent still has not replied to the 10-16 proposal.**
+  - **The demo still creates the bill at receipt** (ehtesham.anwar, 13:46): *"This is now created. in QB. as well linked to the PO"*. That is timing 1 above, not the 10-16 proposal.
+  - **The bills-received blocker is in the demo.** *"we have this bill not created as a flag"*, and it stops the customer invoice on a third-party line. The vendor-attachment decision records that blocker as *proposed, not agreed*. No TCG comment.
+  - **A new place for the hold.** ehtesham.anwar, 54:53: PO *"has two statuses"*; add a third, *held*, from the third party's invoice *"until our customer base"* (as captured; INFERRED *pays*), then *"release these POs"*. The 10-16 *Held* was a bill status. See [../vendors-agencies/gaps.md](../vendors-agencies/gaps.md#po-state-following-vendor-state--and-vendor-state-means-two-different-things).
+  - **Sammy Garrett (Controller), 54:42:** *"if we got paid by Edison, then now we owe RCS"*; to the held status, 55:46: *"Perfect. Thank you."* This supports Case 1 for a subcontractor. It does not settle (a)–(d), and LADWP (Case 2) was not mentioned.
+  - **For the AP view** (ehtesham.anwar, 53:30): it lists bills only; POs with no bill are to be added.
+  - Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §2, §10.
 
 ## Invoice-approval reminders — what interval, and by what channel?
 
@@ -580,6 +590,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the AR list design.
 - **Blocked:** the AR tab's design.
 - **Owner:** Brent Wagstaff.
+- **Update 2026-11-05 (11-03 accounting module) — partly answered.** Reviewing the AR view, **Brent, 49:23:** *"This is what I'm looking for, 100%."* He named what he likes: the top snapshot (47:36), the **AR paid** column (*"That's really super helpful for us"*, 48:14), and paid / partial / unpaid filters with download (49:30). He also asked to edit the goal (47:36); ehtesham.anwar agreed (47:59). He did not say this is the *"like Accounts Payable v2"* he asked for on 10-16, and the prototype changed after his e-mail. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §8.
 
 ## AP payment marking — selecting bills for payment, "sent to bank", and partial payments: ERP or QuickBooks?
 
@@ -636,6 +647,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     and days-to-pay projection. `meetings/2026-10-13-…` §6: the overview design.
 - **Blocked:** the Cash Flow Overview's data model and the Cash Forecast report.
 - **Owner:** Brent Wagstaff.
+- **Update 2026-11-05 (11-03 accounting module) — not answered.** Brent, 1:00:08: *"I'm intrigued to see how it looks with actual data in it, like a consistent like six months or 12 months."* He deferred judgment; (a)–(d) stay open. Beside his request on 10-13 that little time go on loading past data, that bears on [../admin/gaps.md](../admin/gaps.md#go-live--how-much-history-comes-over-from-fcc-and-quickbooks-and-what-happens-to-test-data). Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §11.
 
 ## Accounting reports — what breakdowns each View Reports report needs, and the days-to-pay bands
 
@@ -661,6 +673,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     thresholds.
 - **Blocked:** the report definitions, and the days-to-pay colour bands.
 - **Owner:** Brent Wagstaff.
+- **Update 2026-11-05 (11-03 accounting module) — partly answered, for AR.** ehtesham.anwar, 49:30: the list's filter and download *are* the report, with no separate function. Brent: *"Yeah, that's what I want … Yep, I like it."* And 49:04–49:23: *"Reports and stuff are down, not down the line, but they're after we get this dialed."* Breakdowns per report (other than this), and the 45 / 60 bands, were not answered. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §8.
 
 ## QuickBooks direction for vendors and billing codes — does the ERP pull vendors, and push billing codes?
 
@@ -760,3 +773,97 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     ruled out by that.
 - **Blocked:** any fuel capture on mobile or at the yard; job costing.
 - **Owner:** Brent Wagstaff (CFO) for scope; Jeff Stricker and Kyle Harlow for how fuel is captured.
+
+## Flags on the invoicing screen — who may edit or clear a flagged ticket, and does any flag not hold the invoice?
+
+- **Status:** open
+- **Asked:** 2026-11-03 — ehtesham.anwar (CodingCops) put the question on the accounting call, 13:46. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §3. Corrina Bustos and Micaela Dipane were absent; Brian Petros will send them the questions and the recording (46:45).
+  - **Hold first.** Kyle Harlow, 23:06: *"I think it should be fixed first before it's billed."* Brent Wagstaff, 38:48: *"I think payroll should be getting completed before invoicing, right?"*
+  - **Flag classes.** Joe Schacatano, 29:01: *"I don't want to restrict invoicing and waiting"*; *"if it doesn't necessarily need to hold up the invoicing, we can still move forward"*. And 24:18–25:39: alerts by level, reminders, per-flag rules, visible to all of Accounting.
+  - **CodingCops' conclusion, unanswered.** ehtesham.anwar, 45:43: *"they can not create an invoice on it, and then they cannot mark it clean. They will have to ask to. Payroll to clean it for them."*
+- **Question:** *"From the invoicing screen, may accounting edit or approve a flagged ticket, or only send it to payroll?"* Follow-ups, each a one-line answer:
+  - **(a)** Is there any flag that does **not** hold the invoice, as Joe suggests? The verified 2026-10-13 decision says any flag holds the day.
+  - **(b)** Micaela is the named Payroll Administrator and also invoices. Which permission applies when one person holds both?
+  - **(c)** A **non-payroll** mismatch (the demo's quotation mismatch): may accounting fix that itself?
+  - **(d)** Does the crane superintendent get told? See the conflict below.
+  - **(e)** Are Joe's per-flag alert rules and timed reminders wanted, and who sets them?
+- **Sources checked:**
+  - [../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md](../decisions/2026-10-13-invoice-by-whole-job-day-never-per-ticket-payroll-flag-holds-the-day.md) (`verified`), point 2. Its *What was not decided* leaves open what "cleared by payroll" means and other blockers on a day.
+  - [../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md](../decisions/2026-09-30-payroll-flag-list-confirmed-all-flags-block-approval.md) (`verified`): every flag blocks payroll approval.
+  - [../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md](../decisions/2026-09-29-payroll-flags-go-to-payroll-admin-and-manager-not-crane-superintendent.md) and [../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md](../decisions/2026-09-29-flagged-entries-payroll-corrects-per-employee-and-rest-from-rounded-paid-time.md) (`verified`, Corrina): **not the crane superintendent**; the Payroll Administrator is Micaela. The 11-03 demo and Kyle and Joe put the superintendent in the path. **Conflict, not resolved here.**
+  - [ap-ar-value-engine-and-whiteboard-flow.md](ap-ar-value-engine-and-whiteboard-flow.md) (`unverified`): *Approve Tickets to Bill* is a discrete gate; it does not say who.
+- **Blocked:** the invoicing screen's ticket actions and its permissions; the *held, payroll flag* chip.
+- **Owner:** Corrina Bustos and Micaela Dipane (payroll), with Brent Wagstaff for accounting. Kyle Harlow on the superintendent.
+
+## 24-hour invoicing against Tuesday payroll — when must hours be clean, and what starts the clock?
+
+- **Status:** open
+- **Asked:** 2026-11-03 — ehtesham.anwar, 26:55: *"Micaela said that she needs to create and Brent said they need to create an invoice within the next 24 hours and send it to the customer … But on the other hand, payroll, Corrina processes on every Tuesday. So there is a gap of operations."* Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §4.
+  - **Brent Wagstaff, 29:35:** the Tuesday run only gets the checks out; in *"the theoretical perfect world"* hours are completed the next day, then *"we can't really invoice till the next day"*. Paper tickets and other barriers still need working through.
+  - **ehtesham.anwar, 33:05 (suggestion):** Corrina and the crane super clear a night job's tickets within 12 hours; accounting has the other 12.
+  - **Prototype chips (9:54):** *escalated, one day past cut*, automatic; *escalated, manager notified* after *"a couple of days"*.
+- **Question:** *"Is 24 hours a TCG rule for invoicing, and does it start at job completion or at payroll clearing the day?"* Follow-ups, each a one-line answer:
+  - **(a)** Who clears hours daily: Corrina, Micaela, a crane superintendent? Is daily clearing an agreed change to how payroll works?
+  - **(b)** Which manager is notified on escalation, and after how many days?
+  - **(c)** Does a day waiting on a vendor's invoice, or on a paper ticket, count against the clock? Brent, 33:53: vendors *"ideally the next day, but there is always some that won't"*.
+  - **(d)** A worker has 24 hours to complete a ticket. Does the invoice clock start after that?
+- **Sources checked:** no statement of a 24-hour invoicing rule found in `accounting/` or in the accounting transcripts and notes (2026-07-21, 07-23, 08-18, 08-25, 08-28, 09-01, 10-08, 10-13); ehtesham.anwar's attribution is the only source. [../decisions/2026-10-15-late-and-incomplete-tickets.md](../decisions/2026-10-15-late-and-incomplete-tickets.md) (developer direction): the worker's 24-hour window. [../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md](../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md) (`verified`): other jobs billed daily, no clock stated.
+- **Blocked:** the escalation chips; any SLA timer; whether payroll needs a daily worklist.
+- **Owner:** Brent Wagstaff, with Corrina Bustos for daily hours.
+
+## A payroll change after the invoice exists — warning, approval and updating the invoice
+
+- **Status:** open
+- **Asked:** 2026-11-03 — Brian Petros, 36:47–37:05: *"there may be payroll changes after the invoice is created"*; the attempt could give *"some sort of warning or notification that the invoice has already been created"*. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §5.
+  - **ehtesham.anwar, 37:21:** a further chip; *"we bill six hours"*, payroll says eight, so two more hours go on the invoice. *"we need to figure out the rules."*
+  - **Brian, 38:19:** *"there would be special approval on that"*, through *"Micaela or whoever's handling it … so they're aware on the invoice level"*.
+- **Question:** *"When a payroll change touches an invoiced day, who approves it, and what happens to the invoice?"* Follow-ups, each a one-line answer:
+  - **(a)** Does every payroll change reach the invoice, or only some? Brian: *"some of the payroll changes"*. A rest penalty, for example, is pay only (INFERRED example).
+  - **(b)** Draft, sent and paid invoices: edit, re-send or credit memo for each?
+  - **(c)** Hours going **down**: Brent (29:35) raised an unapproved work through lunch that *"reduces hours"* after billing.
+- **Sources checked:** [../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md](../decisions/2026-10-06-holdover-oiler-day-and-late-tickets-melissa-answers-provisional.md) (provisional): *"An invoiced or payroll-processed ticket needs approval. A change after billing triggers re-approval"*, and payroll can edit at all times. [../meetings/2026-10-08-accounting-demo-invoicing-approval-ar-ap-and-quickbooks.md](../meetings/2026-10-08-accounting-demo-invoicing-approval-ar-ap-and-quickbooks.md) §5 and §9 Q2: credit memos and QuickBooks locking, unanswered and unfiled.
+- **Blocked:** the payroll edit path on an invoiced ticket; any *invoiced, payroll changed* chip.
+- **Owner:** Brent Wagstaff, with Corrina Bustos.
+
+## Rounded vs actual times — where each shows, and what a customer who asks for a ticket receives
+
+- **Status:** open — Kyle's direction is clear; the payroll owners have not heard it, and the customer copy is undefined.
+- **Asked:** 2026-11-03 — Kyle Harlow, 39:00. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §6.
+  - **Kyle, 41:56:** actuals only *"for investigational purposes"*. 44:35: *"the actuals can be problematic customers"*; *"it should be just the rounded numbers."*
+  - **Brian Petros, 41:35:** *"every presentation that we have to the customer, right, is rounded time. Every presentation we have to the employee even I think is rounded time."*
+  - **Tia Brenneise, 43:22:** *"What about customers that request a ticket?"* ehtesham.anwar: *"The rounded numbers are going to get sent to the customer"* (43:12), masked (43:26), with a toggle to the original on the invoicing side (45:33; Kyle: *"That would be helpful."*).
+- **Question:** *"Is the rule: rounded everywhere, actual only on the ticket's detail view for those allowed to investigate?"* Follow-ups, each a one-line answer:
+  - **(a)** Which roles may see actuals? Does the employee see them on their own ticket?
+  - **(b)** Is the customer's ticket copy a separate masked document? Which times does it mask?
+  - **(c)** A customer who signed on site: which times were on the screen? (INFERRED question; the signature flow was not discussed.)
+  - **(d)** If a customer disputes a rounded time, who may release actuals?
+- **Sources checked:** [../decisions/2026-08-24-payroll-time-rounding-method.md](../decisions/2026-08-24-payroll-time-rounding-method.md) (`verified`): the method, which the call's example agrees with, and nothing on display. [../field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-038-time-rounding.md](../field-ops/frd-new-format-draft/05-functional-requirements/fr-fop-038-time-rounding.md): stores both. [../field-ops/field-app-demo-2026-06.md](../field-ops/field-app-demo-2026-06.md) §2: the app displays the rounding. [../field-ops/field-paper-forms.md](../field-ops/field-paper-forms.md) §1, terms §13: 30-minute increments.
+- **Blocked:** time display on summaries, the invoice preview, and the customer packet's ticket.
+- **Owner:** Kyle Harlow, with Corrina Bustos and Brent Wagstaff. Pointer in [../payroll/gaps.md](../payroll/gaps.md).
+
+## Invoice discounts, the 10-day early-payment tag and retention — on the demo invoice, unsourced
+
+- **Status:** open
+- **Asked:** 2026-11-03 — shown by ehtesham.anwar: *"2% early payment discount, if paid within 10 days"* (13:46); *"you can add the discount"* (13:46); a chip for *"when CFO. adds the discount on an invoice"* (13:46); *"partial retention open"* (13:46). Nobody at TCG commented. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §2. It also files 2026-10-08 §9 Q3 and Q4, listed but never filed.
+- **Question:** *"Is the 2% / 10-day term on every customer, or per customer?"* Follow-ups, each a one-line answer:
+  - **(a)** Who may add an invoice discount: only the CFO? Does sales approve it afterwards, as the chip order implies?
+  - **(b)** Which customers or jobs hold retention, at what percentage, and when is it released and billed?
+- **Sources checked:** [invoice-packets-2026-04-worked-examples.md](invoice-packets-2026-04-worked-examples.md): *2% Net 10*, recorded 2026-08-28 for Edison. [fcc-invoicing-in-nexgen.md](fcc-invoicing-in-nexgen.md): `Discountable` per line and a price list's *Sales Discount %*. `meetings/2026-10-08-…` *Against the vault*: retention first appeared there, and the AR projection is built on the 10 days. `grep -i retention` on this file finds no earlier entry.
+- **Blocked:** invoice discount permissions; AR figures *excluding retention*; the AR projection.
+- **Owner:** Brent Wagstaff, with Tia Brenneise.
+
+## Commissions in the ERP — engine, category filter on the invoice list, and the hand-off to payroll
+
+- **Status:** open
+- **Asked:** 2026-11-03 — Brian Petros, 50:04, 51:33: commissions drill into QuickBooks invoices for categories; could the list flag or sort by type? Brent Wagstaff, 51:24: *"in a perfect world, we'd have something like this for commissions and the ability to mark that it was paid. But I don't know if that's a right now thing."* ehtesham.anwar, 52:19: an engine, in the backlog, then accounting feeds payroll. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §9.
+- **Question:** *"Is a commission view in this phase or later?"* Follow-ups, each a one-line answer:
+  - **(a)** Which invoice categories should the list filter by? Brian: *"Yeah, maybe"* to a filter beside *All types* (52:16).
+  - **(b)** Does the ERP take over the commission workbook's rules, or only show its result?
+  - **(c)** How does a commission reach payroll, given office and sales staff are not on ERP payroll yet (ehtesham.anwar, 53:15)?
+- **Sources checked:** [../quotations/sales-commissions.md](../quotations/sales-commissions.md) (`unverified`): the invoice-driven workbook between FCC and QuickBooks, with coordinator pay. [wishlist](2026-07-accounting-team-erp-wishlist.md): not tiered.
+- **Blocked:** nothing now; the invoice list's type filter.
+- **Owner:** Brent Wagstaff, with Ryan Adams for the rules.
+
+## Go-live history — pointer, owned by admin
+
+Brent Wagstaff, 7:16, asked how much past data comes over. See [../admin/gaps.md → *Go-live*](../admin/gaps.md#go-live--how-much-history-comes-over-from-fcc-and-quickbooks-and-what-happens-to-test-data).

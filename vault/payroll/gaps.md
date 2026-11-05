@@ -887,6 +887,10 @@ someone has confirmed otherwise.
   recommend to go with the second option"* (48:40). syed.haris asked to watch the next real submission,
   and Micaela agreed to message when it was sent that afternoon (27:44–28:08). **No TCG owner chose
   between the paths on the call**, so this stays open. Source: [2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md](../meetings/2026-10-27-erp-demo-walkthrough-part-3-mobile-install-holdover-ticket-payroll-and-adp.md), transcript [2026-10-27-erp-demo-walkthrough-part-3.md](../meetings/transcripts/2026-10-27-erp-demo-walkthrough-part-3.md).
+- **Update 2026-11-02:** Syed Haris (developer direction, `reference`, TCG not consulted) said of
+  re-sending *"for now no, add the export option for now, but for API call no need for re-send"*. That
+  is his statement about the eventual API path. **It does not choose between the paths, so this stays
+  open.** Source: [decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md](../decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md).
 
 ## Employee master — who creates a worker, ERP or ADP
 
@@ -2617,6 +2621,11 @@ someone has confirmed otherwise.
   EXPORTED *periods* are still skipped, and there is still no reopen or delta path — this
   question stands as asked. The calculate window has also moved since this entry: the engine now
   reads prior-week context (PAY-045 rest, the holiday ladder, the premium-date minimum).
+  **Update 2026-11-02 — the 2026-10-27 update above is stale.** The plain re-send is withdrawn by
+  developer direction (Syed Haris, `reference`, TCG not consulted):
+  [decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md](../decisions/2026-11-02-adp-send-whole-week-only-no-re-send-export-of-a-sent-week-developer-direction.md).
+  A sent week can only be exported again as a download of its frozen figures, with nothing stamped.
+  It still cannot carry a correction, so the amended-week question stands as asked.
 - **Owner:** TCG payroll (Brian Petros, Corrina for practice) for the correction policy;
   CodingCops for the window. Brian has offered to walk through it in a meeting — that meeting is
   where PAY-068 and PAY-066 close.
@@ -5193,6 +5202,7 @@ somewhere it should not have. Settle that before touching either.
   - **Round 9, later the same day** ([same note, section *Round 9*](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#round-9--the-flag-definitions-and-designs-2026-09-30)): developer readings for Q6–Q11, pending Corrina; C4 answered. See the dated lines under each.
   - **Rounds 10–11, later the same day** ([same note, section *Rounds 10 and 11*](../decisions/2026-09-30-developer-answers-multi-day-and-flagged-entry-gaps.md#rounds-10-and-11--flag-details-for-payroll-flags-u14u21-2026-09-30)): developer readings for Q5(d)'s missing notes, Q7 and Q10(c)(d), pending Corrina; C1's rest-start mechanics, pay-affecting, pending Corrina / Brian. See the dated lines under each.
 - **Owner:** Corrina Bustos (payroll), with Brian Petros for C1–C3 (engine / rest rule). CodingCops for Q2's role design and C4.
+- **Update 2026-11-05 (11-03 accounting module) — the crane superintendent is back in the path. Conflict, not resolved.** The accounting prototype sends a reminder to *"the payroll or the crane super"* (ehtesham.anwar, 13:46), and payroll *"can send it to the crane super to be fixed"* (36:13). Kyle Harlow, 23:06: *"brought to the at least to the superintendent's attention"*. Joe Schacatano, 24:18: *"a message via alert to the superintendent"*. Corrina's *"not the crane superintendent"* stands in the verified 09-29 note, and she was not on the call. Brian Petros will send her the questions (46:45). Filed in [../accounting/gaps.md → *Flags on the invoicing screen*](../accounting/gaps.md#flags-on-the-invoicing-screen--who-may-edit-or-clear-a-flagged-ticket-and-does-any-flag-not-hold-the-invoice). Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §3.
 
 ## Should a Crane Supervisor see an employee's pay in the correction preview without payroll view
 
@@ -6378,3 +6388,21 @@ somewhere it should not have. Settle that before touching either.
   (*"if a job is not marked as a Labor Compliance job, it will not appear in Certified Payroll reports"*);
   `Quotation.certifiedPayroll` exists. Nothing routes tickets.
 - **Owner:** Corrina Bustos.
+
+## The system cannot take away or modify time — which contract clause, and what about an unapproved work through lunch?
+
+- **Status:** open
+- **Asked:** 2026-11-03 — Kyle Harlow, 25:45, on system alerts about a ticket: *"the language in the contract that says that the system cannot take away time or modify time. So it will have to be carefully worded."* It can suggest; *"I think that will run into grievances"*; then the manager decides. *"it cannot be used for discipline or for adjusting time."* Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §3.
+  - ehtesham.anwar, 26:55: *"there is not a rule that removes an hour from people"*; 31:19–32:19: the engine does not remove hours.
+  - **Brent Wagstaff, 29:35:** *"we do run into work through lunches where it wasn't approved, but it was put on, and then that reduces hours."*
+- **Question:** *"Which contract clause does Kyle mean?"* Follow-ups, each a one-line answer:
+  - **(a)** Does it limit only automatic changes, or also what a flag or an alert may say? Who should approve the wording?
+  - **(b)** Do the Samsara flags count as the system adjusting time?
+  - **(c)** Who approves a work through lunch, and when payroll rejects one, what is that recorded as?
+- **Sources checked:** the MLA's in-cab camera MOU ([mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md](mcog-l12-mla-2025-2028/truck-crane-mla-2025-2028-full-text.md)): *"Employers shall not use data collected under this MOU to initiate discipline"*, except vehicle-related incidents. That is about **cameras**; whether Kyle means it is unknown. A search of the MLA texts for *GPS*, *telematics*, *timekeeping* and *discipline* found no clause about a system changing time. [../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md](../decisions/2026-09-29-invalid-entry-flags-samsara-30-minutes-and-wtl-penalty-moves-rest-start.md): the Samsara flag.
+- **Blocked:** the wording of flag alerts to employees; any automatic time suggestion.
+- **Owner:** Kyle Harlow, with Corrina Bustos.
+
+## Rounded vs actual times — pointer, owned by accounting
+
+Where actuals may show, and what a customer receives. See [../accounting/gaps.md → *Rounded vs actual times*](../accounting/gaps.md#rounded-vs-actual-times--where-each-shows-and-what-a-customer-who-asks-for-a-ticket-receives). Payroll's own side of the invoice timing is in [*24-hour invoicing against Tuesday payroll*](../accounting/gaps.md#24-hour-invoicing-against-tuesday-payroll--when-must-hours-be-clean-and-what-starts-the-clock).

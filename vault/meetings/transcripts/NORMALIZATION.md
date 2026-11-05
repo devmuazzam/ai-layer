@@ -435,3 +435,35 @@ FAA or a NOTAM"* (1:04:30). "cream", "queen" and "undertone" were **not** read a
 "Dallas" was not read as Lisette. Speaker labels are reproduced uncorrected: "Brian Petros" is the
 conference-room microphone, carrying Brian and Ryan Adams; the header gives the evidence. Left unchanged:
 the items listed in the file's own header note.
+
+# Pass 18 — 2026-11-05 (one new transcript only)
+
+Applied to `2026-11-03-accounting-module.md` (50); no earlier file was touched. **50 substitutions**, each
+pinned to its own turn, with the timestamps in the file's header note. In summary: "coding cups" / "code
+cops" -> "CodingCops" (1 / 1); "is a 10 itself" -> "is a tenant itself" (1); "from FC" -> "from FCC" (1);
+"green super" / "grain super" / "clean super" / "pain super" -> "crane super" (3 / 1 / 1 / 1, as pass 1 and
+7); "75 ton train" -> "75 ton crane" (1, as pass 1), "mobile trains" -> "mobile cranes" (3, as pass 1);
+"plane(s)" -> "crane(s)" (3, as pass 3); "higher level frame" -> "higher level crane" (1, as pass 6);
+"greens" -> "cranes" (1, as pass 2); "PU" -> "PO" (1, as pass 13); "NQB." -> "in QB." (1); "build" / "built"
+/ "builds" -> "bill" / "billed" / "billing" / "bills" (8, as pass 12 and 13); "my clean" -> "mark clean" (1);
+"an R" / "Rs" / "ours" -> "an hour" / "hours" (5); "payroll flat" -> "payroll flagged" (1, as pass 13);
+"Payable" -> "Payroll" (2); "Estan" -> "Ehtesham" (1, as pass 9 and 12); "ERB" -> "ERP" (1, as pass 9);
+"Brett" -> "Brent" (1); "making a code" -> "making a quote" (1, as pass 11); "spot e-mail" -> "support e-mail"
+(1); "O2.0" -> "OAuth 2.0" (1); "AP connection" -> "API connection" (1); "mob demo" / "mob demog" -> "mob
+demob" (1 / 1, as pass 6); "early" -> "hourly" (3, as pass 10, the quote type, set against mob/demob).
+
+New evidence rules used here: **"an R" / "Rs" / "ours" -> hour(s)** only in ehtesham.anwar's 26:55, 31:19 and
+32:19 turns on the payroll side of a ticket, pinned by Brent's restatement *"you talked about adding hours"*
+(29:35). It is the same mis-hearing pass 17 listed and left as *"If we don't have an Rs"*; here the turns
+carry the argument and Brent's restatement pins them. **"Payable" -> Payroll** only in Brent's 29:35 turn,
+which opens on *"the payroll processing on Tuesday"*, and in ehtesham.anwar's *"ask to. Payroll to clean it"*
+(45:43), beside *"mark it clean"*. *Accounts Payable* and every other "Payable(s)" are untouched. **"pain super"
+-> crane super** is pinned by *"the crane super"* at 36:13 and by "super". **"10" -> tenant** only in *"is a
+10 itself"*, because the same sentence continues to *"new tenant"*. **"Brett" -> Brent** only at 1:00:36, where
+the speaker named Brent two sentences earlier; *"Hey, Brett. Brent"* (49:58) is a self-correction and stays.
+"customer base" and "draft to bid" (54:53, ~ *pays*, *paid*) were **not** changed, because each is a real phrase;
+the curated notes mark that reading as inferred. "Leo" (25:45) was not read as Joe, because Leo Lopez is a real
+TCG name. "Sam" (51:44) was not read as Ehtesham, because Sammy Garrett is on the call. "queen" was left (as
+pass 14, 15 and 17). "flat" outside *"payroll flat"* was left (as pass 13). Speaker labels are reproduced
+uncorrected: "IT Support" is Patrick McKiernan; the header gives the evidence. Left unchanged: the items
+listed in the file's own header note.

@@ -2,7 +2,7 @@
 title: Vendors Agencies — open questions
 status: reference
 kind: gaps
-updated: 2026-10-20
+updated: 2026-11-05
 tags: [module/vendors-agencies, kind/gaps, open-questions]
 ---
 
@@ -372,6 +372,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** a UAT row is an ask, not intent — [../uat/INDEX.md](../uat/INDEX.md). Do not build from the sheet's one sentence; it does not name a state, a direction or a transition.
 - **Blocked:** any vendor→PO status wiring; the `OPEN | CLOSED` transition set, which two named sources now want to extend in two different directions (vendor state, quote-lost).
 - **Owner:** Brian Petros and Liz Lopez (the PO process); whoever raised the UAT 3 row, to say which "vendor state" they meant.
+- **Update 2026-11-05 (11-03 accounting module) — a third reading, not an answer.** ehtesham.anwar, 54:53: *"PO has two statuses"*; add **held**, from the third party's invoice *"until our customer base"* (as captured; INFERRED *pays*), then release the POs when the customer invoice is paid. Sammy Garrett, 55:46: *"Perfect. Thank you."* That ties the PO to the **customer invoice**, not to the vendor, and starts at the moment `CLOSED` auto-closes today. Neither reading of *vendor state* was addressed. Also: *"not focused on closing out the PO. We'll look at that later on"* (13:46). Filed under [../accounting/gaps.md → *Vendor-bill flow*](../accounting/gaps.md#vendor-bill-flow--when-is-the-quickbooks-bill-created-and-which-bills-wait-for-the-customers-payment). Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §10.
 
 ## Permit Cost vs PO Fee — pointer, owned by projects-jobs
 
@@ -398,3 +399,13 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** see the accounting entry.
 - **Blocked:** see the accounting entry.
 - **Owner:** Brent Wagstaff (accounting).
+
+## Can one job carry more than one Customer PO?
+
+- **Status:** open
+- **Asked:** 2026-11-05 — left open when Trello card #14 (TCG-22) closed. The card asked whether there can be more than one; the answer it closed on settles where the Customer PO lives, not how many.
+- **Question:** one line answers it. May a single job carry more than one Customer PO number, for example when a customer issues a second PO for extra work, or is it always one per job?
+- **Sources checked:** [../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md](../decisions/2026-09-05-po-types-and-quote-to-invoice-workflow.md) and [purchase-orders-fcc/commissioning-email-thread.md](purchase-orders-fcc/commissioning-email-thread.md) place it on the job and the invoice, and do not address a count. [../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md](../decisions/2026-10-20-holdovers-billed-weekly-or-monthly-other-jobs-daily-one-job-per-invoice.md) records Melissa McNutt's written reply on billing, 20 Oct 2026: *"We typically do 1 job per invoice / PO."* "Typically" leaves the exception open.
+- **Related, do not answer separately:** [../quotations/gaps.md → *The customer PO arrives before the job exists — may the quotation capture it?*](../quotations/gaps.md#the-customer-po-arrives-before-the-job-exists--may-the-quotation-capture-it) and [../projects-jobs/gaps.md → *Customer PO on the job*](../projects-jobs/gaps.md#customer-po-on-the-job--a-new-pos-tab-where-every-source-names-schedule-or-main).
+- **Blocked:** nothing today; the job holds one number. It matters when invoicing is built.
+- **Owner:** Brian Petros, with Melissa McNutt.
