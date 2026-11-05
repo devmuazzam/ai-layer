@@ -4,10 +4,12 @@
 
 ## Unit ledger
 
-| Unit | Title                                                             | Surface | Status    | PR  | Target           |
-| ---- | ----------------------------------------------------------------- | ------- | --------- | --- | ---------------- |
-| U1   | Expose `yardGate` for holdover tickets in field-ticket read model | API     | completed | —   | `origin/staging` |
-| U2   | Mobile holdover ticket gating & Home-start exemption              | Mobile  | completed | —   | targets U1       |
+| Unit | Title                                                             | Surface | Status            | PR                                                                    | Target    |
+| ---- | ----------------------------------------------------------------- | ------- | ----------------- | --------------------------------------------------------------------- | --------- |
+| U1   | Expose `yardGate` for holdover tickets in field-ticket read model | API     | merged — PR #1042 | [#1042](https://github.com/TheCraneGuys/craneguys-platform/pull/1042) | `staging` |
+| U2   | Mobile holdover ticket gating & Home-start exemption              | Mobile  | merged — PR #1042 | [#1042](https://github.com/TheCraneGuys/craneguys-platform/pull/1042) | `staging` |
+
+Both units merged together on 2026-11-05 as `c98b670da`, containing implementation commit `5f42143fd`. Platform `main` does not yet contain this change. The planned API/mobile split was not delivered as separate PRs; see `reflection.md`.
 
 ---
 
