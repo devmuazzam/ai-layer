@@ -47,7 +47,7 @@ logs and avoid repeating unchanged long runs without cause.
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | Field crew upload/read/delete structured ticket files and open fresh presigned S3 links without API byte streaming | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05 | api, mobile; existing web consumers checked | — | ~600 changed lines / 24 existing files, including existing cases | built — fix/strict-ticket-presigned-attachments |
+| U1 | Field crew upload/read/delete structured ticket files and open fresh presigned S3 links without API byte streaming | REQ-01, REQ-02, REQ-03, REQ-04, REQ-05 | api, mobile; existing web consumers checked | — | ~600 changed lines / 24 existing files, including existing cases | merged — PR #1049 into staging, 2026-11-06 |
 
 - Requirements covered: **5 in spec §2, 5 fully covered, 0 uncovered**, counted 2026-11-05.
 - Units blocked on an open question: **none**; `spec.md` §12 has no unanswered question.

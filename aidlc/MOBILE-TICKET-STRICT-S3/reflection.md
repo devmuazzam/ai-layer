@@ -1,9 +1,12 @@
 # Reflection — MOBILE-TICKET-STRICT-S3 — strict ticket S3 hierarchy
 
-> **CURRENT QUALIFICATION — 2026-11-06:** The appended live-QA addendum supersedes
-> the historical “no executor defects” and “AC4-only blocker” conclusions below.
-> ED-1 was reproduced and corrected before merge; fresh gates now pass. This record
-> does not claim merge, deployment, ticket closure, or complete office-role UI coverage.
+> **POST-MERGE QUALIFICATION — 2026-11-06:** PR #1049 is merged into `staging` as
+> `2e2ff31d91a231e3d8d4f8e1e756e6e6b0c90dbd`, including cleanup correction
+> `1e4e375b52a3d1997f060e740f6c478d25357e87`. The final addendum supersedes the
+> historical zero-ED, AC4-only blocker, unpublished and pre-merge conclusions below.
+> Final totals: 1 spec defect and 2 executor defects, corrected before merge;
+> 3 prevention proposals remain proposed, none applied. Office/admin screen checks
+> remain not checked. A staging merge does not establish deployment or production acceptance.
 
 > **PRE-MERGE IMPLEMENTATION REFLECTION — 2026-11-05.** Requested explicitly before
 > publishing. U1 is uncommitted and unmerged; nothing is claimed shipped or closed.
@@ -295,3 +298,123 @@ earlier zero-executor-defect claim is superseded, not silently erased. The devel
 could have requested the same-tenant wrong-ticket fixture alongside cross-tenant QA
 at the start; no additional approval step was necessary. The earlier unrequested
 link-expiration idea remains unbuilt. Normal review/merge/closure work remains pending.
+
+
+## 2026-11-06 final addendum — PR #1049 merged and post-save cleanup correction
+
+### ED-2 — Strict stale-key validation escaped after a replacement had already saved
+
+- **Where:** `TicketAttachmentGuardService.cleanupReplaced` and its four existing
+  post-save call sites across signatures, lunch breaks and checklist answers.
+- **Existing contract:** Replacement metadata is saved before orphan cleanup. The
+  helper already treated unavailable S3 cleanup as nonfatal because that save had
+  committed. Strict key refusal required preventing legacy signing/deletion, not
+  converting successful replacement persistence into a failed response.
+- **Built:** `deleteOrphaned` began validating stale row ownership and key hierarchy,
+  introducing an expected `BadRequestException`. Its post-save caller still caught
+  only `ServiceUnavailableException`. A stale flat/malformed key could therefore
+  produce 400 after a replacement saved. Checklist processing could stop before
+  subsequent answers and `markSubmitted`.
+- **Caught by:** Independent PR review, then the coordinator's source validation and
+  the executor's temporary before-patch runtime reproduction. Earlier emulator
+  replacement checks used valid structured old keys; they did not cover this case.
+- **Cause of the miss:** Shared-helper callers were enumerated, but the changed
+  exception contract was not traced through the callers' persistence ordering.
+  Structured replacement success and strict direct rejection each passed while
+  their combination on post-save cleanup remained unchecked. This is an executor
+  regression in an existing consumer, not a newly discovered product requirement.
+- **Correction:** Commit `1e4e375b5` catches expected bad-request validation in
+  `cleanupReplaced`, alongside the existing storage-unavailable exception. It warns
+  and retains rejected stale rows/objects. Direct reads/deletes still reject before
+  S3 access, valid structured cleanup still removes both variants, and unexpected
+  errors still propagate. D7 records this narrow decision; legacy access was not
+  restored and no historical rows or objects were rewritten.
+- **Class:** `refactor-untested`. Status: corrected and merged; R3 prevention proposal
+  remains proposed. No new repository test cases were requested or introduced.
+
+### Verification, merge evidence and limits
+
+**VERIFIED in this reflector run:** `git show -s origin/staging` identifies merge
+`2e2ff31d91a231e3d8d4f8e1e756e6e6b0c90dbd`, subject “Merge pull request #1049
+from TheCraneGuys/fix/strict-ticket-presigned-attachments”. Its second parent is
+`1e4e375b52a3d1997f060e740f6c478d25357e87`; `git merge-base --is-ancestor`
+for that correction against `origin/staging` exits 0. This verifies application
+merge ancestry, not any deployment or overlay publication.
+
+**Previously VERIFIED by this executor; after-patch smoke independently rerun by the coordinator:**
+`node /tmp/tcg-stale-cleanup-smoke.cjs before` reproduced the rejected stale key
+escaping and stopping continuation. The after-patch invocation verified continuation,
+one warning, no deletion of rejected stale rows/objects, strict direct rejection,
+both structured variants deleted, expected 503 suppression and unexpected-error
+propagation. It runs the actual source guard with the compiled key validator and
+mocked repository/storage; it does not reproduce an endpoint, database, S3 or
+emulator failure. Six existing suite files were selected through cache-disabled
+Nx and the target exited 0; that targeted log did not retain Jest suite/test counts.
+
+`review-cleanup-fix.md` records the independent Path B analyst PASS, fresh API build
+and lint PASS, and full API tests PASS (328 suites / 3,845 tests) after allowing the
+local ports required by existing HTTP suites. The coordinator checked those outputs;
+the reflector did not rerun the full gates at close. The successful rerun supersedes
+sandbox `listen EPERM` failures. Earlier web/mobile checks and emulator evidence remain
+historical evidence; the stale-key correction was not rerun on an emulator. Authorized
+office/admin meter and job-progress screens remain **NOT CHECKED**, as already recorded.
+
+### R3 — Required failure-path evidence for existing shared-helper consumers
+
+**Proposal only; third-occurrence structural escalation.** Replace the current
+`Complete?` bullet in `.ai/aidlc/agents/construction/tcg-analyst.md` §4 with:
+
+> - **Complete?** Every row delivered, requested tests included, migration committed if the schema moved.
+>   For a changed shared helper, require an existing-consumer ledger: caller, changed success/error contract, persistence before/after the call, resulting response/state on each newly introduced failure, and command/output or NOT CHECKED. A consumer list or green happy path alone is insufficient; do not request or add new tests without developer authorization.
+
+Adds 2 source lines and removes 1 bullet. The required ledger replaces a weak completion
+assertion instead of adding the same rule to multiple roles. **Applicability:** the
+`BadRequestException` row for checklist `upsertAnswer → cleanupReplaced → markSubmitted`
+would show the save precedes the new exception and the final submission write is skipped.
+A temporary runtime reproduction, existing test, or explicitly NOT CHECKED entry meets
+the evidence format without violating the no-new-tests policy. This is a structural
+review-artifact requirement, not an implemented runtime/static checker. No tooling was
+edited; only Haris may decide/apply the proposal.
+
+### Recurrence and why the earlier prevention did not hold
+
+Class grep finds exactly two prior `refactor-untested` rows: SCRUM-900 SD-1 and
+SCRUM-252 ED-4. Their relevant reflection sections and proposals were read. The index
+marks both earlier proposals applied (2026-08-28 / 2026-10-20). This is the **third
+recorded occurrence**, requiring structural escalation rather than another reminder.
+The earlier mechanisms emphasized covering existing consumers and confirming behavior;
+this run did enumerate consumers and verify structured happy paths, but failed to expose
+the new exception after persistence. R3 therefore requires the missing failure/persistence
+artifact explicitly. No evidence establishes whether an older instruction was ignored;
+its existence and the previous green checks do not establish that failure paths were
+covered. No new class is invented. One ED-2 row is appended, never rewriting ED-1 or SD-1.
+
+Rejected interpretations: do not classify this as `missing-requirement` merely because
+D7 now clarifies implementation, and do not broaden `gate-illusion` solely because
+passing gates missed it. No documented-convention breach needs to be invented. Do not
+restore legacy signing/deletion or swallow every exception to fix this case. The early
+zero-executor-defect and all-cases/merge-ready conclusions are superseded; they remain
+historical evidence of the verification gap.
+
+### §3 disposition and close handoff
+
+§3's two historical fallback directions were already dispositioned by the scoped
+requester decision. ED-2 introduces no stale/wrong vault source, new conflict, unwritten
+human product answer, undefined term, or ticket/vault question. No new vault action,
+§12 question or gaps-file edit is warranted. The wider field-ops conflict remains outside
+this technical ticket. Final totals: **SD-1 plus ED-1/ED-2; 0 outstanding source actions**.
+R1, R2 and R3 are proposed only; the source fixes are separately merged. No preventive
+rule has been applied by this reflection.
+
+Stale queue check: the immediately preceding recorded ticket close is HOLDOVER-YARD-GATE,
+2026-11-05 (`state.md` Closed line). Parsing only date-bearing Markdown index rows with
+status beginning `proposed` and date strictly before `2026-11-05` finds **33 rows**
+(2026-10-19 through 2026-11-04): branch-ops 2; contract-drift 1; contradicted-source 1;
+duplicated-logic 1; env-lesson 2; gate-illusion 4; ignored-spec-edge 2; layer-violation 1;
+missing-requirement 6; open-built-anyway 2; over-broad-condition 1; over-built 1;
+pattern-drift 2; phase-skipped 1; stale-reference 2; stale-ui-state 3; unbounded-scan 1.
+Dates have no intra-day timestamps, so same-day rows are conservatively excluded.
+
+The close coordinator owns state, units/processed ledger, office-check disposition and
+overlay publication. This reflection does not claim those writes are pushed. No source,
+tooling or product-vault file was changed by this close reflection.

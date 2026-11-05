@@ -2,8 +2,8 @@
 
 ## Agent run record
 
-All eight role agents ran for this lifecycle. This records agent execution, not acceptance
-of AC4, a human review, or a merge.
+All eight role agents ran for this lifecycle. Historical stage results are retained below;
+the closure record establishes the final merge and verification state.
 
 | Stage / role | Result / artifact |
 | --- | --- |
@@ -13,35 +13,33 @@ of AC4, a human review, or a merge.
 | tcg-contract-tracer | Inception and final construction audits; specialist-audits.md |
 | tcg-prisma-guardian | Inception and final construction audits; specialist-audits.md |
 | tcg-executor | U1 implemented; final API tests/build/lint and compiled smoke passed |
-| tcg-analyst | analysis.md: no source defect; DO NOT SHIP because AC4 remains unfulfilled |
-| tcg-reflector | reflection.md: pre-merge reflection; one corrected interim planning gap, zero final executor defects; proposal only |
+| tcg-analyst | Historical analysis.md AC4 blocker superseded by full gates; independent Path B source/runtime reviews pass for owner validation and post-save cleanup |
+| tcg-reflector | reflection.md: historical reflection plus live-QA and post-merge addenda; proposals remain unapplied |
 
-**Path:** A (explicit developer request), then Path B live-QA correction · **Branch(es):** `fix/strict-ticket-presigned-attachments` · **Last updated:** 2026-11-06 by emulator QA coordinator
+**Path:** A (explicit developer request), then Path B corrections · **Branch(es):** `fix/strict-ticket-presigned-attachments` · **Last updated:** 2026-11-06 close-ticket
 
 ## Phases
 
 - [x] Intent — intent.md, developer request captured
 - [x] Spec — spec.md, 5 sourced requester directions; no open questions
-- [x] Sign-off — explicit request authorizes technical scope; scrum records fallback reversal; routine AI decision/sibling review pending, no unanswered guardrail row
+- [x] Sign-off — explicit technical scope and final patch authorized; developer merged PR #1049; no unanswered guardrail row
 - [x] Units — units.md, one coherent vertical U1; 5/5 requirements, all 10 ripple groups
 - [x] Build — U1 plus live-QA owner-validation correction; fresh full gates pass, historical AC4 failures superseded
 - [x] Analyse — initial verdict retained below; independent Path B analyst/guardian/tracer review passes; emulator evidence in emulator-validation.md
-- [ ] Merged — no PR/merge requested
-- [x] Reflect — tcg-reflector; pre-merge/local implementation only, reflection.md and one indexed corrected interim SD-1; no shipped/closed claim
-- [ ] Closed — publishing/close-ticket not requested
+- [x] Merged — PR #1049 into staging, merge `2e2ff31d91a231e3d8d4f8e1e756e6e6b0c90dbd`, 2026-11-06
+- [x] Reflect — post-merge tcg-reflector addendum and reflections index; proposals only, no tooling edits
+- [x] Closed — explicitly requested after staging merge, 2026-11-06; see closure.md
 
 ## Resume
 
-PR #1049 follow-up: independent review found post-save cleanup could return 400 for rejected
-stale keys after a valid replacement was saved. Developer requested the Path B correction;
-guard patch and independent analyst source/runtime review pass. Direct invalid-key
-reads/deletes remain strict. Fresh API build, lint and all 328 suites / 3,845 tests pass;
-the HTTP suites required local-port access outside the sandbox. See review-cleanup-fix.md for
-the exact reproduction, result and publication state. The fix is committed and published as
-`1e4e375b5`; matching overlay records accompany this publication. Earlier readiness claims below do
-not cover this newly discovered scenario.
-
-Current: native emulator attachment flows and supporting endpoint checks passed. Live negative QA found and corrected the featureId/ticketId owner-shape gap in generic access, shared covers and orphan cleanup (Path B, ED-1). Fresh cache-disabled API 328 suites/3845 tests, lint, typecheck and API build pass. Confirmed current-server live retests reject wrong UUID/code/unknown owners and preserve valid code-owned structured files. Cleanup is complete. See emulator-validation.md for the matrix, evidence, implementation decision and exact limitations. Office meter/job-progress views still require an authorized admin session (field role gets 403); no live SUPER_ADMIN demonstration is claimed. Human AI-decision review remains pending. The followup API fix and existing fixture updates are committed as `9b8afbf11`; the matching overlay records accompany the requested branch publication below. No merge, deployment or closure occurred.
+Closed — U1 and both Path B corrections merged into staging through PR #1049; no
+implementation unit or spec §12 question remains open. Closure evidence, remaining manual
+checks and separate generic-folder retirement scope are recorded in closure.md. Final
+cleanup verification: API build/lint and 328 suites / 3,845 tests pass; earlier full
+workspace lint/typecheck and emulator evidence remain in emulator-validation.md.
+Office meter/job-progress UI checks and live SUPER_ADMIN demonstration were not completed;
+they remain explicit follow-ups, not claims of this closure. No merge into application
+main, production deployment, data migration or generic S3 folder deletion is claimed.
 
 ### Historical construction evidence (superseded where noted above)
 
