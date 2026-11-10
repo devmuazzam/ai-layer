@@ -2,7 +2,7 @@
 title: Accounting — open questions
 status: reference
 kind: gaps
-updated: 2026-10-20
+updated: 2026-11-10
 tags: [module/accounting, kind/gaps, open-questions]
 ---
 
@@ -92,6 +92,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   the wishlist's AI collections assistant (automated reminders and escalation), and nothing else in
   this entry is answered. The entry stays open.
 - **Update 2026-11-05 (11-03 accounting module) — the portal date moved, not tiered.** ehtesham.anwar, 13:46: *"in a couple of weeks, we are going to introduce, thinking of introducing the client portal"*; 1:06:20: *"we are also working on client portal"*. This conflicts with (c) above. Brent (51:24) on commissions: *"I don't know if that's a right now thing"*. On deferred items, ehtesham.anwar (1:00:36): *"the next layer of functionalities"*, *"based on need"*. Source: [2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md](../meetings/2026-11-03-accounting-module-payroll-flag-before-invoice-rounded-times-ar-ap-held-pos-and-salesperson-outlook.md), transcript [2026-11-03-accounting-module.md](../meetings/transcripts/2026-11-03-accounting-module.md) §2, §9, §11.
+- **Update 2026-11-10 (11-05 customer portal) — the portal is prototyped, still not tiered.** ehtesham.anwar walked a customer portal prototype covering quotes, jobs and **invoices** (35:11, 36:31). It lists invoices to be paid (overdue, upcoming) and paid ones. The invoice is *"the same invoice that we are sending right now for QuickBooks"*, with the packet downloadable. **Pay Now** is QuickBooks' own (*"We are just updating UI here"*). A paid invoice gets a confirmation e-mail. Asked by Ryan Adams (36:23) about **automatic past-due alerts**: *"that's the whole setup is there in the background"*, with no interval, wording or sender. This covers the wishlist's *view invoices · pay online* and part of *auto-send statements*. **No one from Accounting was on the call** (Tia left at 1:33), so none of it is accounting's answer. The portal's place against (c) is still unset. Source: [2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md](../meetings/2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md), transcript [2026-11-05-customer-portal.md](../meetings/transcripts/2026-11-05-customer-portal.md) §6.
 
 ## Project detail Accounting tab — what it shows, and what it shows before the module exists
 

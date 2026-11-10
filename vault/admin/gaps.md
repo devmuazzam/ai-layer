@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-10-08
+updated: 2026-11-10
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -1481,3 +1481,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** [tcg-erp-rfp-2026-02-26.md](tcg-erp-rfp-2026-02-26.md) (via *Field beta test* above): UAT and parallel running. The frozen root [../gaps.md](../gaps.md) *Phased rollout — no vault coverage*. [*What a newly created tenant must contain*](#what-a-newly-created-tenant-must-contain--provisioned-defaults-or-an-empty-portal): reference data, not history. No register entry states a data-migration scope.
 - **Blocked:** the go-live plan; forecast seed data.
 - **Owner:** Brent Wagstaff (accounting data), Melissa McNutt; CodingCops for the plan.
+
+## Role dashboards and per-user goals — every manager owes a write-up; the Scalable scoreboard beside them
+
+- **Status:** open
+- **Asked:** 2026-11-10 — processing the 2026-11-05 customer portal meeting. Ryan Adams, 43:12: on opening the ERP, will a user see goals such as *"you got to make 2 quotes today"*, red when behind and green when close?
+- **Question:** ehtesham.anwar (43:45) showed the accounting dashboard, *"the first proper dashboard that we have created for any team"*. Each department gets its own, in place of today's shared one. *"I would like every manager to send us a write-up of what is needed on that dashboard for each kind of employee"*, plus Joe's, Melissa's and Wes's questions (45:07). Owed: **(a)** each department's dashboard contents per kind of employee; **(b)** whether per-user goals with red and green status are wanted, and who sets them; **(c)** what the ERP does with **Scalable**. Wes Staley (46:33, 47:04) wants the Scalable dashboard included; Joe and Wes then agreed it stays a **manual** weekly KPI scoreboard reviewed monthly, beside the ERP's own dashboards (47:59–48:18). Is the ERP to host that scoreboard, feed it, or neither?
+- **Sources checked:** [../admin/tcg-erp-rfp-2026-02-26.md](../admin/tcg-erp-rfp-2026-02-26.md): *Reporting & Analytics (operations, finance and executive KPI dashboards)* is **Phase 3** (Q1 2027), and an executive dashboard is nice-to-have. [../quotations/sales-reporting-workbooks.md](../quotations/sales-reporting-workbooks.md): the sales workbooks' `Dashboard` and `Salesperson Scoreboard`. [../domain/value-engines-and-playbooks-method.md](../domain/value-engines-and-playbooks-method.md): TCG works by Ryan Deiss's *Get Scalable*, so Wes's *Scalable* is most likely its scoreboard (INFERRED). [../field-ops/gaps.md](../field-ops/gaps.md) *My Labor / My Performance KPI card*. Nothing else defines per-role dashboards or per-user goals.
+- **Note:** Joe Schacatano (46:10): *"we actually have a drafted dashboard"*, made with Ryan, to be reviewed and shared. ehtesham.anwar (49:12) wants the needs now, *"to see the gaps in the background that we have"*. A dedicated conversation on Scalable is owed (48:20).
+- **Blocked:** any department dashboard beyond accounting's.
+- **Owner:** each department manager; Joe Schacatano and Ryan Adams (the drafted dashboard); Wes Staley (Scalable).
+- Source: [2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md](../meetings/2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md), transcript [2026-11-05-customer-portal.md](../meetings/transcripts/2026-11-05-customer-portal.md) §10.

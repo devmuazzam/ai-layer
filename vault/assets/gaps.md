@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-10-06
+updated: 2026-11-10
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -1607,3 +1607,4 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** [../decisions/2026-10-06-association-quote-visibility-hourly-and-mob-demob-settings.md](../decisions/2026-10-06-association-quote-visibility-hourly-and-mob-demob-settings.md) (`verified`): the switches, not their reach. [../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md](../meetings/2026-10-22-erp-demo-walkthrough-part-2-assets-double-booking-quotation-to-project-das-and-permits.md) §2. No entry found by grepping this file for existing quotes and configuration.
 - **Blocked:** nothing now; it affects how TCG tests the configuration.
 - **Owner:** Joe Schacatano; CodingCops to state what the build does.
+- **Update 2026-11-10 (11-05 customer portal) — it reaches every crane by design; per-crane separation was asked and not offered.** ehtesham.anwar, 2:28: making something optional on the operator load is done on the operator-load subcategory, and *"this is going to change all of the operator loads that you have added in different cranes. That's like a kind of a drawback."* **Ryan Adams, 4:10–4:16:** *"So, it will do it for every crane"*; *"Is there any way to separate that … for each crane?"* ehtesham.anwar answered with the intent (the configuration decides, so sales and dispatch do not guess), not with a way to separate. That is a second reach beside the one asked above: across **cranes**, not only across existing quotes and jobs. Also: **Joe Schacatano, 1:57–2:19**, reviewed the configuration with Brian. *"It looked proper the way that it's built out … I didn't really see any issues with it"*, with the actual configurations to be set nearer go-live. Still open: what the build does to existing quotes and jobs; whether per-crane overrides are wanted. Source: [2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md](../meetings/2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md), transcript [2026-11-05-customer-portal.md](../meetings/transcripts/2026-11-05-customer-portal.md) §1.

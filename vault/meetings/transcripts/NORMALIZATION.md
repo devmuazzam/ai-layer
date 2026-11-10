@@ -467,3 +467,28 @@ TCG name. "Sam" (51:44) was not read as Ehtesham, because Sammy Garrett is on th
 pass 14, 15 and 17). "flat" outside *"payroll flat"* was left (as pass 13). Speaker labels are reproduced
 uncorrected: "IT Support" is Patrick McKiernan; the header gives the evidence. Left unchanged: the items
 listed in the file's own header note.
+
+# Pass 19 — 2026-11-10 (one new transcript only)
+
+Applied to `2026-11-05-customer-portal.md` (28); no earlier file was touched. **28 substitutions**, each pinned
+to its own turn, with the timestamps in the file's header note. In summary: "Euler" -> "oiler" (1, as pass 3);
+"rigor" -> "rigger" (2, as pass 3 and 17); "Sam," / "Ashtam," / "as Jam," -> "Ehtesham," (2 / 1 / 1, as pass
+14); "Sam Sarah" / "Sam Sura" / "Samantha" -> "Samsara" (1 / 1 / 1, as pass 3 and 7) and "access to Sam, sorry to
+see it" -> "access to Samsara to see it" (1); "train(s)" -> "crane(s)" (3, as pass 1); "265 done train" -> "265
+ton crane" (2, as pass 1 and 3); "green" -> "crane" (2, as pass 2); "early quotation" -> "hourly quotation" (1,
+as pass 10 and 18); "presidents" / "presence" -> "precedence" (2 / 1); "drag and draw" -> "drag and drop" (1);
+"coding stage" -> "quoting stage" (1, as pass 11); "beyond number" -> "PO number" (1); "assert" -> "asset" (1);
+"Yard 2 job site" -> "yard to job site" (1); "D's" -> "Dee's" (1, as pass 12).
+
+New evidence rules used here: **"Sam" -> Ehtesham** only where Ryan Adams addresses him and ehtesham.anwar
+answers (6:33, 20:44), and only because TCG's Sammy Garrett is not on this call; pass 18 left "Sam" because he
+was. **"access to Sam, sorry to see it" -> Samsara** only in Joe's 29:06 turn, which answers Ryan's *"Samsara also
+sends out a code"* (28:50) and goes on to *"where it's at in route"*. **"presidents" / "presence" -> precedence**
+only in the line-order exchange (11:25, 13:21), pinned by *"set precedence"*, which ASR caught correctly at 12:15
+and 12:47. **"beyond number" -> PO number** only at 20:09, which answers Ryan's question about a PO and sets the
+number against *"upload document"*. **"Yard 2 job site" -> yard to job site** only at 31:38, where the next
+sentence is *"scheduling from job to job"*. "Now they are looking at the green" (32:14) was **not** changed: on a
+tracking map it may be the marker. "Anzaldo" (38:15) was not read as Joe, because Lisette Anzaldo is a real TCG
+name. "liquidation" (9:26), "upload" (14:00), "compiler" (11:03), "Esq measures" (26:40) and "PNO" (36:31) were
+left; the header lists the likely readings. Speaker labels are reproduced uncorrected; none was found wrong. Left
+unchanged: the items listed in the file's own header note.

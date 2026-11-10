@@ -2,7 +2,7 @@
 title: Projects Jobs — open questions
 status: reference
 kind: gaps
-updated: 2026-10-08
+updated: 2026-11-10
 tags: [module/projects-jobs, kind/gaps, open-questions]
 ---
 
@@ -156,6 +156,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   Still needs the client: the threshold per population — 90 (04-09 recording), 60 (their own
   tracker), 30 (`SCRUM-237` AC 10) — and whether job permits get any reminder at all.
 - **Update 2026-09-04, from the record** (read the same day from the `RENEWAL QUEUE` sheet of `Permit Tracker[88].xlsx`, Ryan's 2026-08-06 copy, days-left as computed on its own `TODAY()`): the four bands are **not formula-driven** — the sheet's only formulas are the `EXPIRED / NOT YET ACTIVE / EXPIRING SOON (≤ 60 days) / VALID` status — but the rows sort into clean day ranges: `1 - EXPIRED` -905…-12 days (n=124), `2 - RENEW NOW` -9…49 days (n=36), `3 - UPCOMING` 51…100 days (n=19), `4 - MONITOR` 120…415 days (n=179). Read as cut-offs that is roughly *renew now* inside about 50 days (plus the handful just expired), *upcoming* from 50 to 100 days, *monitor* from four months out — bands that do **not** line up with the sheet's own 60-day *EXPIRING SOON* rule (five *upcoming* rows are already flagged expiring), so they are the tracker author's working convention, not a stated rule, and a third number set beside the 90 and 30 the entry already holds.
+- **Update 2026-11-10 (11-05 customer portal) — no number given again.** ehtesham.anwar, 42:24, to Ryan Adams on renewing an annual: *"Once it's expiring, you are going to get the notification"*. He gave no lead time, so this entry stands. The overlap rule he gave is filed below as *Two annual permits for the same asset overlap*. Source: [2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md](../meetings/2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md), transcript [2026-11-05-customer-portal.md](../meetings/transcripts/2026-11-05-customer-portal.md) §9.
 
 ## Asset on a permit — optional, except where a punch list says compulsory
 
@@ -1176,3 +1177,25 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     (`reference`) — a quote created with `?projectId=` returns to the project.
 - **Blocked:** the customer default on a quote created from a project; any project-level invoice view.
 - **Owner:** Wes (named as the source) with Ryan Adams (sales).
+
+## What a customer sees of a job on the portal
+
+- **Status:** open (a decision candidate)
+- **Asked:** 2026-11-10 — processing the 2026-11-05 customer portal meeting. ehtesham.anwar, 26:40: *"do we need to show them the live tracking or just once the job ends … or maybe we don't show them this information itself"*.
+- **Question:** the call reached an answer, and it needs confirming. ehtesham.anwar (33:52, 34:24) proposed this. The customer sees the job's **status** (*scheduled, invoiced, approved, waiting to be approved, in progress*), **the number of assets and the number of crew members** (in place of *"two tickets"*), the **basic schedule** and the progress status. There is **no live tracking, no crew timestamps and no Samsara position**. **Joe Schacatano, 34:10:** *"Yeah, I'm good with that"*; **34:46:** *"Yeah, I agree with that."* Still owed: **(a)** does any milestone notification survive (*crew on the way, arrived and working, completed*)? Joe, 33:11: *"I almost think we have to not do any of it"*. **(b)** Are crew names shown? The prototype showed the operator and oiler. **(c)** May a completed job show its tickets, which the invoice packet carries anyway?
+- **Sources checked:** [../decisions/2026-09-11-progress-tracking-chat-and-reminders-shown-disabled.md](../decisions/2026-09-11-progress-tracking-chat-and-reminders-shown-disabled.md) (internal Live Tracking shown disabled; nothing customer-facing). [../accounting/gaps.md](../accounting/gaps.md) *Back-to-back jobs billed portal to portal*: the job-to-job overlap that ehtesham.anwar says makes Samsara-timed alerts wrong (31:56). [../assets/gaps.md](../assets/gaps.md) *Samsara vehicle tracking*. Nothing else in the vault says what a customer sees.
+- **Note:** Joe's reasons are on record: a timestamp hit late or edited later misleads the customer (31:23), and *"if we're stacking jobs, if it's off the Samsara, it's going to throw off the billing"* (33:17). Dispatch was not on the call.
+- **Blocked:** the portal's job view, beyond the prototype.
+- **Owner:** Joe Schacatano; dispatch (Lisette Anzaldo) for (a).
+- Source: [2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md](../meetings/2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md), transcript [2026-11-05-customer-portal.md](../meetings/transcripts/2026-11-05-customer-portal.md) §5.
+
+## Two annual permits for the same asset overlap — the newer one wins?
+
+- **Status:** open (a decision candidate)
+- **Asked:** 2026-11-10 — processing the 2026-11-05 customer portal meeting. Ryan Adams, 42:08: when a renewed annual is entered before the old one ends, *"is there a way to delete the old one and go with the new one, or how does that work?"*
+- **Question:** ehtesham.anwar, 42:24: the renewal runs as an application on top of the old permit; the new permit has its own start and end; *"If they overlap, we go with the new one."* **Ryan, 43:12:** *"Very good."* Confirm: **(a)** during the overlap, the new permit is the one every job uses; **(b)** the old one stays on record, not deleted; **(c)** this applies per asset and city (Annual Travel is tied to one city).
+- **Sources checked:** [../decisions/2026-11-04-permit-vendor-required-annual-city-agency-filter.md](../decisions/2026-11-04-permit-vendor-required-annual-city-agency-filter.md) (Annual Travel tied to one city, owner direction). [../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md](../decisions/2026-06-18-annual-permits-no-po-single-permits-need-po.md). *Permit expiry reminders* above. Nothing found on overlapping annuals.
+- **Note:** in the same call Joe Schacatano (40:50, 41:50) confirmed that one asset on one job can carry several permits, an annual where a city offers one and a single-trip permit where it does not. That agrees with both notes above and needs no entry.
+- **Blocked:** nothing now.
+- **Owner:** Brian Petros (permits); CodingCops' rule, accepted by Ryan Adams.
+- Source: [2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md](../meetings/2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md), transcript [2026-11-05-customer-portal.md](../meetings/transcripts/2026-11-05-customer-portal.md) §9.
