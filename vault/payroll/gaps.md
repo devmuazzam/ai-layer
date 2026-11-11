@@ -6406,3 +6406,19 @@ somewhere it should not have. Settle that before touching either.
 ## Rounded vs actual times — pointer, owned by accounting
 
 Where actuals may show, and what a customer receives. See [../accounting/gaps.md → *Rounded vs actual times*](../accounting/gaps.md#rounded-vs-actual-times--where-each-shows-and-what-a-customer-who-asks-for-a-ticket-receives). Payroll's own side of the invoice timing is in [*24-hour invoicing against Tuesday payroll*](../accounting/gaps.md#24-hour-invoicing-against-tuesday-payroll--when-must-hours-be-clean-and-what-starts-the-clock).
+
+## Employee with no Compensation Type — payable as Eligible or held for setup, and is Non-Union Hourly the right fallback?
+
+- **Status:** open
+- **Asked:** 2026-11-11. A developer direction made Compensation Type optional, along with the craft, salary and hourly-rate fields under it: [../decisions/2026-11-11-employee-compensation-type-optional-developer-direction.md](../decisions/2026-11-11-employee-compensation-type-optional-developer-direction.md) (`reference`, supersedes DEC-0915 Q4/Q5/Q8 in part). As built:
+  - a blank-type employee stays `payrollStatus = ELIGIBLE`;
+  - they are priced on the group `derivePayrollGroup` gives with no type (`SYS*` → SYS, mechanic → L12_MECHANIC, union → L12_FIELD, else **NON_UNION_HOURLY**);
+  - their week card carries the non-blocking warning `EMPLOYEE_NO_COMPENSATION_TYPE`.
+- **Question:** **(a)** Should an employee with no Compensation Type be paid? Options: A. Yes, Eligible, with the week-card warning (as built) · B. No, they are held, or given a "needs setup" status, until a type is set · X. Other — say what. **(b)** With no type and no union or mechanic craft, should their group be Non-Union Hourly? Options: A. Yes (as built; it is DEC-0915 Q4's backfill catch-all) · B. No, they are left out of payroll until a group is set · X. Other — say what. *(No order of preference.)*
+- **Candidates:**
+  - [../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md](../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md) — 13 KB, 2026-09-15, `reference`. Q3: ELIGIBLE is the default and hours are never silently dropped. Q4: the backfill sends no-salary, no-primary-craft rows to Hourly Non-Craft, which maps to NON_UNION_HOURLY. Developer readings, not client rulings.
+  - [payroll-rules-provenance.md](payroll-rules-provenance.md) §5, rows *Payroll hold excludes…* and *No compensation type warns, never holds* — both **Pending**.
+  - Related, not settled by this: [*Employee-module rules the E2E suite asserts with no written source — PR #488*](#employee-module-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) item (e), which asks what the required set is.
+- **Note:** the warning does not exempt an employee whose payroll group was set by hand. The stored `payroll_group` cannot tell a manual override from a derived value. Under option B for (a), an exempt or hand-set case would need a separate marker.
+- **Blocked:** nothing in the build; it runs on option A for both. A ratified B changes who is on the worklist and in the ADP export, so it needs a G4 provenance change.
+- **Owner:** Corrina Bustos / Brian Petros (payroll).
