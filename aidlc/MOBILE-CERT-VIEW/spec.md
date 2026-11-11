@@ -11,7 +11,7 @@
 | Intent | `.ai/aidlc/MOBILE-CERT-VIEW/intent.md`, captured 2026-11-10 |
 | Elaborated on | 2026-11-10 |
 | Vault state at elaboration | Certification rules are unverified/reference; no vault page specifies a mobile certificate viewer. Mobile app topic is under open conflict (`field-ops/field-ops-mobile-INDEX.md`, 4.1 KB, 2026-08-10). Six `domain/` files verified; none relevant. |
-| Open questions raised by this spec | 1 (Q1, process/sequencing, not client-facing) |
+| Open questions raised by this spec | 2 (Q1 resolved 2026-11-10; Q2 open, owner haris) |
 | Already-shipped behaviour reached | 3 consumers in §11a; 0 with no source |
 | Rules consulted | `.ai/claude/contexts/mobile.md` (48px targets, tokens), `.ai/claude/contexts/patterns.md` P3 (presigned links, no bearer to S3) as cited by `MOBILE-REMAINING-PRESIGNED-FILES/spec.md` |
 
@@ -208,7 +208,7 @@ N/A — no change. The contract lives in `apps/mobile/data/contracts/certificati
 
 ## 12. Open questions — the stop-and-ask list
 
-Everything the five developer decisions covered is answered. One sequencing question remains.
+Everything the five developer decisions covered is answered. Q1 (sequencing) is resolved; Q2 (deleted S3 object message) is open.
 
 ### Q1 — Base branch for the code this ticket edits
 
@@ -224,7 +224,20 @@ Everything the five developer decisions covered is answered. One sequencing ques
 - **Candidates:** `.ai/aidlc/MOBILE-REMAINING-PRESIGNED-FILES/spec.md` (22 KB, 2026-11-03), `analysis-pr-1018.md`, `vault/decisions/2026-11-04-mobile-presigned-reads-viewers-approved-employee-files-owner-or-admin.md`; branch tips `fix/mobile-presigned-reads` 350dad0da (2026-11-04), `fix/strict-ticket-presigned-attachments` 1e4e375b5 (2026-11-06).
 - **Owner:** haris (developer)
 - **Workaround, if any:** none needed to proceed with the spec; build waits on the answer.
-- **Status:** open
+- **Status:** resolved — see decisions/2026-11-10-mobile-certificate-view-developer-decisions.md
+
+### Q2 — Can the app tell a deleted S3 object from a network failure?
+
+- **Question:** REQ-05 shows "This document is no longer available" only for a 404 on `GET /attachments/:id/links`. When the presigned S3 GET fails because the object is gone, `File.downloadFileAsync` puts the status only in the error message string, so that path keeps the generic "Could not open the certificate. Please try again." Should that path also say "no longer available" (for example by parsing the message or by checking object existence in the links route)?
+- **Options:**
+  - A. Keep the generic toast for the S3 path (current, shipped in PR #1063).
+  - B. Parse the status from the `expo-file-system` error message in the opener.
+  - C. Have `GET /attachments/:id/links` verify the object exists before presigning.
+  - X. Other — say what
+- **Why it cannot be answered from what is written:** the spec asked to inspect the error first and keep the generic message if it carried no status; it carried none. Option B or C changes the shared opener or a shared API route (spec §11c siblings).
+- **Blocked:** nothing; follow-up only.
+- **Owner:** haris (developer)
+- **Status:** open (raised by the reflector, 2026-11-11)
 
 ## 13. What this spec deliberately does not specify
 
@@ -246,7 +259,7 @@ Everything the five developer decisions covered is answered. One sequencing ques
 - [x] Every `[OPEN]` requirement is answered, or explicitly deferred by a named person
 - [x] Every `[CONFLICT]` (none) requirement has a decision note in `.ai/vault/decisions/`
 - [x] Answers written back into `spec.md` with their new sources and flags
-- [S] Every §12 question updated — Q1 answered inline (developer sequencing decision, not a client ruling; no vault decision note written)
+- [S] Every §12 question updated — Q1 resolved — see `vault/decisions/2026-11-10-mobile-certificate-view-developer-decisions.md` (a developer decision, not a client ruling)
 - [x] Every requirement's **Edges** fields are filled (`ASSUMED` allowed) or point at a §12 question
 - [x] Every §11a ripple row has a source for what happens to that consumer, or a §12 question
 - [x] A developer has reviewed §11b and §11c (_Reviewed by_), and answered every `needs developer` row

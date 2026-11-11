@@ -11,8 +11,8 @@
 
 | Unit | Outcome (one line) | Reqs | Surfaces | Depends on | Size | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| U1 | The document a certificate card opens is the one on the row the card shows, not the newest same-named upload | REQ-04 (REQ-01 preserved, no change) | api | — | ~15 lines / 1 file | built — feat/MOBILE-CERT-VIEW-u1-view-download |
-| U2 | Certificate screen: one "View / Download / Share" button, disabled with "No document on file" when none, and "This document is no longer available" when the file is gone | REQ-02, REQ-03, REQ-05 | mobile | — | ~50 lines / 1-2 files | built — feat/MOBILE-CERT-VIEW-u2-mobile-states |
+| U1 | The document a certificate card opens is the one on the row the card shows, not the newest same-named upload | REQ-04 (REQ-01 preserved, no change) | api | — | ~15 lines / 1 file | merged — PR #1062 |
+| U2 | Certificate screen: one "View / Download / Share" button, disabled with "No document on file" when none, and "This document is no longer available" when the file is gone | REQ-02, REQ-03, REQ-05 | mobile | — | ~50 lines / 1-2 files | merged — PR #1063 |
 
 - **Status** takes exactly one of: `not started` · `in progress — <branch>` · `built — <branch>` · `merged — PR #<n>` · `cut — <reason>`. Never a commit SHA.
 - Requirements covered: REQ-01..REQ-05, counted against `spec.md` §2 on 2026-11-10: **5 in spec, 5 in ledger.** REQ-01 is confirm-and-preserve: no unit changes it, both units must not widen the query or add a view (the check is in each unit's Ripple). Not covered: none.
