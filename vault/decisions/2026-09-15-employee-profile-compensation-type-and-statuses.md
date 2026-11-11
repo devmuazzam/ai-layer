@@ -12,6 +12,15 @@ decided_by: >-
   Bustos / Brian Petros / Lisette Anzaldo, each of whom is named as owner on the question
   they would overrule.
 status: reference
+superseded_by: decisions/2026-11-11-employee-compensation-type-optional-developer-direction.md
+provenance_note: >-
+  Superseded in part, 2026-11-11, by the developer direction in the note named above (not a client
+  ruling): Compensation Type is optional (column nullable again), so the required type, payType
+  derived from a required type and the NOT NULL step of Q4; Q5's field-Employee-Type default, its
+  "primary craft required iff CRAFT_HOURLY" and its CRAFT_HOURLY-only missing-primary list; and
+  Q8's required Salary Frequency together with the required set (REQ-08/10/11/12/29). Do not answer
+  those from this file. Q4's manual payroll-group override, Q8's four-value list, Q12's hide-never-clear
+  and Q1-Q3, Q6, Q7, Q9-Q15 stand, so status stays reference. Body unchanged.
 conflicts_with: []
 resolves: SCRUM-EMPLOYEE-PROFILE/spec.md#12
 jira: [SCRUM-EMPLOYEE-PROFILE, SCRUM-926, SCRUM-928]
