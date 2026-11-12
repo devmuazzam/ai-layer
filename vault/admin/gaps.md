@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-11-10
+updated: 2026-11-12
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -1492,3 +1492,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** any department dashboard beyond accounting's.
 - **Owner:** each department manager; Joe Schacatano and Ryan Adams (the drafted dashboard); Wes Staley (Scalable).
 - Source: [2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md](../meetings/2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md), transcript [2026-11-05-customer-portal.md](../meetings/transcripts/2026-11-05-customer-portal.md) §10.
+
+## Field-level edit rights on asset identity data — pointer, owned by assets
+
+- **Pointer (2026-11-12):** Brian Petros's request to limit who may change asset "core" data (VIN, plate, registration details) to a short named list is filed once in [../assets/gaps.md](../assets/gaps.md#who-may-change-an-assets-core-identity-data-in-the-erp--and-does-it-need-approval) → *Who may change an asset's core identity data in the ERP — and does it need approval?* It bears on *Departments, roles and their capabilities* above: today access is granted per module, never per field.
