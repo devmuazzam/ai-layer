@@ -2,7 +2,7 @@
 title: Dispatch — open questions
 status: reference
 kind: gaps
-updated: 2026-11-10
+updated: 2026-11-12
 tags: [module/dispatch, kind/gaps, open-questions]
 ---
 
@@ -1022,6 +1022,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
       `Operator` is on those managers' can-also-fill lists? Not stated. It is a developer decision.
     - **Unchanged:** whether the DAS Employees tab is exactly the ticket-eligible set (Lisette),
       and work-order dispatchability.
+- **Update 2026-11-12 (11-10 employee access call) — Joe and Kyle conflict with the verified Q5.** Corrina Bustos (10-20, `verified`): only field crew, HDRs through can-also-fill, the Crane Superintendent and Local 12 managers; *"NEVER yard techs"*. On this call, after Corrina had left: **Joe Schacatano, 59:19:** *"We schedule safety and yard guys to do piloting"*; *"you should have all employees accessible"* (59:26); a job ticket *"could be union or non-union"* (1:01:47). **Kyle Harlow, 1:00:27:** *"the mechanics and the yard guys at times do"* go to the field, and *"if they go in the field, they're getting applied to the job"*; **1:00:51:** men who were not operators or oilers did rigging jobs today, *"and they get a ticket"*. Brian Petros (1:01:49): *"I didn't know that there was a possibility of a non-union getting a job ticket until now"*; he will check with Corrina (1:02:05). ehtesham.anwar (1:02:31–1:02:40): a dispatchable flag on the role, on production *"after the sprint"*. Not adjudicated here. A yard tech piloting or rigging on a job is the case the two accounts disagree on. Owner: Corrina Bustos with Joe and Kyle. Source: [2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md](../meetings/2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md), transcript [2026-11-10-employee-access-and-entering-assets.md](../meetings/transcripts/2026-11-10-employee-access-and-entering-assets.md) §10.
 
 ## Job ticket code format — UAT 3 asks for the FCC pattern, and no FCC pattern is written anywhere
 
@@ -1920,3 +1921,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** nothing; an idea, not scope.
 - **Owner:** Ryan Adams with Joe Schacatano and the dispatch team (Lisette Anzaldo); Ryan resends the per-city permit schedule.
 - Source: [2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md](../meetings/2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md), transcript [2026-11-05-customer-portal.md](../meetings/transcripts/2026-11-05-customer-portal.md) §4.
+
+## A substitute crane's loads — the requested crane's configuration, one per substitution pair, or dispatch adds custom?
+
+- **Status:** open
+- **Asked:** 2026-11-12 — processing the 2026-11-10 employee access call. **Kyle Harlow, 41:59:** *"If the 275 is going out, you don't need all the counterweight. So is there a way that we organize how much counterweight goes to cover that job? When it's substituting."*
+- **Question:** when a bigger crane covers a smaller one, which loads and crew go? **(a)** The **requested** crane's configuration, unchanged. That is the build: ehtesham.anwar, 52:33: *"the configuration of the job remains the same as of 200."* **(b)** A configuration **per substitution pair**, programmed, so *"if it's going out as a 110 ton machine, but it's the 275, it goes with this many trailers and this many people"* (Kyle, 43:13). **(c)** Dispatch adds or removes by hand through the planned **add custom** section (ehtesham.anwar, 53:06). Kyle (52:55) notes a heavier machine may need **more** loads, not fewer. Does *add custom* also cover employees (Brian Petros, 56:51)?
+- **Sources checked:** [../decisions/2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md](../decisions/2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md) (`reference`): the quote keeps its configuration, but it does not address substitution. [*Requested vs dispatched resources*](#requested-vs-dispatched-resources--melissa-stated-it-the-vault-still-says-the-opposite): the confirmations playbook's *"a 90-ton job with a 265-ton assigned"*, then the travel permit and extra loads, so a substitution re-opens configuration in practice. [../assets/gaps.md](../assets/gaps.md) *Does changing a subcategory's configuration reach quotes and jobs that already exist?* covers configuration changes, not substitutes. Joe Schacatano (47:08–48:09) holds that the build already covers it (*"it's a drag and drop"*); Kyle accepted that at 48:03 and asked again at 52:55.
+- **Note:** the data may exist already. Wes Staley (43:46) proposed the sales **crane cheat sheet** with a new column per configuration; Joe (44:22): the sheets are built differently but can be rebuilt. Kyle (44:44): **Lisette Anzaldo has a chart** of how machines cover each other. The rules for *add custom* are still being worked out (ehtesham.anwar, 56:35). His one example: offer the crane's own load two rather than rebuild it (57:13).
+- **Blocked:** a programmed substitution; the *add custom* rules.
+- **Owner:** Kyle Harlow and Lisette Anzaldo (the coverage chart); Joe Schacatano and Wes Staley (the cheat sheet); CodingCops (ehtesham.anwar).
+- Source: [2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md](../meetings/2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md), transcript [2026-11-10-employee-access-and-entering-assets.md](../meetings/transcripts/2026-11-10-employee-access-and-entering-assets.md) §9.

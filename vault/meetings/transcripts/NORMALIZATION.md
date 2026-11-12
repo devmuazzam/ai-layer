@@ -492,3 +492,27 @@ tracking map it may be the marker. "Anzaldo" (38:15) was not read as Joe, becaus
 name. "liquidation" (9:26), "upload" (14:00), "compiler" (11:03), "Esq measures" (26:40) and "PNO" (36:31) were
 left; the header lists the likely readings. Speaker labels are reproduced uncorrected; none was found wrong. Left
 unchanged: the items listed in the file's own header note.
+
+# Pass 20 — 2026-11-12 (one new transcript only)
+
+Applied to `2026-11-10-employee-access-and-entering-assets.md` (33); no earlier file was touched. **33 substitutions**,
+each pinned to its own turn, with the timestamps in the file's header note. In summary: "train" / "green" ->
+"crane" (3 / 3, as pass 1 and 2); "Grain is going, boiler is needed" -> "Crane is going, oiler is needed" (1);
+"Euler" -> "oiler" (1, as pass 3); "rigor. Rigor" -> "rigger. Rigger" (1, as pass 3 and 17); "200 time" / "200 time
+pane" / "200 time frame" / "200 on crane" -> "200 ton (crane)" (4, as pass 1); "allowed subscriptions" -> "allowed
+substitutions" (1); "ot plus one" -> "op plus one" (1); "Trunk" -> "Truck" (1); "AP integration" -> "ADP
+integration" (1); "department at rules" / "within the rules" -> "… and roles" / "… the roles" (2); "Ms. clarity" ->
+"MS Clarity" (3); "Room" -> "Loom" (1); "Hey, Shawn." / "SM," -> "Ehtesham" (1 / 1, as pass 9 and 19); "Brent" ->
+"Brian" (2); "Harris" / "Rice," -> "Haris" (2 / 1, as pass 10); "Abdul Rahman" -> "Abdulrehman" (1, as pass 9); "a
+Cellier person" -> "a salaried person" (1); "same Bennett" -> "same tenant" (1).
+
+New evidence rules used here: **"Brent" -> Brian** only in abdulrehman's turns at 1:04:58 and 1:06:25, each answered
+by Brian Petros, with Brent Wagstaff not on the call; Jeff Stricker's *"like Brent said"* (6:18) was **not** changed,
+because the reference is to an earlier statement, not an answer. **"Rice," -> Haris** only at 1:18:25 (*"Mute
+yourself, please"*), directly after syed.haris speaks at 1:18:14 and 1:18:19. **"Hey, Shawn." -> Ehtesham** only at
+25:05 (*"you're on mute"*), answered by ehtesham.anwar about the mic. **"Room" -> Loom** only at 1:03:14, a screen
+recorder with *"a small button on your window"*, as the 09-11 notes' Looms. **"Ms. clarity" -> MS Clarity**, the
+Microsoft Clarity logging tool, in each of its three occurrences. "Salesforce" (12:54), "Eli" (8:45) and "sixty-five"
+(46:50) were left; the header lists the likely readings. A **speaker-label caveat** is new: "Brian Petros" carries
+Jeff Stricker's voice from the same conference room; the header lists the turns read as Jeff. Left unchanged: the
+items listed in the file's own header note.

@@ -2,7 +2,7 @@
 title: Payroll — open questions
 status: reference
 kind: gaps
-updated: 2026-10-28
+updated: 2026-11-12
 tags: [module/payroll, kind/gaps, open-questions]
 ---
 
@@ -3171,6 +3171,7 @@ someone has confirmed otherwise.
   wrong contract.
 - **Owner:** product team — Corrina Bustos and Brian Petros (HR onboarding and the employee master),
   with Lisette Anzaldo for the DAS temp/fill-in population.
+- **Update 2026-11-12 (11-10 employee access call) — (e), for creating and inviting.** **Brian Petros, 10:36:** *"Can we get this to be able to save without requiring this information so we can invite the employee?"* **ehtesham.anwar, 18:52 and 19:42:** for testing, require only *"name, phone number, e-mail, and department and role"*; everything else optional *"for now"*. Brian (19:35) and Corrina Bustos (19:40: *"that's how they have to log in"*) asked for phone and e-mail to stay required. The Compensation Type part shipped on 2026-11-11 ([../decisions/2026-11-11-employee-compensation-type-optional-developer-direction.md](../decisions/2026-11-11-employee-compensation-type-optional-developer-direction.md), PR #1072 on `staging`). This call is that note's client source, which it lacked. Still open for (e): the set **at finalize**, and whether *"for now"* ends at go-live. Source: [2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md](../meetings/2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md), transcript [2026-11-10-employee-access-and-entering-assets.md](../meetings/transcripts/2026-11-10-employee-access-and-entering-assets.md) §2.
 
 ## Post-import ADP entry — what Corrina changes or adds after the CSV, and the salary batch
 
@@ -3897,6 +3898,7 @@ somewhere it should not have. Settle that before touching either.
   pricing engine.
 
 - Update 2026-09-28 (ADP Integration Sync, [../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md](../meetings/2026-09-28-adp-integration-sync-onboarding-worksheets-and-temp-rate.md) §1.4, §2): how the other populations reach ADP today. **Three worksheets a week:** (1) a **salary sheet** covering all office/admin staff, salaried *and* hourly, keyed by Corrina with PTO, sick, bereavement, on-call and subsistence; (2) a **time-off worksheet** for those who qualify, added by hand every week; (3) the **field worksheet** from the CSV, which carries **union field and non-union yard** employees. **Union employees get no PTO or sick leave.** Salaried staff are not in FCC at all (*"factored … into the burden rate"*). Corrina called whether the new ERP holds them *"an ownership question"*. **Phase 1 was stated as union field employees only** (abdulrehman 42:42, Brian *"I think so"*), with union mechanics excluded as well (1:07:43), and everything else stays with Corrina in ADP. Whether the ERP tracks PTO depends on how far the HR module goes, which is Ehtesham's call. The work-order population is not addressed.
+- **Update 2026-11-12 (11-10 employee access call) — is the work-order path in the launch? Asked, not answered.** **Brian Petros, 57:44–58:15:** non-union hourly labour recorded in FCC as a **work order**, not tied to a job: part of the launch, or later? **Kyle Harlow, 59:30:** labour not connected to jobs belongs to maintenance, in the yard, and storage, *"which is not part of what we're doing"*. **Joe Schacatano, 1:01:36:** a job ticket for a job, a work order for maintenance, *"union or non-union"*. The DAS side (who may go on a job ticket) conflicts with a verified note; see [../dispatch/gaps.md](../dispatch/gaps.md) *Sales Persons in the DAS Employees tab — dispatchability*. Source: [2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md](../meetings/2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md), transcript [2026-11-10-employee-access-and-entering-assets.md](../meetings/transcripts/2026-11-10-employee-access-and-entering-assets.md) §10.
 
 ## The before-midnight bucket rule — we were given it, we had it right, and `ad9041bc` changed away from it
 
@@ -6422,3 +6424,13 @@ Where actuals may show, and what a customer receives. See [../accounting/gaps.md
 - **Note:** the warning does not exempt an employee whose payroll group was set by hand. The stored `payroll_group` cannot tell a manual override from a derived value. Under option B for (a), an exempt or hand-set case would need a separate marker.
 - **Blocked:** nothing in the build; it runs on option A for both. A ratified B changes who is on the worklist and in the ADP export, so it needs a G4 provenance change.
 - **Owner:** Corrina Bustos / Brian Petros (payroll).
+
+## Employee ID — the ADP file number, or the ERP's own?
+
+- **Status:** open
+- **Asked:** 2026-11-12 — processing the 2026-11-10 employee access call. **Corrina Bustos, 10:28:** *"It might be good to have the employee ID match the ADP so that they're the same on both platforms. Just a thought."* Brian Petros (9:49) did not know whether the field would hold the **FCC** ID. No one answered.
+- **Question:** **(a)** Is the employee's **Employee ID** the ADP file number, the FCC ID, or a number of the ERP's own? **(b)** If it is the ADP file number, what does it hold before ADP returns one (a pending hire) and for a person with more than one file number? **(c)** Does Corrina's import list (name, phone, e-mail, department, role, ADP file number; 34:17) fill the ADP file number field, the Employee ID, or both?
+- **Sources checked:** [../decisions/2026-06-30-adp-erp-employee-data-ownership.md](../decisions/2026-06-30-adp-erp-employee-data-ownership.md) (`verified`): ADP mints the file number; the ERP stores it as a cross-reference and **never generates it**. It says nothing of the ERP's own employee ID. [../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md](../decisions/2026-09-15-employee-profile-compensation-type-and-statuses.md) Q13–Q14: an *Employee ID* label (*Temp Employee ID* for temps), and the employee carries the ADP file number. [*Employee ↔ ADP position — one person, possibly several File Numbers*](#employee--adp-position--one-person-possibly-several-file-numbers): one person may hold several. [*Employee-module rules the E2E suite asserts*](#employee-module-rules-the-e2e-suite-asserts-with-no-written-source--pr-488) (b) asks whether the employee ID is unique per tenant.
+- **Blocked:** the employee import for testing; the FCC migration's ID mapping.
+- **Owner:** Corrina Bustos (HR); Brian Petros.
+- Source: [2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md](../meetings/2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md), transcript [2026-11-10-employee-access-and-entering-assets.md](../meetings/transcripts/2026-11-10-employee-access-and-entering-assets.md) §2.
