@@ -1631,6 +1631,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** the code, read 2026-11-12: the link today is held only on the ERP side (`Asset.samsaraAssetId` + `samsaraAssetType`, `@@unique([tenantCompanyId, samsaraAssetId])`) and is set by hand from the asset form's Samsara picker. The ERP never writes to Samsara. `apps/api/src/service/samsara/samsara.mapper.ts:50` ignores `externalIds`. The FCC seeder drops FCC's `LowerGPSID` links ([fcc-samsara-reconciliation-2026-09-21.md](fcc-samsara-reconciliation-2026-09-21.md)). Whether the current Samsara token can write was **not checked**. Abdul Rehman's integration principle, *"we will keep every external ID in our database"* (2026-08-26 sprint review 12:30), covers the ERP holding Samsara's id. It does not cover Samsara holding the ERP's. `decisions/` holds no Samsara decision.
 - **Blocked:** the link design: one-way (ERP holds Samsara's id) or two-way (Samsara also holds the ERP's). It also bears on the cardinality entry above: a Samsara vehicle has one set of External IDs, so a crane and its support tractor cannot both be written onto one device.
 - **Owner:** Brian Petros, with Patrick McKiernan for the token and Samsara permissions.
+- **Asked of Brian 2026-11-12** (Syed Haris's reply, Q1): will the ERP fill in the External IDs, with a token from Patrick that can edit vehicles, or will TCG enter them by hand? Reply text in the source file, §4.
 
 ## Who may change an asset's core identity data in the ERP — and does it need approval?
 
@@ -1640,6 +1641,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** the code, read 2026-11-12: every asset edit goes through one permission, `asset-management: edit` (`apps/api/src/presentation/asset-management/assets/assets.controller.ts:103-104`), and no field is held back. [../admin/gaps.md → *Departments, roles and their capabilities*](../admin/gaps.md#departments-roles-and-their-capabilities--the-authorization-layer-is-unbuilt-and-the-list-is-unwritten) (open, partly answered 2026-10-20): roles decide access at module level, and nothing there is per field. [../decisions/2026-10-20-asset-photos-entity-images.md](../decisions/2026-10-20-asset-photos-entity-images.md) Q4: "anyone who may edit an asset" may manage its photos, the only per-asset rule on record. No source mentions field-level asset permissions or an approval step.
 - **Blocked:** nothing in flight. It decides whether the asset edit form needs a second permission for identity fields before the cleaned data is imported.
 - **Owner:** Joe Schacatano and Kyle Harlow (Brian defers the list to them), with Brian Petros.
+- **Asked of Brian 2026-11-12** (Syed Haris's reply, Q2): should the core fields be limited to the same short list, and does a change need approval or just a record of who changed what? Reply text in the source file, §4.
 
 ## DMV make code — a separate asset field, as Brian Petros asked
 
@@ -1649,3 +1651,4 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Sources checked:** `model Asset` (`apps/api/prisma/schema.prisma`) has `manufacture`, `vehicleMake`, `vehicleModel`, `modelYear`, `license`, `state`, `serialNumber` and `vin`, and no make-code field. [asset-record-requested-additions.md](asset-record-requested-additions.md) does not list it. FCC tracks `REG` Registration (DMV) as a unit compliance schedule (same file, line 478), which says nothing about make codes. The email's sourcing guidance (NHTSA vPIC for road vehicles; data plate and title for cranes that NHTSA does not decode) tells the people cleaning the data where to look. It does not ask the ERP to decode VINs.
 - **Blocked:** nothing in flight. It is a small asset-record addition when someone picks it up.
 - **Owner:** Brian Petros.
+- **Asked of Brian 2026-11-12** (Syed Haris's reply, Q3): every vehicle, or only units with a DMV registration? The reply offered the field as CodingCops' suggestion; TCG has not confirmed it. Reply text in the source file, §4.

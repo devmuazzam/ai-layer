@@ -120,6 +120,23 @@ it to. It names sources for the people cleaning the data. The DMV make code is t
 ask for a field. Open question:
 [gaps.md → *DMV make code*](gaps.md#dmv-make-code--a-separate-asset-field-as-brian-petros-asked).
 
+## 4. CodingCops' reply, 2026-11-12
+
+Syed Haris replied to Brian Petros on 2026-11-12. The text was drafted in the Claude Code
+session; Haris confirmed it was sent but did not say whether he edited it first.
+
+- **Given to Brian** (from our 2026-09-21 measurements, each still to be checked against the
+  data plate): FCC's VIN is the likely correct one for 9002. 10004 and the inactive tractor AT07
+  share one Samsara ID, which explains the Kenworth decode. The Bragg record that last reported
+  on 2024-11-15 is a leftover from a gateway swap. 6001 is inactive in FCC, so it may be one to
+  remove from Samsara rather than fix.
+- **Asked of Brian:** (1) who fills in the External IDs: the ERP, with a token from Patrick that
+  can edit vehicles, or TCG by hand; (2) whether the ERP's core identity fields should be limited
+  to the same short list, and whether changes need approval or just a record; (3) whether the
+  DMV make code goes on every vehicle or only on registered units.
+- **Offered by CodingCops, not decided by TCG:** we will use External IDs as the link, and we
+  can add the DMV make code as its own field next to Make.
+
 ## What this does not establish
 
 - **Any decision.** The editor list is a proposal that Joe Schacatano and Kyle Harlow have not
