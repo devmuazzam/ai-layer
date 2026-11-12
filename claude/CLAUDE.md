@@ -152,6 +152,55 @@ API aliases: `@orm/* @presentation/* @usecase/* @service/* @config/* @guard/* @d
 - Tenant scoping is a Prisma `$extends` extension and **not unconditional** —
   `contexts/prisma.md`. Never assume a query is scoped.
 
+## Business time — the tenant's zone, never a constant
+
+Every business-day decision (payroll week, day type, rate in force, "today", expiry, reminder,
+"not before today", scheduled job) uses the tenant's IANA zone, `TenantCompany.timezone` (NOT
+NULL, no default, set once at creation). Instants are `timestamptz`, calendar dates `@db.Date`;
+the zone decides which day an instant falls on. Spec: `.ai/aidlc/SCRUM-TZ/`.
+
+- **Never** use `BUSINESS_TIMEZONE`, a literal `'America/Los_Angeles'`,
+  `toISOString().slice(0, 10)`, `getFullYear()/getMonth()/getDate()`, or the browser, device or
+  server zone for a business day. `BUSINESS_TIMEZONE` is only the fallback when no tenant exists.
+- **API:** `TenantContextService.getTimeZone()` inside a request; it throws outside one, so a
+  cron or queue reads the tenant row (`findTenantTimeZone`) and passes the zone down.
+- **Web:** `useSessionTimeZone()` in components, `getSessionTimeZone()` in plain helpers; label
+  rendered times with the zone (`zoneLabelFor`, `formatZonedDateTime`).
+- **Mobile:** `getTenantZone()` from `lib/tenant-zone.ts`; labels via `field-ticket/timers/zone-label.ts`.
+- **Shared / payroll engine:** the zone is a required argument — pass it through, never default
+  it. A new caller of `todayIsoDate`, `formatClock`, `payWeekBounds`, `sliceWindow` or
+  `businessDateOf` passes a zone. A tenant-creation path supplies a valid IANA zone.
+- Clock-dependent tests must hold in several zones (`sh scripts/test-timezones.sh`).
+- A spec for date or time behaviour says which zone decides it (`spec.md` §11b).
+- After rebasing onto a newer `staging`, rebuild every project: new callers of helpers that now
+  take a zone merge cleanly as text and fail only in the type check.
+
+## Departments and roles — every module answers to them
+
+A role's `permissions` (per module, per action `view | create | edit | archive`) and its
+role-as-employee-type flags (`isDispatchable`, `boomPay`, `runsInspections`, `quoteApproval`,
+`craneInspectionOrder`) decide who can see and do what. Departments and roles are per tenant,
+and a tenant can rename, add and archive them. So work on any module settles four things, and the
+spec §11b or the PR's _AI decisions_ table records the answer for each:
+
+- **Permission gate:** every new or changed route carries `@RequirePermission` with the module
+  and action. Reuse `grantsAt(...)` and the shared constants in
+  `apps/api/src/decorator/permission-requirements.ts`. A read other modules use as a picker
+  accepts those modules too. Mobile routes also accept the `mobile-*` module.
+- **Module registry:** a new module is added to `packages/shared/src/constants/permissions.ts`
+  and to the web role-access screen (`features/departments/constants/role-permissions.ts`), so it
+  can be granted on a role. Check the seeded roles (`SYSTEM_DEPARTMENTS` in `seed-data.ts`) get
+  the right defaults, and say whether existing tenants' roles need a backfill (G2 if it rewrites
+  data).
+- **Surface:** the web sidebar and screens, and the mobile tabs, hide or disable what the role
+  cannot do. API enforcement is the real gate; the UI follows the same module and action.
+- **Names are not logic:** never branch on a department or role _name_ or code
+  (`'Sales Manager'`, `'Operator'`). Use the role's flag, or a stored reference. Never read a
+  department code from env.
+
+Roles and departments are tenant data, so G3 applies to anything that reads or writes them.
+Where a rule depends on who may do something and the vault does not say, that is G1.
+
 ## Code quality
 
 - Strict TypeScript, no `any`. Named exports only (except Next.js pages). One root Prettier
