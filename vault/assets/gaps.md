@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-11-10
+updated: 2026-11-12
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -1126,6 +1126,15 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   picker on the asset form.
 - **Owner:** product team — Brian Petros and Corrina Bustos already stated the two constraints
   above; they own the answer.
+- **Update 2026-11-12 (Brian Petros email):** Brian proposes Samsara's **External IDs** field,
+  empty on every vehicle today, as *"the field CodingCops should use to permanently link each
+  Samsara record to its ERP unit"*. That would add a Samsara → ERP direction to the ERP → Samsara
+  link built today. A vehicle has one set of External IDs, so the crane-and-tractor case in (a)
+  stays unanswered. He also found that `10004`'s VIN decodes as a **2008 Kenworth truck-tractor**.
+  That fits the shared `10004`+`AT07` id above, which suggests the gateway moved and the old
+  record's VIN was never updated. That reading is still inference. Tracked in
+  [*Samsara External IDs as the link*](#samsara-external-ids-as-the-link--who-writes-them-and-does-the-erp-keep-its-own-link-too);
+  source [samsara-data-audit-and-edit-access-brian-2026-11-12.md](samsara-data-audit-and-edit-access-brian-2026-11-12.md).
 
 ## The fleet day — "today" is one hardcoded timezone, and no source defines a fleet day
 
@@ -1456,6 +1465,11 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Owner:** product team, with Brian Petros on the operational half — three of the eight are
   main cranes, so whether they are genuinely untracked today is a fleet question before it is a
   display question.
+- **Update 2026-11-12 (Brian Petros email):** Brian and Jeff Stricker's own audit counts **ten
+  gateways that have not reported in over 90 days**, and says `6001` has no VIN and has been silent
+  since April 2024. That matches our 2026-04-15 reading; FCC marks `6001` inactive. Brian does not
+  name the ten or say whether each is a dead gateway or an idle unit, so this entry's question is
+  still open. Source: [samsara-data-audit-and-edit-access-brian-2026-11-12.md](samsara-data-audit-and-edit-access-brian-2026-11-12.md) §2.
 
 ## Archived rows in pickers — never offered except the record's own saved value?
 
@@ -1608,3 +1622,30 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Blocked:** nothing now; it affects how TCG tests the configuration.
 - **Owner:** Joe Schacatano; CodingCops to state what the build does.
 - **Update 2026-11-10 (11-05 customer portal) — it reaches every crane by design; per-crane separation was asked and not offered.** ehtesham.anwar, 2:28: making something optional on the operator load is done on the operator-load subcategory, and *"this is going to change all of the operator loads that you have added in different cranes. That's like a kind of a drawback."* **Ryan Adams, 4:10–4:16:** *"So, it will do it for every crane"*; *"Is there any way to separate that … for each crane?"* ehtesham.anwar answered with the intent (the configuration decides, so sales and dispatch do not guess), not with a way to separate. That is a second reach beside the one asked above: across **cranes**, not only across existing quotes and jobs. Also: **Joe Schacatano, 1:57–2:19**, reviewed the configuration with Brian. *"It looked proper the way that it's built out … I didn't really see any issues with it"*, with the actual configurations to be set nearer go-live. Still open: what the build does to existing quotes and jobs; whether per-crane overrides are wanted. Source: [2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md](../meetings/2026-11-05-customer-portal-crane-set-order-quote-approval-po-upload-job-visibility-pay-now-permits-and-dashboards.md), transcript [2026-11-05-customer-portal.md](../meetings/transcripts/2026-11-05-customer-portal.md) §1.
+
+## Samsara External IDs as the link — who writes them, and does the ERP keep its own link too?
+
+- **Status:** open
+- **Asked:** 2026-11-12 — Brian Petros, email to Patrick McKiernan shared with CodingCops: *"External IDs are empty on every vehicle. This is the field CodingCops should use to permanently link each Samsara record to its ERP unit."* Source: [samsara-data-audit-and-edit-access-brian-2026-11-12.md](samsara-data-audit-and-edit-access-brian-2026-11-12.md) §3.
+- **Question:** Brian proposes the Samsara vehicle's **External ID** as the permanent link to the ERP unit. Two lines are TCG's to answer: **(a)** who writes the External IDs into Samsara: the ERP through the Samsara API, which needs a token with **write** access to vehicles from Patrick McKiernan, or TCG staff by hand? **(b)** Once Samsara is locked down (§1 of the source), may the ERP's own integration user change a vehicle's External ID? CodingCops decides the rest: which ERP value goes in the External ID, and whether `Asset.samsaraAssetId` stays as the ERP-side copy.
+- **Sources checked:** the code, read 2026-11-12: the link today is held only on the ERP side (`Asset.samsaraAssetId` + `samsaraAssetType`, `@@unique([tenantCompanyId, samsaraAssetId])`) and is set by hand from the asset form's Samsara picker. The ERP never writes to Samsara. `apps/api/src/service/samsara/samsara.mapper.ts:50` ignores `externalIds`. The FCC seeder drops FCC's `LowerGPSID` links ([fcc-samsara-reconciliation-2026-09-21.md](fcc-samsara-reconciliation-2026-09-21.md)). Whether the current Samsara token can write was **not checked**. Abdul Rehman's integration principle, *"we will keep every external ID in our database"* (2026-08-26 sprint review 12:30), covers the ERP holding Samsara's id. It does not cover Samsara holding the ERP's. `decisions/` holds no Samsara decision.
+- **Blocked:** the link design: one-way (ERP holds Samsara's id) or two-way (Samsara also holds the ERP's). It also bears on the cardinality entry above: a Samsara vehicle has one set of External IDs, so a crane and its support tractor cannot both be written onto one device.
+- **Owner:** Brian Petros, with Patrick McKiernan for the token and Samsara permissions.
+
+## Who may change an asset's core identity data in the ERP — and does it need approval?
+
+- **Status:** open
+- **Asked:** 2026-11-12 — raised by CodingCops from Brian Petros's email to Patrick McKiernan, which asks for the same lock-down **in Samsara**: *"too many users can change the info on assets … We need to "lock this down" … to prevent the updated info from changing too easily over time (without proper approval from the ones responsible for maintaining/certifying it)"*. Brian suggests limiting editors to Kyle Harlow, Joe Schacatano, Jeff Stricker, Brian Petros and Patrick McKiernan, and leaves the list to Joe and Kyle. Source: [samsara-data-audit-and-edit-access-brian-2026-11-12.md](samsara-data-audit-and-edit-access-brian-2026-11-12.md) §1.
+- **Question:** Once the ERP is the source of asset data, should **core identity fields** (VIN, serial number, plate and state, make, model, year, and the Samsara link) be editable only by a small named group, separately from the rest of the asset record? And does a change to them need someone's approval, or is a record of who changed what enough?
+- **Sources checked:** the code, read 2026-11-12: every asset edit goes through one permission, `asset-management: edit` (`apps/api/src/presentation/asset-management/assets/assets.controller.ts:103-104`), and no field is held back. [../admin/gaps.md → *Departments, roles and their capabilities*](../admin/gaps.md#departments-roles-and-their-capabilities--the-authorization-layer-is-unbuilt-and-the-list-is-unwritten) (open, partly answered 2026-10-20): roles decide access at module level, and nothing there is per field. [../decisions/2026-10-20-asset-photos-entity-images.md](../decisions/2026-10-20-asset-photos-entity-images.md) Q4: "anyone who may edit an asset" may manage its photos, the only per-asset rule on record. No source mentions field-level asset permissions or an approval step.
+- **Blocked:** nothing in flight. It decides whether the asset edit form needs a second permission for identity fields before the cleaned data is imported.
+- **Owner:** Joe Schacatano and Kyle Harlow (Brian defers the list to them), with Brian Petros.
+
+## DMV make code — a separate asset field, as Brian Petros asked
+
+- **Status:** open
+- **Asked:** 2026-11-12 — Brian Petros, email to Patrick McKiernan shared with CodingCops: *"Plates and DMV make codes: the DMV registration card. The short make codes on the card come from the federal NCIC list. For example, KW is Kenworth, PTRB is Peterbilt, and TADO covers Tadano and Tadano Faun. Store these in their own ERP field, separate from the make."* Source: [samsara-data-audit-and-edit-access-brian-2026-11-12.md](samsara-data-audit-and-edit-access-brian-2026-11-12.md) §3.
+- **Question:** Brian asks for an asset field holding the **DMV make code** from the registration card, separate from the make. Confirm that TCG wants it, and on which assets: every registered vehicle, or only those with a DMV registration?
+- **Sources checked:** `model Asset` (`apps/api/prisma/schema.prisma`) has `manufacture`, `vehicleMake`, `vehicleModel`, `modelYear`, `license`, `state`, `serialNumber` and `vin`, and no make-code field. [asset-record-requested-additions.md](asset-record-requested-additions.md) does not list it. FCC tracks `REG` Registration (DMV) as a unit compliance schedule (same file, line 478), which says nothing about make codes. The email's sourcing guidance (NHTSA vPIC for road vehicles; data plate and title for cranes that NHTSA does not decode) tells the people cleaning the data where to look. It does not ask the ERP to decode VINs.
+- **Blocked:** nothing in flight. It is a small asset-record addition when someone picks it up.
+- **Owner:** Brian Petros.

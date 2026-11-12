@@ -2,7 +2,7 @@
 title: FCC ↔ Samsara asset reconciliation — the 2026-09-21 comparison, measured
 source: Teams message from Brian Petros 2026-09-21; shared-folder Project Repository → 2.1.1_DATA-MIGRATION/{FCC_Samsara_Asset_Comparison_2026-09-21.xlsx, "FCC_Samsara_Asset_Compare - starting data.xlsx", Samsara Asset Vehicle_2026-09-21_0910.csv}
 migrated: 2026-09-22
-updated: 2026-09-22
+updated: 2026-11-12
 status: reference
 conflicts_with: []
 jira: []
@@ -21,6 +21,9 @@ this file was **re-derived by direct measurement** of the three supplied files o
 **This is a record of two client systems' state, not a spec.** It settles no product
 question. The questions it raises live in [gaps.md](gaps.md) → *One Asset ↔ one Samsara asset*
 and *Which dispatchable cranes are untracked*.
+
+**Follow-up 2026-11-12:** Brian Petros's own audit, which also proposes Samsara External IDs as
+the link, is recorded in [samsara-data-audit-and-edit-access-brian-2026-11-12.md](samsara-data-audit-and-edit-access-brian-2026-11-12.md).
 
 ## The two snapshots are 81 days apart
 

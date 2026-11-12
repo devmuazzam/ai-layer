@@ -2,7 +2,7 @@
 title: Assets — module index
 status: reference
 kind: index
-updated: 2026-09-22
+updated: 2026-11-12
 tags: [module/assets, kind/reference]
 ---
 
@@ -26,6 +26,7 @@ Assets, yards-as-records, tools & rigging, categories. Backend usecases: `asset-
 | [equipment-onboarding.md](equipment-onboarding.md) | How a new machine becomes dispatchable — the on-boarding value engine and the (stub) FCC creation playbook | 5.8 |
 | [trailer-inspection-form.md](trailer-inspection-form.md) | The paper trailer inspection checklist, version 1 — 24 side-by-side checks plus 8 conditional ones | 4.1 |
 | [fcc-samsara-reconciliation-2026-09-21.md](fcc-samsara-reconciliation-2026-09-21.md) | **The FCC ↔ Samsara comparison, re-measured** — FCC has no VIN column, the `LowerGPSID` Samsara link it already carries on 45 units (4 of them shared by two units), which dispatchable cranes are untracked, eight silent gateways, and a per-unit adjudication of every VIN conflict | 11.0 |
+| [samsara-data-audit-and-edit-access-brian-2026-11-12.md](samsara-data-audit-and-edit-access-brian-2026-11-12.md) | **Brian's Samsara audit email (2026-11-12)**: locking down who edits asset data in Samsara, his eight "will break the ERP sync" findings checked against our 09-21 measurements, External IDs proposed as the link, and where make, model and DMV make codes come from | 10.1 |
 | [categories-and-sub-categories.md](categories-and-sub-categories.md) | Category/sub-category questions (2 tags — thin) | 0.6 |
 
 ## Also relevant
