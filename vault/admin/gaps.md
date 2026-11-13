@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-11-12
+updated: 2026-11-13
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -1500,6 +1500,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## Field-level edit rights on asset identity data — pointer, owned by assets
 
 - **Pointer (2026-11-12):** Brian Petros's request to limit who may change asset "core" data (VIN, plate, registration details) to a short named list is filed once in [../assets/gaps.md](../assets/gaps.md#who-may-change-an-assets-core-identity-data-in-the-erp--and-does-it-need-approval) → *Who may change an asset's core identity data in the ERP — and does it need approval?* It bears on *Departments, roles and their capabilities* above: today access is granted per module, never per field.
+- **Update 2026-11-13 (Brian Petros, email):** he answers with an **"Asset Data Admin" role** that has field-level rights, and asks *"Could the ERP handle multiple roles for the same user?"* That pulls against the verified 2026-10-20 decision that one main role decides access ([../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md](../decisions/2026-10-20-departments-roles-main-role-and-can-also-fill-corrina.md)). **Built today:** one `role` per user, plus per-employee **extra access per module** (`EmployeePermissionGrant`: module with view/create/edit/delete), which is already more than the decision describes. No field-level rights exist. **Open:** does an Asset Data Admin become a second role, a per-person grant, or something else, and who decides it given the 10-20 owners? The same need is already open in [*Per-person access beyond the role default*](#per-person-access-beyond-the-role-default-and-the-approval-flow-for-role-and-permission-changes) and [*Field-level access inside a module*](#field-level-access-inside-a-module--ssn-pay-and-numbers-hidden-from-roles-that-can-open-the-module) (payroll's version). Decision note: [../decisions/2026-11-13-samsara-link-asset-field-security-dmv-make-code-brian.md](../decisions/2026-11-13-samsara-link-asset-field-security-dmv-make-code-brian.md). Source: [../assets/samsara-cleanup-plan-and-answers-brian-2026-11-13.md](../assets/samsara-cleanup-plan-and-answers-brian-2026-11-13.md) §2.
 
 ## Field-level access inside a module — SSN, pay and "numbers" hidden from roles that can open the module
 

@@ -2,7 +2,7 @@
 title: Samsara data audit and edit access — Brian Petros's email to Patrick McKiernan, 2026-11-12
 source: Email from Brian Petros to Patrick McKiernan (IT Manager), shared with CodingCops 2026-11-12. Body pasted to the Claude Code session by Syed Haris; two of its three embedded images supplied (image001, the problems list, and the "official sources" image). The third image was not supplied.
 migrated: 2026-11-12
-updated: 2026-11-12
+updated: 2026-11-13
 status: unverified
 conflicts_with: []
 jira: []
@@ -87,8 +87,7 @@ field. Today every vehicle's External IDs field is empty.
 - The ERP **reads** from Samsara only. Nothing writes to Samsara. The stats mapper ignores
   `externalIds`: its own comment says *"Real responses also carry externalIds … the index
   signature tolerates them"* (`apps/api/src/service/samsara/samsara.mapper.ts:50`).
-- The FCC seeder does not map FCC's `LowerGPSID` into `samsaraAssetId`. So no links come over
-  from FCC on import (reconciliation file, §*FCC already carries the Samsara link*).
+- **Corrected 2026-11-13:** since 2026-10-20 the FCC seeder applies `apps/api/fcc-seeder/seed-files/samsara-asset-map.json`: 52 links keyed by FCC unit code, marked *provisional*, taken from a read-only pull of FCC's `LowerGPSID` (corrected 2026-11-13; an earlier version of this note said the seeder drops the links).
 
 An External ID points the other way, from Samsara to the ERP. For it to stay correct,
 **somebody has to write it into Samsara**: either the ERP through the Samsara API, which needs
@@ -136,6 +135,8 @@ session; Haris confirmed it was sent but did not say whether he edited it first.
   DMV make code goes on every vehicle or only on registered units.
 - **Offered by CodingCops, not decided by TCG:** we will use External IDs as the link, and we
   can add the DMV make code as its own field next to Make.
+
+**Brian's answer (2026-11-13):** recorded in [samsara-cleanup-plan-and-answers-brian-2026-11-13.md](samsara-cleanup-plan-and-answers-brian-2026-11-13.md).
 
 ## What this does not establish
 
