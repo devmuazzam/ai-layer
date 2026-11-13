@@ -314,7 +314,17 @@ Claude Code session.
   can schedule a test to write an ID to a vehicle once confirmed."* Whether the current Samsara
   token can write vehicles is still **not checked** in the vault or the code.
 
-The Teams follow-up in §6 had not been answered when this was recorded.
+**Teams reply, 2026-11-13.** Syed Haris also answered §6 on Teams. The text was drafted in the
+Claude Code session and sent as drafted, as far as the session knows. It told Brian:
+- The code table makes sense, and the ERP already has the two IDs: a hidden, permanent asset ID,
+  which is what goes into Samsara's External ID, and the Unit Code as the label.
+- **CodingCops agrees with Kyle Harlow** that there should be no permanent trailer-to-crane
+  "Assigned to" field, because dispatch allocation already records which trailer went with which
+  crane on each job. CodingCops' basis was the schema, not a screen check.
+- Assigning an employee to an asset is *"a separate idea we'd be happy to look at"*. That is an
+  offer, not a commitment.
+- A separate "FCC UnitCode" field makes sense.
+- For SL03 and SL05, use Samsara's *Move a Vehicle Gateway* step when their devices are reused.
 
 ## What this does not establish
 
