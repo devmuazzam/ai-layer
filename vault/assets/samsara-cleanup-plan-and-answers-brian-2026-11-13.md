@@ -295,6 +295,27 @@ data and reference for the users."*
   collide; `apps/api/fcc-seeder/src/seed-all.ts`, `createFleetAsset`) and keeps no separate copy, so
   renaming an ERP code would lose the link back to FCC.
 
+## 7. CodingCops' email reply, 2026-11-13
+
+Syed Haris replied to Brian by email on 2026-11-13. The text below is as sent, pasted into the
+Claude Code session.
+
+- **Told Brian:** the gateway moves explain the four Samsara IDs FCC holds on two units each
+  (`10004`/`AT07`, `SL03`/`AT03`, `SL04`/`AT05`, `ST12`/`2202`). On multiple roles: *"today each
+  person has one main role, as agreed with Corrina on 20 Oct, but we can already give a specific
+  person extra access to a module on top of that role. What's missing is control per field, which
+  we'd build for the Asset Data Admin."*
+- **Asked:** (1) is Asset Data Admin extra access for named people on top of their main role, or a
+  second role, and are Kyle, Joe S., Jeff S., Brian and Patrick confirmed; (2) does a "Registered"
+  checkbox show the DMV make code, or simply having a plate; (3) is the code typed from the
+  registration card with a suggestion from Make and a mismatch warning, or always taken from
+  Make and read-only.
+- **Stated by CodingCops:** *"For the ERP to write External IDs into Samsara, we have the API and
+  can schedule a test to write an ID to a vehicle once confirmed."* Whether the current Samsara
+  token can write vehicles is still **not checked** in the vault or the code.
+
+The Teams follow-up in §6 had not been answered when this was recorded.
+
 ## What this does not establish
 
 - **The unit-code standard, the cutover and the field layout are a plan under review.** The code
