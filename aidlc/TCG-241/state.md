@@ -44,3 +44,5 @@
 - **Migrations to apply (local and staging):** `20261026120000_add_tool_cover_attachment_fk`, `20261027120000_add_employee_user_cover_attachment` with `npx prisma migrate deploy` in `apps/api` (never `pnpm db:migrate` on a database with data). Old images: deleted by hand, system starts fresh (D77).
 - **patterns.md:** P3 "Entity photos and profile pictures" added to `claude/contexts/patterns.md` (asked for by Haris), plus 4 rows in _Shared building blocks_.
 - **Resume:** push the client branches U12 → U13 and open stacked PRs (U13 targets U12, draft until U12 merges); each PR needs the AI-decisions table (D70–D79 / D80–D89) and a Siblings table; Haris reviews P3 in `patterns.md`; then close-ticket (reflection) for TCG-241 including U11–U13.
+
+- **Superseded 2026-11-16 (Trello #246):** U13's "employee pictures — ADMIN only" (spec §Trust boundary, D82-era note) no longer holds on `feat/hide-actions-without-permission` (commit `46ff517b0`, not merged): employees Create or Edit may change an employee's picture. See `../Trello-246/state.md`; the `patterns.md` P3 change is proposed in `../proposals/2026-11-16-employee-photo-follows-employees-permission.md`.
