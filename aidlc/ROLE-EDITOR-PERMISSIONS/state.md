@@ -1,6 +1,9 @@
 # State — ROLE-EDITOR-PERMISSIONS Role editor rework and hiding controls a role does not grant
 
-**Path:** C (no ticket, no Jira id) · **Branch(es):** `feat/hide-actions-without-permission` (local, not pushed, no PR) · **Last updated:** 2026-11-13 (end-to-end pass) by Claude Code session (jahanzaib)
+**Path:** C (the role editor rework has no card of its own) · **Branch(es):** `feat/hide-actions-without-permission` (local, rebased onto `origin/staging` `f0676b6b3` on 2026-11-16, not pushed, no PR) · **Last updated:** 2026-11-16 by Claude Code session (fouzan; client commits are authored as Jz-Nd / Jahanzaib Nadeem)
+
+**Trello cards fixed on this branch** (each has its own folder — this one is the build record of the role editor rework and the umbrella):
+[Trello-178](../Trello-178/state.md) hide Create / Edit controls (web done, mobile open) · [Trello-246](../Trello-246/state.md) employee picture bug (path B) · [Trello-247](../Trello-247/state.md) role editor decisions (path A, waiting on TCG) · [Trello-248](../Trello-248/state.md) phone and tablet layout. Related, not built here: #195 hidden fields, #177 / TCG-248 notifications, #130 per-action permissions (Done, earlier branch).
 
 **Status: INCOMPLETE.** The role editor and the control-hiding work are built and checked, but
 three things are deferred and the client-facing behaviour is unconfirmed (below).
@@ -12,7 +15,7 @@ three things are deferred and the client-facing behaviour is unconfirmed (below)
 - [S] Sign-off — path C
 - [S] Units — path C
 - [-] Build — role editor rework and web control hiding done; three items deferred (see Resume)
-- [ ] Analyse — `review-pr` not run
+- [-] Analyse — `review-pr` not run; a manual branch review was done 2026-11-16 (rebase, typechecks, tests, lint, removed test ids, hex colours)
 - [ ] Merged — PR #…, not opened
 - [ ] Reflect — not run
 - [ ] Closed — `close-ticket` not run
@@ -80,8 +83,14 @@ generated password in the session scratchpad, not in the repo):**
   (the API refuses it); the Owner
   "last few modules" question from 2026-11-10.
 
+**2026-11-16 — after the end-to-end pass:**
+- Responsive pass (Trello-248): grid, approver rows, boom pay choice, role cards, department tabs; shared `PageHero`, `SectionTabs`, Projects toggle — see [Trello-248](../Trello-248/state.md) for the shared-UI approval it needs.
+- Rebased onto `origin/staging` `f0676b6b3` (48 commits ahead); two conflicts (`access-token.strategy.ts`, `schedule-table-section.tsx`) resolved; all commit hashes in this folder are the rebased ones. `prisma generate` rerun; the local database still lacks staging's `20261113150000_add_suspended_user_status`.
+- Gates after the rebase: web tests 1051/1051; API build typecheck clean; API jest 92/92 (departments, attachments, strategy, seed-data, web-portal); eslint 0 errors on the 126 changed web files. Not run: Playwright, mobile, staging.
+- Stray commit `46dd60a41` (gitignore `graphify-out/`) belongs to no ticket here; drop it or move it.
+
 **Deferred, to do:**
-1. **Notifications setting in the role editor.** No section exists. `1b4fb4474` had removed it and
+1. **Notifications setting in the role editor.** No section exists. `1bb21619a` had removed it and
    granted all four `notify-*` groups to every role, which sent payroll admin alerts to every
    user, against Corrina's verified 2026-09-29 decision. This branch stops that (a save leaves the
    groups as the role has them; the seed derives them from permissions as before), but a role
@@ -99,8 +108,8 @@ Entry: `vault/admin/gaps.md` → *Role editor behaviour nobody specified*. What 
 (TCG-237 Q5) is still unwritten, so seeded defaults are a labelled workaround.
 
 **Not swept:** ungated write controls on other detail pages and inline controls (plan approval
-actions, tool activity card, dylen-dashboard "Add New Tool", payroll managers, department role
-cards, quotation sales actions, inner form rows). Open decision: add `purchase-orders` to the
+actions, tool activity card, payroll managers, inner form rows). Swept since 2026-11-13: department role
+cards, quotation sales actions, the yard tools panel, notes, attachments, project and job tabs. Open decision: add `purchase-orders` to the
 API's `ASSET_CATEGORIES_READ`, then drop the Purchase Orders → Asset Management link.
 
-Next: build item 1 or 2 when picked up; run `review-pr`; open the PR with the AI-decisions table.
+Next: build item 1 or 2 when picked up; run `review-pr`; open the PR with the AI-decisions table (`pr-ai-decisions.md` in this folder).

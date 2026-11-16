@@ -1451,7 +1451,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 ## Role editor behaviour nobody specified — linked View grants, hidden modules and actions, per-action toggles
 
 - **Status:** open
-- **Asked:** 2026-11-13 — branch `feat/hide-actions-without-permission` (no ticket), which reworks
+- **Asked:** 2026-11-13 — branch `feat/hide-actions-without-permission` (tracked since 2026-11-16 as Trello #247, `.ai/aidlc/Trello-247/`), which reworks
   the role editor in `apps/web/src/features/departments`. Each item below is client-facing
   behaviour with no source (G1), built on the developer's reading and now waiting on the role
   editors.
