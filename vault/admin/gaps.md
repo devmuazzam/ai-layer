@@ -1431,6 +1431,57 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - **Still true:** the ERP has no approval flow. Part 2's assignment approval is new behaviour
     (Path A). Lisette Anzaldo, Melissa McNutt and Joe Schacatano are not on record agreeing to
     these duties.
+- **Update 2026-11-13 (code check) — the assignment approval flow is now built (TCG-244).** The
+  line above is out of date. Commits `30c5151b1` (2026-10-21), `c3aa21b68` and `6b129f6e9`
+  (2026-10-27) add `role-change-requests` (API and web, *Role approvals*). As built, read from the
+  code, not from any source:
+  - each role carries **Role change approval** (`approvalRequired`) and a list of **approver
+    roles**. Giving someone that role, as main role or on the can-also-fill list, or taking it off
+    that list, waits for an approver;
+  - a person whose main role is one of the approver roles, or a portal admin, makes the change at
+    once. With no approver role set, only admins approve;
+  - submitting needs `employees: edit`, listing needs `employees: view`;
+  - the seed turns approval on for every system role, with the Dispatch Manager as approver
+    (`ROLE_ASSIGNMENT_APPROVER` in `seed-data.ts`), following F2.
+  - **Still open, unchanged:** (d) self-approval, (e) the Sales Coordinator tension, (f) whether
+    editing what a role can do needs approval (the build has no approval on role edits), and part
+    1. TCG-244 has no `.ai/aidlc/` folder and no `processed.log` line, so no spec records these
+    choices; TCG has not seen them.
+
+## Role editor behaviour nobody specified — linked View grants, hidden modules and actions, per-action toggles
+
+- **Status:** open
+- **Asked:** 2026-11-13 — branch `feat/hide-actions-without-permission` (no ticket), which reworks
+  the role editor in `apps/web/src/features/departments`. Each item below is client-facing
+  behaviour with no source (G1), built on the developer's reading and now waiting on the role
+  editors.
+- **Question:** each needs a yes or a change.
+  1. **Linked View grants.** Ticking a module for the first time also gives View on the modules
+     its screens link to, one hop only (`constants/linked-modules.ts`: Quotations → Customers and
+     Jobs; Dispatch → Jobs, Customers, Asset Management, Employees, Purchase Orders; and so on). A
+     "+N linked" chip shows it. Unticking the module leaves those View grants in place. **Is that
+     wanted, or should a role get only what is ticked, with a link to a screen it cannot open
+     showing "No access"?**
+  2. **Modules and actions not offered.** The editor no longer shows the modules nothing enforces
+     (Invoicing, Payments, Reports, Audit Log, Documents, Notifications as a module), or actions
+     nothing checks (Create and Archive on Job Walks; Archive on Leave Management; Create on User
+     Management; anything but View on Roles & Permissions). Stored values are kept, not cleared.
+     **Hide them until they are enforced, or show them greyed out?**
+  3. **Per-action toggles.** TCG was shown four levels per module on 2026-10-21 (no access, view,
+     edit, full; edit = update without create) and Brian still described them that way on
+     2026-11-10 (11:00). The editor now shows View, Create, Edit and Archive as separate toggles,
+     which the API has stored all along. **Keep per-action toggles, or go back to the four levels?**
+- **Sources checked:** [../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md](../meetings/2026-10-21-erp-demo-walkthrough-part-1-roles-craft-codes-agencies-billing-codes-price-lists-and-vendors.md)
+  §4; [../meetings/2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md](../meetings/2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md)
+  §3; [*Departments, roles and their capabilities*](#departments-roles-and-their-capabilities--the-authorization-layer-is-unbuilt-and-the-list-is-unwritten)
+  (what each role may do is unwritten, so none of the three has a source).
+  [../decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md](../decisions/2026-09-04-system-departments-and-roles-carry-no-restrictions.md)
+  is about seeded rows, not these.
+- **Blocked:** nothing. The branch ships on the readings above; each can be reversed in the web
+  editor alone, with no data change.
+- **Also not built (2026-11-13):** a Notifications setting in the role editor (deferred; a role created in the editor starts with none of the four notification groups) and the hidden-fields layer ([*Field-level access inside a module*](#field-level-access-inside-a-module--ssn-pay-and-numbers-hidden-from-roles-that-can-open-the-module)). Status of the branch: `.ai/aidlc/ROLE-EDITOR-PERMISSIONS/state.md`.
+- **Owner:** the four who edit what a role can do — Corrina Bustos, Melissa McNutt, Joe
+  Schacatano, Lisette Anzaldo (decision 2026-10-20, F2); Brian Petros to put it to them.
 
 ## Branch fixes/TCG-22-OCT-UAT (PR #926) — fallback company email moved from thecraneguys.com to craneguys.com, with new mailbox names
 
@@ -1510,6 +1561,7 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
 - **Note:** ehtesham.anwar (14:32): *"we are going to have another permission level and that's where you guys come in"*, once testing raises the questions. Joe Schacatano (14:04) and Brian (13:27) agreed TCG will specify them. Brian also saw the **Owner** role lacking access to the last few modules under *full permission* (12:12). That was not explained on the call, and this check did not trace it.
 - **Blocked:** inviting real employees with SSN or pay entered, if those must be hidden from some roles.
 - **Owner:** Brian Petros and Corrina Bustos (which fields, which roles); Patrick McKiernan (TCG IT); CodingCops for the layer.
+- **Update 2026-11-13 — to do, not built.** The role editor (branch `feat/hide-actions-without-permission`, `.ai/aidlc/ROLE-EDITOR-PERMISSIONS/state.md`) grants per module and action only; it has no per-field setting, so any role that can open the employee module sees SSN and pay (answer to (d): yes, today). The hidden-fields layer is deferred until TCG names the fields (a). Status stays open.
 - Source: [2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md](../meetings/2026-11-10-employee-access-and-entering-assets-minimum-invite-field-level-permissions-test-tenant-parts-fcc-import-substitute-loads-and-work-orders.md), transcript [2026-11-10-employee-access-and-entering-assets.md](../meetings/transcripts/2026-11-10-employee-access-and-entering-assets.md) §3.
 
 ## Which tenant, which environment — an on-screen indicator
