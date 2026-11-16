@@ -352,6 +352,13 @@ Dispatch module to know how that might affect/help the DAS. What do you think?"*
 - **New ask:** *"Still need to be trained on how to run reports from ERP backend."* Nothing in the
   vault records report access or training promised to Brian.
 
+**CodingCops' Teams reply, 2026-11-16, as sent by Syed Haris:**
+- **Offered by CodingCops, not decided by TCG:** yes to a crane's own trailers and boom dolly *"as long as it's a default rather than a fixed rule"*. Each crane lists them, dispatch gets them filled in when it allocates the crane, dispatch can swap any for one job, and the job keeps what actually went out. Tractors stay picked per job. The board can show when a crane's trailer is out with another crane.
+- **Told Brian:** customers, employees, vendors, quotes, jobs, projects and yards all have a hidden permanent ID plus the visible code.
+- **Asked:** (1) when a crane borrows another crane's trailer, does the trailer stay assigned to its own crane (lent out) or does the assignment move; (2) should only Asset Data Admins change which trailers belong to a crane.
+- **Not answered:** the reports training ask, left for later at Syed Haris's direction.
+- Tracked on Trello #230 (Waiting on Client).
+
 ## What this does not establish
 
 - **The unit-code standard, the cutover and the field layout are a plan under review.** The code
