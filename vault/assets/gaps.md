@@ -2,7 +2,7 @@
 title: Assets — open questions
 status: reference
 kind: gaps
-updated: 2026-11-13
+updated: 2026-11-16
 tags: [module/assets, kind/gaps, open-questions]
 ---
 
@@ -1700,4 +1700,5 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   - **Also in the table, untouched by any question yet:** retired units (`AT07`, `2202`, `9001 OL`) *"migrate as history under their FCC code"*; rented units get `RR` + the owner's number; cost categories (`SAFETY 01`, `SHOP/YARD`) become cost or work-order codes, not assets.
 - **Told Brian 2026-11-13 (Teams, Syed Haris):** CodingCops agrees with Kyle that there should be no permanent trailer-to-crane field, because dispatch allocation already records the pairing per job. A separate FCC UnitCode field makes sense. Employee-to-asset assignment was offered as a separate idea to look at. Not decided by TCG. Source: [samsara-cleanup-plan-and-answers-brian-2026-11-13.md](samsara-cleanup-plan-and-answers-brian-2026-11-13.md) §7.
 - **Trello (2026-11-13):** The FCC UnitCode field (line b) is tracked on Trello #224 (Backlog). The code standard itself has no card until Joe and Kyle see it.
+- **Update 2026-11-16 (Brian Petros, relaying Kyle Harlow):** line (c) moves. Kyle now says a **crane may have trailers and boom dollies assigned** to it, while a **tractor is not assigned to a trailer**. This narrows his 2026-11-13 "no asset-to-asset". Brian asks CodingCops whether that assignment would help dispatch; CodingCops' 2026-11-13 Teams answer (no permanent field needed) predates it. **Still open:** whether the assignment is a default that dispatch can change per job, what happens when a crane borrows another crane's trailer, and who may change an assignment. Source: [samsara-cleanup-plan-and-answers-brian-2026-11-13.md](samsara-cleanup-plan-and-answers-brian-2026-11-13.md) §8.
 
