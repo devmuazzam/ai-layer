@@ -2,7 +2,7 @@
 title: Samsara cleanup plan and answers on linking, field security and DMV make code — Brian Petros, reply of 2026-11-13
 source: Email reply from Brian Petros to Syed Haris (CodingCops), answering the three questions sent 2026-11-12. Shared in the Claude Code session 2026-11-13. Body pasted; three of its images supplied (the gateway-move findings, the "Fix now / Unit codes" plan, and the "Where to change codes / Data you can verify" plan). image001 (1).png, image012.png and image013.png are named in the email; which supplied image is which was not stated.
 migrated: 2026-11-13
-updated: 2026-11-13
+updated: 2026-11-16
 status: unverified
 conflicts_with: []
 jira: []
@@ -325,6 +325,39 @@ Claude Code session and sent as drafted, as far as the session knows. It told Br
   offer, not a commitment.
 - A separate "FCC UnitCode" field makes sense.
 - For SL03 and SL05, use Samsara's *Move a Vehicle Gateway* step when their devices are reused.
+
+## 8. Brian's reply to the Teams message, 2026-11-16: Kyle says yes to crane-to-trailer and crane-to-boom-dolly
+
+Verbatim, in part: *"Thanks... that all sounds good. Just one more bit of clarity... I checked back
+with Kyle just now and he clarified something. Kyle said that... Can we "assign" tractors to
+trailers?... NO. Can we "assign" cranes to trailers?... YES. Can we "assign" cranes to boom
+dollies?... YES. So, would be good to know if you think the functionality of "assigning" those
+would be helpful in the system. I'm not familiar enough with how you have (and planning) the
+Dispatch module to know how that might affect/help the DAS. What do you think?"*
+
+- **This narrows Kyle's earlier "no asset-to-asset" (§6).** As relayed by Brian: a **crane** may
+  have trailers and boom dollies assigned to it; a **tractor** is not assigned to a trailer. It also
+  overtakes CodingCops' Teams reply of 2026-11-13 (§7), which said a permanent "Assigned to" field
+  was not needed. Brian now asks CodingCops for an opinion; nothing is decided.
+- **Physical evidence it matches:** the 41 trailer survey sheets already name each operator load
+  and support load after its crane (`36001 OL`, `36001 .1`–`.4`; [crane-fleet-reference.md](crane-fleet-reference.md) §4).
+- **Built today (read 2026-11-16, not checked on screen):** a crane type's support loads are set on
+  the sub-category; on a job, dispatch picks each specific trailer by hand. No code fills in a
+  crane's own trailers when the crane is allocated.
+- **Asset ID:** *"I'm still thinking through/planning how to handle the "Asset ID" in the ERP … good
+  to know that there is a hidden ID field … and assume this is also true of other things like
+  Customers, Employees, etc..."* Checked in the schema 2026-11-16: customers, employees, vendors,
+  quotations, jobs, projects and yards each have a hidden UUID plus a visible per-company code, the
+  same shape as assets.
+- **New ask:** *"Still need to be trained on how to run reports from ERP backend."* Nothing in the
+  vault records report access or training promised to Brian.
+
+**CodingCops' Teams reply, 2026-11-16, as sent by Syed Haris:**
+- **Offered by CodingCops, not decided by TCG:** yes to a crane's own trailers and boom dolly *"as long as it's a default rather than a fixed rule"*. Each crane lists them, dispatch gets them filled in when it allocates the crane, dispatch can swap any for one job, and the job keeps what actually went out. Tractors stay picked per job. The board can show when a crane's trailer is out with another crane.
+- **Told Brian:** customers, employees, vendors, quotes, jobs, projects and yards all have a hidden permanent ID plus the visible code.
+- **Asked:** (1) when a crane borrows another crane's trailer, does the trailer stay assigned to its own crane (lent out) or does the assignment move; (2) should only Asset Data Admins change which trailers belong to a crane.
+- **Not answered:** the reports training ask, left for later at Syed Haris's direction.
+- Tracked on Trello #230 (Waiting on Client).
 
 ## What this does not establish
 
