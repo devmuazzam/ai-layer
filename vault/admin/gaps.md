@@ -2,7 +2,7 @@
 title: Admin — open questions
 status: reference
 kind: gaps
-updated: 2026-11-13
+updated: 2026-11-16
 tags: [module/admin, kind/gaps, open-questions]
 ---
 
@@ -1048,6 +1048,14 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
     the Sales Coordinator tension, self-approval, and whether role edits need approval.
   - **Unchanged here:** what each role may do is still unwritten. The follow-up names who may
     *edit* a role's capabilities, not what they are.
+- **Update 2026-11-16 (Brian Petros, message to CodingCops, relayed by Syed Haris):** Brian set up TCG's departments and roles in the ERP and entered and invited the real office employees from Corrina Bustos's list (name, e-mail, phone, department, role, ADP #).
+  - **Departments as configured by TCG:** the nine system departments, with the ninth renamed from "Management" to **"Ownership"** (*"TCG ownership department for all owners and special administrators assisting ownership"*), plus two added by Brian: **IT** and **Marketing**. This is TCG configuring its own company. It differs in wording from the verified 2026-10-20 list (Management), and nobody has said whether Ownership replaces Management in that decision.
+  - **Role = position.** Brian: *"I don't think there is a place in the ERP to enter each Employee's Position … I think maybe the "Role" is intended to be used for the employee position name. So, I created a Role for each position."* That is the design: the verified 2026-10-20 decision makes the main role the person's job, and it decides access.
+  - **Every role has full access for now**, *"for initial testing … then we can trim back once we get sensitive info in there and/or once we are ready to restrict access by department."* So access per role is not yet set by TCG; the *Field-level access inside a module* entry below still governs sensitive employee details.
+  - **Not yet entered:** operators, oilers, 3rd men and drivers, and the rest of Shop and Yard (mechanics, yard technicians) until Jeff Stricker, Elliott Gonzalez and Dylan Masterson ask.
+  - **Employee codes** entered as `FCC_####` with the ADP file number (`4RZ…`) kept separately. That bears on Corrina's open question whether the Employee ID should equal the ADP file number (Trello "Corrina: employee ID…").
+  - **Reported bug:** some employees cannot be set to Union, e.g. Jeff Kelley, whom the 2026-10-20 decision (F4) names as a Local 12 member. Trello #231. Not reproduced yet.
+  - **Test data still in the tenant:** 16 test crew (`EMP-00101`–`EMP-00404`) and the "IT ADMIN" login (formerly "Alex Morgan"). Brian asked on 2026-11-10 for them to be taken out; removing them is a data deletion and waits on his confirmation.
 
 ## Must a new nav entry be permission-gated, and who may see live vehicle locations?
 
