@@ -2,7 +2,7 @@
 title: Assets — module index
 status: reference
 kind: index
-updated: 2026-11-12
+updated: 2026-11-13
 tags: [module/assets, kind/reference]
 ---
 
@@ -27,6 +27,7 @@ Assets, yards-as-records, tools & rigging, categories. Backend usecases: `asset-
 | [trailer-inspection-form.md](trailer-inspection-form.md) | The paper trailer inspection checklist, version 1 — 24 side-by-side checks plus 8 conditional ones | 4.1 |
 | [fcc-samsara-reconciliation-2026-09-21.md](fcc-samsara-reconciliation-2026-09-21.md) | **The FCC ↔ Samsara comparison, re-measured** — FCC has no VIN column, the `LowerGPSID` Samsara link it already carries on 45 units (4 of them shared by two units), which dispatchable cranes are untracked, eight silent gateways, and a per-unit adjudication of every VIN conflict | 11.0 |
 | [samsara-data-audit-and-edit-access-brian-2026-11-12.md](samsara-data-audit-and-edit-access-brian-2026-11-12.md) | **Brian's Samsara audit email (2026-11-12)**: locking down who edits asset data in Samsara, his eight "will break the ERP sync" findings checked against our 09-21 measurements, External IDs proposed as the link, and where make, model and DMV make codes come from | 10.1 |
+| [samsara-cleanup-plan-and-answers-brian-2026-11-13.md](samsara-cleanup-plan-and-answers-brian-2026-11-13.md) | **Brian's reply (2026-11-13)**: the ERP writes its asset ID into Samsara's External ID; an Asset Data Admin role with field-level rights, change log and approvals; the DMV make code as a lookup in a Registration section; plus his cleanup plan under review (moved gateways, the unit-code table, the FCC UnitCode field, component fields) and Kyle's view against asset-to-asset assignment | 23 |
 | [categories-and-sub-categories.md](categories-and-sub-categories.md) | Category/sub-category questions (2 tags — thin) | 0.6 |
 
 ## Also relevant
@@ -50,6 +51,7 @@ Assets, yards-as-records, tools & rigging, categories. Backend usecases: `asset-
 - [2026-10-01-operator-load-is-one-billing-code-its-associations-stay-off-the-quote.md](../decisions/2026-10-01-operator-load-is-one-billing-code-its-associations-stay-off-the-quote.md) — Operator Load is one billing code; its tractor/operator hidden on the quote **by default**, configurable (Joe, 2026-10-01 + 2026-10-07, `verified`); tractor/operator keep codes for one-offs; Certified Operator is its own code
 - [2026-10-07-field-assets-configuration-tab-rename-and-activity-log.md](../decisions/2026-10-07-field-assets-configuration-tab-rename-and-activity-log.md) — Sub-category tab renamed Field Assets Configuration, with its own activity log (ehtesham.anwar, CodingCops, `reference`)
 - [2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md](../decisions/2026-10-16-a-quote-keeps-the-asset-configuration-it-went-out-with.md) — A change to a sub-category's Field Assets Configuration reaches only quotes not yet gone out: a quote keeps a snapshot from its first send (or Mark as Won, or conversion), never refreshed; jobs read their quote's; names stay live (Syed Haris, ticket owner, `reference`)
+- [2026-11-13-samsara-link-asset-field-security-dmv-make-code-brian.md](../decisions/2026-11-13-samsara-link-asset-field-security-dmv-make-code-brian.md) — The ERP writes its asset ID into Samsara's External ID and keeps Samsara's ID, with a daily unlinked/VIN-mismatch check; an Asset Data Admin role with field-level rights, change log and approvals (who holds it still open); DMV make codes from a configuration table in a Registration section (two points still open)
 
 ## Open questions
 

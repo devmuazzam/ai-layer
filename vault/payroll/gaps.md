@@ -5777,8 +5777,14 @@ somewhere it should not have. Settle that before touching either.
 
 ## Send Back of a multi-crew ticket — does sending a ticket back also return it for the other crew members on that ticket?
 
-- **Status:** open — developer answered 2026-09-30: **(c), plus a hold on every worker's week**.
-  It extends Corrina's verified worker-target rule, so it is **pending Corrina Bustos**.
+- **Status:** open — **remainder only** (see *Update 2026-11-11* at the end of this entry): (1) a
+  worker's own mobile edit of the shared ticket — does the crewmate's pay move? (2) whether Corrina
+  Bustos's own sign-off is still wanted. The main question is **ratified for build 2026-11-11 by
+  Ali Riaz**, standing in for Corrina Bustos: **(c), plus a hold on every crew member's week until
+  the correction is recalculated** — see
+  [../decisions/2026-11-11-shared-crew-send-back-returns-and-holds-every-crew-member-ali-riaz-ratification.md](../decisions/2026-11-11-shared-crew-send-back-returns-and-holds-every-crew-member-ali-riaz-ratification.md)
+  (`status: reference`: a team ratification, not a TCG one). The rest of this entry is kept as the
+  record of what was in question.
 - **Asked:** 2026-09-30, while recording the
   [fifth addendum (independent date rows on the weekly timesheet)](../decisions/2026-09-28-flagged-entries-boom-range-and-send-back-to-crane-supervisor.md#addendum-2026-09-30-fifth--independent-date-rows-on-the-weekly-timesheet),
   item D. No ticket covers Send Back (the decision names none), so it is filed here, not in a
@@ -5896,6 +5902,38 @@ somewhere it should not have. Settle that before touching either.
   - TCG asked to hold the answers until an updated version is sent.
   - Filed once:
     [*Who may complete or correct a ticket on a worker's behalf, and who approves a late or post-submit edit*](#who-may-complete-or-correct-a-ticket-on-a-workers-behalf-and-who-approves-a-late-or-post-submit-edit--manager-or-payroll).
+- **Update 2026-11-11: the main question is ratified for build. Two items stay open.**
+  - **Ratified.** Ali Riaz (CodingCops developer, shared devmohsinakram git profile), 2026-11-11,
+    relayed verbatim: *"I'm the ratifier here, build it."* He ratifies the developer answer
+    above, standing in for Corrina Bustos. Sending back one crew member's entry on a shared
+    Oiler + Operator ticket sends the ticket back to the other crew member's entry too, and holds
+    both employees' weeks from approval until the correction is recalculated. That is (c) with (b)'s
+    hold. Recorded in
+    [../decisions/2026-11-11-shared-crew-send-back-returns-and-holds-every-crew-member-ali-riaz-ratification.md](../decisions/2026-11-11-shared-crew-send-back-returns-and-holds-every-crew-member-ali-riaz-ratification.md).
+  - **Standing: `reference`, not `verified`.** The ratifier is on the team, not at TCG, and the
+    vault has no record that Corrina Bustos delegated this. It binds implementation, and TCG can
+    overrule it. See the note's *Standing*.
+  - **Lines above that this overtakes:**
+    - *What the code does today: (a)*, as of `b3c992f10`. Out of date. Since PR #709 (PAYROLL-FLAGS
+      REQ-25), `sendBack` writes one row per roster member under one `returnGroupId`, and each row
+      holds that member's week. Code read at HEAD `fcfacb10b`, not run; lines are in the note's
+      *Build*.
+    - *Developer answer 2026-09-30*, *Build: an API change, not built*. Built in PR #709. No API
+      change is outstanding for the main question.
+    - *Developer answer 2026-09-30*, *Why it stays open* and *Ratifier: Corrina Bustos*. Answered
+      for build by the ratification above. The tension with her verified *"individual"* stays open
+      as remainder item (1).
+  - **Open remainder:**
+    1. **A worker's own mobile edit of the shared ticket.** After a Send Back, if the Oiler edits
+       a shared ticket time on mobile (09-30 note C3 and G2), does the Operator's pay move too, or
+       only the Oiler's? It is unaddressed elsewhere. Corrina's clause 3 is about Payroll's own
+       correction. The 2026-10-28 note withdrew *C6 refined* for Payroll corrections only and left
+       this open. **Ratifier: Corrina Bustos.**
+    2. **Whether Corrina Bustos's own sign-off is still wanted.** If TCG has given Ali Riaz her
+       ratification, the record of it (who, when, where) lets a tcg-scrum pass set the 2026-11-11
+       note to `verified` and drop this item.
+  - Not settled by this update either: whether Send Back keeps its refusal while a crewmate's week
+    is approved (2026-10-28 note, *What this does not decide*, item 1).
 
 ## DAS holdover vs subsistence holdover — pointer, owned by dispatch
 
