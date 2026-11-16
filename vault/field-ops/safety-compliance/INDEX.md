@@ -59,6 +59,7 @@ field-ops.**
 | [05-customer-imposed-safety-requirements.md](05-customer-imposed-safety-requirements.md) | **What do customers require of TCG?** — the SCE 71-page orientation and safety plan, and two H&M/Mesa subcontract safety documents | 18.3 |
 | [06-safety-data-platform-requirements-spec.md](06-safety-data-platform-requirements-spec.md) | **What should accident and injury reporting look like?** — the AbInBev360 (UL Solutions 360) reference Dee sent as an example (2026-09-30): five modules, roles and locations, TRIR/DART formulas, the OSHA 300, a 3-phase MVP, and 8 open questions. The e-mail says *"they wrote their own ERP … and it worked"* | 19.6 |
 | [07-environmental-compliance-calendar.md](07-environmental-compliance-calendar.md) | **What must TCG file, with whom, and when?** — 19 recurring California and federal filings (IFTA, UCR, Clearinghouse, CERS/CUPA HMBP and APSA, IGP, OSHA 300A) and 20 agency systems, for 90/60/30-day e-mail reminders | 10.4 |
+| [08-incident-root-cause-report-ircr.md](08-incident-root-cause-report-ircr.md) | **How does TCG investigate and close an incident or injury?** — the IRCR, TCG's own six-step deck (respond and notify agencies, facts, timeline and evidence, Five Whys, corrective actions with 30/90/180-day checks, four sign-offs). Dee: every step must be completed to close an investigation |
 
 ## What is not here
 

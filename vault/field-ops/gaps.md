@@ -1043,3 +1043,12 @@ Entry format (unchanged from the retired registers, so the global sweep still wo
   change is made; the question is filed in case the assumption is wrong.
 - **Blocked:** nothing currently — behaviour unchanged.
 - **Owner:** TCG field-ops owner, with Kyle Harlow.
+
+## Incident and injury investigations in the ERP — TCG's IRCR is the close-out standard; what must the ERP hold?
+
+- **Status:** open
+- **Asked:** 2026-11-16 — Dennene "Dee" Jones (Safety & Compliance Manager), through Brian Petros: *"Here's the information for coding cops. IRCR attached. This is used as a guide for our incident and injury investigations deck. Every step must be completed per the instructions in the deck to close the investigation."* Source: [safety-compliance/08-incident-root-cause-report-ircr.md](safety-compliance/08-incident-root-cause-report-ircr.md).
+- **Question:** the ERP has only a small incident report on a job ticket (type, severity, description, signature, attachments). TCG's investigation has six steps, four sign-offs and 30/90/180-day effectiveness checks, and closes only when every step is done. Still unsettled: (a) whether the ERP runs the whole IRCR or only starts it (the field report) and stores the finished deck; (b) who signs: the IRCR names investigator, supervisor, Safety & Compliance Manager and management, while Dee said on 29 Sep that Safety, the employee's manager **and the employee** confirm each step; (c) the claims e-mail template Dee says she attached, which did not reach CodingCops; (d) the further item Dee is to send.
+- **Sources checked:** [../meetings/2026-09-29-safety-discussion-onboarding-certifications-incidents-and-facility-compliance.md](../meetings/2026-09-29-safety-discussion-onboarding-certifications-incidents-and-facility-compliance.md) §5 (reporting chain, the IRCR deck, claims by e-mail template, close-out with sign-offs, evidence package, trend reporting); [safety-compliance/04-incident-investigation-form.md](safety-compliance/04-incident-investigation-form.md) (an older generic form, use unknown); [safety-compliance/06-safety-data-platform-requirements-spec.md](safety-compliance/06-safety-data-platform-requirements-spec.md); the `TicketIncidentReport` model on `origin/staging`. No ticket or decision covers incident investigations.
+- **Blocked:** any incident or injury build beyond the ticket's incident report.
+- **Owner:** Dennene Jones, with Brian Petros. Trello #253 (Waiting on Client).
